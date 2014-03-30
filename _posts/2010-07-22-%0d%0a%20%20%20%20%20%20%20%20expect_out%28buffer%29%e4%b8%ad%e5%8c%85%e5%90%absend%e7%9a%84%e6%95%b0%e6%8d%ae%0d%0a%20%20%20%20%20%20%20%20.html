@@ -1,0 +1,111 @@
+---
+layout: post
+title: expect_out(buffer)中包含send的数据
+categories:
+- Tcl/Tk
+- Unix/Linux
+tags:
+- Tcl/Tk
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '1610'
+  original_post_id: '62'
+  _wp_old_slug: '62'
+author: 
+---
+
+<p>&nbsp;</p>
+<div>
+<h1 id="zw-129f916d484wZwN43916c">expect_out(buffer)中包含send的数据</h1>
+<p id="zw-129f9095e02SqGVnn3916c"><span id="zw-129f9081eab6rVFjl3916c">我一直以为在Expect中一旦执行send之后，</span><span id="zw-129f9081eab0LvB_n3916c">expect_out(buffer)就会被清空，直到有新的数据被填入，而恰恰就是这些数据被用在expect语句中。而今天在调试时发现的问题却令我大吃一惊，原来expect_out(buffer)不会被自动清空，而expect到的数据很可能不是你真正想要的，非常有可能是历史数据。</span><span id="zw-129f9095dc2QusTdp3916c"><a id="zw-129f9081f1cN6cQM93916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378">"expect_out(buffer) has the content of the previous send"</a>&nbsp;</span><span id="zw-129f9099e0e7RHXvZ3916c">一文</span><span id="zw-129f908ec42SOcAlE3916c">也指出了这个问题。</span></p>
+<h4></h4>
+<p id="zw-129f8fe7303mkLwZ3916c">&nbsp;</p>
+<p id="zw-129f9000807KX0na03916c">&nbsp;</p>
+<div id="zw-129f900a60bRM8gME3916c"><span id="zw-129f900a60cjSAA9Y3916c">比如在我的代码中，有如下片段：</span></div>
+<div id="zw-129f90d0f92fIcFt93916c">
+<pre>set prompt "#"
+set lockfile "/root/tmp/.cool.lock" 
+send "
+if /[ -e $lockfile ]; then
+        cat $lockfile
+else 
+        echo /"COOLID: $coolid/" &gt; $lockfile
+        echo DONE!
+fi
+/r"
+sleep 1 ;# necessary
+expect {
+        timeout {
+                puts stderr "WARNING: $ME: cannot verify if the Linux AP is locked by other COOL session!";
+                exit 2;
+        }
+       -re "COOLID: (/[1-9](/[0-9])*).*$prompt" {
+                puts stdout "expect_out(buffer)=$expect_out(buffer)"
+                puts stdout "expect_out(0,string)=$expect_out(0,string)"
+                puts stdout "expect_out(1,string)=$expect_out(1,string)"
+                puts stdout "expect_out(2,string)=$expect_out(2,string)"
+                puts stdout "expect_out(3,string)=$expect_out(3,string)"
+        }
+        "DONE!"  ;# do nothing    
+}
+</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f90da827xtgjkZ3916c">无论$<span id="zw-129f90e1718nSGeGs3916c">lockfile是否存在，expect总会得到COOLID: 68，而expect_out(buffer)的出如下：</span></div>
+<div id="zw-129f90b2476dtXxBy3916c"><span id="zw-129f90b2476oxjVv3916c"><br /></span></div>
+<div id="zw-129f909c0f6KIKdhr3916c">
+<pre>[root@bjvsmcl05 ~]# expect_out(buffer)= 
+Last login: Fri Jul 23 09:32:13 2010 from bjbldd
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]# if [ -e /root/tmp/.cool.lock ]; then
+&gt;         cat /root/tmp/.cool.lock
+&gt; else 
+&gt;         echo "COOLID: 68" &gt; /root/tmp/.cool.lock
+&gt;         echo DONE!
+&gt; fi
+COOLID: 1234
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]#
+expect_out(0,string)=23 09:32:13 2010 from bjbldd
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]# if [ -e /root/tmp/.cool.lock ]; then
+&gt;         cat /root/tmp/.cool.lock
+&gt; else 
+&gt;         echo "COOLID: 68" &gt; /root/tmp/.cool.lock
+&gt;         echo DONE!
+&gt; fi
+COOLID: 1234</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f900a6154k9vr_3916c"></div>
+<div id="zw-129f9105181rk1x3916c"><span id="zw-129f910e606ulQUt93916c">由此可见，由于</span><span id="zw-129f910e6063BF84J3916c">expect_out(buffer)中含有send的</span><span id="zw-129f910e666C0g_Fp3916c">echo "COOLID: 68"</span><span id="zw-129f910e607avGslF3916c">，因此永远都能匹配到这个数据。</span></div>
+<div id="zw-129f912e050bsjfk33916c"><span id="zw-129f912e0513SIKJW3916c"><br /></span></div>
+<div id="zw-129f912eb9dtLDgK3916c"><span id="zw-129f91d3abebAfTcg3916c">由于没有找到一种可以清空</span><span id="zw-129f91d3ac0nlD1Le3916c">expect_out(buffer)的方法，无法实时地将</span><span id="zw-129f91d3b3fb8YqAR3916c">expect_out(buffer)清空。</span><span id="zw-129f91d3ac3QUsX9u3916c">我能想到的解决方法有两种：一是更改send和expect的内容或方式，避免send的内容中出现expect的模式(pattern)。比如在我的程序中把上述代码段改为：</span></div>
+<div id="zw-129f9158fb2IWSJh63916c">
+<pre>set lockfile "/root/tmp/.cool.lock"   
+send "cat $lockfile/r"
+expect {
+        -re "COOLID: (/[1-9](/[0-9])*)" {
+                puts stdout "expect_out(buffer)=$expect_out(buffer)"
+                puts stdout "expect_out(0,string)=$expect_out(0,string)"
+                puts stdout "expect_out(1,string)=$expect_out(1,string)"
+                if { [string compare $expect_out(1,string) $coolid] } {
+                        puts stdout "ERROR: $ME: $pcname has been reserverd by COOL session $expect_out(1,string), please choose another Linux PC instead./n"
+                        exit 2;
+                }
+        }
+        "cat: $lockfile: No such file or directory*" {
+                send "echo /"COOLID: $coolid/" &gt; $lockfile/r"
+        }
+}</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f9158fbfu4Bqbj3916c">就可以正常工作了。</div>
+<div id="zw-129f915d6eatVpx_B3916c"></div>
+<div id="zw-129f915ddd2JF4vnX3916c"><span id="zw-129f9193cbaAjqmW43916c">另一种方法是按照</span><a id="zw-129f9193cbcDH9aOQ3916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378"><span id="zw-129f9193cbdI49BAL3916c">"expect_out(buffer) has the content of the previous send"</span></a><span id="zw-129f9193cbfZkPuN3916c">的例子中的方法，set prompt，保持原始代码中send的内容不变，将expect的正则表达式改为&nbsp;</span><span id="zw-129f9193d30IyWK1h3916c">-re "fi(</span><span id="zw-129f9193d30nUI-eL3916c">.*)</span><span id="zw-129f9193d30LfTLJL3916c">$prompt"，如此一来希望的输出就在expect_out(1,string)中了，然后利用string或者lsearch命令对匹配到的数据进行分析。</span></div>
+<div id="zw-129f91aeeb09SBIGu3916c"><span id="zw-129f91aeeb1poW5U3916c"><br /></span></div>
+<div id="zw-129f91af02eanEEu3916c"><span id="zw-129f91af02eiHWs1G3916c">结论：今后在编写Expect脚本时，不仅要考虑每一步的send/expect，也还要考虑到这一步的expect的内容有可能出现在之前的历史数据中。</span></div>
+<div><span id="zw-129f91af02eiHWs1G3916c"><br /></span></div>
+<p id="zw-129f9158fca-kkq893916c">&nbsp;</p>
+</div>
+<p>&nbsp;</p>

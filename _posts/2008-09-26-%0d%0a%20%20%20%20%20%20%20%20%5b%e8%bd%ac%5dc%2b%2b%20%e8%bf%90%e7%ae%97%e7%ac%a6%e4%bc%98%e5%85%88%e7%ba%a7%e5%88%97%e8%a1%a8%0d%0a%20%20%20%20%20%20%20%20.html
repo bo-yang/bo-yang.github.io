@@ -1,0 +1,145 @@
+---
+layout: post
+title: '[转]C++ 运算符优先级列表'
+categories:
+- C/C++
+tags:
+- C/C++
+status: publish
+type: post
+published: true
+meta:
+  views: '78'
+  original_post_id: '25'
+  _wp_old_slug: '25'
+author: 
+---
+<p>
+<span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:14px;"><br />
+<h2 style="margin-top:10px;font-size:1em;"><a id="viewpost1_TitleUrl" href="http://www.cppblog.com/aqazero/archive/2006/06/08/8284.html" style="text-decoration:none;color:rgb(0,102,0);">C++ 运算符优先级列表</a></h2>
+<p><a href="http://www.cppreference.com/operator_precedence.html" style="text-decoration:none;color:rgb(0,102,0);">http://www.cppreference.com/operator_precedence.html</a> <br />
+<table class="code-table" border="1">
+<tbody>
+<tr>
+<th class="code-table-th">Precedence</th>
+<th class="code-table-th">Operator</th>
+<th class="code-table-th">Description</th>
+<th class="code-table-th">Example</th>
+<th class="code-table-th">Associativity</th>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">1</td>
+<td class="code-table-td" style="font-size:12px;">()<br />[]<br />-&gt;<br />.<br />::<br />++<br />--</td>
+<td class="code-table-td" style="font-size:12px;">Grouping operator<br />Array access<br />Member access from a pointer<br />Member access from an object<br />Scoping operator<br />Post-increment<br />Post-decrement</td>
+<td class="code-table-td" style="font-size:12px;">(a + b) / 4;<br />array[4] = 2;<br />ptr-&gt;age = 34;<br />obj.age = 34;<br />Class::age = 2;<br />for( i = 0; i &lt; 10; i++ ) ...<br />for( i = 10; i &gt; 0; i-- ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">2</td>
+<td class="code-table-td" style="font-size:12px;">!<br />~<br />++<br />--<br />-<br />+<br />*<br />&amp;<br />(type)<br /><a href="http://www.cppreference.com/keywords/sizeof.html" style="text-decoration:none;color:rgb(0,102,0);">sizeof</a></td>
+<td class="code-table-td" style="font-size:12px;">Logical negation<br />Bitwise complement<br />Pre-increment<br />Pre-decrement<br />Unary minus<br />Unary plus<br />Dereference<br />Address of<br />Cast to a given type<br />Return size in bytes</td>
+<td class="code-table-td" style="font-size:12px;">if( !done ) ...<br />flags = ~flags;<br />for( i = 0; i &lt; 10; ++i ) ...<br />for( i = 10; i &gt; 0; --i ) ...<br />int i = -1;<br />int i = +1;<br />data = *ptr;<br />address = &amp;obj;<br />int i = (int) floatNum;<br />int size = sizeof(floatNum);</td>
+<td class="code-table-td" style="font-size:12px;">right to left</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">3</td>
+<td class="code-table-td" style="font-size:12px;">-&gt;*<br />.*</td>
+<td class="code-table-td" style="font-size:12px;">Member pointer selector<br />Member pointer selector</td>
+<td class="code-table-td" style="font-size:12px;">ptr-&gt;*var = 24;<br />obj.*var = 24;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">4</td>
+<td class="code-table-td" style="font-size:12px;">*<br />/<br />%</td>
+<td class="code-table-td" style="font-size:12px;">Multiplication<br />Division<br />Modulus</td>
+<td class="code-table-td" style="font-size:12px;">int i = 2 * 4;<br />float f = 10 / 3;<br />int rem = 4 % 3;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">5</td>
+<td class="code-table-td" style="font-size:12px;">+<br />-</td>
+<td class="code-table-td" style="font-size:12px;">Addition<br />Subtraction</td>
+<td class="code-table-td" style="font-size:12px;">int i = 2 + 3;<br />int i = 5 - 1;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">6</td>
+<td class="code-table-td" style="font-size:12px;">&lt;&lt;<br />&gt;&gt;</td>
+<td class="code-table-td" style="font-size:12px;">Bitwise shift left<br />Bitwise shift right</td>
+<td class="code-table-td" style="font-size:12px;">int flags = 33 &lt;&lt; 1;<br />int flags = 33 &gt;&gt; 1;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">7</td>
+<td class="code-table-td" style="font-size:12px;">&lt;<br />&lt;=<br />&gt;<br />&gt;=</td>
+<td class="code-table-td" style="font-size:12px;">Comparison less-than<br />Comparison less-than-or-equal-to<br />Comparison greater-than<br />Comparison geater-than-or-equal-to</td>
+<td class="code-table-td" style="font-size:12px;">if( i &lt; 42 ) ...<br />if( i &lt;= 42 ) ...<br />if( i &gt; 42 ) ...<br />if( i &gt;= 42 ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">8</td>
+<td class="code-table-td" style="font-size:12px;">==<br />!=</td>
+<td class="code-table-td" style="font-size:12px;">Comparison equal-to<br />Comparison not-equal-to</td>
+<td class="code-table-td" style="font-size:12px;">if( i == 42 ) ...<br />if( i != 42 ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">9</td>
+<td class="code-table-td" style="font-size:12px;">&amp;</td>
+<td class="code-table-td" style="font-size:12px;">Bitwise AND</td>
+<td class="code-table-td" style="font-size:12px;">flags = flags &amp; 42;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">10</td>
+<td class="code-table-td" style="font-size:12px;">^</td>
+<td class="code-table-td" style="font-size:12px;">Bitwise exclusive OR</td>
+<td class="code-table-td" style="font-size:12px;">flags = flags ^ 42;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">11</td>
+<td class="code-table-td" style="font-size:12px;">|</td>
+<td class="code-table-td" style="font-size:12px;">Bitwise inclusive (normal) OR</td>
+<td class="code-table-td" style="font-size:12px;">flags = flags | 42;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">12</td>
+<td class="code-table-td" style="font-size:12px;">&amp;&amp;</td>
+<td class="code-table-td" style="font-size:12px;">Logical AND</td>
+<td class="code-table-td" style="font-size:12px;">if( conditionA &amp;&amp; conditionB ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">13</td>
+<td class="code-table-td" style="font-size:12px;">||</td>
+<td class="code-table-td" style="font-size:12px;">Logical OR</td>
+<td class="code-table-td" style="font-size:12px;">if( conditionA || conditionB ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">14</td>
+<td class="code-table-td" style="font-size:12px;">? :</td>
+<td class="code-table-td" style="font-size:12px;">Ternary conditional (if-then-else)</td>
+<td class="code-table-td" style="font-size:12px;">int i = (a &gt; b) ? a : b;</td>
+<td class="code-table-td" style="font-size:12px;">right to left</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">15</td>
+<td class="code-table-td" style="font-size:12px;">=<br />+=<br />-=<br />*=<br />/=<br />%=<br />&amp;=<br />^=<br />|=<br />&lt;&lt;=<br />&gt;&gt;=</td>
+<td class="code-table-td" style="font-size:12px;">Assignment operator<br />Increment and assign<br />Decrement and assign<br />Multiply and assign<br />Divide and assign<br />Modulo and assign<br />Bitwise AND and assign<br />Bitwise exclusive OR and assign<br />Bitwise inclusive (normal) OR and assign<br />Bitwise shift left and assign<br />Bitwise shift right and assign</td>
+<td class="code-table-td" style="font-size:12px;">int a = b;<br />a += 3;<br />b -= 4;<br />a *= 5;<br />a /= 2;<br />a %= 3;<br />flags &amp;= new_flags;<br />flags ^= new_flags;<br />flags |= new_flags;<br />flags &lt;&lt;= 2;<br />flags &gt;&gt;= 2;</td>
+<td class="code-table-td" style="font-size:12px;">right to left</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">16</td>
+<td class="code-table-td" style="font-size:12px;">,</td>
+<td class="code-table-td" style="font-size:12px;">Sequential evaluation operator</td>
+<td class="code-table-td" style="font-size:12px;">for( i = 0, j = 0; i &lt; 10; i++, j++ ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p></span></p>

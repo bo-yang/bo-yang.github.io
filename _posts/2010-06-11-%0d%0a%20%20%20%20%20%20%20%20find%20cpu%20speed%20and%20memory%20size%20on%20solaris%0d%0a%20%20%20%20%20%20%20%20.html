@@ -1,0 +1,29 @@
+---
+layout: post
+title: Find CPU Speed and Memory Size on Solaris
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '77'
+  original_post_id: '47'
+  _wp_old_slug: '47'
+author: 
+---
+
+<p><h2>Find CPU Speed and Memory Size on Solaris</h2>
+<div class="entry">
+<p>As I&rsquo;m writing my thesis I&rsquo;m running tests on an old SMP Solaris machine. Obviously, I need to provide the specs of this machine in the paper so that the readers can see my results in context (ie why everything is taking forever. On linux I would just use&nbsp;<kbd>lshw</kbd>&nbsp;which is your ultimate hardware information goldmine. If you don&rsquo;t have it on your system, go install it now. You will thank me later.</p>
+<p>The ancient Solaris machine I was working with did not have it, so I was forced to find other ways of finding information such as CPU speed and memory size.</p>
+<p>First you can try&nbsp;<kbd>prtdiag</kbd>&nbsp;&ndash; it will tell you detailed information about all your CPU&rsquo;s and memory banks. Unfortunately it is in a weird directory that is not in your $path so you will need to run it with the absolute path:</p>
+<p><code>/usr/platform/sun4u/sbin/prtdiag -v</code></p>
+<p>If you just want information on the CPU&rsquo;s you can also try:</p>
+<p><code>psrinfo -v</code></p>
+<p>Finally, to just get your total memory size do:</p>
+<p><code>prtconf | grep Memory</code></p>
+<p>There might be better ways to do this, but these worked for me. Craig will probably be able to add to this list or correct me.&nbsp;<img class="wp-smiley" src="http://www.terminally-incoherent.com/blog/wp-includes/images/smilies/icon_smile.gif" alt=":)" /></p>
+</div>

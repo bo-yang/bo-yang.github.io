@@ -1,0 +1,27 @@
+<p>
+<span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">看到一个函数，定义如下： </span>
+<div>
+<div class="highlighter">
+<ol start="1" class="highlighter-c">
+<li><span class="preprocessor">#include "u.h"</span><span></span></li>
+<li class="alt"><span></span><span class="preprocessor">#include "lib.h"</span><span></span></li>
+<li><span></span></li>
+<li class="alt"><span></span><span class="keyword">ulong</span><span></span></li>
+<li><span>getcallerpc(</span><span class="keyword">void</span><span> *x)</span></li>
+<li class="alt"><span>{</span></li>
+<li><span>    </span><span class="keyword">return</span><span> (((</span><span class="keyword">ulong</span><span>*)(x))[-1]);</span></li>
+<li class="alt"><span>}</span></li>
+<li><span></span></li>
+<li class="alt"><span></span></li>
+</ol>
+</div>
+<p><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">((ulong*)(x))  将void* 的x针针强制转换为 ulong* </p>
+<p>此时可以理解为x指向一个ulong类型的数组 <br />[-1] : 表示去x前面的那个元素 </p>
+<p>上面的代码等价与 </p>
+<p>ulong px=（ulong*）x <br />--px <br />return (*px) </p>
+<p>一般情况下不会用 下表-1,估计此处有什么特殊用法，要看实际是怎么用的了.<br /></span></div>
+<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;"><br /></span></div>
+<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">------------------------------------------------------------------------</span></div>
+<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;"><br /></span></div>
+<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">ulong getcallerpc(void *x) <br />{ <br />    return (((ulong*)(x))[-1]); <br />} </p>
+<p>在((ulong*)(x))[-1] 中： <br />x是一个指针 <br />（ulong*)(x)：将x转换为ulong型的指针，我们假设（ulong*)(x)转换后指针为y，则 <br />((ulong*)(x))[-1]为：y[-1]，而y[-1]就指向y首地址前面的那个地址。这种情况只有 <br />当你自己知道前面那个地址是什么了，也就是楼上所说的特殊用法了。~_~<br /></span></div>

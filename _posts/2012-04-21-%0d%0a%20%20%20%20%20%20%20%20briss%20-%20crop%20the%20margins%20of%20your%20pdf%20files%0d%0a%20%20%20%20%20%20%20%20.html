@@ -1,0 +1,36 @@
+---
+layout: post
+title: Briss -- Crop the Margins of Your PDF Files
+categories:
+- Tips
+tags:
+- Tips
+status: publish
+type: post
+published: true
+meta:
+  views: '36'
+  original_post_id: '62'
+  _wp_old_slug: '62'
+author: 
+---
+
+<p><span style="font-size:18px;">今天用iPad阅读一个PDF文档时，发现每页留白太多，字体特别小，在iBooks中每翻一页都要手动去缩放，实在是麻烦。于是搜索去掉PDF留白的方法。</span></p>
+<p><span style="font-size:18px;">先是寄希望于Linux系统自带的pdfcrop，结果尝试了各种选项后，发现PDF的size没有变，还是原来的8.5x8.9 inch。</span></p>
+<p><span style="font-size:18px;">后来搜索Ghostscript的用法，把papersize或者resolution强制改成希望的数&#20540;，仍然没有变化。郁闷！</span></p>
+<p><span style="font-size:18px;">再后来发现了网上的一个PDFcrop版本，也是用Perl写的，只是更加友好一点，尝试之后仍不奏效。自己上手用hardcode改为自己想要的结果，失败。不过在该tool中最大的发现就是<em> 1inch=28.3464567bp(dpi)</em>.</span></p>
+<p><span style="font-size:18px;">总结一晚上失败的经验就是：<strong>该PDF文档是扫描的图片转PDF&#26684;式，而不是文字直接转的，因此pdfcrop等工具无法发现并处理留白！</strong></span></p>
+<p><span style="font-size:18px;">最后在网上搜索PDF Margin Crop，无意中发现了<a href="http://sourceforge.net/projects/briss/">Briss</a>，抱着试试看的心态下载使用了一下，发现竟然能够识别图片转PDF的文字区域，拖动左上或右下脚上的蓝色正方形区域还可一手动选择保留的区域， Terrific！</span></p>
+<p><span style="font-size:18px;">使用方法就是下载<a href="http://sourceforge.net/projects/briss/">Briss</a>，解压缩，然后执行</span></p></p>
+<pre>java -jar briss-0.0.13.jar
+or
+java -jar briss-0.0.13.jar cropthis.pdf
+
+(The second line comes in handy if you want shortlinks for pdf editing) 
+</pre>
+<p>
+<span style="font-size:18px;">更详细的使用说明参见&nbsp;<a href="http://www.freewaregenius.com/2011/01/18/briss-crop-your-pdf-documents-using-a-visual-interface/" title="Briss: crop your PDF documents using a visual interface" rel="bookmark" style="font-family:'Myriad Pro', Calibri;line-height:22px;vertical-align:baseline;outline-style:none;outline-width:initial;outline-color:initial;background-color:transparent;border-width:initial;border-color:initial;color:rgb(34,34,34);border-style:none;margin:0;padding:0;">Briss:<br />
+ crop your PDF documents using a visual interface</a><span style="color:rgb(68,68,68);font-family:'Myriad Pro', Calibri;line-height:22px;">。</span></span></p>
+<p></p>
+<p></p>
+<p></p>

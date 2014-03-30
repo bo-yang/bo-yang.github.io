@@ -1,0 +1,24 @@
+---
+layout: post
+title: 硬盘安装Fedora 9时死机？
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '358'
+  original_post_id: '45'
+  _wp_old_slug: '45'
+author: 
+---
+<p>
+    前天晚上在Fedora9下装完ATI显卡的驱动以后，升级系统，昨天早晨起来一看，我的本本过热休眠了（发现Fedora下经常出现这种情况，而Windows下很少出现，可见Linux的电源管理确实还有问题），当时没有管它。</p>
+<p>昨天晚上到了半夜，决定切换到Fedora下玩一玩，结果发现进不了图形界面了，字符界面也还闪来闪去的，实在没办法，重装。非常不幸的是，重装到一半的时候，CPU过热又歇菜了。</p>
+<p>这时重启发现只能进grub控制台，无法进Windows了。顿时傻了。</p>
+<p>今天早晨来实验室上网搜索修复MBR的方法，最简单的就是用Windows安装盘。拿出Win2003的盘插到光驱一试，没反应，My God！光驱又坏了！！！难道我辛辛苦苦好几年积攒的文档就眼看要人间蒸发付诸东流了吗？</p>
+<p>我不甘心，继续搜索grub的使用方法，试着敲入如下的命令：</p>
+<pre>kernel (hd0,6)/isolinux/vmlinuz &lt;br  /&gt;initrd (hd0,6)/isolinux/initrd.img &lt;br  /&gt;boot</pre>
+<p>成功了，终于可以进入继续安装Fedora 9的界面了！<br />只要能够进入一个操作系统就好说了，不管它是Windows还是Linux！</p>

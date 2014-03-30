@@ -1,0 +1,14 @@
+<p>由于' '不是Tcl所能识别的操作符，因此在Tcl中使用Awk命令时不能用exec awk '/pattern/ {do_something}' file这种命令，即使在''前面加上/也不行。' &rsquo; 可以被Bource Shell和其它shell识别，但是由于exec awk命令是在Tcl中解释的。</p>
+<p>&nbsp;</p>
+<p>如果要在Tcl中执行awk命令，方法有两种：一是用&ldquo;&rdquo;代替' '，但是要考虑到需要把某些Tcl的特殊字符用/转义；二是用{}代替' '。比如语句</p>
+<p>
+<pre>exec awk '/{print /"blah/"/}' temp.fil </pre>
+<p>&nbsp;</p>
+<p>应该写为：</p>
+<p>
+<pre>exec awk "/somePattern/ {print /$0}" someFile</pre>
+<p>&nbsp;</p>
+<p>或者</p>
+<p>
+<pre>exec awk {/somePattern/ {print $0}}  someFile </pre>
+<p>&nbsp;</p>

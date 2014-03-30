@@ -1,0 +1,74 @@
+<p>
+    2008年5月15日修正版</p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">利用频谱仪进行电磁干扰测试时，考虑到显示效果，点击测试对话框的&ldquo;开始&rdquo;按钮之后视图应该立刻切换到对数坐标系而不是等待测试完成后才切换，因此，必须采用多线程测试方式，也即，需要增加一个测试线程用来向频谱仪发送测试指令。该测试线程定义为</span><span lang="EN-US">CTestThread</span><span style="font-family:宋体;">，由</span><span lang="EN-US">MFC</span><span style="font-family:宋体;">类</span><span lang="EN-US">CWinThread</span><span style="font-family:宋体;">派生而来。主线程（在本程序中为</span><span lang="EN-US">CChildFrame</span><span style="font-family:宋体;">类）和辅助线程（</span><span lang="EN-US">CTestThread</span><span style="font-family:宋体;">）之间利用消息进行通信，消息处理函数的参数用来传递测试工程设置数据的指针。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">另一方面，根据</span><span lang="EN-US">GJB152A-97</span><span style="font-family:宋体;">《军用设备和分系统电磁发射和敏感度测量》规定，在不同的测试频段，接收机的</span><span lang="EN-US">6dB</span><span style="font-family:宋体;">带宽</span><span lang="EN-US">(RBW)</span><span style="font-family:宋体;">必须采用不同的数值，如下表所示：</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p align="center" style="text-align:center;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;color:red;">表</span><span style="color:red;"> </span><span style="font-family:宋体;">频率扫描测量</span><span lang="EN-US">6dB</span><span style="font-family:宋体;">带宽</span></p>
+<table cellspacing="0" cellpadding="0" border="1" style="border:medium none;border-collapse:collapse;" class="MsoTableGrid">
+<tbody>
+<tr>
+<td width="284" valign="top" style="border:1pt solid black;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span style="font-family:宋体;">频率范围</span></p>
+</td>
+<td width="284" valign="top" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">6dB</span><span style="font-family:宋体;">带宽</span></p>
+</td>
+</tr>
+<tr>
+<td width="284" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">30Hz</span><span style="font-family:宋体;">～</span><span lang="EN-US">1KHz</span></p>
+</td>
+<td width="284" valign="top" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">10Hz</span></p>
+</td>
+</tr>
+<tr>
+<td width="284" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">1</span><span style="font-family:宋体;">～</span><span lang="EN-US">10KHz</span></p>
+</td>
+<td width="284" valign="top" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">100Hz</span></p>
+</td>
+</tr>
+<tr>
+<td width="284" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">10</span><span style="font-family:宋体;">～</span><span lang="EN-US">250KHz</span></p>
+</td>
+<td width="284" valign="top" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">1KHz</span></p>
+</td>
+</tr>
+<tr>
+<td width="284" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">250KHz</span><span style="font-family:宋体;">～</span><span lang="EN-US">30MHz</span></p>
+</td>
+<td width="284" valign="top" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">10KHz</span></p>
+</td>
+</tr>
+<tr>
+<td width="284" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">30MHz</span><span style="font-family:宋体;">～</span><span lang="EN-US">1GHz</span></p>
+</td>
+<td width="284" valign="top" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">100KHz</span></p>
+</td>
+</tr>
+<tr>
+<td width="284" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">&gt;1GHz</span></p>
+</td>
+<td width="284" valign="top" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:213.05pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">1MHz</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">如果一次测试横跨多个频段，那么就必须分为多段进行测量。另外，由于接收机或频谱仪一般为数字设备，受限于测量仪器的测量采样精度，如果频段较宽，因为一次测量采样点数是固定的</span><span lang="EN-US">(</span><span style="font-family:宋体;">本文所用频谱仪一帧采样</span><span lang="EN-US">501</span><span style="font-family:宋体;">个点</span><span lang="EN-US">)</span><span style="font-family:宋体;">，此时往往也需要将整个测试频段划分为几个更小的频段分段测量。本文中将这样的划分后的一个小频段称为一帧。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">综上所述，一次测试是一个多线程逐帧测试的过程。辅助线程</span><span lang="EN-US">CTestThread</span><span style="font-family:宋体;">用于向频谱仪发送测试指令，发送完一段测试指令，便休眠等待；主线程</span><span lang="EN-US">CChildFrame</span><span style="font-family:宋体;">接收测试结果（</span><span lang="EN-US">ASCII</span><span style="font-family:宋体;">格式），接收完一帧向辅助线程发送消息进行下一段测试，同时发送消息更新</span><span lang="EN-US">CEMCView</span><span style="font-family:宋体;">中的测试曲线。测试流程如下图所示：</span></p>
+<p><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/多线程分频段测试流程图.JPG" alt="" /></p>
+<p>以下为最初的版本，予以保留。</p>
+<p>################ 关于多线程测试方法的说明 ################</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 利用频谱仪进行电磁干扰测试时，考虑到显示效果（点击&ldquo;开始测试&rdquo;按钮之后视图立刻切换到对数坐标系而不是等待测试完成后才切换），必须采用多线程方式，也即，增加一个TestThread用来向频谱仪发送测试指令。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 主线程和辅助线程（CTestThread）之间利用消息通信。根据GJB规定，CE102测试在10KHz～1000MHz之间需要分为三段：10KHz～250KHz（RBW：1KHz）、250KHz～30MHz（RBW：10KHz）、30MHz～1GHz（RBW：100KHz）。因此，一次测试工程势必要分为多段测量。辅助线程用于向频谱仪发送测试指令，发送完一段测试指令，便休眠等待；主线程接收测试结果（ASCII格式），接收完一帧向辅助线程发送消息进行<br />下一段测试。辅助线程也可以通过::PostMessage函数向主线程发送消息。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 测试流程如下图所示：</p>
+<p><img alt="" src="http://www.best4c.com/Best4cUserFiles/20080503/17143_1209816609220.jpg" /><br />&nbsp;&nbsp; file="/Best4cUserFiles/20080503/17143_1209816609220";showImage();&nbsp;&nbsp;&nbsp; 如需源代码，请联系本人。</p>
+<p>PS：今天本人第一次使用CSDN的Best4c画流程图，很是惊异于网络编程的强大，难怪微软深刻感到Google等公司的在线Office的压力，也要推出自己的Live Office呢。（貌似Best4c采用了Adobe的Flex技术？请求达人指教）但是必须指出的是，Best4c在很多方面还不够理想，仍需努力&hellip;&hellip;</p>

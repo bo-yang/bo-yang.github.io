@@ -1,0 +1,444 @@
+---
+layout: post
+title: Perl数值转换
+categories:
+- Perl
+tags:
+- Perl
+status: publish
+type: post
+published: true
+meta:
+  views: '313'
+  original_post_id: '35'
+  _wp_old_slug: '35'
+author: 
+---
+</p>
+<p>As always with Perl there is more than one way to do it. Below are a few examples of approaches to making common conversions between number representations. This is intended to be representational rather than exhaustive.</p>
+<p>Some of the examples below use the Bit::Vector module from CPAN. The reason you might choose Bit::Vector over the perl built in functions is that it works with numbers of ANY size, that it is optimized for speed on some operations, and for at least some programmers the notation might be familiar.</p>
+<dl>
+<dt><a name="How-do-I-convert-hexadecimal-into-decimal">How do I convert hexadecimal into decimal</a></dt>
+<dd>
+<p>Using perl's built in conversion of 0x notation:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = 0xDEADBEEF;
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using the hex function:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = hex("DEADBEEF");
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using pack:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = unpack("N", pack("H8", substr("0" x 8 . "DEADBEEF", -8)));
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using the CPAN module Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Hex(32, "DEADBEEF");
+    $dec = $vec-&gt;to_Dec();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-decimal-to-hexadecimal">How do I convert from decimal to hexadecimal</a></dt>
+<dd>
+<p>Using sprint:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $hex = sprintf("%X", 3735928559);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using unpack</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $hex = unpack("H*", pack("N", 3735928559));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(32, -559038737);
+    $hex = $vec-&gt;to_Hex();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>And Bit::Vector supports odd bit counts:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(33, 3735928559);
+    $vec-&gt;Resize(32); # suppress leading 0 if unwanted
+    $hex = $vec-&gt;to_Hex();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-octal-to-decimal">How do I convert from octal to decimal</a></dt>
+<dd>
+<p>Using Perl's built in conversion of numbers with leading zeros:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = 033653337357; # note the leading 0!
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using the oct function:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = oct("33653337357");
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new(32);
+    $vec-&gt;Chunk_List_Store(3, split(//, reverse "33653337357"));
+    $dec = $vec-&gt;to_Dec();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-decimal-to-octal">How do I convert from decimal to octal</a></dt>
+<dd>
+<p>Using sprintf:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $oct = sprintf("%o", 3735928559);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(32, -559038737);
+    $oct = reverse join('', $vec-&gt;Chunk_List_Read(3));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-binary-to-decimal">How do I convert from binary to decimal</a></dt>
+<dd>
+<p>Perl 5.6 lets you write binary numbers directly with the 0b notation:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>	$number = 0b10110110;  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using pack and ord</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $decimal = ord(pack('B8', '10110110'));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using pack and unpack for larger strings</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = unpack("N", pack("B32",
+	substr("0" x 32 . "11110101011011011111011101111", -32)));
+    $dec = sprintf("%d", $int);
+
+    # substr() is used to left pad a 32 character string with zeros.  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $vec = Bit::Vector-&gt;new_Bin(32, "11011110101011011011111011101111");
+    $dec = $vec-&gt;to_Dec();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-decimal-to-binary">How do I convert from decimal to binary</a></dt>
+<dd>
+<p>Using unpack;</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $bin = unpack("B*", pack("N", 3735928559));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(32, -559038737);
+    $bin = $vec-&gt;to_Bin();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>The remaining transformations (e.g. hex -&gt; oct, bin -&gt; hex, etc.) are left as an exercise to the inclined reader.</p>
+</dd>
+</dl>

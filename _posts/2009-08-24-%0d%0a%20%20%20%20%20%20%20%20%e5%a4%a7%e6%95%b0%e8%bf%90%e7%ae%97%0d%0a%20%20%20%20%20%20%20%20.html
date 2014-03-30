@@ -1,0 +1,276 @@
+---
+layout: post
+title: 大数运算
+categories:
+- Algorithm
+- C/C++
+tags:
+- Algorithm
+- C/C++
+status: publish
+type: post
+published: true
+meta:
+  views: '54'
+  original_post_id: '42'
+  _wp_old_slug: '42'
+author: 
+---
+
+<p>下面这段程序包含了大数的加、减、乘运算的代码，除法运算尚在研究中。</p>
+<p>&nbsp;</p>
+<p>
+<pre>/*
+ * =====================================================================================
+ *
+ *       Filename:  LargeNumOp.c
+ *
+ *    Description:  The regular version of Large Number Multiplication.
+ *
+ *        Version:  1.0
+ *        Created:  08/23/2009 07:02:48 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Bonn Yang 
+ *        Company:  
+ *
+ * =====================================================================================
+ */
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+/* 
+ * Large number multiplication. 
+ *	a*b=c
+ * The product stores in c.
+ */ 
+void multiply(char* a,char* b,char* c)
+{
+    int i,j,ca,cb,* s;
+    ca=strlen(a);
+    cb=strlen(b);
+    s=(int*)malloc(sizeof(int)*(ca+cb));
+    for (i=0;i&lt;ca+cb;i++)
+        s[i]=0;
+    for (i=0;i&lt;ca;i++)
+        for (j=0;j&lt;cb;j++)
+            s[i+j+1]+=(a[i]-'0')*(b[j]-'0');
+    for (i=ca+cb-1;i&gt;=0;i--)
+        if (s[i]&gt;=10)
+        {
+            s[i-1]+=s[i]/10;
+            s[i]%=10;
+        }
+    i=0;
+    while (s[i]==0)
+        i++;
+    for (j=0;i&lt;ca+cb;i++,j++)
+        c[j]=s[i]+'0';
+    c[j]='/0';
+    free(s);
+}
+/* Large number addition 
+ * 		a+b=c
+ */
+void add(char* a, char* b, char* c)
+{
+	int i,j,ca,cb,rlen,* s;
+    ca=strlen(a);
+    cb=strlen(b);
+	rlen=((ca&gt;cb)?ca:cb)+1;		/* len of result */
+    s=(int*)malloc(sizeof(int)*rlen);
+    for (i=0;i&lt;rlen;i++)
+        s[i]=0;
+	if(ca&gt;cb)
+	{
+    	for(i=0;i&lt;ca-cb;i++)
+			s[i+1]=a[i]-'0';
+		for(i=ca-cb;i&lt;ca;i++)
+			s[i+1]=(a[i]-'0')+(b[i-ca+cb]-'0');
+	} 
+	else 
+	{
+		for(i=0;i&lt;cb-ca;i++)
+			s[i+1]=b[i]-'0';
+		for(i=cb-ca;i&lt;cb;i++)
+			s[i+1]=(a[i-cb+ca]-'0')+(b[i]-'0');
+	} 
+	
+    for (i=rlen-1;i&gt;=0;i--)
+        if (s[i]&gt;=10)
+        {
+            s[i-1]+=s[i]/10;
+            s[i]%=10;
+        }
+    i=0;
+    while (s[i]==0)
+        i++;
+	for (j=0;i&lt;rlen;i++,j++)
+        c[j]=s[i]+'0';
+    c[j]='/0';
+    free(s);
+}
+/* Large number substraction 
+ * 		a-b=c
+ */
+void sub(char* a,char* b,char* c)
+{
+	int i,j,ca,cb,rlen,* s;
+    ca=strlen(a);
+    cb=strlen(b);
+	rlen=((ca&gt;cb)?ca:cb)+1;		/* len of result, the first byte is negative or positive sign */
+    s=(int*)malloc(sizeof(int)*rlen);
+    for (i=0;i&lt;rlen;i++)
+        s[i]=0;
+	if(ca&gt;cb)
+	{
+		s[0]='+';
+    	for(i=ca-1;i&gt;=ca-cb;i--)
+		{
+			if(a[i]&gt;b[i-ca+cb])
+			{
+				s[i+1]=(a[i]-'0')-(b[i-ca+cb]-'0');
+			}
+			else if(a[i]&lt;b[i-ca+cb])
+			{
+				s[i+1]=(a[i]-'0'+10)-(b[i-ca+cb]-'0');
+				a[i-1]-=1;
+			}
+			else
+				s[i+1]=0;
+		}
+		for(i=ca-cb-1;i&gt;=1;i--)
+		{
+			if(a[i]&gt;0)
+			{
+				s[i+1]=(a[i]-'0');
+			}
+			else if(a[i]&lt;0)
+			{
+				s[i+1]=a[i]-'0'+10;
+				a[i-1]-=1;
+			}
+			else
+				s[i+1]=0;
+		}
+		s[1]=a[i]-'0';
+	} 
+	else if(ca&lt;cb)
+	{
+		s[0]='-';
+		for(i=cb-1;i&gt;cb-ca-1;i--)
+		{
+			if(b[i]&gt;a[i-cb+ca])
+			{
+				s[i+1]=(b[i]-'0')-(a[i-cb+ca]-'0');
+			}
+			else if(b[i]&lt;a[i-ca+cb])
+			{
+				s[i+1]=(b[i]-'0'+10)-(a[i-cb+ca]-'0');
+				b[i-1]-=1;
+			}
+			else
+				s[i+1]=0;
+		}
+		for(i=cb-ca-1;i&gt;=1;i--)
+		{
+			if(b[i]&gt;0)
+			{
+				s[i+1]=(b[i]-'0');
+			}
+			else if(b[i]&lt;0)
+			{
+				s[i+1]=b[i]-'0'+10;
+				b[i-1]-=1;
+			}
+			else
+				s[i+1]=0;
+		}
+		s[1]=b[i]-'0';
+	} 
+	else	/* ca==cb */
+	{
+		if(strcmp(a,b)&gt;0)		/* a&gt;b */
+		{
+			s[0]='+';
+			for(i=ca-1;i&gt;=1;i--)
+			{
+				if(a[i]&gt;b[i])
+				{
+					s[i+1]=(a[i]-'0')-(b[i]-'0');
+				}
+				else if(a[i]&lt;b[i])
+				{
+					s[i+1]=(a[i]-'0'+10)-(b[i]-'0');
+					a[i-1]-=1;
+				}
+				else
+					s[i+1]=0;
+			}
+			s[1]=(a[i]-'0')-(b[i]-'0');
+		}
+		else if(strcmp(a,b)&lt;0)	/* a&lt;b */
+		{
+			s[0]='-';
+			for(i=ca-1;i&gt;=1;--i)
+			{
+				if(b[i]&gt;a[i])
+				{
+					s[i+1]=(b[i]-'0')-(a[i]-'0');
+				}
+				else if(b[i]&lt;a[i])
+				{
+					s[i+1]=(b[i]-'0'+10)-(a[i]-'0');
+					b[i-1]-=1;
+				}
+				else
+					s[i+1]=0;
+			}
+			s[1]=(b[i]-'0')-(a[i]-'0');
+		}
+		else					/* a==b */
+		{
+			c[0]='+';
+			c[1]='0';
+			c[2]='/0';
+			free(s);
+		}
+	}
+	c[0]=s[0];
+    i=1;j=1;
+    while ((s[i]==0) &amp;&amp; (i&lt;rlen))
+        i++;
+	if(i!=rlen)	/* result is not zero */
+	{
+		for (j=1;i&lt;rlen;i++,j++)
+		{
+			if(s[i]&lt;0)
+				c[j]='0'-s[i];
+			else
+        		c[j]=s[i]+'0';
+		}
+	} else {	/* result is zero */
+		c[j++]='0';
+	}
+    c[j]='/0';
+    free(s);
+}
+int main()
+{
+	char a[1024]={'/0'};
+	char b[1024]={'/0'};
+	char c[1024]={'/0'};
+	printf(&quot;Enter two numbers:/n&quot;);
+	gets(a);
+	gets(b);
+	multiply(a,b,c);
+	printf(&quot;%s * %s = %s/n&quot;,a,b,c);
+	add(a,b,c);
+	printf(&quot;%s + %s = %s/n&quot;,a,b,c);
+	sub(a,b,c);
+	printf(&quot;%s - %s = %s/n&quot;,a,b,c);
+	
+	return 0;
+}
+</pre></p>
+<p>&nbsp;</p>

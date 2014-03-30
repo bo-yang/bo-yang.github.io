@@ -1,0 +1,41 @@
+</p>
+<p>近来碰到一个关于SCTP的问题：某个产品跑在Monta Vista上，其内核版本号为2.6.21；可每次该产品泡在我们的Red Hat Enterprise Linux 5.5上时，都会报错错误信息如下：
+<pre>^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt() setsockopt - Invalid argument
+^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts(): failed to set SCTP_EVENTS for socket 6</pre></p>
+<p>ammsSetSockOpt()调用了Linux API setsockopt()。产品的同事告诉我们他们升级过libsctp.so，于是我们copy了MV中的这个shared lib到RHEL中，问题依旧。后来我们以为是RHEL5.5的内核和Monta Vista的内核不一致，于是我把RHEL的内核从2.6.18-194.el5升级到2.6.18-238.9.1.el5，问题还在。当我们还在考虑要不要把我们的server替换为Monta Vista时，一位同事受<a href="http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500">http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500</a><br />
+ 的启发，把setsockopt()最后一个参数由sizeof(events)改为8，竟然成功了！ events定义如下。
+<pre>struct sctp_event_subscribe events; </pre></p>
+<pre></pre>
+<p>最终，发现RHEL5和RHEL6中struct<span style="font-family:'Times New Roman';font-size:13px;">&nbsp;</span><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);">sctp_event_subscribe</span>的定义竟然完全不同！要想根本解决上面的问题，只能升级操作系统到RHEL6了。</p></p>
+<p>RHEL5中的定义：<a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">http://rhkernel.org/RHEL5&#043;2.6.18-194.el5/include/net/sctp/user.h#L367</a></p></p>
+<pre>/*
+ 364 * Described in Section 7.3
+ 365 *   Ancillary Data and Notification Interest Options
+ 366 */
+ 367struct sctp_event_subscribe {
+ 368        __u8 sctp_data_io_event;
+ 369        __u8 sctp_association_event;
+ 370        __u8 sctp_address_event;
+ 371        __u8 sctp_send_failure_event;
+ 372        __u8 sctp_peer_error_event;
+ 373        __u8 sctp_shutdown_event;
+ 374        __u8 sctp_partial_delivery_event;
+ 375        __u8 sctp_adaption_layer_event;
+ 376};</pre></p>
+<p>RHEL 6中的定义：<a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">http://rhkernel.org/RHEL6&#043;2.6.32-71.18.2.el6/include/net/sctp/user.h#L406</a></p></p>
+<pre>/*
+ 403 * Described in Section 7.3
+ 404 *   Ancillary Data and Notification Interest Options
+ 405 */
+ 406struct sctp_event_subscribe {
+ 407        __u8 sctp_data_io_event;
+ 408        __u8 sctp_association_event;
+ 409        __u8 sctp_address_event;
+ 410        __u8 sctp_send_failure_event;
+ 411        __u8 sctp_peer_error_event;
+ 412        __u8 sctp_shutdown_event;
+ 413        __u8 sctp_partial_delivery_event;
+ 414        __u8 sctp_adaptation_layer_event;
+ 415        __u8 sctp_authentication_event;
+ 416};
+ 417</pre></p>

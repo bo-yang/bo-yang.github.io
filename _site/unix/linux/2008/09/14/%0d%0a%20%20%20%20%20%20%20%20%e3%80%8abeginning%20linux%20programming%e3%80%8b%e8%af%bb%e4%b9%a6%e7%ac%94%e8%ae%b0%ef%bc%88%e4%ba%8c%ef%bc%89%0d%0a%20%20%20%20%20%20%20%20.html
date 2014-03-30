@@ -1,0 +1,113 @@
+<p>
+    &nbsp;<font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
+"&gt;", by default, if the file already exists, then it will be<br />
+overwritten. If you want to change the default behavior, you can use<br />
+the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
+<p>&nbsp;&nbsp;&nbsp;<br />
+File descriptor 0 is the standard input to a program, file descriptor 1<br />
+is the standard output, and file descriptor 2 is the standard error<br />
+output. It’s unusual to want to redirect any other than the standard<br />
+ones: 0, 1, and 2.</p>
+<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
+standard error output, preface the &gt; operator with the number of the<br />
+file descriptor you wish to redirect. Because the standard error is on<br />
+file descriptor 2, use the 2&gt; operator. This is often useful to<br />
+discard error information and prevent it from appearing on the screen.</p>
+<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
+<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
+put both the output and error outputs into the same file. Notice the<br />
+order of the operators. This reads as “redirect standard output to the<br />
+file killouterr.txt, and then direct standard error to the same place<br />
+as the standard output.” If you get the order wrong, the redirect won’t<br />
+work as you expect.</p>
+<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
+<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
+<p>3.4 <span style="color:rgb(0,0,255);"><i>file</i></span> command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
+<p>3.5 <span style="color:rgb(0,0,255);"><i>read</i></span> command
+<div>&nbsp;&nbsp; &nbsp;You can assign user input to a variable by using the <span style="color:rgb(0,0,255);"><i>read</i></span> command.The read normally&nbsp;completes when the user presses Enter.</div>
+<div></div>
+<div>3.6 <span style="color:rgb(0,0,255);"><i>which</i></span></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>Check which command is used, e.g. <i>which test</i>.</p>
+<p>3.7 <i>touch</i> filename<br /><span>&nbsp;&nbsp;&nbsp; </span>Check whether it exists and create it if it doesn’t.
+<div><font size="4">4 Shell Scripts</font></div>
+<div>4.1 Quoting</div>
+<div>&nbsp;&nbsp;<br />
+&nbsp;If you&nbsp;enclose a $ variable expression in double quotes, then it’s<br />
+replaced with its value when the line is executed.&nbsp;If you enclose it in<br />
+single quotes, then no substitution takes place. You can also remove<br />
+the special&nbsp;meaning of the $ symbol by prefacing it with a /.</div>
+<div></div>
+<div>&nbsp;&nbsp;<br />
+&nbsp;Usually, strings are enclosed in double quotes, which protects<br />
+variables from being separated by whitespace but allows $ expansion to<br />
+take place.</div>
+<div></div>
+<div>4.2 Environment Variables</div>
+<div style="padding:1em 0;text-align:center;" id="tfjq"><img src="http://docs.google.com/File?id=dd6nw3mt_59g32fh2hs_b" style="width:830px;height:522px;" /></div>
+<div style="padding:1em 0;text-align:left;" id="tfjq">&nbsp;&nbsp; &nbsp;If you want to check out how the program works in a different environment by running&nbsp;the <span style="color:rgb(0,0,255);"><i>env &lt;command&gt;</i></span>, try looking at the env manual pages.</div>
+<p>4.3 Parameter&nbsp;Variables<br />&nbsp;&nbsp;<br />
+&nbsp;If<br />
+your&nbsp;script&nbsp;is&nbsp;invoked&nbsp;with&nbsp;parameters,&nbsp;some&nbsp;additional&nbsp;variables&nbsp;are&nbsp;created.&nbsp;If&nbsp;no&nbsp;parameters&nbsp;are&nbsp;passed,&nbsp;the&nbsp;environment&nbsp;variable&nbsp;<span style="color:rgb(0,0,255);">$#</span>&nbsp;still&nbsp;exists&nbsp;but&nbsp;has&nbsp;a&nbsp;value&nbsp;of&nbsp;0.
+<div style="padding:1em 0;text-align:center;" id="mmzl"><img src="http://docs.google.com/File?id=dd6nw3mt_60d6q52vkg_b" style="width:822px;height:231px;" /></div>
+<div>&nbsp;&nbsp;&nbsp;<br />
+As&nbsp;you&nbsp;can&nbsp;see,&nbsp;within&nbsp;double&nbsp;quotes,&nbsp;$@&nbsp;expands&nbsp;the&nbsp;positional&nbsp;parameters&nbsp;as&nbsp;separate&nbsp;fields,&nbsp;regardless&nbsp;of&nbsp;the&nbsp;IFS&nbsp;value.&nbsp;In&nbsp;general,&nbsp;if&nbsp;you&nbsp;want&nbsp;access&nbsp;to&nbsp;the&nbsp;parameters,&nbsp;$@&nbsp;is&nbsp;the&nbsp;sensible&nbsp;choice.</p>
+</div>
+<div>4.4 A Problem With Variables<br />&nbsp;&nbsp;&nbsp; &nbsp;For a script<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);font-family:Courier New;">if [ $timeofday = “yes” ]</span><br />, if just press "Enter",rather than answer anything.When the variable <span style="background-color:rgb(204,204,204);"><span style="font-family:Courier New;">timeofday </span><span style="background-color:rgb(255,255,255);">was tested,</span></span> it consisted of a blank string. Therefore, the <span style="background-color:rgb(204,204,204);">if</span> clause looks like<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ = “yes” ]</span><br />which isn't a valid condition. To avoid this, you must use quotes around the variable:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “$timeofday” = “yes” ]</span><br />An empty variable then gives the valid test:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “” = “yes” ]</span></p>
+<p>&nbsp;&nbsp; &nbsp;<span style="color:rgb(0,0,255);">Remember<br />
+that adding the quotes tells the shell to consider everything between<br />
+them as a single string. This is one way of getting spaces to be stored<br />
+in a variable.</span></p>
+<p>4.5 The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> Command</div>
+<div>&nbsp;&nbsp; &nbsp;The <span style="color:rgb(0,0,255);"><i>[</i></span> and <span style="color:rgb(0,0,255);"><i>test</i></span> commands are synonymous, except that when the <span style="color:rgb(0,0,255);"><i>[</i></span> command is used, a trailing <span style="color:rgb(0,0,255);"><i>]</i></span> is also used. The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> can be used to check to see whether a file exists.</div>
+<div>e.g.&nbsp;&nbsp; &nbsp;<i>test -f &lt;filename&gt; </i>or<i> [ -f &lt;filename&gt; ]</i></div>
+<div>&nbsp;&nbsp; &nbsp;(<span style="color:rgb(255,0,0);">Note: You must put spaces between the [ braces and the condition being checked.</span>)</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp;Conditions that you can use <span style="color:rgb(0,0,255);"><i>test</i></span> command are:</div>
+<div style="padding:1em 0;text-align:center;" id="p1.x"><img src="http://docs.google.com/File?id=dd6nw3mt_61fhn45rcs_b" style="width:546px;height:645px;" /></div>
+<div>4.6 Control Structures</div>
+<div>(1)<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">if</span> <i>condition</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">then</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">elif</span> <i>condition</i><span style="font-family:Courier New;">; then</span> <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">else</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">fi</p>
+<p></span>(2)</div>
+<p>&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">for</span> <i><span style="font-family:Arial;">variable</span></i> <span style="font-family:Courier New;">in</span> <i>values</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p>Note: <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="background-color:rgb(204,204,204);">for file in $(ls f*.sh); do</span><br />In this example,&nbsp; the parameter list for the for command is provided by the output of the command enclosed in the $() sequence.</p>
+<p>(3) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">while</span> <i>condition</i> <span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p>(4) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">until </span><i>condition</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p><font size="3"><span style="background-color:rgb(255,229,153);font-family:Arial;">Note:&nbsp;&nbsp;&nbsp; In general, if a loop should always execute at least once, use a <span style="font-family:Courier New;">while</span> loop; if it may not need to execute at all, use an <span style="font-family:Courier New;">until</span> loop.</span></font></p>
+<p>(5)</p>
+<p>&nbsp;&nbsp; &nbsp;case variable in<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;...<br />&nbsp;&nbsp; &nbsp;esac</p>
+<p>&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(255,229,153);">Note:<br /><span></span></span>
+<ul>
+<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp;&nbsp; </span>Notice<br />
+that each pattern line is terminated with double semicolons (;;). You<br />
+can put multiple statements between each pattern and the next, so a<br />
+double semicolon is needed to mark where one statement ends and the<br />
+next pattern begins.</span></span></li>
+</ul>
+<p><span style="background-color:rgb(255,229,153);"><br /><span> </span></span>
+<ul>
+<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp; &nbsp;</span></span>Be<br />
+careful with the case construct if you are using wildcards such as ‘*‘<br />
+in the pattern. The problem is that the first matching pattern will be<br />
+taken, even if a later pattern matches more exactly.</span></li>
+</ul>
+<p>(6) Lists
+<ul>
+<li><span>&nbsp;&nbsp;&nbsp; </span><b>AND</b><br />
+List: The AND list construct enables you to execute a series of<br />
+commands, executing the next command only if all the previous commands<br />
+have succeeded. The syntax is<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 &amp;&amp; statement2 &amp;&amp; statement3 &amp;&amp; ...</span></li>
+</ul>
+<ul>
+<li><span>&nbsp;&nbsp;&nbsp; </span><b>OR</b><br />
+List: The OR list construct enables us to execute a series of commands<br />
+until one succeeds, and then not execute any more. The syntax is as<br />
+follows:<br />&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 || statement2 || statement3 || ...</span></p>
+</li>
+</ul>
+<p>(7) Statement Blocks<br />
+<span>&nbsp;&nbsp; &nbsp;</span>If you want to use multiple statements in a place<br />
+where only one is allowed, such as in an AND or OR list, you can do so<br />
+by enclosing them in braces {} to make a statement block.</p>
+<p>(8) Shell Function<br />
+<span>&nbsp;&nbsp;&nbsp; </span><span style="background-color:rgb(204,204,204);">function_name () {</span><br style="background-color:rgb(204,204,204);" /><br />
+<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;statements</span><br style="background-color:rgb(204,204,204);" /><br />
+<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;}</span></p>

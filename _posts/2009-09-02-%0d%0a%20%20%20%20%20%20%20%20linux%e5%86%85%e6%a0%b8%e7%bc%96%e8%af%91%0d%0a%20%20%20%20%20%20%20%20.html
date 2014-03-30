@@ -1,0 +1,147 @@
+---
+layout: post
+title: Linux内核编译
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '151'
+  original_post_id: '45'
+  _wp_old_slug: '45'
+author: 
+---
+<br />
+<table style="width:100%;" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td align="center">
+<table style="width:100%;" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="100%">
+<div id="art">
+<div><span style="font-size:medium;">如何编译Linux内核？ 相信你会得到很多种不同的答案，而我在写此文章之前，总是获得一些编译错误的结果。</span>
+</div>
+<div><span style="font-size:medium;">如何你总是遇到编译错误或者失败，其实很多情况下是你下载的内核版本的问题，就是在高版本GCC中编译低版本的内核，造成编译失败。如果你对编译内核一悉莫展，在网上Google到很多种编译方法，但都失败的情话。倒不如看看内核的README文档，或者在内核目录下运行make help。它将会告诉许多你所不知的秘密。</span>
+</div>
+<div><span style="font-size:medium;">1. Linux系统编译内核的通用方法<br />
+内核代码中的README文件对编译过程有非常 详细介绍，下而介绍的方法是Linux内核通用的编译方法，它是Makefile文件已定义好的编译过程。</span>
+</div>
+<div>
+<span style="font-size:medium;">&nbsp; 1） 下载源代码(以2.6.28为例）</span>
+</div>
+<div>
+<span style="font-size:medium;">&nbsp; wget&nbsp;&nbsp;</span><br />
+<a href="http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.28.1.tar.gz"><span style="font-size:medium;">http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.28.1.tar.gz</span><br />
+</a>
+</div>
+<div>
+<span style="font-size:medium;">&nbsp; 2) 解压，并把它放到/usr/src/目录下</span>
+</div>
+<div>
+<span style="font-size:medium;">&nbsp;&nbsp; gzip -d linux-2.6.28.1.tar.gz</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;&nbsp; tar -xvf linux-2.6.28.1.tar</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; mv -rf linux-2.6.28.1 /usr/src</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; 3) 在/usr/src/建立一个软链接到linux-2.6.28.1目录&nbsp;</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; cd /usr/src</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; ln -s linux-2.6.28.1 linux</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;4) 清理源代码（如果是之前已生成一些中间文件可运行此命令，否则不必了）</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;&nbsp; make mrproper</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;5) 生成config文件</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; cp /boot/config-`uname -r` ./.config</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; make menuconfig</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; 在make menuconfig的配置界面中，先选择Load config file， 把该才拷贝的文件加载进来再进行修改，修改完成后，直接选Exit，然后在提示中选择保当前配置文件。</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;6） 编译</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;make</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;7)&nbsp; 安装模块</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; make modules_install</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;该命令会把模块及相关文件放到目录/lib/modules/2.6.18.1/下，并不会与当前内核产生冲突，除非内核版本是一样的。</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; 8）安装内核</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; make install</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;该命令会把内核相关文件(bzImage, initrd.img，System.map .config）放到/boot/目录下，文件名均带有内核版本名，与其它版本相关区别。</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;如果系统安装了LILO，它会自己把该内核的启动加进来。如果是grub程序，那要看情况而定。我在Fodera系统中，它会自动添加该启动项到/boot/grup/menu.lst文件中，而在Ubuntu中则不会，需要手动添加。添加完也，即可重启进行新内核。</span>
+</div>
+<div><span style="font-size:medium;">2. Ubuntu内核编译方法。</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 上面介如的通常方法适合于所有的Linux系统，Ubuntu也不例外。Ubuntu同样提供了编译内核的方法。而且方法非常简单，把上述第6）和7）步换成下面这一命令即可。</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; make-kpkg --initrd --append-to-version &lt;your_tag&gt; kernel_image kernel_headers</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; 其中&lt;your_tag&gt;是你给内核名字在版本号的基础上加上你指定的字符串，如果你打算直接使用内核版本号作为内核名字，则把--append-to-version和它的参数从命令行中去掉。个人建议你不要使用该选项，因为内核名字就是uname -r的运行结果，使得有时编译新的模块程序时，uname -r 和 make kernelrelease结果不一致。</span>
+</div>
+<div><span style="font-size:medium;">该命运行完毕后，生成两个deb包，其它一个是内核和模块的包；另一个是头文件的deb包。如果不需要，可在命令行上把kernel_header去掉。</span>
+</div>
+<div><span style="font-size:medium;">安装内核变异常简单，只需安装一个生成的内核映象的deb包。使用如下命令：</span>
+</div>
+<div><span style="font-size:medium;">dpkg - i&nbsp; linux-image-2.6.28.1_2.6.28.1-10.00.Custom_i386.deb</span>
+</div>
+<div><span style="font-size:medium;">安装完后，所有的事情也就完成了，连/boot/grub/menu.lst的启动菜单项都修改好了，你所要做的事情就是重启系统而已。</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; 使用这种方法的好处是不言而喻的：你只需要在一台Ubuntu上编译好一个较新的内核，就可以在整个实验室中升级，何乐而不为呢？</span>
+</div>
+<div><span style="font-size:medium;">3. Fodera 内核编译方法</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;&nbsp; 很抱歉，目前还未有找到很准确的Fodera内核编译方法，后面会补上。但这里介绍的方法仍然适后Fodera系统，那就是象Ubuntu一样，把内核编译成为一个rpm包。而且非常简单，只需把上面的第6)和7)步换成下面的命令：</span>
+</div>
+<div><span style="font-size:medium;">&nbsp; make rpm-pkg</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;运行完后，内核rpm包位于目录/usr/src/rpm/RPMS/i386/kernel-2.6.28.1.i386.rpm下，使用rpm -i kernel-2.6.28.1.i386.rpm命令即可安装。</span>
+</div>
+<div><span style="font-size:medium;">&nbsp;安装rpm完成后，请检查/boot/grup/menu.lst文件是否有新内核的启动，若否请手工添加。</span>
+</div>
+<div>
+</div>
+<div>内核删除：<br />
+有时我们基于各种原因可能删除一些老的内核，基本步骤如下：<br />
+1. 查看当前系统的内核版本，千万不要删除错了<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #uname -r&nbsp; 或者&nbsp; uname -a<br />
+2. 对于通过rpm方式安装的内核，删除就很简单了。直接用rpm -e 相应的内核版本就能删除掉了。<br />
+&nbsp;&nbsp; 对于手工编译安装的内核，删除起来稍微就要麻烦些了。<br />
+&nbsp;&nbsp;&nbsp; （1）、修改 /etc/grub/grub.conf 或 /etc/grub/menu.lst ，删除那些不想要的内核选项。<br />
+&nbsp;&nbsp;&nbsp; （2）、删除 /lib/modules/相对应的内核版本的目录<br />
+&nbsp;&nbsp;&nbsp; （3）、删除 /boot/相对应的内核版本的文件<br />
+对于Ubuntu系统：<br />
+$dpkg &ndash;get-selections|grep linux-image&nbsp; //查看内核版本名称<br />
+$sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td height="25">
+<p>&nbsp;<span style="color:#000099;"><strong>原文地址</strong><br />
+</span><br />
+&nbsp;<a href="http://blog.csdn.net/linyt/archive/2009/03/16/3995435.aspx" target="_blank">http://blog.csdn.net/linyt/archive/2009/03/16/3995435.aspx</a></p>
+<p><a href="http://www.loosky.net/?p=309">http://www.loosky.net/?p=309</a></p>
+</td>
+</tr>
+</tbody>
+</table>

@@ -1,0 +1,116 @@
+---
+layout: post
+title: Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(II)
+categories:
+- Plan 9
+tags:
+- Plan 9
+status: publish
+type: post
+published: true
+meta:
+  views: '51'
+  original_post_id: '10'
+  _wp_old_slug: '10'
+author: 
+---
+
+<p>	&lt;!--<br />
+		@page { margin: 0.79in }<br />
+		P { margin-bottom: 0.08in }<br />
+	--&gt;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span><span style="font-size:x-small;"><span style="font-family:mceinline;">man</span><span style="font-family:'Trebuchet MS', sans-serif;">:<br />
+section 1 is for commands, section 8 is fo</span><span style="font-family:mceinline;">r&nbsp;</span></span></span></span><span style="font-family:'Trebuchet MS', sans-serif;font-size:x-small;"><span style="font-family:mceinline;">commands<br />
+not commonly used by users (i.e., they are intended to administer the<br />
+system), and</span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">section<br />
+2 is for C functions and libraries. </span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;">To<br />
+read a manual page found at a particular</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">section,<br />
+you can type the section number and the page name after the man<br />
+command, like in</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"> </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">;<br />
+man 1 ls</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">lookman<br />
+</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">is<br />
+used to search manual.</span></span></span></span></p>
+<p align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">sig</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+displays the signature, i.e., the prototype for a C function<br />
+documented in section 2 of the manual.</span></span></span></span></p>
+<p align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">Flag<br />
+</span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-m</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+asks </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">ls</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+to print the name of the user who last modified a file, along with<br />
+the file name.</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">cp</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+accepts more than one  (source) file name to copy to the destination<br />
+file name. </span></span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">We<br />
+can see a dump of the bytes kept within that file using the  program<br />
+</span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">xd</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+(hexadecimal dump). This program reads a file and writes its contents<br />
+so that it is </span></span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">easy<br />
+for us to read. Option </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-b</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+asks </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">xd</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+to print the contents as a series of bytes:</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">term%<br />
+xd -b TODO</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000000<br />
+ 63 6f 70 79 20 6d 6b 64 65 70 20 66 72 6f 6d 20</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000010<br />
+ 6c 65 66 66 65 20 28 2d 72 20 66 6c 61 67 29 0a</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000020<br />
+ 0a</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000021<br />
+</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">Adding<br />
+option </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-c</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">,<br />
+the program prints the character for each byte when feasible:</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">term%<br />
+xd -b -c TODO</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000000<br />
+ 63 6f 70 79 20 6d 6b 64 65 70 20 66 72 6f 6d 20</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">0<br />
+  c  o  p  y     m  k  d  e  p     f  r  o  m   </span></span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000010<br />
+ 6c 65 66 66 65 20 28 2d 72 20 66 6c 61 67 29 0a</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">10<br />
+  l  e  f  f  e     (  -  r     f  l  a  g  ) /n</span></span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000020<br />
+ 0a</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">20<br />
+ /n</span></span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000021<br />
+</span></span></span></p>
+<p align="LEFT">&nbsp;</p>
+<p align="LEFT">The<br />
+command <span style="font-family:'Courier New', monospace;">nm</span> (name list)<br />
+displays the names of symbols (i.e., procedure names, variables) that<br />
+are contained or required by our object and executable files.</p>

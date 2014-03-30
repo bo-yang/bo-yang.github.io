@@ -1,0 +1,16 @@
+</p>
+<p id="zw-129ed8c28af2dvqtt15bea0" class="MsoNormal">
+<h1>Here Document</h1></p>
+<p>Syntax:</p>
+<p><em>command &lt;&lt; label&nbsp;<br />input line 1&nbsp;<br />&hellip;&nbsp;<br />input line n&nbsp;<br />label</em></p>
+<p>This allows you to redirect input to a shell script from within the shell script itself.</p>
+<ul>
+<li>&lt;&lt; label indicates that label marks the end of the here document</li>
+<li>label must appear on a line by itself to end the here document</li>
+<li>&lt;&lt; 'label' prevents the shell from doing parameter and command substitution in the here document</li>
+<li>&lt;&lt;- label deletes leading tabs (but not spaces) from the here document</li>
+</ul>
+<h2>Here Document Example&nbsp;<br /><span>(from page 189 in "Learning the Korn Shell")</span></h2>
+<p>pgmname=$1&nbsp;<br />for user in $(ypcat passwd | cut -f1 -d:)&nbsp;<br />do&nbsp;<br />&nbsp;&nbsp;mail $user &lt;&lt;- EOF<br />&nbsp;&nbsp;Dear user,&nbsp;<br />&nbsp;&nbsp;A new version of $pgmname has been installed&nbsp;<br />&nbsp;&nbsp;in $(whence $pgmname).&nbsp;<br />&nbsp;&nbsp;Regards,&nbsp;<br />&nbsp;&nbsp;Your friendly sysadmin&nbsp;<br />EOF&nbsp;<br />done</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal"><span>原文：&nbsp;</span><a href="http://snap.nlc.dcccd.edu/reference/scarlatos/cis2.50/note6.html">http://snap.nlc.dcccd.edu/reference/scarlatos/cis2.50/note6.html</a></p>

@@ -1,0 +1,52 @@
+<p>&nbsp;PERL Handling Binary Scalar</p>
+<div>
+<div><span></p>
+<div></div>
+<div><strong>1</strong>&nbsp;<strong>[Question]:</strong></div>
+<div></div>
+<div><span><br />
+</span>
+<p>I adopt select()...sysread()...syswrite() mechanism to handle socket messages, where messages are sysread() into $buffer (binary) before they are syswritten.</p>
+<p>Now I want to change two bytes of the message, which denote the length of the whole message. At first, I use following code:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $declen</span><span class="pun">=</span><span class="pln">hex</span><span class="pun">(</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$declen </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$declen</span><span class="pun">);</span> <span class="com"># change the length</span><br /></code></pre>
+<p>However, it doesn't work in this way. If the final value of $declen is 85, then the modified $buffer will be "0x35 0x35 0x00 0x02...". I insert digital number to $buffer but finally got ASCII!</p>
+<p>I also tried this way:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes,binary</span><span class="pln"><br />$msglen </span><span class="pun">+=</span> <span class="lit">0b11</span><span class="pun">;</span> <span class="com"># Or $msglen += 3;</span><br /><span class="kwd">my</span><span class="pln"> $msgbody</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the rest part of message, binary</span><span class="pln"><br />$buffer</span><span class="pun">=</span><span class="pln">join</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> $msglen</span><span class="pun">,</span><span class="pln"> $msgbody</span><span class="pun">);</span><br /></code></pre>
+<p>Sadly, this method also failed. The result is such as"0x33 0x 0x00 0x02..." I just wonder why two binary scalar can't be joined into a binary scalar?</p>
+<p>Can you help me? Thank you!</p>
+<p><span><strong>[Answer 1]:</strong></span>&nbsp;</p>
+<p>&nbsp;</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $number </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$number </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><br /><span class="kwd">my</span><span class="pln"> $number_bin </span><span class="pun">=</span><span class="pln"> pack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$number</span><span class="pun">);</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$number_bin</span><span class="pun">);</span> <span class="com"># change the length</span></code></pre>
+<p>&nbsp;</p>
+</div>
+<p></span></div>
+<p><span><strong>[Answer 2]:</strong></span></p>
+<div>用vec。&nbsp;</p>
+<p>比如：&nbsp;
+<dl class="code">
+<dt><strong>Perl code</strong></dt>
+<dd>
+<pre><div><span>my</span> <span>$buffer</span> <span>=</span> <span><strong>"</strong></span><span><strong>/x00/x01</strong></span><span><strong>"</strong></span><span>;
+</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;
+</span><span>vec</span><span>(</span><span>$buffer</span><span>,</span> <span>0</span><span>,</span> <span>16</span><span>) </span><span>+=</span> <span>3</span><span>;
+</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;</span></div></pre>
+</dd>
+</dl>
+</div>
+<p></p>
+<div><strong>2&nbsp;</strong><strong>[Question]:</strong></div>
+<div><span><br />
+</span>
+<p>I am writing a Perl program that sends and receives messages from two sockets and acta as a switch. I have to modify the received messages received from one socket, prepend 3 bytes to the data, and finally send the modified messages to another socket. I adopt select()...sysread()...syswrite() mechanism to poll for messages between sockets. The received messages are stored in $buffer during modification.</p>
+<p>Now I can use following way to get the received messages:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $hexmsg </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"H*"</span><span class="pun">,</span><span class="pln"> $buffer</span><span class="pun">);</span><br /><span class="kwd">my</span><span class="pln"> @msg </span><span class="pun">=</span> <span class="pun">(</span><span class="pln"> $hexmsg </span><span class="pun">=~</span><span class="pln"> m</span><span class="pun">/.</span><span class="pln">.</span><span class="str">/g );<br /></span></code></pre>
+<p>then I can insert 3 bytes to @msg. However, I don't know how to pack the message in @msg into a scalar(such as $buffer) and send it to another socket by syswrite(). Can anybody help me? Thank you in advance!</p>
+<p>BTW, are messages in $buffer binary?</p>
+<p><span><strong>[Answer]:</strong></span></p>
+<p>&nbsp;</p>
+<p>Yes, messages in $buffer are binary (if I'm guessing what you mean by that correctly). If your only reason for unpacking it into @msg is to insert the bytes, don't. Use&nbsp;<a rel="nofollow" href="http://perldoc.perl.org/functions/substr.html">substr</a>&nbsp;instead, and just write out the changed $buffer. For instance:</p>
+<pre class="prettyprint"><code><span class="pln">substr</span><span class="pun">(</span><span class="pln"> $buffer</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="str">"/x01/x02/x03"</span> <span class="pun">);</span> <span class="com"># insert 3 bytes at beginning.</span><br /></code></pre>
+<p>If you are doing other things with @msg, you could continue to use that as well as doing the substr insert before writing it out, or you could use substr or pack or split or vec or a regex to parse out the pieces you need. You'd need to describe what you are doing to get more specific help.</p>
+<p>&nbsp;</p>
+</div>
+</div>

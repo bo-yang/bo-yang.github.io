@@ -1,0 +1,30 @@
+<p>Today, one of my folks met a very weird problem and finally he asked me for help. The issue was, when running command "ldd CDNap" on a Solaris 9 server(AP11), following error would show up:</p>
+<p><code>AP11: ldd CDNap<br />
+ldd: CDNap: execution failed due to signal 9</code></p>
+<p>However, when running this command on another Solaris 9 server(ap15), it worked well.</p>
+<p>According to <a href="https://forums.oracle.com/forums/thread.jspa?threadID=1919581">Weird exec failure</a>, "<strong>My bet is that the program has a rather large BSS segment, and there isn't enough swap to reserve the space. (ldd(1) works by setting up some environment variables, then running the program itself, which is why it would fail)</strong>". To verify this, you can run</p>
+<pre>/usr/ccs/bin/size /path/to/program</pre>
+<p>To check the free space of swap, you can</p>
+<pre>swap -s</pre>
+<p>After comparing the swap space and memory of the two Solaris servers, I noticed that the server(AP11) bearing this issue has smaller memory(1GB) and swap space(only 75008k available).</p>
+<pre>AP11: swap -l
+swapfile             dev  swaplo blocks   free
+/dev/dsk/c0t2d0s1   136,1      16 4198304 4198304
+AP11: swap -s
+total: 513384k bytes allocated + 2296288k reserved = 2809672k used, 75008k available
+AP11: uname -a
+SunOS coolap22n 5.9 Generic_122300-61 sun4u sparc SUNW,UltraAX-i2
+AP11: prtconf|grep Memory
+Memory size: 1024 Megabytes</pre>
+<p>Server(ap15) without ldd issue has 2GB memory and larger swap(4966160k available).</p>
+<pre>ap15:root &gt; swap -s
+total: 372136k bytes allocated + 522864k reserved = 895000k used, 4966160k available
+ap15:root &gt; df -k swap
+Filesystem            kbytes    used   avail capacity  Mounted on
+swap                 1793064960 1589658648 203406312    89%    /tmp
+ap15:root &gt; swap -l
+swapfile             dev  swaplo blocks   free
+/dev/dsk/c0t2d0s1   136,1      16 8392544 8392544
+ap15:root &gt; uname -a
+SunOS coolap10n 5.9 Generic_122300-61 sun4u sparc SUNW,UltraAX-i2</pre>
+<p>It seems it's time for such old Solaris servers to retire.</p>

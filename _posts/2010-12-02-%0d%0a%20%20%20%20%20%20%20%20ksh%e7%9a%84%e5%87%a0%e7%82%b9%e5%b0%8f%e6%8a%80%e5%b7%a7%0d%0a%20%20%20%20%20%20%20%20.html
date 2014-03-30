@@ -1,0 +1,50 @@
+---
+layout: post
+title: Ksh的几点小技巧
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '101'
+  original_post_id: '98'
+  _wp_old_slug: '98'
+author: 
+---
+
+<ol>
+<li>在一个函数(function)中，如果不希望局部变量影响到全局变量或环境变量，可以用typeset来定义。</li>
+<li>对于多个参数的函数或脚本，对多个输入参数的处理有两种办法：</li>
+</ol>
+<ul>
+<li>一是利用如下方式：</li>
+</ul>
+<p>
+<pre>while (($# != 0)) 
+do 
+      # process $1 
+      shift 
+done </pre>
+<p>&nbsp;</p>
+<ul>
+<li>另一种方法是利用如下方式：</li>
+</ul>
+<p>
+<pre>while getopts :A:B:c:d:e:E:C:i:G:L:M:R:hD:V OPT; do
+	case $OPT in
+	A)	export E_CONFIG=${OPTARG}
+		;;
+	B)	Banner=$(echo "$OPTARG" | tr '%' ' ');;
+	C)	Mach="-m $OPTARG"; MachName=$OPTARG;;
+	D)	DBDir=$OPTARG;;
+	G)	TRCellGen=$OPTARG;;
+	i)	iconic='-iconic';;
+	L)  Lab3BEM=$OPTARG;;
+	M)  NumMobileSub=$OPTARG;;
+	esac
+done
+shift OPTIND-1</pre>
+<p>&nbsp;</p>

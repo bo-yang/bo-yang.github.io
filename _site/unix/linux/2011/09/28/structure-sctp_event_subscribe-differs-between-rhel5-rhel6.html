@@ -1,0 +1,48 @@
+<p>Recently meet an SCTP issue: one product application running on MontaVista(kernel version 2.6.21) can't run on RedHat Enterprise Linux 5.5. After hours investion between millions lines  of  log file and source code, I finally noticed following error showed up:<br />
+[sourcecode language="text"]<br />
+^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566]<br />
+ ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt()<br />
+ setsockopt - Invalid argument<br />
+^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566]<br />
+../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts():<br />
+ failed to set SCTP_EVENTS for socket 6<br />
+[/sourcecode]<br />
+C function ammsSetSockOpt() was a function used in that product application, which eventually calls Linux system API setsockopt().</p>
+<p>The product developers told me that they updated libsctp.so shared library in MV, so I copied that library directly to RHEL5.5(usually this way will work). However, that shared library didn't work this time.</p>
+<p>Then I noticed that the kernel of RHEL5.5 was 2.6.18-194.el5, which means Linux kernel 2.6.18 was used. I also found some webpages about RHEL kernel, and all of them claimed that Red Hat would backport new-developed Linux kernel(community) features to RHEL5 kernels, which means that the older kernel version of RHEL may also contains some features in higher Linux kernel.  Since SCTP codes were largely changed in 2.6.21, I decided to upgrade RHEL kernel to 2.6.18-238.9.1.el5(the default version in RHEL5.7).</p>
+<p>After 4.5 hours compiling and installing, RHEL kernel upgraded to the latest one. Unfortunately, the SCTP issue still existed.</p>
+<p>I wen to back to reading source code, and tried to change the last parameter of setsockopt() from sizeof(events) to 8, and it worked!  Where, events is defined as<br />
+[sourcecode language="cpp"]struct sctp_event_subscribe events;[/sourcecode]<br />
+Then I began to check the definition of struct sctp_event_subscribe in both RHEL5.5 and RHEL6.0 - they were different:</p>
+<p>In <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">RHEL 6</a>,</p>
+<pre><a id="L402" name="L402" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L402"></a> 402/*
+<a id="L403" name="L403" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L403"></a> 403 * Described in Section 7.3
+<a id="L404" name="L404" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L404"></a> 404 *   Ancillary Data and Notification Interest Options
+<a id="L405" name="L405" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L405"></a> 405 */
+<a id="L406" name="L406" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406"></a> 406struct <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_event_subscribe">sctp_event_subscribe</a> {
+<a id="L407" name="L407" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L407"></a> 407        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_data_io_event">sctp_data_io_event</a>;
+<a id="L408" name="L408" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L408"></a> 408        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_association_event">sctp_association_event</a>;
+<a id="L409" name="L409" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L409"></a> 409        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_address_event">sctp_address_event</a>;
+<a id="L410" name="L410" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L410"></a> 410        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_send_failure_event">sctp_send_failure_event</a>;
+<a id="L411" name="L411" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L411"></a> 411        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_peer_error_event">sctp_peer_error_event</a>;
+<a id="L412" name="L412" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L412"></a> 412        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_shutdown_event">sctp_shutdown_event</a>;
+<a id="L413" name="L413" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L413"></a> 413        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_partial_delivery_event">sctp_partial_delivery_event</a>;
+<a id="L414" name="L414" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L414"></a> 414        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_adaptation_layer_event">sctp_adaptation_layer_event</a>;
+<a id="L415" name="L415" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L415"></a> 415        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_authentication_event">sctp_authentication_event</a>;
+<a id="L416" name="L416" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L416"></a> 416};</pre>
+<p>While in <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">RHEL5</a>,</p>
+<pre><a id="L363" name="L363" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L363"></a> 363/*
+<a id="L364" name="L364" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L364"></a> 364 * Described in Section 7.3
+<a id="L365" name="L365" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L365"></a> 365 *   Ancillary Data and Notification Interest Options
+<a id="L366" name="L366" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L366"></a> 366 */
+<a id="L367" name="L367" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367"></a> 367struct <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_event_subscribe">sctp_event_subscribe</a> {
+<a id="L368" name="L368" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L368"></a> 368        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_data_io_event">sctp_data_io_event</a>;
+<a id="L369" name="L369" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L369"></a> 369        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_association_event">sctp_association_event</a>;
+<a id="L370" name="L370" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L370"></a> 370        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_address_event">sctp_address_event</a>;
+<a id="L371" name="L371" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L371"></a> 371        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_send_failure_event">sctp_send_failure_event</a>;
+<a id="L372" name="L372" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L372"></a> 372        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_peer_error_event">sctp_peer_error_event</a>;
+<a id="L373" name="L373" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L373"></a> 373        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_shutdown_event">sctp_shutdown_event</a>;
+<a id="L374" name="L374" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L374"></a> 374        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_partial_delivery_event">sctp_partial_delivery_event</a>;
+<a id="L375" name="L375" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L375"></a> 375        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_adaption_layer_event">sctp_adaption_layer_event</a>;
+<a id="L376" name="L376" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L376"></a> 376};</pre>
+<p id="b9/7a/901cb22644e92e629902da22bf3d62baf0cc_3/0">It seems upgrading RHEL5.5 to RHEL6 is the final choice!</p>

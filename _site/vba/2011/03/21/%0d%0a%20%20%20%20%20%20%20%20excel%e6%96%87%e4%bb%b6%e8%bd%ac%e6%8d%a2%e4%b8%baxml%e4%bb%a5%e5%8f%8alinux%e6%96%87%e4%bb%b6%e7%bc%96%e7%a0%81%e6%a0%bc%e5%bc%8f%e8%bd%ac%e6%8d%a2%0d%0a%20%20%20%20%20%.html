@@ -1,0 +1,163 @@
+<p>今天需要将多个Excel文档转换为XML&#26684;式，本打算用MS Office自带的另存为XML文件的功能，结果转换成MS Office2003 XML之后的文件就是一坨屎！Office 2007自带的XML文档转换的功能也TMD超级繁琐，根据帮助手册自己建了.xsd文件导入到Excel之后也无法导出XML数据，白白浪费了时间。</p>
+<p>后来Google到了<a href="http://www.meadinkent.co.uk/xl_xml1.htm">这篇文章</a>。文中提供了现成的VBA源代码，稍微修改一下即可拿来使用（中文注释为本人所加）：</p>
+<p>
+<pre>'Attribute VB_Name = &quot;XL_to_XML&quot;
+Sub MakeXML()
+' create an XML file from an Excel table
+Dim MyRow As Integer, MyCol As Integer, Temp As String, YesNo As Variant, DefFolder As String
+Dim XMLFileName As String, XMLRecSetName As String, MyLF As String, RTC1 As Integer
+Dim RangeOne As String, RangeTwo As String, Tt As String, FldName(99) As String
+
+MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
+DefFolder = &quot;C:MyXML&quot;   'change this to the location of saved XML files
+
+YesNo = MsgBox(&quot;This procedure requires the following data:&quot; &amp; MyLF _
+ &amp; &quot;1 A filename for the XML file&quot; &amp; MyLF _
+ &amp; &quot;2 A groupname for an XML record&quot; &amp; MyLF _
+ &amp; &quot;3 A cellrange containing fieldnames (col titles)&quot; &amp; MyLF _
+ &amp; &quot;4 A cellrange containing the data table&quot; &amp; MyLF _
+ &amp; &quot;Are you ready to proceed?&quot;, vbQuestion + vbYesNo, &quot;MakeXML CiM&quot;)
+ 
+If YesNo = vbNo Then
+ Debug.Print &quot;User aborted with 'No'&quot;
+ Exit Sub
+End If
+
+XMLFileName = FillSpaces(InputBox(&quot;1. Enter the name of the XML file:&quot;, &quot;MakeXML CiM&quot;, &quot;GRE_Core_Words&quot;))
+If Right(XMLFileName, 4) &lt;&gt; &quot;.xml&quot; Then
+ XMLFileName = XMLFileName &amp; &quot;.xml&quot;
+End If
+
+XMLRecSetName = FillSpaces(InputBox(&quot;2. Enter an identifying name of a record:&quot;, &quot;MakeXML CiM&quot;, &quot;item&quot;))
+
+RangeOne = InputBox(&quot;3. Enter the range of cells containing the field names (or column titles):&quot;, &quot;MakeXML CiM&quot;, &quot;A2:D2&quot;)
+If MyRng(RangeOne, 1) &lt;&gt; MyRng(RangeOne, 2) Then
+  MsgBox &quot;Error: names must be on a single row&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+End If
+MyRow = MyRng(RangeOne, 1)
+For MyCol = MyRng(RangeOne, 3) To MyRng(RangeOne, 4)
+ If Len(Cells(MyRow, MyCol).Value) = 0 Then
+  MsgBox &quot;Error: names range contains blank cell&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+ End If
+ FldName(MyCol - MyRng(RangeOne, 3)) = FillSpaces(Cells(MyRow, MyCol).Value)
+Next MyCol
+
+RangeTwo = InputBox(&quot;4. Enter the range of cells containing the data table:&quot;, &quot;MakeXML CiM&quot;, &quot;A3:D6257&quot;)
+If MyRng(RangeOne, 4) - MyRng(RangeOne, 3) &lt;&gt; MyRng(RangeTwo, 4) - MyRng(RangeTwo, 3) Then
+  MsgBox &quot;Error: number of field names &lt;&gt; data columns&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+End If
+RTC1 = MyRng(RangeTwo, 3)
+
+If InStr(1, XMLFileName, &quot;:&quot;) = 0 Then
+ XMLFileName = DefFolder &amp; XMLFileName
+End If
+
+Open XMLFileName For Output As #1
+Print #1, &quot;&lt;?xml version=&quot; &amp; Chr(34) &amp; &quot;1.0&quot; &amp; Chr(34) &amp; &quot; encoding=&quot; &amp; Chr(34) &amp; &quot;UTF-8&quot; &amp; Chr(34) &amp; &quot;?&gt;&quot;
+Print #1, &quot;&lt;wordbook&gt;&quot;
+
+For MyRow = MyRng(RangeTwo, 1) To MyRng(RangeTwo, 2)
+Print #1, &quot;&lt;&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
+  For MyCol = RTC1 To MyRng(RangeTwo, 4)
+  ' the next line uses the FormChk function to format dates and numbers
+     Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; Cells(MyRow, MyCol).Value &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
+  ' the next line does not apply any formatting
+  '  Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; RemoveAmpersands(Cells(MyRow, MyCol).Value) &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
+    Next MyCol
+ Print #1, &quot;&lt;/&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
+
+Next MyRow
+Print #1, &quot;&lt;/wordbook&gt;&quot;
+Close #1
+MsgBox XMLFileName &amp; &quot; created.&quot; &amp; MyLF &amp; &quot;Process finished&quot;, vbOKOnly + vbInformation, &quot;MakeXML CiM&quot;
+Debug.Print XMLFileName &amp; &quot; saved&quot;
+End Sub
+Function MyRng(MyRangeAsText As String, MyItem As Integer) As Integer
+' analyse a range, where MyItem represents 1=TR, 2=BR, 3=LHC, 4=RHC
+
+Dim UserRange As Range
+Set UserRange = Range(MyRangeAsText)
+Select Case MyItem
+ Case 1
+ MyRng = UserRange.Row
+ Case 2
+ MyRng = UserRange.Row + UserRange.Rows.Count - 1
+ Case 3
+ MyRng = UserRange.Column
+ Case 4
+ MyRng = UserRange.Columns(UserRange.Columns.Count).Column
+End Select
+Exit Function
+
+End Function
+Function FillSpaces(AnyStr As String) As String
+' remove any spaces and replace with underscore character
+Dim MyPos As Integer
+MyPos = InStr(1, AnyStr, &quot; &quot;)
+Do While MyPos &gt; 0
+ Mid(AnyStr, MyPos, 1) = &quot;_&quot;
+ MyPos = InStr(1, AnyStr, &quot; &quot;)
+Loop
+FillSpaces = LCase(AnyStr)
+End Function
+
+Function FormChk(RowNum As Integer, ColNum As Integer) As String
+' formats numeric and date cell values to comma 000's and DD MMM YY
+FormChk = Cells(RowNum, ColNum).Value
+If IsNumeric(Cells(RowNum, ColNum).Value) Then
+ FormChk = Format(Cells(RowNum, ColNum).Value, &quot;#,##0 ;(#,##0)&quot;)
+End If
+If IsDate(Cells(RowNum, ColNum).Value) Then
+ FormChk = Format(Cells(RowNum, ColNum).Value, &quot;dd mmm yy&quot;)
+End If
+End Function
+
+Function RemoveAmpersands(AnyStr As String) As String
+Dim MyPos As Integer
+' replace Ampersands (&amp;) with plus symbols (+)
+
+MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
+Do While MyPos &gt; 0
+ Mid(AnyStr, MyPos, 1) = &quot;+&quot;
+ MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
+Loop
+RemoveAmpersands = AnyStr
+End Function
+</pre>
+<p></p>
+<p></p>
+<p>如果不想将文件中的&amp;替换为&#043;，可以将第55行的<span>RemoveAmpersands(FormChk(MyRow,&nbsp;MyCol))替换为</span><span>Cells(MyRow,&nbsp;MyCol).Value。</span></p>
+<p>&nbsp;</p>
+<p>需要注意的是在Excel文件中必须有一行是标题行——即改行存放各列的标题，否则生成的XML文件&#26684;式不一定是你所需要的。</p>
+<p>&nbsp;</p>
+<p>由于我对XML文件的编码&#26684;式有要求，必须是UTF-8，而Windows默认的编码&#26684;式是GBXXXX，因此需要对生成的XML文件进行编码&#26684;式转换。搜索到了<a href="http://tech.16c.cn/linux/glpz/20100221/22560.html">linux 查看文件编码以及修改编码</a>一文，摘录重点如下：</p>
+<p>&nbsp;</p>
+<p>查看文件编码</p>
+<p>&nbsp;</p>
+<p>　　在Linux中查看文件编码可以通过以下几种方式：</p>
+<p>　　1.在Vim中可以直接查看文件编码</p>
+<p>　　:set fileencoding</p>
+<p>　　即可显示文件编码&#26684;式。</p>
+<p>　　如果你只是想查看其它编码&#26684;式的文件或者想解决用Vim查看文件乱码的问题，那么你可以在~/.vimrc 文件中添加以下内容：</p>
+<p>　　set encoding=utf-8 fileencodings=ucs-bom,utf-8,cp936</p>
+<p>　　这样，就可以让vim自动识别文件编码（可以自动识别UTF-8或者GBK编码的文件），其实就是依照fileencodings提供的编码列表尝试，如果没有找到合适的编码，就用latin-1(ASCII)编码打开。</p>
+<p>　　2. enca (如果你的系统中没有安装这个命令，可以用sudo yum install -y enca 安装 )查看文件编码</p>
+<p>　　$ enca filename</p>
+<p>　　filename: Universal transformation format 8 bits; UTF-8</p>
+<p>　　CRLF line terminators</p>
+<p>　　需要说明一点的是，enca对某些GBK编码的文件识别的不是很好，识别时会出现：</p>
+<p>　　Unrecognized encoding</p>
+<p>&nbsp;</p>
+<p>文件编码转换</p>
+<p>　　1.在Vim中直接进行转换文件编码,比如将一个文件转换成utf-8&#26684;式</p>
+<p>　　:set fileencoding=utf-8</p>
+<p>　　2. enconv 转换文件编码，比如要将一个GBK编码的文件转换成UTF-8编码，操作如下</p>
+<p>　　enconv -L zh_CN -x UTF-8 filename</p>
+<p>　　3. iconv 转换，iconv的命令&#26684;式如下：</p>
+<p>　　iconv -f encoding -t encoding inputfile</p>
+<p>　　比如将一个UTF-8 编码的文件转换成GBK编码</p>
+<p>　　iconv -f GBK -t UTF-8 file1 -o file2</p>
+<p>&nbsp;</p>

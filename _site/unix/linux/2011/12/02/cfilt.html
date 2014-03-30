@@ -1,0 +1,8 @@
+<p>c++flit decodes(demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
+<p>You may use c++filt to demangle the symbols.<br />
+[sourcecode language="text"]<br />
+$ c++filt _ZNSt8ios_base4InitD1Ev<br />
+std::ios_base::Init::~Init()<br />
+[/sourcecode]</p>
+<p>You may try adding-lstdc++ to your link command to resolve the issue.</p>
+<p><a href="http://sourceware.org/binutils/docs-2.16/binutils/c_002b_002bfilt.html"><strong>c++filt manual</strong></a> </p>

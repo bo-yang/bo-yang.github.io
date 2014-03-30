@@ -1,0 +1,38 @@
+---
+layout: post
+title: QEMU常用命令
+categories:
+- Unix/Linux
+- Virtualization
+tags:
+- Unix/Linux
+- Virtualization
+status: publish
+type: post
+published: true
+meta:
+  views: '412'
+  original_post_id: '19'
+  _wp_old_slug: '19'
+author: 
+---
+
+<p>Following are excerpted from <em>Build appliances with QEMU and OpenBSD</em>, <em>BSD Magazine,</em> 2011.04.</p>
+<ul>
+<li>Boot from an ISO image: &nbsp; &nbsp;<span style="font-family:'courier new', courier;">qemu -cdrom <em>image.iso</em></span></li>
+<li>Create new hard disk for a VM: &nbsp; &nbsp;<span style="font-family:'courier new', courier;">qemu-img create <em>disk.bin</em> <em>2G</em></span></li>
+<li>Install OS into the virtual disk: &nbsp; &nbsp;<span style="font-family:'courier new', courier;">qemu -hda <em>disk.bin </em>-cdrom <em>image.iso</em></span></li>
+<li>Boot VM from virtual disk:<span style="font-family:'courier new', courier;">&nbsp; &nbsp; qemu <em>disk.bin</em></span></li>
+<li><span style="font-family:'courier new', courier;">Boot VM with two virtual disks: &nbsp; <em>&nbsp;qemu -hda first.bin -hdb second.bin</em></span></li>
+<li><span style="font-family:'courier new', courier;">Start VM in bridge mode network:<em>&nbsp; &nbsp; qemu -net nic -net tap disk.bin</em></span></li>
+<li><span style="font-family:'courier new', courier;">Simulate multiple network cards:<em> &nbsp; qemu -net nic,model=lance -net nic,model=pcnet -net nic,model=rt18139 disk.bin</em></span></li>
+<li><span style="font-family:mceinline;">QEMU can also be used with remote machines without X in -nographic mode. For this you have to have this in <em>boot.conf</em>(FreeBSD):</span></li>
+</ul>
+<p><span style="font-family:mceinline;"><em>
+<pre># cat /etc/boot.conf
+set tty com0</pre>
+<p>&nbsp;</em></span></p>
+<p><span style="font-family:mceinline;">And start QEMU with command:</span></p>
+<ul>
+</ul>
+<p><em><span style="font-family:mceinline;">qemu -nographic disk.bin&nbsp;</span></em></p>
