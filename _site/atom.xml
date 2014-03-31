@@ -3,16 +3,22 @@
     <title>Bo Yang's Blog</title>
     <link href="http://bo-yang.github.io/atom.xml" rel="self"/>
     <link href="http://bo-yang.github.io/"/>
-    <updated>2014-03-30T23:41:03-04:00</updated>
+    <updated>2014-03-31T00:44:41-04:00</updated>
     <id>http://bo-yang.github.io/</id>
     
     
     <entry>
         <title>How To Install Jekyll in Mac OSX Mavericks</title>
         
-        <link href="http://bo-yang.github.io/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks/"/>
+        <category term="notes" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <category term="jekyll" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <category term="github" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/notes/jekyll/github/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks/"/>
         <updated>2014-03-29T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks</id>
+        <id>bo-yang.github.io:/notes/jekyll/github/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks</id>
         <content type="html">&lt;ol&gt;
 &lt;li&gt;
 &lt;p dir=&quot;ltr&quot;&gt;&lt;a href=&quot;http://xthinking.com/github/2014/03/17/github_install_jekyll_mavericks.html&quot;&gt;Procedure of installing Jekyll in Mac OS X&lt;/a&gt;&lt;/p&gt;
@@ -31,11 +37,12 @@
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;p dir=&quot;ltr&quot;&gt;clang: error: unknown argument: &#39;-multiply_definedsuppress&#39; [-Wunused-command-line-argument-hard-error-in-future]&lt;/p&gt;
-&lt;p dir=&quot;ltr&quot;&gt;clang: note: this will be a hard error (cannot be downgraded to a warning) in the future&lt;/p&gt;
-&lt;p dir=&quot;ltr&quot;&gt;make: *** [redcarpet.bundle] Error 1&lt;/p&gt;
-&lt;p&gt;
-&lt;p dir=&quot;ltr&quot;&gt;make failed, exit code 2&lt;/p&gt;
+&lt;pre class=&quot;plain&quot;&gt;
+clang: error: unknown argument: &#39;-multiply_definedsuppress&#39; [-Wunused-command-line-argument-hard-error-in-future]
+clang: note: this will be a hard error (cannot be downgraded to a warning) in the future
+make: *** [redcarpet.bundle] Error 1
+
+make failed, exit code 2 &lt;/pre&gt;
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
@@ -49,18 +56,20 @@
 &lt;col width=&quot;*&quot; /&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;
-&lt;p dir=&quot;ltr&quot;&gt;export ARCHFLAGS=&quot;-Wno-error=unused-command-line-argument-hard-error-in-future&quot;&lt;/p&gt;
-&lt;p dir=&quot;ltr&quot;&gt;export CFLAGS=-Wunused-command-line-argument-hard-error-in-future&lt;/p&gt;
-&lt;p dir=&quot;ltr&quot;&gt;export CPPFLAGS=-Qunused-arguments&lt;/p&gt;
+	&lt;td&gt;
+		&lt;pre class=&quot;cpp&quot;&gt;
+export ARCHFLAGS=&quot;-Wno-error=unused-command-line-argument-hard-error-in-future&quot;
+export CFLAGS=-Wunused-command-line-argument-hard-error-in-future
+export CPPFLAGS=-Qunused-arguments
+sudo -E gem install jekyll &lt;/pre&gt;
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;p dir=&quot;ltr&quot;&gt;[Note]: Above is a temporary workaround for Xcode 5.1 only.&lt;/p&gt;
+&lt;p dir=&quot;ltr&quot;&gt;&lt;i&gt;[Note]: Above is only a temporary workaround for Xcode 5.1.&lt;/i&gt;&lt;/p&gt;
 &lt;p&gt; &lt;/p&gt;
-&lt;p dir=&quot;ltr&quot;&gt;References:&lt;/p&gt;
+&lt;p dir=&quot;ltr&quot;&gt;&lt;b&gt;References&lt;/b&gt;:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p dir=&quot;ltr&quot;&gt;&lt;a href=&quot;http://xthinking.com/github/2014/03/17/github_install_jekyll_mavericks.html&quot;&gt;http://xthinking.com/github/2014/03/17/github_install_jekyll_mavericks.html&lt;/a&gt;&lt;/p&gt;
@@ -89,9 +98,13 @@
     <entry>
         <title>C++ Code to Print Pascal Triangle</title>
         
-        <link href="http://bo-yang.github.io/2014/03/26/c-code-to-print-pascal-triangle/"/>
+        <category term="alogrithm" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <category term="cpp" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/alogrithm/cpp/2014/03/26/c-code-to-print-pascal-triangle/"/>
         <updated>2014-03-26T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2014/03/26/c-code-to-print-pascal-triangle</id>
+        <id>bo-yang.github.io:/alogrithm/cpp/2014/03/26/c-code-to-print-pascal-triangle</id>
         <content type="html">&lt;p&gt;
 	Printing Pascal Triangle seems like an easy problem, however, it is not that easy to print a good-looking Pascal Triangle.&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;
@@ -173,9 +186,11 @@ The output looks like:&lt;/p&gt;&lt;/p&gt;
     <entry>
         <title>BACI Simple Install and Compile Guide</title>
         
-        <link href="http://bo-yang.github.io/2014/01/22/baci-simple-install-and-compile-guide/"/>
+        <category term="baci" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/baci/2014/01/22/baci-simple-install-and-compile-guide/"/>
         <updated>2014-01-22T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2014/01/22/baci-simple-install-and-compile-guide</id>
+        <id>bo-yang.github.io:/baci/2014/01/22/baci-simple-install-and-compile-guide</id>
         <content type="html">&lt;p&gt;This is a guideline for a course of this semester, for which I am serving as a teaching assistant. I publish it here in hope that it can also help someone else who want to use BACI.&lt;/p&gt;
 &lt;h2&gt;Install BACI&lt;/h2&gt;
 &lt;ol&gt;
@@ -273,9 +288,15 @@ The output looks like:&lt;/p&gt;&lt;/p&gt;
     <entry>
         <title>Dense Trajectory Notes</title>
         
-        <link href="http://bo-yang.github.io/2014/01/10/dense-trajectory-notes/"/>
+        <category term="notes" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <category term="dtf" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <category term="computer vision" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/notes/dtf/computer%20vision/2014/01/10/dense-trajectory-notes/"/>
         <updated>2014-01-10T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2014/01/10/dense-trajectory-notes</id>
+        <id>bo-yang.github.io:/notes/dtf/computer%20vision/2014/01/10/dense-trajectory-notes</id>
         <content type="html">&lt;p&gt;&lt;span style=&quot;font-size:12px;font-weight:bold;line-height:1em;&quot;&gt;Notes of Dense Trajectories&lt;/span&gt;&lt;img class=&quot;aligncenter&quot; style=&quot;font-size:12px;font-weight:bold;line-height:1em;&quot; alt=&quot;&quot; src=&quot;https://lh6.googleusercontent.com/AysSQ7M6yvc5hbkBHzsEHc1c7L4ZJcIXmdSfzh9g4iBDsL_q9lZD_8fhH8TEPMwAJ12Kp_s4z1FWmX3rndc6DTFAwARyWkx-mJiixB4X7nQRV5XcB391xltefQ&quot; width=&quot;568px;&quot; height=&quot;178px;&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;densely sample feature points in each frame&lt;/li&gt;
@@ -403,9 +424,11 @@ end&lt;/code&gt;&lt;/p&gt;
     <entry>
         <title>Notes of Advanced Machine Learning(I)</title>
         
-        <link href="http://bo-yang.github.io/2013/10/11/notes-of-advanced-machine-learningi/"/>
+        <category term="ml" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/ml/2013/10/11/notes-of-advanced-machine-learningi/"/>
         <updated>2013-10-11T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2013/10/11/notes-of-advanced-machine-learningi</id>
+        <id>bo-yang.github.io:/ml/2013/10/11/notes-of-advanced-machine-learningi</id>
         <content type="html">&lt;ol&gt;
 &lt;li&gt;Two different ways represent a distribution over several random variables: (1) product of conditional probabilities: \(p(x_1,x_2,x_3,x_4)=p(x_4)p(x_3|x_4)p(x_2|x_3,x_4)p(x_1|x_2,x_3,x_4)\) and (2) global energy function: \(p(x_1,x_2,x_3,x_4)=\frac{1}{Z}e^{-E(x_1,x_2,x_3,x_4)}\), where \(Z\) is the partition function.&lt;/li&gt;
 &lt;li&gt;Directed graphical models use conditional probabilities, which undirected graphical models use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.&lt;/li&gt;
@@ -527,9 +550,11 @@ make: *** [all] Error 2&lt;/pre&gt;
     <entry>
         <title>Build Dense Trajectory Codes in Ubuntu</title>
         
-        <link href="http://bo-yang.github.io/2013/10/10/build-dense-trajectory-codes-in-ubuntu/"/>
+        <category term="computer vision" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/computer%20vision/2013/10/10/build-dense-trajectory-codes-in-ubuntu/"/>
         <updated>2013-10-10T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2013/10/10/build-dense-trajectory-codes-in-ubuntu</id>
+        <id>bo-yang.github.io:/computer%20vision/2013/10/10/build-dense-trajectory-codes-in-ubuntu</id>
         <content type="html">&lt;p&gt;Even when the OpenCV and ffmpeg have been successfully installed, you still may meet the error of &quot;&lt;strong&gt;undefined reference to main&lt;/strong&gt;&quot; when building the &lt;a href=&quot;http://lear.inrialpes.fr/people/wang/dense_trajectories&quot;&gt;Dense Trajectory code&lt;/a&gt;. Since the author didn&#39;t provide a solution, I share my workaround here -- just use command g++ directly:&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;The program &lt;em&gt;Video&lt;/em&gt; can be built in similar way, just substitute all &lt;em&gt;DenseTrack&lt;/em&gt; into Video.&lt;/p&gt;
@@ -742,9 +767,13 @@ func main() {
     <entry>
         <title>Linear Space Sequence Alignment</title>
         
-        <link href="http://bo-yang.github.io/2013/04/05/linear-space-sequence-alignment/"/>
+        <category term="algorithm" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <category term="cpp" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/algorithm/cpp/2013/04/05/linear-space-sequence-alignment/"/>
         <updated>2013-04-05T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2013/04/05/linear-space-sequence-alignment</id>
+        <id>bo-yang.github.io:/algorithm/cpp/2013/04/05/linear-space-sequence-alignment</id>
         <content type="html">&lt;p&gt;For explanation to linear space sequence alignment, please refer to &lt;a href=&quot;http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf&quot;&gt;http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The algorithm and equation I used was from the textbook &lt;em&gt;Algorithm Design&lt;/em&gt; by Jon Kleinberg and Éva Tardos(2005):&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/align-equation.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-531&quot; alt=&quot;align-equation&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/align-equation.png&quot; width=&quot;529&quot; height=&quot;134&quot; /&gt;&lt;/a&gt; &lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/align-alg.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-530&quot; alt=&quot;align-alg&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/align-alg.png&quot; width=&quot;529&quot; height=&quot;236&quot; /&gt;&lt;/a&gt; &lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/space-efficient-equation.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-529&quot; alt=&quot;space-efficient-equation&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/space-efficient-equation.png&quot; width=&quot;529&quot; height=&quot;66&quot; /&gt;&lt;/a&gt; &lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/space-efficient-akg.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-528&quot; alt=&quot;space-efficient-akg&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/space-efficient-akg.png&quot; width=&quot;529&quot; height=&quot;277&quot; /&gt;&lt;/a&gt; &lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/divide-conquer.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-527&quot; alt=&quot;divide-conquer&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/divide-conquer.png&quot; width=&quot;529&quot; height=&quot;283&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
@@ -1344,9 +1373,13 @@ int main(int argc, char** argv)
     <entry>
         <title>Implementation of Strassen&#39;s Algorithm for Matrix Multiplication</title>
         
-        <link href="http://bo-yang.github.io/2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication/"/>
+        <category term="cpp" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <category term="algorithm" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/cpp/algorithm/2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication/"/>
         <updated>2013-03-20T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication</id>
+        <id>bo-yang.github.io:/cpp/algorithm/2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication</id>
         <content type="html">&lt;p&gt;Strassen&#39;s algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen&#39;s algorithm on &lt;a href=&quot;http://en.wikipedia.org/wiki/Strassen_algorithm&quot;&gt;Wikipedia&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;However, the implementation of Strassen&#39;s algorithm cannot be used directly, because it  just sets the base case of the divide-and-conquer to be 1x1 matrix, which would consume huge time cost for iteration. If set the base case to 2x2 matrix, which means 2x2 matrix and 1x1 matrix will be multiplied by naive algorithm, then the Strassen&#39;s algorithm will be more efficient for matrices larger than 512x512.&lt;/p&gt;
 &lt;p&gt;[caption id=&quot;attachment_521&quot; align=&quot;alignnone&quot; width=&quot;529&quot;]&lt;a href=&quot;http://bonny95.files.wordpress.com/2013/03/local_double_41.png&quot;&gt;&lt;img class=&quot;size-full wp-image-521&quot; alt=&quot;When set base case to 2x2 matrix, then the Strassen&#39;s algorithm will surpass naive algorithm for matrices larger than 512x512.&quot; src=&quot;http://bonny95.files.wordpress.com/2013/03/local_double_41.png&quot; width=&quot;529&quot; height=&quot;395&quot; /&gt;&lt;/a&gt; When set base case to 2x2 matrix, then the Strassen&#39;s algorithm will surpass naive algorithm for matrices larger than 512x512.[/caption]&lt;/p&gt;
@@ -1810,9 +1843,11 @@ References:&lt;/p&gt;&lt;/p&gt;
     <entry>
         <title>Simple Matlab/Octave Commands to Process Data</title>
         
-        <link href="http://bo-yang.github.io/2012/12/06/simple-matlaboctave-commands-to-process-data/"/>
+        <category term="matlab" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/matlab/2012/12/06/simple-matlaboctave-commands-to-process-data/"/>
         <updated>2012-12-06T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2012/12/06/simple-matlaboctave-commands-to-process-data</id>
+        <id>bo-yang.github.io:/matlab/2012/12/06/simple-matlaboctave-commands-to-process-data</id>
         <content type="html">&lt;p&gt;To load data in following format stored in a text file &quot;read_pos&#39; into Matlab/Octave, use commands&lt;br /&gt;
 &lt;code&gt;&lt;br /&gt;
     f=fopen(&#39;read_pos&#39;,&#39;r&#39;); % open file&lt;br /&gt;
@@ -1904,9 +1939,11 @@ ylim([0-5*nVarargs 6*nVarargs]); % scale y-axis&lt;br /&gt;
     <entry>
         <title>Tips about Regular Expression</title>
         
-        <link href="http://bo-yang.github.io/2012/11/17/tips-about-regular-expression/"/>
+        <category term="tips" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/tips/2012/11/17/tips-about-regular-expression/"/>
         <updated>2012-11-17T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2012/11/17/tips-about-regular-expression</id>
+        <id>bo-yang.github.io:/tips/2012/11/17/tips-about-regular-expression</id>
         <content type="html">&lt;ol&gt;
 &lt;li&gt;In Vim, greedy matching is used by default. In order to use non-greedy matching, you can use \{-}, or \{-n,m}, such as: :/Q.\{-0,200}[IL].\{-0,2000}FF.&lt;/li&gt;
 &lt;li&gt;In Perl, default matching is also greedy. To use non-greedy matching, please change &lt;code&gt;*&lt;/code&gt; , &lt;code&gt;+&lt;/code&gt; , &lt;code&gt;?&lt;/code&gt; , and&lt;code&gt;{}&lt;/code&gt; into &lt;code&gt;*?&lt;/code&gt; , &lt;code&gt;+?&lt;/code&gt; , &lt;code&gt;??&lt;/code&gt; , and &lt;code&gt;{}?&lt;/code&gt; , respectively.&lt;/li&gt;
@@ -4144,13 +4181,13 @@ This process provides user quota information for remote users.&amp;nbsp;&lt;code
     <entry>
         <title>c++filt</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="cpp" scheme="http://www.sixapart.com/ns/types#tag" />
         
         <category term="unix/linux" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/unix/linux/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/cpp/unix/linux/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2011-09-14T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/c/c++/unix/linux/2011/09/14/%0d%0a%20%20%20%20%20%20%20%20c%2b%2bfilt%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/cpp/unix/linux/2011/09/14/%0d%0a%20%20%20%20%20%20%20%20c%2b%2bfilt%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;
 &lt;span style=&quot;font-family:&#39;Times New Roman&#39;;font-size:16px;&quot;&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;div style=&quot;background-color:transparent;&quot;&gt;&lt;span style=&quot;font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;&quot;&gt;&lt;strong&gt;c&amp;#043;&amp;#043;filt&lt;br /&gt;
@@ -4278,13 +4315,13 @@ This process provides user quota information for remote users.&amp;nbsp;&lt;code
     <entry>
         <title>RHEL5和RHEL6中的sctp_event_subscribe定义大不同</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
         <category term="unix/linux" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/unix/linux/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/c/unix/linux/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2011-08-24T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/c/c++/unix/linux/2011/08/24/%0d%0a%20%20%20%20%20%20%20%20rhel5%e5%92%8crhel6%e4%b8%ad%e7%9a%84sctp_event_subscribe%e5%ae%9a%e4%b9%89%e5%a4%a7%e4%b8%8d%e5%90%8c%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/c/unix/linux/2011/08/24/%0d%0a%20%20%20%20%20%20%20%20rhel5%e5%92%8crhel6%e4%b8%ad%e7%9a%84sctp_event_subscribe%e5%ae%9a%e4%b9%89%e5%a4%a7%e4%b8%8d%e5%90%8c%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;/p&gt;
 &lt;p&gt;近来碰到一个关于SCTP的问题：某个产品跑在Monta Vista上，其内核版本号为2.6.21；可每次该产品泡在我们的Red Hat Enterprise Linux 5.5上时，都会报错错误信息如下：
 &lt;pre&gt;^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt() setsockopt - Invalid argument
@@ -10835,13 +10872,13 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     <entry>
         <title>【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
         <category term="unix/linux" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/unix/linux/2009/10/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%2590%25e6%2580%25bb%25e7%25bb%2593%25e3%2580%2591linux%25e4%25b8%258bc%25e5%25bc%2580%25e5%258f%2591%25ef%25bc%258c%25e6%2580%258e%25e4%25b9%2588%25e5%2581%259a%25e6%2588%2590%25e5%25ba%2593%25e6%2596%2587%25e4%25bb%25b6%25ef%25bc%258c%25e5%258f%2588%25e6%2580%258e%25e/"/>
+        <link href="http://bo-yang.github.io/c/unix/linux/2009/10/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%2590%25e6%2580%25bb%25e7%25bb%2593%25e3%2580%2591linux%25e4%25b8%258bc%25e5%25bc%2580%25e5%258f%2591%25ef%25bc%258c%25e6%2580%258e%25e4%25b9%2588%25e5%2581%259a%25e6%2588%2590%25e5%25ba%2593%25e6%2596%2587%25e4%25bb%25b6%25ef%25bc%258c%25e5%258f%2588%25e6%2580%258e%25e/"/>
         <updated>2009-10-27T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/c/c++/unix/linux/2009/10/27/%0d%0a%20%20%20%20%20%20%20%20%e3%80%90%e6%80%bb%e7%bb%93%e3%80%91linux%e4%b8%8bc%e5%bc%80%e5%8f%91%ef%bc%8c%e6%80%8e%e4%b9%88%e5%81%9a%e6%88%90%e5%ba%93%e6%96%87%e4%bb%b6%ef%bc%8c%e5%8f%88%e6%80%8e%e</id>
+        <id>bo-yang.github.io:/c/unix/linux/2009/10/27/%0d%0a%20%20%20%20%20%20%20%20%e3%80%90%e6%80%bb%e7%bb%93%e3%80%91linux%e4%b8%8bc%e5%bc%80%e5%8f%91%ef%bc%8c%e6%80%8e%e4%b9%88%e5%81%9a%e6%88%90%e5%ba%93%e6%96%87%e4%bb%b6%ef%bc%8c%e5%8f%88%e6%80%8e%e</id>
         <content type="html">&lt;p&gt;本文根据&lt;a href=&quot;http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487&quot;&gt;http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487&lt;/a&gt;的回复总结而成。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;1. 共享库&lt;/p&gt;
@@ -11587,11 +11624,11 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）&lt;/div&g
         
         <category term="algorithm" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/algorithm/c/c++/2009/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25a4%25a7%25e6%2595%25b0%25e8%25bf%2590%25e7%25ae%2597%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/algorithm/c/2009/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25a4%25a7%25e6%2595%25b0%25e8%25bf%2590%25e7%25ae%2597%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2009-08-24T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/algorithm/c/c++/2009/08/24/%0d%0a%20%20%20%20%20%20%20%20%e5%a4%a7%e6%95%b0%e8%bf%90%e7%ae%97%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/algorithm/c/2009/08/24/%0d%0a%20%20%20%20%20%20%20%20%e5%a4%a7%e6%95%b0%e8%bf%90%e7%ae%97%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;下面这段程序包含了大数的加、减、乘运算的代码，除法运算尚在研究中。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;
@@ -12168,13 +12205,13 @@ function showAnswer() {
     <entry>
         <title>[转]在C语言中使用正则表达式</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
         <category term="unix/linux" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/unix/linux/2009/04/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%255b%25e8%25bd%25ac%255d%25e5%259c%25a8c%25e8%25af%25ad%25e8%25a8%2580%25e4%25b8%25ad%25e4%25bd%25bf%25e7%2594%25a8%25e6%25ad%25a3%25e5%2588%2599%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/c/unix/linux/2009/04/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%255b%25e8%25bd%25ac%255d%25e5%259c%25a8c%25e8%25af%25ad%25e8%25a8%2580%25e4%25b8%25ad%25e4%25bd%25bf%25e7%2594%25a8%25e6%25ad%25a3%25e5%2588%2599%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2009-04-11T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/c/c++/unix/linux/2009/04/11/%0d%0a%20%20%20%20%20%20%20%20%5b%e8%bd%ac%5d%e5%9c%a8c%e8%af%ad%e8%a8%80%e4%b8%ad%e4%bd%bf%e7%94%a8%e6%ad%a3%e5%88%99%e8%a1%a8%e8%be%be%e5%bc%8f%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/c/unix/linux/2009/04/11/%0d%0a%20%20%20%20%20%20%20%20%5b%e8%bd%ac%5d%e5%9c%a8c%e8%af%ad%e8%a8%80%e4%b8%ad%e4%bd%bf%e7%94%a8%e6%ad%a3%e5%88%99%e8%a1%a8%e8%be%be%e5%bc%8f%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;&lt;span&gt;&lt;/p&gt;
 &lt;h1&gt;在C语言中使用正则表达式&lt;/h1&gt;
@@ -15123,15 +15160,15 @@ undef() # is a function returning the undefined value, so false.&lt;/pre&gt;
     <entry>
         <title>由服务器名字(Host name)获得IP地址</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
         <category term="network/telecom" scheme="http://www.sixapart.com/ns/types#tag" />
         
         <category term="unix/linux" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/network/telecom/unix/linux/2008/12/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25b1%25e6%259c%258d%25e5%258a%25a1%25e5%2599%25a8%25e5%2590%258d%25e5%25ad%2597%2528host%2520name%2529%25e8%258e%25b7%25e5%25be%2597ip%25e5%259c%25b0%25e5%259d%2580%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/c/network/telecom/unix/linux/2008/12/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25b1%25e6%259c%258d%25e5%258a%25a1%25e5%2599%25a8%25e5%2590%258d%25e5%25ad%2597%2528host%2520name%2529%25e8%258e%25b7%25e5%25be%2597ip%25e5%259c%25b0%25e5%259d%2580%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-12-24T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/c/c++/network/telecom/unix/linux/2008/12/24/%0d%0a%20%20%20%20%20%20%20%20%e7%94%b1%e6%9c%8d%e5%8a%a1%e5%99%a8%e5%90%8d%e5%ad%97%28host%20name%29%e8%8e%b7%e5%be%97ip%e5%9c%b0%e5%9d%80%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/c/network/telecom/unix/linux/2008/12/24/%0d%0a%20%20%20%20%20%20%20%20%e7%94%b1%e6%9c%8d%e5%8a%a1%e5%99%a8%e5%90%8d%e5%ad%97%28host%20name%29%e8%8e%b7%e5%be%97ip%e5%9c%b0%e5%9d%80%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;
     一下代码可以根据host name获得IP地址：
 &lt;div&gt;
@@ -15207,11 +15244,11 @@ undef() # is a function returning the undefined value, so false.&lt;/pre&gt;
     <entry>
         <title>return (((ulong*)(x))[-1])</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/2008/12/04/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520return%2520%2528%2528%2528ulong%252a%2529%2528x%2529%2529%255b-1%255d%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/c/2008/12/04/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520return%2520%2528%2528%2528ulong%252a%2529%2528x%2529%2529%255b-1%255d%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-12-04T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/c/c++/2008/12/04/%0d%0a%20%20%20%20%20%20%20%20return%20%28%28%28ulong%2a%29%28x%29%29%5b-1%5d%29%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/c/2008/12/04/%0d%0a%20%20%20%20%20%20%20%20return%20%28%28%28ulong%2a%29%28x%29%29%5b-1%5d%29%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;
 &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:������;&quot;&gt;看到一个函数，定义如下： &lt;/span&gt;
 &lt;div&gt;
@@ -15249,13 +15286,13 @@ undef() # is a function returning the undefined value, so false.&lt;/pre&gt;
     <entry>
         <title>NULL Pointer Bugs</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
         <category term="unix/linux" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/unix/linux/2008/12/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520null%2520pointer%2520bugs%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/c/unix/linux/2008/12/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520null%2520pointer%2520bugs%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-12-03T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/c/c++/unix/linux/2008/12/03/%0d%0a%20%20%20%20%20%20%20%20null%20pointer%20bugs%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/c/unix/linux/2008/12/03/%0d%0a%20%20%20%20%20%20%20%20null%20pointer%20bugs%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;div style=&quot;min-height:1100px;font-family:Verdana;font-size:10pt;line-height:1;background-color:rgb(255,255,255);width:648px!important;border-color:rgb(204,204,204) rgb(187,187,187) rgb(187,187,187) rgb(204,204,204);border-style:solid;border-width:1px 2px 2px 1px;margin:15px auto 25px;padding:40px 50px;&quot;&gt;
 &lt;h1 style=&quot;text-align:center;font-size:18pt;&quot;&gt;NULL Pointer Bugs&lt;br /&gt;&lt;/h1&gt;
 &lt;div style=&quot;margin-top:0;margin-bottom:0;&quot;&gt;&lt;/div&gt;
@@ -15969,9 +16006,11 @@ n, instead of the words from the word list. It is equivalent to:&lt;br /&gt;
     <entry>
         <title>korn Shell Notes(III)</title>
         
-        <link href="http://bo-yang.github.io/2008/11/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2520notes%2528iii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <category term="shell" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/shell/2008/11/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2520notes%2528iii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-11-26T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2008/11/26/%0d%0a%20%20%20%20%20%20%20%20korn%20shell%20notes%28iii%29%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/shell/2008/11/26/%0d%0a%20%20%20%20%20%20%20%20korn%20shell%20notes%28iii%29%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;
      &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:Verdana;font-size:13px;&quot;&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-size:19px;font-style:italic;font-weight:bold;&quot;&gt;6 Variables&lt;/span&gt;
 &lt;div id=&quot;xcw:&quot; style=&quot;text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;&quot;&gt;
@@ -16528,9 +16567,11 @@ change the value of parent shell variables, functions, or aliases.&lt;/div&gt;
     <entry>
         <title>Tcl/Tk Notes (3)</title>
         
-        <link href="http://bo-yang.github.io/2008/11/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25283%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <category term="tcl/tk" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/tcl/tk/2008/11/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25283%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-11-02T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2008/11/02/%0d%0a%20%20%20%20%20%20%20%20tcltk%20notes%20%283%29%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/tcl/tk/2008/11/02/%0d%0a%20%20%20%20%20%20%20%20tcltk%20notes%20%283%29%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;br /&gt;
 &lt;h2&gt;Part III&amp;nbsp;Tcl&amp;nbsp;Data&amp;nbsp;Structures&lt;br /&gt;
     &lt;/h2&gt;
@@ -17258,11 +17299,11 @@ utilities&lt;/p&gt;
     <entry>
         <title>[转]C++ 运算符优先级列表</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/2008/09/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%255b%25e8%25bd%25ac%255dc%252b%252b%2520%25e8%25bf%2590%25e7%25ae%2597%25e7%25ac%25a6%25e4%25bc%2598%25e5%2585%2588%25e7%25ba%25a7%25e5%2588%2597%25e8%25a1%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/c/2008/09/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%255b%25e8%25bd%25ac%255dc%252b%252b%2520%25e8%25bf%2590%25e7%25ae%2597%25e7%25ac%25a6%25e4%25bc%2598%25e5%2585%2588%25e7%25ba%25a7%25e5%2588%2597%25e8%25a1%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-09-26T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/c/c++/2008/09/26/%0d%0a%20%20%20%20%20%20%20%20%5b%e8%bd%ac%5dc%2b%2b%20%e8%bf%90%e7%ae%97%e7%ac%a6%e4%bc%98%e5%85%88%e7%ba%a7%e5%88%97%e8%a1%a8%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/c/2008/09/26/%0d%0a%20%20%20%20%20%20%20%20%5b%e8%bd%ac%5dc%2b%2b%20%e8%bf%90%e7%ae%97%e7%ac%a6%e4%bc%98%e5%85%88%e7%ba%a7%e5%88%97%e8%a1%a8%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;
 &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:Verdana;font-size:14px;&quot;&gt;&lt;br /&gt;
 &lt;h2 style=&quot;margin-top:10px;font-size:1em;&quot;&gt;&lt;a id=&quot;viewpost1_TitleUrl&quot; href=&quot;http://www.cppblog.com/aqazero/archive/2006/06/08/8284.html&quot; style=&quot;text-decoration:none;color:rgb(0,102,0);&quot;&gt;C++ 运算符优先级列表&lt;/a&gt;&lt;/h2&gt;
@@ -17488,9 +17529,11 @@ The following table summarizes the options:
     <entry>
         <title>《Beiginning Linux programming || Linux 程序设计》读书笔记(三)</title>
         
-        <link href="http://bo-yang.github.io/2008/09/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeiginning%2520linux%2520programming%2520%257c%257c%2520linux%2520%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2589%2529%250d%250a%2520%2520%25/"/>
+        <category term="unix/linux" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/unix/linux/2008/09/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeiginning%2520linux%2520programming%2520%257c%257c%2520linux%2520%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2589%2529%250d%250a%2520%2520%25/"/>
         <updated>2008-09-18T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2008/09/18/%0d%0a%20%20%20%20%20%20%20%20%e3%80%8abeiginning%20linux%20programming%20%7c%7c%20linux%20%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1%e3%80%8b%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0%28%e4%b8%89%29%0d%0a%20%20%</id>
+        <id>bo-yang.github.io:/unix/linux/2008/09/18/%0d%0a%20%20%20%20%20%20%20%20%e3%80%8abeiginning%20linux%20programming%20%7c%7c%20linux%20%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1%e3%80%8b%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0%28%e4%b8%89%29%0d%0a%20%20%</id>
         <content type="html">&lt;p&gt;
 &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:Verdana;font-size:13px;&quot;&gt;
 &lt;div style=&quot;margin-top:0;margin-bottom:0;&quot;&gt;(8) Shell Function&lt;br /&gt;    &lt;span style=&quot;background-color:rgb(204,204,204);&quot;&gt;function_name () {&lt;/span&gt;&lt;br style=&quot;background-color:rgb(204,204,204);&quot; /&gt;&lt;span style=&quot;background-color:rgb(204,204,204);&quot;&gt;        statements&lt;/span&gt;&lt;br style=&quot;background-color:rgb(204,204,204);&quot; /&gt;&lt;span style=&quot;background-color:rgb(204,204,204);&quot;&gt;    }&lt;/span&gt;&lt;br /&gt;    &lt;/div&gt;
@@ -17749,11 +17792,11 @@ work as you expect.&lt;/p&gt;
     <entry>
         <title>类成员函数指针浅析</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25b1%25bb%25e6%2588%2590%25e5%2591%2598%25e5%2587%25bd%25e6%2595%25b0%25e6%258c%2587%25e9%2592%2588%25e6%25b5%2585%25e6%259e%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/c/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25b1%25bb%25e6%2588%2590%25e5%2591%2598%25e5%2587%25bd%25e6%2595%25b0%25e6%258c%2587%25e9%2592%2588%25e6%25b5%2585%25e6%259e%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-09-08T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/c/c++/2008/09/08/%0d%0a%20%20%20%20%20%20%20%20%e7%b1%bb%e6%88%90%e5%91%98%e5%87%bd%e6%95%b0%e6%8c%87%e9%92%88%e6%b5%85%e6%9e%90%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/c/2008/09/08/%0d%0a%20%20%20%20%20%20%20%20%e7%b1%bb%e6%88%90%e5%91%98%e5%87%bd%e6%95%b0%e6%8c%87%e9%92%88%e6%b5%85%e6%9e%90%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;
     今天看某软件的源代码时，发现有这样一行
 &lt;div class=&quot;highlighter&quot;&gt;
@@ -18006,11 +18049,11 @@ less &amp;lt;&amp;gt;,greater &amp;lt;&amp;gt;,bind2nd &amp;lt;&amp;gt;等&amp;n
     <entry>
         <title>函数对象</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2587%25bd%25e6%2595%25b0%25e5%25af%25b9%25e8%25b1%25a1%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/c/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2587%25bd%25e6%2595%25b0%25e5%25af%25b9%25e8%25b1%25a1%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-09-08T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/c/c++/2008/09/08/%0d%0a%20%20%20%20%20%20%20%20%e5%87%bd%e6%95%b0%e5%af%b9%e8%b1%a1%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/c/2008/09/08/%0d%0a%20%20%20%20%20%20%20%20%e5%87%bd%e6%95%b0%e5%af%b9%e8%b1%a1%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;
     看到有个概念叫“函数对象”，搜了一下关于它的解释： &lt;/p&gt;
 &lt;p&gt; &lt;span style=&quot;color:rgb(255,0,0);&quot;&gt;函&lt;br /&gt;
@@ -18156,11 +18199,11 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
     <entry>
         <title>C语言函数中定义大数组耗尽堆栈的问题</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/2008/08/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%25e8%25af%25ad%25e8%25a8%2580%25e5%2587%25bd%25e6%2595%25b0%25e4%25b8%25ad%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e6%2595%25b0%25e7%25bb%2584%25e8%2580%2597%25e5%25b0%25bd%25e5%25a0%2586%25e6%25a0%2588%25e7%259a%2584%25e9%2597%25ae%25e9%25a2%2598%250d%250a%2520%2520%2520%25/"/>
+        <link href="http://bo-yang.github.io/c/2008/08/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%25e8%25af%25ad%25e8%25a8%2580%25e5%2587%25bd%25e6%2595%25b0%25e4%25b8%25ad%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e6%2595%25b0%25e7%25bb%2584%25e8%2580%2597%25e5%25b0%25bd%25e5%25a0%2586%25e6%25a0%2588%25e7%259a%2584%25e9%2597%25ae%25e9%25a2%2598%250d%250a%2520%2520%2520%25/"/>
         <updated>2008-08-26T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/c/c++/2008/08/26/%0d%0a%20%20%20%20%20%20%20%20c%e8%af%ad%e8%a8%80%e5%87%bd%e6%95%b0%e4%b8%ad%e5%ae%9a%e4%b9%89%e5%a4%a7%e6%95%b0%e7%bb%84%e8%80%97%e5%b0%bd%e5%a0%86%e6%a0%88%e7%9a%84%e9%97%ae%e9%a2%98%0d%0a%20%20%20%</id>
+        <id>bo-yang.github.io:/c/2008/08/26/%0d%0a%20%20%20%20%20%20%20%20c%e8%af%ad%e8%a8%80%e5%87%bd%e6%95%b0%e4%b8%ad%e5%ae%9a%e4%b9%89%e5%a4%a7%e6%95%b0%e7%bb%84%e8%80%97%e5%b0%bd%e5%a0%86%e6%a0%88%e7%9a%84%e9%97%ae%e9%a2%98%0d%0a%20%20%20%</id>
         <content type="html">&lt;p&gt;
     今晚上一同学请我帮忙看一个C程序，GCC编译时一直抱错，说是段错误。&lt;br /&gt;程序本身写的比较差，但编译能通过，只是有几十个警告。&lt;br /&gt;两个小时过去了，在Eclipse+GCC下没有找到问题（这个环境还不熟悉），换到了VC下面，逐步调试，才发现问题出在被main调用的一个叫做readmctal()的函数的前面几行中。该函数如下：
 &lt;div class=&quot;highlighter&quot;&gt;
@@ -18680,11 +18723,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
         
         <category term="ai" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/ai/c/c++/2008/06/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520emc-cbr%25e6%2595%2585%25e9%259a%259c%25e8%25af%258a%25e6%2596%25ad%25e7%25a0%2594%25e7%25a9%25b6%25ef%25bc%2588%25e5%259b%259b%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/ai/c/2008/06/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520emc-cbr%25e6%2595%2585%25e9%259a%259c%25e8%25af%258a%25e6%2596%25ad%25e7%25a0%2594%25e7%25a9%25b6%25ef%25bc%2588%25e5%259b%259b%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-06-05T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/ai/c/c++/2008/06/05/%0d%0a%20%20%20%20%20%20%20%20emc-cbr%e6%95%85%e9%9a%9c%e8%af%8a%e6%96%ad%e7%a0%94%e7%a9%b6%ef%bc%88%e5%9b%9b%ef%bc%89%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/ai/c/2008/06/05/%0d%0a%20%20%20%20%20%20%20%20emc-cbr%e6%95%85%e9%9a%9c%e8%af%8a%e6%96%ad%e7%a0%94%e7%a9%b6%ef%bc%88%e5%9b%9b%ef%bc%89%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;&lt;font size=&quot;3&quot;&gt;&lt;span&gt;&lt;span style=&quot;font-size:12pt;line-height:173%;font-family:宋体;&quot;&gt;1、系统组成&lt;/span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;line-height:173%;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;&lt;br /&gt;&amp;nbsp;&amp;nbsp; 本系统是由&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;CBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;和&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;RBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;组成的混合系统。系统结构如下图&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;所示。系统的核心是推理机，推理机根据用户输入的故障描述，既可以将故障描述转化为新的案例，从而进行对案例库进行操作；又可以将故障描述转化为事实，对规则库进行操作。但&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;CBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;和&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;RBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;的地位并不是等同的，&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;CBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;起主导作用，&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;RBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;对&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;CBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;起监督作用，二者的推理结果由综合机制进行综合。本系统采用友好的人机界面，普通用户输入故障描述后，系统经推理后给出诊断建议，并对给出的建议进行解释。另外，为了便于对系统知识（案例库、知识库和事实库）进行管理，系统可以由知识工程师进行修改。&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
 &lt;p align=&quot;left&quot; style=&quot;text-align:left;text-indent:22.7pt;line-height:22pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font size=&quot;3&quot;&gt;&lt;img src=&quot;http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/系统结构.JPG&quot; alt=&quot;&quot; /&gt;&lt;/font&gt;&lt;/p&gt;
 &lt;p align=&quot;left&quot; style=&quot;text-align:left;text-indent:22.7pt;line-height:22pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font size=&quot;3&quot;&gt;2、案例表示与存储&lt;/font&gt;&lt;/p&gt;
@@ -18748,13 +18791,13 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
         
         <category term="algorithm" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <category term="visual c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/ai/algorithm/c/c++/visual%20c++/2008/05/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%25bb%25e8%25be%2591%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e8%25af%258d%25e6%25b3%2595%25e5%2588%2586%25e6%259e%2590%25e5%2599%25a8%25e5%2588%2586%25e6%259e%2590%25e7%25bb%2593%25e6%259e%259c%25e7%259a%2584%25e6%2598%25be%25e7%25a4%25ba%250d%250a%2520%2520%2520%252/"/>
+        <link href="http://bo-yang.github.io/ai/algorithm/c/mfc/2008/05/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%25bb%25e8%25be%2591%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e8%25af%258d%25e6%25b3%2595%25e5%2588%2586%25e6%259e%2590%25e5%2599%25a8%25e5%2588%2586%25e6%259e%2590%25e7%25bb%2593%25e6%259e%259c%25e7%259a%2584%25e6%2598%25be%25e7%25a4%25ba%250d%250a%2520%2520%2520%252/"/>
         <updated>2008-05-27T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/ai/algorithm/c/c++/visual%20c++/2008/05/27/%0d%0a%20%20%20%20%20%20%20%20%e9%80%bb%e8%be%91%e8%a1%a8%e8%be%be%e5%bc%8f%e8%af%8d%e6%b3%95%e5%88%86%e6%9e%90%e5%99%a8%e5%88%86%e6%9e%90%e7%bb%93%e6%9e%9c%e7%9a%84%e6%98%be%e7%a4%ba%0d%0a%20%20%20%2</id>
+        <id>bo-yang.github.io:/ai/algorithm/c/mfc/2008/05/27/%0d%0a%20%20%20%20%20%20%20%20%e9%80%bb%e8%be%91%e8%a1%a8%e8%be%be%e5%bc%8f%e8%af%8d%e6%b3%95%e5%88%86%e6%9e%90%e5%99%a8%e5%88%86%e6%9e%90%e7%bb%93%e6%9e%9c%e7%9a%84%e6%98%be%e7%a4%ba%0d%0a%20%20%20%2</id>
         <content type="html">&lt;p&gt;
 &lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 上篇博客文章《&lt;a href=&quot;void(0);/*1211894183336*/&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;简易逻辑表达式词法分析器&lt;/span&gt;&lt;/a&gt;》讲到设计了一个逻辑表达式词法分析器，这次以那个词法分析器作为后端，利用VC搭建前端界面，展示一下分析效果。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/词法分析器结果.JPG&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
@@ -18778,11 +18821,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
         
         <category term="algorithm" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/ai/algorithm/c/c++/2008/05/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8vc%25e8%25ae%25be%25e8%25ae%25a1%25e7%25ae%2580%25e6%2598%2593%25e9%2580%25bb%25e8%25be%2591%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e8%25af%258d%25e6%25b3%2595%25e5%2588%2586%25e6%259e%2590%25e5%2599%25a8%250d%250a%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/ai/algorithm/c/2008/05/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8vc%25e8%25ae%25be%25e8%25ae%25a1%25e7%25ae%2580%25e6%2598%2593%25e9%2580%25bb%25e8%25be%2591%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e8%25af%258d%25e6%25b3%2595%25e5%2588%2586%25e6%259e%2590%25e5%2599%25a8%250d%250a%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-05-24T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/ai/algorithm/c/c++/2008/05/24/%0d%0a%20%20%20%20%20%20%20%20%e5%88%a9%e7%94%a8vc%e8%ae%be%e8%ae%a1%e7%ae%80%e6%98%93%e9%80%bb%e8%be%91%e8%a1%a8%e8%be%be%e5%bc%8f%e8%af%8d%e6%b3%95%e5%88%86%e6%9e%90%e5%99%a8%0d%0a%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/ai/algorithm/c/2008/05/24/%0d%0a%20%20%20%20%20%20%20%20%e5%88%a9%e7%94%a8vc%e8%ae%be%e8%ae%a1%e7%ae%80%e6%98%93%e9%80%bb%e8%be%91%e8%a1%a8%e8%be%be%e5%bc%8f%e8%af%8d%e6%b3%95%e5%88%86%e6%9e%90%e5%99%a8%0d%0a%20%20%20%20%20%20</id>
         <content type="html">&lt;p class=&quot;MsoNormal&quot; style=&quot;text-align:center;&quot; align=&quot;center&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;简易逻辑表达式词法分析器&lt;/span&gt;&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot; style=&quot;text-align:center;&quot; align=&quot;center&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot; style=&quot;text-indent:21pt;&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;待分析的逻辑表达式如下：&lt;/span&gt;&lt;/p&gt;
@@ -18837,13 +18880,13 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>线性坐标系到对数坐标系的变换——EMC测试曲线的绘制</title>
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <category term="visual c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/c/c++/visual%20c++/2008/05/23/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25ba%25bf%25e6%2580%25a7%25e5%259d%2590%25e6%25a0%2587%25e7%25b3%25bb%25e5%2588%25b0%25e5%25af%25b9%25e6%2595%25b0%25e5%259d%2590%25e6%25a0%2587%25e7%25b3%25bb%25e7%259a%2584%25e5%258f%2598%25e6%258d%25a2-emc%25e6%25b5%258b%25e8%25af%2595%25e6%259/"/>
+        <link href="http://bo-yang.github.io/c/mfc/2008/05/23/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25ba%25bf%25e6%2580%25a7%25e5%259d%2590%25e6%25a0%2587%25e7%25b3%25bb%25e5%2588%25b0%25e5%25af%25b9%25e6%2595%25b0%25e5%259d%2590%25e6%25a0%2587%25e7%25b3%25bb%25e7%259a%2584%25e5%258f%2598%25e6%258d%25a2-emc%25e6%25b5%258b%25e8%25af%2595%25e6%259/"/>
         <updated>2008-05-23T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/c/c++/visual%20c++/2008/05/23/%0d%0a%20%20%20%20%20%20%20%20%e7%ba%bf%e6%80%a7%e5%9d%90%e6%a0%87%e7%b3%bb%e5%88%b0%e5%af%b9%e6%95%b0%e5%9d%90%e6%a0%87%e7%b3%bb%e7%9a%84%e5%8f%98%e6%8d%a2-emc%e6%b5%8b%e8%af%95%e6%9</id>
+        <id>bo-yang.github.io:/c/mfc/2008/05/23/%0d%0a%20%20%20%20%20%20%20%20%e7%ba%bf%e6%80%a7%e5%9d%90%e6%a0%87%e7%b3%bb%e5%88%b0%e5%af%b9%e6%95%b0%e5%9d%90%e6%a0%87%e7%b3%bb%e7%9a%84%e5%8f%98%e6%8d%a2-emc%e6%b5%8b%e8%af%95%e6%9</id>
         <content type="html">&lt;p&gt;        &lt;span style=&quot;font-size:10.5pt;font-family:宋体;&quot;&gt;&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; 绘制测试曲线的核心函数为&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:10.5pt;font-family:&quot;Calibri&quot;, &quot;sans-serif&quot;;&#39;&gt;CEMCView::DrawFrameCurve()&lt;/span&gt;&lt;span style=&quot;font-size:10.5pt;font-family:宋体;&quot;&gt;函数。该函数可以根据测试的频段和该频段的测试数据在对数坐标系的对应位置绘制测试曲线。&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:10.5pt;font-family:&quot;Calibri&quot;, &quot;sans-serif&quot;;&#39;&gt;DrawFrameCurve()&lt;/span&gt;&lt;span style=&quot;font-size:10.5pt;font-family:宋体;&quot;&gt;函数绘制曲线的流程图如图&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:10.5pt;font-family:&quot;Calibri&quot;, &quot;sans-serif&quot;;&#39;&gt;1&lt;/span&gt;&lt;span style=&quot;font-size:10.5pt;font-family:宋体;&quot;&gt;所示：&lt;/p&gt;
 &lt;p&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;div style=&quot;text-align:center;&quot;&gt;&lt;span style=&quot;font-size:10.5pt;font-family:宋体;&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/测试流程图.JPG&quot; /&gt;&lt;br /&gt;图1 测试流程图&lt;/p&gt;
@@ -18955,7 +18998,9 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>硬盘安装Fedora 9成功</title>
         
-        <category term="unix/linux" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="unix" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <category term="linux" scheme="http://www.sixapart.com/ns/types#tag" />
         
         <link href="http://bo-yang.github.io/unix/linux/2008/05/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25a1%25ac%25e7%259b%2598%25e5%25ae%2589%25e8%25a3%2585fedora%25209%25e6%2588%2590%25e5%258a%259f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-05-14T00:00:00-04:00</updated>
@@ -18974,11 +19019,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>EMC测试曲线选择缩放功能的实现</title>
         
-        <category term="visual c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/visual%20c++/2008/05/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520emc%25e6%25b5%258b%25e8%25af%2595%25e6%259b%25b2%25e7%25ba%25bf%25e9%2580%2589%25e6%258b%25a9%25e7%25bc%25a9%25e6%2594%25be%25e5%258a%259f%25e8%2583%25bd%25e7%259a%2584%25e5%25ae%259e%25e7%258e%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/mfc/2008/05/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520emc%25e6%25b5%258b%25e8%25af%2595%25e6%259b%25b2%25e7%25ba%25bf%25e9%2580%2589%25e6%258b%25a9%25e7%25bc%25a9%25e6%2594%25be%25e5%258a%259f%25e8%2583%25bd%25e7%259a%2584%25e5%25ae%259e%25e7%258e%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-05-10T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/visual%20c++/2008/05/10/%0d%0a%20%20%20%20%20%20%20%20emc%e6%b5%8b%e8%af%95%e6%9b%b2%e7%ba%bf%e9%80%89%e6%8b%a9%e7%bc%a9%e6%94%be%e5%8a%9f%e8%83%bd%e7%9a%84%e5%ae%9e%e7%8e%b0%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/mfc/2008/05/10/%0d%0a%20%20%20%20%20%20%20%20emc%e6%b5%8b%e8%af%95%e6%9b%b2%e7%ba%bf%e9%80%89%e6%8b%a9%e7%bc%a9%e6%94%be%e5%8a%9f%e8%83%bd%e7%9a%84%e5%ae%9e%e7%8e%b0%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p align=&quot;center&quot; class=&quot;MsoNormal&quot; style=&quot;text-align:center;&quot;&gt;&lt;span lang=&quot;EN-US&quot;&gt;EMC&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;测试曲线选择缩放功能的实现&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; class=&quot;MsoNormal&quot; style=&quot;text-align:center;&quot;&gt;&lt;span lang=&quot;EN-US&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot; style=&quot;text-indent:21pt;&quot;&gt;&lt;span lang=&quot;EN-US&quot;&gt;EMC&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;测试完成后，一般以曲线的形式显示在对数坐标系中。由于测试数据非常多，而对数坐标常常使得大量的数据分布不均，经常在一些地方使得测试曲线叠加在一起，看不清楚具体的数值和趋势。一幅&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;CE102&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;测试曲线如图&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;1&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;所示：&lt;/span&gt;&lt;/p&gt;
@@ -19325,11 +19370,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
         
         <category term="emc" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <category term="visual c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/emc/visual%20c++/2008/05/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2585%25b3%25e4%25ba%258eemi%25e5%25a4%259a%25e7%25ba%25bf%25e7%25a8%258b%25e5%2588%2586%25e6%25ae%25b5%25e6%25b5%258b%25e8%25af%2595%25e6%2596%25b9%25e6%25b3%2595%25e7%259a%2584%25e8%25af%25b4%25e6%2598%258e%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/emc/mfc/2008/05/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2585%25b3%25e4%25ba%258eemi%25e5%25a4%259a%25e7%25ba%25bf%25e7%25a8%258b%25e5%2588%2586%25e6%25ae%25b5%25e6%25b5%258b%25e8%25af%2595%25e6%2596%25b9%25e6%25b3%2595%25e7%259a%2584%25e8%25af%25b4%25e6%2598%258e%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-05-03T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/emc/visual%20c++/2008/05/03/%0d%0a%20%20%20%20%20%20%20%20%e5%85%b3%e4%ba%8eemi%e5%a4%9a%e7%ba%bf%e7%a8%8b%e5%88%86%e6%ae%b5%e6%b5%8b%e8%af%95%e6%96%b9%e6%b3%95%e7%9a%84%e8%af%b4%e6%98%8e%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/emc/mfc/2008/05/03/%0d%0a%20%20%20%20%20%20%20%20%e5%85%b3%e4%ba%8eemi%e5%a4%9a%e7%ba%bf%e7%a8%8b%e5%88%86%e6%ae%b5%e6%b5%8b%e8%af%95%e6%96%b9%e6%b3%95%e7%9a%84%e8%af%b4%e6%98%8e%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;
     2008年5月15日修正版&lt;/p&gt;
 &lt;p align=&quot;left&quot; style=&quot;text-align:left;text-indent:21pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;利用频谱仪进行电磁干扰测试时，考虑到显示效果，点击测试对话框的&amp;ldquo;开始&amp;rdquo;按钮之后视图应该立刻切换到对数坐标系而不是等待测试完成后才切换，因此，必须采用多线程测试方式，也即，需要增加一个测试线程用来向频谱仪发送测试指令。该测试线程定义为&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;CTestThread&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;，由&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;MFC&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;类&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;CWinThread&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;派生而来。主线程（在本程序中为&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;CChildFrame&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;类）和辅助线程（&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;CTestThread&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;）之间利用消息进行通信，消息处理函数的参数用来传递测试工程设置数据的指针。&lt;/span&gt;&lt;/p&gt;
@@ -19414,11 +19459,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>利用自定义消息处理函数的WPARAM或LPARAM参数传递指针</title>
         
-        <category term="visual c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/visual%20c++/2008/04/29/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8%25e8%2587%25aa%25e5%25ae%259a%25e4%25b9%2589%25e6%25b6%2588%25e6%2581%25af%25e5%25a4%2584%25e7%2590%2586%25e5%2587%25bd%25e6%2595%25b0%25e7%259a%2584wparam%25e6%2588%2596lparam%25e5%258f%2582%25e6%2595%25b0%25e4%25bc%25a0%25e9%2580%2592%25e6%258/"/>
+        <link href="http://bo-yang.github.io/mfc/2008/04/29/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8%25e8%2587%25aa%25e5%25ae%259a%25e4%25b9%2589%25e6%25b6%2588%25e6%2581%25af%25e5%25a4%2584%25e7%2590%2586%25e5%2587%25bd%25e6%2595%25b0%25e7%259a%2584wparam%25e6%2588%2596lparam%25e5%258f%2582%25e6%2595%25b0%25e4%25bc%25a0%25e9%2580%2592%25e6%258/"/>
         <updated>2008-04-29T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/visual%20c++/2008/04/29/%0d%0a%20%20%20%20%20%20%20%20%e5%88%a9%e7%94%a8%e8%87%aa%e5%ae%9a%e4%b9%89%e6%b6%88%e6%81%af%e5%a4%84%e7%90%86%e5%87%bd%e6%95%b0%e7%9a%84wparam%e6%88%96lparam%e5%8f%82%e6%95%b0%e4%bc%a0%e9%80%92%e6%8</id>
+        <id>bo-yang.github.io:/mfc/2008/04/29/%0d%0a%20%20%20%20%20%20%20%20%e5%88%a9%e7%94%a8%e8%87%aa%e5%ae%9a%e4%b9%89%e6%b6%88%e6%81%af%e5%a4%84%e7%90%86%e5%87%bd%e6%95%b0%e7%9a%84wparam%e6%88%96lparam%e5%8f%82%e6%95%b0%e4%bc%a0%e9%80%92%e6%8</id>
         <content type="html">&lt;p&gt;
     有自定义消息：&lt;/p&gt;
 &lt;div style=&quot;border:.5pt solid windowtext;padding:4px 5.4pt;background:rgb(230,230,230) none repeat scroll 0 0;-moz-background-clip:-moz-initial;-moz-background-origin:-moz-initial;width:95%;&quot;&gt;
@@ -19445,9 +19490,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>EMC-CBR故障诊断研究（一）</title>
         
-        <link href="http://bo-yang.github.io/2008/04/25/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520emc-cbr%25e6%2595%2585%25e9%259a%259c%25e8%25af%258a%25e6%2596%25ad%25e7%25a0%2594%25e7%25a9%25b6%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <category term="notes" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/notes/2008/04/25/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520emc-cbr%25e6%2595%2585%25e9%259a%259c%25e8%25af%258a%25e6%2596%25ad%25e7%25a0%2594%25e7%25a9%25b6%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-04-25T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2008/04/25/%0d%0a%20%20%20%20%20%20%20%20emc-cbr%e6%95%85%e9%9a%9c%e8%af%8a%e6%96%ad%e7%a0%94%e7%a9%b6%ef%bc%88%e4%b8%80%ef%bc%89%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/notes/2008/04/25/%0d%0a%20%20%20%20%20%20%20%20emc-cbr%e6%95%85%e9%9a%9c%e8%af%8a%e6%96%ad%e7%a0%94%e7%a9%b6%ef%bc%88%e4%b8%80%ef%bc%89%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p class=&quot;MsoNormal&quot; style=&quot;color:rgb(0,0,0);&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 该系列文章致力于建立一个基于CBR（Case-Based Reasoning）的电磁兼容故障诊断系统模型。这篇文章将首先阐述用语义网络对故障进行表示。&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot;&gt;&lt;strong&gt;&lt;span lang=&quot;EN-US&quot; style=&quot;color:red;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot;&gt;&lt;strong&gt;&lt;span lang=&quot;EN-US&quot; style=&quot;color:red;&quot;&gt;Case6&lt;/span&gt;&lt;/strong&gt;&lt;strong&gt;&lt;span style=&quot;font-family:宋体;color:red;&quot;&gt;：&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&quot;color:red;&quot;&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -19969,9 +20016,13 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>场耦合到导线/电缆的预估</title>
         
-        <link href="http://bo-yang.github.io/2008/03/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%259c%25ba%25e8%2580%25a6%25e5%2590%2588%25e5%2588%25b0%25e5%25af%25bc%25e7%25ba%25bf%25e7%2594%25b5%25e7%25bc%2586%25e7%259a%2584%25e9%25a2%2584%25e4%25bc%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <category term="emc" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/mfc/emc/2008/03/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%259c%25ba%25e8%2580%25a6%25e5%2590%2588%25e5%2588%25b0%25e5%25af%25bc%25e7%25ba%25bf%25e7%2594%25b5%25e7%25bc%2586%25e7%259a%2584%25e9%25a2%2584%25e4%25bc%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-03-10T00:00:00-04:00</updated>
-        <id>bo-yang.github.io:/2008/03/10/%0d%0a%20%20%20%20%20%20%20%20%e5%9c%ba%e8%80%a6%e5%90%88%e5%88%b0%e5%af%bc%e7%ba%bf%e7%94%b5%e7%bc%86%e7%9a%84%e9%a2%84%e4%bc%b0%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/mfc/emc/2008/03/10/%0d%0a%20%20%20%20%20%20%20%20%e5%9c%ba%e8%80%a6%e5%90%88%e5%88%b0%e5%af%bc%e7%ba%bf%e7%94%b5%e7%bc%86%e7%9a%84%e9%a2%84%e4%bc%b0%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;这几天事情比较多，知道今天才完成&amp;nbsp;&amp;ldquo;场耦合到导线/电缆的预估&amp;rdquo;该部分的程序。&lt;/p&gt;
 &lt;p&gt;该程序依然是根据《电磁兼容原理与应用》一书中的QBASIC程序改编而成。程序运行截图如下：&lt;/p&gt;
 &lt;p&gt;&lt;img alt=&quot;&quot; src=&quot;http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/环路接收性能预估.JPG&quot; /&gt;&lt;/p&gt;
@@ -19988,9 +20039,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>导线辐射预估</title>
         
-        <link href="http://bo-yang.github.io/2008/03/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25af%25bc%25e7%25ba%25bf%25e8%25be%2590%25e5%25b0%2584%25e9%25a2%2584%25e4%25bc%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/mfc/2008/03/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25af%25bc%25e7%25ba%25bf%25e8%25be%2590%25e5%25b0%2584%25e9%25a2%2584%25e4%25bc%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-03-07T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2008/03/07/%0d%0a%20%20%20%20%20%20%20%20%e5%af%bc%e7%ba%bf%e8%be%90%e5%b0%84%e9%a2%84%e4%bc%b0%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/mfc/2008/03/07/%0d%0a%20%20%20%20%20%20%20%20%e5%af%bc%e7%ba%bf%e8%be%90%e5%b0%84%e9%a2%84%e4%bc%b0%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;今天完成了导线辐射预估的编程。导线辐射预估分为三部分：电流元预估、电流环路预估、谐振传输线预估。&lt;/p&gt;
 &lt;p&gt;因为涉及到很多电磁兼容专业公式，因此有需要代码的朋友可以和我联系。&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;img alt=&quot;电流元预估&quot; align=&quot;absMiddle&quot; src=&quot;http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/电流元预估.JPG&quot; /&gt;&lt;/p&gt;
@@ -20009,9 +20062,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>关于测试工程提示信息功能的说明</title>
         
-        <link href="http://bo-yang.github.io/2008/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2585%25b3%25e4%25ba%258e%25e6%25b5%258b%25e8%25af%2595%25e5%25b7%25a5%25e7%25a8%258b%25e6%258f%2590%25e7%25a4%25ba%25e4%25bf%25a1%25e6%2581%25af%25e5%258a%259f%25e8%2583%25bd%25e7%259a%2584%25e8%25af%25b4%25e6%2598%258e%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/mfc/2008/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2585%25b3%25e4%25ba%258e%25e6%25b5%258b%25e8%25af%2595%25e5%25b7%25a5%25e7%25a8%258b%25e6%258f%2590%25e7%25a4%25ba%25e4%25bf%25a1%25e6%2581%25af%25e5%258a%259f%25e8%2583%25bd%25e7%259a%2584%25e8%25af%25b4%25e6%2598%258e%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-03-03T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2008/03/03/%0d%0a%20%20%20%20%20%20%20%20%e5%85%b3%e4%ba%8e%e6%b5%8b%e8%af%95%e5%b7%a5%e7%a8%8b%e6%8f%90%e7%a4%ba%e4%bf%a1%e6%81%af%e5%8a%9f%e8%83%bd%e7%9a%84%e8%af%b4%e6%98%8e%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/mfc/2008/03/03/%0d%0a%20%20%20%20%20%20%20%20%e5%85%b3%e4%ba%8e%e6%b5%8b%e8%af%95%e5%b7%a5%e7%a8%8b%e6%8f%90%e7%a4%ba%e4%bf%a1%e6%81%af%e5%8a%9f%e8%83%bd%e7%9a%84%e8%af%b4%e6%98%8e%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p align=&quot;center&quot;&gt;关于测试工程提示信息功能的说明&lt;/p&gt;
 &lt;p&gt;该功能的实现完全依赖于CPPToolTip类，该类可以在 &lt;a href=&quot;http://www.codeproject.com/&quot;&gt;http://www.codeproject.com/&lt;/a&gt;&lt;br /&gt;
  上下载到。具体说明见该网站的介绍。&lt;br /&gt;
@@ -20921,9 +20976,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>加载真彩色工具栏</title>
         
-        <link href="http://bo-yang.github.io/2008/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%258a%25a0%25e8%25bd%25bd%25e7%259c%259f%25e5%25bd%25a9%25e8%2589%25b2%25e5%25b7%25a5%25e5%2585%25b7%25e6%25a0%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/mfc/2008/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%258a%25a0%25e8%25bd%25bd%25e7%259c%259f%25e5%25bd%25a9%25e8%2589%25b2%25e5%25b7%25a5%25e5%2585%25b7%25e6%25a0%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-03-02T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2008/03/02/%0d%0a%20%20%20%20%20%20%20%20%e5%8a%a0%e8%bd%bd%e7%9c%9f%e5%bd%a9%e8%89%b2%e5%b7%a5%e5%85%b7%e6%a0%8f%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/mfc/2008/03/02/%0d%0a%20%20%20%20%20%20%20%20%e5%8a%a0%e8%bd%bd%e7%9c%9f%e5%bd%a9%e8%89%b2%e5%b7%a5%e5%85%b7%e6%a0%8f%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 首先利用&lt;strong&gt;Visual Toolbar工具&lt;/strong&gt;将自.bmp图片制作成工具条。&lt;strong&gt;Visual Toolbar工具&lt;/strong&gt;可以利用Google去搜，尽管这款软件需要注册，但笔者不提倡下载注册机破解注册或者直接下载破解版。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;然后在VC的资源中添加工具栏，导入已经制作好的工具条（此时为bmp格式），然后利用CtrueColorToolBar 类加载图片到工具条。CtrueColorToolBar 类的下载地址为：&lt;a href=&quot;http://www.codeproject.com/docking/TrueColorToolBar.asp&quot;&gt;http://www.codeproject.com/docking/TrueColorToolBar.asp&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;以上两步可以参考《&lt;strong&gt;&lt;a href=&quot;http://www.vckbase.com/document/viewdoc/?id=1069&quot;&gt;一步步制作真彩工具条&lt;/a&gt;&lt;/strong&gt;》。&lt;/p&gt;
@@ -20946,9 +21003,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>关于ROHDE&amp;SCHWARZ公司电流探头EZ-17系数修正的说明</title>
         
-        <link href="http://bo-yang.github.io/2008/02/29/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2585%25b3%25e4%25ba%258erohde%2526amp%253bschwarz%25e5%2585%25ac%25e5%258f%25b8%25e7%2594%25b5%25e6%25b5%2581%25e6%258e%25a2%25e5%25a4%25b4ez-17%25e7%25b3%25bb%25e6%2595%25b0%25e4%25bf%25ae%25e6%25ad%25a3%25e7%259a%2584%25e8%25af%25b4%25e6%2598%258e%250d%250a/"/>
+        <category term="emc" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/emc/2008/02/29/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2585%25b3%25e4%25ba%258erohde%2526amp%253bschwarz%25e5%2585%25ac%25e5%258f%25b8%25e7%2594%25b5%25e6%25b5%2581%25e6%258e%25a2%25e5%25a4%25b4ez-17%25e7%25b3%25bb%25e6%2595%25b0%25e4%25bf%25ae%25e6%25ad%25a3%25e7%259a%2584%25e8%25af%25b4%25e6%2598%258e%250d%250a/"/>
         <updated>2008-02-29T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2008/02/29/%0d%0a%20%20%20%20%20%20%20%20%20%e5%85%b3%e4%ba%8erohde%26amp%3bschwarz%e5%85%ac%e5%8f%b8%e7%94%b5%e6%b5%81%e6%8e%a2%e5%a4%b4ez-17%e7%b3%bb%e6%95%b0%e4%bf%ae%e6%ad%a3%e7%9a%84%e8%af%b4%e6%98%8e%0d%0a</id>
+        <id>bo-yang.github.io:/emc/2008/02/29/%0d%0a%20%20%20%20%20%20%20%20%20%e5%85%b3%e4%ba%8erohde%26amp%3bschwarz%e5%85%ac%e5%8f%b8%e7%94%b5%e6%b5%81%e6%8e%a2%e5%a4%b4ez-17%e7%b3%bb%e6%95%b0%e4%bf%ae%e6%ad%a3%e7%9a%84%e8%af%b4%e6%98%8e%0d%0a</id>
         <content type="html">&lt;p align=&quot;center&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;关于EZ-17探头系数修正的说明&lt;/p&gt;
 &lt;p&gt;///// 电流探头EZ17测试结果修正&amp;nbsp;/////&lt;br /&gt;// 根据ROHDE&amp;amp;SCHWARZ公司的手册，EZ17的测试结果需要&lt;br /&gt;// 进行修正，加上转移电阻K。由手册给出的曲线(第二页)&lt;br /&gt;// 和测试数据(第12页，表4-1),可知在对数坐标中，500KHz&lt;br /&gt;// 以下可看作一条直线；500KHz～10MHz为一非线性变化段；&lt;br /&gt;// 10MHz～200MHz为另一非线性变化段。据此，对测试数据进行&lt;br /&gt;// 校正。以下所有拟合函数均为对数坐标系下的拟合函数。&lt;br /&gt;//&lt;br /&gt;// 20Hz～500KHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p1=-19.1838*x-8.1953&lt;br /&gt;// 500KHz～10MHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p4=18.2253*x^4-31.3557*x^3+16.5565*x^2-6.6261*x-6.8&lt;br /&gt;// 10MHz～20MHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p0=-10&lt;br /&gt;//&amp;nbsp;20MHz～100MHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p2=0.1157*x^2-0.0959*x-10.0711&lt;br /&gt;// 100MHz～200MHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p3=175.6*x^3-1044.5*x^2+2067.7*x-1371.9&lt;br /&gt;//&amp;nbsp;以上各式中，x为频率的对数，p为频率所对应的修正因子。&lt;br /&gt;//&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -20967,18 +21026,36 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
         
         <category term="algorithm" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <category term="c/c++" scheme="http://www.sixapart.com/ns/types#tag" />
+        <category term="c" scheme="http://www.sixapart.com/ns/types#tag" />
         
         <category term="emc" scheme="http://www.sixapart.com/ns/types#tag" />
         
-        <link href="http://bo-yang.github.io/algorithm/c/c++/emc/2008/02/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8vc%25e7%25bb%2598%25e5%2588%25b6%25e5%25af%25b9%25e6%2595%25b0%25e5%259d%2590%25e6%25a0%2587%25e7%25b3%25bb%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <link href="http://bo-yang.github.io/algorithm/c/emc/2008/02/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8vc%25e7%25bb%2598%25e5%2588%25b6%25e5%25af%25b9%25e6%2595%25b0%25e5%259d%2590%25e6%25a0%2587%25e7%25b3%25bb%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-02-21T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/algorithm/c/c++/emc/2008/02/21/%0d%0a%20%20%20%20%20%20%20%20%e5%88%a9%e7%94%a8vc%e7%bb%98%e5%88%b6%e5%af%b9%e6%95%b0%e5%9d%90%e6%a0%87%e7%b3%bb%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/algorithm/c/emc/2008/02/21/%0d%0a%20%20%20%20%20%20%20%20%e5%88%a9%e7%94%a8vc%e7%bb%98%e5%88%b6%e5%af%b9%e6%95%b0%e5%9d%90%e6%a0%87%e7%b3%bb%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;&lt;span style=&quot;font-weight:bold;&quot;&gt;&lt;br /&gt;
 &lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;span style=&quot;font-size:medium;&quot;&gt;利用VC绘制对数坐标系&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;left&quot;&gt;&lt;span style=&quot;font-size:small;&quot;&gt;目标：绘制以任意频率为起点、任意频率为终点的对数坐标，并能对坐标进行任意缩放。&lt;/span&gt;&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot; style=&quot;margin:0;&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;&lt;span style=&quot;font-size:small;&quot;&gt;实现方法：&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;MsoNormal&quot; style=&quot;margin:0cm 0cm 0pt&quot;&gt;&lt;span style=&quot;font-family:宋体; font-size:12px; color:#ff0000&quot;&gt;======【Update 2013-12-18】：=========================================================&lt;/span&gt;&lt;/p&gt;
+&lt;p class=&quot;MsoNormal&quot; style=&quot;margin:0cm 0cm 0pt&quot;&gt;&lt;/p&gt;
+&lt;ul style=&quot;list-style:none; margin:0px; padding:0px; border:none; outline:none 0px; line-height:24px&quot;&gt;
+&lt;li style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;今天发现以前的方法其实是很笨的方法。其实只要知道任意两个点的X坐标及其对应的频率f, 就可以根据第三点的频率确定第三点的坐标，或者根据第三点的坐标确定该点的频率。&lt;/span&gt;&lt;span style=&quot;font-size:18px&quot;&gt;&lt;span style=&quot;color:#ff0000&quot;&gt;个人感觉&lt;span style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif; line-height:24px&quot;&gt;对数坐标的本质就是，对于频率取对数之后，该坐标映射成为线性坐标，即屏幕坐标x可以看做log(f)的线性函数。&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;&lt;br&gt;
+&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;给定三点(x0,f0), (x1,f1),(x2,f2), 其中x是X坐标，f是对应的频率，有对应关系&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;text-align:center; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;&lt;span style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif; white-space:pre&quot;&gt;&lt;/span&gt;&lt;span style=&quot;font-family:Courier New&quot;&gt;(x2-x0)/(x1-x0) = (log(f2)-log(f0))/(log(f1)-log(f0)) = log(f2/f0)/log(f1/f0),&lt;/span&gt;&lt;span style=&quot;font-family:Times New Roman&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;于是，可以求得&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;text-align:center; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;&lt;span style=&quot;font-family:Courier New&quot;&gt;&amp;nbsp;x1=log(f1/f0)/log(f2/f0)*(x2-x0)&amp;#43;x0&lt;/span&gt;&lt;span style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;和&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;text-align:center; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;&lt;span style=&quot;font-family:Courier New&quot;&gt;log(f1) = 1/C* log(f2/f0)&amp;#43;log(f0), where C=(x2-x0)/(X1-x0)。&lt;/span&gt;&lt;span style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif; text-align:center; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;&lt;br&gt;
+&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px&quot;&gt;
+&lt;span style=&quot;font-size:18px; color:#ff0000&quot;&gt;根据这两个公式，写成两个函数，一个是根据频率计算x坐标，一个根据x坐标计算频率，然后指定坐标轴的位置，就可以很容易绘制出对数坐标系了。&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;span style=&quot;font-size:12px; color:#ff0000; font-family:宋体&quot;&gt;=====================================================================================&lt;/span&gt;
+&lt;p&gt;以下内容已经过时，仅供参考。&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot; style=&quot;margin:0;&quot;&gt;&lt;span style=&quot;font-size:small;&quot;&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;span style=&quot;font-family:Calibri;&quot;&gt;1&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;、定义&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot; style=&quot;margin:0;text-indent:21pt;&quot;&gt;&lt;span style=&quot;font-size:small;&quot;&gt;标准频率：频率值为&lt;span lang=&quot;EN-US&quot;&gt;&lt;span style=&quot;font-family:Calibri;&quot;&gt;10&lt;sup&gt;N&lt;/sup&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;的相应的频率点，其中&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;span style=&quot;font-family:Calibri;&quot;&gt;N=&amp;hellip;-2,-1,0,1,2,3&amp;hellip;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;，单位&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;span style=&quot;font-family:Calibri;&quot;&gt;MHz&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;。如&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;span style=&quot;font-family:Calibri;&quot;&gt;0.01MHZ&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;、&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;span style=&quot;font-family:Calibri;&quot;&gt;0.1MHz&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;、&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;span style=&quot;font-family:Calibri;&quot;&gt;1MHz&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;、&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;span style=&quot;font-family:Calibri;&quot;&gt;10MHz&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;、&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;span style=&quot;font-family:Calibri;&quot;&gt;100MHz&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;等都是标准频率。&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot; style=&quot;margin:0;text-indent:21pt;&quot;&gt;&lt;span style=&quot;font-size:small;&quot;&gt;&lt;/span&gt;&lt;/p&gt;
@@ -21083,9 +21160,11 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
     <entry>
         <title>关于属性页和属性单的应用总结</title>
         
-        <link href="http://bo-yang.github.io/2008/02/16/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2585%25b3%25e4%25ba%258e%25e5%25b1%259e%25e6%2580%25a7%25e9%25a1%25b5%25e5%2592%258c%25e5%25b1%259e%25e6%2580%25a7%25e5%258d%2595%25e7%259a%2584%25e5%25ba%2594%25e7%2594%25a8%25e6%2580%25bb%25e7%25bb%2593%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
+        <category term="mfc" scheme="http://www.sixapart.com/ns/types#tag" />
+        
+        <link href="http://bo-yang.github.io/mfc/2008/02/16/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2585%25b3%25e4%25ba%258e%25e5%25b1%259e%25e6%2580%25a7%25e9%25a1%25b5%25e5%2592%258c%25e5%25b1%259e%25e6%2580%25a7%25e5%258d%2595%25e7%259a%2584%25e5%25ba%2594%25e7%2594%25a8%25e6%2580%25bb%25e7%25bb%2593%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/"/>
         <updated>2008-02-16T00:00:00-05:00</updated>
-        <id>bo-yang.github.io:/2008/02/16/%0d%0a%20%20%20%20%20%20%20%20%20%e5%85%b3%e4%ba%8e%e5%b1%9e%e6%80%a7%e9%a1%b5%e5%92%8c%e5%b1%9e%e6%80%a7%e5%8d%95%e7%9a%84%e5%ba%94%e7%94%a8%e6%80%bb%e7%bb%93%0d%0a%20%20%20%20%20%20%20%20</id>
+        <id>bo-yang.github.io:/mfc/2008/02/16/%0d%0a%20%20%20%20%20%20%20%20%20%e5%85%b3%e4%ba%8e%e5%b1%9e%e6%80%a7%e9%a1%b5%e5%92%8c%e5%b1%9e%e6%80%a7%e5%8d%95%e7%9a%84%e5%ba%94%e7%94%a8%e6%80%bb%e7%bb%93%0d%0a%20%20%20%20%20%20%20%20</id>
         <content type="html">&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;关于属性页和属性单的应用总结&lt;/p&gt;
 &lt;p&gt;1、属性页(CPropertyPage)中获取&lt;br /&gt;&amp;nbsp;(1) 程序主框架指针：CMainFrame* pMainFrame=(CMainFrame*)AfxGetMainWnd();&lt;br /&gt;&amp;nbsp;(2) 程序子框架指针：CChildFrame* pframe=(CChildFrame*)((CMainFrame*)AfxGetMainWnd())-&amp;gt;GetActiveFrame();&lt;br /&gt;&amp;nbsp;(3) 程序活动文档指针：CEMCDoc* m_pDoc=(CEMCDoc*)pframe-&amp;gt;GetActiveDocument();&amp;nbsp;//获取活动的文档&lt;br /&gt;&amp;nbsp;(4) 属性单(CPropertySheet)指针：CMyPropertySheet* pSheet=(CMyPropertySheet*)this-&amp;gt;GetParent();&amp;nbsp;// 获取CMyPropertySheet指针&lt;br /&gt;&amp;nbsp;(5) 程序活动视图指针：CEMCView* pView=(CEMCView*)pframe-&amp;gt;GetActiveView();&amp;nbsp;// 获取活动视图&lt;/p&gt;
 &lt;p&gt;2、在属性单(CPropertySheet)单击OK按钮后，程序框架将逐个遍历加载的CPropertyPage（从GetPage(0)～GetPage(N-1)），查询是否&lt;br /&gt;有CPropertyPage重载了OnOK()，若有则执行重载的代码，否则执行默认的CPropertyPage::OnOK()。&lt;/p&gt;

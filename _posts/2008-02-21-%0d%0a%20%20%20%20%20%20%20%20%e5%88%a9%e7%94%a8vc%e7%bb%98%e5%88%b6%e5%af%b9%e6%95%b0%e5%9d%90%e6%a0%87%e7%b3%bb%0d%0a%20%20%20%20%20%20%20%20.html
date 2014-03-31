@@ -3,17 +3,17 @@ layout: post
 title: 利用VC绘制对数坐标系
 categories:
 - Algorithm
-- C/C++
+- C
 - EMC
 tags:
 - Algorithm
-- C/C++
+- C
 - EMC
 status: publish
 type: post
 published: true
 meta:
-  views: '2104'
+  views: '3246'
   original_post_id: '17'
   _wp_old_slug: '17'
 author: 
@@ -24,6 +24,24 @@ author:
 <p align="center"><span style="font-size:medium;">利用VC绘制对数坐标系</span></p>
 <p align="left"><span style="font-size:small;">目标：绘制以任意频率为起点、任意频率为终点的对数坐标，并能对坐标进行任意缩放。</span></p>
 <p class="MsoNormal" style="margin:0;"><span style="font-family:宋体;"><span style="font-size:small;">实现方法：</span></span></p>
+<p class="MsoNormal" style="margin:0cm 0cm 0pt"><span style="font-family:宋体; font-size:12px; color:#ff0000">======【Update 2013-12-18】：=========================================================</span></p>
+<p class="MsoNormal" style="margin:0cm 0cm 0pt"></p>
+<ul style="list-style:none; margin:0px; padding:0px; border:none; outline:none 0px; line-height:24px">
+<li style="font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000">今天发现以前的方法其实是很笨的方法。其实只要知道任意两个点的X坐标及其对应的频率f, 就可以根据第三点的频率确定第三点的坐标，或者根据第三点的坐标确定该点的频率。</span><span style="font-size:18px"><span style="color:#ff0000">个人感觉<span style="font-family:Helvetica,Tahoma,Arial,sans-serif; line-height:24px">对数坐标的本质就是，对于频率取对数之后，该坐标映射成为线性坐标，即屏幕坐标x可以看做log(f)的线性函数。</span></span></span></li><li style="font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000"><br>
+</span></li><li style="font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000">给定三点(x0,f0), (x1,f1),(x2,f2), 其中x是X坐标，f是对应的频率，有对应关系&nbsp;</span></li><li style="text-align:center; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000"><span style="font-family:Helvetica,Tahoma,Arial,sans-serif; white-space:pre"></span><span style="font-family:Courier New">(x2-x0)/(x1-x0) = (log(f2)-log(f0))/(log(f1)-log(f0)) = log(f2/f0)/log(f1/f0),</span><span style="font-family:Times New Roman">&nbsp;</span></span></li><li style="font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000">于是，可以求得</span></li><li style="text-align:center; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000"><span style="font-family:Courier New">&nbsp;x1=log(f1/f0)/log(f2/f0)*(x2-x0)&#43;x0</span><span style="font-family:Helvetica,Tahoma,Arial,sans-serif">,&nbsp;</span></span></li><li style="font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000">和&nbsp;</span></li><li style="text-align:center; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000"><span style="font-family:Courier New">log(f1) = 1/C* log(f2/f0)&#43;log(f0), where C=(x2-x0)/(X1-x0)。</span><span style="font-family:Helvetica,Tahoma,Arial,sans-serif">&nbsp;</span></span></li><li style="font-family:Helvetica,Tahoma,Arial,sans-serif; text-align:center; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000"><br>
+</span></li><li style="font-family:Helvetica,Tahoma,Arial,sans-serif; list-style:none; margin:0px; padding:0px; border:none; outline:none 0px">
+<span style="font-size:18px; color:#ff0000">根据这两个公式，写成两个函数，一个是根据频率计算x坐标，一个根据x坐标计算频率，然后指定坐标轴的位置，就可以很容易绘制出对数坐标系了。</span></li></ul>
+<span style="font-size:12px; color:#ff0000; font-family:宋体">=====================================================================================</span>
+<p>以下内容已经过时，仅供参考。</p>
 <p class="MsoNormal" style="margin:0;"><span style="font-size:small;"><span lang="EN-US"><span style="font-family:Calibri;">1</span></span><span style="font-family:宋体;">、定义</span></span></p>
 <p class="MsoNormal" style="margin:0;text-indent:21pt;"><span style="font-size:small;">标准频率：频率值为<span lang="EN-US"><span style="font-family:Calibri;">10<sup>N</sup></span></span><span style="font-family:宋体;">的相应的频率点，其中</span><span lang="EN-US"><span style="font-family:Calibri;">N=&hellip;-2,-1,0,1,2,3&hellip;</span></span><span style="font-family:宋体;">，单位</span><span lang="EN-US"><span style="font-family:Calibri;">MHz</span></span><span style="font-family:宋体;">。如</span><span lang="EN-US"><span style="font-family:Calibri;">0.01MHZ</span></span><span style="font-family:宋体;">、</span><span lang="EN-US"><span style="font-family:Calibri;">0.1MHz</span></span><span style="font-family:宋体;">、</span><span lang="EN-US"><span style="font-family:Calibri;">1MHz</span></span><span style="font-family:宋体;">、</span><span lang="EN-US"><span style="font-family:Calibri;">10MHz</span></span><span style="font-family:宋体;">、</span><span lang="EN-US"><span style="font-family:Calibri;">100MHz</span></span><span style="font-family:宋体;">等都是标准频率。</span></span></p>
 <p class="MsoNormal" style="margin:0;text-indent:21pt;"><span style="font-size:small;"></span></p>
