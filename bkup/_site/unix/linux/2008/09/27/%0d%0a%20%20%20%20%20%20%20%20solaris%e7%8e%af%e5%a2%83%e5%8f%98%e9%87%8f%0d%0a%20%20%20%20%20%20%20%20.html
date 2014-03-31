@@ -1,9 +1,0 @@
-<p>
-    ～/.profile 是在用户的主目录下的一个文件，每次用户登陆都会执行这里边的ENV环境变量设置。<br />
-/etc/profile是一个全局的环境变量设置，只要登陆系统的用户都会执行里面的ENV环境变量设置<br />
-~/.kshrc是在用户的主目录下面的，每次执行KSH下面的子shell的时候，都会执行这里面的ENV环境变量设置。<br />
-~/.dtprofile是在用户的主目录下面的，在这里设置你进入CDE时的一些变量设置，如果用户没有通过CDE进入过系统，那么将不会产生这个文件，只有用户曾经用CDE进入过系统后就会自动生成一个.dtprofile文件，然后还可以对里边的变量进行设置。。<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 如果在这个文件里的DTSOURCEPROFILE的变量设置为true则会读取用户瞩目路下的.profile文件里的变量设置，如果没有这个变量或者设置为false，那么将不读取.profile里的环境变量。</p>
-<p>如果想让刚刚改变的.profile .kshrc里面的设置马上生效使用，可以使用以下的命令：<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; . ~/.profile<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; . ~/.kshrc</p>
