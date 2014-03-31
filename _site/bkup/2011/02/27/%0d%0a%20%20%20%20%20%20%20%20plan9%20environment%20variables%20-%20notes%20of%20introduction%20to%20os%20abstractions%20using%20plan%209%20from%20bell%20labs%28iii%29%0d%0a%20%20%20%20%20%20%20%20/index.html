@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Plan9 Environment Variables -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(III) </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>Plan9 Environment Variables -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(III)</h1>
+    <p><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
+interface for using environment variables in Plan 9 is a file<br />
+interface.<br />
+ All interfaces of environment variables can be found<br />
+under <span style="font-family:'Courier New', monospace;">/env</span>.</span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">To<br />
+obtain the value for a environment variable, from a C program, we can<br />
+use the </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">getenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><br />
+system call. If the variable is not defined, </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">getenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><br />
+returns a null string. A related call is </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">putenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">,<br />
+which accepts a name and a value, and set the corresponding<br />
+environment variable accordingly.</span></span></p>
+<p><span style="font-family:'Trebuchet MS', sans-serif;">
+<pre>#include &lt;u.h&gt;
+#include &lt;libc.h&gt;
+void main()
+{
+char * path;
+path=getenv("path");
+if(path==nil)
+sysfatal("path not defined!");
+print("PATH is %s /n", path);
+exits(nil);
+}</pre>
+<p>&nbsp;</span></p>
+<p>&nbsp;</p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">In<br />
+some cases it is convenient to define an environment variable just<br />
+for a command. This can be<br />
+ done by defining it in the same command<br />
+line, before the command, like in the following exam-ple:<br />
+</span></span></p>
+<p><span style="font-family:'Courier New', monospace;">
+<pre>; temp=/tmp/foobar echo $temp
+/tmp/foobar
+; echo $temp
+;
+</pre>
+<p>&nbsp;</span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><strong>Useful<br />
+Environment Variables:</strong></span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">status</span><br />
+is updated by the shell once it finds out how it went to the last<br />
+command it executed.<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">path</span><br />
+is a list of paths where the shell should<br />
+look for executable files<br />
+to run the user commands.<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">user</span><br />
+contains the user name<br />
+.</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">sysname</span><br />
+contains the machine name.<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
+file <span style="font-family:'Courier New', monospace;">/dev/text </span>represents<br />
+the<br />
+ text shown in the window (when used within that window). To make<br />
+a copy of your shell session,<br />
+ you already know what to do:<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">;<br />
+cp /dev/text $home/saved<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
+same can be done for the image shown in the display for your window,<br />
+which is also represented as a file, <span style="font-family:'Courier New', monospace;">/dev/window</span>.<br />
+This is what we did to capture screen images .</span></span></p>
+<p>&nbsp;</p>
+
+</div>
+
+<small class="meta">Posted February 27, 2011</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

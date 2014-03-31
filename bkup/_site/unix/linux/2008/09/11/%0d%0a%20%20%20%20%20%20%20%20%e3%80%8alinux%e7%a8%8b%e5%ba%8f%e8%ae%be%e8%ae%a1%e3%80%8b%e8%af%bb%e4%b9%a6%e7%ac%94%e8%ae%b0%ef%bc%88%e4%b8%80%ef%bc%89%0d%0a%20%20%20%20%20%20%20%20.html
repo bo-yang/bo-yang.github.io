@@ -1,0 +1,43 @@
+<p>
+    &nbsp;
+<div id="xrgo" style="text-align:center;"><font size="5"><span id="y5c80" style="font-family:SimHei, 黑体, MS Hei, sans-serif;">《Linux程序设计》读书笔记</span></font></div>
+<p><b><br /><font size="4">1、编译C程序的技巧</font></b><br />&nbsp;&nbsp;&nbsp;&nbsp;在调用C语言编译器的时候可以通过给出“-I”标志来引用保存在下级子目录或者非标准目录下的头文件，如：<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;$ gcc -I /usr/openwin/include fred.c<br />它会使编译器在/usr/openwin/include的子目录和标准目录两个地方去查找fred.c程序里所包含的头文件。</p>
+<p>&nbsp;&nbsp;&nbsp; 用grep查找含有某些特定定义与函数生命的头文件是很方便的。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ grep EXIT_ *.h<br />grep命令会在该子目录下的所有名字以.h结尾的文件里查找字符串“EXIT_”。</p>
+<p><font size="4"><b>2、库文件</b></font><br />&nbsp;&nbsp;&nbsp;<br />
+标准的系统库文件一般保存在/lib或/usr/lib子目录中。库文件的名字永远以“lib”这几个字母打头，随后便是函数库说明的部分（比如用c表示<br />
+这是一个C语言函数库，用m表示一个数学运算库），文件名的最后部分以一个“.”开始，然后给出这个库文件的类型：静态函数库.a;共享函数库.so<br />
+或.sa。<br />&nbsp;&nbsp;&nbsp; 在通知编译器查找某个库文件的时候，既可以给出其完整的路径名，也可以使用“-l”标志，。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c /usr/lib/libm.a<br />或<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c -lm<br />-lm代表标准目录库中名为libm.a的函数库。 更详细的解释参见下面的例子。<br />&nbsp;&nbsp;&nbsp;&nbsp;虽然库文件与头文件相似，都是被保存在某个标准位置，但我们仍然可以通过“-L”标志给编译器增加搜索子目录库。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o x11fred -L/usr/openwin/lib x11fred.c -lX11<br />该命令在编译和链接程序x11fred时将使用在子目录/usr/openwin/lib中找到的libX11函数库版本。</p>
+<p>&nbsp;&nbsp;&nbsp; 2.1 静态库(archive)<br />&nbsp;&nbsp;&nbsp; 假设现有源文件bill.c和fred.c，则建立静态库的方法：<br />&nbsp;&nbsp;&nbsp; （1）编译源文件生成二进制目标文件，需要在调用C编译器时加上“-c”选项以防止生成最终应用程序。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -c bill.c fred.c<br />&nbsp;&nbsp;&nbsp; （2）为函数库建立一个头文件（lib.h），它的作用是在我们的函数库里对这两个函数进行声明；如果有程序要使用这个函数库，就必须使用include引用。<br />&nbsp;&nbsp;&nbsp; <img alt="" /><img alt="" />（3）调用程序（program.c）引用库函数头文件并调用其中的函数。<br />&nbsp;&nbsp;&nbsp; （4）使用ar工具简历档案并把目标代码加入其中。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ar crv</b> libfoo.a bill.o fred.o<br />&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;另外，某些系统（尤其是Berkley&nbsp;UNIX操作系统发展而来的系统）上，要想成功是用函数库，必须先为这个函数库建立一个内容表：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ranlib</b> libfoo.a</p>
+<p>&nbsp;&nbsp;&nbsp; 可以通过使用“-L”选项告诉编译器静态库的位置：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o program program.o -L. -lfoo<br />“-L.”告诉编译器在当前子目录中查找函数库。“-lfoo”选项告诉编译器使用那个名为libfoo.a的函数库（或者一个名为libfoo.so的共享库，如果有的话）。</p>
+<p>&nbsp;&nbsp;&nbsp; 可以使用nm命令查看某个目标代码文件、函数库或者可执行程序里都包含那些函数。</p>
+<p>&nbsp;&nbsp;&nbsp; 2.2 共享库<br />&nbsp;&nbsp;&nbsp;<br />
+如果一个程序使用了共享库，它的连接方式是这样的：它本身不再保存函数的代码，而只保存共享代码的调用线索，共享代码是在运行的时候才加入其中的。对<br />
+Linux系统而言，负责加载共享库并解析客户程序中函数调用线索的程序（即共享库动态加载器）是ld.so或ld-linux.so.2；查找共享库的<br />
+其他地点是在/etc/ld.so.conf文件里配置的；如果这个文件进行了修改，就需要用ldconfig命令进行处理。<br />&nbsp;&nbsp;&nbsp; 可以使用<b>ldd</b>程序查看某个程序要求使用的是哪一个共享库：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ ldd program</p>
+<p>&nbsp;&nbsp;&nbsp; .so类似于Windows中的.DLL文件，是运行时加入程序的；.sa类似于Windows中的.LIB文件，是加入到可执行文件里面的。</p>
+<p><font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
+"&gt;", by default, if the file already exists, then it will be<br />
+overwritten. If you want to change the default behavior, you can use<br />
+the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
+<p>&nbsp;&nbsp;&nbsp;<br />
+File descriptor 0 is the standard input to a program, file descriptor 1<br />
+is the standard output, and file descriptor 2 is the standard error<br />
+output. It’s unusual to want to redirect any other than the standard<br />
+ones: 0, 1, and 2.</p>
+<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
+standard error output, preface the &gt; operator with the number of the<br />
+file descriptor you wish to redirect. Because the standard error is on<br />
+file descriptor 2, use the 2&gt; operator. This is often useful to<br />
+discard error information and prevent it from appearing on the screen.</p>
+<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
+<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
+put both the output and error outputs into the same file. Notice the<br />
+order of the operators. This reads as “redirect standard output to the<br />
+file killouterr.txt, and then direct standard error to the same place<br />
+as the standard output.” If you get the order wrong, the redirect won’t<br />
+work as you expect.</p>
+<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
+<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
+<p>3.4 file command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
+<p><font size="4">4 Shell Scripts</font></p>
+<p>P60, to be continued...</p>

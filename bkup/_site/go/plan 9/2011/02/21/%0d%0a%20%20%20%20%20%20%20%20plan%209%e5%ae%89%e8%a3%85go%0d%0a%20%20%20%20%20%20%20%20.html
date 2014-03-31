@@ -1,0 +1,26 @@
+<p>I、安装python和mercurial(hg)</p>
+<p>首先是在term中输入9fs sources, 然后cd到/n/sources/contrib下，参照Plan 9的<a href="http://plan9.bell-labs.com/wiki/plan9/contrib_index/index.html">contrib index</a>，找到"From fgb's contrib"的python用户名。</p>
+<p><pre>% 9fs sources
+% /n/sources/contrib/fgb/root/rc/bin/contrib/install fgb/contrib
+% contrib/install -f bichued/python
+% contrib/install -f bichued/hg</pre></p>
+<p>或者将/n/sources/extra/python.iso.bz2拷到自己的目录下，然后</p>
+<p>
+<pre>% bunzip2 python.iso.bz2
+% 9660srv -f python.iso
+% 9fs 9660
+% cd /n/9660
+% cat README</pre></p>
+<p>
+然后参照README中的说明来安装python。需要注意的是在执行setup脚本之前，应该9fs kfs，否则会出错。</p>
+<p>&nbsp;</p>
+<p>II、安装Go<br />
+参考<a href="http://golang.org/doc/install.html">http://golang.org/doc/install.html</a></p>
+<p>
+<pre>% hg clone -r release https://go.googlecode.com/hg/ go</pre></p>
+<p>奇怪的是装完mercurial，执行上面的命令之后，总是会报如下的错误：</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/02/0_1298343128g5li.gif" alt="plan9 hg error" width="708" height="441" /></p>
+<p>后来在contrib index中找到了contrib/ericvh目录下的go-plan9，尝试用dircp拷到自己目录下，总是会报各种各样的问题。几次失败之后，决定用tar cvf $home/go.tar /n/sources/contrib/ericvh/go-plan9试试。</p>
+<p>&nbsp;</p>
+<p><strong><em>2011-02-25更新：</em></strong></p>
+<p>在VirtualBox的Plan 9虚拟机中按照contrib/install来安装Python, Mercurial和执行hg clone go时并未出现任何错误。看来9vx和Plan9比起来还是很不稳定的。可惜的是Go默认的编译脚本是bash写的，而Plan 9只支持rc，看来只能等将来有时间再研究如何把bash的脚本改成rc了。</p>

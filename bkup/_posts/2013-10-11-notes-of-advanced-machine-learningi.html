@@ -1,0 +1,98 @@
+---
+layout: post
+title: Notes of Advanced Machine Learning(I)
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  publicize_facebook_url: https://facebook.com/
+  publicize_linkedin_url: http://www.linkedin.com/updates?discuss=&scope=74863407&stype=M&topic=5794417590461796352&type=U&a=Xzad
+  _wpas_done_373263: '1'
+  _publicize_done_external: a:1:{s:8:"linkedin";a:1:{s:10:"DFfbe-Shd5";b:1;}}
+author: 
+---
+<ol>
+<li>Two different ways represent a distribution over several random variables: (1) product of conditional probabilities: \(p(x_1,x_2,x_3,x_4)=p(x_4)p(x_3|x_4)p(x_2|x_3,x_4)p(x_1|x_2,x_3,x_4)\) and (2) global energy function: \(p(x_1,x_2,x_3,x_4)=\frac{1}{Z}e^{-E(x_1,x_2,x_3,x_4)}\), where \(Z\) is the partition function.</li>
+<li>Directed graphical models use conditional probabilities, which undirected graphical models use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</li>
+<li>
+<ol>
+<li>
+<h3>Probabilistic Model</h3>
+</li>
+</ol>
+<p dir="ltr">Two different ways represent a distribution over several random variables:</p>
+<ul>
+<li>
+<p dir="ltr">product of conditional probabilities: p(x1,x2,x3,x4)=p(x4)p(x3|x4)p(x2|x3,x4)p(x1|x2,x3,x4)</p>
+</li>
+<li>
+<p dir="ltr">global energy function:</p>
+</li>
+</ul>
+<p dir="ltr">p(x1,x2,x3,x4)=1Ze{-E(x1,x2,x3,x4)},</p>
+<p dir="ltr">where Zis the partition function.</p>
+<p dir="ltr">Directed graphical models use conditional probabilities(Bayesian networks), while undirected graphical models(Markov random fields, Boltzmann machines) use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</p>
+<h4>Directed Graphs</h4>
+<p dir="ltr">Directed graphs are useful for expressing causal relationships between random variables.</p>
+<ul>
+<li>
+<p dir="ltr">The joint distribution defined by the graph is given by the product of a conditional distribution for each node conditioned on its parents.</p>
+</li>
+<li>
+<p dir="ltr">For example, the joint distribution over x1,,x7 factorizes:</p>
+</li>
+</ul>
+<p dir="ltr">p(x)=p(x1)p(x2)p(x3)p(x4|x1,x2,x3)p(x5|x1,x3)p(x6|x4)p(x7|x4,x5)</p>
+<h4>Markov Random Fields</h4>
+<p dir="ltr">p(x)=1Zcc(xc)</p>
+<ul>
+<li>
+<p dir="ltr">Each potential function is a mapping from joint configurations of random variables in a clique to non-negative real numbers.</p>
+</li>
+<li>
+<p dir="ltr">The choice of potential functions is not restricted to having specific probabilistic interpretations.</p>
+</li>
+<li>
+<p dir="ltr">Potential functions are often represented as exponentials:</p>
+</li>
+</ul>
+<p dir="ltr">p(x)=1Zcc(xc)=1Z(-cE(xc))=1Z(-E(x)) (Boltzmann distribution)</p>
+<ul>
+<li>
+<p dir="ltr">Computing Z is very hard, which represents a major limitation of undirected models.</p>
+</li>
+</ul>
+<p dir="ltr">
+<hr />
+<p>&nbsp;</p>
+<ol start="2">
+<li>
+<h3>Singular Value Decomposition</h3>
+</li>
+</ol>
+<p dir="ltr">Singular Value Decomposition(SVD) is a factorization of a real or complex matrix. Formally, the singular value decomposition of an mn matrix M is a factorization of the form</p>
+<p dir="ltr">M=UV*</p>
+<p dir="ltr">where U is a mm unitary matrix,  is an mn rectangular diagonal matrix with nonnegative real numbers on the diagonal, and V*(the conjugate transpose of V: (V*)ij=Vji, for real matrix, it equals the transpose) is an nn unitary matrix.</p>
+<p dir="ltr">A complex square matrix U is unitary if U*U=UU*=I.</p>
+<p dir="ltr">The diagonal entries ij of  are known as the singular values of M, which means they are the square roots of the eigenvalues of matrix MM*. The m columns of U and n columns of V are called the left-singular vectors and right-singular vectors of M, respectively.</p>
+<p dir="ltr">The SVD and the eigendecomposition are closely related:</p>
+<ul>
+<li>
+<p dir="ltr">The left-singular vectors of M(columns of U) are eigenvectors of MM*.</p>
+</li>
+<li>
+<p dir="ltr">The right-singular vectors of M(columns of V) are eigenvectors of M*M.</p>
+</li>
+<li>
+<p dir="ltr">The non-zero singular values of M(diagonal entries of ) are the square roots of the non-zero eigenvalues of both M*M and MM*.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>References:</p>
+<ol>
+<li>U Toronto CSC2535: <a href="http://www.cs.toronto.edu/~hinton/csc2535/lectures.html">http://www.cs.toronto.edu/~hinton/csc2535/lectures.html</a></li>
+</ol>

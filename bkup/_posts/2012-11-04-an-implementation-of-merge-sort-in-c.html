@@ -1,0 +1,59 @@
+---
+layout: post
+title: An Implementation of Merge Sort in C
+categories: []
+tags:
+- Algorithm
+- Merge sort
+status: publish
+type: post
+published: true
+meta:
+  _publicize_done_external: a:1:{s:8:"linkedin";a:1:{s:10:"DFfbe-Shd5";b:1;}}
+  _wpas_done_373263: '1'
+  _publicize_pending: '1'
+  _wpas_skip_373263: '1'
+author: 
+---
+<p>Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. </p>
+<p>The merge sort below was found in Internet. Sorry that I forgot to record the hyperlink of the webpage. Only a few changes were made by me. </p>
+<p> </p>
+<p><code>void Merge(int* input, long p, long r)<br />
+{<br />
+	long mid = floor((p + r) / 2);<br />
+	long i1 = 0;<br />
+	long i2 = p;<br />
+	long i3 = mid + 1;</p>
+<p>	// Temp array<br />
+	int* temp=new int[r-p+1];</p>
+<p>	// Merge in sorted form the 2 arrays<br />
+	while ( i2 &lt;= mid &amp;&amp; i3 &lt;= r )<br />
+		if ( input[i2] &lt; input[i3] )<br />
+			temp[i1++] = input[i2++];<br />
+		else<br />
+			temp[i1++] = input[i3++];</p>
+<p>	// Merge the remaining elements in left array<br />
+	while ( i2 &lt;= mid )<br />
+		temp[i1++] = input[i2++];</p>
+<p>	// Merge the remaining elements in right array<br />
+	while ( i3 &lt;= r )<br />
+		temp[i1++] = input[i3++];</p>
+<p>	// Move from temp array to master array<br />
+	for ( int i = p; i &lt;= r; i++ )<br />
+		input[i] = temp[i-p];</p>
+<p>	delete [] temp;<br />
+}</p>
+<p>// inputs:<br />
+//	p - the start index of array input<br />
+//	r - the end index of array input<br />
+void Merge_sort(int* input, long p, long r)<br />
+{<br />
+	if ( p &lt; r )<br />
+	{<br />
+		long mid = floor((p + r) / 2);<br />
+		Merge_sort(input, p, mid);<br />
+		Merge_sort(input, mid + 1, r);<br />
+		Merge(input, p, r);<br />
+	}<br />
+}<br />
+</code></p>

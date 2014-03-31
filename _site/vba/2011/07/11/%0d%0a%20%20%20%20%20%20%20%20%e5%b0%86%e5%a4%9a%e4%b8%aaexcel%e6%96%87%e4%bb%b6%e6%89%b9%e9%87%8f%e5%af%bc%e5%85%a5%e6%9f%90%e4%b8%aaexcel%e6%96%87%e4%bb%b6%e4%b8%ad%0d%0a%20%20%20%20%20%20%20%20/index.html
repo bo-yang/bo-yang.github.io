@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - 将多个Excel文件批量导入某个Excel文件中 </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>将多个Excel文件批量导入某个Excel文件中</h1>
+    <p>这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。</p>
+<p>下面是搜索了半天之后搞出来的Macro，没有异常处理，而且使用了copy/paste，文件太多时效率肯定不高。其实完全可以参照<span style="font-family:Arial, Helvetica, sans-serif;"></span></p>
+<p><a href="http://www.exceltip.com/st/Copy_a_sheet_from_each_workbook_into_your_workbook_in_a_folder_using_VBA_in_Microsoft_Excel/560.html">Copy a sheet from each workbook into your workbook in a folder using VBA in Microsoft Excel</a>&nbsp;和 <a href="http://www.ozgrid.com/VBA/SpeedingUpVBACode.htm">Optimize Slow VBA Code</a> 中的方法来优化。</p></p>
+<pre>Sub LoadSheets()
+    Application.ScreenUpdating = False  ' stop screen flickering
+    
+    ' Create new sheets according to selected cells and copy the
+    ' contebts of other files into the new sheets
+    Dim YesNo As Variant, myFolder As String, MyLF As String
+        
+    MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
+    myFolder = &quot;D:Documents and SettingsbonnyMy Documentstools&quot;   'change this to the location of saved XML files
+    'Windows 7下C盘默认不可写，请修改DefFolder的值
+    
+    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; myclf &amp; _
+        &quot;Do you want to continue?&quot;, _
+        vbYesNo, &quot;Caution&quot;)
+    Select Case YesNo
+    Case vbYes
+        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates&quot;, Default:=myFolder)
+        'Create new worksheets
+        For Each cell In Selection.Cells
+            Call CreateNewWorksheet(cell.Value, myFolder)
+        Next
+    Case vbNo
+        Exit Sub
+    End Select
+    
+    Application.ScreenUpdating = True
+End Sub
+
+Function CreateNewWorksheet(SheetName As String, FolderName As String) As String
+
+    Dim oSheet As Worksheet, vRet As Variant
+    Dim fName As String
+    
+    'creating a new excel worksheet
+    Set oSheet = Worksheets.Add
+    With oSheet
+        .Name = SheetName
+        .Move after:=Sheets(Sheets.Count) '在当前所有worksheet后创建新的工作表
+        .Activate
+    End With
+    
+    'open Excel files and copy the contents to this sheet
+    Dim newWB As Workbook, curWB As Workbook
+    Dim startRange As Range
+    
+    Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
+    fName = FolderName + &quot;&quot; + SheetName + &quot;.xls&quot;
+    Set newWB = Workbooks.Open(fName)
+    newWB.Activate
+    newWB.Sheets(1).Activate ' 假定只有第一个worksheet需要copy
+    Set startRange = newWB.Sheets(1).UsedRange ' Only used range will be copied
+    newWB.Sheets(1).UsedRange.Copy
+    
+    'select the destination cell
+    curWB.Activate
+    Sheets(SheetName).Activate
+    Range(startRange.Address).Select
+    ActiveSheet.Paste
+    Application.CutCopyMode = False  'Clear Clipboard
+    newWB.Close
+    
+    Exit Function
+
+End Function
+
+</pre></p>
+
+</div>
+
+<small class="meta">Posted July 11, 2011</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

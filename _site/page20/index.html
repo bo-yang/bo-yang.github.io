@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%25e4%25b8%25adifs%25e7%259a%2584%25e5%25a6%2599%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Korn Shell中IFS的妙用</a></h2>
+
+    <p>IFS是internal field separator的缩写，shell的特殊环境变量。ksh根据IFS存储的值，可以是空格、tab、换行符或者其他自定义符号，来解析输入和输出的变量值。</p>
+<p>&nbsp;</p>
+<p>如果有一IP地址220.112.253.111, 欲将这个IP地址颠倒顺序，你可以定义IFS为"."，然后直接echo这个地址即可得到此IP的4个数值，然后c重新把IFS设为空格，重新组合四个IP地址的数值即可。</p>
+<p>
+<pre># The following code segment will only work in ksh, 
+# and it will fail in bash
+IP=220.112.253.111
+IFS="."
+TMPIP=$(echo $IP)
+IFS=" " # space
+echo $TMPIP | read ip1 ip2 ip3 ip4
+INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>更详细的IFS的介绍参见下文：（原文地址：<a href="http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm">http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm</a>）</p>
+<p>&nbsp;</p>
+<table style="width:100%;" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Another shell variable that you should become comfortable using is the IFS, or internal field separator, variable.<span>&nbsp;&nbsp;</span>The shell uses the value stored in IFS, which is the space, tab, and newline characters by default, to delimit words for the read and set commands, when parsing output from command substitution, and when performing variable substitution.</span><span></p>
+<p><span style="text-decoration:underline;">IFS can be redefined to parse one or more lines of data whose fields are not delimited by the default white-space characters.</span><span>&nbsp;&nbsp;</span>Consider this sequence of variable assignments and for loops:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">$ line=learn:unix:at:livefire:labs<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn:unix:at:livefire:labs<br />$ OIFS=$IFS<br />$ IFS=:<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn<br />unix<br />at<br />livefire<br />labs<br />$</p>
+<p></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>The first command assigns the string &ldquo;learn:unix:at:livefire:labs&rdquo; to the variable named line.<span>&nbsp;&nbsp;</span>You can see from the first for loop that the shell treats the entire string as a single field.<span>&nbsp;&nbsp;</span>This is because the string does not contain a space, tab, or newline character.&nbsp;</p>
+<p></span><span>After redefining IFS, the second for loop treats the string as four separated fields, each delimited by a colon.<span>&nbsp;&nbsp;</span>Using a colon for IFS would be appropriate when parsing the fields in a record from /etc/passwd, the user account information file:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">livefire:x:100:1::/export/home/livefire:/bin/ksh</p>
+<p></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Notice that the original value of IFS was stored in OIFS (&ldquo;O&rdquo; for original) prior to changing its value.<span>&nbsp;&nbsp;</span>After you are finished using the new definition, it would be wise to return it to its original value to avoid unexpected side effects that may surface later on in your script.&nbsp;</p>
+<p></span><span>TIP &ndash; The current value of IFS may be viewed using the following pipeline:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<blockquote>
+<p><span style="font-family:Arial;font-size:x-small;">$ echo "$IFS" | od -b<br />0000000 040 011 012 012<br />0000004<br />$</span></p>
+</blockquote>
+</td>
+</tr>
+<tr>
+<td width="100%"><span style="font-family:Arial;font-size:x-small;"><span>The output of the echo command is piped into the octal dump command, giving you its octal equivalent.<span>&nbsp;&nbsp;</span>You can then use an ASCII table to determine what characters are stored in the variable.<span>&nbsp;&nbsp;</span>Hint: Ignore the first set of zeros and the second newline character (012), which was generated by echo.<br /></span></span></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">July 17, 2010 | <a href='/bkup/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%25e4%25b8%25adifs%25e7%259a%2584%25e5%25a6%2599%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%25e4%25b8%25adifs%25e7%259a%2584%25e5%25a6%2599%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Korn Shell中IFS的妙用</a></h2>
+
+    <p>IFS是internal field separator的缩写，shell的特殊环境变量。ksh根据IFS存储的值，可以是空格、tab、换行符或者其他自定义符号，来解析输入和输出的变量值。</p>
+<p>&nbsp;</p>
+<p>如果有一IP地址220.112.253.111, 欲将这个IP地址颠倒顺序，你可以定义IFS为"."，然后直接echo这个地址即可得到此IP的4个数值，然后c重新把IFS设为空格，重新组合四个IP地址的数值即可。</p>
+<p>
+<pre># The following code segment will only work in ksh, 
+# and it will fail in bash
+IP=220.112.253.111
+IFS="."
+TMPIP=$(echo $IP)
+IFS=" " # space
+echo $TMPIP | read ip1 ip2 ip3 ip4
+INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>更详细的IFS的介绍参见下文：（原文地址：<a href="http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm">http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm</a>）</p>
+<p>&nbsp;</p>
+<table style="width:100%;" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Another shell variable that you should become comfortable using is the IFS, or internal field separator, variable.<span>&nbsp;&nbsp;</span>The shell uses the value stored in IFS, which is the space, tab, and newline characters by default, to delimit words for the read and set commands, when parsing output from command substitution, and when performing variable substitution.</span><span></p>
+<p><span style="text-decoration:underline;">IFS can be redefined to parse one or more lines of data whose fields are not delimited by the default white-space characters.</span><span>&nbsp;&nbsp;</span>Consider this sequence of variable assignments and for loops:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">$ line=learn:unix:at:livefire:labs<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn:unix:at:livefire:labs<br />$ OIFS=$IFS<br />$ IFS=:<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn<br />unix<br />at<br />livefire<br />labs<br />$</p>
+<p></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>The first command assigns the string &ldquo;learn:unix:at:livefire:labs&rdquo; to the variable named line.<span>&nbsp;&nbsp;</span>You can see from the first for loop that the shell treats the entire string as a single field.<span>&nbsp;&nbsp;</span>This is because the string does not contain a space, tab, or newline character.&nbsp;</p>
+<p></span><span>After redefining IFS, the second for loop treats the string as four separated fields, each delimited by a colon.<span>&nbsp;&nbsp;</span>Using a colon for IFS would be appropriate when parsing the fields in a record from /etc/passwd, the user account information file:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">livefire:x:100:1::/export/home/livefire:/bin/ksh</p>
+<p></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Notice that the original value of IFS was stored in OIFS (&ldquo;O&rdquo; for original) prior to changing its value.<span>&nbsp;&nbsp;</span>After you are finished using the new definition, it would be wise to return it to its original value to avoid unexpected side effects that may surface later on in your script.&nbsp;</p>
+<p></span><span>TIP &ndash; The current value of IFS may be viewed using the following pipeline:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<blockquote>
+<p><span style="font-family:Arial;font-size:x-small;">$ echo "$IFS" | od -b<br />0000000 040 011 012 012<br />0000004<br />$</span></p>
+</blockquote>
+</td>
+</tr>
+<tr>
+<td width="100%"><span style="font-family:Arial;font-size:x-small;"><span>The output of the echo command is piped into the octal dump command, giving you its octal equivalent.<span>&nbsp;&nbsp;</span>You can then use an ASCII table to determine what characters are stored in the variable.<span>&nbsp;&nbsp;</span>Hint: Ignore the first set of zeros and the second newline character (012), which was generated by echo.<br /></span></span></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">July 17, 2010 | <a href='/unix/linux/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%25e4%25b8%25adifs%25e7%259a%2584%25e5%25a6%2599%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520awk%25e6%25ad%25a3%25e5%2588%2599%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e4%25b8%25ad%25e8%25b0%2583%25e7%2594%25a8ksh%25e5%258f%2598%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">awk正则表达式中调用ksh变量</a></h2>
+
+    </p>
+<p>如果ksh中定义了变量pcname,而在嵌入ksh中的awk程序中又要使用这个环境变量，并且用它在正则表达式中，该如何用它呢？</p>
+<p>最简单的方法就是：</p>
+<p>
+<pre>#!/bin/ksh
+pcname="ap201"
+nawk '/'"$pcname"'/{print $2}' $FILE</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>更多方法，参见下面转载的《<strong><a href="http://www.91linux.com/html/article/shell/20090405/16355.html">AWK 使用 Shell 变量</a></strong>》一文：</p>
+<p>&nbsp;</p>
+<p>最近闲着没事，想写个Shell脚本，其中用到了 AWK。想在AWK中读取／设置Shell脚本中定义的变量，搜索些资源，总结了一些东东。</p>
+<p><span style="font-size:large;">读取变量</span></p>
+<p>在通过如下方式<span>读取</span>Shell变量<br />1&gt; awk -v varName=varValue '...' ...<br />2&gt; awk '...{print "'"${USER}"'"}' ...<br />&nbsp;&nbsp; 此种方式可以访问系统环境变量（如USER等），和自定义Shell变量。若这些变量中没有空格及其他特殊字符，则可以少写两个双引号：awk '...{print "'${USER}"}' ...<br />3&gt; awk '...{print ENVIRON["USER"]}...' ...<br />&nbsp;&nbsp; 但是这种方法只能访问系统变量</p>
+<p><span style="font-size:large;">设置变量</span></p>
+<p><span>在AWK中尚未找到设置</span>Shell变量的方法，因为像上面的读取的方法中，一旦awk开始执行，这些环境变量都是一个副本，无论处理多少条记录，不管主Shell中如何变化，所引用的这些变量值都保持不变。而且，通过下面的实验可以看出来，在AWK中执行system函数调用命令是另起一个Shell线程，所以无法依靠system来设置外部环境变量。<br />如果你的AWK只打印一条结果的话，可以使用如下方式<span>在shell环境中设置</span>变量<br />&nbsp;&nbsp; myVar="`echo | awk '{print "AA/nBB/nCC"}'`"<br />注意，这种方式在awk打印多行情况下会将回车用空格替代后赋值。</p>
+<p>实验过程如下：</p>
+<p><span style="font-size:medium;"><span>$ vi tmp.sh</span></span><br />// 编辑内容如下<br /><span><span style="font-family:新宋体;">
+<pre>#!/bin/bash
+echo
+echo "SHELL VERSION : ${SHELL} ${BASH_VERSION}"
+echo "AWK VERSION : `awk -W version | sed -n '1p'`"
+echo
+myVar="AAA BBB CCC DDD"
+echo "IN SHELL : PID=$"
+echo "IN SHELL : /${myVar}=/"${myVar}/""
+echo
+echo | awk -v var1="${myVar}" '{
+    print "IN AWK : how to print single quote : " "'"'"'" 
+    print "No." NR
+    print "IN AWK : -v : var1=/"" var1 "/""
+    print "IN AWK : get : ENVIRON[/"USER/"]=/"" ENVIRON["USER"] "/""
+    print "IN AWK : get : ENVIRON[/"myVar/"]=/"" ENVIRON["myVar"] "/""
+    print "IN AWK : get : ${USER} =/"" "'"${USER}"'" "/"" 
+    print "IN AWK : get : ${myVar}=/"" "'"${myVar}"'" "/"" 
+    print
+    system("echo /"IN AWK : system() : PID=$/"")
+}' 
+myVar="`echo | awk '{print "AA/nBB/nCC"}'`"
+#/n is replaced by space character
+echo ${myVar}</pre>
+<p></span><br /><span style="font-size:medium;"><span style="font-family:新宋体;"><span>$ . tmp.sh</span><br /></span></span></span>//输出结果如下
+<pre>
+SHELL VERSION : /bin/bash 3.2.25(1)-release
+AWK VERSION : GNU Awk 3.1.5
+IN SHELL : PID=10627
+IN SHELL : ${myVar}="AAA BBB CCC DDD"
+IN AWK : how to print single quote : ' 
+No.1
+IN AWK : -v : var1="AAA BBB CCC DDD"
+IN AWK : get : ENVIRON["USER"]="zhangll"
+IN AWK : get : ENVIRON["myVar"]=""
+IN AWK : get : ${USER} ="zhangll"
+IN AWK : get : ${myVar}="AAA BBB CCC DDD"
+IN AWK : system() : PID=17468
+AA BB CC</pre>
+<p>&nbsp;</p>
+
+
+    <small class="meta">July 17, 2010 | <a href='/bkup/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520awk%25e6%25ad%25a3%25e5%2588%2599%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e4%25b8%25ad%25e8%25b0%2583%25e7%2594%25a8ksh%25e5%258f%2598%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520awk%25e6%25ad%25a3%25e5%2588%2599%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e4%25b8%25ad%25e8%25b0%2583%25e7%2594%25a8ksh%25e5%258f%2598%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">awk正则表达式中调用ksh变量</a></h2>
+
+    </p>
+<p>如果ksh中定义了变量pcname,而在嵌入ksh中的awk程序中又要使用这个环境变量，并且用它在正则表达式中，该如何用它呢？</p>
+<p>最简单的方法就是：</p>
+<p>
+<pre>#!/bin/ksh
+pcname="ap201"
+nawk '/'"$pcname"'/{print $2}' $FILE</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>更多方法，参见下面转载的《<strong><a href="http://www.91linux.com/html/article/shell/20090405/16355.html">AWK 使用 Shell 变量</a></strong>》一文：</p>
+<p>&nbsp;</p>
+<p>最近闲着没事，想写个Shell脚本，其中用到了 AWK。想在AWK中读取／设置Shell脚本中定义的变量，搜索些资源，总结了一些东东。</p>
+<p><span style="font-size:large;">读取变量</span></p>
+<p>在通过如下方式<span>读取</span>Shell变量<br />1&gt; awk -v varName=varValue '...' ...<br />2&gt; awk '...{print "'"${USER}"'"}' ...<br />&nbsp;&nbsp; 此种方式可以访问系统环境变量（如USER等），和自定义Shell变量。若这些变量中没有空格及其他特殊字符，则可以少写两个双引号：awk '...{print "'${USER}"}' ...<br />3&gt; awk '...{print ENVIRON["USER"]}...' ...<br />&nbsp;&nbsp; 但是这种方法只能访问系统变量</p>
+<p><span style="font-size:large;">设置变量</span></p>
+<p><span>在AWK中尚未找到设置</span>Shell变量的方法，因为像上面的读取的方法中，一旦awk开始执行，这些环境变量都是一个副本，无论处理多少条记录，不管主Shell中如何变化，所引用的这些变量值都保持不变。而且，通过下面的实验可以看出来，在AWK中执行system函数调用命令是另起一个Shell线程，所以无法依靠system来设置外部环境变量。<br />如果你的AWK只打印一条结果的话，可以使用如下方式<span>在shell环境中设置</span>变量<br />&nbsp;&nbsp; myVar="`echo | awk '{print "AA/nBB/nCC"}'`"<br />注意，这种方式在awk打印多行情况下会将回车用空格替代后赋值。</p>
+<p>实验过程如下：</p>
+<p><span style="font-size:medium;"><span>$ vi tmp.sh</span></span><br />// 编辑内容如下<br /><span><span style="font-family:新宋体;">
+<pre>#!/bin/bash
+echo
+echo "SHELL VERSION : ${SHELL} ${BASH_VERSION}"
+echo "AWK VERSION : `awk -W version | sed -n '1p'`"
+echo
+myVar="AAA BBB CCC DDD"
+echo "IN SHELL : PID=$"
+echo "IN SHELL : /${myVar}=/"${myVar}/""
+echo
+echo | awk -v var1="${myVar}" '{
+    print "IN AWK : how to print single quote : " "'"'"'" 
+    print "No." NR
+    print "IN AWK : -v : var1=/"" var1 "/""
+    print "IN AWK : get : ENVIRON[/"USER/"]=/"" ENVIRON["USER"] "/""
+    print "IN AWK : get : ENVIRON[/"myVar/"]=/"" ENVIRON["myVar"] "/""
+    print "IN AWK : get : ${USER} =/"" "'"${USER}"'" "/"" 
+    print "IN AWK : get : ${myVar}=/"" "'"${myVar}"'" "/"" 
+    print
+    system("echo /"IN AWK : system() : PID=$/"")
+}' 
+myVar="`echo | awk '{print "AA/nBB/nCC"}'`"
+#/n is replaced by space character
+echo ${myVar}</pre>
+<p></span><br /><span style="font-size:medium;"><span style="font-family:新宋体;"><span>$ . tmp.sh</span><br /></span></span></span>//输出结果如下
+<pre>
+SHELL VERSION : /bin/bash 3.2.25(1)-release
+AWK VERSION : GNU Awk 3.1.5
+IN SHELL : PID=10627
+IN SHELL : ${myVar}="AAA BBB CCC DDD"
+IN AWK : how to print single quote : ' 
+No.1
+IN AWK : -v : var1="AAA BBB CCC DDD"
+IN AWK : get : ENVIRON["USER"]="zhangll"
+IN AWK : get : ENVIRON["myVar"]=""
+IN AWK : get : ${USER} ="zhangll"
+IN AWK : get : ${myVar}="AAA BBB CCC DDD"
+IN AWK : system() : PID=17468
+AA BB CC</pre>
+<p>&nbsp;</p>
+
+
+    <small class="meta">July 17, 2010 | <a href='/unix/linux/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520awk%25e6%25ad%25a3%25e5%2588%2599%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e4%25b8%25ad%25e8%25b0%2583%25e7%2594%25a8ksh%25e5%258f%2598%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/06/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apache%2520%2526amp%253b%2520subversion%25e9%2585%258d%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Apache & Subversion配置</a></h2>
+
+    <p>&nbsp;</p>
+<h2>I.&nbsp;<span style="color:#000000;"><a href="http://xuebingnanmm.javaeye.com/blog/629810">CentOS Apache配置详解</a></span></h2>
+<p><span style="color:#000000;">(</span><a href="http://xuebingnanmm.javaeye.com/blog/629810">http://xuebingnanmm.javaeye.com/blog/629810</a>)</p>
+<p>&nbsp;</p>
+<p><span style="color:#000000;"><br />
+</span></p>
+<h2>II.<span style="color:#000000;"><a id="vqhi" title="Subversion on CentOS" href="http://wiki.centos.org/HowTos/Subversion#head-63b296629e14e219beb2a4b866521947afe58d68">Subversion on CentOS</a>&nbsp;</span></h2>
+<pre><span style="color:#000000;">(</span><a href="http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9">http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9</a>)</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>III. How to customize the path of svn repository?&nbsp;</h2>
+<p>The URL of svn repository is like http://&lt;server_name&gt;/&lt;location&gt;/&lt;project&gt;. You can store the svn repository to anywhere you want.&nbsp;</p>
+<p>&nbsp;</p>
+<div>If the location is not defined in&nbsp;/etc/httpd/conf/httpd.conf, add such definition in it:</div>
+<div><span style="font-family:'Courier New';">&lt;Directory /path&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;Options FollowSymLinks<br /></span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;AllowOverride None</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Directory&gt;</span></div>
+<p>&nbsp;</p>
+<div>Then change the&nbsp;<strong>/etc/httpd/conf.d/subversion.conf</strong>, such as:</div>
+<div><span style="font-family:'Courier New';">&lt;Location /tmp&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;DAV svn</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;SVNParentPath /var/www/svn/repos</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;AuthzSVNAccessFile /etc/svn-acl-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;SVNPath /tmp/svn/project</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthType Basic</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthName "Subversion repos"</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthUserFile /etc/svn-auth-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;Require valid-user</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Location&gt;</span></div>
+<p>
+<br />However,&nbsp;<span style="font-family:'courier new';">SVNParentPath&nbsp;</span>is can not be used here and only&nbsp;<span style="font-family:'courier new';">SVNPath&nbsp;</span>is supported (<a href="http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html">http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html</a>).</p>
+<div>The &lt;Location /&gt;...&lt;/Location&gt; tags also can be added in /etc/httpd/conf/httpd.conf (<a href="http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn">http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn</a>).</div>
+<div>Command to stop SELinux: &nbsp;<span style="font-family:'courier new';"><span style="font-size:x-small;">setenforce 0</span></span></div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">June 24, 2010 | <a href='/bkup/2010/06/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apache%2520%2526amp%253b%2520subversion%25e9%2585%258d%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/06/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apache%2520%2526amp%253b%2520subversion%25e9%2585%258d%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Apache & Subversion配置</a></h2>
+
+    <p>&nbsp;</p>
+<h2>I.&nbsp;<span style="color:#000000;"><a href="http://xuebingnanmm.javaeye.com/blog/629810">CentOS Apache配置详解</a></span></h2>
+<p><span style="color:#000000;">(</span><a href="http://xuebingnanmm.javaeye.com/blog/629810">http://xuebingnanmm.javaeye.com/blog/629810</a>)</p>
+<p>&nbsp;</p>
+<p><span style="color:#000000;"><br />
+</span></p>
+<h2>II.<span style="color:#000000;"><a id="vqhi" title="Subversion on CentOS" href="http://wiki.centos.org/HowTos/Subversion#head-63b296629e14e219beb2a4b866521947afe58d68">Subversion on CentOS</a>&nbsp;</span></h2>
+<pre><span style="color:#000000;">(</span><a href="http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9">http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9</a>)</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>III. How to customize the path of svn repository?&nbsp;</h2>
+<p>The URL of svn repository is like http://&lt;server_name&gt;/&lt;location&gt;/&lt;project&gt;. You can store the svn repository to anywhere you want.&nbsp;</p>
+<p>&nbsp;</p>
+<div>If the location is not defined in&nbsp;/etc/httpd/conf/httpd.conf, add such definition in it:</div>
+<div><span style="font-family:'Courier New';">&lt;Directory /path&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;Options FollowSymLinks<br /></span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;AllowOverride None</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Directory&gt;</span></div>
+<p>&nbsp;</p>
+<div>Then change the&nbsp;<strong>/etc/httpd/conf.d/subversion.conf</strong>, such as:</div>
+<div><span style="font-family:'Courier New';">&lt;Location /tmp&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;DAV svn</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;SVNParentPath /var/www/svn/repos</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;AuthzSVNAccessFile /etc/svn-acl-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;SVNPath /tmp/svn/project</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthType Basic</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthName "Subversion repos"</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthUserFile /etc/svn-auth-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;Require valid-user</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Location&gt;</span></div>
+<p>
+<br />However,&nbsp;<span style="font-family:'courier new';">SVNParentPath&nbsp;</span>is can not be used here and only&nbsp;<span style="font-family:'courier new';">SVNPath&nbsp;</span>is supported (<a href="http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html">http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html</a>).</p>
+<div>The &lt;Location /&gt;...&lt;/Location&gt; tags also can be added in /etc/httpd/conf/httpd.conf (<a href="http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn">http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn</a>).</div>
+<div>Command to stop SELinux: &nbsp;<span style="font-family:'courier new';"><span style="font-size:x-small;">setenforce 0</span></span></div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">June 24, 2010 | <a href='/unix/linux/2010/06/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apache%2520%2526amp%253b%2520subversion%25e9%2585%258d%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/06/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8excel%2520vba%25e5%25a4%2584%25e7%2590%2586%25e6%2596%2587%25e6%25a1%25a3%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">利用Excel VBA处理文档</a></h2>
+
+    <p>遇到如下格式的一篇WORD文档，格式混乱，不适合打印：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;"><img src="http://bonny95.files.wordpress.com/2010/06/64_1276413753mmbm.jpg" alt="" width="232" height="614" /></span></span></p>
+<p>&nbsp;</p>
+<p>由于没有接触过Word VBA，因此决定用Excel VBA来处理这篇文档。首先全选该文档的内容，粘贴到Excel文档中。然后创建一个新的macro,修改该Macro为以下代码：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;">
+<pre>Sub FormatSheet()'' FormatSheet Macro' Macro recorded 6/13/2010 by Bo Yang'' Keyboard Shortcut: Ctrl+f'    Dim str As String    Dim i As Long        ' Remove blank rows    rownumber = Range(&quot;A65536&quot;).End(xlUp).Row    Do While rownumber &gt;= 1        If Cells(rownumber, 1).Value = &quot;&quot; Then            Rows(rownumber).Delete            rownumber = rownumber - 1        End If        rownumber = rownumber - 1    Loop        ' Copy the Chinese intepretation    For rownumber = 2 To 65535        Cells(rownumber, 2).Value = Cells(rownumber + 1, 1).Value    Next        ' Delete rows which contians Chinese character    ' in their first cells    For rownumber = 2 To 65535        For i = 1 To Len(Cells(rownumber, 1).Value)            str = Mid(Cells(rownumber, 1).Value, i, 1)            If str Like &quot;[Ò»£­ý›]&quot; Then                Rows(rownumber).Delete            End If        Next    Next    End Sub</pre>
+<p> </span></span></p>
+<p>&nbsp;</p>
+<p>然后按自定义快捷键Ctrl+f， 数秒钟后，文档处理完毕，秩序井然矣。</p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2010/06/64_12764139792ekk.jpg" alt="" width="464" height="523" /></p>
+
+
+    <small class="meta">June 13, 2010 | <a href='/bkup/2010/06/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8excel%2520vba%25e5%25a4%2584%25e7%2590%2586%25e6%2596%2587%25e6%25a1%25a3%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/vba/2010/06/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8excel%2520vba%25e5%25a4%2584%25e7%2590%2586%25e6%2596%2587%25e6%25a1%25a3%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">利用Excel VBA处理文档</a></h2>
+
+    <p>遇到如下格式的一篇WORD文档，格式混乱，不适合打印：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;"><img src="http://bonny95.files.wordpress.com/2010/06/64_1276413753mmbm.jpg" alt="" width="232" height="614" /></span></span></p>
+<p>&nbsp;</p>
+<p>由于没有接触过Word VBA，因此决定用Excel VBA来处理这篇文档。首先全选该文档的内容，粘贴到Excel文档中。然后创建一个新的macro,修改该Macro为以下代码：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;">
+<pre>Sub FormatSheet()'' FormatSheet Macro' Macro recorded 6/13/2010 by Bo Yang'' Keyboard Shortcut: Ctrl+f'    Dim str As String    Dim i As Long        ' Remove blank rows    rownumber = Range(&quot;A65536&quot;).End(xlUp).Row    Do While rownumber &gt;= 1        If Cells(rownumber, 1).Value = &quot;&quot; Then            Rows(rownumber).Delete            rownumber = rownumber - 1        End If        rownumber = rownumber - 1    Loop        ' Copy the Chinese intepretation    For rownumber = 2 To 65535        Cells(rownumber, 2).Value = Cells(rownumber + 1, 1).Value    Next        ' Delete rows which contians Chinese character    ' in their first cells    For rownumber = 2 To 65535        For i = 1 To Len(Cells(rownumber, 1).Value)            str = Mid(Cells(rownumber, 1).Value, i, 1)            If str Like &quot;[Ò»£­ý›]&quot; Then                Rows(rownumber).Delete            End If        Next    Next    End Sub</pre>
+<p> </span></span></p>
+<p>&nbsp;</p>
+<p>然后按自定义快捷键Ctrl+f， 数秒钟后，文档处理完毕，秩序井然矣。</p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2010/06/64_12764139792ekk.jpg" alt="" width="464" height="523" /></p>
+
+
+    <small class="meta">June 13, 2010 | <a href='/vba/2010/06/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8excel%2520vba%25e5%25a4%2584%25e7%2590%2586%25e6%2596%2587%25e6%25a1%25a3%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/06/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520find%2520cpu%2520speed%2520and%2520memory%2520size%2520on%2520solaris%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Find CPU Speed and Memory Size on Solaris</a></h2>
+
+    <p><h2>Find CPU Speed and Memory Size on Solaris</h2>
+<div class="entry">
+<p>As I&rsquo;m writing my thesis I&rsquo;m running tests on an old SMP Solaris machine. Obviously, I need to provide the specs of this machine in the paper so that the readers can see my results in context (ie why everything is taking forever. On linux I would just use&nbsp;<kbd>lshw</kbd>&nbsp;which is your ultimate hardware information goldmine. If you don&rsquo;t have it on your system, go install it now. You will thank me later.</p>
+<p>The ancient Solaris machine I was working with did not have it, so I was forced to find other ways of finding information such as CPU speed and memory size.</p>
+<p>First you can try&nbsp;<kbd>prtdiag</kbd>&nbsp;&ndash; it will tell you detailed information about all your CPU&rsquo;s and memory banks. Unfortunately it is in a weird directory that is not in your $path so you will need to run it with the absolute path:</p>
+<p><code>/usr/platform/sun4u/sbin/prtdiag -v</code></p>
+<p>If you just want information on the CPU&rsquo;s you can also try:</p>
+<p><code>psrinfo -v</code></p>
+<p>Finally, to just get your total memory size do:</p>
+<p><code>prtconf | grep Memory</code></p>
+<p>There might be better ways to do this, but these worked for me. Craig will probably be able to add to this list or correct me.&nbsp;<img class="wp-smiley" src="http://www.terminally-incoherent.com/blog/wp-includes/images/smilies/icon_smile.gif" alt=":)" /></p>
+</div>
+
+
+    <small class="meta">June 11, 2010 | <a href='/unix/linux/2010/06/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520find%2520cpu%2520speed%2520and%2520memory%2520size%2520on%2520solaris%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/06/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520find%2520cpu%2520speed%2520and%2520memory%2520size%2520on%2520solaris%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Find CPU Speed and Memory Size on Solaris</a></h2>
+
+    <p><h2>Find CPU Speed and Memory Size on Solaris</h2>
+<div class="entry">
+<p>As I&rsquo;m writing my thesis I&rsquo;m running tests on an old SMP Solaris machine. Obviously, I need to provide the specs of this machine in the paper so that the readers can see my results in context (ie why everything is taking forever. On linux I would just use&nbsp;<kbd>lshw</kbd>&nbsp;which is your ultimate hardware information goldmine. If you don&rsquo;t have it on your system, go install it now. You will thank me later.</p>
+<p>The ancient Solaris machine I was working with did not have it, so I was forced to find other ways of finding information such as CPU speed and memory size.</p>
+<p>First you can try&nbsp;<kbd>prtdiag</kbd>&nbsp;&ndash; it will tell you detailed information about all your CPU&rsquo;s and memory banks. Unfortunately it is in a weird directory that is not in your $path so you will need to run it with the absolute path:</p>
+<p><code>/usr/platform/sun4u/sbin/prtdiag -v</code></p>
+<p>If you just want information on the CPU&rsquo;s you can also try:</p>
+<p><code>psrinfo -v</code></p>
+<p>Finally, to just get your total memory size do:</p>
+<p><code>prtconf | grep Memory</code></p>
+<p>There might be better ways to do this, but these worked for me. Craig will probably be able to add to this list or correct me.&nbsp;<img class="wp-smiley" src="http://www.terminally-incoherent.com/blog/wp-includes/images/smilies/icon_smile.gif" alt=":)" /></p>
+</div>
+
+
+    <small class="meta">June 11, 2010 | <a href='/bkup/2010/06/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520find%2520cpu%2520speed%2520and%2520memory%2520size%2520on%2520solaris%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page21' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page19' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

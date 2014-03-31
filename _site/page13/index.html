@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/04/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520groff%25e5%2588%259d%25e4%25bd%2593%25e9%25aa%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">groff初体验</a></h2>
+
+    <p>&ldquo;所见即所得（WYSIWYG，What you see is what you get）&rdquo;编辑器可以使简单的工作更简单，却无法完成某些复杂的工作。</p>
+<p>&nbsp;</p>
+<p>nroff/troff是UNIX下经典的typesetting工具，groff是GNU的*roff实现，并对troff的功能进行了增强。与LaTeX相比，体积较小，且大多为*nix自带，使用较为方便。虽说TeX为Donald Knuth所创，排版效果非常好，但体积相当庞大（安装完差不多3.5GB），而且通篇的/xx语法确实把我雷倒了&mdash;&mdash;还是先由groff入手吧。</p>
+<p>&nbsp;</p>
+<p>已经搜集到的*roff相关的资料：</p>
+<ul>
+<li><span><a class="l" href="http://www.angelfire.com/linux/mlaha/pdffiles/grofftut.pdfg" target="_blank">An Introduction to the GNU&nbsp;<em>Groff</em>&nbsp;Text Processing System</a></span></li>
+<li><span><a class="l" href="http://www.angelfire.com/linux/mlaha/pdffiles/grofftut.pdfg" target="_blank"></a></span><a href="http://www.ibm.com/developerworks/aix/tutorials/au-groff/index.html">Produce device-independent documentation with Groff</a></li>
+<li><a href="http://www.gnu.org/software/groff/manual/groff.pdf">Groff Manual</a></li>
+<li><a href="http://www.ibm.com/developerworks/aix/tutorials/au-groff/index.html"></a><a href="http://troff.org/">http://troff.org/</a></li>
+<li><a href="http://oreilly.com/openbook/utp/UnixTextProcessing.pdf">http://oreilly.com/openbook/utp/UnixTextProcessing.pdf</a></li>
+<li><a href="http://floppsie.comp.glam.ac.uk/Glamorgan/gaius/web/groff_www.html">groff_www</a></li>
+<li><a href="http://floppsie.comp.glam.ac.uk/Glamorgan/gaius/web/groff.xhtml">GROFF &amp; [X]HTML</a></li>
+</ul>
+<p>groff最吸引我的地方在于能够轻松的编辑数学公式、绘图、制表、排版并且转化为ps/pdf文件或者网页。为了体验这些功能，将下面的代码为输入纯文本文件html_test,</p>
+<p>
+<pre>.URL http://netpbm.sourceforge.net/doc "Netpbm manual"
+.URL pic.html "Eric Raymond's pic guide"
+.LK TestLink
+.LP
+.EQ
+G(z) ~=~ e sup { ln ~ G(z) }
+    ~=~ exp left ( sum from k&gt;=1 { S sub k z sup k } over k right )
+    ~=~ prod from k&gt;=1 e sup { S sub k z sup k /k }
+.EN
+.LP
+.TS
+tab(:);
+c s s
+c | c | c
+l | l | n.
+Major New York Bridges
+=
+Bridge:Designer:Length
+_
+Brooklyn:J. A. Roebling:1595
+Manhattan:G. Lindenthal: 1470
+Williamsburg:L. L. Buck:1600
+_
+Queensborough:Palmer &amp;:1182
+/^:  Hornbostel:/^
+_
+Triborough:O. H. Ammann:1380
+/^:/^:383
+_
+Bronx Whitestone:O. H. Ammann:2300
+Throgs Neck:O. H. Ammann:1800
+_
+George Washington:O. H. Ammann:3500
+_
+.TE
+.LP
+.PS
+lineht = lineht / 2
+box "/fIletter.tr/fP"
+arrow
+circle "tbl"
+arrow
+Eqn: circle "eqn"
+arrow
+Troff: circle "troff"
+arc cw
+line down
+arc cw
+left
+arrow
+circle "grops"
+arrow
+box "/fIletter.ps/fP"
+up
+line &lt;- from Troff.n
+arc
+line
+box "/fItmac.m/fP"
+.PE
+</pre>
+<p>&nbsp;</p>
+<p>然后输入下列命令：</p>
+<p>
+<pre>pic html_test | eqn | tbl | groff -ms -Thtml &gt; html_test.html</pre>
+<p>&nbsp;</p>
+<p>或者</p>
+<p>
+<pre>groff -p -e -t -ms -Thtml html_test &gt; html_test.html</pre>
+<p>&nbsp;</p>
+<p>在处理pic时，宏-ms必不可少。</p>
+<p>&nbsp;</p>
+<p>如果不出错的话，链接将会在网页中正常显示，公式、表格以及图表会被转换为图片。</p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/04/0_1303308743p06n.gif" alt="" width="402" height="201" /></p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/04/0_13033087485aw7.gif" alt="" /></p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/04/0_13033087538dbq.gif" alt="" /></p>
+<p>&nbsp;</p>
+<p>groff的groff_www扩展会调用pnmcut，netpbm的工具包中的一个工具。netpbm可以在<a href="http://netpbm.sourceforge.net/">http://netpbm.sourceforge.net/</a>下载并安装。安装成功后，需要把netpbm的路径加入到PATH中，最好是在$HOME/.bashrc中加入。</p>
+<p>&nbsp;</p>
+<hr />
+<p>Update 2011-04-21:</p>
+<p>&nbsp;</p>
+<p>今天试着用groff写了一个文件，并把它转化为html格式，那是相当的痛苦&mdash;&mdash;对于一个习惯了所见即所得的初学者，groff的学习曲线确实相当的陡峭。</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">April 20, 2011 | <a href='/unix/linux/2011/04/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520groff%25e5%2588%259d%25e4%25bd%2593%25e9%25aa%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/04/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520groff%25e5%2588%259d%25e4%25bd%2593%25e9%25aa%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">groff初体验</a></h2>
+
+    <p>&ldquo;所见即所得（WYSIWYG，What you see is what you get）&rdquo;编辑器可以使简单的工作更简单，却无法完成某些复杂的工作。</p>
+<p>&nbsp;</p>
+<p>nroff/troff是UNIX下经典的typesetting工具，groff是GNU的*roff实现，并对troff的功能进行了增强。与LaTeX相比，体积较小，且大多为*nix自带，使用较为方便。虽说TeX为Donald Knuth所创，排版效果非常好，但体积相当庞大（安装完差不多3.5GB），而且通篇的/xx语法确实把我雷倒了&mdash;&mdash;还是先由groff入手吧。</p>
+<p>&nbsp;</p>
+<p>已经搜集到的*roff相关的资料：</p>
+<ul>
+<li><span><a class="l" href="http://www.angelfire.com/linux/mlaha/pdffiles/grofftut.pdfg" target="_blank">An Introduction to the GNU&nbsp;<em>Groff</em>&nbsp;Text Processing System</a></span></li>
+<li><span><a class="l" href="http://www.angelfire.com/linux/mlaha/pdffiles/grofftut.pdfg" target="_blank"></a></span><a href="http://www.ibm.com/developerworks/aix/tutorials/au-groff/index.html">Produce device-independent documentation with Groff</a></li>
+<li><a href="http://www.gnu.org/software/groff/manual/groff.pdf">Groff Manual</a></li>
+<li><a href="http://www.ibm.com/developerworks/aix/tutorials/au-groff/index.html"></a><a href="http://troff.org/">http://troff.org/</a></li>
+<li><a href="http://oreilly.com/openbook/utp/UnixTextProcessing.pdf">http://oreilly.com/openbook/utp/UnixTextProcessing.pdf</a></li>
+<li><a href="http://floppsie.comp.glam.ac.uk/Glamorgan/gaius/web/groff_www.html">groff_www</a></li>
+<li><a href="http://floppsie.comp.glam.ac.uk/Glamorgan/gaius/web/groff.xhtml">GROFF &amp; [X]HTML</a></li>
+</ul>
+<p>groff最吸引我的地方在于能够轻松的编辑数学公式、绘图、制表、排版并且转化为ps/pdf文件或者网页。为了体验这些功能，将下面的代码为输入纯文本文件html_test,</p>
+<p>
+<pre>.URL http://netpbm.sourceforge.net/doc "Netpbm manual"
+.URL pic.html "Eric Raymond's pic guide"
+.LK TestLink
+.LP
+.EQ
+G(z) ~=~ e sup { ln ~ G(z) }
+    ~=~ exp left ( sum from k&gt;=1 { S sub k z sup k } over k right )
+    ~=~ prod from k&gt;=1 e sup { S sub k z sup k /k }
+.EN
+.LP
+.TS
+tab(:);
+c s s
+c | c | c
+l | l | n.
+Major New York Bridges
+=
+Bridge:Designer:Length
+_
+Brooklyn:J. A. Roebling:1595
+Manhattan:G. Lindenthal: 1470
+Williamsburg:L. L. Buck:1600
+_
+Queensborough:Palmer &amp;:1182
+/^:  Hornbostel:/^
+_
+Triborough:O. H. Ammann:1380
+/^:/^:383
+_
+Bronx Whitestone:O. H. Ammann:2300
+Throgs Neck:O. H. Ammann:1800
+_
+George Washington:O. H. Ammann:3500
+_
+.TE
+.LP
+.PS
+lineht = lineht / 2
+box "/fIletter.tr/fP"
+arrow
+circle "tbl"
+arrow
+Eqn: circle "eqn"
+arrow
+Troff: circle "troff"
+arc cw
+line down
+arc cw
+left
+arrow
+circle "grops"
+arrow
+box "/fIletter.ps/fP"
+up
+line &lt;- from Troff.n
+arc
+line
+box "/fItmac.m/fP"
+.PE
+</pre>
+<p>&nbsp;</p>
+<p>然后输入下列命令：</p>
+<p>
+<pre>pic html_test | eqn | tbl | groff -ms -Thtml &gt; html_test.html</pre>
+<p>&nbsp;</p>
+<p>或者</p>
+<p>
+<pre>groff -p -e -t -ms -Thtml html_test &gt; html_test.html</pre>
+<p>&nbsp;</p>
+<p>在处理pic时，宏-ms必不可少。</p>
+<p>&nbsp;</p>
+<p>如果不出错的话，链接将会在网页中正常显示，公式、表格以及图表会被转换为图片。</p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/04/0_1303308743p06n.gif" alt="" width="402" height="201" /></p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/04/0_13033087485aw7.gif" alt="" /></p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/04/0_13033087538dbq.gif" alt="" /></p>
+<p>&nbsp;</p>
+<p>groff的groff_www扩展会调用pnmcut，netpbm的工具包中的一个工具。netpbm可以在<a href="http://netpbm.sourceforge.net/">http://netpbm.sourceforge.net/</a>下载并安装。安装成功后，需要把netpbm的路径加入到PATH中，最好是在$HOME/.bashrc中加入。</p>
+<p>&nbsp;</p>
+<hr />
+<p>Update 2011-04-21:</p>
+<p>&nbsp;</p>
+<p>今天试着用groff写了一个文件，并把它转化为html格式，那是相当的痛苦&mdash;&mdash;对于一个习惯了所见即所得的初学者，groff的学习曲线确实相当的陡峭。</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">April 20, 2011 | <a href='/bkup/2011/04/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520groff%25e5%2588%259d%25e4%25bd%2593%25e9%25aa%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/04/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520qemu%25e5%25b8%25b8%25e7%2594%25a8%25e5%2591%25bd%25e4%25bb%25a4%2520%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">QEMU常用命令</a></h2>
+
+    <p>Following are excerpted from <em>Build appliances with QEMU and OpenBSD</em>, <em>BSD Magazine,</em> 2011.04.</p>
+<ul>
+<li>Boot from an ISO image: &nbsp; &nbsp;<span style="font-family:'courier new', courier;">qemu -cdrom <em>image.iso</em></span></li>
+<li>Create new hard disk for a VM: &nbsp; &nbsp;<span style="font-family:'courier new', courier;">qemu-img create <em>disk.bin</em> <em>2G</em></span></li>
+<li>Install OS into the virtual disk: &nbsp; &nbsp;<span style="font-family:'courier new', courier;">qemu -hda <em>disk.bin </em>-cdrom <em>image.iso</em></span></li>
+<li>Boot VM from virtual disk:<span style="font-family:'courier new', courier;">&nbsp; &nbsp; qemu <em>disk.bin</em></span></li>
+<li><span style="font-family:'courier new', courier;">Boot VM with two virtual disks: &nbsp; <em>&nbsp;qemu -hda first.bin -hdb second.bin</em></span></li>
+<li><span style="font-family:'courier new', courier;">Start VM in bridge mode network:<em>&nbsp; &nbsp; qemu -net nic -net tap disk.bin</em></span></li>
+<li><span style="font-family:'courier new', courier;">Simulate multiple network cards:<em> &nbsp; qemu -net nic,model=lance -net nic,model=pcnet -net nic,model=rt18139 disk.bin</em></span></li>
+<li><span style="font-family:mceinline;">QEMU can also be used with remote machines without X in -nographic mode. For this you have to have this in <em>boot.conf</em>(FreeBSD):</span></li>
+</ul>
+<p><span style="font-family:mceinline;"><em>
+<pre># cat /etc/boot.conf
+set tty com0</pre>
+<p>&nbsp;</em></span></p>
+<p><span style="font-family:mceinline;">And start QEMU with command:</span></p>
+<ul>
+</ul>
+<p><em><span style="font-family:mceinline;">qemu -nographic disk.bin&nbsp;</span></em></p>
+
+
+    <small class="meta">April 05, 2011 | <a href='/bkup/2011/04/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520qemu%25e5%25b8%25b8%25e7%2594%25a8%25e5%2591%25bd%25e4%25bb%25a4%2520%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/virtualization/2011/04/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520qemu%25e5%25b8%25b8%25e7%2594%25a8%25e5%2591%25bd%25e4%25bb%25a4%2520%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">QEMU常用命令</a></h2>
+
+    <p>Following are excerpted from <em>Build appliances with QEMU and OpenBSD</em>, <em>BSD Magazine,</em> 2011.04.</p>
+<ul>
+<li>Boot from an ISO image: &nbsp; &nbsp;<span style="font-family:'courier new', courier;">qemu -cdrom <em>image.iso</em></span></li>
+<li>Create new hard disk for a VM: &nbsp; &nbsp;<span style="font-family:'courier new', courier;">qemu-img create <em>disk.bin</em> <em>2G</em></span></li>
+<li>Install OS into the virtual disk: &nbsp; &nbsp;<span style="font-family:'courier new', courier;">qemu -hda <em>disk.bin </em>-cdrom <em>image.iso</em></span></li>
+<li>Boot VM from virtual disk:<span style="font-family:'courier new', courier;">&nbsp; &nbsp; qemu <em>disk.bin</em></span></li>
+<li><span style="font-family:'courier new', courier;">Boot VM with two virtual disks: &nbsp; <em>&nbsp;qemu -hda first.bin -hdb second.bin</em></span></li>
+<li><span style="font-family:'courier new', courier;">Start VM in bridge mode network:<em>&nbsp; &nbsp; qemu -net nic -net tap disk.bin</em></span></li>
+<li><span style="font-family:'courier new', courier;">Simulate multiple network cards:<em> &nbsp; qemu -net nic,model=lance -net nic,model=pcnet -net nic,model=rt18139 disk.bin</em></span></li>
+<li><span style="font-family:mceinline;">QEMU can also be used with remote machines without X in -nographic mode. For this you have to have this in <em>boot.conf</em>(FreeBSD):</span></li>
+</ul>
+<p><span style="font-family:mceinline;"><em>
+<pre># cat /etc/boot.conf
+set tty com0</pre>
+<p>&nbsp;</em></span></p>
+<p><span style="font-family:mceinline;">And start QEMU with command:</span></p>
+<ul>
+</ul>
+<p><em><span style="font-family:mceinline;">qemu -nographic disk.bin&nbsp;</span></em></p>
+
+
+    <small class="meta">April 05, 2011 | <a href='/unix/linux/virtualization/2011/04/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520qemu%25e5%25b8%25b8%25e7%2594%25a8%25e5%2591%25bd%25e4%25bb%25a4%2520%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/03/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520excel%25e6%2596%2587%25e4%25bb%25b6%25e8%25bd%25ac%25e6%258d%25a2%25e4%25b8%25baxml%25e4%25bb%25a5%25e5%258f%258alinux%25e6%2596%2587%25e4%25bb%25b6%25e7%25bc%2596%25e7%25a0%2581%25e6%25a0%25bc%25e5%25bc%258f%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%25/">Excel文件转换为XML以及Linux文件编码格式转换</a></h2>
+
+    <p>今天需要将多个Excel文档转换为XML&#26684;式，本打算用MS Office自带的另存为XML文件的功能，结果转换成MS Office2003 XML之后的文件就是一坨屎！Office 2007自带的XML文档转换的功能也TMD超级繁琐，根据帮助手册自己建了.xsd文件导入到Excel之后也无法导出XML数据，白白浪费了时间。</p>
+<p>后来Google到了<a href="http://www.meadinkent.co.uk/xl_xml1.htm">这篇文章</a>。文中提供了现成的VBA源代码，稍微修改一下即可拿来使用（中文注释为本人所加）：</p>
+<p>
+<pre>'Attribute VB_Name = &quot;XL_to_XML&quot;
+Sub MakeXML()
+' create an XML file from an Excel table
+Dim MyRow As Integer, MyCol As Integer, Temp As String, YesNo As Variant, DefFolder As String
+Dim XMLFileName As String, XMLRecSetName As String, MyLF As String, RTC1 As Integer
+Dim RangeOne As String, RangeTwo As String, Tt As String, FldName(99) As String
+
+MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
+DefFolder = &quot;C:MyXML&quot;   'change this to the location of saved XML files
+
+YesNo = MsgBox(&quot;This procedure requires the following data:&quot; &amp; MyLF _
+ &amp; &quot;1 A filename for the XML file&quot; &amp; MyLF _
+ &amp; &quot;2 A groupname for an XML record&quot; &amp; MyLF _
+ &amp; &quot;3 A cellrange containing fieldnames (col titles)&quot; &amp; MyLF _
+ &amp; &quot;4 A cellrange containing the data table&quot; &amp; MyLF _
+ &amp; &quot;Are you ready to proceed?&quot;, vbQuestion + vbYesNo, &quot;MakeXML CiM&quot;)
+ 
+If YesNo = vbNo Then
+ Debug.Print &quot;User aborted with 'No'&quot;
+ Exit Sub
+End If
+
+XMLFileName = FillSpaces(InputBox(&quot;1. Enter the name of the XML file:&quot;, &quot;MakeXML CiM&quot;, &quot;GRE_Core_Words&quot;))
+If Right(XMLFileName, 4) &lt;&gt; &quot;.xml&quot; Then
+ XMLFileName = XMLFileName &amp; &quot;.xml&quot;
+End If
+
+XMLRecSetName = FillSpaces(InputBox(&quot;2. Enter an identifying name of a record:&quot;, &quot;MakeXML CiM&quot;, &quot;item&quot;))
+
+RangeOne = InputBox(&quot;3. Enter the range of cells containing the field names (or column titles):&quot;, &quot;MakeXML CiM&quot;, &quot;A2:D2&quot;)
+If MyRng(RangeOne, 1) &lt;&gt; MyRng(RangeOne, 2) Then
+  MsgBox &quot;Error: names must be on a single row&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+End If
+MyRow = MyRng(RangeOne, 1)
+For MyCol = MyRng(RangeOne, 3) To MyRng(RangeOne, 4)
+ If Len(Cells(MyRow, MyCol).Value) = 0 Then
+  MsgBox &quot;Error: names range contains blank cell&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+ End If
+ FldName(MyCol - MyRng(RangeOne, 3)) = FillSpaces(Cells(MyRow, MyCol).Value)
+Next MyCol
+
+RangeTwo = InputBox(&quot;4. Enter the range of cells containing the data table:&quot;, &quot;MakeXML CiM&quot;, &quot;A3:D6257&quot;)
+If MyRng(RangeOne, 4) - MyRng(RangeOne, 3) &lt;&gt; MyRng(RangeTwo, 4) - MyRng(RangeTwo, 3) Then
+  MsgBox &quot;Error: number of field names &lt;&gt; data columns&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+End If
+RTC1 = MyRng(RangeTwo, 3)
+
+If InStr(1, XMLFileName, &quot;:&quot;) = 0 Then
+ XMLFileName = DefFolder &amp; XMLFileName
+End If
+
+Open XMLFileName For Output As #1
+Print #1, &quot;&lt;?xml version=&quot; &amp; Chr(34) &amp; &quot;1.0&quot; &amp; Chr(34) &amp; &quot; encoding=&quot; &amp; Chr(34) &amp; &quot;UTF-8&quot; &amp; Chr(34) &amp; &quot;?&gt;&quot;
+Print #1, &quot;&lt;wordbook&gt;&quot;
+
+For MyRow = MyRng(RangeTwo, 1) To MyRng(RangeTwo, 2)
+Print #1, &quot;&lt;&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
+  For MyCol = RTC1 To MyRng(RangeTwo, 4)
+  ' the next line uses the FormChk function to format dates and numbers
+     Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; Cells(MyRow, MyCol).Value &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
+  ' the next line does not apply any formatting
+  '  Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; RemoveAmpersands(Cells(MyRow, MyCol).Value) &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
+    Next MyCol
+ Print #1, &quot;&lt;/&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
+
+Next MyRow
+Print #1, &quot;&lt;/wordbook&gt;&quot;
+Close #1
+MsgBox XMLFileName &amp; &quot; created.&quot; &amp; MyLF &amp; &quot;Process finished&quot;, vbOKOnly + vbInformation, &quot;MakeXML CiM&quot;
+Debug.Print XMLFileName &amp; &quot; saved&quot;
+End Sub
+Function MyRng(MyRangeAsText As String, MyItem As Integer) As Integer
+' analyse a range, where MyItem represents 1=TR, 2=BR, 3=LHC, 4=RHC
+
+Dim UserRange As Range
+Set UserRange = Range(MyRangeAsText)
+Select Case MyItem
+ Case 1
+ MyRng = UserRange.Row
+ Case 2
+ MyRng = UserRange.Row + UserRange.Rows.Count - 1
+ Case 3
+ MyRng = UserRange.Column
+ Case 4
+ MyRng = UserRange.Columns(UserRange.Columns.Count).Column
+End Select
+Exit Function
+
+End Function
+Function FillSpaces(AnyStr As String) As String
+' remove any spaces and replace with underscore character
+Dim MyPos As Integer
+MyPos = InStr(1, AnyStr, &quot; &quot;)
+Do While MyPos &gt; 0
+ Mid(AnyStr, MyPos, 1) = &quot;_&quot;
+ MyPos = InStr(1, AnyStr, &quot; &quot;)
+Loop
+FillSpaces = LCase(AnyStr)
+End Function
+
+Function FormChk(RowNum As Integer, ColNum As Integer) As String
+' formats numeric and date cell values to comma 000's and DD MMM YY
+FormChk = Cells(RowNum, ColNum).Value
+If IsNumeric(Cells(RowNum, ColNum).Value) Then
+ FormChk = Format(Cells(RowNum, ColNum).Value, &quot;#,##0 ;(#,##0)&quot;)
+End If
+If IsDate(Cells(RowNum, ColNum).Value) Then
+ FormChk = Format(Cells(RowNum, ColNum).Value, &quot;dd mmm yy&quot;)
+End If
+End Function
+
+Function RemoveAmpersands(AnyStr As String) As String
+Dim MyPos As Integer
+' replace Ampersands (&amp;) with plus symbols (+)
+
+MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
+Do While MyPos &gt; 0
+ Mid(AnyStr, MyPos, 1) = &quot;+&quot;
+ MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
+Loop
+RemoveAmpersands = AnyStr
+End Function
+</pre>
+<p></p>
+<p></p>
+<p>如果不想将文件中的&amp;替换为&#043;，可以将第55行的<span>RemoveAmpersands(FormChk(MyRow,&nbsp;MyCol))替换为</span><span>Cells(MyRow,&nbsp;MyCol).Value。</span></p>
+<p>&nbsp;</p>
+<p>需要注意的是在Excel文件中必须有一行是标题行——即改行存放各列的标题，否则生成的XML文件&#26684;式不一定是你所需要的。</p>
+<p>&nbsp;</p>
+<p>由于我对XML文件的编码&#26684;式有要求，必须是UTF-8，而Windows默认的编码&#26684;式是GBXXXX，因此需要对生成的XML文件进行编码&#26684;式转换。搜索到了<a href="http://tech.16c.cn/linux/glpz/20100221/22560.html">linux 查看文件编码以及修改编码</a>一文，摘录重点如下：</p>
+<p>&nbsp;</p>
+<p>查看文件编码</p>
+<p>&nbsp;</p>
+<p>　　在Linux中查看文件编码可以通过以下几种方式：</p>
+<p>　　1.在Vim中可以直接查看文件编码</p>
+<p>　　:set fileencoding</p>
+<p>　　即可显示文件编码&#26684;式。</p>
+<p>　　如果你只是想查看其它编码&#26684;式的文件或者想解决用Vim查看文件乱码的问题，那么你可以在~/.vimrc 文件中添加以下内容：</p>
+<p>　　set encoding=utf-8 fileencodings=ucs-bom,utf-8,cp936</p>
+<p>　　这样，就可以让vim自动识别文件编码（可以自动识别UTF-8或者GBK编码的文件），其实就是依照fileencodings提供的编码列表尝试，如果没有找到合适的编码，就用latin-1(ASCII)编码打开。</p>
+<p>　　2. enca (如果你的系统中没有安装这个命令，可以用sudo yum install -y enca 安装 )查看文件编码</p>
+<p>　　$ enca filename</p>
+<p>　　filename: Universal transformation format 8 bits; UTF-8</p>
+<p>　　CRLF line terminators</p>
+<p>　　需要说明一点的是，enca对某些GBK编码的文件识别的不是很好，识别时会出现：</p>
+<p>　　Unrecognized encoding</p>
+<p>&nbsp;</p>
+<p>文件编码转换</p>
+<p>　　1.在Vim中直接进行转换文件编码,比如将一个文件转换成utf-8&#26684;式</p>
+<p>　　:set fileencoding=utf-8</p>
+<p>　　2. enconv 转换文件编码，比如要将一个GBK编码的文件转换成UTF-8编码，操作如下</p>
+<p>　　enconv -L zh_CN -x UTF-8 filename</p>
+<p>　　3. iconv 转换，iconv的命令&#26684;式如下：</p>
+<p>　　iconv -f encoding -t encoding inputfile</p>
+<p>　　比如将一个UTF-8 编码的文件转换成GBK编码</p>
+<p>　　iconv -f GBK -t UTF-8 file1 -o file2</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 21, 2011 | <a href='/bkup/2011/03/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520excel%25e6%2596%2587%25e4%25bb%25b6%25e8%25bd%25ac%25e6%258d%25a2%25e4%25b8%25baxml%25e4%25bb%25a5%25e5%258f%258alinux%25e6%2596%2587%25e4%25bb%25b6%25e7%25bc%2596%25e7%25a0%2581%25e6%25a0%25bc%25e5%25bc%258f%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%25/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/vba/2011/03/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520excel%25e6%2596%2587%25e4%25bb%25b6%25e8%25bd%25ac%25e6%258d%25a2%25e4%25b8%25baxml%25e4%25bb%25a5%25e5%258f%258alinux%25e6%2596%2587%25e4%25bb%25b6%25e7%25bc%2596%25e7%25a0%2581%25e6%25a0%25bc%25e5%25bc%258f%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%25/">Excel文件转换为XML以及Linux文件编码格式转换</a></h2>
+
+    <p>今天需要将多个Excel文档转换为XML&#26684;式，本打算用MS Office自带的另存为XML文件的功能，结果转换成MS Office2003 XML之后的文件就是一坨屎！Office 2007自带的XML文档转换的功能也TMD超级繁琐，根据帮助手册自己建了.xsd文件导入到Excel之后也无法导出XML数据，白白浪费了时间。</p>
+<p>后来Google到了<a href="http://www.meadinkent.co.uk/xl_xml1.htm">这篇文章</a>。文中提供了现成的VBA源代码，稍微修改一下即可拿来使用（中文注释为本人所加）：</p>
+<p>
+<pre>'Attribute VB_Name = &quot;XL_to_XML&quot;
+Sub MakeXML()
+' create an XML file from an Excel table
+Dim MyRow As Integer, MyCol As Integer, Temp As String, YesNo As Variant, DefFolder As String
+Dim XMLFileName As String, XMLRecSetName As String, MyLF As String, RTC1 As Integer
+Dim RangeOne As String, RangeTwo As String, Tt As String, FldName(99) As String
+
+MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
+DefFolder = &quot;C:MyXML&quot;   'change this to the location of saved XML files
+
+YesNo = MsgBox(&quot;This procedure requires the following data:&quot; &amp; MyLF _
+ &amp; &quot;1 A filename for the XML file&quot; &amp; MyLF _
+ &amp; &quot;2 A groupname for an XML record&quot; &amp; MyLF _
+ &amp; &quot;3 A cellrange containing fieldnames (col titles)&quot; &amp; MyLF _
+ &amp; &quot;4 A cellrange containing the data table&quot; &amp; MyLF _
+ &amp; &quot;Are you ready to proceed?&quot;, vbQuestion + vbYesNo, &quot;MakeXML CiM&quot;)
+ 
+If YesNo = vbNo Then
+ Debug.Print &quot;User aborted with 'No'&quot;
+ Exit Sub
+End If
+
+XMLFileName = FillSpaces(InputBox(&quot;1. Enter the name of the XML file:&quot;, &quot;MakeXML CiM&quot;, &quot;GRE_Core_Words&quot;))
+If Right(XMLFileName, 4) &lt;&gt; &quot;.xml&quot; Then
+ XMLFileName = XMLFileName &amp; &quot;.xml&quot;
+End If
+
+XMLRecSetName = FillSpaces(InputBox(&quot;2. Enter an identifying name of a record:&quot;, &quot;MakeXML CiM&quot;, &quot;item&quot;))
+
+RangeOne = InputBox(&quot;3. Enter the range of cells containing the field names (or column titles):&quot;, &quot;MakeXML CiM&quot;, &quot;A2:D2&quot;)
+If MyRng(RangeOne, 1) &lt;&gt; MyRng(RangeOne, 2) Then
+  MsgBox &quot;Error: names must be on a single row&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+End If
+MyRow = MyRng(RangeOne, 1)
+For MyCol = MyRng(RangeOne, 3) To MyRng(RangeOne, 4)
+ If Len(Cells(MyRow, MyCol).Value) = 0 Then
+  MsgBox &quot;Error: names range contains blank cell&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+ End If
+ FldName(MyCol - MyRng(RangeOne, 3)) = FillSpaces(Cells(MyRow, MyCol).Value)
+Next MyCol
+
+RangeTwo = InputBox(&quot;4. Enter the range of cells containing the data table:&quot;, &quot;MakeXML CiM&quot;, &quot;A3:D6257&quot;)
+If MyRng(RangeOne, 4) - MyRng(RangeOne, 3) &lt;&gt; MyRng(RangeTwo, 4) - MyRng(RangeTwo, 3) Then
+  MsgBox &quot;Error: number of field names &lt;&gt; data columns&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+End If
+RTC1 = MyRng(RangeTwo, 3)
+
+If InStr(1, XMLFileName, &quot;:&quot;) = 0 Then
+ XMLFileName = DefFolder &amp; XMLFileName
+End If
+
+Open XMLFileName For Output As #1
+Print #1, &quot;&lt;?xml version=&quot; &amp; Chr(34) &amp; &quot;1.0&quot; &amp; Chr(34) &amp; &quot; encoding=&quot; &amp; Chr(34) &amp; &quot;UTF-8&quot; &amp; Chr(34) &amp; &quot;?&gt;&quot;
+Print #1, &quot;&lt;wordbook&gt;&quot;
+
+For MyRow = MyRng(RangeTwo, 1) To MyRng(RangeTwo, 2)
+Print #1, &quot;&lt;&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
+  For MyCol = RTC1 To MyRng(RangeTwo, 4)
+  ' the next line uses the FormChk function to format dates and numbers
+     Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; Cells(MyRow, MyCol).Value &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
+  ' the next line does not apply any formatting
+  '  Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; RemoveAmpersands(Cells(MyRow, MyCol).Value) &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
+    Next MyCol
+ Print #1, &quot;&lt;/&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
+
+Next MyRow
+Print #1, &quot;&lt;/wordbook&gt;&quot;
+Close #1
+MsgBox XMLFileName &amp; &quot; created.&quot; &amp; MyLF &amp; &quot;Process finished&quot;, vbOKOnly + vbInformation, &quot;MakeXML CiM&quot;
+Debug.Print XMLFileName &amp; &quot; saved&quot;
+End Sub
+Function MyRng(MyRangeAsText As String, MyItem As Integer) As Integer
+' analyse a range, where MyItem represents 1=TR, 2=BR, 3=LHC, 4=RHC
+
+Dim UserRange As Range
+Set UserRange = Range(MyRangeAsText)
+Select Case MyItem
+ Case 1
+ MyRng = UserRange.Row
+ Case 2
+ MyRng = UserRange.Row + UserRange.Rows.Count - 1
+ Case 3
+ MyRng = UserRange.Column
+ Case 4
+ MyRng = UserRange.Columns(UserRange.Columns.Count).Column
+End Select
+Exit Function
+
+End Function
+Function FillSpaces(AnyStr As String) As String
+' remove any spaces and replace with underscore character
+Dim MyPos As Integer
+MyPos = InStr(1, AnyStr, &quot; &quot;)
+Do While MyPos &gt; 0
+ Mid(AnyStr, MyPos, 1) = &quot;_&quot;
+ MyPos = InStr(1, AnyStr, &quot; &quot;)
+Loop
+FillSpaces = LCase(AnyStr)
+End Function
+
+Function FormChk(RowNum As Integer, ColNum As Integer) As String
+' formats numeric and date cell values to comma 000's and DD MMM YY
+FormChk = Cells(RowNum, ColNum).Value
+If IsNumeric(Cells(RowNum, ColNum).Value) Then
+ FormChk = Format(Cells(RowNum, ColNum).Value, &quot;#,##0 ;(#,##0)&quot;)
+End If
+If IsDate(Cells(RowNum, ColNum).Value) Then
+ FormChk = Format(Cells(RowNum, ColNum).Value, &quot;dd mmm yy&quot;)
+End If
+End Function
+
+Function RemoveAmpersands(AnyStr As String) As String
+Dim MyPos As Integer
+' replace Ampersands (&amp;) with plus symbols (+)
+
+MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
+Do While MyPos &gt; 0
+ Mid(AnyStr, MyPos, 1) = &quot;+&quot;
+ MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
+Loop
+RemoveAmpersands = AnyStr
+End Function
+</pre>
+<p></p>
+<p></p>
+<p>如果不想将文件中的&amp;替换为&#043;，可以将第55行的<span>RemoveAmpersands(FormChk(MyRow,&nbsp;MyCol))替换为</span><span>Cells(MyRow,&nbsp;MyCol).Value。</span></p>
+<p>&nbsp;</p>
+<p>需要注意的是在Excel文件中必须有一行是标题行——即改行存放各列的标题，否则生成的XML文件&#26684;式不一定是你所需要的。</p>
+<p>&nbsp;</p>
+<p>由于我对XML文件的编码&#26684;式有要求，必须是UTF-8，而Windows默认的编码&#26684;式是GBXXXX，因此需要对生成的XML文件进行编码&#26684;式转换。搜索到了<a href="http://tech.16c.cn/linux/glpz/20100221/22560.html">linux 查看文件编码以及修改编码</a>一文，摘录重点如下：</p>
+<p>&nbsp;</p>
+<p>查看文件编码</p>
+<p>&nbsp;</p>
+<p>　　在Linux中查看文件编码可以通过以下几种方式：</p>
+<p>　　1.在Vim中可以直接查看文件编码</p>
+<p>　　:set fileencoding</p>
+<p>　　即可显示文件编码&#26684;式。</p>
+<p>　　如果你只是想查看其它编码&#26684;式的文件或者想解决用Vim查看文件乱码的问题，那么你可以在~/.vimrc 文件中添加以下内容：</p>
+<p>　　set encoding=utf-8 fileencodings=ucs-bom,utf-8,cp936</p>
+<p>　　这样，就可以让vim自动识别文件编码（可以自动识别UTF-8或者GBK编码的文件），其实就是依照fileencodings提供的编码列表尝试，如果没有找到合适的编码，就用latin-1(ASCII)编码打开。</p>
+<p>　　2. enca (如果你的系统中没有安装这个命令，可以用sudo yum install -y enca 安装 )查看文件编码</p>
+<p>　　$ enca filename</p>
+<p>　　filename: Universal transformation format 8 bits; UTF-8</p>
+<p>　　CRLF line terminators</p>
+<p>　　需要说明一点的是，enca对某些GBK编码的文件识别的不是很好，识别时会出现：</p>
+<p>　　Unrecognized encoding</p>
+<p>&nbsp;</p>
+<p>文件编码转换</p>
+<p>　　1.在Vim中直接进行转换文件编码,比如将一个文件转换成utf-8&#26684;式</p>
+<p>　　:set fileencoding=utf-8</p>
+<p>　　2. enconv 转换文件编码，比如要将一个GBK编码的文件转换成UTF-8编码，操作如下</p>
+<p>　　enconv -L zh_CN -x UTF-8 filename</p>
+<p>　　3. iconv 转换，iconv的命令&#26684;式如下：</p>
+<p>　　iconv -f encoding -t encoding inputfile</p>
+<p>　　比如将一个UTF-8 编码的文件转换成GBK编码</p>
+<p>　　iconv -f GBK -t UTF-8 file1 -o file2</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 21, 2011 | <a href='/vba/2011/03/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520excel%25e6%2596%2587%25e4%25bb%25b6%25e8%25bd%25ac%25e6%258d%25a2%25e4%25b8%25baxml%25e4%25bb%25a5%25e5%258f%258alinux%25e6%2596%2587%25e4%25bb%25b6%25e7%25bc%2596%25e7%25a0%2581%25e6%25a0%25bc%25e5%25bc%258f%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%25/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/03/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%259c%25a8etchosts%25e4%25b8%25ad%25e5%25ae%259a%25e4%25b9%2589linux%25e7%259a%2584hostname%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">在/etc/hosts中定义Linux的hostname</a></h2>
+
+    <p>今天碰到这样一个问题：一个程序在刚刚装好的Linux server上获取IP地址时永远都是0x7f000001。一开始没有注意，后来仔细一想，0x7f000001不正好就是127.0.0.1嘛！有同事查了一下/etc/hosts，发现在该文件中有这样一行：</p>
+<p>
+<pre>127.0.0.1     mylinuxsvr localhost.localhost.localdomain localhost
+</pre>
+<p>&nbsp;</p>
+<p>其中，mylinuxsvr是这个server的名字。难怪每次都只能获取到127.0.0.1呢。当然了，这台server的IP地址其实是配好了的，只是不知为什么，有一个不同server间通信的程序非要通过/etc/hosts来获取IP地址&hellip;&hellip;</p>
+<p>&nbsp;</p>
+<p>找了一些Linux server网络配置的文章，记录于此：</p>
+<ol>
+<li><a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a></li>
+<li><a href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Virtualization_for_Servers/2.2/html/Administration_Guide/Administration_Guide-Create_Objects-Add_Server.html">Adding Red Hat Enterprise Linux Hosts</a></li>
+</ol>
+<p>下文摘自<a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a>。</p>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1><span id="Configuring_Your_.2Fetc.2Fhosts_File" class="mw-headline">Configuring Your /etc/hosts File</span></h1>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0 goog_qs-tidbit-hilite">The /etc/hosts file is just a list of IP addresses and their corresponding server names.</span>&nbsp;Your server will typically check this file before referencing DNS. If the name is found with a corresponding IP address then DNS won't be queried at all. Unfortunately, if the IP address for that host changes, you also have to also update the file. This may not be much of a concern for a single server, but can become laborious if it has to be done companywide. For ease of management, it is often easiest to limit entries in this file to just the loopback interface and also the server's own hostname, and use a centralized DNS server to handle most of the rest. Sometimes you might not be the one managing the DNS server, and in such cases it may be easier to add a quick /etc/hosts file entry till the centralized change can be made.</p>
+<pre>192.168.1.101  smallfry
+
+</pre>
+<p>In the example above server smallfry has an IP address of 192.168.1.101. You can access 192.168.1.101 using the ping, telnet or any other network aware program by referring to it as smallfry. Here is an example using the ping command to see whether smallfry is alive and well on the network:</p>
+<pre>[root@bigboy tmp]# ping smallfry
+PING zero (192.168.1.101) 56(84) bytes of data.
+64 bytes from smallfry (192.168.1.101): icmp_seq=0 ttl=64 time=0.197 ms
+64 bytes from smallfry (192.168.1.101): icmp_seq=1 ttl=64 time=0.047 ms
+
+
+--- smallfry ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 2017ms
+rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
+[root@bigboy tmp]#
+
+</pre>
+<p>You can also add aliases to the end of the line which enable you to refer to the server using other names. Here we have set it up so that smallfry can also be accessed using the names&nbsp;<code>tiny</code>&nbsp;and&nbsp;<code>littleguy</code>.</p>
+<pre>192.168.1.101  smallfry  tiny  littleguy
+
+</pre>
+<p>You should never have an IP address more than once in this file because Linux will use only the values in the first entry it finds.</p>
+<pre>192.168.1.101  smallfry    # (Wrong)
+192.168.1.101  tiny        # (Wrong)
+192.168.1.101  littleguy   # (Wrong)
+</pre>
+<p>&nbsp;</p>
+<h2><span id="The_loopback_Interface.27s_localhost_Entry" class="mw-headline">The loopback Interface's localhost Entry</span></h2>
+<p>Usually the first entry in /etc/hosts defines the IP address of the server's virtual loopback interface. This is usually mapped to the name localhost.localdomain (the universal name used when a server refers to itself) and localhost (the shortened alias name). By default, Fedora inserts the hostname of the server between the 127.0.0.1 and the localhost entries like this:</p>
+<pre>127.0.0.1     bigboy    localhost.localdomain    localhost
+
+</pre>
+<p>When the server is connected to the Internet this first entry after the 127.0.0.1 needs to be the fully qualified domain name (FQDN) of the server. For example,&nbsp;<code>bigboy.mysite.com</code>, like this:</p>
+<pre>127.0.0.1     bigboy.my-site.com    localhost.localdomain    localhost
+
+</pre>
+<p>Some programs such as Sendmail are very sensitive to this and if they detect what they feel is an incorrect FQDN they will default to using the name localhost.localdomain when communicating with another server on the network. This can cause confusion, as the other server also feels it is localhost.localdomain.</p>
+<p>Note:&nbsp;You must always have a localhost and localhost.localdomain entry mapping to 127.0.0.1 for Linux to work properly and securely.</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 10, 2011 | <a href='/bkup/2011/03/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%259c%25a8etchosts%25e4%25b8%25ad%25e5%25ae%259a%25e4%25b9%2589linux%25e7%259a%2584hostname%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/network/telecom/unix/linux/2011/03/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%259c%25a8etchosts%25e4%25b8%25ad%25e5%25ae%259a%25e4%25b9%2589linux%25e7%259a%2584hostname%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">在/etc/hosts中定义Linux的hostname</a></h2>
+
+    <p>今天碰到这样一个问题：一个程序在刚刚装好的Linux server上获取IP地址时永远都是0x7f000001。一开始没有注意，后来仔细一想，0x7f000001不正好就是127.0.0.1嘛！有同事查了一下/etc/hosts，发现在该文件中有这样一行：</p>
+<p>
+<pre>127.0.0.1     mylinuxsvr localhost.localhost.localdomain localhost
+</pre>
+<p>&nbsp;</p>
+<p>其中，mylinuxsvr是这个server的名字。难怪每次都只能获取到127.0.0.1呢。当然了，这台server的IP地址其实是配好了的，只是不知为什么，有一个不同server间通信的程序非要通过/etc/hosts来获取IP地址&hellip;&hellip;</p>
+<p>&nbsp;</p>
+<p>找了一些Linux server网络配置的文章，记录于此：</p>
+<ol>
+<li><a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a></li>
+<li><a href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Virtualization_for_Servers/2.2/html/Administration_Guide/Administration_Guide-Create_Objects-Add_Server.html">Adding Red Hat Enterprise Linux Hosts</a></li>
+</ol>
+<p>下文摘自<a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a>。</p>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1><span id="Configuring_Your_.2Fetc.2Fhosts_File" class="mw-headline">Configuring Your /etc/hosts File</span></h1>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0 goog_qs-tidbit-hilite">The /etc/hosts file is just a list of IP addresses and their corresponding server names.</span>&nbsp;Your server will typically check this file before referencing DNS. If the name is found with a corresponding IP address then DNS won't be queried at all. Unfortunately, if the IP address for that host changes, you also have to also update the file. This may not be much of a concern for a single server, but can become laborious if it has to be done companywide. For ease of management, it is often easiest to limit entries in this file to just the loopback interface and also the server's own hostname, and use a centralized DNS server to handle most of the rest. Sometimes you might not be the one managing the DNS server, and in such cases it may be easier to add a quick /etc/hosts file entry till the centralized change can be made.</p>
+<pre>192.168.1.101  smallfry
+
+</pre>
+<p>In the example above server smallfry has an IP address of 192.168.1.101. You can access 192.168.1.101 using the ping, telnet or any other network aware program by referring to it as smallfry. Here is an example using the ping command to see whether smallfry is alive and well on the network:</p>
+<pre>[root@bigboy tmp]# ping smallfry
+PING zero (192.168.1.101) 56(84) bytes of data.
+64 bytes from smallfry (192.168.1.101): icmp_seq=0 ttl=64 time=0.197 ms
+64 bytes from smallfry (192.168.1.101): icmp_seq=1 ttl=64 time=0.047 ms
+
+
+--- smallfry ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 2017ms
+rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
+[root@bigboy tmp]#
+
+</pre>
+<p>You can also add aliases to the end of the line which enable you to refer to the server using other names. Here we have set it up so that smallfry can also be accessed using the names&nbsp;<code>tiny</code>&nbsp;and&nbsp;<code>littleguy</code>.</p>
+<pre>192.168.1.101  smallfry  tiny  littleguy
+
+</pre>
+<p>You should never have an IP address more than once in this file because Linux will use only the values in the first entry it finds.</p>
+<pre>192.168.1.101  smallfry    # (Wrong)
+192.168.1.101  tiny        # (Wrong)
+192.168.1.101  littleguy   # (Wrong)
+</pre>
+<p>&nbsp;</p>
+<h2><span id="The_loopback_Interface.27s_localhost_Entry" class="mw-headline">The loopback Interface's localhost Entry</span></h2>
+<p>Usually the first entry in /etc/hosts defines the IP address of the server's virtual loopback interface. This is usually mapped to the name localhost.localdomain (the universal name used when a server refers to itself) and localhost (the shortened alias name). By default, Fedora inserts the hostname of the server between the 127.0.0.1 and the localhost entries like this:</p>
+<pre>127.0.0.1     bigboy    localhost.localdomain    localhost
+
+</pre>
+<p>When the server is connected to the Internet this first entry after the 127.0.0.1 needs to be the fully qualified domain name (FQDN) of the server. For example,&nbsp;<code>bigboy.mysite.com</code>, like this:</p>
+<pre>127.0.0.1     bigboy.my-site.com    localhost.localdomain    localhost
+
+</pre>
+<p>Some programs such as Sendmail are very sensitive to this and if they detect what they feel is an incorrect FQDN they will default to using the name localhost.localdomain when communicating with another server on the network. This can cause confusion, as the other server also feels it is localhost.localdomain.</p>
+<p>Note:&nbsp;You must always have a localhost and localhost.localdomain entry mapping to 127.0.0.1 for Linux to work properly and securely.</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 10, 2011 | <a href='/network/telecom/unix/linux/2011/03/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%259c%25a8etchosts%25e4%25b8%25ad%25e5%25ae%259a%25e4%25b9%2589linux%25e7%259a%2584hostname%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/plan%209/2011/03/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%2520files%2520-%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528iv%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Plan9 Files -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(IV)</a></h2>
+
+    <p>&nbsp;</p>
+<div>
+<h4 id="internal-source-marker_0.12957935757003725"><span>2.1 Input/Output</span></h4>
+<p><span>Most of the times, standard input, standard output, and standard error go to </span><span>/dev/cons</span><span>. This file represents the console for your program.It is the interface to use the device that is known as the console, which corresponds to your terminal.</span><span>The file interface provided for each process in Plan 9 has a file that provides the list of open file descriptors for the process. For example, to know which file descriptors are open in the shell we are using we can do this.</span>
+<pre> term% cat /proc/$pid/fd/usr/glenda
+ 0 r  M   40 (0000000000000001 0 00)  8192       47 /dev/cons
+ 1 w  M   40 (0000000000000001 0 00)  8192     3506 /dev/cons
+ 2 w  M   40 (0000000000000001 0 00)  8192     3506 /dev/cons
+ 3 r  M    8 (000000000000166b 2 00)  8192      512 /rc/lib/rcmain
+ 4 r  M   40 (0000000000000001 0 00)  8192       47 /dev/cons</pre>
+<p><span>Each time you open a file, the system keeps track of a file offset for that open file, to know the offset in the file where to start working at the next </span><span>read</span><span> or </span><span>write</span><span>. </span><br /><span>The offset for a file descriptor can be changed using the </span><span>seek</span><span> system call.</span></p>
+<h4><span>2.2 Write games</span></h4>
+<p><span>A </span><span>Chan</span><span>(or Channel) is a data structure, which contains all the information needed to let the kernel reach the file server and perform operations on the file. A </span><span>Chan</span><span> is just something used by Plan 9 to speak to a server regarding a file. This may require doing remote procedure calls across the network, but that is up to your kernel, and you can forget. There is one </span><span>Chan</span><span> per file in use in the system.</span></p>
+<p><span>The size of a file corresponds to the highest file offset ever written on it. All the bytes that we did not write were set to zero by Plan 9.</span><br /><span>seek(fd, 0, 2); // move to the end</span><br /><span>append only permission bit :</span><br /><span>; chmod +a /sys/log/diagnostics</span><br /><span>; ls -l /sys/log/diagnostics</span><br /><span>a-rw-r--r-- M 19 nemo nemo 0 Jul 10 01:11 /sys/log/diagnostics</span><br /><span>+a</span><span> permission bit guarantees that any write will happen at the end of existing data, no matter what the offset is.</span><br /><span>Doing a </span><span>seek</span><span> in all programs using this file might not suffice. If there are multiple machines writing to this file, each machine would keep its own offset for the file. Therefore, there is some risk of overwriting some data in the file.</span><br /><span>The </span><span>create</span><span> system call creates one file.</span><br /><span>The system call </span><span>remove</span><span> removes the named file. </span><br /><span>The system call </span><span>access</span><span> to check file properties.</span></p>
+<h4><span>2.3 Directory Entry</span></h4>
+<p><span>File </span><span>metadata</span><span> is simply what the system needs to know about the file to be able to implement it. File metadata includes the file name, the file size, the time for the last modification to the file, the time for the last access to the file, and other attributes for the file. Thus, file metadata is also known as file attributes.</span><br /><span>Plan 9 stores attributes for a file in the directory that contains the file. Thus, the data structure that contains file metadata is known as a directory entry. A directory contains just a sequence of entries, each one providing the attributes for a file contained in it.</span><br /><span>To obtain the directory entry for a file, i.e., its attributes, we can use </span><span>dirstat</span><span>. This function &nbsp;uses the actual system call, </span><span>stat</span><span>, to read the data, and returns a Dir structure that is more convenient to use in C programs. This structure is stored in dynamic memory allocated with malloc &nbsp;by dirstat, and the caller is responsible for calling free on it. </span><br /><span>Because directories contain directory entries, reading from a directory is very similar to &nbsp;what we have just done. The function </span><span>read</span><span> can be used to read directories as well as files. The &nbsp;only difference is that the system will read only an integral number of directory entries. If one &nbsp;more entry does not fit in the buffer you supply to read, it will have to wait until you read again. </span><br /><span>The entries are stored in the directory in a portable, machine independent, and not amenable, format. Therefore, instead of using </span><span>read</span><span>, it is more convenient to use </span><span>dirread</span><span>. This &nbsp;function calls read to read the data stored in the directory. But before returning to the caller, it &nbsp;unpacks them into a, more convenient, array of Dir structures. </span><br /><span>The function </span><span>dirwstat</span><span> is the counterpart of </span><span>dirstat</span><span>. It works in a similar way, but &nbsp;instead of reading the attributes, it updates them. New values for the update are taken from a Dir &nbsp;structure given as a parameter. However, the function ignores any field set to a null value, to &nbsp;allow you to change just one attribute, or a few ones. Beware that zero is not a null value for some of the fields, because it would be a perfectly legal value for them. The function </span><span>nulldir</span><span> &nbsp;is to be used to null all of the fields in a given Dir. </span></p>
+<h3><span>2.4 Bio</span></h3>
+<p><span>The bio(2) library in Plan 9 provides buffered input/output. This is an abstraction that,although not provided by the underlying Plan 9, is so common that you really must know how it works. The idea is that your program creates a </span><span>Bio</span><span> buffer for reading or writing, called a </span><span>Biobuf</span><span>. Your program reads from the </span><span>Biobuf</span><span>, by calling a library function, and the library will call read only to refill the buffer each time you exhaust its contents. </span>
+<pre>#include &lt;u.h&gt;
+#include &lt;libc.h&gt;
+#include &lt;bio.h&gt;
+static void
+usage(void)
+{
+    fprint(2,"usage: %s [-b bufsz] infile outfile/n", argv0);
+    exits("usage");
+}
+void
+main(int argc, char* argv[])
+{
+    char* buf;
+    long nr, bufsz = 8*1024;
+    Biobuf* bin;
+    Biobuf* bout;
+    ARGBEGIN{
+    case 'b':
+        bufsz = atoi(EARGF(usage()));
+        break;
+    default:
+        usage();
+    }ARGEND;
+    if (argc !=2)
+        usage();
+    buf = malloc(bufsz);
+    if (buf == nil)
+        sysfatal("no more memory");
+    bin = Bopen(argv[0], OREAD);
+    if (bin == nil)
+        sysfatal("%s: %s: %r", argv0, argv[0]);
+    bout = Bopen(argv[1], OWRITE);
+    if (bout == nil)
+        sysfatal("%s: %s: %r", argv0, argv[1]);
+    for(;;) {
+        nr = Bread(bin, buf, bufsz);
+        if (nr &lt; 0)
+            break;
+        Bwrite(bout, buf, nr);
+    }
+    Bterm(bin);
+    Bterm(bout);
+    exits(nil);
+}</pre>
+<p>&nbsp;</p></div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 07, 2011 | <a href='/plan%209/2011/03/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%2520files%2520-%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528iv%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/03/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%2520files%2520-%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528iv%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Plan9 Files -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(IV)</a></h2>
+
+    <p>&nbsp;</p>
+<div>
+<h4 id="internal-source-marker_0.12957935757003725"><span>2.1 Input/Output</span></h4>
+<p><span>Most of the times, standard input, standard output, and standard error go to </span><span>/dev/cons</span><span>. This file represents the console for your program.It is the interface to use the device that is known as the console, which corresponds to your terminal.</span><span>The file interface provided for each process in Plan 9 has a file that provides the list of open file descriptors for the process. For example, to know which file descriptors are open in the shell we are using we can do this.</span>
+<pre> term% cat /proc/$pid/fd/usr/glenda
+ 0 r  M   40 (0000000000000001 0 00)  8192       47 /dev/cons
+ 1 w  M   40 (0000000000000001 0 00)  8192     3506 /dev/cons
+ 2 w  M   40 (0000000000000001 0 00)  8192     3506 /dev/cons
+ 3 r  M    8 (000000000000166b 2 00)  8192      512 /rc/lib/rcmain
+ 4 r  M   40 (0000000000000001 0 00)  8192       47 /dev/cons</pre>
+<p><span>Each time you open a file, the system keeps track of a file offset for that open file, to know the offset in the file where to start working at the next </span><span>read</span><span> or </span><span>write</span><span>. </span><br /><span>The offset for a file descriptor can be changed using the </span><span>seek</span><span> system call.</span></p>
+<h4><span>2.2 Write games</span></h4>
+<p><span>A </span><span>Chan</span><span>(or Channel) is a data structure, which contains all the information needed to let the kernel reach the file server and perform operations on the file. A </span><span>Chan</span><span> is just something used by Plan 9 to speak to a server regarding a file. This may require doing remote procedure calls across the network, but that is up to your kernel, and you can forget. There is one </span><span>Chan</span><span> per file in use in the system.</span></p>
+<p><span>The size of a file corresponds to the highest file offset ever written on it. All the bytes that we did not write were set to zero by Plan 9.</span><br /><span>seek(fd, 0, 2); // move to the end</span><br /><span>append only permission bit :</span><br /><span>; chmod +a /sys/log/diagnostics</span><br /><span>; ls -l /sys/log/diagnostics</span><br /><span>a-rw-r--r-- M 19 nemo nemo 0 Jul 10 01:11 /sys/log/diagnostics</span><br /><span>+a</span><span> permission bit guarantees that any write will happen at the end of existing data, no matter what the offset is.</span><br /><span>Doing a </span><span>seek</span><span> in all programs using this file might not suffice. If there are multiple machines writing to this file, each machine would keep its own offset for the file. Therefore, there is some risk of overwriting some data in the file.</span><br /><span>The </span><span>create</span><span> system call creates one file.</span><br /><span>The system call </span><span>remove</span><span> removes the named file. </span><br /><span>The system call </span><span>access</span><span> to check file properties.</span></p>
+<h4><span>2.3 Directory Entry</span></h4>
+<p><span>File </span><span>metadata</span><span> is simply what the system needs to know about the file to be able to implement it. File metadata includes the file name, the file size, the time for the last modification to the file, the time for the last access to the file, and other attributes for the file. Thus, file metadata is also known as file attributes.</span><br /><span>Plan 9 stores attributes for a file in the directory that contains the file. Thus, the data structure that contains file metadata is known as a directory entry. A directory contains just a sequence of entries, each one providing the attributes for a file contained in it.</span><br /><span>To obtain the directory entry for a file, i.e., its attributes, we can use </span><span>dirstat</span><span>. This function &nbsp;uses the actual system call, </span><span>stat</span><span>, to read the data, and returns a Dir structure that is more convenient to use in C programs. This structure is stored in dynamic memory allocated with malloc &nbsp;by dirstat, and the caller is responsible for calling free on it. </span><br /><span>Because directories contain directory entries, reading from a directory is very similar to &nbsp;what we have just done. The function </span><span>read</span><span> can be used to read directories as well as files. The &nbsp;only difference is that the system will read only an integral number of directory entries. If one &nbsp;more entry does not fit in the buffer you supply to read, it will have to wait until you read again. </span><br /><span>The entries are stored in the directory in a portable, machine independent, and not amenable, format. Therefore, instead of using </span><span>read</span><span>, it is more convenient to use </span><span>dirread</span><span>. This &nbsp;function calls read to read the data stored in the directory. But before returning to the caller, it &nbsp;unpacks them into a, more convenient, array of Dir structures. </span><br /><span>The function </span><span>dirwstat</span><span> is the counterpart of </span><span>dirstat</span><span>. It works in a similar way, but &nbsp;instead of reading the attributes, it updates them. New values for the update are taken from a Dir &nbsp;structure given as a parameter. However, the function ignores any field set to a null value, to &nbsp;allow you to change just one attribute, or a few ones. Beware that zero is not a null value for some of the fields, because it would be a perfectly legal value for them. The function </span><span>nulldir</span><span> &nbsp;is to be used to null all of the fields in a given Dir. </span></p>
+<h3><span>2.4 Bio</span></h3>
+<p><span>The bio(2) library in Plan 9 provides buffered input/output. This is an abstraction that,although not provided by the underlying Plan 9, is so common that you really must know how it works. The idea is that your program creates a </span><span>Bio</span><span> buffer for reading or writing, called a </span><span>Biobuf</span><span>. Your program reads from the </span><span>Biobuf</span><span>, by calling a library function, and the library will call read only to refill the buffer each time you exhaust its contents. </span>
+<pre>#include &lt;u.h&gt;
+#include &lt;libc.h&gt;
+#include &lt;bio.h&gt;
+static void
+usage(void)
+{
+    fprint(2,"usage: %s [-b bufsz] infile outfile/n", argv0);
+    exits("usage");
+}
+void
+main(int argc, char* argv[])
+{
+    char* buf;
+    long nr, bufsz = 8*1024;
+    Biobuf* bin;
+    Biobuf* bout;
+    ARGBEGIN{
+    case 'b':
+        bufsz = atoi(EARGF(usage()));
+        break;
+    default:
+        usage();
+    }ARGEND;
+    if (argc !=2)
+        usage();
+    buf = malloc(bufsz);
+    if (buf == nil)
+        sysfatal("no more memory");
+    bin = Bopen(argv[0], OREAD);
+    if (bin == nil)
+        sysfatal("%s: %s: %r", argv0, argv[0]);
+    bout = Bopen(argv[1], OWRITE);
+    if (bout == nil)
+        sysfatal("%s: %s: %r", argv0, argv[1]);
+    for(;;) {
+        nr = Bread(bin, buf, bufsz);
+        if (nr &lt; 0)
+            break;
+        Bwrite(bout, buf, nr);
+    }
+    Bterm(bin);
+    Bterm(bout);
+    exits(nil);
+}</pre>
+<p>&nbsp;</p></div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 07, 2011 | <a href='/bkup/2011/03/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%2520files%2520-%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528iv%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page14' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page12' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

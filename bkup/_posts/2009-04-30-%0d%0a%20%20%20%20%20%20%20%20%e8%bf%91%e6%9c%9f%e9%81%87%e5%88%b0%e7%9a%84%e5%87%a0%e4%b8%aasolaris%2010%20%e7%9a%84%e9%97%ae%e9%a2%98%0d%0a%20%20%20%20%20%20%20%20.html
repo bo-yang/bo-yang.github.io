@@ -1,0 +1,32 @@
+---
+layout: post
+title: 近期遇到的几个Solaris 10 的问题
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '84'
+  original_post_id: '20'
+  _wp_old_slug: '20'
+author: 
+---
+
+<p>公司正在逐渐把server升级为Solaris 10， 对于新平台我非常陌生（当然了，对于以前的Solaris 9也不怎么懂），遇到了几个值得记录下来的问题。</p>
+<p>&nbsp;</p>
+<p>1. $HOME目录几乎所有文件（夹）的owner和group都被改为nobody</p>
+<p>昨天在工作时遇到了问题，自己无法解决，求助于同事。同事帮忙查了半天，发现了我的$HOME下的所有的文件和文件夹的owner和group都被改为nobody了。我们都很诧异为什么会出现这种情况，求助于公司的IT，IT们说这是因为我们部门有两个NFS storage,其中一个和NFS的版本和Solaris 10兼容，另外一个不兼容。而我的$HOME恰好就在不兼容的Storage上，结果权限就变了。</p>
+<p>&nbsp;</p>
+<p>今天上午IT把这个问题FIX了，但我对于NFS还是不清楚，对于权限如何变的也不知道。有时间再去仔细研究NFS的问题。</p>
+<p>&nbsp;</p>
+<p>2.&nbsp;ld.so.1: cp:<span style="white-space:pre;">fatal: libsec.so.1: open failed: No such file or directory</span></p>
+<p><span style="white-space:pre;">ld.so.1: cp: fatal: libsec.so.1: version `SUNW_1.2' not found (required by file /usr/bin/cp)</span></p>
+<p>&nbsp;</p>
+<p><span style="white-space:pre;">这是一个动态链接库的问题。这个问题Google了一下发现很多人也有类似的问题，但没有看到如何解决。貌似</span></p>
+<p><span style="white-space:pre;">Sun推出了一个patch来解决这个问题。但具体情况不了解。</span></p>
+<p>&nbsp;</p>
+<p><span style="white-space:pre;">前几天早晨遇到了这个问题，和同事查了一上午也没发现原因，结果当我们绝望的时候这个问题自己消失了。莫名其妙。</span></p>
+<p><span style="white-space:pre;">但这个问题估计在往后系统重启以后还会发生。</span></p>

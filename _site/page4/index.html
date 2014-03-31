@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/bkup/2012/11/17/tips-about-regular-expression/">Tips about Regular Expression</a></h2>
+
+    <ol>
+<li>In Vim, greedy matching is used by default. In order to use non-greedy matching, you can use \{-}, or \{-n,m}, such as: :/Q.\{-0,200}[IL].\{-0,2000}FF.</li>
+<li>In Perl, default matching is also greedy. To use non-greedy matching, please change <code>*</code> , <code>+</code> , <code>?</code> , and<code>{}</code> into <code>*?</code> , <code>+?</code> , <code>??</code> , and <code>{}?</code> , respectively.</li>
+<li>To count the number of matching in Vim, you can use command ":%s/&lt;pattern&gt;//g". After get the number of matches, then execute ":u" to undo the changes.</li>
+<li>In Perl, to count the number of matching, you can use command: 
+<pre><code>my $number =()= $string =~ /\./gi;</code></pre>
+</li>
+</ol>
+<p>References:</p>
+<ol>
+<li>http://vimregex.com/</li>
+<li>http://stackoverflow.com/questions/1849329/is-there-a-perl-shortcut-to-count-the-number-of-matches-in-a-string</li>
+<li>http://docstore.mik.ua/orelly/perl/cookbook/ch06_16.htm</li>
+</ol>
+<p> </p>
+
+
+    <small class="meta">November 17, 2012 | <a href='/bkup/2012/11/17/tips-about-regular-expression/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2012/11/17/tips-about-regular-expression/">Tips about Regular Expression</a></h2>
+
+    <ol>
+<li>In Vim, greedy matching is used by default. In order to use non-greedy matching, you can use \{-}, or \{-n,m}, such as: :/Q.\{-0,200}[IL].\{-0,2000}FF.</li>
+<li>In Perl, default matching is also greedy. To use non-greedy matching, please change <code>*</code> , <code>+</code> , <code>?</code> , and<code>{}</code> into <code>*?</code> , <code>+?</code> , <code>??</code> , and <code>{}?</code> , respectively.</li>
+<li>To count the number of matching in Vim, you can use command ":%s/&lt;pattern&gt;//g". After get the number of matches, then execute ":u" to undo the changes.</li>
+<li>In Perl, to count the number of matching, you can use command: 
+<pre><code>my $number =()= $string =~ /\./gi;</code></pre>
+</li>
+</ol>
+<p>References:</p>
+<ol>
+<li>http://vimregex.com/</li>
+<li>http://stackoverflow.com/questions/1849329/is-there-a-perl-shortcut-to-count-the-number-of-matches-in-a-string</li>
+<li>http://docstore.mik.ua/orelly/perl/cookbook/ch06_16.htm</li>
+</ol>
+<p> </p>
+
+
+    <small class="meta">November 17, 2012 | <a href='/2012/11/17/tips-about-regular-expression/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library/">Calculate the CDF of Poisson Distribution with Boost C++ Library</a></h2>
+
+    <p>The Cumulative Distribution Function(CDF) of Poisson distribution can be easily calculated by R function ppois() or octave/Matlab function poisspdf(). However, it is not a easy thing to deal with statistics with C++ from scratch.</p>
+<p>Today I found a very powerful C++ mathematical library(actually not limited to math), boost. Unfortunately, it is hard to figure out the API of boost library from the code if you are not familiar with generalization programming(just like me). Besides, there is no useful "hello world" examples on the Internet to show the boost library handling statistics(examples on webpage <a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a> is a bit complicated and the header files are not included).</p>
+<p>Therefore, I made up following example to show how to get the cdf of Poisson distribution with boost C++ library:<br />
+<code><br />
+#include &lt;boost/math/distributions/poisson.hpp&gt;<br />
+#include &lt;iostream&gt;</code></p>
+<p>using namespace std;<br />
+using namespace boost::math;</p>
+<p>int main()<br />
+{<br />
+poisson_distribution&lt;&gt; p(2.9);<br />
+cout&lt;&lt;"cdf: ppois(1,2.9)="&lt;&lt;cdf(p,1)&lt;&lt;endl;</p>
+<p>return 0;<br />
+}</p>
+<p><em>References:</em></p>
+<ol>
+<li><a href="http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html">http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html</a></li>
+<li><a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a></li>
+<li><a href="http://www.datasimfinancial.com/forum/viewtopic.php?t=111">http://www.datasimfinancial.com/forum/viewtopic.php?t=111</a></li>
+</ol>
+
+
+    <small class="meta">November 05, 2012 | <a href='/2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library/">Calculate the CDF of Poisson Distribution with Boost C++ Library</a></h2>
+
+    <p>The Cumulative Distribution Function(CDF) of Poisson distribution can be easily calculated by R function ppois() or octave/Matlab function poisspdf(). However, it is not a easy thing to deal with statistics with C++ from scratch.</p>
+<p>Today I found a very powerful C++ mathematical library(actually not limited to math), boost. Unfortunately, it is hard to figure out the API of boost library from the code if you are not familiar with generalization programming(just like me). Besides, there is no useful "hello world" examples on the Internet to show the boost library handling statistics(examples on webpage <a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a> is a bit complicated and the header files are not included).</p>
+<p>Therefore, I made up following example to show how to get the cdf of Poisson distribution with boost C++ library:<br />
+<code><br />
+#include &lt;boost/math/distributions/poisson.hpp&gt;<br />
+#include &lt;iostream&gt;</code></p>
+<p>using namespace std;<br />
+using namespace boost::math;</p>
+<p>int main()<br />
+{<br />
+poisson_distribution&lt;&gt; p(2.9);<br />
+cout&lt;&lt;"cdf: ppois(1,2.9)="&lt;&lt;cdf(p,1)&lt;&lt;endl;</p>
+<p>return 0;<br />
+}</p>
+<p><em>References:</em></p>
+<ol>
+<li><a href="http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html">http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html</a></li>
+<li><a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a></li>
+<li><a href="http://www.datasimfinancial.com/forum/viewtopic.php?t=111">http://www.datasimfinancial.com/forum/viewtopic.php?t=111</a></li>
+</ol>
+
+
+    <small class="meta">November 05, 2012 | <a href='/bkup/2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2012/11/04/an-implementation-of-merge-sort-in-c/">An Implementation of Merge Sort in C</a></h2>
+
+    <p>Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. </p>
+<p>The merge sort below was found in Internet. Sorry that I forgot to record the hyperlink of the webpage. Only a few changes were made by me. </p>
+<p> </p>
+<p><code>void Merge(int* input, long p, long r)<br />
+{<br />
+	long mid = floor((p + r) / 2);<br />
+	long i1 = 0;<br />
+	long i2 = p;<br />
+	long i3 = mid + 1;</p>
+<p>	// Temp array<br />
+	int* temp=new int[r-p+1];</p>
+<p>	// Merge in sorted form the 2 arrays<br />
+	while ( i2 &lt;= mid &amp;&amp; i3 &lt;= r )<br />
+		if ( input[i2] &lt; input[i3] )<br />
+			temp[i1++] = input[i2++];<br />
+		else<br />
+			temp[i1++] = input[i3++];</p>
+<p>	// Merge the remaining elements in left array<br />
+	while ( i2 &lt;= mid )<br />
+		temp[i1++] = input[i2++];</p>
+<p>	// Merge the remaining elements in right array<br />
+	while ( i3 &lt;= r )<br />
+		temp[i1++] = input[i3++];</p>
+<p>	// Move from temp array to master array<br />
+	for ( int i = p; i &lt;= r; i++ )<br />
+		input[i] = temp[i-p];</p>
+<p>	delete [] temp;<br />
+}</p>
+<p>// inputs:<br />
+//	p - the start index of array input<br />
+//	r - the end index of array input<br />
+void Merge_sort(int* input, long p, long r)<br />
+{<br />
+	if ( p &lt; r )<br />
+	{<br />
+		long mid = floor((p + r) / 2);<br />
+		Merge_sort(input, p, mid);<br />
+		Merge_sort(input, mid + 1, r);<br />
+		Merge(input, p, r);<br />
+	}<br />
+}<br />
+</code></p>
+
+
+    <small class="meta">November 04, 2012 | <a href='/2012/11/04/an-implementation-of-merge-sort-in-c/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2012/11/04/an-implementation-of-merge-sort-in-c/">An Implementation of Merge Sort in C</a></h2>
+
+    <p>Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. </p>
+<p>The merge sort below was found in Internet. Sorry that I forgot to record the hyperlink of the webpage. Only a few changes were made by me. </p>
+<p> </p>
+<p><code>void Merge(int* input, long p, long r)<br />
+{<br />
+	long mid = floor((p + r) / 2);<br />
+	long i1 = 0;<br />
+	long i2 = p;<br />
+	long i3 = mid + 1;</p>
+<p>	// Temp array<br />
+	int* temp=new int[r-p+1];</p>
+<p>	// Merge in sorted form the 2 arrays<br />
+	while ( i2 &lt;= mid &amp;&amp; i3 &lt;= r )<br />
+		if ( input[i2] &lt; input[i3] )<br />
+			temp[i1++] = input[i2++];<br />
+		else<br />
+			temp[i1++] = input[i3++];</p>
+<p>	// Merge the remaining elements in left array<br />
+	while ( i2 &lt;= mid )<br />
+		temp[i1++] = input[i2++];</p>
+<p>	// Merge the remaining elements in right array<br />
+	while ( i3 &lt;= r )<br />
+		temp[i1++] = input[i3++];</p>
+<p>	// Move from temp array to master array<br />
+	for ( int i = p; i &lt;= r; i++ )<br />
+		input[i] = temp[i-p];</p>
+<p>	delete [] temp;<br />
+}</p>
+<p>// inputs:<br />
+//	p - the start index of array input<br />
+//	r - the end index of array input<br />
+void Merge_sort(int* input, long p, long r)<br />
+{<br />
+	if ( p &lt; r )<br />
+	{<br />
+		long mid = floor((p + r) / 2);<br />
+		Merge_sort(input, p, mid);<br />
+		Merge_sort(input, mid + 1, r);<br />
+		Merge(input, p, r);<br />
+	}<br />
+}<br />
+</code></p>
+
+
+    <small class="meta">November 04, 2012 | <a href='/bkup/2012/11/04/an-implementation-of-merge-sort-in-c/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2012/08/24/connect-mac-os-x-with-linux-server/">Connect Mac OS X with Linux Server</a></h2>
+
+    <p>There are many ways to connect Mac OS X with Linux by command line. However, connecting them with GUI is not so easy. I tried two ways, but none of them work perfectly and each of them has both advantages and disadvantages.</p>
+<p>The first way I tried was VNC. <a href="http://sourceforge.net/projects/cotvnc/">Chicken of the VNC</a> was said to be the best VNC client under Mac OS X, unfortunately, I haven't make it work, even follow the tips of webpage <a id="using_vnc_on_mac_os_x" name="using_vnc_on_mac_os_x"></a><a href="http://www.cs.vassar.edu/sysnews/vnc/osx">Using VNC on Mac OS X</a>. I used realvnc. The first step is to configure ssh. I followed the tips on webpage <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>.  In the Linux server, after installing openssh, edit the file <code>/etc/ssh/ssh_config</code> and make sure</p>
+<pre>ForwardAgent yes
+ForwardX11 yes
+ForwardX11Trusted yes</pre>
+<p>Then edit <code>/etc/ssh/sshd_config</code> and make sure</p>
+<pre>X11Forwarding yes</pre>
+<p>.</p>
+<p>In the terminal of Mac OS X, enter command "<code>ssh -L 5901:localhost:5900 &lt;login&gt;@&lt;LinuxServer&gt;</code>". 5901 is the port number to be used by RealVNC, and 5900 is the port number of the VNC in Linux. For details about this command, refer to <a href="http://manas.tungare.name/blog/ssh-port-forwarding-on-mac-os-x/">SSH Port Forwarding on Mac OS X</a>. Then start RealVNC, enter "<code>localhost:5901</code>" and your VNC password.</p>
+<p>RealVNC works reliably, but the quality of GUI is not good and sometimes responds slowly.</p>
+<p>The other method is also based on ssh, therefore the ssh should also be configured in the Linux side. The only difference is X11 should be installed in Mac OS X. The above<br />
+ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&gt;". After login to Linux in terminal, run command "<code>gnome-session</code>"(this requires Gnome be installed in Linux server). In this way, remote Linux programs runs as local Mac applications. For more info, please refer to <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>. The disadvantage of using this way is, X11 is not reliable in Mac OS X and it may crash at any time.</p>
+
+
+    <small class="meta">August 24, 2012 | <a href='/bkup/2012/08/24/connect-mac-os-x-with-linux-server/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2012/08/24/connect-mac-os-x-with-linux-server/">Connect Mac OS X with Linux Server</a></h2>
+
+    <p>There are many ways to connect Mac OS X with Linux by command line. However, connecting them with GUI is not so easy. I tried two ways, but none of them work perfectly and each of them has both advantages and disadvantages.</p>
+<p>The first way I tried was VNC. <a href="http://sourceforge.net/projects/cotvnc/">Chicken of the VNC</a> was said to be the best VNC client under Mac OS X, unfortunately, I haven't make it work, even follow the tips of webpage <a id="using_vnc_on_mac_os_x" name="using_vnc_on_mac_os_x"></a><a href="http://www.cs.vassar.edu/sysnews/vnc/osx">Using VNC on Mac OS X</a>. I used realvnc. The first step is to configure ssh. I followed the tips on webpage <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>.  In the Linux server, after installing openssh, edit the file <code>/etc/ssh/ssh_config</code> and make sure</p>
+<pre>ForwardAgent yes
+ForwardX11 yes
+ForwardX11Trusted yes</pre>
+<p>Then edit <code>/etc/ssh/sshd_config</code> and make sure</p>
+<pre>X11Forwarding yes</pre>
+<p>.</p>
+<p>In the terminal of Mac OS X, enter command "<code>ssh -L 5901:localhost:5900 &lt;login&gt;@&lt;LinuxServer&gt;</code>". 5901 is the port number to be used by RealVNC, and 5900 is the port number of the VNC in Linux. For details about this command, refer to <a href="http://manas.tungare.name/blog/ssh-port-forwarding-on-mac-os-x/">SSH Port Forwarding on Mac OS X</a>. Then start RealVNC, enter "<code>localhost:5901</code>" and your VNC password.</p>
+<p>RealVNC works reliably, but the quality of GUI is not good and sometimes responds slowly.</p>
+<p>The other method is also based on ssh, therefore the ssh should also be configured in the Linux side. The only difference is X11 should be installed in Mac OS X. The above<br />
+ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&gt;". After login to Linux in terminal, run command "<code>gnome-session</code>"(this requires Gnome be installed in Linux server). In this way, remote Linux programs runs as local Mac applications. For more info, please refer to <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>. The disadvantage of using this way is, X11 is not reliable in Mac OS X and it may crash at any time.</p>
+
+
+    <small class="meta">August 24, 2012 | <a href='/unix/linux/2012/08/24/connect-mac-os-x-with-linux-server/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2012/08/08/how-to-make-nic-bcm57780-work-in-scientific-linux/">How to make NIC BCM57780 work in Scientific Linux?</a></h2>
+
+    <p>I decided to install Scientific Linux on the computer in my lab. Partly because this distribution is called "Scientific", partly because it is compiled from Red Hat Enterprise Linux, the most prestigious Linux distribution in the world.</p>
+<p>At first, I downloaded the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso">Everything DVDs</a> and burned it into my USB stick via <a href="http://unetbootin.sourceforge.net/">UNetbootin</a>. Unfortunately, it couldn't boot. Then I tried the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveCD.iso">Live CD</a>. It did worked and I installed the SL in a few minutes. However, the network could not be connected and the NIC could not be activated. I checked the NIC type by "<code>lspci | grep net</code>", and I found it was <strong>Broadcom Corporation NetLink BCM57780</strong>.</p>
+<p>Many people complain this network card. Some guys tried to download the<a href="http://www.broadcom.com/support/ethernet_nic/netlink_k57.php"> source code </a>of the driver from Broadcom and compiled it by themselves. I didn't want to do that, so I searched "tg3 rpm" and finally got the rpm package for SL <a href="ftp://ftp.ntua.gr/pub/linux/scientificlinux/6.2/x86_64/updates/fastbugs/kmod-tg3-3.122-1.el6_2.x86_64.rpm">kmod-tg3-3.122-1.el6_2.x86_64.rpm</a>. I installed it and restarted the network even the computer, the NIC still didn't work.</p>
+<p>Then I resorted to compiling the source code of tg3. Unfortunately, I realized that gcc was not installed -- the LiveCD didn't contain the GCC package. When I tried to manually install GCC from rpm, a series of shared library dependencies blocked me. So I have to downloaded the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveDVD.iso">LiveDVD of SL</a>, burned it again and installed the SL again. This time, the GCC was included.</p>
+<p>Before building the tg3 driver, I installed the downloaded tg3 rpm package and searched again for the driver. Finally I found webpage <strong><a href="http://www.aoddy.com/2007/10/15/how-to-updating-driver-for-gigabit-network-card-broadcom-tg3netxtream-on-fedora-core-4-2/">How to updating driver for gigabit network card [Broadcom TG3:netXtream] on fedora core 4.</a> </strong>and responses to <a href="http://fonality.com/trixbox/forums/trixbox-forums/help/eth0-no-device-found-nic-broadcom-tg3-drivers-kernel-dkms">eth0 no device found, NIC Broadcom tg3 drivers, kernel, DKMS</a>. Combing the two webpages, I got to know how to make BCM57780 work in SL:</p>
+<ol>
+<li>Download and install <a href="ftp://ftp.ntua.gr/pub/linux/scientificlinux/6.2/x86_64/updates/fastbugs/kmod-tg3-3.122-1.el6_2.x86_64.rpm">kmod-tg3-3.122-1.el6_2.x86_64.rpm</a>.</li>
+<li>Go to <code>/lib/modules/&lt;kernel#&gt;/kernel/net </code> and check if tg3.ko there. If not, try executing "locate tg3".</li>
+<li>Run command "<code>insmod  /path/to/tg3.ko</code>".</li>
+<li>Run command "<code>service network restart</code>".</li>
+<li>Update /etc/.rc.local and append commands in 3 &amp; 4 to the end. Or you must manually run commands 3&amp;4 after reboot.</li>
+</ol>
+<p>Besides, if the above still not work, you may consider appending "<code>biosdevname=0</code>" to the kernel line of the grub config file <code>/etc/grub.conf</code>.</p>
+<p><em><strong>[Update 08/09/2012]:</strong></em></p>
+<p>I am sorry that I didn't really tried if the way above modifying /etc/rc.local really work after reboot. And today I did try, but the answer was no. I struggled for another hour and finally found out the tricky tip: <span style="color:#ff0000;"><strong>module tg3.ko must be removed and re-installed before restarting your network, or the Broadcom NIC still wouldn't work!</strong></span></p>
+<p>So you should append following code to your /etc/rc.local:</p>
+<p><strong><code>rmmod tg3.ko<br />
+insmod /path/to/tg3.ko<br />
+service network restart</code></strong></p>
+
+
+    <small class="meta">August 08, 2012 | <a href='/2012/08/08/how-to-make-nic-bcm57780-work-in-scientific-linux/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2012/08/08/how-to-make-nic-bcm57780-work-in-scientific-linux/">How to make NIC BCM57780 work in Scientific Linux?</a></h2>
+
+    <p>I decided to install Scientific Linux on the computer in my lab. Partly because this distribution is called "Scientific", partly because it is compiled from Red Hat Enterprise Linux, the most prestigious Linux distribution in the world.</p>
+<p>At first, I downloaded the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso">Everything DVDs</a> and burned it into my USB stick via <a href="http://unetbootin.sourceforge.net/">UNetbootin</a>. Unfortunately, it couldn't boot. Then I tried the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveCD.iso">Live CD</a>. It did worked and I installed the SL in a few minutes. However, the network could not be connected and the NIC could not be activated. I checked the NIC type by "<code>lspci | grep net</code>", and I found it was <strong>Broadcom Corporation NetLink BCM57780</strong>.</p>
+<p>Many people complain this network card. Some guys tried to download the<a href="http://www.broadcom.com/support/ethernet_nic/netlink_k57.php"> source code </a>of the driver from Broadcom and compiled it by themselves. I didn't want to do that, so I searched "tg3 rpm" and finally got the rpm package for SL <a href="ftp://ftp.ntua.gr/pub/linux/scientificlinux/6.2/x86_64/updates/fastbugs/kmod-tg3-3.122-1.el6_2.x86_64.rpm">kmod-tg3-3.122-1.el6_2.x86_64.rpm</a>. I installed it and restarted the network even the computer, the NIC still didn't work.</p>
+<p>Then I resorted to compiling the source code of tg3. Unfortunately, I realized that gcc was not installed -- the LiveCD didn't contain the GCC package. When I tried to manually install GCC from rpm, a series of shared library dependencies blocked me. So I have to downloaded the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveDVD.iso">LiveDVD of SL</a>, burned it again and installed the SL again. This time, the GCC was included.</p>
+<p>Before building the tg3 driver, I installed the downloaded tg3 rpm package and searched again for the driver. Finally I found webpage <strong><a href="http://www.aoddy.com/2007/10/15/how-to-updating-driver-for-gigabit-network-card-broadcom-tg3netxtream-on-fedora-core-4-2/">How to updating driver for gigabit network card [Broadcom TG3:netXtream] on fedora core 4.</a> </strong>and responses to <a href="http://fonality.com/trixbox/forums/trixbox-forums/help/eth0-no-device-found-nic-broadcom-tg3-drivers-kernel-dkms">eth0 no device found, NIC Broadcom tg3 drivers, kernel, DKMS</a>. Combing the two webpages, I got to know how to make BCM57780 work in SL:</p>
+<ol>
+<li>Download and install <a href="ftp://ftp.ntua.gr/pub/linux/scientificlinux/6.2/x86_64/updates/fastbugs/kmod-tg3-3.122-1.el6_2.x86_64.rpm">kmod-tg3-3.122-1.el6_2.x86_64.rpm</a>.</li>
+<li>Go to <code>/lib/modules/&lt;kernel#&gt;/kernel/net </code> and check if tg3.ko there. If not, try executing "locate tg3".</li>
+<li>Run command "<code>insmod  /path/to/tg3.ko</code>".</li>
+<li>Run command "<code>service network restart</code>".</li>
+<li>Update /etc/.rc.local and append commands in 3 &amp; 4 to the end. Or you must manually run commands 3&amp;4 after reboot.</li>
+</ol>
+<p>Besides, if the above still not work, you may consider appending "<code>biosdevname=0</code>" to the kernel line of the grub config file <code>/etc/grub.conf</code>.</p>
+<p><em><strong>[Update 08/09/2012]:</strong></em></p>
+<p>I am sorry that I didn't really tried if the way above modifying /etc/rc.local really work after reboot. And today I did try, but the answer was no. I struggled for another hour and finally found out the tricky tip: <span style="color:#ff0000;"><strong>module tg3.ko must be removed and re-installed before restarting your network, or the Broadcom NIC still wouldn't work!</strong></span></p>
+<p>So you should append following code to your /etc/rc.local:</p>
+<p><strong><code>rmmod tg3.ko<br />
+insmod /path/to/tg3.ko<br />
+service network restart</code></strong></p>
+
+
+    <small class="meta">August 08, 2012 | <a href='/bkup/2012/08/08/how-to-make-nic-bcm57780-work-in-scientific-linux/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page5' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page3' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,18 @@
+---
+layout: post
+title: regexp -line逐行匹配
+categories:
+- Tcl/Tk
+tags:
+- Tcl/Tk
+status: publish
+type: post
+published: true
+meta:
+  views: '82'
+  original_post_id: '12'
+  _wp_old_slug: '12'
+author: 
+---
+
+<p>以前没注意到Tcl/Tk的正则表达式命令regexp还有一个逐行匹配的选项-line（其实是三个-line, <span>-lineanchor和</span><span>-linestop，第一个是后两者的综合</span>），因此碰到需要在多行内容中匹配某一行的中的某字符（串）是总是不得不用AWK,PERL等其他工具，现在有了-line，直接regexp -line &lt;pattern&gt; &lt;var&gt;就搞定了！</p>

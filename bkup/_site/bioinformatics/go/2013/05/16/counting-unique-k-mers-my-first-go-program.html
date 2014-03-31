@@ -1,0 +1,135 @@
+<p>Previously, I wrote a Perl program to count the number of unique k-mers. It is very convenient to implement it in Perl, because Perl supports hash-of-hashes(which could dynamically count distinct k-mers) and sorting hashes by value(which can easily list the occurrences of unique k-mers in descending order).</p>
+<p>Unfortunately, comparing to C++, Perl program usually costs more memory and longer time. This is not a big issue when the FASTA files are not large(smaller than 400MB). However, when handling larger FASTA files, my Perl program would require more than 8GB memory, which exceeds the limits of my computer. Therefore, I decided to rewrite the program by Go, a system language that supports concurrent features and can has C/C++-comparable speed.</p>
+<p>The syntax of Go is very different from C/C++, which takes me a whole day familiarize. Some operations that can be implemented easily in Perl can only be done in complicated way, such as calling system command, reading file line-by-line, writing file and sorting map by value. Since this small tool doesn't involve network and concurrency, I cannot compare the difficulty of writing Go program to implement such work. </p>
+<p>Although the experience of the first Go program is not happy, I still think it is necessary to continue learning Go language, because Go program really runs very fast and saves memory(comparing to Perl script). And you don't need to worry about the tricky part of C++. </p>
+<pre>
+// kmerfreq - count unique k-mers from a fasta file.
+
+package main
+
+import (
+	"bufio"
+	"bytes"
+	"flag"
+	"fmt"
+	"io"
+	"os"
+	"os/exec"
+	"strings"
+	"strconv"
+)
+
+// Readln returns a single line (without the ending \n)
+// from the input buffered reader.
+// An error is returned iff there is an error with the
+// buffered reader.
+func Readln(r *bufio.Reader) (string, error) {
+	var (
+		isPrefix bool  = true
+		err      error = nil
+		line, ln []byte
+	)
+	for isPrefix &amp;&amp; err == nil {
+		line, isPrefix, err = r.ReadLine()
+		ln = append(ln, line...)
+	}
+	return string(ln), err
+}
+
+func main() {
+	// Get options
+	var input = flag.String("i", "", "input fasta file")
+	var kmer = flag.Int("k", 16, "length of k-mer")
+	flag.Parse()
+
+	// Dynamically parse the input file name
+	cmd := exec.Command("basename", *input)
+	cmd.Stdin = strings.NewReader("some input")
+	var name bytes.Buffer
+	cmd.Stdout = &amp;name
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var output = flag.String("o", fmt.Sprintf("%s.%d-mer", strings.TrimSpace(name.String()), *kmer), "output file")
+	flag.Parse()
+
+	// open input file
+	fi, err := os.Open(*input)
+	if err != nil {
+		panic(err)
+	}
+	// close fi on exit and check for its returned error
+	defer func() {
+		if err := fi.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	// open output file
+	fo, err := os.Create(*output)
+	if err != nil {
+		panic(err)
+	}
+	// close fo on exit and check for its returned error
+	defer func() {
+		if err := fo.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	// Read and count unique k-mers
+	var read string = ""
+	var km map[string]int  // k-mer counts
+	km = make(map[string]int)
+
+	r := bufio.NewReader(fi)
+	for {
+		line, err := Readln(r)
+		if err == io.EOF {
+			if !strings.HasPrefix(line, "&gt;") {
+				read += line
+			}
+			break // done
+		} else if err != nil {
+			panic(err) // error happens
+		}
+		if strings.HasPrefix(line, "&gt;") {
+			// Header of the read
+			if len(read) != 0 {
+				// count k-mers
+				for i := 0; i &lt; len(read)-*kmer+1; i++ {
+					if km[read[i:i+*kmer]] != 0 {
+						km[read[i:i+*kmer]]++
+					} else {
+						km[read[i:i+*kmer]] = 1
+					}
+				}
+				read = &quot;&quot;
+			}
+		} else {
+			// Read
+			read += line
+		}
+	} // end of for
+
+	// don&#039;t forget the last read
+	if len(read) != 0 {
+		// count k-mers
+		for i := 0; i &lt; len(read)-*kmer+1; i++ {
+			if km[read[i:i+*kmer]] != 0 {
+				km[read[i:i+*kmer]]++
+			} else {
+				km[read[i:i+*kmer]] = 1
+			}
+		}
+	}
+
+	// Write results
+	for k, v := range km {
+		fo.WriteString(k + &quot;\t&quot; + strconv.Itoa(v) + &quot;\n&quot;)
+	}
+}
+</pre>
+<p>&nbsp;</p>

@@ -1,0 +1,35 @@
+<p>当一个含有变量a的命令存储在某个变量b中时, 利用$($b)时有可能会报错。如下面的代码，有时可以成功执行，有时会发生&ldquo;ipcs|grep xxx can not be found"的错误。&nbsp;</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	IPCSCMD="ipcs"
+else
+	IPCSCMD="ipcs|grep $LOGNAME"
+fi
+for Eachline in $($IPCSCMD)
+do
+	IFS=" " # Space
+	# Handle IPCs
+	...
+done</pre>
+<p>&nbsp;</p>
+<p>究其根源，应该是对IPCSCMD的解析出了问题。将代码改为下面的形式，就可以正确执行了。注意IFS的变化&mdash;&mdash;改成下面的形式后必须将循环内的IFS改为Space和Tab。</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	ipcs
+else
+	ipcs|grep $LOGNAME
+fi | while read Eachline
+do
+	IFS=" 	" # Space and tab
+	# Handle IPCs
+	...
+done
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

@@ -1,0 +1,57 @@
+---
+layout: post
+title: Fedora 10 MP3 Support
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '152'
+  original_post_id: '39'
+  _wp_old_slug: '39'
+author: 
+---
+
+<p><a title="Fedora 10 MP3 Support"><br />
+</a></p>
+<p><a title="Fedora 10 MP3 Support"></p>
+<h2>Fedora 10 MP3 Support</h2>
+<p></a></p>
+<div id="node-92" class="node">
+<div class="content">
+<p>Fedora 10 does not come with built-in MP3 support. To get MP3 support with Fedora, you can use RPM Fusion's YUM repositories to download MP3 enabled RPMs.</p>
+<p>&nbsp;</p>
+<p><strong>Enable RPM Fusion</strong></p>
+<p>First, install RPM Fusion's free and nonfree YUM repositories. For detailed information about installing RPM Fusion, see:&nbsp;<a title="http://rpmfusion.org/Configuration" href="http://rpmfusion.org/Configuration">http://rpmfusion.org/Configuration</a></p>
+<p><code>su -c "rpm -Uvh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm"</code></p>
+<p><code>su -c "rpm -Uvh http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm"</code></p>
+<p>&nbsp;</p>
+<p><strong>Install GStreamer</strong></p>
+<p>Next, run this command to get the&nbsp;<a title="GStreamer" href="http://www.gstreamer.net/">gstreamer</a>&nbsp;plugins.</p>
+<p><code>su -c "yum install gstreamer gstreamer-plugins-bad gstreamer-plugins-ugly"</code></p>
+<p>&nbsp;</p>
+<p><strong>Install Applications and Libraries</strong></p>
+<p>For&nbsp;<a title="Amarok" href="http://amarok.kde.org/">Amarok</a>&nbsp;with MP3 support, install these packages:</p>
+<p><code>su -c "yum install amarok phonon-backend-gstreamer"</code></p>
+<p>For&nbsp;<a title="MPlayer" href="http://www.mplayerhq.hu">MPlayer</a>&nbsp;with MP3 support, install these RPMs:</p>
+<p><code>su -c "yum install mplayer gnome-mplayer gnome-mplayer-common mencoder"</code></p>
+<p>For&nbsp;<a title="XMMS" href="http://sourceforge.net/projects/xmms/">XMMS</a>&nbsp;with MP3 support, install the following:</p>
+<p><code>su -c "yum install xmms xmms-mp3"</code></p>
+<p>For&nbsp;<a title="Xine" href="http://xinehq.de/">xine</a>&nbsp;with MP3 support, install these RPMs:</p>
+<p><code>su -c "yum install xine xine-lib-extras-nonfree"</code></p>
+<p>To create MP3s with&nbsp;<a href="http://lame.sourceforge.net">LAME</a>, install lame and lame-mp3x.</p>
+<p><code>su -c "yum install lame lame-mp3x"</code></p>
+<p>&nbsp;</p>
+<p>Alternatively, run this command to install everything:</p>
+<p><code>su -c "yum install xmms xine mplayer amarok xmms-mp3 gstreamer phonon-backend-gstreamer gstreamer-plugins-bad gstreamer-plugins-ugly xine-lib-extras-nonfree mplayer gnome-mplayer-common mencoder gnome-mplayer lame lame-mp3x"</code></p>
+<p>&nbsp;</p>
+<p>[http://hacktux.com/fedora/mp3]</p>
+<p>&nbsp;</p>
+<p>PS: To install VLC media player:</p>
+<p>su -c "yum install vlc"</p>
+</div>
+</div>
+<p>&nbsp;</p>

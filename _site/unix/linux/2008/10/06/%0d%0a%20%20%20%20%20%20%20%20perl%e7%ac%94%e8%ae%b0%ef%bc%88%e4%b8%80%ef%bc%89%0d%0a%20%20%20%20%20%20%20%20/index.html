@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Perl笔记（一） </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>Perl笔记（一）</h1>
+    <p>
+    1 Perl中所有数字内部格式一致，只有双精度浮点数（Perl内部没有整数值）。<br />2 Perl中允许用下划线来分隔比较长的整数，如612980400283768和612_980_400_283_768是相同的值。<br />3 Perl中的非十进制整数：八进制以0开头，十六机制以0x开头，二进制以0b开头。<br />4 Perl中的数字操作符除加减乘除之外，还有模数运算符(%)和指数操作符(**)。对于%，两个操作数首先变成对应的整数值，如10.5%3.2首先变成10%3后再计算。在模数运算中，如果有一个操作数为负数，其结果和Perl的具体实现有关。另外，通常不能进行一个负数的非整数次方的运算（这将产生一个复数），除非有了Math::Complex模块。<br />5 单引号字符串<br />&nbsp;&nbsp; &nbsp;单引号不是字符串的一部分，但Perl可以用它辨别字符串的开始和结束。除了单引号或者反斜线（包括换行字符，如果字符串在下一行继续）之外的任何字符都表示它自身。要得到一个反斜线，可以把两个反斜线放在一起；要得到单引号，需要在单引号之前加上反斜线。单引号字符串中的/n不会被当作换行符来处理，其仅仅是两个字符/和n。只有在反斜线后面接的是/或者是单引号'才会被当作特殊字符来处理。<br />6 双引号字符串<br />&nbsp;&nbsp; &nbsp;双引号字符串中/n为换行符。双引号中的转义字符：<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ 符号&nbsp;&nbsp; &nbsp;｜ 含义&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /n&nbsp;&nbsp; &nbsp;｜ 换行&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /r&nbsp;&nbsp; &nbsp;｜ 回车&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /t&nbsp;&nbsp; &nbsp;｜ 制表符&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /f&nbsp;&nbsp; &nbsp;｜ formfeed&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /b&nbsp;&nbsp; &nbsp;｜ 退格&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /a&nbsp;&nbsp; &nbsp;｜ 响铃&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /e&nbsp;&nbsp; &nbsp;｜ escape(ASCII中的escape字符)&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /007&nbsp;&nbsp; &nbsp;｜ 任何八进制值（这里是007=bell）&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /x7f&nbsp;&nbsp; &nbsp;｜ 任何十六进制值（这里是007＝bell）&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /cC&nbsp;&nbsp; &nbsp;｜ 一个控制符（这里是Ctrl+c）&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ //&nbsp;&nbsp; &nbsp;｜ 反斜线&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /"&nbsp;&nbsp; &nbsp;｜ 双引号&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /l&nbsp;&nbsp; &nbsp;｜ 下个字符小写&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /L&nbsp;&nbsp; &nbsp;｜ 接下来的字符均小写直到/E&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /u&nbsp;&nbsp; &nbsp;｜ 下个字符大写&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /U&nbsp;&nbsp; &nbsp;｜ 接下来的字符均大写知道/E&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /Q&nbsp;&nbsp; &nbsp;｜ 在non-word字符之前加上/,直到/E&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /E&nbsp;&nbsp; &nbsp;｜ 结束/L, /E和/Q&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>双引号字符串的另一个性质是可以进行变量内插，也即当使用字符串时，如果字符串中含有变量名，将由变量的当前值替换它。</p>
+<p>7 字符串操作符<br />&nbsp;&nbsp; &nbsp;字符串可由.操作符连接。<br />&nbsp;&nbsp; &nbsp;字符串重复操作符为小写字母x，如"fred" x 3 #"fredfredfred", 5 x 4 #实际上是"5555"。</p>
+<p>8 数字和字符串之间的自动转换<br />&nbsp;&nbsp; &nbsp;Perl将在需要的时候根据标量值之间的操作符自动进行数字和字符串之间的自动转换。 </p>
+<p>9 Perl中的标量变量都形如$fred。当一个字符串由双引号括起来时，如果变量前没有反斜线，则变量的值会被替换（如果一个变量未被赋值，则将使用空值）。Perl提供了分隔符{}将变量名括起来，如：<br />&nbsp;&nbsp; &nbsp;$what="brontosaurus steak";<br />&nbsp;&nbsp; &nbsp;$n=3;<br />&nbsp;&nbsp; &nbsp;print "fred ate $n $whats./n";&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;#输出不是steaks，而是$whats的值<br />&nbsp;&nbsp; &nbsp;print "fred ate $n ${what}s./n";&nbsp;&nbsp; &nbsp;#现在使用$what的值。</p>
+<p>10 Perl中没有Boolean类型，但可以利用一下几条法则帮助记忆：<br />&nbsp;&nbsp; &nbsp;如果值为数字，0是false，其余为真；<br />&nbsp;&nbsp; &nbsp;如果值为字符串，则空串('')为false，其余为真；<br />&nbsp;&nbsp; &nbsp;如果值的类型既不是数字又不是字符串，则将其转换为数值或字符串再利用上述规则。</p>
+<p>11 行输入运算符：&lt;STDIN&gt;。&lt;STDIN&gt;作为标量值来使用，Perl每次在标准输入中读入文本下一行，将其传给&lt;STDIN&gt;。利用&lt;STDIN&gt;读入的字符串行尾是有换行符的，可以利用chomp函数来去掉。chomp是一个函数，作为函数它有一个返回值，为移除的字符的个数。在使用chomp时，可以使用或不使用（），这又是perl中的一条通用规则：除非移除它们会改变含义，否则括号是可以省略的。如果结尾有两个或两个以上的换行符，chomp仅去掉一个。</p>
+<p>12 undef值<br />&nbsp;&nbsp; &nbsp;Perl中，变量在第一次赋值前有一个特殊值undef，如果该变量是数值型，则undef为0；如果是字符串，则undef为空串。</p>
+<p>13 defined函数</p>
+<p></p>
+
+</div>
+
+<small class="meta">Posted October 06, 2008</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

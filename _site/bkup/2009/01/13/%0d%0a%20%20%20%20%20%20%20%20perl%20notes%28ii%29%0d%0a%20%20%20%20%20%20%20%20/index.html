@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Perl Notes(II) </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>Perl Notes(II)</h1>
+    <p>
+     <span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;"><span class="Apple-style-span" style="font-size:19px;font-weight:bold;">Part II<span>    Network Programming With Perl</span></span><br />
+<h3 style="font-size:12pt;"><a name="1_Input_Output_Basics_" id="1_Input_Output_Basics_"></a>1 Input/Output Basics<br /></h3>
+<h4 style="font-size:10pt;"><a name="1_1_Filehandles_" id="1_1_Filehandles_"></a>1.1 Filehandles<br /></h4>
+<p></span>
+<p class="docText" style="margin:0;">Filehandles are the foundation of networked applications. In this section we review the ins and outs of filehandles. Even if you're an experienced Perl programmer, you might want to scan this section to refresh your memory on some of the more obscure aspects of Perl I/O.</p>
+<p><a name="ch01lev2sec7"></a><br />
+<h5 style="font-size:8pt;"><a name="1_1_1_Standard_Filehandles_" id="1_1_1_Standard_Filehandles_"></a>1.1.1 Standard Filehandles<br /></h5>
+<p class="docText" style="margin:0;">A filehandle connects a Perl script to the outside world. Reading from a filehandle brings in outside data, and writing to one exports data. Depending on how it was created, a filehandle may be connected to a disk file, to a hardware device such as a serial port, to a local process such as a command-line window in a windowing system, or to a remote process such as a network server. It's also possible for a filehandle to be connected to a "bit bucket" device that just sucks up data and ignores it.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">A filehandle is any valid Perl identifier that consists of uppercase and lowercase letters, digits, and the underscore character. Unlike other variables, a filehandle does not have a distinctive prefix (like "$"). So to make them distinct, Perl programmers often represent them in all capital letters, or caps.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">When a Perl script starts, exactly three filehandles are open by default: <tt>STDOUT</tt>, <tt>STDIN</tt>, and <tt>STDERR</tt>. The <tt>STDOUT</tt> filehandle, for "standard output," is the default filehandle for output. Data sent to this filehandle appears on the user's preferred output device, usually the command-line window from which the script was launched. <tt>STDIN</tt>, for "standard input," is the default input filehandle. Data read from this filehandle is taken from the user's preferred input device, usually the keyboard. <tt>STDERR</tt> ("standard error") is used for error messages, diagnostics, debugging, and other such incidental output. By default <tt>STDERR</tt> uses the same output device as <tt>STDOUT</tt>, but this can be changed at the user's discretion. The reason that there are separate filehandles for normal and abnormal output is so that the user can divert them independently; for example, to send normal output to a file and error output to the screen.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">This code fragment will read a line of input from <tt>STDIN</tt>, remove the terminating end-of-line character with the <tt>chomp()</tt> function, and echo it to standard output:</p>
+<pre>$input = &lt;STDIN&gt;;
+chomp($input);
+print STDOUT "If I heard you correctly, you said: $input/n";
+</pre>
+<p class="docText" style="margin:0;">By taking advantage of the fact that <tt>STDIN</tt> and <tt>STDOUT</tt> are the defaults for many I/O operations, and by combining <tt>chomp()</tt> with the input operation, the same code could be written more succinctly like this:</p>
+<pre>chomp($input = &lt;&gt;);
+print "If I heard you correctly, you said: $input/n";
+</pre>
+<p class="docText" style="margin:0;">We review the <tt>&lt;&gt;</tt> and <tt>print()</tt> functions in the next section. Similarly, <tt>STDERR</tt> is the default destination for the <tt>warn()</tt> and <tt>die()</tt> functions.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The user can change the attachment of the three standard filehandles before launching the script. On UNIX and Windows systems, this is done using the redirect metacharacters "&lt;" and "&gt;". For example, given a script named <span class="docEmphasis">muncher.pl</span> this command will change the script's standard input so that it comes from the file <span class="docEmphasis">data.txt</span>, and its standard output so that processed data ends up in <span class="docEmphasis">crunched.txt</span>:</p>
+<pre>% <span class="docEmphStrong">muncher.pl &lt;data.txt &gt;crunched.txt</span>
+						</pre>
+<p class="docText" style="margin:0;">Standard error isn't changed, so diagnostic messages (e.g., from the built-in <tt>warn()</tt> and <tt>die()</tt> functions) appear on the screen.</p>
+<p class="docText" style="margin:0;">On Macintosh systems, users can change the source of the three standard filehandles by selecting filenames from a dialog box within the MacPerl development environment.</p>
+<p><a name="ch01lev2sec8"></a><br />
+<h5 style="font-size:8pt;"><a name="1_1_2_Input_and_Output_Operati" id="1_1_2_Input_and_Output_Operati"></a>1.1.2 Input and Output Operations<br /></h5>
+<p class="docText" style="margin:0;">Perl gives you the option of reading from a filehandle one line at a time, suitable for text files, or reading from it in chunks of arbitrary length, suitable for binary byte streams like image files.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">For input, the <tt>&lt;&gt;</tt> operator is used to read from a filehandle in a line-oriented fashion, and <tt>read()</tt> or <tt>sysread()</tt> to read in a byte-stream fashion. For output, <tt>print()</tt> and <tt>syswrite()</tt> are used for both text and binary data (you decide whether to make the output line-oriented by printing newlines).</p>
+<p class="docText" style="margin:0;"></p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$line = &lt;FILEHANDLE&gt;</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">@lines = &lt;FILEHANDLE&gt;</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$line &lt;&gt;</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">@lines &lt;&gt;</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="font-weight:bold;"><br /></span></p>
+<p class="docText" style="margin:0;">The <tt>&lt;&gt;</tt> ("angle bracket") operator is sensitive to the context in which it is called. If it is used to assign to a scalar variable, a so-called scalar context, it reads a line of text from the indicated filehandle, returning the data along with its terminating end-of-line character. After reading the last line of the filehandle, <tt>&lt;&gt;</tt> will return <tt>undef</tt>, signaling the end-of-file (EOF) condition.</p>
+<p class="docText" style="margin:0;">When <tt>&lt;&gt;</tt> is assigned to an array or used in another place where Perl ordinarily expects a list, it reads <span class="docEmphasis">all</span> lines from the filehandle through to EOF, returning them as one (potentially gigantic) list. This is called a list context.</p>
+<p class="docText" style="margin:0;">If called in a "void context" (i.e., without being assigned to a variable),<tt>&lt;&gt;</tt> copies a line into the <tt>$_</tt> global variable. This is commonly seen in <tt>while()</tt> loops, and often combined with pattern matches and other operations that use <tt>$_</tt> implicitly:</p>
+<pre>while (&lt;&gt;) {
+   print "Found a gnu/n" if /GNU/i;
+}
+</pre>
+<p class="docText" style="margin:0;">The <tt>&lt;FILEHANDLE&gt;</tt> form of this function explicitly gives the filehandle to read from. However, the <tt>&lt;&gt;</tt> form is "magical." If the script was called with a set of file names as command-line arguments, <tt>&lt;&gt;</tt> will attempt to <tt>open()</tt> each argument in turn and will then return lines from them as if they were concatenated into one large pseudofile.</p>
+<p class="docText" style="margin:0;">If no files are given on the command line, or if a single file named "-" is given, then <tt>&lt;&gt;</tt> reads from standard input and is equivalent to <tt>&lt;STDIN&gt;</tt>. See the <span class="docEmphasis">perlfunc</span> POD documentation for an explanation of how this works (<tt>pod perlfunc</tt>, as explained in the Preface).</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$bytes = read (FILEHANDLE,$buffer,$length [,$offset])</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$bytes = sysread (FILEHANDLE,$buffer,$length [,$offset])</span></span></span></p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The <tt>read()</tt> and <tt>sysread()</tt> functions read data of arbitrary length from the indicated filehandle. Up to <tt>$length</tt> bytes of data will be read, and placed in the <tt>$buffer</tt> scalar variable. Both functions return the number of bytes actually read, numeric 0 on the end of file, or <tt>undef</tt> on an error.</p>
+<p class="docText" style="margin:0;">This code fragment will attempt to read 50 bytes of data from <tt>STDIN</tt>, placing the information in <tt>$buffer</tt>, and assigning the number of bytes read to <tt>$bytes</tt>:</p>
+<pre>my $buffer;
+$bytes = read (STDIN,$buffer,50);
+</pre>
+<p class="docText" style="margin:0;">By default, the read data will be placed at the beginning of <tt>$buffer</tt>, overwriting whatever was already there. You can change this behavior by providing the optional numeric <tt>$offset</tt> argument, to specify that read data should be written into the variable starting at the specified position.</p>
+<p class="docText" style="margin:0;">The main difference between <tt>read()</tt> and <tt>sysread()</tt> is that <tt>read()</tt> uses standard I/O buffering, and <tt>sysread()</tt> does not. This means that <tt>read()</tt> will not return until either it can fetch the exact number of bytes requested or it hits the end of file. The <tt>sysread()</tt> function, in contrast, can return partial reads. It is guaranteed to return at least 1 byte, but if it cannot immediately read the number of bytes requested from the filehandle, it will return what it can. This behavior is discussed in more detail later in the Buffering and Blocking section.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$result = print FILEHANDLE $data1,$data2,$data3...</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$result = print $data1,$data2,$data3...</span></span></span></p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The <tt>print()</tt> function prints a list of data items to a filehandle. In the first form, the filehandle is given explicitly. Notice that there is no comma between the filehandle name and the first data item. In the second form, <tt>print()</tt> uses the current default filehandle, usually <tt>STDOUT</tt>. The default filehandle can be changed using the one-argument form of <tt>select()</tt> (discussed below). If no data arguments are provided, then <tt>print()</tt> prints the contents of <tt>$_</tt>.</p>
+<p class="docText" style="margin:0;">If output was successful, <tt>print()</tt> returns a true value. Otherwise it returns false and leaves an error message in the variable named <tt>$!</tt>.</p>
+<p class="docText" style="margin:0;">Perl is a parentheses-optional language. Although I prefer using parentheses around function arguments, most Perl scripts drop them with <tt>print()</tt>, and this book follows that convention as well.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$result = printf $format,$data1,$data2,$data3...</span></span></span></p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The <tt>printf()</tt> function is a formatted print. The indicated data items are formatted and printed according to the <tt>$format</tt> format string. The formatting language is quite rich, and is explained in detail in Perl's POD documentation for the related <tt>sprintf()</tt> (string formatting) function.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$bytes = syswrite (FILEHANDLE,$data [,$length [,$offset]])</span></span></span></p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The <tt>syswrite()</tt> function is an alternative way to write to a filehandle that gives you more control over the process. Its arguments are a filehandle and a scalar value (avariable or string literal). It writes the data to the filehandle, and returns the number of bytes successfully written.</p>
+<p class="docText" style="margin:0;">By default, <tt>syswrite()</tt> attempts to write the entire contents of <tt>$data</tt>, beginning at the start of the string. You can alter this behavior by providing an optional <tt>$length</tt> and <tt>$offset</tt>, in which case <tt>syswrite()</tt> will write <tt>$length</tt> bytes beginning at the position specified by <tt>$offset</tt>.</p>
+<p class="docText" style="margin:0;">Aside from familiarity, the main difference between <tt>print()</tt> and <tt>syswrite()</tt> is that the former uses standard I/O buffering, while the latter does not. We discuss this later in the Buffering and Blocking section.</p>
+<p class="docText" style="margin:0;">Don't confuse <tt>syswrite()</tt> with Perl's unfortunately named <tt>write()</tt> function. The latter is part of Perl's report formatting package, which we won't discuss further.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$previous = select(FILEHANDLE)</span></span></span></p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The <tt>select()</tt> function changes the default output filehandle used by print <tt>print ()</tt>. It takes the name of the filehandle to set as the default, and returns the name of the previous default. There is also a version of <tt>select()</tt> that takes four arguments, which is used for I/O multiplexing. We introduce the four-argument version in <a class="docLink">Chapter 8</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">When reading data as a byte stream with <tt>read()</tt> or <tt>sysread()</tt>, a common idiom is to pass <tt>length($buffer)</tt> as the offset into the buffer. This will make <tt>read()</tt> append the new data to  the end of data that was already in the buffer. For example:</p>
+<pre>my $buffer;
+while (1) {
+  $bytes = read (STDIN,$buffer,50,length($buffer));
+  last unless $bytes &gt; 0;
+}</pre>
+<p><span class="Apple-style-span" style="font-size:11px;font-weight:bold;"><a name="ch01lev2sec9"></a></span><br />
+<h5 style="font-size:8pt;"><a name="1_1_3_Detecting_the_End_of_Fil" id="1_1_3_Detecting_the_End_of_Fil"></a>1.1.3 Detecting the End of File<br /></h5>
+<p class="docText" style="margin:0;">The end-of-file condition occurs when there's no more data to be read from a file or device. When reading from files this happens at the literal end of the file, but the EOF condition applies as well when reading from other devices. When reading from the terminal (command-line window), for example, EOF occurs when the user presses a special key: control-D on UNIX, control-Z on Windows/DOS, and command-. on Macintosh. When reading from a network-attached socket, EOF occurs when the remote machine closes its end of the connection.</p>
+<p class="docText" style="margin:0;">The EOF condition is signaled differently depending on whether you are reading from the filehandle one line at a time or as a byte stream. For byte-stream operations with <tt>read()</tt> or <tt>sysread()</tt>, EOF is indicated when the function returns numeric 0. Other I/O errors return <tt>undef</tt> and set <tt>$!</tt> to the appropriate error message. To distinguish between an error and a normal end of file, you can test the return value with <tt>defined():</tt></p>
+<pre>while (1) {
+  my $bytes = read(STDIN,$buffer,100);
+  die "read error" unless defined ($bytes);
+  last unless $bytes &gt; 0;
+}
+</pre>
+<p class="docText" style="margin:0;">In contrast, the <tt>&lt;&gt;</tt> operator doesn't distinguish between EOF and abnormal conditions, and returns <tt>undef</tt> in either case. To distinguish them, you can set <tt>$!</tt> to <tt>undef</tt> before performing a series of reads, and check whether it is defined afterward:</p>
+<pre>undef $!;
+while (defined(my $line = &lt;STDIN&gt;)) {
+   $data .= $line;
+}
+die "Abnormal read error: $!" if defined ($!);
+</pre>
+<p class="docText" style="margin:0;">When you are using <tt>&lt;&gt;</tt> inside the conditional of a <tt>while()</tt> loop, as shown in the most recent code fragment, you can dispense with the explicit <tt>defined()</tt> test. This makes the loop easier on the eyes:</p>
+<pre>while (my $line = &lt;STDIN&gt;) {
+   $data .= $line;
+}
+</pre>
+<p class="docText" style="margin:0;">This will work even if the line consists of a single 0 or an empty string, which Perl would ordinarily treat as false. Outside <tt>while()</tt> loops, be careful to use <tt>defined()</tt> to test the returned value for EOF.</p>
+<p class="docText" style="margin:0;">Finally, there is the <tt>eof()</tt> function, which explicitly tests a filehandle for the EOF condition:</p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$eof = eof(FILEHANDLE)</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="color:rgb(0,0,255);font-weight:bold;"><br /></span></p>
+<p class="docText" style="margin:0;">The <tt>eof()</tt> function returns true if the next read on <tt>FILEHANDLE</tt> will return an EOF. Called without arguments or parentheses, as in <tt>eof</tt>, the function tests the last filehandle read from.</p>
+<p class="docText" style="margin:0;">When using <tt>while(&lt;&gt;)</tt> to read from the command-line arguments as a single pseudofile, <tt>eof()</tt> has "magical"—or at least confusing—properties. Called with empty parentheses, as in <tt>eof()</tt>, the function returns true at the end of the very last file. Called without parentheses or arguments, as in <tt>eof</tt>, the function returns true at the end of each of the individual files on the command line. See the Perl POD documentation for examples of the circumstances in which this behavior is useful.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">In practice, you do not have to use <tt>eof()</tt> except in very special circumstances, and a reliance on it is often a signal that something is amiss in the structure of your program.</p>
+<p><a name="ch01lev2sec10"></a><br />
+<h5 style="font-size:8pt;"><a name="1_1_4_Anarchy_at_the_End_of_th" id="1_1_4_Anarchy_at_the_End_of_th"></a>1.1.4 Anarchy at the End of the Line<br /></h5>
+<p class="docText" style="margin:0;">When performing line-oriented I/O, you have to watch for different interpretations of the end-of-line character. No two operating system designers can seem to agree on how lines should end in text files. On UNIX systems, lines end with the linefeed character (LF, octal <tt>/012</tt> in the ASCII table); on Macintosh systems, they end with the carriage return character (CR, octal <tt>/015</tt>); and the Windows/DOS designers decided to end each line of text with two characters, a carriage return/linefeed pair (CRLF, or octal <tt>/015/012</tt>). Most line-oriented network servers also use CRLF to terminate lines.</p>
+<p class="docText" style="margin:0;">This leads to endless confusion when moving text files between machines. Fortunately, Perl provides a way to examine and change the end-of-line character. The global variable <tt>$/</tt> contains the current character, or sequence of characters, used to signal the end of line. By default, it is set to <tt>/012</tt> on Unix systems, <tt>/015</tt> on Macintoshes, and <tt>/015/012</tt> on Windows and DOS systems.</p>
+<p class="docText" style="margin:0;">The line-oriented <tt>&lt;&gt;</tt> input function will read from the specified handle until it encounters the end-of-line character(s) contained in <tt>$/</tt>, and return the line of text with the end-of-line sequence still attached. The <tt>chomp()</tt> function looks for the end-of-line sequence at the end of a text string and removes it, respecting the current value of <tt>$/</tt>.</p>
+<p class="docText" style="margin:0;">The string escape <tt>/n</tt> is the <span class="docEmphasis">logical</span> newline character, and means different things on different platforms. For example, <tt>/n</tt> is equivalent to <tt>/012</tt> on UNIX systems, and to <tt>/015</tt> on Macintoshes. (On Windows systems, <tt>/n</tt> is usually <tt>/012</tt>, but see the later discussion of DOS text mode.) In a similar vein, <tt>/r</tt> is the logical carriage return character, which also varies from system to system.</p>
+<p class="docText" style="margin:0;">When communicating with a line-oriented network server that uses CRLF to terminate lines, it won't be portable to set <tt>$/</tt> to <tt>/r/n</tt>. Use the explicit string <tt>/015/012</tt> instead. To make this less obscure, the Socket and IO::Socket modules, which we discuss in great detail later, have an option to export globals named <tt>$CRLF</tt> and <tt>CRLF()</tt> that return the correct values.</p>
+<p class="docText" style="margin:0;">There is an additional complication when performing line-oriented I/O on Microsoft Windows and DOS machines. For historical reasons, Windows/DOS distinguishes between filehandles in "text mode" and those in "binary mode." In binary mode, what you see is exactly what you get. When you print to a binary filehandle, the data is output exactly as you specified. Similarly, read operations return the data exactly as it was stored in the file.</p>
+<p class="docText" style="margin:0;">In text mode, however, the standard I/O library automatically translates LF into CRLF pairs on the way out, and CRLF pairs into LF on the way in. The virtue of this is that it makes text operations on Windows and UNIX Perls look the same—from the programmer's point of view, the DOS text files end in a single <tt>/n</tt> character, just as they do in UNIX. The problem one runs into is when reading or writing binary files—such as images or indexed databases—and the files become mysteriously corrupted on input or output. This is due to the default line-end translation. Should this happen to you, you should turn off character translation by calling <tt>binmode()</tt> on the filehandle.</p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">binmode (FILEHANDLE [$discipline])</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="color:rgb(0,0,255);font-weight:bold;"><br /></span></p>
+<p class="docText" style="margin:0;">The <tt>binmode()</tt> function turns on binary mode for a filehandle, disabling character translation. It should be called after the filehandle is opened, but before doing any I/O with it. The single-argument form turns on binary mode. The two-argument form, available only with Perl 5.6 or higher, allows you to turn binary mode on by providing <tt>:raw</tt> as the value of <tt>$discipline</tt>, or restore the default text mode using <tt>:crlf</tt> as the value.</p>
+<p class="docText" style="margin:0;"><tt>binmode()</tt> only has an effect on systems like Windows and VMS, where the end-of-line sequence is more than one character. On UNIX and Macintosh systems, it has no effect.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">Another way to avoid confusion over text and binary mode is to use the <tt>sysread()</tt> and <tt>syswrite()</tt> functions, which bypass the character translation routines in the standard I/O library.</p>
+<p class="docText" style="margin:0;">A whole bevy of special global variables control other aspects of line-oriented I/O, such as whether to append an end-of-line character automatically to data output with the <tt>print()</tt> statement, and whether multiple data values should be separated by a delimiter. See Appendix B for a brief summary.</p>
+<p><a name="ch01lev2sec11"></a><br />
+<h5 style="font-size:8pt;"><a name="1_1_5_Opening_and_Closing_File" id="1_1_5_Opening_and_Closing_File"></a>1.1.5 Opening and Closing Files<br /></h5>
+<p class="docText" style="margin:0;">In addition to the three standard filehandles, Perl allows you to open any number of additional filehandles. To open a file for reading or writing, use the built-in Perl function <tt>open()</tt> If successful, <tt>open()</tt> gives you a filehandle to use for the read and/or write operations themselves. Once you are finished with the filehandle, call <tt>close()</tt> to close it. This code fragment illustrates how to open the file <span class="docEmphasis">message.txt</span> for writing, write two lines of text to it, and close it:</p>
+<pre>open (FH,"&gt;message.txt") or die "Can't open file: $!";
+print FH "This is the first line./n";
+print FH "And this is the second./n";
+close (FH) or die "Can't close file: $!";
+</pre>
+<p class="docText" style="margin:0;">We call <tt>open()</tt> with two arguments: a filehandle name and the name of the file we wish to open. The filehandle name is any valid Perl identifier consisting of any combination of uppercase and lowercase letters, digits, and the underscore character. To make them distinct, most Perl programmers choose all uppercase letters for filehandles. The " <tt>&gt;</tt> " symbol in front of the filename tells Perl to overwrite the file's contents if it already exists, or to create the file if it doesn't. The file will then be opened for writing.</p>
+<p class="docText" style="margin:0;">If <tt>open()</tt> succeeds, it returns a true value. Otherwise, it returns false, causing Perl to evaluate the expression to the right of the <tt>or</tt> operator. This expression simply dies with an error message, using Perl's <tt>$!</tt> global variable to retrieve the last system error message encountered.</p>
+<p class="docText" style="margin:0;">We call <tt>print()</tt> twice to write some text to the filehandle. The first argument to <tt>print()</tt> is the filehandle, and the second and subsequent arguments are strings to write to the filehandle. Again, notice that there is no comma between the filehandle and the strings to print. Whatever is printed to a filehandle shows up in its corresponding file. If the filehandle argument to <tt>print()</tt> is omitted, it defaults to <tt>STDOUT</tt>.</p>
+<p class="docText" style="margin:0;">After we have finished printing, we call <tt>close()</tt> to close the filehandle. <tt>close()</tt> returns a true value if the filehandle was closed uneventfully, or false if some untoward event, such as a disk filling up, occurred. We check this result code using the same type of <tt>or</tt> test we used earlier.</p>
+<p class="docText" style="margin:0;">Let's look at <tt>open()</tt> and <tt>close()</tt> in more detail.</p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$success = open(FILEHANDLE,$path)</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$success = open(FILEHANDLE,$mode,$path)</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="color:rgb(0,0,255);font-weight:bold;"><br /></span></p>
+<p class="docText" style="margin:0;">The <tt>open()</tt> call opens the file given in <tt>$path</tt>, associating it with a designated <tt>FILEHANDLE</tt>. There are both two- and three-argument versions of <tt>open()</tt>. In the three-argument version, which is available in Perl versions 5.6 and higher, a <tt>$mode</tt> argument specifies how the file is to be opened. <tt>$mode</tt> is a one- or two-character string chosen to be reminiscent of the I/O redirection operators in the UNIX and DOS shells. Choices are shown here.</p>
+<p style="margin:0;">
+<table cellspacing="0" cellpadding="1" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Mode</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Description</span></th>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>&lt;</tt></td>
+<td class="docTableCell" valign="top">Open file for reading</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>&gt;</tt></td>
+<td class="docTableCell" valign="top">Truncate file to zero length and open for writing</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>&gt;&gt;</tt></td>
+<td class="docTableCell" valign="top">Open file for appending, do not truncate</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>+&gt;</tt></td>
+<td class="docTableCell" valign="top">Truncate file and then open for read/write</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>&lt;+</tt></td>
+<td class="docTableCell" valign="top">Open file for read/write, do not truncate</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">We can open the file named <span class="docEmphasis">darkstar.txt</span> for reading and associate it with the filehandle <tt>DARKFH</tt> like this:</p>
+<pre>open(DARKFH,'&lt;','darkstar.txt');
+</pre>
+<p class="docText" style="margin:0;">In the two-argument form of <tt>open()</tt>, the mode is appended directly to the filename, as in:</p>
+<pre>open(DARKFH,'&lt;darkstar.txt');
+</pre>
+<p class="docText" style="margin:0;">For readability, you can put any amount of whitespace between the mode symbol and the filename; it will be ignored. If you leave out the mode symbol, the file will be opened for reading. Hence the above examples are all equivalent to this:</p>
+<pre>open(DARKFH,'darkstar.txt');
+</pre>
+<p class="docText" style="margin:0;">If successful, <tt>open()</tt> will return a true value. Otherwise it returns false. In the latter case, the <tt>$!</tt> global will contain a human-readable message indicating thecause of the error.</p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$success = close(FH);</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="color:rgb(0,0,255);font-weight:bold;"><br /></span></p>
+<p class="docText" style="margin:0;">The <tt>close()</tt> function closes a previously opened file, returning true if successful, or false otherwise. In the case of an error, <span class="Apple-style-span" style="text-decoration:underline;">the error message can again be found in </span><tt><span class="Apple-style-span" style="text-decoration:underline;"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(255,0,0);">$!</span></span></span></tt><span class="Apple-style-span" style="text-decoration:underline;">.</span></p>
+<p class="docText" style="margin:0;">When your program exits, any filehandles that are still open will be closed automatically.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">The three-argument form of <tt>open()</tt> is used only rarely. However, it has the virtue of not scanning the filename for special characters the way that the two-argument form does. This lets you open files whose names contain leading or trailing whitespace, "&gt;" characters, and other weird and arbitrary data. The filename "-" is special. When opened for reading, it tells Perl to open standard input. When opened for writing, it tells Perl to open standard output.</p>
+<p class="docText" style="margin:0;">If you call <tt>open()</tt> on a filehandle that is already open, it will be automatically closed and then reopened on the file that you specify. Among other things, this call can be used to reopen one of the three standard filehandles on the file of your choice, changing the default source or destination of the <tt>&lt;&gt;</tt>, <tt>print()</tt>, and <tt>warn()</tt> functions. We will see an example of this shortly.</p>
+<p class="docText" style="margin:0;">As with the <tt>print()</tt> function, many programmers drop the parentheses around <tt>open()</tt> and <tt>close()</tt>. For example, this is the most common idiom for opening a file:</p>
+<pre>open DARKSTAR,"darkstar.txt" or die "Couldn't open darkstar.txt: $!"
+</pre>
+<p class="docText" style="margin:0;">I don't like this style much because it leads to visual ambiguity (does the <tt>or</tt> associate with the string "darkstar.txt" or with the <tt>open()</tt> function?). However, I do use this style with<tt>close()</tt>, <tt>print()</tt>, and <tt>return()</tt> because of their ubiquity.</p>
+<p class="docText" style="margin:0;">The two-argument form of <tt>open()</tt> has a lot of magic associated with it (too much magic, some would say). The full list of magic behavior can be found in the <span class="docEmphasis">perlfunc</span> and <span class="docEmphasis">perlopentut</span> POD documentation. However, one trick is worth noting because we use it in later chapters. You can <span class="docEmphasis">duplicate</span> a filehandle by using it as the second argument to <tt>open()</tt> with the sequence <tt>&gt;&amp;</tt> or <tt>&lt;&amp;</tt> prepended to the beginning. <tt>&gt;&amp;</tt> duplicates filehandles used for writing, and <tt>&lt;&amp;</tt> duplicates those used for reading:</p>
+<pre>open (OUTCOPY,"&gt;&amp;STDOUT");
+open (INCOPY,"&lt;&amp;STDOUT");
+</pre>
+<p class="docText" style="margin:0;">This example creates a new filehandle named <tt>OUTCOPY</tt> that is attached to the same device as <tt>STDOUT</tt>. You can now write to <tt>OUTCOPY</tt> and it will have the same effect as writing to <tt>STDOUT</tt>. This is useful when you want to replace one or more of the three standard filehandles temporarily, and restore them later. For example, this code fragment will temporarily reopen <tt>STDOUT</tt> onto a file, invoke the system <span class="docEmphasis">date</span> command (using the <tt>system()</tt> function, which we discuss in more detail in <a class="docLink">Chapter 2</a>), and then restore the previous value of <tt>STDOUT</tt>. When <span class="docEmphasis">date</span> runs, its standard output is opened on the file, and its output appears there rather than in the command window:</p>
+<pre>#!/usr/bin/perl
+# file: redirect.pl
+
+print "Redirecting STDOUT/n";
+open (SAVEOUT,"&gt;&amp;STDOUT");
+open (STDOUT,"&gt;test.txt") or die "Can't open test.txt: $!";
+
+print "STDOUT is redirected/n";
+system "date";
+
+open (STDOUT,"&gt;&amp;SAVEOUT");
+print "STDOUT restored/n";
+</pre>
+<p class="docText" style="margin:0;">When this script runs, its output looks like this:</p>
+<pre>% redirect.pl
+Redirecting STDOUT
+STDOUT restored
+</pre>
+<p class="docText" style="margin:0;">and the file <span class="docEmphasis">test.txt</span> contains these lines:</p>
+<pre>STDOUT is redirected
+Thu Aug 10 09:19:24 EDT 2000
+</pre>
+<p class="docText" style="margin:0;">Notice how the second <tt>print()</tt> statement and the output of the <span class="docEmphasis">date</span> system command went to the file rather than to the screen because we had reopened <tt>STDOUT</tt> at that point. When we restored <tt>STDOUT</tt> from the copy saved in <tt>SAVEOUT</tt>, our ability to print to the terminal was restored.</p>
+<p class="docText" style="margin:0;">Perl also provides an alternative API for opening files that avoids the magic and obscure syntax of <tt>open()</tt> altogether. The <tt>sysopen()</tt> function allows you to open files using the same syntax as the C library's <tt>open()</tt> function.</p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$result = sysopen (FILEHANDLE,$filename,$mode [,$perms])</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="color:rgb(0,0,255);font-weight:bold;"><br /></span></p>
+<p class="docText" style="margin:0;">The <tt>sysopen()</tt> function opens the file indicated by <tt>$filename</tt>, using the I/O mode indicated by <tt>$mode</tt>. If the file doesn't exist, and <tt>$mode</tt> indicates that the file should be created, then the optional <tt>$perms</tt> value specifies the permission bits for the newly created file. We discuss I/O modes and permissions in more detail below.</p>
+<p class="docText" style="margin:0;">If successful, <tt>sysopen()</tt> returns a true result and associates the opened file with <tt>FILEHANDLE</tt>. Otherwise it returns a false result and leaves the error message in <tt>$!</tt>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">The <tt>$mode</tt> argument used in <tt>sysopen()</tt> is different from the mode used in ordinary <tt>open()</tt>. Instead of being a set of characters, it is a numeric bitmask formed by ORing together one or more constants using the bitwise <tt>OR</tt> operator " <tt>|</tt> ". For example, the following snippet opens up a file for writing using a mode that causes it to be created if it doesn't exist, and truncated to length zero if it does (equivalent to <tt>open()</tt>'s " <tt>&gt;</tt> " mode):</p>
+<pre>sysopen(FH, "darkstar.txt",O_WRONLY|O_CREAT|O_TRUNC)
+      or die "Can't open: $!"
+</pre>
+<p class="docText" style="margin:0;">The standard <tt>Fcntl</tt> module exports the constants recognized by <tt>sysopen()</tt>, all of which begin with the prefix <tt>O_</tt>. Just use <tt>Fcntl</tt> at the top of your script togain access to them.</p>
+<p class="docText" style="margin:0;">The mode constants useful for <tt>sysopen()</tt> are listed in <a class="docLink">Table 1.1</a>. Each call to <tt>sysopen()</tt> must have one (and only one) of <tt>O_RDONLY</tt>, <tt>O_WRONLY</tt>, and <tt>O_RDWR</tt>. The <tt>O_WRONLY</tt> and <tt>O_RDWR</tt> constants may be ORed with one or more of <tt>O_CREAT</tt>, <tt>O_EXCL</tt>, <tt>O_TRUNC</tt>, or <tt>O_APPEND</tt>.</p>
+<p class="docText" style="margin:0;"><tt>O_CREAT</tt> causes the file to be created if it doesn't already exist. If it isn't specified, and the file doesn't exist when you try to open it for writing, then <tt>sysopen()</tt> will fail.</p>
+<p class="docText" style="margin:0;">Combining <tt>O_CREAT</tt> with <tt>O_EXCL</tt> leads to the useful behavior of creating the file if it doesn't already exist, but failing if it does. This can be used to avoid accidentally clobbering an existing file.</p>
+<p class="docText" style="margin:0;">If <tt>O_TRUNC</tt> is specified, then the file is truncated to zero length before the first write, effectively overwriting the previous contents. <tt>O_APPEND</tt> has the opposite effect, positioning the write pointer to the end of the file so that everything written to the file is appended to its existing contents.</p>
+<p><a name="ch01table01"></a>
+<p style="margin:0;"></p>
+<p>
+<div style="text-align:center;margin-top:0;margin-bottom:0;">Table 1.1. sysopen() Mode Constants</div>
+<table cellspacing="0" cellpadding="1" width="100%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Constant</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Description</span></th>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_RDONLY</tt></td>
+<td class="docTableCell" valign="top">Open read only.</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_WRONLY</tt></td>
+<td class="docTableCell" valign="top">Open write only.</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_RDWR</tt></td>
+<td class="docTableCell" valign="top">Open read/write.</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_CREAT</tt></td>
+<td class="docTableCell" valign="top">Create file if it doesn't exist.</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_EXCL</tt></td>
+<td class="docTableCell" valign="top">When combined with <tt>O_CREAT</tt>, create file if it doesn't exist and fail if it does.</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_TRUNC</tt></td>
+<td class="docTableCell" valign="top">If file already exists, truncate it to zero.</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_APPEND</tt></td>
+<td class="docTableCell" valign="top">Open file in append mode (equivalent to <tt>open()</tt>'s " <tt>&gt;&gt;</tt> ").</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_NOCTTY</tt></td>
+<td class="docTableCell" valign="top">If the file is a terminal device, open it without allowing it to become the process's controlling terminal.</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_NONBLOCK</tt></td>
+<td class="docTableCell" valign="top">Open file in nonblockingmode.</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>O_SYNC</tt></td>
+<td class="docTableCell" valign="top">Open file for synchronous mode, so that all writes block until the data is physically written.</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">The <tt>O_NOCTTY</tt>, <tt>O_NONBLOCK</tt>, and <tt>O_SYNC</tt> modes all have specialized uses that are discussed in later chapters.</p>
+<p class="docText" style="margin:0;">If <tt>sysopen()</tt> needs to create a file, the <tt>$perm</tt> argument specifies the permissions mode of the resulting file. File permissions is a UNIX concept that maps imperfectly onto the Windows/DOS world, and not at all onto the Macintosh world. It is an octal value, such as <tt>0644</tt> (which happens to specify read/write permissions for the owner of the file, and read-only permissions for others).</p>
+<p class="docText" style="margin:0;">If <tt>$perm</tt> is not provided, <tt>sysopen()</tt> defaults to <tt>0666</tt>, which grants read/write access to everyone. However, whether you specify the permissions or accept the default, the actual permissions of the created file are determined by performing the bitwise AND between the <tt>$perm</tt> argument and the current contents of the user's <span class="docEmphasis">umask</span> (another UNIX concept). This is often set, at the user's discretion, to forbid access to the file from outside the user's account or group.</p>
+<p class="docText" style="margin:0;">In most circumstances, it is best to omit the permissions argument and let the user adjust the <span class="docEmphasis">umask</span>. This also increases the portability of the program. See the <tt>umask()</tt> entry in the <span class="docEmphasis">perlfunc</span> POD documentation for information on how you can examine and set the umask programatically.</p>
+<p><a name="ch01lev2sec12"></a><br />
+<h5 style="font-size:8pt;"><a name="1_1_6_Buffering_and_Blocking_" id="1_1_6_Buffering_and_Blocking_"></a>1.1.6 Buffering and Blocking<br /></h5>
+<p class="docText" style="margin:0;">When you <tt>print()</tt> or <tt>syswrite()</tt> to a filehandle, the actual output operation does not occur immediately. If you are writing to a file, the system has to wait for the write head to reach the proper location on the disk drive, and for the spinning platter to bring the proper location under the head. This is usually an insignificant length of time (although it may be quite noticeable on a laptop that intermittently spins down its disk to save battery power), but other output operations can take much more time. In particular, network operations may take a considerable length of time to complete. The same applies to input.</p>
+<p class="docText" style="margin:0;">There is a fundamental mismatch between computational speed and I/O speed. A program can execute the contents of a tight loop a million times a second, but a single I/O operation may take several seconds to complete. To overcome this mismatch, modern operating systems use the techniques of buffering and blocking.</p>
+<p class="docText" style="margin:0;">The idea behind buffering is shown in <a class="docLink">Figure 1.3</a>. Buffers decouple the I/O calls invoked by the program from the actual I/O operations that occur at the hardware level. A call to <tt>print()</tt>, for example, doesn't send data directly to the terminal, network card, or disk drive, but instead it results in data being written to a memory area. This occurs quickly, because writes to memory are fast. Meanwhile, in an asynchronous fashion, the operating system reads from data previously written to the buffer and performs the actions necessary to write the information to the hardware device.</p>
+<p>Figure 1.3. Buffers help solve the mismatch between computation speed and I/O speed
+<p class="docText" style="margin:0;"></p>
+<div id="r:n9" style="text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;"><a target="_blank" href="http://docs.google.com/File?id=dd6nw3mt_211c67qrqfz_b"><img src="http://docs.google.com/File?id=dd6nw3mt_211c67qrqfz_b" style="width:500px;height:512px;border-style:initial;border-color:initial;border-width:0;" /></a></div>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">Similarly, for input operations, the operating system receives data from active input devices (the keyboard, disk drive, network card) and writes that data to an input buffer somewhere in memory. The data remains in the input buffer until your program calls <tt>&lt;&gt;</tt> or <tt>read()</tt>, at which point the data is copied from the operating system's buffer into the memory space corresponding to a variable in your program.</p>
+<p class="docText" style="margin:0;">The advantage of buffering is significant, particularly if your program performs I/O in a "bursty" way; that is, it performs numerous reads and writes of unpredictable size and timing. Instead of waiting for each operation to complete at the hardware level, the data is safely buffered in the operating system and "flushed"—passed on to the output device—whenever the downstream hardware can accept it.</p>
+<p class="docText" style="margin:0;">The buffers in <a class="docLink">Figure 1.3</a> are conceptually circular FIFO (first in first out) data structures. When data is written beyond the end of the buffer memory area, the operating system merely begins writing new data at the beginning. The operating system maintains two pointers in each of its I/O buffers. The write pointer is the place where new data enters the buffer. The read pointer is the position from which stored data is moved out of the buffer to its next destination. For example, on write operations, each <tt>print()</tt> you perform adds some data to the output buffer and advances the write pointer forward. The operating system reads older data starting at the read pointer and copies it to the low-level hardware device.</p>
+<p class="docText" style="margin:0;">The size of the I/O buffer minus the distance between the write pointer and the read pointer is the amount of free space remaining. If your program is writing faster than the output hardware can receive it, then the buffer will eventually fill up and the buffer's free space will be zero. What happens then?</p>
+<p class="docText" style="margin:0;">Because there is no room for new data in the buffer, the output operation cannot succeed immediately. As a result, the write operation blocks. Your program will be suspended at the blocked <tt>print()</tt> or <tt>syswrite()</tt> for an indefinite period of time. When the backlog in the output buffer clears and there is again room to receive new data, the output operation will unblock and <tt>print()</tt> or <tt>syswrite()</tt> will return.</p>
+<p class="docText" style="margin:0;">In a similar fashion, reads will block when the input buffer is empty; that is, it blocks when the amount of free space is equal to the size of the buffer. In this case, calls to <tt>read()</tt> or <tt>sysread()</tt> will block until some new data has entered the buffer and there is something to be read.</p>
+<p class="docText" style="margin:0;">Blocking is often the behavior you want, but sometimes you need more control over I/O. There are several techniques to manage blocking. One technique, discussed in <a class="docLink">Chapter 2</a> under Timing Out System Calls, uses signals to abort an I/O operation prematurely if it takes too long. Another technique, discussed in <a class="docLink">Chapter 12</a>, uses the four-argument <tt>select()</tt> system call to test a filehandle for its readiness to perform I/O before actually making the read or write call. A third technique, discussed in <a class="docLink">Chapter 13</a>, is to mark the filehandle as nonblocking, which causes the read or write operation to return immediately with an error code if the operation would block.</p>
+<p><a name="ch01lev2sec13"></a><br />
+<h5 style="font-size:8pt;"><a name="1_1_7_Standard_I_O_Buffering_" id="1_1_7_Standard_I_O_Buffering_"></a>1.1.7 Standard I/O Buffering<br /></h5>
+<p class="docText" style="margin:0;">Although we have spoken of a single buffer for I/O operations on a filehandle, there may in fact be several buffers at different layers of the operating system. For example, when writing to a disk file, there is a very low-level buffer on the disk hardware itself, another one in the SCSI or IDE driver that controls the disk, a third in the driver for the filesystem, and a fourth in the standard C library used by Perl. I may have missed a few.</p>
+<p class="docText" style="margin:0;">You cannot control or even access most of these buffers directly, but there is one class of buffer that you should be aware of. Many of Perl's I/O operations flow through "stdio," a standard C-language library which maintains its own I/O buffers independent of the operating system's.<sup class="docFootnote"><a class="docLink">[1]</a></sup></p>
+<blockquote style="border-color:rgb(221,221,221);border-style:dashed;border-width:1px;padding:10px;"><p class="docFootnote" style="margin:0;"><sup><a name="ch01fn01">[1]</a></sup> You can think of the stdio library as a layersitting on top of the OS, making the OS look more C-like to programs; similarly, a Pascal standard I/O library makes the OS look as if it were written in Pascal.</p>
+</blockquote>
+<p class="docText" style="margin:0;">Perl's <tt>&lt;&gt;</tt> operator, <tt>read()</tt>, and <tt>print()</tt> all use stdio. When you call <tt>print()</tt>, the data is transferred to an output buffer in the stdio layer before being sent to the operating system itself. Likewise, <tt>&lt;&gt;</tt> and <tt>read()</tt> both read data from an stdio buffer rather than directly from the OS. Each filehandle has its own set of buffers for input and output. For efficiency reasons, stdio waits until its output buffers reach a certain size before flushing their contents to the OS.</p>
+<p class="docText" style="margin:0;">Normally, the presence of the stdio buffering is not a problem, but it can run you into trouble when doing more sophisticated types of I/O such as network operations. Consider the common case of an application that requires you to write a small amount of data to a remote server, wait for a response, and then send more data. You may think that the data has been sent across the network, but in fact it may not have been. The output data may still be sitting in its local stdio buffer, waiting for more data to come before flushing the buffer. The remote server will never receive the data, and so will never return a response. Your program will never receive a response and so will never send additional data. Deadlock ensues.</p>
+<p class="docText" style="margin:0;">In contrast, the lower-level buffering performed by the operating system doesn't have this property. The OS will always attempt to deliver whatever data is in its output buffers as soon as the hardware can accept it.</p>
+<p class="docText" style="margin:0;">There are two ways to work around stdio buffering. One is to turn on "autoflush" mode for the filehandle. Autoflush mode applies only to output operations. When active, Perl tells stdio to flush the filehandle's buffer every time <tt>print()</tt> is called.</p>
+<p class="docText" style="margin:0;">To turn on autoflush mode, set the special variable <tt>$|</tt> to a true value. Autoflush mode affects the currently selected filehandle, so to change autoflush mode for a specific filehandle, one must first <tt>select()</tt> it, set <tt>$|</tt> to true, and then <tt>select()</tt> the previously selected filehandle. For example, to turn on autoflush mode for filehandle <tt>FH</tt>:</p>
+<pre>my $previous = select(FH);
+$| = 1;
+select($previous);
+</pre>
+<p class="docText" style="margin:0;">You will sometimes see this motif abbreviated using the following mind-blowing idiom:</p>
+<pre>select((select(FH),$|=1)[0]);
+</pre>
+<p class="docText" style="margin:0;">However, it is much cleaner to bring in the <tt>IO::Handle</tt> module, which adds an <tt>autoflush()</tt> method to filehandles. With <tt>IO::Handle</tt> loaded, <tt>FH</tt> can be put into autoflush mode like this:</p>
+<pre>use IO::Handle;
+FH-&gt;autoflush(1);
+</pre>
+<p class="docText" style="margin:0;">If the OO syntax confuses you, see the Objects and References section later in this chapter.</p>
+<p class="docText" style="margin:0;">The other way to avoid stdio buffering problems is to use the <tt>sysread()i</tt> and <tt>syswrite()</tt> calls. These calls bypass the stdio library and go directly to the operating system I/O calls. An important advantage of these calls is that they interoperate well with other low-level I/O calls, such as the four-argument <tt>select()</tt> call, and with advanced techniques such as nonblocking I/O.</p>
+<p class="docText" style="margin:0;">Another ramification of the fact that the <tt>sys*()</tt> functions bypass stdio is the difference in behavior between <tt>read()</tt> and <tt>sysread()</tt> when asked to fetch a larger chunk of data than is available. In the case of <tt>read()</tt>, the function will block indefinitely until it can fetch exactly the amount of data requested. The only exception to this is when the filehandle encounters the end of file before the full request has been satisfied, in which case <tt>read()</tt> will return everything to the end of the file. In contrast, <tt>sysread()</tt> can and will return partial reads. If it can't immediately read the full amount of data requested, it will return the data that is available. If no data is available, <tt>sysread()</tt> will block until it can return at least 1 byte. This behavior makes <tt>sysread()</tt> invaluable for use in network communications, where data frequently arrives in chunks of unpredictable size.</p>
+<p class="docText" style="margin:0;">For these reasons, <tt>sysread()</tt> and <tt>syswrite()</tt> are preferred for many network applications.</p>
+<p><a name="ch01lev2sec14"></a><br />
+<h5 style="font-size:8pt;"><a name="1_1_8_Passing_and_Storing_File" id="1_1_8_Passing_and_Storing_File"></a>1.1.8 Passing and Storing Filehandles<br /></h5>
+<p class="docText" style="margin:0;">Network applications frequently must open multiple filehandles simultaneously, pass them to subroutines, and keep track of them in hashes and other data structures. Perl allows you to treat filehandles as strings, store them into variables, and pass them around to subroutines. For example, this functional but flawed code fragment stores the <tt>MY_FH</tt> filehandle into a variable named <tt>$fh</tt>, and then passes it to a subroutine named <tt>hello()</tt> to use in printing a friendly message:</p>
+<pre># Flawed technique
+$fh = MY_FH;
+hello($fh);
+sub hello {
+  my $handle = shift;
+  print $handle "Howdy folks!/n";
+}
+</pre>
+<p class="docText" style="margin:0;">This technique often works; however, it will run you into problems as soon asyou try to pass filehandles to subroutines in other packages, such as functions exported by modules. The reason is that passing filehandles as strings loses the filehandle package information. If we pass the filehandle <tt>MY_FH</tt> from the main script (package <tt>main</tt>) to a subroutine defined in the <tt>MyUtils</tt> module, the subroutine will try to access a filehandle named <tt>MyUtils::MY_FH</tt> rather than the true filehandle, which is <tt>main::MY_FH</tt>. The same problem also occurs, of course, when a subroutine from one package tries to return a filehandle to a caller from another package.</p>
+<p class="docText" style="margin:0;">The correct way to move filehandles around is as a <span class="docEmphasis">typeglob</span> or a <span class="docEmphasis">typeglob reference.</span> Typeglobs are symbol table entries, but you don't need to know much more about them than that in order to use them (see the <span class="docEmphasis">perlref</span> POD documentation for the full details). To turn a filehandle into a glob put an asterisk ("*") in front of its name:</p>
+<pre>$fh = *MY_FH;
+</pre>
+<p class="docText" style="margin:0;">To turn a filehandle into a typeglob reference, put "/*" in front of its name:</p>
+<pre>$fh = /*MY_FH;
+</pre>
+<p class="docText" style="margin:0;">In either case, <tt>$fh</tt> can now be used to pass the filehandle back and forth between subroutines and to store filehandles in data structures. Of the two forms, the glob reference (<tt>/*HANDLE</tt>) is the safer, because there's less risk of accidentally writing to the variable and altering the symbol table. This is the form we use throughout this book, and the one used by Perl's I/O-related modules, such as IO::Socket.</p>
+<p class="docText" style="margin:0;">Typeglob references can be passed directly to subroutines:</p>
+<pre>hello(/*MY_FH):
+</pre>
+<p class="docText" style="margin:0;">They can also be returned directly by subroutines:</p>
+<pre>my $fh = get_fh();
+sub get_fh {
+   open (FOO,"foo.txt") or die "foo: $!";
+   return /*FOO;
+}
+</pre>
+<p class="docText" style="margin:0;">Typeglob refs can be used anywhere a bare filehandle is accepted, including as the first argument to <tt>print()</tt>, <tt>read()</tt>, <tt>sysread()</tt>, <tt>syswrite()</tt>, or any of the socket-related calls that we discuss in later chapters.</p>
+<p class="docText" style="margin:0;">Sometimes you will need to examine a scalar variable to determine whether it contains a valid filehandle. The <tt>fileno()</tt> function makes this possible:</p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$integer = fileno (FILEHANDLE)</span></span></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="color:rgb(0,0,255);font-weight:bold;"><br /></span></p>
+<p class="docText" style="margin:0;">The <tt>fileno()</tt> function accepts a filehandle in the form of a bare string, a typeglob, or a typeglob reference. If the filehandle is valid, <tt>fileno()</tt> returns the <span class="docEmphasis">file descriptor</span> for the filehandle. This is a small integer that uniquely identifies the filehandle to the operating system. <tt>STDIN</tt>, <tt>STDOUT</tt>, and <tt>STDERR</tt> generally correspond to descriptors 0, 1, and 2, respectively (but this can change if you close and reopen them). Other filehandles have descriptors greater than 3.</p>
+<p class="docText" style="margin:0;">If the argument passed to <tt>fileno()</tt> does not correspond to a valid filehandle (including former filehandles that have been closed), <tt>fileno()</tt> returns <tt>undef</tt>. Here is the idiom for checking whether a scalar variable contains a filehandle:</p>
+<pre>die "not a filehandle" unless defined fileno($fh);
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p><a name="ch01lev2sec15"></a><br />
+<h5 style="font-size:8pt;"><a name="1_1_9_Detecting_Errors_" id="1_1_9_Detecting_Errors_"></a>1.1.9 Detecting Errors<br /></h5>
+<p class="docText" style="margin:0;">Because of the vicissitudes of Internet communications, I/O errors are common in network applications. As a rule, each of the Perl functions that performs I/O returns <tt>undef</tt>, a false value, on failure. More specific information can be found by examining the special global variable <tt>$!</tt>.</p>
+<p class="docText" style="margin:0;"><tt>$!</tt> has an interesting dual nature. Treated as a string, it will return a human-readable error message such as <tt>Permission denied</tt>. Treated as a number, however, it will return the numeric constant for the error, as defined by the operating system (e.g., <tt>EACCES</tt>). It is generally more reliable to use these numeric error constants to distinguish particular errors, because they are standardized across operating systems.</p>
+<p class="docText" style="margin:0;">You can obtain the values of specific error message constants by importing them from the <tt>Errno</tt> module. In the <tt>use</tt> statement, you can import individual constants by name, or all of them at once. To bring in individual constants, list them in the <tt>use()</tt> statement, as shown here:</p>
+<pre>use Errno qw(EACCES ENOENT);
+my $result = open (FH,"&gt;/etc/passwd");
+if (!$result) { # oops, something went wrong
+   if ($! == EACCESS) {
+      warn "You do not have permission to open this file.";
+   } elsif ($! == ENOENT) {
+      warn "File or directory not found.";
+   } else {
+      warn "Some other error occurred: $!";
+   }
+}
+</pre>
+<p class="docText" style="margin:0;">The <tt>qw()</tt> operator is used to split a text string into a list of words. The first line above is equivalent to:</p>
+<pre>use Errno ('EACCESS','ENOENT');
+</pre>
+<p class="docText" style="margin:0;">and brings in the <tt>EACCESS</tt> and <tt>ENOENT</tt> constants. Notice that we use the numeric comparison operator " <tt>==</tt> " when comparing <tt>$!</tt> to numeric constants.</p>
+<p class="docText" style="margin:0;">To bring in all the common error constants, import the tag <tt>:POSIX</tt>. Thisbrings in the error constants that are defined by the POSIX standard, across-platform API that UNIX, Windows NT/2000, and many other operating systems are largely compliant with. For example:</p>
+<pre>use Errno qw(:POSIX);
+</pre>
+<p class="docText" style="margin:0;">Do not get into the habit of testing <tt>$!</tt> to see if an error occurred during the last operation. <tt>$!</tt> is set when an operation fails, but is not unset when an operation succeeds. The value of <tt>$!</tt> should be relied on only immediately after a function has indicated failure.</p>
+<p style="margin:0;">
+<h4 style="font-size:10pt;"><a name="1_2_" id="1_2_"></a>1.2 Using Object-Oriented Syntax with the IO::Handle and IO::File Modules<br /></h4>
+<p style="margin:0;">
+<h5 style="font-size:8pt;">1.2.1 Objects and References<br /></h5>
+<p class="docText" style="margin:0;">In Perl, references are pointers to data structures. You can create a reference to an existing data structure using the backslash operator. For example:</p>
+<pre>$a = 'hi there';
+$a_ref = /$a; # reference to a scalar
+@b = ('this','is','an','array');
+$b_ref = /@b; # reference to an array
+%c = ( first_name =&gt; 'Fred', last_name =&gt; 'Jones');
+$c_ref = /%c; # reference to a hash
+</pre>
+<p class="docText" style="margin:0;">Once a reference has been created, you can make copies of it, as you would any regular scalar, or stuff it into arrays or hashes. When you want to get to the data contained inside a reference, you dereference it using the prefix appropriate for its contents:</p>
+<pre>$a = $$a_ref;
+@b = @$b_ref;
+%c = %$c_ref;
+</pre>
+<p class="docText" style="margin:0;">You can index into array and hash references without dereferencing the whole thing by using the <tt>-&gt;</tt> syntax:</p>
+<pre>$b_ref-&gt;[2];          # yields "an"
+$c_ref-&gt;{last_name};  # yields "Jones"
+</pre>
+<p class="docText" style="margin:0;">It is also possible to create references to anonymous, unnamed arrays and hashes, using the following syntax:</p>
+<pre>$anonymous_array = ['this','is','an','anonymous','array'];
+$anonymous_hash  = { first_name =&gt;'Jane', last_name =&gt; 'Doe' };
+</pre>
+<p class="docText" style="margin:0;">If you try to print out a reference, you'll get a string like <tt>HASH(0x82ab0e0)</tt>, which indicates the type of reference and the memory location where it can be found (which is just short of useless).</p>
+<p class="docText" style="margin:0;">An <span class="docEmphasis">object</span> is a reference with just a little bit extra. It is "blessed" into a particular module's package in such a way that it carries information about what module created it.<sup class="docFootnote"><a class="docLink">[2]</a></sup> The blessed reference will continue to work just like other references. For example, if the object named <tt>$object</tt> is a blessed hash reference, you can index into it like this:</p>
+<blockquote style="border-color:rgb(221,221,221);border-style:dashed;border-width:1px;padding:10px;"><p class="docFootnote" style="margin:0;"><sup><a name="ch01fn02">[2]</a></sup> The function responsible for turning ordinary references into blessed ones is, naturally enough, called <span class="docEmphStrong">bless()</span>.</p>
+</blockquote>
+<pre>$object-&gt;{last_name};
+</pre>
+<p class="docText" style="margin:0;">What makes objects different from plain references is that they have <span class="docEmphasis">methods</span>. A method call uses the <tt>-&gt;</tt> notation, but followed by a subroutine name and optional subroutine-style arguments:</p>
+<pre>$object-&gt;print_record(); # invoke the print_record() method
+</pre>
+<p class="docText" style="margin:0;">You may sometimes see a method called with arguments, like this:</p>
+<pre>$object-&gt;print_record(encoding =&gt; 'EBCDIC');
+</pre>
+<p class="docText" style="margin:0;">The "=&gt;" symbol is accepted by Perl as a synonym for ','. It makes the relationship between the two arguments more distinct, and has the added virtue of automatically quoting the argument on the left. This allows us to write encoding rather than <span class="docEmphasis">"encoding"</span>. If a method takes no arguments, it's often written with the parentheses omitted, as in:</p>
+<pre>$object-&gt;print_record;
+</pre>
+<p class="docText" style="margin:0;">In many cases, <tt>print_record()</tt> will be a subroutine defined in the object's package. Assuming that the object was created by a module named BigDatabase, the above is just a fancy way of saying this:</p>
+<pre>BigDatabase::print_record($object);
+</pre>
+<p class="docText" style="margin:0;">However, Perl is more subtle than this, and the <tt>print_record()</tt>, method definition might actually reside in another module, which the current module <span class="docEmphasis">inherits</span> from. How this works is beyond the scope of this introduction, and can be found in the <span class="docEmphasis">perltoot</span>, <span class="docEmphasis">perlobj</span>, and <span class="docEmphasis">perlref</span> POD pages, as well as in [Wall 2000] and the other general Perl reference works listed in Appendix D.</p>
+<p class="docText" style="margin:0;">To create an object, you must invoke one of its <span class="docEmphasis">constructors</span>. A constructor is a method call that is invoked from the module's name. For example, to create a new BigDatabase object:</p>
+<pre>$object = BigDatabase-&gt;new(); # call the new() constructor
+</pre>
+<p class="docText" style="margin:0;">Constructors, which are a special case of a <span class="docEmphasis">class method,</span> are frequently named <tt>new()</tt>. However, any subroutine name is possible. Again, this syntax is part trickery. In most cases an equivalent call would be:</p>
+<pre>$object = BigDatabase::new('BigDatabase');
+</pre>
+<p class="docText" style="margin:0;">This is not quite the same thing, however, because class methods can also be inherited.</p>
+<p><a name="ch01lev2sec17"></a><br />
+<h5 style="font-size:8pt;">1.2.2 The IO::Handle and IO::File Modules<br /></h5>
+<p class="docText" style="margin:0;">The IO::Handle and IO::File modules, standard components of Perl, together provide object-oriented interface to filehandles. IO::Handle provides generic methods that are shared by all filehandle objects, including pipes and sockets. The more specialized class, IO::File, adds functionality for opening and manipulating files. Together, these classes smooth out some of the bumps and irregularities in Perl's built-in filehandles, and make larger programs easier to understand and maintain.</p>
+<p class="docText" style="margin:0;">IO::File's elegance does not by itself provide any very compelling reason to choose the object-oriented syntax over native filehandles. Its main significance is that IO::Socket, IO::Pipe, and other I/O-related modules also inherit their behavior from IO::Handle. This means that programs that read and write from local files and those that read and write to remote network servers share a common, easy-to-use interface.</p>
+<p class="docText" style="margin:0;">We'll get a feel for the module by looking at a tiny example of a program that opens a file, counts the number of lines, and reports its findings (<a class="docLink">Figure 1.4</a>).</p>
+<p>Figure 1.4. The count_lines.pl program
+<p class="docText" style="margin:0;"></p>
+<div id="rld9" style="text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;"><img src="http://docs.google.com/File?id=dd6nw3mt_212gxq8wfdw_b" style="width:500px;height:215px;" /></div></p>
+<blockquote style="border-color:rgb(221,221,221);border-style:dashed;border-width:1px;padding:10px;"><p style="margin:0;"></p>
+<p class="docText" style="margin:0;"><b>Lines 1–3: Load modules</b> We turn on strict syntax checking, and load the IO::File module.</p>
+<p style="margin:0;">
+<p style="margin:0;">
+<p class="docText" style="margin:0;"><b>Lines 4–5: Initialize variables</b> We recover from the command line the name of the file to perform the line count on, and initialize the <tt>$counter</tt> variable to zero.</p>
+<p style="margin:0;">
+<p style="margin:0;">
+<p class="docText" style="margin:0;"><b>Line 6: Create a new IO::File object</b> We call the <tt>IO::File::new()</tt> method, using the syntax <tt>IO::File-&gt;new()</tt>. The argument is the name of the file to open. If successful, <tt>new()</tt> returns a new IO::File object that we can use for I/O. Otherwise it returns <tt>undef</tt>, and we die with an error message.</p>
+<p style="margin:0;">
+<p style="margin:0;">
+<p class="docText" style="margin:0;"><b>Lines 7–9: Main loop</b> We call the IO::File object's <tt>getline()</tt> method in the test portion of a <tt>while()</tt> loop. This method returns the next line of text, or <tt>undef</tt> on end of file—just like <tt>&lt;&gt;</tt>.</p>
+<p class="docList" style="margin:0;">Each time through the loop we bump up <tt>$counter</tt>. The loop continues until <tt>getline()</tt> returns <tt>undef.</tt></p>
+<p style="margin:0;">
+<p style="margin:0;">
+<p class="docText" style="margin:0;"><b>Line 10: Print results</b> We print out our results by calling <tt>STDOUT-&gt;print()</tt>. We'll discuss why this surprising syntax works in a moment.</p>
+<p style="margin:0;">
+</blockquote>
+<p class="docText" style="margin:0;">When I ran <span class="docEmphasis">count_lines.pl</span> on the unfinished manuscript for this chapter, I got the following result:</p>
+<pre>% <span class="docEmphStrong">count_lines.pl ch1.pod</span>
+Counted 2428 lines
+</pre>
+<p class="docText" style="margin:0;">IO::File objects are actually blessed typeglob references (see the Passing and Storing Filehandles section earlier in this chapter). This means that you can use them in an object-oriented fashion, as in:</p>
+<pre>$fh-&gt;print("Function calls are for the birds./n");
+</pre>
+<p class="docText" style="margin:0;">or with the familiar built-in function calls:</p>
+<pre>print $fh "Object methods are too effete./n";
+</pre>
+<p class="docText" style="margin:0;">Many of IO::File's methods are simple wrappers around Perl's built-in functions. In addition to <tt>print()</tt> and <tt>getline()</tt> methods, there are <tt>read()</tt>, <tt>syswrite()</tt>, and <tt>close()</tt> methods, among others. We discuss the pros and cons of using object-oriented method calls and function calls in <a class="docLink">Chapter 5</a>, where we introduce IO:: Socket.</p>
+<p class="docText" style="margin:0;">When you load IO::File (technically, when IO::File loads IO::Handle, which it inherits from), it adds methods to ordinary filehandles. This means that any of the methods in IO::File can also be used with <tt>STDIN</tt>, <tt>STDOUT</tt>, <tt>STDERR</tt>, or even with any conventional filehandles that you happen to create. This is why line 10 of <a class="docLink">Figure 1.4</a> allows us to print to standard output by calling <tt>print()</tt>.</p>
+<p class="docText" style="margin:0;">Of the method listings that follow, only the <tt>new()</tt> and <tt>new_tmpfile()</tt> methods are actually defined by IO::File. The rest are inherited from IO::Handle and can be used with other descendents of IO::Handle, such as IO::Socket. This list is not complete. I've omitted some of the more obscure methods, including those that allow you to move around inside a file in a record-oriented fashion, because we won't need them for network communications.</p>
+<p class="docText" style="margin:0;"></p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$fh = IO::File-&gt;new($filename [,$mode [,$perms]])</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>new()</tt> method is the main constructor for IO::File. It is a unified replacement for both <tt>open()</tt> and <tt>sysopen()</tt>. Called with a single argument, <tt>new()</tt> acts like the two-argument form of <tt>open()</tt>, taking a filename optionally preceded by a mode string. For example, this will open the indicated file for appending:</p>
+<pre>$fh = IO::File-&gt;new("&gt;darkstar.txt");
+</pre>
+<p class="docText" style="margin:0;">If called with two or three arguments, IO::File treats the second argument as the open mode, and the third argument as the file creation permissions. <tt>$mode</tt> may be a Perl-style mode string, such as " <tt>+&lt;</tt> ", or an octal numeric mode, such as those used by <tt>sysopen()</tt>. As a convenience, IO::File automatically imports the <tt>Fcntl O_*</tt> constants when it loads. In addition, <tt>open()</tt> allows for an alternative type of symbolic mode string that is used in the C <tt>fopen()</tt> call; for example, it allows " <tt>w</tt> " to open the file for writing. We won't discuss those modes further here, because they do not add functionality.</p>
+<p class="docText" style="margin:0;">The permission agreement given by <tt>$perms</tt> is an octal number, and has the same significance as the corresponding parameter passed to <tt>sysopen()</tt>.</p>
+<p class="docText" style="margin:0;">If <tt>new()</tt> cannot open the indicated file, it will return <tt>undef</tt> and set <tt>$!</tt> to the appropriate system error message.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$fh = IO::File-&gt;new_tmpfile</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>new_tmpfile()</tt> constructor, which is called without arguments, creates a temporary file opened for reading and writing. On UNIX systems, this file is anonymous, meaning that it cannot be seen on the file system. When the IO::File object is destroyed, the file and all its contents will be deleted automatically.</p>
+<p class="docText" style="margin:0;">This constructor is useful for storing large amounts of temporary data.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$result = $fh-&gt;close</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>close()</tt> method closes the IO::File object, returning a true result if successful. If you do not call <tt>close()</tt> explicitly, it will be called automatically when the object is destroyed. This happens when the script exits, if you happen to <tt>undef()</tt> the object, or if the object goes out of scope such as when a <tt>my</tt> variable reaches the end of its enclosing block.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$result = $fh-&gt;open($filename [,$mode [,$perms]])</span></span></span></p>
+<p class="docText" style="margin:0;">You can reopen a filehandle object on the indicated file by using its <tt>open()</tt> method. The input arguments are identical to <tt>new()</tt>. The method result indicates whether the open was successful.</p>
+<p class="docText" style="margin:0;">This is chiefly used for reopening the standard filehandles <tt>STDOUT</tt>, <tt>STDIN</tt>, and <tt>STDERR</tt>. For example:</p>
+<pre>STDOUT-&gt;open("log.txt") or die "Can't reopen STDOUT: $!";
+</pre>
+<p class="docText" style="margin:0;">Calls to <tt>print()</tt> will now write to the file <span class="docEmphasis"><tt>log.txt</tt> </span>.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$result = $fh-&gt;print(@args)</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$result=$fh-&gt;printf($fmt,@args)</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$bytes=$fh-&gt;write($data [,$length [,$offset]])</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$bytes = $fh-&gt;syswrite($data [,$length [,$offset]])</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>print()</tt>, <tt>printf()</tt>, and <tt>syswrite()</tt> methods work exactly like their built-in counterparts. For example, <tt>print()</tt> takes a list of data items, writes them to the filehandle object, and returns true if successful.</p>
+<p class="docText" style="margin:0;">The <tt>write()</tt> method is the opposite of <tt>read()</tt>, writing a stream of bytes to the filehandle object and returning the number successfully written. It is similar to <tt>syswrite()</tt>, except that it uses stdio buffering. This method corrects the inconsistent naming of the built-in <tt>write()</tt> function, which creates formatted reports. The IO::File object method that corresponds to the built-in <tt>write()</tt> goes by the name of <tt>format_write()</tt>.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$line = $fh-&gt;getline</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">@lines=$fh-&gt;getlines</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$bytes = $fh-&gt;read($buffer,$length ",$offset")</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$bytes = $fh-&gt;ysread($buffer,$length ",$offsetr")</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>getline()</tt> and <tt>getlines()</tt> methods together replace the <tt>&lt;&gt;</tt> operator. <tt>getline()</tt> reads one line from the filehandle object and returns it, behaving in the same way in both scalar and list contexts. The <tt>getlines()</tt> method acts like <tt>&lt;&gt;</tt> in a list context, returning a list of all the available lines. <tt>getline()</tt> will return undef at the end of file.</p>
+<p class="docText" style="margin:0;">The <tt>read()</tt> and <tt>sysread()</tt> methods act just like their built-in function counterparts.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$previous = $fh-&gt;autoflush([$boolean])</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>autoflush()</tt> method gets or sets the <tt>autoflush()</tt> mode for the filehandle object. Called without arguments, it turns <span class="docEmphasis">on</span> autoflush. Called with a single boolean argument, it sets autoflush to the indicated status. In either case, <tt>autoflush()i</tt> returns the previous value of the autoflush state.</p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong">$boolean = $fh-&gt;opened</span></p>
+<p class="docText" style="margin:0;">The <tt>opened()</tt> method returns true if the filehandle object is currently valid. It is equivalent to:</p>
+<pre>defined fileno($fh);
+</pre>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$boolean = $fh-&gt;eof</span></span></span></p>
+<p class="docText" style="margin:0;">Returns true if the next read on the filehandle object will return EOF.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$fh-&gt;flush</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>flush()</tt> method immediately flushes any data that is buffered in the filehandle object. If the filehandle is being used for writing, then its buffered data is written to disk (or to the pipe, or network, as we'll see when we get to IO::Socket objects). If the filehandle is being used for reading, any data in the buffer is <tt>discarded</tt>, forcing the next read to come from disk.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$boolean = $fh-&gt;blocking("$boolean")</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>blocking()</tt> method turns on and off blocking mode for the filehandle. </p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="color:rgb(0,0,255);"><span class="Apple-style-span" style="font-weight:bold;">$fh-&gt;clearerr</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="color:rgb(0,0,255);"><span class="Apple-style-span" style="font-weight:bold;">$boolean = $fh-&gt;error</span></span></span></p>
+<p class="docText" style="margin:0;">These two methods are handy if you wish to perform a series of I/O operations and check the error status only after you're finished. The <tt>error()i</tt> method will return true if any errors have occurred on the filehandle since it was created, or since the last call to <tt>clearerr()</tt>. The <tt>clearerr()</tt> method clears this flag.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">In addition to the methods listed here, IO::File has a constructor named <tt>new_from_fd()</tt>, and a method named <tt>fdopen()</tt>, both inherited from IO::Handle. These methods can be used to save and restore objects in much the way that the <tt>&gt;&amp;FILEHANDLE</tt> does with standard filehandles.</p>
+<p class="docText" style="margin:0;"></p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$fh = IO::File-&gt;new_from_fd($fd,$mode)</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>new_from_fd()</tt> method opens up a copy of the filehandle object indicated by <tt>$fd</tt> using the read/write mode given by <tt>$mode</tt>. The object may be an IO::Handle object, an IO::File object, a regular filehandle, or a numeric file descriptor returned <tt>byfileno()</tt>. <tt>$mode</tt> must match the mode with which <tt>$fd</tt> was originally opened. For example:</p>
+<pre>$saveout = IO::File-&gt;new_from_fd(STDOUT,"&gt;");
+</pre>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$result = $fh-&gt;fdopen($fd,$mode)</span></span></span></p>
+<p class="docText" style="margin:0;">The <tt>fdopen()</tt> method is used to reopen an existing filehandle object, making it a copy of another one. The <tt>$fd</tt> argument may be an IO::Handle object or a regular filehandle, or a numeric file descriptor <tt>$mode</tt> must match the mode with which <tt>$fd</tt> was originally opened.</p>
+<p class="docText" style="margin:0;">This is typically used in conjunction with <tt>new_from_fd()</tt> to restore a saved filehandle:</p>
+<pre>$saveout = IO::File-&gt;new_from_fd(STDOUT,"&gt;"); # save STDOUT
+STDOUT-&gt;open('&gt;log.txt');                     # reopen on a file
+STDOUT-&gt;print("Yippy yie yay!/n");            # print something
+STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved 
+<img height="9" alt="graphics/ccc.gif" width="14" align="left" border="0" />value
+</pre>
+<div><span class="Apple-style-span" style="font-family:-webkit-monospace;white-space:pre;"><br /></span></div>
+</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+<small class="meta">Posted January 13, 2009</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">选中Excel单元格自动导入多个Excel worksheets</a></h2>
+
+    <p>前日完成<a href="http://blog.csdn.net/bonny95/article/details/6597776">将多个Excel文件批量导入某个Excel文件中</a>老婆规定的任务后，老婆又提出了新的要求：</p></p>
+<ol>
+<li>可以update每个worksheet</li>
+<li>对导入的worksheets进行排序</li>
+<li>自动匹配代导入文件的文件名</li>
+<li>将导入的worksheets中的特定多个单元&#26684;（cells）的内容自动填充到某一表&#26684;的特定区域</li>
+</ol>
+<p><strong><span style="color:#ff0000;">本文中用到的Excel文件及VBA宏可以在<a href="http://download.csdn.net/detail/bonny95/3438424">此处</a>下载。</span></strong></p>
+<p></p>
+<table border="1" width="200" cellspacing="1" cellpadding="1" style="text-align:center;">
+<caption><span style="font-size:16px;">表1 &nbsp;选中的单元&#26684;</span><br />
+</caption>
+<tbody>
+<tr>
+<td style="text-align:center;">1</td>
+<td style="text-align:center;">工作表 1</td>
+</tr>
+<tr>
+<td style="text-align:center;">2</td>
+<td style="text-align:center;">工作表 2</td>
+</tr>
+<tr>
+<td style="text-align:center;">3</td>
+<td style="text-align:center;">工作表 3</td>
+</tr>
+<tr>
+<td style="text-align:center;">4</td>
+<td style="text-align:center;">工作表 4</td>
+</tr>
+<tr>
+<td style="text-align:center;">5</td>
+<td style="text-align:center;">工作表 5</td>
+</tr>
+<tr>
+<td style="text-align:center;">6</td>
+<td style="text-align:center;">工作表 6</td>
+</tr>
+<tr>
+<td style="text-align:center;">7</td>
+<td style="text-align:center;">工作表 7</td>
+</tr>
+<tr>
+<td style="text-align:center;">8</td>
+<td style="text-align:center;">工作表 8</td>
+</tr>
+<tr>
+<td style="text-align:center;">9</td>
+<td style="text-align:center;">工作表 9</td>
+</tr>
+<tr>
+<td style="text-align:center;">10</td>
+<td style="text-align:center;">工作表 10</td>
+</tr>
+</tbody>
+</table></p>
+<p>对应的各个worksheet的名字(Name)是：<em>01&nbsp;工作表 1，&nbsp;02&nbsp;工作表 2，03&nbsp;工作表 3，……，10&nbsp;工作表 10.</em></p>
+<p><em><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521133c6e4.gif" alt="" /><br />
+</em></p>
+<p>待导入的Excel文件的名字为“<em>02 某某银行XX项目_工作表 1_20110701.xls</em>”。</p>
+<p></p>
+<p><span style="color:#ff0000;"><em>Update 2011-07-13 21:50</em></span></p>
+<p>应老婆的要求，更新了程序，遇到并解决的问题有：</p></p>
+<ol>
+<li>Office 2003和2007不兼容——有些method在office2003中正常工作但在office2007中却不再支持，如判定某文件是否存在的函数，解决方法参见<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">FindFileName函数。</span></li>
+<li>如果某个表中的一些单元&#26684;被筛选，则会遇到“不能复制合并的单元&#26684;”(Can't copy merged cell)的问题，解决方法就是在copy前强制关闭autofilter: &nbsp;&nbsp;<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter</span></li>
+<li><span style="font-family:monospace;"><span style="white-space:pre-wrap;">关闭打开的Excel文件或者copy单元&#26684;时会有各种各样的对话框弹出来，解决办法就是加上下面语句：</span></span></li>
+</ol>
+<p><span style="font-family:monospace;"><span style="white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);"></span></span></span></p>
+<pre style="word-wrap:break-word;white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre-wrap;"></span></pre>
+<pre style="word-wrap:break-word;white-space:pre-wrap;">Application.DisplayAlerts = True</pre>
+<pre style="word-wrap:break-word;white-space:pre-wrap;">newWB.Close SaveChanges:=False  ' close without change
+Application.DisplayAlerts = True</pre></p>
+<p><em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em></p>
+<p>傻瓜型用户的需求就是无穷无尽啊……我老婆发现在选择不连续的区域时，只有第一个区域会被处理，其他的没有变化。顶着挨骂的压力Google之后才知道，原来Slection.Areas可以包含所有不连续的选择，然后通过遍历，处理所有的选择……程序改动如下。</p></p>
+<pre>       ' Create new worksheets
+        ' Discontinuous selection is supported by Selection.Areas
+        For Each Rng In Selection.Areas
+            Set SelRange = Rng.Cells
+            Set ColNo = Rng.Columns(1)
+            Set ColDepart = Rng.Columns(2)
+            idx = 1
+            For Each cell In ColDepart.Cells
+                no_str = ColNo.Cells(idx).Value
+                If Len(no_str) = 1 Then
+                    no_str = &quot;0&quot; + no_str
+                End If
+                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
+                idx = idx + 1
+            Next
+        Next</pre>
+<p></p></p>
+<p>实现以上所有需求的代码如下（<em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em>）：</p></p>
+<pre>&lt;span style="font-family: 'Times New Roman';font-size:16px; "&gt;&lt;/span&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap; "&gt;                                         
+Option Explicit
+Dim curWS As Worksheet
+
+
+Sub LoadWorksheets()
+'
+' LoadWorksheets Macro
+' Macro recorded 7/13/2011 by Bo Yang
+'
+' Keyboard Shortcut: Ctrl+Shift+L
+'
+' *How to use this macro?*
+' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*
+'
+&nbsp; &nbsp; Application.ScreenUpdating = False &nbsp;' stop screen flickering
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' Create new sheets according to selected cells and copy the
+&nbsp; &nbsp; ' contebts of other files into the new sheets
+&nbsp; &nbsp; Dim YesNo As Variant, myFolder As String, MyLF As String
+&nbsp; &nbsp; Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range
+&nbsp; &nbsp; Dim SheetName As String, SheetToBeCopy As String
+&nbsp; &nbsp; Dim ColCnt As Integer
+&nbsp; &nbsp; Dim no_str As String, idx As Integer
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; myFolder = &quot;D:&quot; &nbsp; '*****Change this value as you need*****
+&nbsp; &nbsp; SheetToBeCopy = &quot;信息资产风险评估&quot; &nbsp;' *****Change this value as you need*****
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; MyLF = Chr(10) &amp; Chr(13) &nbsp; &nbsp;' a line feed command
+&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' check that if user select valid columns
+&nbsp; &nbsp; ColCnt = Selection.Columns.Count
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If ColCnt &lt;&gt; 2 Then
+&nbsp; &nbsp; &nbsp; &nbsp; MsgBox (&quot;Please select 2 columns!!!&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;The first column must be digital numbers,&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;And the Second column must be department names&quot; _
+&nbsp; &nbsp; &nbsp; &nbsp; )
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &quot;Do you want to continue?&quot;, _
+&nbsp; &nbsp; &nbsp; &nbsp; vbYesNo, &quot;Caution&quot;)
+&nbsp; &nbsp; Select Case YesNo
+&nbsp; &nbsp; Case vbYes
+&nbsp; &nbsp; &nbsp; &nbsp; myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)
+&nbsp; &nbsp; &nbsp; &nbsp; SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Create new worksheets
+&nbsp; &nbsp; &nbsp; &nbsp; ' Discontinuous selection is supported by Selection.Areas
+&nbsp; &nbsp; &nbsp; &nbsp; For Each Rng In Selection.Areas
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set SelRange = Rng.Cells
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColNo = Rng.Columns(1)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColDepart = Rng.Columns(2)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For Each cell In ColDepart.Cells
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = ColNo.Cells(idx).Value
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Len(no_str) = 1 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = &quot;0&quot; + no_str
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = idx + 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next
+&nbsp; &nbsp; &nbsp; &nbsp; Next
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Sort worksheets
+&nbsp; &nbsp; &nbsp; &nbsp; Call SortWorksheets
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Case vbNo
+&nbsp; &nbsp; &nbsp; &nbsp; Application.ScreenUpdating = True
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
+&nbsp; &nbsp; End Select
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; Application.ScreenUpdating = True
+End Sub
+
+
+Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String
+&nbsp; &nbsp; Dim oSheet As Worksheet, vRet As Variant
+&nbsp; &nbsp; Dim SheetName As String, FileName As String
+&nbsp; &nbsp; Dim Entry As Integer, i As Integer
+
+
+&nbsp; &nbsp; ' Determine where to insert new worksheet
+&nbsp; &nbsp; Entry = 0
+&nbsp; &nbsp; For i = Sheets.Count To 1 Step -1
+&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
+&nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; Next i
+Determ_Entry:
+&nbsp; &nbsp; If Entry = 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; Entry = Sheets.Count
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; 'Example of one worksheet name:
+&nbsp; &nbsp; ' &nbsp; 07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls
+&nbsp; &nbsp; SheetName = no + &quot; &quot; + Depart
+&nbsp; &nbsp; If Not SheetExists(SheetName) Then
+&nbsp; &nbsp; &nbsp; &nbsp; 'worksheet XXX doesn't exist in current workbook
+&nbsp; &nbsp; &nbsp; &nbsp; 'creating a new excel worksheet
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; Set oSheet = Worksheets.Add
+&nbsp; &nbsp; &nbsp; &nbsp; With oSheet
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Name = SheetName
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Move After:=Sheets(Entry)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Activate
+&nbsp; &nbsp; &nbsp; &nbsp; End With
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; FileName = FindFileName(no, Depart, FolderName)
+&nbsp; &nbsp; If FileName &lt;&gt; &quot;&quot; Then
+&nbsp; &nbsp; &nbsp; &nbsp; Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Exit Function
+
+
+End Function
+
+
+Function SheetExists(SheetName As String) As Boolean
+' returns TRUE if the sheet exists in the active workbook
+&nbsp; &nbsp; SheetExists = False
+&nbsp; &nbsp; On Error GoTo NoSuchSheet
+&nbsp; &nbsp; If Len(Sheets(SheetName).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; SheetExists = True
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Function
+&nbsp; &nbsp; End If
+NoSuchSheet:
+End Function
+
+
+Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String
+&nbsp; &nbsp; 'open Excel files and copy the contents to this sheet
+&nbsp; &nbsp; Dim newWB As Workbook, curWB As Workbook
+&nbsp; &nbsp; Dim startRange As Range
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If Dir(FileName) &lt;&gt; &quot;&quot; Then
+&nbsp; &nbsp; &nbsp; &nbsp; ' file exists
+&nbsp; &nbsp; &nbsp; &nbsp; ' Clear all cells of current worksheet
+&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).UsedRange.Clear
+&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = False ' disable alerts
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Open workbooks to be copied
+&nbsp; &nbsp; &nbsp; &nbsp; Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
+&nbsp; &nbsp; &nbsp; &nbsp; Set newWB = Workbooks.Open(FileName)
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter
+&nbsp; &nbsp; &nbsp; &nbsp; Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).UsedRange.Copy
+&nbsp; &nbsp; &nbsp; &nbsp; ' paste to target worksheet
+&nbsp; &nbsp; &nbsp; &nbsp; curWB.Activate
+&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).Range(startRange.Address).PasteSpecial
+&nbsp; &nbsp; &nbsp; &nbsp; Application.CutCopyMode = False &nbsp;'Clear Clipboard
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Close SaveChanges:=False &nbsp;' close without change
+&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = True
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; End If
+
+
+End Function
+
+
+Function FindFileName(no As String, Depart As String, FolderName As String) As String
+&nbsp; &nbsp; Dim Coll_Docs As New Collection
+&nbsp; &nbsp; Dim Search_path, Search_Filter, Search_Fullname As String
+&nbsp; &nbsp; Dim DocName As String
+&nbsp; &nbsp; Dim i As Long
+
+
+&nbsp; &nbsp; Search_path = FolderName &nbsp; ' where ?
+&nbsp; &nbsp; Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?
+&nbsp; &nbsp; Set Coll_Docs = Nothing
+
+
+&nbsp; &nbsp; DocName = Dir(Search_path &amp; &quot;&quot; &amp; Search_Filter)
+
+
+&nbsp; &nbsp; Do Until DocName = &quot;&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;' build the collection
+&nbsp; &nbsp; &nbsp; &nbsp; Coll_Docs.Add Item:=DocName
+&nbsp; &nbsp; &nbsp; &nbsp; DocName = Dir
+&nbsp; &nbsp; Loop
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If Coll_Docs.Count = 1 Then
+&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = Search_path &amp; &quot;&quot; &amp; Coll_Docs(1)
+&nbsp; &nbsp; Else
+&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = &quot;&quot;
+&nbsp; &nbsp; End If
+
+
+End Function
+
+
+Function SortWorksheetsByName() As String
+&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
+&nbsp; &nbsp; Dim sCount As Integer, i As Integer, j As Integer
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Application.ScreenUpdating = False
+&nbsp; &nbsp; sCount = Worksheets.Count
+&nbsp; &nbsp; If sCount = 1 Then Exit Function
+&nbsp; &nbsp; For i = 1 To sCount - 1
+&nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To sCount
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Worksheets(j).Name &lt; Worksheets(i).Name Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; Next j
+&nbsp; &nbsp; Next i
+&nbsp; &nbsp;&nbsp;
+End Function
+
+
+Function SortWorksheets() As String
+&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
+&nbsp; &nbsp; Dim cnt As Integer, i As Integer, j As Integer
+&nbsp; &nbsp; Dim Entry As Integer
+&nbsp; &nbsp; Dim curWS As Worksheet
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet
+&nbsp; &nbsp; 'Application.ScreenUpdating = False
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; cnt = Worksheets.Count
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' Determine where to start sorting
+&nbsp; &nbsp; Entry = 0
+&nbsp; &nbsp; For i = 1 To cnt
+&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
+&nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; Next i
+Determ_Entry:
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; For i = Entry To cnt - 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To cnt
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; Val(Worksheets(j).Name) Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next j
+&nbsp; &nbsp; Next i
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; 'Application.ScreenUpdating = True
+End Function
+</pre>
+<pre></pre>
+<p>如要自动导入每个worksheet的特定单元&#26684;（L2:L6）到表2中的D，E，F，G，H列，可以使用下面的UpdateCells宏。</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521124rpsk.gif" alt="" /></p></p></p>
+<pre>Option Explicit
+
+Sub UpdateCells()
+'
+' UpdateCells Macro
+' Macro recorded 7/13/2011 by Bo Yang
+'
+' Keyboard Shortcut: Ctrl+Shift+C
+'
+' Risk:Cell
+' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6
+Dim Risk5 As Range
+Dim num As String, depart As Range, idx As Integer
+Dim SheetName As String
+Dim SelRange As Range
+Dim curWS As Worksheet
+
+Application.ScreenUpdating = False
+
+Set curWS = ActiveSheet
+Set SelRange = Selection
+
+idx = 1
+For Each depart In SelRange.Columns(2).Cells
+    num = SelRange.Columns(1).Cells(idx).value
+    If Len(num) = 1 Then
+        num = &quot;0&quot; + num
+    End If
+    SheetName = num + &quot; &quot; + depart.value
+    
+    Set Risk5 = SelRange.Columns(3).Cells(idx)
+    
+    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy
+    Risk5.Select
+    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True
+    Application.CutCopyMode = False 'Clear Clipboard
+    
+    idx = idx + 1
+Next
+
+Application.ScreenUpdating = True
+End Sub
+</pre>
+<p></p>
+<pre></pre>
+
+
+    <small class="meta">July 13, 2011 | <a href='/bkup/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/vba/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">选中Excel单元格自动导入多个Excel worksheets</a></h2>
+
+    <p>前日完成<a href="http://blog.csdn.net/bonny95/article/details/6597776">将多个Excel文件批量导入某个Excel文件中</a>老婆规定的任务后，老婆又提出了新的要求：</p></p>
+<ol>
+<li>可以update每个worksheet</li>
+<li>对导入的worksheets进行排序</li>
+<li>自动匹配代导入文件的文件名</li>
+<li>将导入的worksheets中的特定多个单元&#26684;（cells）的内容自动填充到某一表&#26684;的特定区域</li>
+</ol>
+<p><strong><span style="color:#ff0000;">本文中用到的Excel文件及VBA宏可以在<a href="http://download.csdn.net/detail/bonny95/3438424">此处</a>下载。</span></strong></p>
+<p></p>
+<table border="1" width="200" cellspacing="1" cellpadding="1" style="text-align:center;">
+<caption><span style="font-size:16px;">表1 &nbsp;选中的单元&#26684;</span><br />
+</caption>
+<tbody>
+<tr>
+<td style="text-align:center;">1</td>
+<td style="text-align:center;">工作表 1</td>
+</tr>
+<tr>
+<td style="text-align:center;">2</td>
+<td style="text-align:center;">工作表 2</td>
+</tr>
+<tr>
+<td style="text-align:center;">3</td>
+<td style="text-align:center;">工作表 3</td>
+</tr>
+<tr>
+<td style="text-align:center;">4</td>
+<td style="text-align:center;">工作表 4</td>
+</tr>
+<tr>
+<td style="text-align:center;">5</td>
+<td style="text-align:center;">工作表 5</td>
+</tr>
+<tr>
+<td style="text-align:center;">6</td>
+<td style="text-align:center;">工作表 6</td>
+</tr>
+<tr>
+<td style="text-align:center;">7</td>
+<td style="text-align:center;">工作表 7</td>
+</tr>
+<tr>
+<td style="text-align:center;">8</td>
+<td style="text-align:center;">工作表 8</td>
+</tr>
+<tr>
+<td style="text-align:center;">9</td>
+<td style="text-align:center;">工作表 9</td>
+</tr>
+<tr>
+<td style="text-align:center;">10</td>
+<td style="text-align:center;">工作表 10</td>
+</tr>
+</tbody>
+</table></p>
+<p>对应的各个worksheet的名字(Name)是：<em>01&nbsp;工作表 1，&nbsp;02&nbsp;工作表 2，03&nbsp;工作表 3，……，10&nbsp;工作表 10.</em></p>
+<p><em><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521133c6e4.gif" alt="" /><br />
+</em></p>
+<p>待导入的Excel文件的名字为“<em>02 某某银行XX项目_工作表 1_20110701.xls</em>”。</p>
+<p></p>
+<p><span style="color:#ff0000;"><em>Update 2011-07-13 21:50</em></span></p>
+<p>应老婆的要求，更新了程序，遇到并解决的问题有：</p></p>
+<ol>
+<li>Office 2003和2007不兼容——有些method在office2003中正常工作但在office2007中却不再支持，如判定某文件是否存在的函数，解决方法参见<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">FindFileName函数。</span></li>
+<li>如果某个表中的一些单元&#26684;被筛选，则会遇到“不能复制合并的单元&#26684;”(Can't copy merged cell)的问题，解决方法就是在copy前强制关闭autofilter: &nbsp;&nbsp;<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter</span></li>
+<li><span style="font-family:monospace;"><span style="white-space:pre-wrap;">关闭打开的Excel文件或者copy单元&#26684;时会有各种各样的对话框弹出来，解决办法就是加上下面语句：</span></span></li>
+</ol>
+<p><span style="font-family:monospace;"><span style="white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);"></span></span></span></p>
+<pre style="word-wrap:break-word;white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre-wrap;"></span></pre>
+<pre style="word-wrap:break-word;white-space:pre-wrap;">Application.DisplayAlerts = True</pre>
+<pre style="word-wrap:break-word;white-space:pre-wrap;">newWB.Close SaveChanges:=False  ' close without change
+Application.DisplayAlerts = True</pre></p>
+<p><em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em></p>
+<p>傻瓜型用户的需求就是无穷无尽啊……我老婆发现在选择不连续的区域时，只有第一个区域会被处理，其他的没有变化。顶着挨骂的压力Google之后才知道，原来Slection.Areas可以包含所有不连续的选择，然后通过遍历，处理所有的选择……程序改动如下。</p></p>
+<pre>       ' Create new worksheets
+        ' Discontinuous selection is supported by Selection.Areas
+        For Each Rng In Selection.Areas
+            Set SelRange = Rng.Cells
+            Set ColNo = Rng.Columns(1)
+            Set ColDepart = Rng.Columns(2)
+            idx = 1
+            For Each cell In ColDepart.Cells
+                no_str = ColNo.Cells(idx).Value
+                If Len(no_str) = 1 Then
+                    no_str = &quot;0&quot; + no_str
+                End If
+                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
+                idx = idx + 1
+            Next
+        Next</pre>
+<p></p></p>
+<p>实现以上所有需求的代码如下（<em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em>）：</p></p>
+<pre>&lt;span style="font-family: 'Times New Roman';font-size:16px; "&gt;&lt;/span&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap; "&gt;                                         
+Option Explicit
+Dim curWS As Worksheet
+
+
+Sub LoadWorksheets()
+'
+' LoadWorksheets Macro
+' Macro recorded 7/13/2011 by Bo Yang
+'
+' Keyboard Shortcut: Ctrl+Shift+L
+'
+' *How to use this macro?*
+' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*
+'
+&nbsp; &nbsp; Application.ScreenUpdating = False &nbsp;' stop screen flickering
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' Create new sheets according to selected cells and copy the
+&nbsp; &nbsp; ' contebts of other files into the new sheets
+&nbsp; &nbsp; Dim YesNo As Variant, myFolder As String, MyLF As String
+&nbsp; &nbsp; Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range
+&nbsp; &nbsp; Dim SheetName As String, SheetToBeCopy As String
+&nbsp; &nbsp; Dim ColCnt As Integer
+&nbsp; &nbsp; Dim no_str As String, idx As Integer
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; myFolder = &quot;D:&quot; &nbsp; '*****Change this value as you need*****
+&nbsp; &nbsp; SheetToBeCopy = &quot;信息资产风险评估&quot; &nbsp;' *****Change this value as you need*****
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; MyLF = Chr(10) &amp; Chr(13) &nbsp; &nbsp;' a line feed command
+&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' check that if user select valid columns
+&nbsp; &nbsp; ColCnt = Selection.Columns.Count
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If ColCnt &lt;&gt; 2 Then
+&nbsp; &nbsp; &nbsp; &nbsp; MsgBox (&quot;Please select 2 columns!!!&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;The first column must be digital numbers,&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;And the Second column must be department names&quot; _
+&nbsp; &nbsp; &nbsp; &nbsp; )
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &quot;Do you want to continue?&quot;, _
+&nbsp; &nbsp; &nbsp; &nbsp; vbYesNo, &quot;Caution&quot;)
+&nbsp; &nbsp; Select Case YesNo
+&nbsp; &nbsp; Case vbYes
+&nbsp; &nbsp; &nbsp; &nbsp; myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)
+&nbsp; &nbsp; &nbsp; &nbsp; SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Create new worksheets
+&nbsp; &nbsp; &nbsp; &nbsp; ' Discontinuous selection is supported by Selection.Areas
+&nbsp; &nbsp; &nbsp; &nbsp; For Each Rng In Selection.Areas
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set SelRange = Rng.Cells
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColNo = Rng.Columns(1)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColDepart = Rng.Columns(2)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For Each cell In ColDepart.Cells
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = ColNo.Cells(idx).Value
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Len(no_str) = 1 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = &quot;0&quot; + no_str
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = idx + 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next
+&nbsp; &nbsp; &nbsp; &nbsp; Next
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Sort worksheets
+&nbsp; &nbsp; &nbsp; &nbsp; Call SortWorksheets
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Case vbNo
+&nbsp; &nbsp; &nbsp; &nbsp; Application.ScreenUpdating = True
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
+&nbsp; &nbsp; End Select
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; Application.ScreenUpdating = True
+End Sub
+
+
+Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String
+&nbsp; &nbsp; Dim oSheet As Worksheet, vRet As Variant
+&nbsp; &nbsp; Dim SheetName As String, FileName As String
+&nbsp; &nbsp; Dim Entry As Integer, i As Integer
+
+
+&nbsp; &nbsp; ' Determine where to insert new worksheet
+&nbsp; &nbsp; Entry = 0
+&nbsp; &nbsp; For i = Sheets.Count To 1 Step -1
+&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
+&nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; Next i
+Determ_Entry:
+&nbsp; &nbsp; If Entry = 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; Entry = Sheets.Count
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; 'Example of one worksheet name:
+&nbsp; &nbsp; ' &nbsp; 07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls
+&nbsp; &nbsp; SheetName = no + &quot; &quot; + Depart
+&nbsp; &nbsp; If Not SheetExists(SheetName) Then
+&nbsp; &nbsp; &nbsp; &nbsp; 'worksheet XXX doesn't exist in current workbook
+&nbsp; &nbsp; &nbsp; &nbsp; 'creating a new excel worksheet
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; Set oSheet = Worksheets.Add
+&nbsp; &nbsp; &nbsp; &nbsp; With oSheet
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Name = SheetName
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Move After:=Sheets(Entry)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Activate
+&nbsp; &nbsp; &nbsp; &nbsp; End With
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; FileName = FindFileName(no, Depart, FolderName)
+&nbsp; &nbsp; If FileName &lt;&gt; &quot;&quot; Then
+&nbsp; &nbsp; &nbsp; &nbsp; Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Exit Function
+
+
+End Function
+
+
+Function SheetExists(SheetName As String) As Boolean
+' returns TRUE if the sheet exists in the active workbook
+&nbsp; &nbsp; SheetExists = False
+&nbsp; &nbsp; On Error GoTo NoSuchSheet
+&nbsp; &nbsp; If Len(Sheets(SheetName).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; SheetExists = True
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Function
+&nbsp; &nbsp; End If
+NoSuchSheet:
+End Function
+
+
+Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String
+&nbsp; &nbsp; 'open Excel files and copy the contents to this sheet
+&nbsp; &nbsp; Dim newWB As Workbook, curWB As Workbook
+&nbsp; &nbsp; Dim startRange As Range
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If Dir(FileName) &lt;&gt; &quot;&quot; Then
+&nbsp; &nbsp; &nbsp; &nbsp; ' file exists
+&nbsp; &nbsp; &nbsp; &nbsp; ' Clear all cells of current worksheet
+&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).UsedRange.Clear
+&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = False ' disable alerts
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Open workbooks to be copied
+&nbsp; &nbsp; &nbsp; &nbsp; Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
+&nbsp; &nbsp; &nbsp; &nbsp; Set newWB = Workbooks.Open(FileName)
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter
+&nbsp; &nbsp; &nbsp; &nbsp; Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).UsedRange.Copy
+&nbsp; &nbsp; &nbsp; &nbsp; ' paste to target worksheet
+&nbsp; &nbsp; &nbsp; &nbsp; curWB.Activate
+&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).Range(startRange.Address).PasteSpecial
+&nbsp; &nbsp; &nbsp; &nbsp; Application.CutCopyMode = False &nbsp;'Clear Clipboard
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Close SaveChanges:=False &nbsp;' close without change
+&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = True
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; End If
+
+
+End Function
+
+
+Function FindFileName(no As String, Depart As String, FolderName As String) As String
+&nbsp; &nbsp; Dim Coll_Docs As New Collection
+&nbsp; &nbsp; Dim Search_path, Search_Filter, Search_Fullname As String
+&nbsp; &nbsp; Dim DocName As String
+&nbsp; &nbsp; Dim i As Long
+
+
+&nbsp; &nbsp; Search_path = FolderName &nbsp; ' where ?
+&nbsp; &nbsp; Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?
+&nbsp; &nbsp; Set Coll_Docs = Nothing
+
+
+&nbsp; &nbsp; DocName = Dir(Search_path &amp; &quot;&quot; &amp; Search_Filter)
+
+
+&nbsp; &nbsp; Do Until DocName = &quot;&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;' build the collection
+&nbsp; &nbsp; &nbsp; &nbsp; Coll_Docs.Add Item:=DocName
+&nbsp; &nbsp; &nbsp; &nbsp; DocName = Dir
+&nbsp; &nbsp; Loop
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If Coll_Docs.Count = 1 Then
+&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = Search_path &amp; &quot;&quot; &amp; Coll_Docs(1)
+&nbsp; &nbsp; Else
+&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = &quot;&quot;
+&nbsp; &nbsp; End If
+
+
+End Function
+
+
+Function SortWorksheetsByName() As String
+&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
+&nbsp; &nbsp; Dim sCount As Integer, i As Integer, j As Integer
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Application.ScreenUpdating = False
+&nbsp; &nbsp; sCount = Worksheets.Count
+&nbsp; &nbsp; If sCount = 1 Then Exit Function
+&nbsp; &nbsp; For i = 1 To sCount - 1
+&nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To sCount
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Worksheets(j).Name &lt; Worksheets(i).Name Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; Next j
+&nbsp; &nbsp; Next i
+&nbsp; &nbsp;&nbsp;
+End Function
+
+
+Function SortWorksheets() As String
+&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
+&nbsp; &nbsp; Dim cnt As Integer, i As Integer, j As Integer
+&nbsp; &nbsp; Dim Entry As Integer
+&nbsp; &nbsp; Dim curWS As Worksheet
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet
+&nbsp; &nbsp; 'Application.ScreenUpdating = False
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; cnt = Worksheets.Count
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' Determine where to start sorting
+&nbsp; &nbsp; Entry = 0
+&nbsp; &nbsp; For i = 1 To cnt
+&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
+&nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; Next i
+Determ_Entry:
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; For i = Entry To cnt - 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To cnt
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; Val(Worksheets(j).Name) Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next j
+&nbsp; &nbsp; Next i
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; 'Application.ScreenUpdating = True
+End Function
+</pre>
+<pre></pre>
+<p>如要自动导入每个worksheet的特定单元&#26684;（L2:L6）到表2中的D，E，F，G，H列，可以使用下面的UpdateCells宏。</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521124rpsk.gif" alt="" /></p></p></p>
+<pre>Option Explicit
+
+Sub UpdateCells()
+'
+' UpdateCells Macro
+' Macro recorded 7/13/2011 by Bo Yang
+'
+' Keyboard Shortcut: Ctrl+Shift+C
+'
+' Risk:Cell
+' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6
+Dim Risk5 As Range
+Dim num As String, depart As Range, idx As Integer
+Dim SheetName As String
+Dim SelRange As Range
+Dim curWS As Worksheet
+
+Application.ScreenUpdating = False
+
+Set curWS = ActiveSheet
+Set SelRange = Selection
+
+idx = 1
+For Each depart In SelRange.Columns(2).Cells
+    num = SelRange.Columns(1).Cells(idx).value
+    If Len(num) = 1 Then
+        num = &quot;0&quot; + num
+    End If
+    SheetName = num + &quot; &quot; + depart.value
+    
+    Set Risk5 = SelRange.Columns(3).Cells(idx)
+    
+    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy
+    Risk5.Select
+    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True
+    Application.CutCopyMode = False 'Clear Clipboard
+    
+    idx = idx + 1
+Next
+
+Application.ScreenUpdating = True
+End Sub
+</pre>
+<p></p>
+<pre></pre>
+
+
+    <small class="meta">July 13, 2011 | <a href='/vba/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">将多个Excel文件批量导入某个Excel文件中</a></h2>
+
+    <p>这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。</p>
+<p>下面是搜索了半天之后搞出来的Macro，没有异常处理，而且使用了copy/paste，文件太多时效率肯定不高。其实完全可以参照<span style="font-family:Arial, Helvetica, sans-serif;"></span></p>
+<p><a href="http://www.exceltip.com/st/Copy_a_sheet_from_each_workbook_into_your_workbook_in_a_folder_using_VBA_in_Microsoft_Excel/560.html">Copy a sheet from each workbook into your workbook in a folder using VBA in Microsoft Excel</a>&nbsp;和 <a href="http://www.ozgrid.com/VBA/SpeedingUpVBACode.htm">Optimize Slow VBA Code</a> 中的方法来优化。</p></p>
+<pre>Sub LoadSheets()
+    Application.ScreenUpdating = False  ' stop screen flickering
+    
+    ' Create new sheets according to selected cells and copy the
+    ' contebts of other files into the new sheets
+    Dim YesNo As Variant, myFolder As String, MyLF As String
+        
+    MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
+    myFolder = &quot;D:Documents and SettingsbonnyMy Documentstools&quot;   'change this to the location of saved XML files
+    'Windows 7下C盘默认不可写，请修改DefFolder的值
+    
+    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; myclf &amp; _
+        &quot;Do you want to continue?&quot;, _
+        vbYesNo, &quot;Caution&quot;)
+    Select Case YesNo
+    Case vbYes
+        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates&quot;, Default:=myFolder)
+        'Create new worksheets
+        For Each cell In Selection.Cells
+            Call CreateNewWorksheet(cell.Value, myFolder)
+        Next
+    Case vbNo
+        Exit Sub
+    End Select
+    
+    Application.ScreenUpdating = True
+End Sub
+
+Function CreateNewWorksheet(SheetName As String, FolderName As String) As String
+
+    Dim oSheet As Worksheet, vRet As Variant
+    Dim fName As String
+    
+    'creating a new excel worksheet
+    Set oSheet = Worksheets.Add
+    With oSheet
+        .Name = SheetName
+        .Move after:=Sheets(Sheets.Count) '在当前所有worksheet后创建新的工作表
+        .Activate
+    End With
+    
+    'open Excel files and copy the contents to this sheet
+    Dim newWB As Workbook, curWB As Workbook
+    Dim startRange As Range
+    
+    Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
+    fName = FolderName + &quot;&quot; + SheetName + &quot;.xls&quot;
+    Set newWB = Workbooks.Open(fName)
+    newWB.Activate
+    newWB.Sheets(1).Activate ' 假定只有第一个worksheet需要copy
+    Set startRange = newWB.Sheets(1).UsedRange ' Only used range will be copied
+    newWB.Sheets(1).UsedRange.Copy
+    
+    'select the destination cell
+    curWB.Activate
+    Sheets(SheetName).Activate
+    Range(startRange.Address).Select
+    ActiveSheet.Paste
+    Application.CutCopyMode = False  'Clear Clipboard
+    newWB.Close
+    
+    Exit Function
+
+End Function
+
+</pre></p>
+
+
+    <small class="meta">July 11, 2011 | <a href='/bkup/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/vba/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">将多个Excel文件批量导入某个Excel文件中</a></h2>
+
+    <p>这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。</p>
+<p>下面是搜索了半天之后搞出来的Macro，没有异常处理，而且使用了copy/paste，文件太多时效率肯定不高。其实完全可以参照<span style="font-family:Arial, Helvetica, sans-serif;"></span></p>
+<p><a href="http://www.exceltip.com/st/Copy_a_sheet_from_each_workbook_into_your_workbook_in_a_folder_using_VBA_in_Microsoft_Excel/560.html">Copy a sheet from each workbook into your workbook in a folder using VBA in Microsoft Excel</a>&nbsp;和 <a href="http://www.ozgrid.com/VBA/SpeedingUpVBACode.htm">Optimize Slow VBA Code</a> 中的方法来优化。</p></p>
+<pre>Sub LoadSheets()
+    Application.ScreenUpdating = False  ' stop screen flickering
+    
+    ' Create new sheets according to selected cells and copy the
+    ' contebts of other files into the new sheets
+    Dim YesNo As Variant, myFolder As String, MyLF As String
+        
+    MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
+    myFolder = &quot;D:Documents and SettingsbonnyMy Documentstools&quot;   'change this to the location of saved XML files
+    'Windows 7下C盘默认不可写，请修改DefFolder的值
+    
+    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; myclf &amp; _
+        &quot;Do you want to continue?&quot;, _
+        vbYesNo, &quot;Caution&quot;)
+    Select Case YesNo
+    Case vbYes
+        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates&quot;, Default:=myFolder)
+        'Create new worksheets
+        For Each cell In Selection.Cells
+            Call CreateNewWorksheet(cell.Value, myFolder)
+        Next
+    Case vbNo
+        Exit Sub
+    End Select
+    
+    Application.ScreenUpdating = True
+End Sub
+
+Function CreateNewWorksheet(SheetName As String, FolderName As String) As String
+
+    Dim oSheet As Worksheet, vRet As Variant
+    Dim fName As String
+    
+    'creating a new excel worksheet
+    Set oSheet = Worksheets.Add
+    With oSheet
+        .Name = SheetName
+        .Move after:=Sheets(Sheets.Count) '在当前所有worksheet后创建新的工作表
+        .Activate
+    End With
+    
+    'open Excel files and copy the contents to this sheet
+    Dim newWB As Workbook, curWB As Workbook
+    Dim startRange As Range
+    
+    Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
+    fName = FolderName + &quot;&quot; + SheetName + &quot;.xls&quot;
+    Set newWB = Workbooks.Open(fName)
+    newWB.Activate
+    newWB.Sheets(1).Activate ' 假定只有第一个worksheet需要copy
+    Set startRange = newWB.Sheets(1).UsedRange ' Only used range will be copied
+    newWB.Sheets(1).UsedRange.Copy
+    
+    'select the destination cell
+    curWB.Activate
+    Sheets(SheetName).Activate
+    Range(startRange.Address).Select
+    ActiveSheet.Paste
+    Application.CutCopyMode = False  'Clear Clipboard
+    newWB.Close
+    
+    Exit Function
+
+End Function
+
+</pre></p>
+
+
+    <small class="meta">July 11, 2011 | <a href='/vba/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Solaris下/usr/lib/secure/0@0.so.1的错误</a></h2>
+
+    <p>&nbsp;</p>
+<p>这两天一直被下面的错误所困扰：</p>
+<p>
+<pre>AP13: lb -m ccmscell uptime 
+ld.so.1: uname: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
+ksh[216]: 4412 Killed
+ld.so.1: uptime: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
+</pre>
+<p>&nbsp;&nbsp;</p>
+<p>lb是一个调用rsh的脚本，ccmscell是一个server pool，uname是在lb中被调用的。</p>
+<p>&nbsp;</p>
+<p>仔细研究了N遍相关的脚本，Google了N次相关的错误信息，都没有找到有价&#20540;的线索。后来问了一位做过IT的同事，她说以前遇见过类&#20284;的问题，可她的解决方案最终被证明无效。</p>
+<p>&nbsp;</p>
+<p>最终发现不是所有的server上执行这条命令都有问题，有些是可以执行的。对比了之后发现，如果/usr/lib/secure/0@0.so.1的group设置为bin，owner设为root，就不会出现上面的问题。出问题的server上/usr/lib/secure/0@0.so.1的group为other。</p>
+<p>&nbsp;</p>
+<p>进一步调查后发现，/usr/lib/secure/0@0.so.1是在Solaris 5.8上被设为LD_PRELOAD_32的，因为很多程序要被setuid&#043;chroot的伪root调用。当且仅当上面的命令被该伪root执行时，才会出现上面的错误！</p>
+<p>&nbsp;</p>
+<p>幸亏Solaris 5.8已经开始走进坟墓了，即使在落后如我们公司的地方！</p>
+<p>&nbsp;</p>
+<p><strong><span style="font-family:mceinline;">【update2011-06-23】：</span></strong></p>
+<p><strong><span style="font-family:mceinline;">今天发现root cause 不是由于/usr/lib/secure/0@0.so.1的group不对，而是因为remote server（比如pool&nbsp;ccmscell中的server）上没有/usr/lib/secure/0@0.so.1 —— 执行rsh命令的login是setuid&#043;chroot实现的伪root，因此远程的server就需要/usr/lib/secure/0@0.so.1了。</span></strong></p>
+<p><span style="font-family:mceinline;font-weight:bold;">【update 2012-03-12】</span></p>
+<p><strong><span style="font-family:mceinline;">今天在Solaris 9上遇到了这样一个错误：</span></strong></p>
+<p><span style="font-family:mceinline;">&nbsp; &nbsp; ld.so.1: pt_chmod: warning: /lib/0@0.so.1: open failed: illegal insecure pathname<br />
+</span></p>
+<p><strong><span style="font-family:mceinline;">查了很久才想起来有可能是</span></strong><strong>/usr/lib/secure/0@0.so.1造成的。一检查</strong><strong>/usr/lib/secure/0@0.so.1，果然不存在。</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在一个正常工作的server上，</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
+<pre>AP31: echo $LD_PRELOAD_32
+/usr/lib/secure/0@0.so.1</pre></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在不能工作的server上，</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
+<pre>AP13: echo $LD_PRELOAD_32
+/lib/0@0.so.1</pre></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>——仅仅升级了一个软件就又把这个library搞丢了，某些同志们啊，唉……</strong></p>
+
+
+    <small class="meta">June 22, 2011 | <a href='/bkup/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Solaris下/usr/lib/secure/0@0.so.1的错误</a></h2>
+
+    <p>&nbsp;</p>
+<p>这两天一直被下面的错误所困扰：</p>
+<p>
+<pre>AP13: lb -m ccmscell uptime 
+ld.so.1: uname: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
+ksh[216]: 4412 Killed
+ld.so.1: uptime: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
+</pre>
+<p>&nbsp;&nbsp;</p>
+<p>lb是一个调用rsh的脚本，ccmscell是一个server pool，uname是在lb中被调用的。</p>
+<p>&nbsp;</p>
+<p>仔细研究了N遍相关的脚本，Google了N次相关的错误信息，都没有找到有价&#20540;的线索。后来问了一位做过IT的同事，她说以前遇见过类&#20284;的问题，可她的解决方案最终被证明无效。</p>
+<p>&nbsp;</p>
+<p>最终发现不是所有的server上执行这条命令都有问题，有些是可以执行的。对比了之后发现，如果/usr/lib/secure/0@0.so.1的group设置为bin，owner设为root，就不会出现上面的问题。出问题的server上/usr/lib/secure/0@0.so.1的group为other。</p>
+<p>&nbsp;</p>
+<p>进一步调查后发现，/usr/lib/secure/0@0.so.1是在Solaris 5.8上被设为LD_PRELOAD_32的，因为很多程序要被setuid&#043;chroot的伪root调用。当且仅当上面的命令被该伪root执行时，才会出现上面的错误！</p>
+<p>&nbsp;</p>
+<p>幸亏Solaris 5.8已经开始走进坟墓了，即使在落后如我们公司的地方！</p>
+<p>&nbsp;</p>
+<p><strong><span style="font-family:mceinline;">【update2011-06-23】：</span></strong></p>
+<p><strong><span style="font-family:mceinline;">今天发现root cause 不是由于/usr/lib/secure/0@0.so.1的group不对，而是因为remote server（比如pool&nbsp;ccmscell中的server）上没有/usr/lib/secure/0@0.so.1 —— 执行rsh命令的login是setuid&#043;chroot实现的伪root，因此远程的server就需要/usr/lib/secure/0@0.so.1了。</span></strong></p>
+<p><span style="font-family:mceinline;font-weight:bold;">【update 2012-03-12】</span></p>
+<p><strong><span style="font-family:mceinline;">今天在Solaris 9上遇到了这样一个错误：</span></strong></p>
+<p><span style="font-family:mceinline;">&nbsp; &nbsp; ld.so.1: pt_chmod: warning: /lib/0@0.so.1: open failed: illegal insecure pathname<br />
+</span></p>
+<p><strong><span style="font-family:mceinline;">查了很久才想起来有可能是</span></strong><strong>/usr/lib/secure/0@0.so.1造成的。一检查</strong><strong>/usr/lib/secure/0@0.so.1，果然不存在。</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在一个正常工作的server上，</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
+<pre>AP31: echo $LD_PRELOAD_32
+/usr/lib/secure/0@0.so.1</pre></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在不能工作的server上，</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
+<pre>AP13: echo $LD_PRELOAD_32
+/lib/0@0.so.1</pre></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>——仅仅升级了一个软件就又把这个library搞丢了，某些同志们啊，唉……</strong></p>
+
+
+    <small class="meta">June 22, 2011 | <a href='/unix/linux/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">ksh中包含变量的命令调用</a></h2>
+
+    <p>当一个含有变量a的命令存储在某个变量b中时, 利用$($b)时有可能会报错。如下面的代码，有时可以成功执行，有时会发生&ldquo;ipcs|grep xxx can not be found"的错误。&nbsp;</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	IPCSCMD="ipcs"
+else
+	IPCSCMD="ipcs|grep $LOGNAME"
+fi
+for Eachline in $($IPCSCMD)
+do
+	IFS=" " # Space
+	# Handle IPCs
+	...
+done</pre>
+<p>&nbsp;</p>
+<p>究其根源，应该是对IPCSCMD的解析出了问题。将代码改为下面的形式，就可以正确执行了。注意IFS的变化&mdash;&mdash;改成下面的形式后必须将循环内的IFS改为Space和Tab。</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	ipcs
+else
+	ipcs|grep $LOGNAME
+fi | while read Eachline
+do
+	IFS=" 	" # Space and tab
+	# Handle IPCs
+	...
+done
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">June 03, 2011 | <a href='/bkup/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">ksh中包含变量的命令调用</a></h2>
+
+    <p>当一个含有变量a的命令存储在某个变量b中时, 利用$($b)时有可能会报错。如下面的代码，有时可以成功执行，有时会发生&ldquo;ipcs|grep xxx can not be found"的错误。&nbsp;</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	IPCSCMD="ipcs"
+else
+	IPCSCMD="ipcs|grep $LOGNAME"
+fi
+for Eachline in $($IPCSCMD)
+do
+	IFS=" " # Space
+	# Handle IPCs
+	...
+done</pre>
+<p>&nbsp;</p>
+<p>究其根源，应该是对IPCSCMD的解析出了问题。将代码改为下面的形式，就可以正确执行了。注意IFS的变化&mdash;&mdash;改成下面的形式后必须将循环内的IFS改为Space和Tab。</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	ipcs
+else
+	ipcs|grep $LOGNAME
+fi | while read Eachline
+do
+	IFS=" 	" # Space and tab
+	# Handle IPCs
+	...
+done
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">June 03, 2011 | <a href='/unix/linux/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">chroot, setuid() & set gid</a></h2>
+
+    <p>这篇文章搜集整理了网上chroot, setuid() &amp; set gid相关的文章。</p>
+<ol>
+<li><a href="http://www.unixwiz.net/techtips/chroot-practices.html">Best Practices for UNIX chroot() Operations</a></li>
+<li><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">How to break out of a&nbsp;<tt>chroot()</tt></a></strong><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">&nbsp;jail</a></strong></li>
+<li><strong><a href="http://www.cs.berkeley.edu/~daw/papers/setuid-usenix02.pdf">Setuid Demystifid</a></strong></li>
+<li><strong><a href="http://oldfield.wattle.id.au/luv/permissions.html">Introduction to Unix file permissions</a></strong></li>
+</ol>
+
+
+    <small class="meta">June 02, 2011 | <a href='/unix/linux/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">chroot, setuid() & set gid</a></h2>
+
+    <p>这篇文章搜集整理了网上chroot, setuid() &amp; set gid相关的文章。</p>
+<ol>
+<li><a href="http://www.unixwiz.net/techtips/chroot-practices.html">Best Practices for UNIX chroot() Operations</a></li>
+<li><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">How to break out of a&nbsp;<tt>chroot()</tt></a></strong><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">&nbsp;jail</a></strong></li>
+<li><strong><a href="http://www.cs.berkeley.edu/~daw/papers/setuid-usenix02.pdf">Setuid Demystifid</a></strong></li>
+<li><strong><a href="http://oldfield.wattle.id.au/luv/permissions.html">Introduction to Unix file permissions</a></strong></li>
+</ol>
+
+
+    <small class="meta">June 02, 2011 | <a href='/bkup/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page12' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page10' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

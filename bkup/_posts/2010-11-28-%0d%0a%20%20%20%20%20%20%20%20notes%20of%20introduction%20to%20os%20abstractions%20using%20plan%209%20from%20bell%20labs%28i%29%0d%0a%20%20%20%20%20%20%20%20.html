@@ -1,0 +1,171 @@
+---
+layout: post
+title: Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(I)
+categories:
+- Plan 9
+tags:
+- Plan 9
+status: publish
+type: post
+published: true
+meta:
+  views: '77'
+  original_post_id: '97'
+  _wp_old_slug: '97'
+author: 
+---
+
+<p>&nbsp;</p>
+<h3 id="zw-1290949398860sDJ1ah"><span id="zw-1290949398861ePu1_6">1. Loaded Programs</span></h3>
+<h4 id="zw-1290949398861DeKRaD"><span id="zw-1290949398861A4v4rA">1.1 Command&nbsp;</span><span id="zw-1290949398861w1u2Ml">nm</span></h4>
+<p id="zw-1290949398861M8Fq2q"><span id="zw-1290949398861Bp3Ccc">Command&nbsp;</span><span id="zw-1290949398861G3bweg">nm</span><span id="zw-1290949398861scTbjG">&nbsp;can be used to display symbol information in both objects and binary files, because it looks at the symbol table stored in the binary for debugging purposes. Command&nbsp;</span><span id="zw-1290949398861vCM8Bc">strip</span><span id="zw-1290949398862uxpNeZ">&nbsp;can be used to remove the symbol table.</span></p>
+<p id="zw-1290949398862fWV4Na"><span id="zw-1290949398862lx4zWW">&nbsp;</span></p>
+<p id="zw-1290949398862puncr7"><span id="zw-1290949398862bTX1vU">Option&nbsp;</span><span id="zw-1290949398862xqkLFX">&ndash;n</span><span id="zw-1290949398862uZgaHC">&nbsp;asks&nbsp;</span><span id="zw-1290949398862bL2tUS">nm</span><span id="zw-1290949398862J8ZHZT">&nbsp;to sort the output by symbol address. The addresses are virtual memory addresses, because the system uses the virtual memory hardware to keep each process in its own virtual address space.</span></p>
+<p id="zw-1290949398862k6pDEH"><span id="zw-1290949398862DVbJhp">&nbsp;</span></p>
+<p id="zw-1290949398862O_WbxH"><span id="zw-1290949398863UiL4fd">In the output of nm,&nbsp;</span><span id="zw-1290949398863YoRHZ6">etext</span><span id="zw-1290949398863HprQPn">&nbsp;is a symbol defined by the linker to let you know where the end of test is, and&nbsp;</span><span id="zw-1290949398863xgx-UA">edata</span><span id="zw-1290949398863_mjveS">&nbsp;reports the address where the initialized data terminates.</span></p>
+<h4 id="zw-1290949398863NmsG5X"><span id="zw-1290949398863tm46dV">1.2 What does the system (kernel) loader do?</span></h4>
+<p id="zw-1290949398863Jg06Kq"><span id="zw-1290949398863AZoq7F">&middot;</span><span id="zw-1290949398864Pw2OoW">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="zw-1290949398864Tl2rEF">The header in the binary file reports the memory size required for the program text, and the file keeps the memory image of that text. Therefore, the system can just copy all this into memory. For a given system and architecture, there is a convention regarding which addresses the program must use. Therefore, the system knows where to load the program.</span></p>
+<p id="zw-12909493988641Ah34P"><span id="zw-1290949398864MwPqj1">&middot;</span><span id="zw-129094939886431kLs_">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="zw-12909493988644HOTq2">The header in the binary reports the memory size required for initialized variables (global) and file contains a memory image for them. Thus, the system can copy those bytes to memory. Note that the system has no idea regarding where does one variable start or how big it is. The system only knows how many bytes it has to copy to memory, and at which address should they be copied.</span></p>
+<p id="zw-1290949398864lF3mfu"><span id="zw-1290949398864Qa1fiF">&middot;</span><span id="zw-1290949398864I57fm8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="zw-1290949398864_vLJAo">For uninitialized global variables, the binary header reports their total size. The system allocates that amount of memory for the program. That is all it has to do. As a courtesy, Plan 9 guarantees that such memory is initialized with all bytes being zero. This means that all your global variables are initialized to null values by default.</span></p>
+<h4 id="zw-1290949398864GGzoov"><span id="zw-1290949398865GPNwpr">1.3 Memory image for the global program</span></h4>
+<p id="zw-1290949398865-KYSgI"><img src="http://xiexie.baihui.com/image.do?imgurl=3babf56062fe04d195271acb7edaebe17c7335448c4ed3af69eac61090566d9dffab3b423280599ed59da39279912dc4" alt="" align="bottom" /></p>
+<p id="zw-129094939886505L7F-"><span id="zw-1290949398865sZMOgN">&nbsp;</span></p>
+<p id="zw-1290949398865fHb7OC"><span id="zw-1290949398865R52pna">The virtual memory of a process in Plan 9 has several segments. A memory segment is a portion of contiguous memory with some properties. Segments used by a Plan 9 process are:</span></p>
+<p id="zw-1290949398865WLGo3b"><span id="zw-129094939886516vPlJ">&middot;</span><span id="zw-1290949398865ayOOVt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="zw-1290949398865VpK3iM">The&nbsp;</span><span id="zw-1290949398866OAh3Sy">test segment</span><span id="zw-1290949398866zwgO7E">. It contains instructions that can be executed but not modified. The hardware is used by the system to enforce these permissions. The memory is initialized by the system with the program text (code) kept within the binary file for the program.</span></p>
+<p id="zw-1290949398866DzjDRR"><span id="zw-1290949398866kzzKuu">&middot;</span><span id="zw-1290949398866dWZ4WJ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="zw-1290949398866rxmiFl">The&nbsp;</span><span id="zw-1290949398866XM0SSt">data segment</span><span id="zw-1290949398866rdIwt5">. It contains the initialized data for the program. Protection is set to allow both read and write operations on it, but you cannot execute instructions on it. The memory is initialized by the system using the initialized data kept within the binary file for the program.</span></p>
+<p id="zw-12909493988665NjJfd"><span id="zw-12909493988668LYe2n">&middot;</span><span id="zw-1290949398866H86UPQ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="zw-1290949398867ujbq5l">The uninitialized data segment, called&nbsp;</span><span id="zw-1290949398867z9DJ4Q">bss segment</span><span id="zw-1290949398867jBIH8H">, which is almost like the data segment. However, this one is initialized by zeroing its memory. The name of the segment comes from an arcane instruction used to implement it on a machine that no longer exists. How much memory is given depends on the size recorded in the binary file. Moreover, this segment can&nbsp;</span><span id="zw-1290949398867woapo8">grow</span><span id="zw-1290949398867eXmEXm">, by using a system call that allocates more memory for it. Function libraries like&nbsp;</span><span id="zw-1290949398867LZTz0R">malloc</span><span id="zw-12909493988674pKHmJ">&nbsp;cause this segment to grow when they consume all the available memory in this segment. This is the reason for the gap between this segment and the stack segment, to leave room for the segment to grow.</span></p>
+<p id="zw-12909493988678T1Cts"><span id="zw-1290949398867O08V4b">&middot;</span><span id="zw-1290949398867sojzlo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="zw-1290949398868wui-dY">The&nbsp;</span><span id="zw-1290949398868EUaLcV">stack segment</span><span id="zw-1290949398868txeB9B">&nbsp;is also used for reading and writing memory. Unlike other segments, this segment seems to grow automatically when more space is used. It is used to keep the stack for the process.</span></p>
+<h4 id="zw-1290949398868bt1ji2"><span id="zw-12909493988683H5_S8">1.4 Process Arguments</span></h4>
+<p id="zw-1290949398868k0kuo-"><span id="zw-1290949398868acWAD4">The macros&nbsp;</span><span id="zw-1290949398868jo_aR3">ARGBEGIN</span><span id="zw-1290949398868GtChIf">&nbsp;and&nbsp;</span><span id="zw-1290949398868F52ej8">ARGEND</span><span id="zw-1290949398869bjzOxh">&nbsp;loop through the argument list, removing and processing</span></p>
+<p id="zw-1290949398869EpgRq7"><span id="zw-1290949398869-ejVsC">options. After ARGEND, both argc and argv reflect the argument list without any option.</span></p>
+<p id="zw-1290949398869-WyGTM"><span id="zw-1290949398869Gzm4-H">Between both macros, we must write the body for a switch statement (supplied by</span></p>
+<p id="zw-1290949398869cUXFi3"><span id="zw-1290949398869ydg8j3">ARGBEGIN), with a case per option.</span></p>
+<p id="zw-12909493988690ytyjT"><span id="zw-1290949398869PmpX8D">&nbsp;</span></p>
+<p id="zw-1290949398869qAGTtJ"><span id="zw-1290949398870g5fJpf">&nbsp;</span></p>
+<p id="zw-1290949398870w7UeKc"><span id="zw-1290949398870VnjgC1">Macros defined in plan9.h</span></p>
+<p id="zw-1290949398870B0qO8e">
+<pre>extern char *argv0;
+#define ARGBEGIN for((void)(argv0||(argv0=*argv)),argv++,argc--;/
+       argv[0] &amp;&amp; argv[0][0]=='-' &amp;&amp; argv[0][1];/
+       argc--, argv++) {/
+    char *_args, *_argt;/
+    Rune _argc;/
+    _args = &amp;argv[0][1];/
+    if(_args[0]=='-' &amp;&amp; _args[1]==0){/
+     argc--; argv++; break;/
+    }/
+    _argc = 0;/
+    while(*_args &amp;&amp; (_args += chartorune(&amp;_argc, _args)))/
+    switch(_argc)
+#define ARGEND  SET(_argt);USED(_argt);USED(_argc);USED(_args);}/
+     USED(argv);USED(argc);
+#define ARGF()  (_argt=_args, _args="",/
+    (*_argt? _argt: argv[1]? (argc--, *++argv): 0))
+#define EARGF(x)  (_argt=_args, _args="",/
+    (*_argt? _argt: argv[1]? (argc--, *++argv): ((x), abort(), (char*)0)))
+ 
+#define ARGC()  _argc
+ 
+#define SET(x) (x) = 0
+#define USED(x) (void)(x)</pre>
+<p>&nbsp;</p>
+<p id="zw-1290949398889_XtEPK"><span id="zw-1290949398889kDGLRd">&nbsp;</span></p>
+<p id="zw-12909493988895SfS4z"><span id="zw-1290949398889ZrdrFv">Most of the Plan 9 programs that accept multiple options use these macros to process their</span></p>
+<p id="zw-12909493988894ZVhLV"><span id="zw-12909493988902Xxg3y">argument list in search for options. This means that the invocation syntax is similar for most pro-grams. You may combine options in a single argument, use multiple arguments, supply arguments for options immediately after the option letter, or use another argument,</span></p>
+<p id="zw-12909493988907I3lpd"><span id="zw-12909493988905VTK78">terminate the option list by giving a -- argument, and so on.</span></p>
+<p id="zw-1290949398890bVD_ls"><span id="zw-1290949398890H5Ub46">&nbsp;</span></p>
+<p id="zw-1290949398890kIS9C9"><span id="zw-1290949398890-gm04p">Source code of bind.c</span></p>
+<p id="zw-1290949398890dTxp09"><span id="zw-1290949398890_CB4vy">&nbsp;</span></p>
+<p id="zw-129094939889033vUJu">
+<pre>#include &lt;u.h&gt;
+#include &lt;libc.h&gt;
+ 
+void usage(void);
+ 
+void
+main(int argc, char *argv[])
+{
+ ulong flag = 0;
+ int qflag = 0;
+ 
+ ARGBEGIN{
+ case 'a':
+  flag |= MAFTER;
+  break;
+ case 'b':
+  flag |= MBEFORE;
+  break;
+ case 'c':
+  flag |= MCREATE;
+  break;
+ case 'q':
+  qflag = 1;
+  break;
+ default:
+  usage();
+ }ARGEND
+ 
+ if(argc != 2 || (flag&amp;MAFTER)&amp;&amp;(flag&amp;MBEFORE))
+  usage();
+ 
+ if(bind(argv[0], argv[1], flag) &lt; 0){
+  if(qflag)
+   exits(0);
+  /* try to give a less confusing error than the default */
+  if(access(argv[0], 0) &lt; 0)
+   fprint(2, "bind: %s: %r/n", argv[0]);
+  else if(access(argv[1], 0) &lt; 0)
+   fprint(2, "bind: %s: %r/n", argv[1]);
+  else
+   fprint(2, "bind %s %s: %r/n", argv[0], argv[1]);
+  exits("bind");
+ }
+ exits(0);
+}
+ 
+void
+usage(void)
+{
+ fprint(2, "usage: bind [-b|-a|-c|-bc|-ac] new old/n");
+ exits("usage");
+}</pre>
+<p>&nbsp;</p>
+<p id="zw-12909493989145UBIdA"><span id="zw-1290949398914vjkUvQ">&nbsp;</span></p>
+<h4 id="zw-1290949398915ChZiV0"><span id="zw-1290949398915TCUl-e">1.5 System call errors</span></h4>
+<p id="zw-1290949398915_VKY7S"><span id="zw-1290949398915F5dVz0">There are several ways of printing out the error string. The most convenient way is using the format &ldquo;%r&rdquo; in print.</span></p>
+<p id="zw-12909493989157rVDOc"><img src="http://xiexie.baihui.com/image.do?imgurl=3babf56062fe04d195271acb7edaebe1bcd1e98698a1ec92775ff5b32fbc87711fb8c1f0d288bb2569e488233a0046f0" alt="" width="553" height="360" /><br /><span id="zw-1290949398915QTjDll">T</span><span id="zw-12909493989150XDKGb">here is a function that both prints a message and exits. It is called&nbsp;</span><span id="zw-1290949398915Bp-iGv">sysfatal</span><span id="zw-1290949398915qZW_Qg">, and is used like follows.</span></p>
+<p id="zw-1290949398915JM2CbI"><img src="http://xiexie.baihui.com/image.do?imgurl=3babf56062fe04d195271acb7edaebe1bcd1e98698a1ec92775ff5b32fbc87714333f017beea4d0004e0d5dd93db05f9" alt="" width="553" height="54" /><br /><span id="zw-1290949398916lQU6kE">T</span><span id="zw-1290949398916JAEBUs">he system call&nbsp;</span><span id="zw-1290949398916UPzKnY">rerrstr</span><span id="zw-12909493989164aLHY8">&nbsp;reads the error string. It stores the string at the buffer you supply.</span></p>
+<p id="zw-1290949398916skGOn9"><img src="http://xiexie.baihui.com/image.do?imgurl=3babf56062fe04d195271acb7edaebe1bcd1e98698a1ec92775ff5b32fbc8771160ef69fcdf2c7af6f12e05e8ca4c254" alt="" width="453" height="74" /></p>
+<p id="zw-12909493989169W1gXj"><span id="zw-1290949398916MxAr7x">The system call&nbsp;</span><span id="zw-12909493989161fVjqL">werrstr</span><span id="zw-1290949398917h2rCfn">&nbsp;writes a new value for the error string. It is used like the&nbsp;</span><span id="zw-1290949398917qviIxD">print</span><span id="zw-12909493989175CwNJH">. Using it, we can implement a function that&nbsp;</span><span id="zw-12909493989175OAYWp">pops</span><span id="zw-1290949398917S6aKR1">&nbsp;an element from a stack and reports errors nicely:</span></p>
+<p id="zw-1290949398917hDQMag"><img src="http://xiexie.baihui.com/image.do?imgurl=3babf56062fe04d195271acb7edaebe1bcd1e98698a1ec92775ff5b32fbc87719994ac148aa292b2e7ef0f1a2485d55f" alt="" width="553" height="348" /></p>
+<h4 id="zw-1290949398917aCF5lL"><span id="zw-1290949398917qHrEEA">1.6 Environment</span></h4>
+<p id="zw-1290949398917jwrhJO"><span id="zw-1290949398918MSMy13">To obtain the value for a environment variable, from a C program, we can use the&nbsp;</span><span id="zw-12909493989185bMn7Y">getenv</span><span id="zw-1290949398918bQHoi3">&nbsp;system call. If the variable is not defined,&nbsp;</span><span id="zw-1290949398918wEHPTG">getenv</span><span id="zw-1290949398918l_JfXG">&nbsp;returns a null string. A related call is&nbsp;</span><span id="zw-1290949398918oWlB7I">putenv</span><span id="zw-1290949398918HwNsEz">, which accepts a name and a value, and set the corresponding environment variable accordingly.</span></p>
+<p id="zw-12909493989186BVTwQ"><span id="zw-1290949398918bg2D2m">&nbsp;</span></p>
+<p id="zw-1290949398918McGxWt"><span id="zw-1290949398918uivMkt">&nbsp;
+<pre>#include &lt;u.h&gt;
+#include &lt;libc.h&gt;
+ 
+void main()
+ 
+{
+ char * path;
+ 
+ path=getenv("path");
+ if(path==nil)
+  sysfatal("path not defined!");
+ print("PATH is %s /n", path);
+ 
+ exits(nil);
+}</pre>
+<p>&nbsp;</span></p>
+<h4 id="zw-1290949398922zFzlXN"><span id="zw-1290949398922cjDuqK">1.7 Process States</span></h4>
+<h4 id="zw-1290949398922FHaTF_"><img src="http://xiexie.baihui.com/image.do?imgurl=3babf56062fe04d195271acb7edaebe1bcd1e98698a1ec92775ff5b32fbc8771c6957ae765ad8d3426137f5235e54399" alt="" width="554" height="238" /><br /><span id="zw-1290949398923RrMZM8">1</span><span id="zw-1290949398923Hc3DDf">.8 Debugging</span></h4>
+<p id="zw-1290949398923k00tpl"><span id="zw-1290949398923s7rFjn">The program&nbsp;</span><span id="zw-1290949398923yroZES">src</span><span id="zw-1290949398923kwDqpL">&nbsp;knows how to obtain the source file name and line number that corresponds to that program counter.</span></p>
+<p id="zw-1290949398923mpe_pi"><span id="zw-129094939892316ZOlD">&nbsp;</span></p>
+<p id="zw-1290949398923wSLiq0"><img class="zohotab" src="http://xiexie.baihui.com/images/spacer.gif" alt="" height="1px" /><span id="zw-12909493989230nQWXw">&nbsp;</span><span id="zw-1290949398924-7QokX">; <em>src -n -s 0x000016ff 8.hi</em></span></p>
+<p id="zw-12909493989244YZqMH"><span id="zw-1290949398924unvzWE">&nbsp;</span><img class="zohotab" src="http://xiexie.baihui.com/images/spacer.gif" alt="" height="1px" /><span id="zw-1290949398924OBCoqn">&nbsp;</span><span id="zw-1290949398924iOBEui">/sys/src/libc/fmt/dofmt.c:37</span></p>
+<p id="zw-1290949398924tRfkHj"><span id="zw-1290949398924RdI--q">&nbsp;</span></p>
+<p id="zw-1290949398924PoVDYf"><span id="zw-1290949398924aW_tFP">Option -n causes the source file name and line to be printed. Otherwise src would ask your editor to display your file and line. Option -s permits you to give a memory address or a symbol name to locate its source.</span></p>
+<p id="zw-1290949398924oOAlGc"><span id="zw-1290949398924KsySpY">&nbsp;</span></p>
+<p id="zw-1290949398925BOhqJ0"><span id="zw-1290949398925hOxtFT">acid</span><span id="zw-1290949398925xmeTc4">&nbsp;is the debugger can be used to dump the stack (function stk()), memory (function mem()) and so on.</span></p>
+<p>&nbsp;</p>

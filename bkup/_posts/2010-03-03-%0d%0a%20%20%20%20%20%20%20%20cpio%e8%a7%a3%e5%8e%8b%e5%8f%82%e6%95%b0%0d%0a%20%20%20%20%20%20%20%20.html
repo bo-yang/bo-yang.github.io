@@ -1,0 +1,22 @@
+---
+layout: post
+title: cpio解压参数
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '390'
+  original_post_id: '37'
+  _wp_old_slug: '37'
+author: 
+---
+
+<p>解压cpio文件&nbsp;<br />cpio -idmv &lt; filename.cpio&nbsp;</p>
+<p>同样可以解压img文件：<br />cpio -idmv &lt; filename.img</p>
+<p>cpio 备份命令<br />备份：cpio -covB &gt; [file|device] 将数据备份到文件或设备上<br />还原：cpio -icduv &lt; [file|device} 将数据还原到系统中</p>
+<p>常用参数：<br />-o&nbsp;&nbsp; ：将数据copy到文件或设备上<br />-i&nbsp;&nbsp;&nbsp; ：将数据从文件或设备上还原到系统中<br />-t&nbsp;&nbsp;&nbsp; ：查看cpio建立的文件或设备内容<br />-c&nbsp;&nbsp; ：一种比较新的portable format方式存储<br />-v&nbsp;&nbsp; ：在屏幕上显示备份过程中的文件名<br />-B&nbsp;&nbsp; ：让预设的blocks可以增加到5120bytes，默认是512bytes，这样可以使备份速度加快<br />-d&nbsp;&nbsp; ：自动建立目录，这样还原时才不会出现找不到路径的问题<br />-u&nbsp;&nbsp; ：更新，用较新的文件覆盖旧的文件</p>
+<p>cpio常与find 配合使用</p>

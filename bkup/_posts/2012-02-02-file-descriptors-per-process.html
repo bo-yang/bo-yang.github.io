@@ -1,0 +1,41 @@
+---
+layout: post
+title: File Descriptors per Process
+categories:
+- Unix/Linux
+tags:
+- file descriptor
+status: publish
+type: post
+published: true
+meta:
+  publicize_results: a:1:{s:2:"fb";a:1:{i:563677940;a:2:{s:7:"user_id";s:9:"563677940";s:7:"post_id";s:17:"10150592687092941";}}}
+  _wpas_done_fb: '1'
+  _wpas_done_linkedin: '1'
+author: 
+---
+<p>A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:</p>
+<ol>
+<li><code>ulimit -a # all limitations</code></li>
+<li><code>ulimit -Sn # soft limit</code></li>
+<li><code>ulimit -Hn # hard limit</code></li>
+</ol>
+<p>If the file descriptor limit is exceeded for a process, you may see the error <code>Too Many Open Files</code>.</p>
+<p>And if you want to change the limit per process temporarily, you can:</p>
+<ol>
+<li><code>ulimit -n &lt;desired_#&gt; # both</code></li>
+<li><code>ulimit -Sn &lt;desired_#&gt; # soft limit</code></li>
+<li><code>ulimit -Hn &lt;desired_#&gt; # hard limit</code></li>
+</ol>
+<p>To check the open files of a process, you can use command <code>pfiles &lt;PID&gt;</code>.</p>
+<p>To check the run time limit of each process in Solaris, you can <code>plimit &lt;PID&gt;</code>(it seems this command is not supported in Linux). If you have the root permission and you want to change the limit of an process without killing or restarting the process, you can <code>plimit -n &lt;desired_#&gt;</code>.</p>
+<p>It was said that it may be dangerous to set the soft limit higher than 256 or hard limit greater than 1024 due to limitations with the stdio library.If programs require more file descriptors, they should use setrlimit directly.</p>
+<p>-------------<br />
+References:</p>
+<ol>
+<li><a href="http://www.brandonhutchinson.com/File_descriptors.html">File descriptors</a></li>
+<li><a href="http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/">Linux Increase The Maximum Number Of Open Files / File Descriptors (FD)</a></li>
+<li><a href="http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/">Linux / UNIX: List Open Files for Process</a></li>
+<li><a href="http://www.princeton.edu/~unix/Solaris/troubleshoot/filedesc.html">Princeton University Enterprise Servers and Storage, File Descriptors</a></li>
+<li><a href="http://compute.cnr.berkeley.edu/cgi-bin/man-cgi?plimit+1">plimit</a></li>
+</ol>

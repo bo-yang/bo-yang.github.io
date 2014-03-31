@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/tcl/tk/2011/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520regexp%2520-line%25e9%2580%2590%25e8%25a1%258c%25e5%258c%25b9%25e9%2585%258d%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">regexp -line逐行匹配</a></h2>
+
+    <p>以前没注意到Tcl/Tk的正则表达式命令regexp还有一个逐行匹配的选项-line（其实是三个-line, <span>-lineanchor和</span><span>-linestop，第一个是后两者的综合</span>），因此碰到需要在多行内容中匹配某一行的中的某字符（串）是总是不得不用AWK,PERL等其他工具，现在有了-line，直接regexp -line &lt;pattern&gt; &lt;var&gt;就搞定了！</p>
+
+
+    <small class="meta">March 02, 2011 | <a href='/tcl/tk/2011/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520regexp%2520-line%25e9%2580%2590%25e8%25a1%258c%25e5%258c%25b9%25e9%2585%258d%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520regexp%2520-line%25e9%2580%2590%25e8%25a1%258c%25e5%258c%25b9%25e9%2585%258d%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">regexp -line逐行匹配</a></h2>
+
+    <p>以前没注意到Tcl/Tk的正则表达式命令regexp还有一个逐行匹配的选项-line（其实是三个-line, <span>-lineanchor和</span><span>-linestop，第一个是后两者的综合</span>），因此碰到需要在多行内容中匹配某一行的中的某字符（串）是总是不得不用AWK,PERL等其他工具，现在有了-line，直接regexp -line &lt;pattern&gt; &lt;var&gt;就搞定了！</p>
+
+
+    <small class="meta">March 02, 2011 | <a href='/bkup/2011/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520regexp%2520-line%25e9%2580%2590%25e8%25a1%258c%25e5%258c%25b9%25e9%2585%258d%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/plan%209/2011/02/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%2520environment%2520variables%2520-%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528iii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Plan9 Environment Variables -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(III)</a></h2>
+
+    <p><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
+interface for using environment variables in Plan 9 is a file<br />
+interface.<br />
+ All interfaces of environment variables can be found<br />
+under <span style="font-family:'Courier New', monospace;">/env</span>.</span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">To<br />
+obtain the value for a environment variable, from a C program, we can<br />
+use the </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">getenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><br />
+system call. If the variable is not defined, </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">getenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><br />
+returns a null string. A related call is </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">putenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">,<br />
+which accepts a name and a value, and set the corresponding<br />
+environment variable accordingly.</span></span></p>
+<p><span style="font-family:'Trebuchet MS', sans-serif;">
+<pre>#include &lt;u.h&gt;
+#include &lt;libc.h&gt;
+void main()
+{
+char * path;
+path=getenv("path");
+if(path==nil)
+sysfatal("path not defined!");
+print("PATH is %s /n", path);
+exits(nil);
+}</pre>
+<p>&nbsp;</span></p>
+<p>&nbsp;</p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">In<br />
+some cases it is convenient to define an environment variable just<br />
+for a command. This can be<br />
+ done by defining it in the same command<br />
+line, before the command, like in the following exam-ple:<br />
+</span></span></p>
+<p><span style="font-family:'Courier New', monospace;">
+<pre>; temp=/tmp/foobar echo $temp
+/tmp/foobar
+; echo $temp
+;
+</pre>
+<p>&nbsp;</span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><strong>Useful<br />
+Environment Variables:</strong></span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">status</span><br />
+is updated by the shell once it finds out how it went to the last<br />
+command it executed.<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">path</span><br />
+is a list of paths where the shell should<br />
+look for executable files<br />
+to run the user commands.<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">user</span><br />
+contains the user name<br />
+.</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">sysname</span><br />
+contains the machine name.<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
+file <span style="font-family:'Courier New', monospace;">/dev/text </span>represents<br />
+the<br />
+ text shown in the window (when used within that window). To make<br />
+a copy of your shell session,<br />
+ you already know what to do:<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">;<br />
+cp /dev/text $home/saved<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
+same can be done for the image shown in the display for your window,<br />
+which is also represented as a file, <span style="font-family:'Courier New', monospace;">/dev/window</span>.<br />
+This is what we did to capture screen images .</span></span></p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">February 27, 2011 | <a href='/plan%209/2011/02/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%2520environment%2520variables%2520-%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528iii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/02/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%2520environment%2520variables%2520-%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528iii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Plan9 Environment Variables -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(III)</a></h2>
+
+    <p><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
+interface for using environment variables in Plan 9 is a file<br />
+interface.<br />
+ All interfaces of environment variables can be found<br />
+under <span style="font-family:'Courier New', monospace;">/env</span>.</span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">To<br />
+obtain the value for a environment variable, from a C program, we can<br />
+use the </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">getenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><br />
+system call. If the variable is not defined, </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">getenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><br />
+returns a null string. A related call is </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">putenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">,<br />
+which accepts a name and a value, and set the corresponding<br />
+environment variable accordingly.</span></span></p>
+<p><span style="font-family:'Trebuchet MS', sans-serif;">
+<pre>#include &lt;u.h&gt;
+#include &lt;libc.h&gt;
+void main()
+{
+char * path;
+path=getenv("path");
+if(path==nil)
+sysfatal("path not defined!");
+print("PATH is %s /n", path);
+exits(nil);
+}</pre>
+<p>&nbsp;</span></p>
+<p>&nbsp;</p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">In<br />
+some cases it is convenient to define an environment variable just<br />
+for a command. This can be<br />
+ done by defining it in the same command<br />
+line, before the command, like in the following exam-ple:<br />
+</span></span></p>
+<p><span style="font-family:'Courier New', monospace;">
+<pre>; temp=/tmp/foobar echo $temp
+/tmp/foobar
+; echo $temp
+;
+</pre>
+<p>&nbsp;</span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><strong>Useful<br />
+Environment Variables:</strong></span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">status</span><br />
+is updated by the shell once it finds out how it went to the last<br />
+command it executed.<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">path</span><br />
+is a list of paths where the shell should<br />
+look for executable files<br />
+to run the user commands.<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">user</span><br />
+contains the user name<br />
+.</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">sysname</span><br />
+contains the machine name.<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
+file <span style="font-family:'Courier New', monospace;">/dev/text </span>represents<br />
+the<br />
+ text shown in the window (when used within that window). To make<br />
+a copy of your shell session,<br />
+ you already know what to do:<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">;<br />
+cp /dev/text $home/saved<br />
+</span></span></p>
+<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
+same can be done for the image shown in the display for your window,<br />
+which is also represented as a file, <span style="font-family:'Courier New', monospace;">/dev/window</span>.<br />
+This is what we did to capture screen images .</span></span></p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">February 27, 2011 | <a href='/bkup/2011/02/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%2520environment%2520variables%2520-%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528iii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/plan%209/2011/02/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(II)</a></h2>
+
+    <p>	&lt;!--<br />
+		@page { margin: 0.79in }<br />
+		P { margin-bottom: 0.08in }<br />
+	--&gt;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span><span style="font-size:x-small;"><span style="font-family:mceinline;">man</span><span style="font-family:'Trebuchet MS', sans-serif;">:<br />
+section 1 is for commands, section 8 is fo</span><span style="font-family:mceinline;">r&nbsp;</span></span></span></span><span style="font-family:'Trebuchet MS', sans-serif;font-size:x-small;"><span style="font-family:mceinline;">commands<br />
+not commonly used by users (i.e., they are intended to administer the<br />
+system), and</span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">section<br />
+2 is for C functions and libraries. </span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;">To<br />
+read a manual page found at a particular</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">section,<br />
+you can type the section number and the page name after the man<br />
+command, like in</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"> </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">;<br />
+man 1 ls</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">lookman<br />
+</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">is<br />
+used to search manual.</span></span></span></span></p>
+<p align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">sig</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+displays the signature, i.e., the prototype for a C function<br />
+documented in section 2 of the manual.</span></span></span></span></p>
+<p align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">Flag<br />
+</span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-m</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+asks </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">ls</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+to print the name of the user who last modified a file, along with<br />
+the file name.</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">cp</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+accepts more than one  (source) file name to copy to the destination<br />
+file name. </span></span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">We<br />
+can see a dump of the bytes kept within that file using the  program<br />
+</span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">xd</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+(hexadecimal dump). This program reads a file and writes its contents<br />
+so that it is </span></span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">easy<br />
+for us to read. Option </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-b</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+asks </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">xd</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+to print the contents as a series of bytes:</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">term%<br />
+xd -b TODO</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000000<br />
+ 63 6f 70 79 20 6d 6b 64 65 70 20 66 72 6f 6d 20</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000010<br />
+ 6c 65 66 66 65 20 28 2d 72 20 66 6c 61 67 29 0a</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000020<br />
+ 0a</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000021<br />
+</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">Adding<br />
+option </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-c</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">,<br />
+the program prints the character for each byte when feasible:</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">term%<br />
+xd -b -c TODO</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000000<br />
+ 63 6f 70 79 20 6d 6b 64 65 70 20 66 72 6f 6d 20</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">0<br />
+  c  o  p  y     m  k  d  e  p     f  r  o  m   </span></span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000010<br />
+ 6c 65 66 66 65 20 28 2d 72 20 66 6c 61 67 29 0a</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">10<br />
+  l  e  f  f  e     (  -  r     f  l  a  g  ) /n</span></span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000020<br />
+ 0a</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">20<br />
+ /n</span></span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000021<br />
+</span></span></span></p>
+<p align="LEFT">&nbsp;</p>
+<p align="LEFT">The<br />
+command <span style="font-family:'Courier New', monospace;">nm</span> (name list)<br />
+displays the names of symbols (i.e., procedure names, variables) that<br />
+are contained or required by our object and executable files.</p>
+
+
+    <small class="meta">February 26, 2011 | <a href='/plan%209/2011/02/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/02/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(II)</a></h2>
+
+    <p>	&lt;!--<br />
+		@page { margin: 0.79in }<br />
+		P { margin-bottom: 0.08in }<br />
+	--&gt;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span><span style="font-size:x-small;"><span style="font-family:mceinline;">man</span><span style="font-family:'Trebuchet MS', sans-serif;">:<br />
+section 1 is for commands, section 8 is fo</span><span style="font-family:mceinline;">r&nbsp;</span></span></span></span><span style="font-family:'Trebuchet MS', sans-serif;font-size:x-small;"><span style="font-family:mceinline;">commands<br />
+not commonly used by users (i.e., they are intended to administer the<br />
+system), and</span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">section<br />
+2 is for C functions and libraries. </span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;">To<br />
+read a manual page found at a particular</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">section,<br />
+you can type the section number and the page name after the man<br />
+command, like in</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"> </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">;<br />
+man 1 ls</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">lookman<br />
+</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">is<br />
+used to search manual.</span></span></span></span></p>
+<p align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">sig</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+displays the signature, i.e., the prototype for a C function<br />
+documented in section 2 of the manual.</span></span></span></span></p>
+<p align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">Flag<br />
+</span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-m</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+asks </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">ls</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+to print the name of the user who last modified a file, along with<br />
+the file name.</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">cp</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+accepts more than one  (source) file name to copy to the destination<br />
+file name. </span></span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">We<br />
+can see a dump of the bytes kept within that file using the  program<br />
+</span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">xd</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+(hexadecimal dump). This program reads a file and writes its contents<br />
+so that it is </span></span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">easy<br />
+for us to read. Option </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-b</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+asks </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">xd</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
+to print the contents as a series of bytes:</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">term%<br />
+xd -b TODO</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000000<br />
+ 63 6f 70 79 20 6d 6b 64 65 70 20 66 72 6f 6d 20</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000010<br />
+ 6c 65 66 66 65 20 28 2d 72 20 66 6c 61 67 29 0a</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000020<br />
+ 0a</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000021<br />
+</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">Adding<br />
+option </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-c</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">,<br />
+the program prints the character for each byte when feasible:</span></span></span></span></p>
+<p lang="en-US" align="LEFT">&nbsp;</p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">term%<br />
+xd -b -c TODO</span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000000<br />
+ 63 6f 70 79 20 6d 6b 64 65 70 20 66 72 6f 6d 20</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">0<br />
+  c  o  p  y     m  k  d  e  p     f  r  o  m   </span></span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000010<br />
+ 6c 65 66 66 65 20 28 2d 72 20 66 6c 61 67 29 0a</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">10<br />
+  l  e  f  f  e     (  -  r     f  l  a  g  ) /n</span></span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000020<br />
+ 0a</span></span></span></p>
+<p align="LEFT"><span style="color:#000000;"><br />
+</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">20<br />
+ /n</span></span></span></span></p>
+<p lang="en-US" align="LEFT">
+<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000021<br />
+</span></span></span></p>
+<p align="LEFT">&nbsp;</p>
+<p align="LEFT">The<br />
+command <span style="font-family:'Courier New', monospace;">nm</span> (name list)<br />
+displays the names of symbols (i.e., procedure names, variables) that<br />
+are contained or required by our object and executable files.</p>
+
+
+    <small class="meta">February 26, 2011 | <a href='/bkup/2011/02/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520notes%2520of%2520introduction%2520to%2520os%2520abstractions%2520using%2520plan%25209%2520from%2520bell%2520labs%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/plan%209/2011/02/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%25e8%2587%25aa%25e5%258a%25a8%25e8%258e%25b7%25e5%258f%2596ip%25e5%259c%25b0%25e5%259d%2580%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Plan9自动获取IP地址</a></h2>
+
+    <p>Plan 9的Manual和Wiki上面关于网络配置的介绍，都是以server为原型，前提条件是这些server都会有固定的IP地址，集成DHCP、DNS乃至自己的子网。可我的Plan 9是在VirtualBox4.0的虚拟机上装的，Host是Fedora 14，通过家用无线路由器上网，IP地址动态获取，不可能有固定IP和固定的DNS、Gateway等等。因此<a href="http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html">http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html</a>和<a href="http://plan9.escet.urjc.es/magic/man2html/8/ipconfig">http://plan9.escet.urjc.es/magic/man2html/8/ipconfig</a>的方法根本无效。</p>
+<p>VirtualBox4.0安装Plan9时，由于没有选择正确的网卡，Plan9使用了默认的Am79C970A网卡，而Plan 9自身并没有该网卡的驱动。要使用plan9自带的网卡驱动而无须自己编译内核的方法就是在plan9.ini中更改默认网卡的类型，可以参考&nbsp;<a href="http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini">http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini</a>。plan9.ini存储在9fat中，默认不挂载到fossil，因此需要在Rio的窗口中输入命令&ldquo;<span style="font-family:mceinline;">9fat:</span>&rdquo;挂载9fat，然后<span style="font-family:mceinline;">cd /n/9fat/</span>，编辑plan9.ini，加入一行&ldquo;<span style="font-family:mceinline;">ether0=type=igbe</span>&rdquo;。同时VirtualBox的网卡也要选择NAT --&gt; Intel Pro1000系列。重启Plan9之后，可以通过ip/ipconfig检查网卡是否能正常工作&mdash;&mdash;如果不报错，证明网卡正常。</p>
+<p>网卡正常工作后，我曾经尝试使用下列命令配置网络，DHCP可以正常工作，但DNS一直无法解析域名：</p>
+<p>
+<pre>ip/ipconfig -D -d ether /net/ether0</pre>
+<p>&nbsp;</p>
+<p>尝试更改/lib/ndb/local多次，仍然无效。无奈之下打开<span style="font-family:mceinline;">/rc/bin/termrc</span>，发现其中依然有了网络配置的内容，只是默认被注释掉了，去掉if以及ip/ipconfig两行前面的#后，重启Plan 9，网络竟然正常了！</p>
+<p>
+<pre># start IP on the LAN, if not already configured.  diskless terminals
+# are already configured by now.  It's commented out to avoid a long timeout
+# on startup waiting for DHCP.
+#
+# If your site provides DHCP service,
+#
+#if(! test -e /net/ipifc/0/ctl)
+#	ip/ipconfig
+#
+# Otherwise, see /cfg/$sysname/termrc (/cfg/example/termrc is an example).
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>另外，9vx本身没有虚拟网卡，因此在/net下没有ether0的选项；但是9vx默认是通过宿主机的网卡来上网的，因此一般情况下9vx的网络无须特殊配置（/rc/bin/termrc中也有对vx32的相应处理）。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">February 24, 2011 | <a href='/plan%209/2011/02/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%25e8%2587%25aa%25e5%258a%25a8%25e8%258e%25b7%25e5%258f%2596ip%25e5%259c%25b0%25e5%259d%2580%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/02/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%25e8%2587%25aa%25e5%258a%25a8%25e8%258e%25b7%25e5%258f%2596ip%25e5%259c%25b0%25e5%259d%2580%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Plan9自动获取IP地址</a></h2>
+
+    <p>Plan 9的Manual和Wiki上面关于网络配置的介绍，都是以server为原型，前提条件是这些server都会有固定的IP地址，集成DHCP、DNS乃至自己的子网。可我的Plan 9是在VirtualBox4.0的虚拟机上装的，Host是Fedora 14，通过家用无线路由器上网，IP地址动态获取，不可能有固定IP和固定的DNS、Gateway等等。因此<a href="http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html">http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html</a>和<a href="http://plan9.escet.urjc.es/magic/man2html/8/ipconfig">http://plan9.escet.urjc.es/magic/man2html/8/ipconfig</a>的方法根本无效。</p>
+<p>VirtualBox4.0安装Plan9时，由于没有选择正确的网卡，Plan9使用了默认的Am79C970A网卡，而Plan 9自身并没有该网卡的驱动。要使用plan9自带的网卡驱动而无须自己编译内核的方法就是在plan9.ini中更改默认网卡的类型，可以参考&nbsp;<a href="http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini">http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini</a>。plan9.ini存储在9fat中，默认不挂载到fossil，因此需要在Rio的窗口中输入命令&ldquo;<span style="font-family:mceinline;">9fat:</span>&rdquo;挂载9fat，然后<span style="font-family:mceinline;">cd /n/9fat/</span>，编辑plan9.ini，加入一行&ldquo;<span style="font-family:mceinline;">ether0=type=igbe</span>&rdquo;。同时VirtualBox的网卡也要选择NAT --&gt; Intel Pro1000系列。重启Plan9之后，可以通过ip/ipconfig检查网卡是否能正常工作&mdash;&mdash;如果不报错，证明网卡正常。</p>
+<p>网卡正常工作后，我曾经尝试使用下列命令配置网络，DHCP可以正常工作，但DNS一直无法解析域名：</p>
+<p>
+<pre>ip/ipconfig -D -d ether /net/ether0</pre>
+<p>&nbsp;</p>
+<p>尝试更改/lib/ndb/local多次，仍然无效。无奈之下打开<span style="font-family:mceinline;">/rc/bin/termrc</span>，发现其中依然有了网络配置的内容，只是默认被注释掉了，去掉if以及ip/ipconfig两行前面的#后，重启Plan 9，网络竟然正常了！</p>
+<p>
+<pre># start IP on the LAN, if not already configured.  diskless terminals
+# are already configured by now.  It's commented out to avoid a long timeout
+# on startup waiting for DHCP.
+#
+# If your site provides DHCP service,
+#
+#if(! test -e /net/ipifc/0/ctl)
+#	ip/ipconfig
+#
+# Otherwise, see /cfg/$sysname/termrc (/cfg/example/termrc is an example).
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>另外，9vx本身没有虚拟网卡，因此在/net下没有ether0的选项；但是9vx默认是通过宿主机的网卡来上网的，因此一般情况下9vx的网络无须特殊配置（/rc/bin/termrc中也有对vx32的相应处理）。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">February 24, 2011 | <a href='/bkup/2011/02/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan9%25e8%2587%25aa%25e5%258a%25a8%25e8%258e%25b7%25e5%258f%2596ip%25e5%259c%25b0%25e5%259d%2580%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/02/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan%25209%25e5%25ae%2589%25e8%25a3%2585go%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Plan 9安装Go</a></h2>
+
+    <p>I、安装python和mercurial(hg)</p>
+<p>首先是在term中输入9fs sources, 然后cd到/n/sources/contrib下，参照Plan 9的<a href="http://plan9.bell-labs.com/wiki/plan9/contrib_index/index.html">contrib index</a>，找到"From fgb's contrib"的python用户名。</p>
+<p><pre>% 9fs sources
+% /n/sources/contrib/fgb/root/rc/bin/contrib/install fgb/contrib
+% contrib/install -f bichued/python
+% contrib/install -f bichued/hg</pre></p>
+<p>或者将/n/sources/extra/python.iso.bz2拷到自己的目录下，然后</p>
+<p>
+<pre>% bunzip2 python.iso.bz2
+% 9660srv -f python.iso
+% 9fs 9660
+% cd /n/9660
+% cat README</pre></p>
+<p>
+然后参照README中的说明来安装python。需要注意的是在执行setup脚本之前，应该9fs kfs，否则会出错。</p>
+<p>&nbsp;</p>
+<p>II、安装Go<br />
+参考<a href="http://golang.org/doc/install.html">http://golang.org/doc/install.html</a></p>
+<p>
+<pre>% hg clone -r release https://go.googlecode.com/hg/ go</pre></p>
+<p>奇怪的是装完mercurial，执行上面的命令之后，总是会报如下的错误：</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/02/0_1298343128g5li.gif" alt="plan9 hg error" width="708" height="441" /></p>
+<p>后来在contrib index中找到了contrib/ericvh目录下的go-plan9，尝试用dircp拷到自己目录下，总是会报各种各样的问题。几次失败之后，决定用tar cvf $home/go.tar /n/sources/contrib/ericvh/go-plan9试试。</p>
+<p>&nbsp;</p>
+<p><strong><em>2011-02-25更新：</em></strong></p>
+<p>在VirtualBox的Plan 9虚拟机中按照contrib/install来安装Python, Mercurial和执行hg clone go时并未出现任何错误。看来9vx和Plan9比起来还是很不稳定的。可惜的是Go默认的编译脚本是bash写的，而Plan 9只支持rc，看来只能等将来有时间再研究如何把bash的脚本改成rc了。</p>
+
+
+    <small class="meta">February 21, 2011 | <a href='/bkup/2011/02/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan%25209%25e5%25ae%2589%25e8%25a3%2585go%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/go/plan%209/2011/02/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan%25209%25e5%25ae%2589%25e8%25a3%2585go%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Plan 9安装Go</a></h2>
+
+    <p>I、安装python和mercurial(hg)</p>
+<p>首先是在term中输入9fs sources, 然后cd到/n/sources/contrib下，参照Plan 9的<a href="http://plan9.bell-labs.com/wiki/plan9/contrib_index/index.html">contrib index</a>，找到"From fgb's contrib"的python用户名。</p>
+<p><pre>% 9fs sources
+% /n/sources/contrib/fgb/root/rc/bin/contrib/install fgb/contrib
+% contrib/install -f bichued/python
+% contrib/install -f bichued/hg</pre></p>
+<p>或者将/n/sources/extra/python.iso.bz2拷到自己的目录下，然后</p>
+<p>
+<pre>% bunzip2 python.iso.bz2
+% 9660srv -f python.iso
+% 9fs 9660
+% cd /n/9660
+% cat README</pre></p>
+<p>
+然后参照README中的说明来安装python。需要注意的是在执行setup脚本之前，应该9fs kfs，否则会出错。</p>
+<p>&nbsp;</p>
+<p>II、安装Go<br />
+参考<a href="http://golang.org/doc/install.html">http://golang.org/doc/install.html</a></p>
+<p>
+<pre>% hg clone -r release https://go.googlecode.com/hg/ go</pre></p>
+<p>奇怪的是装完mercurial，执行上面的命令之后，总是会报如下的错误：</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/02/0_1298343128g5li.gif" alt="plan9 hg error" width="708" height="441" /></p>
+<p>后来在contrib index中找到了contrib/ericvh目录下的go-plan9，尝试用dircp拷到自己目录下，总是会报各种各样的问题。几次失败之后，决定用tar cvf $home/go.tar /n/sources/contrib/ericvh/go-plan9试试。</p>
+<p>&nbsp;</p>
+<p><strong><em>2011-02-25更新：</em></strong></p>
+<p>在VirtualBox的Plan 9虚拟机中按照contrib/install来安装Python, Mercurial和执行hg clone go时并未出现任何错误。看来9vx和Plan9比起来还是很不稳定的。可惜的是Go默认的编译脚本是bash写的，而Plan 9只支持rc，看来只能等将来有时间再研究如何把bash的脚本改成rc了。</p>
+
+
+    <small class="meta">February 21, 2011 | <a href='/go/plan%209/2011/02/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520plan%25209%25e5%25ae%2589%25e8%25a3%2585go%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page15' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page13' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

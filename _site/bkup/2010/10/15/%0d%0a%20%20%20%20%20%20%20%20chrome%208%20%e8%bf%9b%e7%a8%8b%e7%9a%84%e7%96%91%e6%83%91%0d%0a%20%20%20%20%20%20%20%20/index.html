@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Chrome 8 进程的疑惑 </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>Chrome 8 进程的疑惑</h1>
+    <p>最近一直习惯用Chrome打开多个网页，时间一长，就发现硬盘一直在高速旋转。一开始以为是公司的监控软件的原因，就忍了。知道今天早上，电脑持续很长时间的没反应之后，弹出对话框说某个plug-in一直在运行&hellip;&hellip;当时只有Chrome浏览器在工作，这个plugin只可能是Chrome的&hellip;&hellip; 关掉chrome后，硬盘还是高速旋转，打开任务管理器，发现还是有很多chrome进程在运行，很明显这些是跑飞了的chrome进程了。</p>
+<p>&nbsp;</p>
+<p>杀死所有chrome残留进程之后，我重新打开chrome浏览器，打开几个tab，对比Windows任务管理器、chrome任务管理器，发现了一些有趣的现象：</p>
+<p>&nbsp;</p>
+<p style="text-align:center;"><img src="http://bonny95.files.wordpress.com/2010/10/0_128711145593hi.gif" alt="" /></p>
+<p style="text-align:center;">Chrome运行时截图</p>
+<p>&nbsp;</p>
+<p style="text-align:center;"><img src="http://bonny95.files.wordpress.com/2010/10/0_1287111468b1zv.gif" alt="" /></p>
+<p style="text-align:center;">Windows任务管理器中的Chrome进程</p>
+<p>&nbsp;</p>
+<p style="text-align:center;"><img src="http://bonny95.files.wordpress.com/2010/10/0_1287111476mcts.gif" alt="" /></p>
+<p style="text-align:center;">Chrome任务管理器中的Chrome进程</p>
+<p style="text-align:left;">&nbsp;</p>
+<p style="text-align:left;">可以看出：</p>
+<ol>
+<li>Chrome任务管理器中所耗内存的数值比Windows任务管理器中显示的要小很多；</li>
+<li>实际打开了8个Tab，在Chrome任务管理器中却有12个；</li>
+<li>Chrome任务管理器显示有17个Chrome进程，而Windows任务管理器却显示有18个Chrome进程。</li>
+</ol>
+<p>等将来有时间时，好好研究一下这些问题。</p>
+<p>-----------------------------------------------------------------------------------------------------------</p>
+<p>Update: 2010-100-26</p>
+<p>&nbsp;</p>
+<p>Chrome 8 dev升级到8.0.552.11已经有一段时间了，虽说该升级版本已经修复了一些Chrome进程僵死的bug,但运行时间一长，该问题还是会出现的。</p>
+<p>&nbsp;</p>
+
+</div>
+
+<small class="meta">Posted October 15, 2010</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - 在/etc/hosts中定义Linux的hostname </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>在/etc/hosts中定义Linux的hostname</h1>
+    <p>今天碰到这样一个问题：一个程序在刚刚装好的Linux server上获取IP地址时永远都是0x7f000001。一开始没有注意，后来仔细一想，0x7f000001不正好就是127.0.0.1嘛！有同事查了一下/etc/hosts，发现在该文件中有这样一行：</p>
+<p>
+<pre>127.0.0.1     mylinuxsvr localhost.localhost.localdomain localhost
+</pre>
+<p>&nbsp;</p>
+<p>其中，mylinuxsvr是这个server的名字。难怪每次都只能获取到127.0.0.1呢。当然了，这台server的IP地址其实是配好了的，只是不知为什么，有一个不同server间通信的程序非要通过/etc/hosts来获取IP地址&hellip;&hellip;</p>
+<p>&nbsp;</p>
+<p>找了一些Linux server网络配置的文章，记录于此：</p>
+<ol>
+<li><a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a></li>
+<li><a href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Virtualization_for_Servers/2.2/html/Administration_Guide/Administration_Guide-Create_Objects-Add_Server.html">Adding Red Hat Enterprise Linux Hosts</a></li>
+</ol>
+<p>下文摘自<a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a>。</p>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1><span id="Configuring_Your_.2Fetc.2Fhosts_File" class="mw-headline">Configuring Your /etc/hosts File</span></h1>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0 goog_qs-tidbit-hilite">The /etc/hosts file is just a list of IP addresses and their corresponding server names.</span>&nbsp;Your server will typically check this file before referencing DNS. If the name is found with a corresponding IP address then DNS won't be queried at all. Unfortunately, if the IP address for that host changes, you also have to also update the file. This may not be much of a concern for a single server, but can become laborious if it has to be done companywide. For ease of management, it is often easiest to limit entries in this file to just the loopback interface and also the server's own hostname, and use a centralized DNS server to handle most of the rest. Sometimes you might not be the one managing the DNS server, and in such cases it may be easier to add a quick /etc/hosts file entry till the centralized change can be made.</p>
+<pre>192.168.1.101  smallfry
+
+</pre>
+<p>In the example above server smallfry has an IP address of 192.168.1.101. You can access 192.168.1.101 using the ping, telnet or any other network aware program by referring to it as smallfry. Here is an example using the ping command to see whether smallfry is alive and well on the network:</p>
+<pre>[root@bigboy tmp]# ping smallfry
+PING zero (192.168.1.101) 56(84) bytes of data.
+64 bytes from smallfry (192.168.1.101): icmp_seq=0 ttl=64 time=0.197 ms
+64 bytes from smallfry (192.168.1.101): icmp_seq=1 ttl=64 time=0.047 ms
+
+
+--- smallfry ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 2017ms
+rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
+[root@bigboy tmp]#
+
+</pre>
+<p>You can also add aliases to the end of the line which enable you to refer to the server using other names. Here we have set it up so that smallfry can also be accessed using the names&nbsp;<code>tiny</code>&nbsp;and&nbsp;<code>littleguy</code>.</p>
+<pre>192.168.1.101  smallfry  tiny  littleguy
+
+</pre>
+<p>You should never have an IP address more than once in this file because Linux will use only the values in the first entry it finds.</p>
+<pre>192.168.1.101  smallfry    # (Wrong)
+192.168.1.101  tiny        # (Wrong)
+192.168.1.101  littleguy   # (Wrong)
+</pre>
+<p>&nbsp;</p>
+<h2><span id="The_loopback_Interface.27s_localhost_Entry" class="mw-headline">The loopback Interface's localhost Entry</span></h2>
+<p>Usually the first entry in /etc/hosts defines the IP address of the server's virtual loopback interface. This is usually mapped to the name localhost.localdomain (the universal name used when a server refers to itself) and localhost (the shortened alias name). By default, Fedora inserts the hostname of the server between the 127.0.0.1 and the localhost entries like this:</p>
+<pre>127.0.0.1     bigboy    localhost.localdomain    localhost
+
+</pre>
+<p>When the server is connected to the Internet this first entry after the 127.0.0.1 needs to be the fully qualified domain name (FQDN) of the server. For example,&nbsp;<code>bigboy.mysite.com</code>, like this:</p>
+<pre>127.0.0.1     bigboy.my-site.com    localhost.localdomain    localhost
+
+</pre>
+<p>Some programs such as Sendmail are very sensitive to this and if they detect what they feel is an incorrect FQDN they will default to using the name localhost.localdomain when communicating with another server on the network. This can cause confusion, as the other server also feels it is localhost.localdomain.</p>
+<p>Note:&nbsp;You must always have a localhost and localhost.localdomain entry mapping to 127.0.0.1 for Linux to work properly and securely.</p>
+<p>&nbsp;</p>
+
+</div>
+
+<small class="meta">Posted March 10, 2011</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

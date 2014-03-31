@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/perl/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">用PERL处理二进制标量</a></h2>
+
+    <p>&nbsp;PERL Handling Binary Scalar</p>
+<div>
+<div><span></p>
+<div></div>
+<div><strong>1</strong>&nbsp;<strong>[Question]:</strong></div>
+<div></div>
+<div><span><br />
+</span>
+<p>I adopt select()...sysread()...syswrite() mechanism to handle socket messages, where messages are sysread() into $buffer (binary) before they are syswritten.</p>
+<p>Now I want to change two bytes of the message, which denote the length of the whole message. At first, I use following code:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $declen</span><span class="pun">=</span><span class="pln">hex</span><span class="pun">(</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$declen </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$declen</span><span class="pun">);</span> <span class="com"># change the length</span><br /></code></pre>
+<p>However, it doesn't work in this way. If the final value of $declen is 85, then the modified $buffer will be "0x35 0x35 0x00 0x02...". I insert digital number to $buffer but finally got ASCII!</p>
+<p>I also tried this way:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes,binary</span><span class="pln"><br />$msglen </span><span class="pun">+=</span> <span class="lit">0b11</span><span class="pun">;</span> <span class="com"># Or $msglen += 3;</span><br /><span class="kwd">my</span><span class="pln"> $msgbody</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the rest part of message, binary</span><span class="pln"><br />$buffer</span><span class="pun">=</span><span class="pln">join</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> $msglen</span><span class="pun">,</span><span class="pln"> $msgbody</span><span class="pun">);</span><br /></code></pre>
+<p>Sadly, this method also failed. The result is such as"0x33 0x 0x00 0x02..." I just wonder why two binary scalar can't be joined into a binary scalar?</p>
+<p>Can you help me? Thank you!</p>
+<p><span><strong>[Answer 1]:</strong></span>&nbsp;</p>
+<p>&nbsp;</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $number </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$number </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><br /><span class="kwd">my</span><span class="pln"> $number_bin </span><span class="pun">=</span><span class="pln"> pack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$number</span><span class="pun">);</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$number_bin</span><span class="pun">);</span> <span class="com"># change the length</span></code></pre>
+<p>&nbsp;</p>
+</div>
+<p></span></div>
+<p><span><strong>[Answer 2]:</strong></span></p>
+<div>用vec。&nbsp;</p>
+<p>比如：&nbsp;
+<dl class="code">
+<dt><strong>Perl code</strong></dt>
+<dd>
+<pre><div><span>my</span> <span>$buffer</span> <span>=</span> <span><strong>"</strong></span><span><strong>/x00/x01</strong></span><span><strong>"</strong></span><span>;
+</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;
+</span><span>vec</span><span>(</span><span>$buffer</span><span>,</span> <span>0</span><span>,</span> <span>16</span><span>) </span><span>+=</span> <span>3</span><span>;
+</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;</span></div></pre>
+</dd>
+</dl>
+</div>
+<p></p>
+<div><strong>2&nbsp;</strong><strong>[Question]:</strong></div>
+<div><span><br />
+</span>
+<p>I am writing a Perl program that sends and receives messages from two sockets and acta as a switch. I have to modify the received messages received from one socket, prepend 3 bytes to the data, and finally send the modified messages to another socket. I adopt select()...sysread()...syswrite() mechanism to poll for messages between sockets. The received messages are stored in $buffer during modification.</p>
+<p>Now I can use following way to get the received messages:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $hexmsg </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"H*"</span><span class="pun">,</span><span class="pln"> $buffer</span><span class="pun">);</span><br /><span class="kwd">my</span><span class="pln"> @msg </span><span class="pun">=</span> <span class="pun">(</span><span class="pln"> $hexmsg </span><span class="pun">=~</span><span class="pln"> m</span><span class="pun">/.</span><span class="pln">.</span><span class="str">/g );<br /></span></code></pre>
+<p>then I can insert 3 bytes to @msg. However, I don't know how to pack the message in @msg into a scalar(such as $buffer) and send it to another socket by syswrite(). Can anybody help me? Thank you in advance!</p>
+<p>BTW, are messages in $buffer binary?</p>
+<p><span><strong>[Answer]:</strong></span></p>
+<p>&nbsp;</p>
+<p>Yes, messages in $buffer are binary (if I'm guessing what you mean by that correctly). If your only reason for unpacking it into @msg is to insert the bytes, don't. Use&nbsp;<a rel="nofollow" href="http://perldoc.perl.org/functions/substr.html">substr</a>&nbsp;instead, and just write out the changed $buffer. For instance:</p>
+<pre class="prettyprint"><code><span class="pln">substr</span><span class="pun">(</span><span class="pln"> $buffer</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="str">"/x01/x02/x03"</span> <span class="pun">);</span> <span class="com"># insert 3 bytes at beginning.</span><br /></code></pre>
+<p>If you are doing other things with @msg, you could continue to use that as well as doing the substr insert before writing it out, or you could use substr or pack or split or vec or a regex to parse out the pieces you need. You'd need to describe what you are doing to get more specific help.</p>
+<p>&nbsp;</p>
+</div>
+</div>
+
+
+    <small class="meta">March 12, 2009 | <a href='/perl/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">用PERL处理二进制标量</a></h2>
+
+    <p>&nbsp;PERL Handling Binary Scalar</p>
+<div>
+<div><span></p>
+<div></div>
+<div><strong>1</strong>&nbsp;<strong>[Question]:</strong></div>
+<div></div>
+<div><span><br />
+</span>
+<p>I adopt select()...sysread()...syswrite() mechanism to handle socket messages, where messages are sysread() into $buffer (binary) before they are syswritten.</p>
+<p>Now I want to change two bytes of the message, which denote the length of the whole message. At first, I use following code:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $declen</span><span class="pun">=</span><span class="pln">hex</span><span class="pun">(</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$declen </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$declen</span><span class="pun">);</span> <span class="com"># change the length</span><br /></code></pre>
+<p>However, it doesn't work in this way. If the final value of $declen is 85, then the modified $buffer will be "0x35 0x35 0x00 0x02...". I insert digital number to $buffer but finally got ASCII!</p>
+<p>I also tried this way:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes,binary</span><span class="pln"><br />$msglen </span><span class="pun">+=</span> <span class="lit">0b11</span><span class="pun">;</span> <span class="com"># Or $msglen += 3;</span><br /><span class="kwd">my</span><span class="pln"> $msgbody</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the rest part of message, binary</span><span class="pln"><br />$buffer</span><span class="pun">=</span><span class="pln">join</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> $msglen</span><span class="pun">,</span><span class="pln"> $msgbody</span><span class="pun">);</span><br /></code></pre>
+<p>Sadly, this method also failed. The result is such as"0x33 0x 0x00 0x02..." I just wonder why two binary scalar can't be joined into a binary scalar?</p>
+<p>Can you help me? Thank you!</p>
+<p><span><strong>[Answer 1]:</strong></span>&nbsp;</p>
+<p>&nbsp;</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $number </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$number </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><br /><span class="kwd">my</span><span class="pln"> $number_bin </span><span class="pun">=</span><span class="pln"> pack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$number</span><span class="pun">);</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$number_bin</span><span class="pun">);</span> <span class="com"># change the length</span></code></pre>
+<p>&nbsp;</p>
+</div>
+<p></span></div>
+<p><span><strong>[Answer 2]:</strong></span></p>
+<div>用vec。&nbsp;</p>
+<p>比如：&nbsp;
+<dl class="code">
+<dt><strong>Perl code</strong></dt>
+<dd>
+<pre><div><span>my</span> <span>$buffer</span> <span>=</span> <span><strong>"</strong></span><span><strong>/x00/x01</strong></span><span><strong>"</strong></span><span>;
+</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;
+</span><span>vec</span><span>(</span><span>$buffer</span><span>,</span> <span>0</span><span>,</span> <span>16</span><span>) </span><span>+=</span> <span>3</span><span>;
+</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;</span></div></pre>
+</dd>
+</dl>
+</div>
+<p></p>
+<div><strong>2&nbsp;</strong><strong>[Question]:</strong></div>
+<div><span><br />
+</span>
+<p>I am writing a Perl program that sends and receives messages from two sockets and acta as a switch. I have to modify the received messages received from one socket, prepend 3 bytes to the data, and finally send the modified messages to another socket. I adopt select()...sysread()...syswrite() mechanism to poll for messages between sockets. The received messages are stored in $buffer during modification.</p>
+<p>Now I can use following way to get the received messages:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $hexmsg </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"H*"</span><span class="pun">,</span><span class="pln"> $buffer</span><span class="pun">);</span><br /><span class="kwd">my</span><span class="pln"> @msg </span><span class="pun">=</span> <span class="pun">(</span><span class="pln"> $hexmsg </span><span class="pun">=~</span><span class="pln"> m</span><span class="pun">/.</span><span class="pln">.</span><span class="str">/g );<br /></span></code></pre>
+<p>then I can insert 3 bytes to @msg. However, I don't know how to pack the message in @msg into a scalar(such as $buffer) and send it to another socket by syswrite(). Can anybody help me? Thank you in advance!</p>
+<p>BTW, are messages in $buffer binary?</p>
+<p><span><strong>[Answer]:</strong></span></p>
+<p>&nbsp;</p>
+<p>Yes, messages in $buffer are binary (if I'm guessing what you mean by that correctly). If your only reason for unpacking it into @msg is to insert the bytes, don't. Use&nbsp;<a rel="nofollow" href="http://perldoc.perl.org/functions/substr.html">substr</a>&nbsp;instead, and just write out the changed $buffer. For instance:</p>
+<pre class="prettyprint"><code><span class="pln">substr</span><span class="pun">(</span><span class="pln"> $buffer</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="str">"/x01/x02/x03"</span> <span class="pun">);</span> <span class="com"># insert 3 bytes at beginning.</span><br /></code></pre>
+<p>If you are doing other things with @msg, you could continue to use that as well as doing the substr insert before writing it out, or you could use substr or pack or split or vec or a regex to parse out the pieces you need. You'd need to describe what you are doing to get more specific help.</p>
+<p>&nbsp;</p>
+</div>
+</div>
+
+
+    <small class="meta">March 12, 2009 | <a href='/bkup/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/perl/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2595%25b0%25e5%2580%25bc%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Perl数值转换</a></h2>
+
+    </p>
+<p>As always with Perl there is more than one way to do it. Below are a few examples of approaches to making common conversions between number representations. This is intended to be representational rather than exhaustive.</p>
+<p>Some of the examples below use the Bit::Vector module from CPAN. The reason you might choose Bit::Vector over the perl built in functions is that it works with numbers of ANY size, that it is optimized for speed on some operations, and for at least some programmers the notation might be familiar.</p>
+<dl>
+<dt><a name="How-do-I-convert-hexadecimal-into-decimal">How do I convert hexadecimal into decimal</a></dt>
+<dd>
+<p>Using perl's built in conversion of 0x notation:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = 0xDEADBEEF;
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using the hex function:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = hex("DEADBEEF");
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using pack:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = unpack("N", pack("H8", substr("0" x 8 . "DEADBEEF", -8)));
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using the CPAN module Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Hex(32, "DEADBEEF");
+    $dec = $vec-&gt;to_Dec();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-decimal-to-hexadecimal">How do I convert from decimal to hexadecimal</a></dt>
+<dd>
+<p>Using sprint:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $hex = sprintf("%X", 3735928559);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using unpack</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $hex = unpack("H*", pack("N", 3735928559));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(32, -559038737);
+    $hex = $vec-&gt;to_Hex();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>And Bit::Vector supports odd bit counts:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(33, 3735928559);
+    $vec-&gt;Resize(32); # suppress leading 0 if unwanted
+    $hex = $vec-&gt;to_Hex();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-octal-to-decimal">How do I convert from octal to decimal</a></dt>
+<dd>
+<p>Using Perl's built in conversion of numbers with leading zeros:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = 033653337357; # note the leading 0!
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using the oct function:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = oct("33653337357");
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new(32);
+    $vec-&gt;Chunk_List_Store(3, split(//, reverse "33653337357"));
+    $dec = $vec-&gt;to_Dec();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-decimal-to-octal">How do I convert from decimal to octal</a></dt>
+<dd>
+<p>Using sprintf:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $oct = sprintf("%o", 3735928559);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(32, -559038737);
+    $oct = reverse join('', $vec-&gt;Chunk_List_Read(3));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-binary-to-decimal">How do I convert from binary to decimal</a></dt>
+<dd>
+<p>Perl 5.6 lets you write binary numbers directly with the 0b notation:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>	$number = 0b10110110;  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using pack and ord</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $decimal = ord(pack('B8', '10110110'));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using pack and unpack for larger strings</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = unpack("N", pack("B32",
+	substr("0" x 32 . "11110101011011011111011101111", -32)));
+    $dec = sprintf("%d", $int);
+
+    # substr() is used to left pad a 32 character string with zeros.  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $vec = Bit::Vector-&gt;new_Bin(32, "11011110101011011011111011101111");
+    $dec = $vec-&gt;to_Dec();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-decimal-to-binary">How do I convert from decimal to binary</a></dt>
+<dd>
+<p>Using unpack;</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $bin = unpack("B*", pack("N", 3735928559));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(32, -559038737);
+    $bin = $vec-&gt;to_Bin();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>The remaining transformations (e.g. hex -&gt; oct, bin -&gt; hex, etc.) are left as an exercise to the inclined reader.</p>
+</dd>
+</dl>
+
+
+    <small class="meta">March 05, 2009 | <a href='/perl/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2595%25b0%25e5%2580%25bc%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2595%25b0%25e5%2580%25bc%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Perl数值转换</a></h2>
+
+    </p>
+<p>As always with Perl there is more than one way to do it. Below are a few examples of approaches to making common conversions between number representations. This is intended to be representational rather than exhaustive.</p>
+<p>Some of the examples below use the Bit::Vector module from CPAN. The reason you might choose Bit::Vector over the perl built in functions is that it works with numbers of ANY size, that it is optimized for speed on some operations, and for at least some programmers the notation might be familiar.</p>
+<dl>
+<dt><a name="How-do-I-convert-hexadecimal-into-decimal">How do I convert hexadecimal into decimal</a></dt>
+<dd>
+<p>Using perl's built in conversion of 0x notation:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = 0xDEADBEEF;
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using the hex function:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = hex("DEADBEEF");
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using pack:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = unpack("N", pack("H8", substr("0" x 8 . "DEADBEEF", -8)));
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using the CPAN module Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Hex(32, "DEADBEEF");
+    $dec = $vec-&gt;to_Dec();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-decimal-to-hexadecimal">How do I convert from decimal to hexadecimal</a></dt>
+<dd>
+<p>Using sprint:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $hex = sprintf("%X", 3735928559);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using unpack</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $hex = unpack("H*", pack("N", 3735928559));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(32, -559038737);
+    $hex = $vec-&gt;to_Hex();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>And Bit::Vector supports odd bit counts:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(33, 3735928559);
+    $vec-&gt;Resize(32); # suppress leading 0 if unwanted
+    $hex = $vec-&gt;to_Hex();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-octal-to-decimal">How do I convert from octal to decimal</a></dt>
+<dd>
+<p>Using Perl's built in conversion of numbers with leading zeros:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = 033653337357; # note the leading 0!
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using the oct function:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = oct("33653337357");
+    $dec = sprintf("%d", $int);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new(32);
+    $vec-&gt;Chunk_List_Store(3, split(//, reverse "33653337357"));
+    $dec = $vec-&gt;to_Dec();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-decimal-to-octal">How do I convert from decimal to octal</a></dt>
+<dd>
+<p>Using sprintf:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $oct = sprintf("%o", 3735928559);  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(32, -559038737);
+    $oct = reverse join('', $vec-&gt;Chunk_List_Read(3));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-binary-to-decimal">How do I convert from binary to decimal</a></dt>
+<dd>
+<p>Perl 5.6 lets you write binary numbers directly with the 0b notation:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>	$number = 0b10110110;  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using pack and ord</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $decimal = ord(pack('B8', '10110110'));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using pack and unpack for larger strings</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $int = unpack("N", pack("B32",
+	substr("0" x 32 . "11110101011011011111011101111", -32)));
+    $dec = sprintf("%d", $int);
+
+    # substr() is used to left pad a 32 character string with zeros.  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $vec = Bit::Vector-&gt;new_Bin(32, "11011110101011011011111011101111");
+    $dec = $vec-&gt;to_Dec();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</dd>
+<dt><a name="How-do-I-convert-from-decimal-to-binary">How do I convert from decimal to binary</a></dt>
+<dd>
+<p>Using unpack;</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    $bin = unpack("B*", pack("N", 3735928559));  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Using Bit::Vector:</p>
+<p>&nbsp;</p>
+<table border="0" cellspacing="0" cellpadding="1" width="100%" bgcolor="#000000">
+<tbody>
+<tr>
+<td align="middle">
+<table border="0" cellspacing="0" cellpadding="4" width="100%" bgcolor="#e8e8e8">
+<tbody>
+<tr>
+<td>
+<pre>    use Bit::Vector;
+    $vec = Bit::Vector-&gt;new_Dec(32, -559038737);
+    $bin = $vec-&gt;to_Bin();  </pre>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>The remaining transformations (e.g. hex -&gt; oct, bin -&gt; hex, etc.) are left as an exercise to the inclined reader.</p>
+</dd>
+</dl>
+
+
+    <small class="meta">March 05, 2009 | <a href='/bkup/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2595%25b0%25e5%2580%25bc%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2589%2593%25e5%258d%25b0%25e6%2594%25b6%25e5%2588%25b0%25e7%259a%2584socket%25e6%25b6%2588%25e6%2581%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">PERL打印收到的Socket消息</a></h2>
+
+    <p>&nbsp;</p>
+<div>
+<h1>PERL打印收到的Socket消息</h1>
+<div>利用Perl的Select(),sysread()和syswrite()收到的消息将以二进制的形式存储到$buffer中，因此如果直接打印$buffer的内容将得到乱码。要将二进制内容转换为十六进制数串，则必须使用unpack()函数，即：</div>
+<div>my $hexstr=unpack("H*",$buffer);</div>
+<div>而此时如果打印$hexstr将得到一系列的十六进制数串（数串的长度是接收到的字节数的两倍），仍然难以阅读。因此，有必要将十六进制数串每两个数字进行拆分并加前缀&ldquo;0x&rdquo;以便阅读。此时需要借助正则表达式进行模式匹配，方法为:</div>
+<div>my @msg=($hexstr =~ m/../g);</div>
+<div>其中.用以匹配一个字符。</div>
+<div></div>
+<div>示例代码如下：</div>
+<div>
+<pre>##################################################################
+#               DumpMsg
+#
+# Dump received message in hex mode.
+#
+# Format: DumpMsg($type, $msglen, $msg);
+#
+# input:        $type= 'MSC' | 'BSC'
+#               $msglen= msg length
+#               $msg= received msg
+#
+# output:       Print received msg to stderr and log in hex type
+##################################################################
+sub DumpMsg {
+    my $type=$_[0];
+    my $msglen=$_[1];
+    CoolMisc::coolprint("Received message from $type: $msglen bytes/n" );
+    LogPrint("Received message from $type: $msglen bytes/n");
+    # change the received message from bin to hex string.
+    # my @msg=split(/../,unpack("H*", $_[2]),$msglen);
+    my $tmp = unpack("H*", $_[2]);
+    my @msg = ( $tmp =~ m/../g );
+    # print the message to stdout and log file.
+    for(my $i=0;$i&lt;$msglen;$i++) {
+        print "0x$msg[$i] ";
+        syswrite($ROUTELOG,"0x$msg[$i] ");
+        if ($i%8 ==7) {
+            print "/n";
+            syswrite($ROUTELOG,"/n");
+        }
+    }
+    print "/n";
+    syswrite($ROUTELOG,"/n");
+}
+</pre>
+<p>&nbsp;</p></div>
+<div></div>
+<div></div>
+<div>参考文献：</div>
+<div>1. Perl Doc-Data::Numbers&nbsp;<a href="http://perl.active-venture.com/pod/perlfaq4-datanumber.html">http://perl.active-venture.com/pod/perlfaq4-datanumber.html</a></div>
+<div>2. Perl函数pack/unpack:<a href="http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html">http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html</a>&nbsp;</div>
+<div>3.&nbsp;<span><strong><a href="http://stackoverflow.com/questions/372370/how-can-i-split-a-string-into-chunks-of-two-characters-each-in-perl">How can I split a string into chunks of two characters each in Perl?</a></strong></span></div>
+<div><strong><br /></strong></div>
+</div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 05, 2009 | <a href='/bkup/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2589%2593%25e5%258d%25b0%25e6%2594%25b6%25e5%2588%25b0%25e7%259a%2584socket%25e6%25b6%2588%25e6%2581%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/perl/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2589%2593%25e5%258d%25b0%25e6%2594%25b6%25e5%2588%25b0%25e7%259a%2584socket%25e6%25b6%2588%25e6%2581%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">PERL打印收到的Socket消息</a></h2>
+
+    <p>&nbsp;</p>
+<div>
+<h1>PERL打印收到的Socket消息</h1>
+<div>利用Perl的Select(),sysread()和syswrite()收到的消息将以二进制的形式存储到$buffer中，因此如果直接打印$buffer的内容将得到乱码。要将二进制内容转换为十六进制数串，则必须使用unpack()函数，即：</div>
+<div>my $hexstr=unpack("H*",$buffer);</div>
+<div>而此时如果打印$hexstr将得到一系列的十六进制数串（数串的长度是接收到的字节数的两倍），仍然难以阅读。因此，有必要将十六进制数串每两个数字进行拆分并加前缀&ldquo;0x&rdquo;以便阅读。此时需要借助正则表达式进行模式匹配，方法为:</div>
+<div>my @msg=($hexstr =~ m/../g);</div>
+<div>其中.用以匹配一个字符。</div>
+<div></div>
+<div>示例代码如下：</div>
+<div>
+<pre>##################################################################
+#               DumpMsg
+#
+# Dump received message in hex mode.
+#
+# Format: DumpMsg($type, $msglen, $msg);
+#
+# input:        $type= 'MSC' | 'BSC'
+#               $msglen= msg length
+#               $msg= received msg
+#
+# output:       Print received msg to stderr and log in hex type
+##################################################################
+sub DumpMsg {
+    my $type=$_[0];
+    my $msglen=$_[1];
+    CoolMisc::coolprint("Received message from $type: $msglen bytes/n" );
+    LogPrint("Received message from $type: $msglen bytes/n");
+    # change the received message from bin to hex string.
+    # my @msg=split(/../,unpack("H*", $_[2]),$msglen);
+    my $tmp = unpack("H*", $_[2]);
+    my @msg = ( $tmp =~ m/../g );
+    # print the message to stdout and log file.
+    for(my $i=0;$i&lt;$msglen;$i++) {
+        print "0x$msg[$i] ";
+        syswrite($ROUTELOG,"0x$msg[$i] ");
+        if ($i%8 ==7) {
+            print "/n";
+            syswrite($ROUTELOG,"/n");
+        }
+    }
+    print "/n";
+    syswrite($ROUTELOG,"/n");
+}
+</pre>
+<p>&nbsp;</p></div>
+<div></div>
+<div></div>
+<div>参考文献：</div>
+<div>1. Perl Doc-Data::Numbers&nbsp;<a href="http://perl.active-venture.com/pod/perlfaq4-datanumber.html">http://perl.active-venture.com/pod/perlfaq4-datanumber.html</a></div>
+<div>2. Perl函数pack/unpack:<a href="http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html">http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html</a>&nbsp;</div>
+<div>3.&nbsp;<span><strong><a href="http://stackoverflow.com/questions/372370/how-can-i-split-a-string-into-chunks-of-two-characters-each-in-perl">How can I split a string into chunks of two characters each in Perl?</a></strong></span></div>
+<div><strong><br /></strong></div>
+</div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 05, 2009 | <a href='/perl/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2589%2593%25e5%258d%25b0%25e6%2594%25b6%25e5%2588%25b0%25e7%259a%2584socket%25e6%25b6%2588%25e6%2581%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520unix%2520commands%2520used%2520to%2520debug%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">UNIX Commands Used to Debug</a></h2>
+
+    <div>
+<h1>UNIX Commands Used to Debug</h1>
+<div></p>
+<div>
+<h3>1. truss</h3>
+<div>bjbldc:/home/bonny &gt;2&gt; truss -p 6535</div>
+<div>read(11, 0xFFBED6C8, 1024) &nbsp; &nbsp; &nbsp;(sleeping...)</div>
+<div></div>
+</div>
+<h3>2. ps -fu &lt;user_name&gt;</h3>
+</div>
+<div>bjbldc:/home/bonny &gt;&gt; ps -fu bonny</div>
+<div>&nbsp;&nbsp; &nbsp; UID &nbsp; PID &nbsp;PPID &nbsp;C &nbsp; &nbsp;STIME TTY &nbsp; &nbsp; &nbsp;TIME CMD</div>
+<div>&nbsp;&nbsp; bonny &nbsp;9006 &nbsp;9005 &nbsp;0 &nbsp; Feb 26 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 19743 &nbsp;8910 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 dtfile -session dtstaGjf</div>
+<div>&nbsp;&nbsp; bonny &nbsp;8784 &nbsp;8776 &nbsp;0 &nbsp; Feb 16 ? &nbsp; &nbsp; &nbsp; &nbsp;0:13 dtwm</div>
+<div>&nbsp;&nbsp; bonny &nbsp;8911 &nbsp;8776 &nbsp;0 &nbsp; Feb 16 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm -session dt_.a</div>
+<div>q4t -C -ls</div>
+<div>&nbsp;&nbsp; bonny 18994 &nbsp;8784 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttpro</div>
+<div>cid 2.19cDSU 01 8751 1289637095 1 1 39237 135.</div>
+<div>&nbsp;&nbsp; bonny 25275 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 25 ? &nbsp; &nbsp; &nbsp; &nbsp;0:11 gvim BMAcpMsgpr.c</div>
+<div>&nbsp;&nbsp; bonny 25106 &nbsp;8911 &nbsp;0 &nbsp; Feb 25 pts/186 &nbsp;0:00 -ksh</div>
+<div></div>
+<h3>3. ptree &lt;user_name&gt;</h3>
+<div>
+<div>bjbldc:/home/bonny &gt;&gt; ptree bonny</div>
+<div>195 &nbsp; /usr/sbin/inetd -s</div>
+<div>&nbsp;&nbsp;6224 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6225 &nbsp;dtterm -xrm *workspaceList: COOL msc-s COOL/ msc-s -title COOL msc-s Installing</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6252 &nbsp;tail -f /bld/bonny/coolxdir_2/logs/Mar02.18:42:41/APs/31/COOLAPLOG</div>
+<div>&nbsp;&nbsp;6254 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6256 &nbsp;dtterm -xrm *workspaceList: COOL msc-s COOL/ msc-s -title COOL msc-s Installing</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6276 &nbsp;tail -f /bld/bonny/coolxdir_2/logs/Mar02.18:42:41/APs/33/COOLAPLOG</div>
+<div>&nbsp;&nbsp;6278 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6279 &nbsp;dtterm -xrm *workspaceList: COOL msc-s COOL/ msc-s -title COOL msc-s Installing</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6300 &nbsp;tail -f /bld/bonny/coolxdir_2/logs/Mar02.18:42:41/APs/35/COOLAPLOG</div>
+<div>&nbsp;&nbsp;6297 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6298 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLvirtenv -r /bld/bonny/coolxdir_2/APs/31 -a</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6535 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLstartAP -sL -c80 -Wcool01 -Fcoolap23 -dOWL</div>
+<div>&nbsp;&nbsp;6335 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6336 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLvirtenv -r /bld/bonny/coolxdir_2/APs/35 -a</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6627 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLstartAP -sA -c80 -Wcool01 -Fcoolap09 -dOWL</div>
+<div></div>
+<h3>4. uptime</h3>
+<div>
+<div>&nbsp;cool01:/home/bonny &gt;&gt; uptime</div>
+<div>&nbsp;10:17pm &nbsp;up 18:10, &nbsp;2 users, &nbsp;load average: 0.03, 0.01, 0.06</div>
+<div></div>
+<h3>5. uname</h3>
+<div>
+<div>cool01:/home/bonny &gt;127&gt; uname -a</div>
+<div>SunOS cool01 5.8 Generic_117350-58 sun4u sparc SUNW,UltraAX-i2</div>
+<div></div>
+<div>
+<div>bjbldc:sc4.2/SUNWspro/bin &gt;&gt; uname -n</div>
+<div>bjbldc</div>
+<div></div>
+<h3>6. nmake</h3>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; nmake GLIB10=N -n -k -f mytstmk dumpit &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>
+<div>+ set +x</div>
+<div>+ cd /bld/bonny/1apx10</div>
+<div>+ /bin/pwd</div>
+<div>+ set -x</div>
+<div>+ : "STARTING ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div>+ print FMS_GOLDEN_HDRLIB=</div>
+<div>FMS_GOLDEN_HDRLIB=</div>
+<div>+ rm -f&nbsp;</div>
+<div>+ : "COMPLETED ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div></div>
+<h3>7. lb</h3>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -iA -mapbld</div>
+<div></div>
+<div>&nbsp;LB Pool Status for apbld &nbsp;(03/02/09 23:58:21):</div>
+<div></div>
+<div>&nbsp;MACH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RTP &nbsp;%AV &nbsp;RSP &nbsp;CPUF &nbsp;MLA IMLA &nbsp;PLA &nbsp;LA1 &nbsp; LA5 &nbsp; LA15</div>
+<div>bjbldb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1400 &nbsp; 99 &nbsp; 1 &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.08 &nbsp;0.06 &nbsp;0.08 &nbsp;0.30</div>
+<div>bjbldc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1394 &nbsp; 99 &nbsp; 3 &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.17 &nbsp;0.16 &nbsp;0.20 &nbsp;0.29</div>
+<div>bjbldd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1363 &nbsp; 96 &nbsp; 2 &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.61 &nbsp;0.60 &nbsp;0.63 &nbsp;0.69</div>
+<div>------------------------------------------------------------------------------</div>
+<div>AVERAGE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1385 &nbsp; 98 &nbsp; - &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.29 &nbsp;0.27 &nbsp;0.30 &nbsp;0.43</div>
+<div>TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4157 &nbsp; 98 &nbsp; 3 &nbsp;4218 &nbsp;60.6 &nbsp;60 &nbsp;0.86 &nbsp;0.82 &nbsp;0.91 &nbsp;1.28</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;apbld : &nbsp;98% available &nbsp; (98% available IMLA)&nbsp;</div>
+<div></div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -m bjbldc nmake GLIB10=N -n -k -f mytstmk dumpit</div>
+<div>+ set +x</div>
+<div>+ cd /bld/bonny/1apx10</div>
+<div>+ /bin/pwd</div>
+<div>+ set -x</div>
+<div>+ : "STARTING ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div>+ print FMS_GOLDEN_HDRLIB=</div>
+<div>FMS_GOLDEN_HDRLIB=</div>
+<div>+ rm -f&nbsp;</div>
+<div>+ : "COMPLETED ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div></div>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -iA -m CoolServers.ngnap</div>
+<div></div>
+<div>&nbsp;LB Pool Status for coolservers.ngnap &nbsp;(03/03/09 00:15:06):</div>
+<div></div>
+<div>&nbsp;MACH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RTP &nbsp;%AV &nbsp;RSP &nbsp;CPUF &nbsp;MLA IMLA &nbsp;PLA &nbsp;LA1 &nbsp; LA5 &nbsp; LA15</div>
+<div>coolap26 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1361 &nbsp; 94 &nbsp;21 &nbsp;1440 &nbsp;10.0 &nbsp;10 &nbsp;0.54 &nbsp;0.52 &nbsp;0.52 &nbsp;0.52</div>
+<div>coolap14 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 1 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap01 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 2 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.00 &nbsp;0.01 &nbsp;0.01</div>
+<div>coolap12 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 4 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap09 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 5 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap21 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 6 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap19 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;11 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap13 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;13 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;14 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap24 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;16 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap23 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;17 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap25 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;19 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap02 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 3 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.07 &nbsp;0.01 &nbsp;0.04 &nbsp;0.10</div>
+<div>coolap18 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 7 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.06 &nbsp;0.04 &nbsp;0.04 &nbsp;0.06</div>
+<div>coolap07 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 8 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.06 &nbsp;0.05 &nbsp;0.11 &nbsp;0.23</div>
+<div>coolap05 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 9 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.07 &nbsp;0.05 &nbsp;0.05 &nbsp;0.10</div>
+<div>coolap10 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp;10 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.07 &nbsp;0.05 &nbsp;0.05 &nbsp;0.07</div>
+<div>coolap20 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp;15 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.06 &nbsp;0.02 &nbsp;0.04 &nbsp;0.06</div>
+<div>coolap08 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 693 &nbsp; 99 &nbsp;12 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.10 &nbsp;0.08 &nbsp;0.10 &nbsp;0.21</div>
+<div>coolap17 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 691 &nbsp; 98 &nbsp;18 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.13 &nbsp;0.11 &nbsp;0.13 &nbsp;0.12</div>
+<div>coolap11 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 623 &nbsp; 89 &nbsp;20 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;1.09 &nbsp;0.96 &nbsp;0.39 &nbsp;0.26</div>
+<div>------------------------------------------------------------------------------</div>
+<div>AVERAGE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;724 &nbsp; 98 &nbsp; - &nbsp; 735 &nbsp;10.0 &nbsp;10 &nbsp;0.12 &nbsp;0.09 &nbsp;0.07 &nbsp;0.09</div>
+<div>TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;15216 &nbsp; 98 &nbsp;21 15440 210.0 210 &nbsp;2.48 &nbsp;1.89 &nbsp;1.48 &nbsp;1.84</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;coolservers.ngnap : &nbsp;98% available &nbsp; (98% available IMLA)&nbsp;</div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -iA -m coolservers</div>
+<div></div>
+<div>&nbsp;LB Pool Status for coolservers &nbsp;(03/03/09 00:31:49):</div>
+<div></div>
+<div>&nbsp;MACH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RTP &nbsp;%AV &nbsp;RSP &nbsp;CPUF &nbsp;MLA IMLA &nbsp;PLA &nbsp;LA1 &nbsp; LA5 &nbsp; LA15</div>
+<div>cool01 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 1 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool11 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 6 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool05 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 8 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool13 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 9 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.01 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool02 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp;12 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.02 &nbsp;0.01 &nbsp;0.01</div>
+<div>cool09 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 659 &nbsp; 99 &nbsp;10 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.04 &nbsp;0.01 &nbsp;0.01 &nbsp;0.03</div>
+<div>cool08 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 642 &nbsp; 99 &nbsp; 2 &nbsp; 644 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool07 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 642 &nbsp; 99 &nbsp; 5 &nbsp; 644 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool10 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 641 &nbsp; 99 &nbsp;11 &nbsp; 644 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.01 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool14 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 591 &nbsp; 89 &nbsp; 3 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;1.07 &nbsp;1.05 &nbsp;1.03 &nbsp;1.04</div>
+<div>cool12 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 589 &nbsp; 88 &nbsp; 7 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;1.10 &nbsp;1.08 &nbsp;1.06 &nbsp;1.17</div>
+<div>cool03 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 376 &nbsp; 56 &nbsp; 4 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;4.32 &nbsp;4.14 &nbsp;3.36 &nbsp;2.59</div>
+<div>------------------------------------------------------------------------------</div>
+<div>AVERAGE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;620 &nbsp; 94 &nbsp; - &nbsp; 658 &nbsp;10.0 &nbsp;10 &nbsp;0.56 &nbsp;0.53 &nbsp;0.46 &nbsp;0.41</div>
+<div>TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7440 &nbsp; 94 &nbsp;12 &nbsp;7890 120.0 120 &nbsp;6.72 &nbsp;6.32 &nbsp;5.47 &nbsp;4.91</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;coolservers : &nbsp;94% available &nbsp; (94% available IMLA)&nbsp;</div>
+<div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h3>8.&nbsp;timex&nbsp;</h3>
+<div>timex- time a &nbsp;command; &nbsp;report &nbsp;process &nbsp;data &nbsp;and &nbsp;system&nbsp;activity.</div>
+<div></p>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; timex ping cool01</p>
+<div>cool01 is alive</div>
+<div></div>
+<div>real &nbsp; &nbsp; &nbsp; &nbsp;0.01</div>
+<div>user &nbsp; &nbsp; &nbsp; &nbsp;0.01</div>
+<div>sys &nbsp; &nbsp; &nbsp; &nbsp; 0.00</div>
+<div></div>
+<h3>9. remsh</h3>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; remsh bjbldd ps -fu bonny</div>
+<div>&nbsp;&nbsp; &nbsp; UID &nbsp; PID &nbsp;PPID &nbsp;C &nbsp; &nbsp;STIME TTY &nbsp; &nbsp; &nbsp;TIME CMD</div>
+<div>&nbsp;&nbsp; bonny 29793 29752 &nbsp;0 22:18:04 pts/179 &nbsp;0:00 rlogin bjbldc</div>
+<div>&nbsp;&nbsp; bonny 15715 15669 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 dtfile -session dtstaGjf</div>
+<div>&nbsp;&nbsp; bonny 23825 23779 &nbsp;0 00:38:20 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/bin/remsh cool01 eval set -aSTART[0]=/home/bonny/.env[</div>
+<div>&nbsp;&nbsp; bonny &nbsp;2409 15716 &nbsp;0 16:05:08 pts/41 &nbsp; 0:00 -ksh</div>
+<div>&nbsp;&nbsp; bonny 14037 &nbsp; &nbsp; 1 &nbsp;0 16:33:12 ? &nbsp; &nbsp; &nbsp; &nbsp;0:01 gvim COOLein2ap</div>
+<div>&nbsp;&nbsp; bonny 15542 15541 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /opt/exp/lib/vnc/vncconfig.bin -nowin</div>
+<div>&nbsp;&nbsp; bonny 29545 29543 &nbsp;0 22:17:05 pts/195 &nbsp;0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 23779 &nbsp;2666 &nbsp;0 00:38:19 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/bin/remsh cool01 eval set -aSTART[0]=/home/bonny/.env[</div>
+<div>&nbsp;&nbsp; bonny 24503 24502 &nbsp;0 20:49:36 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/clear3bemlab -i -p -lab bonny</div>
+<div>&nbsp;&nbsp; bonny 15498 &nbsp; &nbsp; 1 &nbsp;1 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;2:04 Xvnc :10 -desktop bjbldd:10 () -httpd /opt/exp/lib/vnc/clas</div>
+<div>&nbsp;&nbsp; bonny 23776 &nbsp; &nbsp; 1 &nbsp;0 00:38:19 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/tools/lib/GetDynCOOLID UNAME=coolap01 CO</div>
+<div>&nbsp;&nbsp; bonny 24175 24174 &nbsp;0 20:40:11 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/clear3bemlab -i -p -lab bonny</div>
+<div>&nbsp;&nbsp; bonny 13782 13780 &nbsp;0 16:28:08 pts/180 &nbsp;0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 24502 24343 &nbsp;0 20:49:36 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 15668 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 /usr/dt/bin/ttsession</div>
+<div>&nbsp;&nbsp; bonny 23482 &nbsp; &nbsp; 1 &nbsp;0 00:38:15 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/tools/lib/GetDynCOOLID UNAME=cool01</div>
+<div>&nbsp;&nbsp; bonny 19606 &nbsp; &nbsp; 1 &nbsp;0 17:06:00 ? &nbsp; &nbsp; &nbsp; &nbsp;0:12 gvim /apx/ecpc33/OFC5L33.0/1apx10/rules/tps.mk</div>
+<div>&nbsp;&nbsp; bonny &nbsp;2666 &nbsp; &nbsp; 1 &nbsp;0 16:07:01 ? &nbsp; &nbsp; &nbsp; &nbsp;0:11 /opt/cool/tools/lib/TclPro1.5/solaris-sparc/bin/wish8.3 -f&nbsp;</div>
+<div>&nbsp;&nbsp; bonny 28765 15692 &nbsp;0 22:14:32 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 13970 13969 &nbsp;0 13:45:33 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e athena -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 28767 28765 &nbsp;0 22:14:32 ?? &nbsp; &nbsp; &nbsp; 0:00 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 24588 24587 &nbsp;0 20:51:46 pts/41 &nbsp; 0:00 rlogin cool01</div>
+<div>&nbsp;&nbsp; bonny 14189 14162 &nbsp;2 13:45:39 ? &nbsp; &nbsp; &nbsp; 40:47 rm -rf /opt/cool2b/bonny/APs/21</div>
+<div>&nbsp;&nbsp; bonny 15717 15669 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:01 /usr/dt/bin/sdtperfmeter -f -H -t cpu -t disk -s 1 -name fp</div>
+<div>&nbsp;&nbsp; bonny 14126 14125 &nbsp;0 13:45:39 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/clear3bemlab -i -p -lab bonny</div>
+<div>&nbsp;&nbsp; bonny 15637 15635 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 -ksh -c &nbsp; &nbsp; &nbsp;unset DT; &nbsp; &nbsp; DISPLAY=bjbldd:10; &nbsp; &nbsp; &nbsp; /usr/dt</div>
+<div>&nbsp;&nbsp; bonny 15716 15669 &nbsp;0 &nbsp; Feb 26 ?? &nbsp; &nbsp; &nbsp; 0:03 /usr/dt/bin/dtterm -session dt_.aq4t -C -ls</div>
+<div>&nbsp;&nbsp; bonny 23483 23482 &nbsp;0 00:38:15 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 sleep 1800</div>
+<div>&nbsp;&nbsp; bonny 29752 29750 &nbsp;0 22:17:55 pts/179 &nbsp;0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 24132 24019 &nbsp;0 20:40:08 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 tail +0f /tmp/ldcool.24019/log.ldcool_bonny_bonny</div>
+<div>&nbsp;&nbsp; bonny 15541 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /opt/exp/bin/ksh /opt/exp/lib/vnc/vncconfig -nowin</div>
+<div>&nbsp;&nbsp; bonny 29750 29749 &nbsp;0 22:17:55 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 19600 &nbsp; &nbsp; 1 &nbsp;0 17:05:59 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 15692 15669 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:15 dtwm</div>
+<div>&nbsp;&nbsp; bonny 15634 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dsdm</div>
+<div>&nbsp;&nbsp; bonny 29570 29569 &nbsp;0 22:17:09 pts/195 &nbsp;0:00 rlogin cool01</div>
+<div>&nbsp;&nbsp; bonny 29794 29793 &nbsp;0 22:18:04 pts/179 &nbsp;0:00 rlogin bjbldc</div>
+<div>&nbsp;&nbsp; bonny 13879 &nbsp; &nbsp; 1 &nbsp;0 16:29:06 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 14082 13970 &nbsp;0 13:45:38 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 tail +0f /tmp/ldcool.13970/log.ldcool_bonny_bonny</div>
+<div>&nbsp;&nbsp; bonny 24019 24018 &nbsp;0 20:40:07 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 23823 23779 &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0:00 &lt;defunct&gt;</div>
+<div>&nbsp;&nbsp; bonny 14289 &nbsp; &nbsp; 1 &nbsp;0 16:38:04 ? &nbsp; &nbsp; &nbsp; &nbsp;0:19 gvim /opt/nwstools/bin/getnmakevar</div>
+<div>&nbsp;&nbsp; bonny 15533 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /usr/dt/bin/Xsession</div>
+<div>&nbsp;&nbsp; bonny 28773 28767 &nbsp;0 22:14:33 pts/78 &nbsp; 0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 29542 15692 &nbsp;0 22:17:05 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 15669 15637 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 /usr/dt/bin/dtsession</div>
+<div>&nbsp;&nbsp; bonny 14162 14126 &nbsp;0 13:45:39 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/tools/bin/rmv_coolap -C /opt/cool2b/bonn</div>
+<div>&nbsp;&nbsp; bonny 23777 23776 &nbsp;0 00:38:19 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 sleep 1800</div>
+<div>&nbsp;&nbsp; bonny 24562 24503 &nbsp;1 20:49:36 ? &nbsp; &nbsp; &nbsp; 17:28 rm -rf APs</div>
+<div>&nbsp;&nbsp; bonny 29569 29545 &nbsp;0 22:17:09 pts/195 &nbsp;0:00 rlogin cool01</div>
+<div>&nbsp;&nbsp; bonny 24232 24175 &nbsp;3 20:40:11 ? &nbsp; &nbsp; &nbsp; 15:44 rm -rf APs</div>
+<div>&nbsp;&nbsp; bonny 14125 13970 &nbsp;0 13:45:39 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e athena -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 15635 15533 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 /usr/dt/bin/sdt_shell -c &nbsp; &nbsp; &nbsp;unset DT; &nbsp; &nbsp; DISPLAY=bjbldd:</div>
+<div>&nbsp;&nbsp; bonny 13779 15692 &nbsp;0 16:28:08 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 13882 &nbsp; &nbsp; 1 &nbsp;0 16:29:07 ? &nbsp; &nbsp; &nbsp; &nbsp;0:10 gvim coolit</div>
+<div>&nbsp;&nbsp; bonny 14034 &nbsp; &nbsp; 1 &nbsp;0 16:33:12 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 14286 &nbsp; &nbsp; 1 &nbsp;0 16:38:03 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 29749 15692 &nbsp;0 22:17:55 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 24343 24342 &nbsp;0 20:49:33 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 24460 24343 &nbsp;0 20:49:35 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 tail +0f /tmp/ldcool.24343/log.ldcool_bonny_bonny</div>
+<div>&nbsp;&nbsp; bonny 29543 29542 &nbsp;0 22:17:05 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 13780 13779 &nbsp;0 16:28:08 ?? &nbsp; &nbsp; &nbsp; 0:00 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 24174 24019 &nbsp;0 20:40:11 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 24587 &nbsp;2409 &nbsp;0 20:51:46 pts/41 &nbsp; 0:00 rlogin cool01</div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; remsh bjbldd ps -fu bonny | grep nmake</div>
+<div>&nbsp;&nbsp; bonny 14289 &nbsp; &nbsp; 1 &nbsp;0 16:38:04 ? &nbsp; &nbsp; &nbsp; &nbsp;0:19 gvim /opt/nwstools/bin/getnmakevar</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    <small class="meta">March 03, 2009 | <a href='/bkup/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520unix%2520commands%2520used%2520to%2520debug%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520unix%2520commands%2520used%2520to%2520debug%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">UNIX Commands Used to Debug</a></h2>
+
+    <div>
+<h1>UNIX Commands Used to Debug</h1>
+<div></p>
+<div>
+<h3>1. truss</h3>
+<div>bjbldc:/home/bonny &gt;2&gt; truss -p 6535</div>
+<div>read(11, 0xFFBED6C8, 1024) &nbsp; &nbsp; &nbsp;(sleeping...)</div>
+<div></div>
+</div>
+<h3>2. ps -fu &lt;user_name&gt;</h3>
+</div>
+<div>bjbldc:/home/bonny &gt;&gt; ps -fu bonny</div>
+<div>&nbsp;&nbsp; &nbsp; UID &nbsp; PID &nbsp;PPID &nbsp;C &nbsp; &nbsp;STIME TTY &nbsp; &nbsp; &nbsp;TIME CMD</div>
+<div>&nbsp;&nbsp; bonny &nbsp;9006 &nbsp;9005 &nbsp;0 &nbsp; Feb 26 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 19743 &nbsp;8910 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 dtfile -session dtstaGjf</div>
+<div>&nbsp;&nbsp; bonny &nbsp;8784 &nbsp;8776 &nbsp;0 &nbsp; Feb 16 ? &nbsp; &nbsp; &nbsp; &nbsp;0:13 dtwm</div>
+<div>&nbsp;&nbsp; bonny &nbsp;8911 &nbsp;8776 &nbsp;0 &nbsp; Feb 16 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm -session dt_.a</div>
+<div>q4t -C -ls</div>
+<div>&nbsp;&nbsp; bonny 18994 &nbsp;8784 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttpro</div>
+<div>cid 2.19cDSU 01 8751 1289637095 1 1 39237 135.</div>
+<div>&nbsp;&nbsp; bonny 25275 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 25 ? &nbsp; &nbsp; &nbsp; &nbsp;0:11 gvim BMAcpMsgpr.c</div>
+<div>&nbsp;&nbsp; bonny 25106 &nbsp;8911 &nbsp;0 &nbsp; Feb 25 pts/186 &nbsp;0:00 -ksh</div>
+<div></div>
+<h3>3. ptree &lt;user_name&gt;</h3>
+<div>
+<div>bjbldc:/home/bonny &gt;&gt; ptree bonny</div>
+<div>195 &nbsp; /usr/sbin/inetd -s</div>
+<div>&nbsp;&nbsp;6224 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6225 &nbsp;dtterm -xrm *workspaceList: COOL msc-s COOL/ msc-s -title COOL msc-s Installing</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6252 &nbsp;tail -f /bld/bonny/coolxdir_2/logs/Mar02.18:42:41/APs/31/COOLAPLOG</div>
+<div>&nbsp;&nbsp;6254 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6256 &nbsp;dtterm -xrm *workspaceList: COOL msc-s COOL/ msc-s -title COOL msc-s Installing</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6276 &nbsp;tail -f /bld/bonny/coolxdir_2/logs/Mar02.18:42:41/APs/33/COOLAPLOG</div>
+<div>&nbsp;&nbsp;6278 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6279 &nbsp;dtterm -xrm *workspaceList: COOL msc-s COOL/ msc-s -title COOL msc-s Installing</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6300 &nbsp;tail -f /bld/bonny/coolxdir_2/logs/Mar02.18:42:41/APs/35/COOLAPLOG</div>
+<div>&nbsp;&nbsp;6297 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6298 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLvirtenv -r /bld/bonny/coolxdir_2/APs/31 -a</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6535 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLstartAP -sL -c80 -Wcool01 -Fcoolap23 -dOWL</div>
+<div>&nbsp;&nbsp;6335 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6336 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLvirtenv -r /bld/bonny/coolxdir_2/APs/35 -a</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6627 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLstartAP -sA -c80 -Wcool01 -Fcoolap09 -dOWL</div>
+<div></div>
+<h3>4. uptime</h3>
+<div>
+<div>&nbsp;cool01:/home/bonny &gt;&gt; uptime</div>
+<div>&nbsp;10:17pm &nbsp;up 18:10, &nbsp;2 users, &nbsp;load average: 0.03, 0.01, 0.06</div>
+<div></div>
+<h3>5. uname</h3>
+<div>
+<div>cool01:/home/bonny &gt;127&gt; uname -a</div>
+<div>SunOS cool01 5.8 Generic_117350-58 sun4u sparc SUNW,UltraAX-i2</div>
+<div></div>
+<div>
+<div>bjbldc:sc4.2/SUNWspro/bin &gt;&gt; uname -n</div>
+<div>bjbldc</div>
+<div></div>
+<h3>6. nmake</h3>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; nmake GLIB10=N -n -k -f mytstmk dumpit &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>
+<div>+ set +x</div>
+<div>+ cd /bld/bonny/1apx10</div>
+<div>+ /bin/pwd</div>
+<div>+ set -x</div>
+<div>+ : "STARTING ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div>+ print FMS_GOLDEN_HDRLIB=</div>
+<div>FMS_GOLDEN_HDRLIB=</div>
+<div>+ rm -f&nbsp;</div>
+<div>+ : "COMPLETED ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div></div>
+<h3>7. lb</h3>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -iA -mapbld</div>
+<div></div>
+<div>&nbsp;LB Pool Status for apbld &nbsp;(03/02/09 23:58:21):</div>
+<div></div>
+<div>&nbsp;MACH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RTP &nbsp;%AV &nbsp;RSP &nbsp;CPUF &nbsp;MLA IMLA &nbsp;PLA &nbsp;LA1 &nbsp; LA5 &nbsp; LA15</div>
+<div>bjbldb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1400 &nbsp; 99 &nbsp; 1 &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.08 &nbsp;0.06 &nbsp;0.08 &nbsp;0.30</div>
+<div>bjbldc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1394 &nbsp; 99 &nbsp; 3 &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.17 &nbsp;0.16 &nbsp;0.20 &nbsp;0.29</div>
+<div>bjbldd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1363 &nbsp; 96 &nbsp; 2 &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.61 &nbsp;0.60 &nbsp;0.63 &nbsp;0.69</div>
+<div>------------------------------------------------------------------------------</div>
+<div>AVERAGE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1385 &nbsp; 98 &nbsp; - &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.29 &nbsp;0.27 &nbsp;0.30 &nbsp;0.43</div>
+<div>TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4157 &nbsp; 98 &nbsp; 3 &nbsp;4218 &nbsp;60.6 &nbsp;60 &nbsp;0.86 &nbsp;0.82 &nbsp;0.91 &nbsp;1.28</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;apbld : &nbsp;98% available &nbsp; (98% available IMLA)&nbsp;</div>
+<div></div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -m bjbldc nmake GLIB10=N -n -k -f mytstmk dumpit</div>
+<div>+ set +x</div>
+<div>+ cd /bld/bonny/1apx10</div>
+<div>+ /bin/pwd</div>
+<div>+ set -x</div>
+<div>+ : "STARTING ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div>+ print FMS_GOLDEN_HDRLIB=</div>
+<div>FMS_GOLDEN_HDRLIB=</div>
+<div>+ rm -f&nbsp;</div>
+<div>+ : "COMPLETED ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div></div>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -iA -m CoolServers.ngnap</div>
+<div></div>
+<div>&nbsp;LB Pool Status for coolservers.ngnap &nbsp;(03/03/09 00:15:06):</div>
+<div></div>
+<div>&nbsp;MACH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RTP &nbsp;%AV &nbsp;RSP &nbsp;CPUF &nbsp;MLA IMLA &nbsp;PLA &nbsp;LA1 &nbsp; LA5 &nbsp; LA15</div>
+<div>coolap26 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1361 &nbsp; 94 &nbsp;21 &nbsp;1440 &nbsp;10.0 &nbsp;10 &nbsp;0.54 &nbsp;0.52 &nbsp;0.52 &nbsp;0.52</div>
+<div>coolap14 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 1 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap01 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 2 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.00 &nbsp;0.01 &nbsp;0.01</div>
+<div>coolap12 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 4 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap09 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 5 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap21 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 6 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap19 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;11 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap13 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;13 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;14 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap24 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;16 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap23 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;17 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap25 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;19 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap02 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 3 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.07 &nbsp;0.01 &nbsp;0.04 &nbsp;0.10</div>
+<div>coolap18 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 7 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.06 &nbsp;0.04 &nbsp;0.04 &nbsp;0.06</div>
+<div>coolap07 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 8 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.06 &nbsp;0.05 &nbsp;0.11 &nbsp;0.23</div>
+<div>coolap05 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 9 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.07 &nbsp;0.05 &nbsp;0.05 &nbsp;0.10</div>
+<div>coolap10 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp;10 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.07 &nbsp;0.05 &nbsp;0.05 &nbsp;0.07</div>
+<div>coolap20 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp;15 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.06 &nbsp;0.02 &nbsp;0.04 &nbsp;0.06</div>
+<div>coolap08 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 693 &nbsp; 99 &nbsp;12 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.10 &nbsp;0.08 &nbsp;0.10 &nbsp;0.21</div>
+<div>coolap17 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 691 &nbsp; 98 &nbsp;18 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.13 &nbsp;0.11 &nbsp;0.13 &nbsp;0.12</div>
+<div>coolap11 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 623 &nbsp; 89 &nbsp;20 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;1.09 &nbsp;0.96 &nbsp;0.39 &nbsp;0.26</div>
+<div>------------------------------------------------------------------------------</div>
+<div>AVERAGE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;724 &nbsp; 98 &nbsp; - &nbsp; 735 &nbsp;10.0 &nbsp;10 &nbsp;0.12 &nbsp;0.09 &nbsp;0.07 &nbsp;0.09</div>
+<div>TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;15216 &nbsp; 98 &nbsp;21 15440 210.0 210 &nbsp;2.48 &nbsp;1.89 &nbsp;1.48 &nbsp;1.84</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;coolservers.ngnap : &nbsp;98% available &nbsp; (98% available IMLA)&nbsp;</div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -iA -m coolservers</div>
+<div></div>
+<div>&nbsp;LB Pool Status for coolservers &nbsp;(03/03/09 00:31:49):</div>
+<div></div>
+<div>&nbsp;MACH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RTP &nbsp;%AV &nbsp;RSP &nbsp;CPUF &nbsp;MLA IMLA &nbsp;PLA &nbsp;LA1 &nbsp; LA5 &nbsp; LA15</div>
+<div>cool01 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 1 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool11 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 6 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool05 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 8 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool13 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 9 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.01 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool02 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp;12 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.02 &nbsp;0.01 &nbsp;0.01</div>
+<div>cool09 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 659 &nbsp; 99 &nbsp;10 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.04 &nbsp;0.01 &nbsp;0.01 &nbsp;0.03</div>
+<div>cool08 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 642 &nbsp; 99 &nbsp; 2 &nbsp; 644 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool07 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 642 &nbsp; 99 &nbsp; 5 &nbsp; 644 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool10 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 641 &nbsp; 99 &nbsp;11 &nbsp; 644 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.01 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool14 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 591 &nbsp; 89 &nbsp; 3 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;1.07 &nbsp;1.05 &nbsp;1.03 &nbsp;1.04</div>
+<div>cool12 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 589 &nbsp; 88 &nbsp; 7 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;1.10 &nbsp;1.08 &nbsp;1.06 &nbsp;1.17</div>
+<div>cool03 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 376 &nbsp; 56 &nbsp; 4 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;4.32 &nbsp;4.14 &nbsp;3.36 &nbsp;2.59</div>
+<div>------------------------------------------------------------------------------</div>
+<div>AVERAGE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;620 &nbsp; 94 &nbsp; - &nbsp; 658 &nbsp;10.0 &nbsp;10 &nbsp;0.56 &nbsp;0.53 &nbsp;0.46 &nbsp;0.41</div>
+<div>TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7440 &nbsp; 94 &nbsp;12 &nbsp;7890 120.0 120 &nbsp;6.72 &nbsp;6.32 &nbsp;5.47 &nbsp;4.91</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;coolservers : &nbsp;94% available &nbsp; (94% available IMLA)&nbsp;</div>
+<div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h3>8.&nbsp;timex&nbsp;</h3>
+<div>timex- time a &nbsp;command; &nbsp;report &nbsp;process &nbsp;data &nbsp;and &nbsp;system&nbsp;activity.</div>
+<div></p>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; timex ping cool01</p>
+<div>cool01 is alive</div>
+<div></div>
+<div>real &nbsp; &nbsp; &nbsp; &nbsp;0.01</div>
+<div>user &nbsp; &nbsp; &nbsp; &nbsp;0.01</div>
+<div>sys &nbsp; &nbsp; &nbsp; &nbsp; 0.00</div>
+<div></div>
+<h3>9. remsh</h3>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; remsh bjbldd ps -fu bonny</div>
+<div>&nbsp;&nbsp; &nbsp; UID &nbsp; PID &nbsp;PPID &nbsp;C &nbsp; &nbsp;STIME TTY &nbsp; &nbsp; &nbsp;TIME CMD</div>
+<div>&nbsp;&nbsp; bonny 29793 29752 &nbsp;0 22:18:04 pts/179 &nbsp;0:00 rlogin bjbldc</div>
+<div>&nbsp;&nbsp; bonny 15715 15669 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 dtfile -session dtstaGjf</div>
+<div>&nbsp;&nbsp; bonny 23825 23779 &nbsp;0 00:38:20 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/bin/remsh cool01 eval set -aSTART[0]=/home/bonny/.env[</div>
+<div>&nbsp;&nbsp; bonny &nbsp;2409 15716 &nbsp;0 16:05:08 pts/41 &nbsp; 0:00 -ksh</div>
+<div>&nbsp;&nbsp; bonny 14037 &nbsp; &nbsp; 1 &nbsp;0 16:33:12 ? &nbsp; &nbsp; &nbsp; &nbsp;0:01 gvim COOLein2ap</div>
+<div>&nbsp;&nbsp; bonny 15542 15541 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /opt/exp/lib/vnc/vncconfig.bin -nowin</div>
+<div>&nbsp;&nbsp; bonny 29545 29543 &nbsp;0 22:17:05 pts/195 &nbsp;0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 23779 &nbsp;2666 &nbsp;0 00:38:19 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/bin/remsh cool01 eval set -aSTART[0]=/home/bonny/.env[</div>
+<div>&nbsp;&nbsp; bonny 24503 24502 &nbsp;0 20:49:36 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/clear3bemlab -i -p -lab bonny</div>
+<div>&nbsp;&nbsp; bonny 15498 &nbsp; &nbsp; 1 &nbsp;1 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;2:04 Xvnc :10 -desktop bjbldd:10 () -httpd /opt/exp/lib/vnc/clas</div>
+<div>&nbsp;&nbsp; bonny 23776 &nbsp; &nbsp; 1 &nbsp;0 00:38:19 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/tools/lib/GetDynCOOLID UNAME=coolap01 CO</div>
+<div>&nbsp;&nbsp; bonny 24175 24174 &nbsp;0 20:40:11 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/clear3bemlab -i -p -lab bonny</div>
+<div>&nbsp;&nbsp; bonny 13782 13780 &nbsp;0 16:28:08 pts/180 &nbsp;0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 24502 24343 &nbsp;0 20:49:36 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 15668 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 /usr/dt/bin/ttsession</div>
+<div>&nbsp;&nbsp; bonny 23482 &nbsp; &nbsp; 1 &nbsp;0 00:38:15 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/tools/lib/GetDynCOOLID UNAME=cool01</div>
+<div>&nbsp;&nbsp; bonny 19606 &nbsp; &nbsp; 1 &nbsp;0 17:06:00 ? &nbsp; &nbsp; &nbsp; &nbsp;0:12 gvim /apx/ecpc33/OFC5L33.0/1apx10/rules/tps.mk</div>
+<div>&nbsp;&nbsp; bonny &nbsp;2666 &nbsp; &nbsp; 1 &nbsp;0 16:07:01 ? &nbsp; &nbsp; &nbsp; &nbsp;0:11 /opt/cool/tools/lib/TclPro1.5/solaris-sparc/bin/wish8.3 -f&nbsp;</div>
+<div>&nbsp;&nbsp; bonny 28765 15692 &nbsp;0 22:14:32 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 13970 13969 &nbsp;0 13:45:33 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e athena -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 28767 28765 &nbsp;0 22:14:32 ?? &nbsp; &nbsp; &nbsp; 0:00 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 24588 24587 &nbsp;0 20:51:46 pts/41 &nbsp; 0:00 rlogin cool01</div>
+<div>&nbsp;&nbsp; bonny 14189 14162 &nbsp;2 13:45:39 ? &nbsp; &nbsp; &nbsp; 40:47 rm -rf /opt/cool2b/bonny/APs/21</div>
+<div>&nbsp;&nbsp; bonny 15717 15669 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:01 /usr/dt/bin/sdtperfmeter -f -H -t cpu -t disk -s 1 -name fp</div>
+<div>&nbsp;&nbsp; bonny 14126 14125 &nbsp;0 13:45:39 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/clear3bemlab -i -p -lab bonny</div>
+<div>&nbsp;&nbsp; bonny 15637 15635 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 -ksh -c &nbsp; &nbsp; &nbsp;unset DT; &nbsp; &nbsp; DISPLAY=bjbldd:10; &nbsp; &nbsp; &nbsp; /usr/dt</div>
+<div>&nbsp;&nbsp; bonny 15716 15669 &nbsp;0 &nbsp; Feb 26 ?? &nbsp; &nbsp; &nbsp; 0:03 /usr/dt/bin/dtterm -session dt_.aq4t -C -ls</div>
+<div>&nbsp;&nbsp; bonny 23483 23482 &nbsp;0 00:38:15 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 sleep 1800</div>
+<div>&nbsp;&nbsp; bonny 29752 29750 &nbsp;0 22:17:55 pts/179 &nbsp;0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 24132 24019 &nbsp;0 20:40:08 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 tail +0f /tmp/ldcool.24019/log.ldcool_bonny_bonny</div>
+<div>&nbsp;&nbsp; bonny 15541 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /opt/exp/bin/ksh /opt/exp/lib/vnc/vncconfig -nowin</div>
+<div>&nbsp;&nbsp; bonny 29750 29749 &nbsp;0 22:17:55 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 19600 &nbsp; &nbsp; 1 &nbsp;0 17:05:59 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 15692 15669 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:15 dtwm</div>
+<div>&nbsp;&nbsp; bonny 15634 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dsdm</div>
+<div>&nbsp;&nbsp; bonny 29570 29569 &nbsp;0 22:17:09 pts/195 &nbsp;0:00 rlogin cool01</div>
+<div>&nbsp;&nbsp; bonny 29794 29793 &nbsp;0 22:18:04 pts/179 &nbsp;0:00 rlogin bjbldc</div>
+<div>&nbsp;&nbsp; bonny 13879 &nbsp; &nbsp; 1 &nbsp;0 16:29:06 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 14082 13970 &nbsp;0 13:45:38 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 tail +0f /tmp/ldcool.13970/log.ldcool_bonny_bonny</div>
+<div>&nbsp;&nbsp; bonny 24019 24018 &nbsp;0 20:40:07 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 23823 23779 &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0:00 &lt;defunct&gt;</div>
+<div>&nbsp;&nbsp; bonny 14289 &nbsp; &nbsp; 1 &nbsp;0 16:38:04 ? &nbsp; &nbsp; &nbsp; &nbsp;0:19 gvim /opt/nwstools/bin/getnmakevar</div>
+<div>&nbsp;&nbsp; bonny 15533 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /usr/dt/bin/Xsession</div>
+<div>&nbsp;&nbsp; bonny 28773 28767 &nbsp;0 22:14:33 pts/78 &nbsp; 0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 29542 15692 &nbsp;0 22:17:05 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 15669 15637 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 /usr/dt/bin/dtsession</div>
+<div>&nbsp;&nbsp; bonny 14162 14126 &nbsp;0 13:45:39 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/tools/bin/rmv_coolap -C /opt/cool2b/bonn</div>
+<div>&nbsp;&nbsp; bonny 23777 23776 &nbsp;0 00:38:19 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 sleep 1800</div>
+<div>&nbsp;&nbsp; bonny 24562 24503 &nbsp;1 20:49:36 ? &nbsp; &nbsp; &nbsp; 17:28 rm -rf APs</div>
+<div>&nbsp;&nbsp; bonny 29569 29545 &nbsp;0 22:17:09 pts/195 &nbsp;0:00 rlogin cool01</div>
+<div>&nbsp;&nbsp; bonny 24232 24175 &nbsp;3 20:40:11 ? &nbsp; &nbsp; &nbsp; 15:44 rm -rf APs</div>
+<div>&nbsp;&nbsp; bonny 14125 13970 &nbsp;0 13:45:39 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e athena -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 15635 15533 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 /usr/dt/bin/sdt_shell -c &nbsp; &nbsp; &nbsp;unset DT; &nbsp; &nbsp; DISPLAY=bjbldd:</div>
+<div>&nbsp;&nbsp; bonny 13779 15692 &nbsp;0 16:28:08 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 13882 &nbsp; &nbsp; 1 &nbsp;0 16:29:07 ? &nbsp; &nbsp; &nbsp; &nbsp;0:10 gvim coolit</div>
+<div>&nbsp;&nbsp; bonny 14034 &nbsp; &nbsp; 1 &nbsp;0 16:33:12 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 14286 &nbsp; &nbsp; 1 &nbsp;0 16:38:03 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 29749 15692 &nbsp;0 22:17:55 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 24343 24342 &nbsp;0 20:49:33 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 24460 24343 &nbsp;0 20:49:35 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 tail +0f /tmp/ldcool.24343/log.ldcool_bonny_bonny</div>
+<div>&nbsp;&nbsp; bonny 29543 29542 &nbsp;0 22:17:05 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 13780 13779 &nbsp;0 16:28:08 ?? &nbsp; &nbsp; &nbsp; 0:00 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 24174 24019 &nbsp;0 20:40:11 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 24587 &nbsp;2409 &nbsp;0 20:51:46 pts/41 &nbsp; 0:00 rlogin cool01</div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; remsh bjbldd ps -fu bonny | grep nmake</div>
+<div>&nbsp;&nbsp; bonny 14289 &nbsp; &nbsp; 1 &nbsp;0 16:38:04 ? &nbsp; &nbsp; &nbsp; &nbsp;0:19 gvim /opt/nwstools/bin/getnmakevar</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    <small class="meta">March 03, 2009 | <a href='/unix/linux/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520unix%2520commands%2520used%2520to%2520debug%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/personal/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apple%2520store%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Apple Store的错误</a></h2>
+
+    <p>今天在Apple4us上看到Apple将于今晚发布新的产品，并且Apple Store的网页正在升级，已经无法正常显示产品信息，于是就随便打开看了一看。想不到不看则以，一看还真让我深感意外: Apple竟然做起了张冠李戴、分裂我中华国土的勾当！</p>
+<p>&nbsp;</p>
+<p>尽管本人对Apple景仰已久，但大是大非面前岂能是非不分？遂给Apple发邮件一封,内容如下：</p>
+<p><a name="英文开始"></a></p>
+<div>Dear Sir/Ms. ,</div>
+<div></div>
+<div>I found something confusing in the webpage <a href="http://store.apple.com/">http://store.apple.com/</a>(following "You can contact our telesales team at the following numbers:").</div>
+<div></div>
+<div></div>
+<div>The logo of Taiwan is not appropriate: you add two Chinese characters "日本" above "Taiwan", which will confuse many people. Taiwan is a part of China, so you should add "中国" instead.</div>
+<div></div>
+<div></div>
+<div>I sincerely remind you about this negligence and hope you can change the logo as soon as possible.</div>
+<div></div>
+<div>Thank you in advance!<br />
+Best wishes!</div>
+<div><a name="英文结束"></a></div>
+<div></div>
+<div>我们还是对Apple的行为拭目以待吧。</div>
+<div></div>
+<div></div>
+<div><img src="http://docs.google.com/File?id=dd6nw3mt_239gjv5ggfw_b" alt="Apple的错误" width="800" height="481" /></div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 03, 2009 | <a href='/personal/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apple%2520store%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apple%2520store%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Apple Store的错误</a></h2>
+
+    <p>今天在Apple4us上看到Apple将于今晚发布新的产品，并且Apple Store的网页正在升级，已经无法正常显示产品信息，于是就随便打开看了一看。想不到不看则以，一看还真让我深感意外: Apple竟然做起了张冠李戴、分裂我中华国土的勾当！</p>
+<p>&nbsp;</p>
+<p>尽管本人对Apple景仰已久，但大是大非面前岂能是非不分？遂给Apple发邮件一封,内容如下：</p>
+<p><a name="英文开始"></a></p>
+<div>Dear Sir/Ms. ,</div>
+<div></div>
+<div>I found something confusing in the webpage <a href="http://store.apple.com/">http://store.apple.com/</a>(following "You can contact our telesales team at the following numbers:").</div>
+<div></div>
+<div></div>
+<div>The logo of Taiwan is not appropriate: you add two Chinese characters "日本" above "Taiwan", which will confuse many people. Taiwan is a part of China, so you should add "中国" instead.</div>
+<div></div>
+<div></div>
+<div>I sincerely remind you about this negligence and hope you can change the logo as soon as possible.</div>
+<div></div>
+<div>Thank you in advance!<br />
+Best wishes!</div>
+<div><a name="英文结束"></a></div>
+<div></div>
+<div>我们还是对Apple的行为拭目以待吧。</div>
+<div></div>
+<div></div>
+<div><img src="http://docs.google.com/File?id=dd6nw3mt_239gjv5ggfw_b" alt="Apple的错误" width="800" height="481" /></div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 03, 2009 | <a href='/bkup/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apple%2520store%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page28' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page26' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

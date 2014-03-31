@@ -1,0 +1,174 @@
+<p>I just installed Redhat Enterprise Linux 6.1 on one HP server. Following error met when rup it on other servers:</p>
+<p>
+<pre>$rup coolnjmcl033
+rup:coolnjmcl033: RPC: Program not registered</pre>
+<p>
+SOLUTION:</p>
+<p>1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check if all nfs related services are working: </p>
+<p>
+<pre>[root@coolnjmcl033init.d]# rpcinfo -p
+   program vers proto   port  service
+    100000   4   tcp    111 portmapper
+    100000   3   tcp    111 portmapper
+    100000   2   tcp    111 portmapper
+    100000   4   udp    111 portmapper
+    100000   3   udp    111 portmapper
+    100000   2   udp    111 portmapper
+    100011   1   udp    875 rquotad
+    100011   2   udp    875 rquotad
+    100011   1   tcp    875 rquotad
+    100011   2   tcp    875 rquotad
+    100003   2   tcp   2049 nfs
+    100003   3   tcp   2049 nfs
+    100003   4   tcp   2049 nfs
+    100227   2   tcp   2049 nfs_acl
+    100227   3   tcp   2049 nfs_acl
+    100003   2   udp   2049 nfs
+    100003   3   udp   2049 nfs
+    100003   4   udp   2049 nfs
+    100227   2   udp   2049 nfs_acl
+    100227   3   udp   2049 nfs_acl
+    100005    1  udp  51310  mountd
+    100005    1  tcp  60605  mountd
+   100005    2   udp 42799  mountd
+   100005    2   tcp 44201  mountd
+   100005    3   udp 49544  mountd
+   100005    3   tcp 49098  mountd
+   100024    1   udp 37035  status
+   100024    1   tcp 60898  status
+   100001    3   udp  1008  rstatd
+   100001    2   udp  1008  rstatd
+   100001    1   udp  1008  rstatd</pre>
+<p></p>
+<p>If there is no running&nbsp;<a href="http://man.sourcentral.org/RHEL6/8+rpc.rstatd">rstatd</a>service , start it by<br />
+<strong>service rstatd start</strong>.&nbsp;</p>
+<p>Accordingto <a href="http://man.sourcentral.org/RHEL6/1+rup">RHEL 6 RUP manual</a>:</p>
+<p>&nbsp;&nbsp;&nbsp; <span style="font-family:'Courier New';">rup: RPC: Program not registered</span></p>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tbody>
+<tr>
+<td valign="top">
+<p><span style="font-family:'Courier New';">&nbsp;</span></p>
+</td>
+<td valign="top">
+<p><span style="font-family:'Courier New';">The&nbsp;<a href="http://man.sourcentral.org/RHEL6/8+rpc.rstatd">rpc.rstatd(8)</a>&nbsp;daemon has not been started on the remote host.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>2) &nbsp;check if package <strong>rusers-server-*</strong>and <strong>rusers-* </strong><br />
+are installed: rpm –qa|greprusers. If not, install it and then restart service rstatd.</p>
+<p>&nbsp;</p>
+<p><em>PS: </em></p>
+<p>Other userful commands:</p></p>
+<ol>
+<li>rup localhost</li>
+<li>service rstatd status</li>
+</ol>
+<p>According to <a href="http://pnaplinux.blogspot.com/2011/02/new-features-in-rhel6.html"><br />
+New Featuresin RHEL6</a>, </p>
+<p>1.ext4 file system is introduced.<br />
+2. xen is&nbsp;removed and kernel&nbsp;virtualization&nbsp;machine&nbsp;(KVM) is introduced.<br />
+3. neat&nbsp;command&nbsp;is removed.<br />
+4. portmap service is removed.<br />
+5. iscsi is introduced, which&nbsp;supports&nbsp;forSAN.<br />
+6. rpmbuild is available, which is used to create our own rpms.<br />
+7. File encyption is added.<br />
+8. palimpsest is available for&nbsp;disk&nbsp;management.<br />
+9.&nbsp;Virtual&nbsp;machine will&nbsp;run&nbsp;only on 64bit processors.<br />
+10. postfix service is&nbsp;recommended&nbsp;insteadof sendmail service.</p>
+<p>&nbsp;</p>
+<p>Accordingto <a href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Storage_Administration_Guide/ch-nfs.html"><br />
+Chapter&nbsp;12.&nbsp;Network File System (NFS)</a><strong>, </strong></p>
+<p>The&nbsp;<strong>portmap</strong>&nbsp;service wasused to map RPC program numbers to IP address port number combinations inearlier versions of Red Hat Enterprise Linux. This service is now replaced by&nbsp;<strong>rpcbind</strong>&nbsp;inRed Hat Enterprise Linux 6 to enable<br />
+ IPv6 support. For more information aboutthis change, refer to the following links:</p>
+<ul type="circle">
+<li><em>TI-RPC / rpcbind support</em>:&nbsp;<a href="http://nfsv4.bullopensource.org/doc/tirpc_rpcbind.php">http://nfsv4.bullopensource.org/doc/tirpc_rpcbind.php</a>
+</li>
+<li><em>IPv6 support in NFS</em>:&nbsp;<a href="http://nfsv4.bullopensource.org/doc/nfs_ipv6.php">http://nfsv4.bullopensource.org/doc/nfs_ipv6.php</a></li>
+</ul>
+<p><span style="font-family:'liberation sans', 'Myriad ', 'Bitstream Vera Sans', 'Lucida Grande', 'Luxi Sans', 'Trebuchet MS', helvetica, verdana, arial, sans-serif;line-height:15px;"></span></p>
+<div class="variablelist" style="line-height:1.29em;padding-top:0;">
+<dl>
+<dt class="varlistentry">
+<span class="term"><span style="font-family:'liberation sans', 'Myriad ', 'Bitstream Vera Sans', 'Lucida Grande', 'Luxi Sans', 'Trebuchet MS', helvetica, verdana, arial, sans-serif;line-height:15px;"></span></span></p>
+<h3 class="title" id="s2-nfs-how-daemons" style="line-height:1.29em;color:rgb(167,0,0);margin-top:0;margin-bottom:0;background-color:transparent;font-size:1.3em;padding-top:0;padding-bottom:0;">
+Required Services</h3>
+</dt>
+<dt class="varlistentry">
+<span class="term">nfs</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">service nfs start</code>&nbsp;starts the NFS server and the appropriate RPC processes to service requests for shared NFS<br />
+ file systems.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">nfslock</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">service nfslock start</code>&nbsp;activates a mandatory service that starts the appropriate RPC processes which allow<br />
+ NFS clients to lock files on the server.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpcbind</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpcbind</code>&nbsp;accepts port reservations from local RPC services. These ports are then made available (or advertised)<br />
+ so the corresponding remote RPC services can access them.&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpcbind</code>&nbsp;responds to requests for RPC services and<br />
+ sets up connections to the requested RPC service. This is not used with NFSv4.</div>
+</dd>
+</dl>
+</div>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+The following RPC processes facilitate NFS services:</div>
+<div class="variablelist" style="line-height:1.29em;padding-top:0;">
+<dl>
+<dt class="varlistentry">
+<span class="term">rpc.mountd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+This process receives mount requests from NFS clients and verifies that the requested file system is currently exported. This process is started automatically by the&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">nfs</code>&nbsp;service<br />
+ and does not require user configuration.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpc.nfsd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpc.nfsd</code>&nbsp;allows explicit NFS versions and protocols the server advertises to be defined. It works with the<br />
+ Linux kernel to meet the dynamic demands of NFS clients, such as providing server threads each time an NFS client connects. This process corresponds to the&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">nfs</code>&nbsp;service.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">lockd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">lockd</code>&nbsp;is a kernel thread which runs on both clients and servers. It implements the&nbsp;<span class="firstterm" style="font-style:italic;">Network<br />
+ Lock Manager</span>&nbsp;(NLM) protocol, which allows NFSv2 and NFSv3 clients to lock files on the server. It is started automatically whenever the NFS server is run and whenever an NFS filesystem is mounted.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpc.statd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+This process implements the&nbsp;<span class="firstterm" style="font-style:italic;">Network Status Monitor</span>&nbsp;(NSM) RPC protocol, which notifies NFS clients when an NFS server is restarted without being gracefully brought down.&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpc.statd</code>&nbsp;is<br />
+ started automatically by the&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">nfslock</code>service, and does not require user configuration. This is not used with<br />
+ NFSv4.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpc.rquotad</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+This process provides user quota information for remote users.&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpc.rquotad</code>&nbsp;is started automatically by the&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">nfs</code>service<br />
+ and does not require user configuration.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpc.idmapd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpc.idmapd</code>&nbsp;provides NFSv4 client and server upcalls, which map between on-the-wire NFSv4 names (which are<br />
+ strings in the form of&nbsp;<code class="computeroutput" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;"><span class="replaceable" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;font-style:italic;"></span></code><code style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">user</code>@<span class="replaceable" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;font-style:italic;"><code style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">domain</code></span>)<br />
+ and local UIDs and GIDs. For&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">idmapd</code>&nbsp;to function with NFSv4, the<code class="filename" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">/etc/idmapd.conf</code>&nbsp;must<br />
+ be configured. This service is required for use with NFSv4, although not when all hosts share the same DNS domain name.</div>
+</dd>
+</dl>
+</div>
+<p></p>

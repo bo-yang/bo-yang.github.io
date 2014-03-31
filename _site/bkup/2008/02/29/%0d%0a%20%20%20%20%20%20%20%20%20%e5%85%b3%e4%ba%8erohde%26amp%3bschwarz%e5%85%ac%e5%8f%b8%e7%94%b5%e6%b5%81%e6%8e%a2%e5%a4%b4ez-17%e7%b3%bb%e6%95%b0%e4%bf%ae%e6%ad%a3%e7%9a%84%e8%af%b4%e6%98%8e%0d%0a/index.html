@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - 关于ROHDE&SCHWARZ公司电流探头EZ-17系数修正的说明 </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>关于ROHDE&SCHWARZ公司电流探头EZ-17系数修正的说明</h1>
+    <p align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于EZ-17探头系数修正的说明</p>
+<p>///// 电流探头EZ17测试结果修正&nbsp;/////<br />// 根据ROHDE&amp;SCHWARZ公司的手册，EZ17的测试结果需要<br />// 进行修正，加上转移电阻K。由手册给出的曲线(第二页)<br />// 和测试数据(第12页，表4-1),可知在对数坐标中，500KHz<br />// 以下可看作一条直线；500KHz～10MHz为一非线性变化段；<br />// 10MHz～200MHz为另一非线性变化段。据此，对测试数据进行<br />// 校正。以下所有拟合函数均为对数坐标系下的拟合函数。<br />//<br />// 20Hz～500KHz拟合函数为：<br />//&nbsp;&nbsp;p1=-19.1838*x-8.1953<br />// 500KHz～10MHz拟合函数为：<br />//&nbsp;&nbsp;p4=18.2253*x^4-31.3557*x^3+16.5565*x^2-6.6261*x-6.8<br />// 10MHz～20MHz拟合函数为：<br />//&nbsp;&nbsp;p0=-10<br />//&nbsp;20MHz～100MHz拟合函数为：<br />//&nbsp;&nbsp;p2=0.1157*x^2-0.0959*x-10.0711<br />// 100MHz～200MHz拟合函数为：<br />//&nbsp;&nbsp;p3=175.6*x^3-1044.5*x^2+2067.7*x-1371.9<br />//&nbsp;以上各式中，x为频率的对数，p为频率所对应的修正因子。<br />//</p>
+<p>&nbsp;</p>
+<div style="border-right:windowtext .5pt solid;border-top:windowtext .5pt solid;background:#e6e6e6;border-left:windowtext .5pt solid;width:95%;word-break:break-all;border-bottom:windowtext .5pt solid;padding:4px 5.4pt;">
+<div><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;参数freq为频率，单位MHz。<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;</span><span style="color:#008000;"><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#0000ff;">double</span><span style="color:#000000;">&nbsp;CEMCView::EZ17CorrectionFactor(</span><span style="color:#0000ff;">double</span><span style="color:#000000;">&nbsp;freq)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBlockStart.gif" /><img style="display:none;" align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedBlock.gif" /></span><span id="_75_600_Closed_Text" style="border-right:#808080 1px solid;border-top:#808080 1px solid;display:none;border-left:#808080 1px solid;border-bottom:#808080 1px solid;background-color:#ffffff;">...</span><span id="_75_600_Open_Text"><span style="color:#000000;">{<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">double</span><span style="color:#000000;">&nbsp;factor;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;=</span><span style="color:#000000;">0.000020</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;=</span><span style="color:#000000;">0.5</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=-</span><span style="color:#000000;">19.1838</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">8.1953</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">else</span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;</span><span style="color:#000000;">0.5</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;</span><span style="color:#000000;">10</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=</span><span style="color:#000000;">18.2253</span><span style="color:#000000;">*</span><span style="color:#000000;">pow(log10(freq),</span><span style="color:#000000;">4</span><span style="color:#000000;">)</span><span style="color:#000000;">-</span><span style="color:#000000;">31.3557</span><span style="color:#000000;">*</span><span style="color:#000000;">pow(log10(freq),</span><span style="color:#000000;">3</span><span style="color:#000000;">)</span><span style="color:#000000;">+</span><span style="color:#000000;">16.5565</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">6.6261</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">6.8</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">else</span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;=</span><span style="color:#000000;">10</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;=</span><span style="color:#000000;">20</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=-</span><span style="color:#000000;">10.0</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">else</span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;</span><span style="color:#000000;">20</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;=</span><span style="color:#000000;">100</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=</span><span style="color:#000000;">0.1157</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">0.0959</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">10.0711</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">else</span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;</span><span style="color:#000000;">100</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;=</span><span style="color:#000000;">200</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=</span><span style="color:#000000;">175.6</span><span style="color:#000000;">*</span><span style="color:#000000;">pow(log10(freq),</span><span style="color:#000000;">3</span><span style="color:#000000;">)</span><span style="color:#000000;">-</span><span style="color:#000000;">1044.5</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">+</span><span style="color:#000000;">2067.7</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">1371.9</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" /><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">return</span><span style="color:#000000;">&nbsp;factor;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBlockEnd.gif" />}</span></span></div>
+</div>
+
+</div>
+
+<small class="meta">Posted February 29, 2008</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

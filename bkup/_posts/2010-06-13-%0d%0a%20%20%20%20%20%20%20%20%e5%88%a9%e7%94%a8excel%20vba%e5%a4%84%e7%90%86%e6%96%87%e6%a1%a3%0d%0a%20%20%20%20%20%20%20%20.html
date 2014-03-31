@@ -1,0 +1,30 @@
+---
+layout: post
+title: 利用Excel VBA处理文档
+categories:
+- VBA
+tags:
+- VBA
+status: publish
+type: post
+published: true
+meta:
+  views: '75'
+  original_post_id: '48'
+  _wp_old_slug: '48'
+author: 
+---
+
+<p>遇到如下格式的一篇WORD文档，格式混乱，不适合打印：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;"><img src="http://bonny95.files.wordpress.com/2010/06/64_1276413753mmbm.jpg" alt="" width="232" height="614" /></span></span></p>
+<p>&nbsp;</p>
+<p>由于没有接触过Word VBA，因此决定用Excel VBA来处理这篇文档。首先全选该文档的内容，粘贴到Excel文档中。然后创建一个新的macro,修改该Macro为以下代码：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;">
+<pre>Sub FormatSheet()'' FormatSheet Macro' Macro recorded 6/13/2010 by Bo Yang'' Keyboard Shortcut: Ctrl+f'    Dim str As String    Dim i As Long        ' Remove blank rows    rownumber = Range(&quot;A65536&quot;).End(xlUp).Row    Do While rownumber &gt;= 1        If Cells(rownumber, 1).Value = &quot;&quot; Then            Rows(rownumber).Delete            rownumber = rownumber - 1        End If        rownumber = rownumber - 1    Loop        ' Copy the Chinese intepretation    For rownumber = 2 To 65535        Cells(rownumber, 2).Value = Cells(rownumber + 1, 1).Value    Next        ' Delete rows which contians Chinese character    ' in their first cells    For rownumber = 2 To 65535        For i = 1 To Len(Cells(rownumber, 1).Value)            str = Mid(Cells(rownumber, 1).Value, i, 1)            If str Like &quot;[Ò»£­ý›]&quot; Then                Rows(rownumber).Delete            End If        Next    Next    End Sub</pre>
+<p> </span></span></p>
+<p>&nbsp;</p>
+<p>然后按自定义快捷键Ctrl+f， 数秒钟后，文档处理完毕，秩序井然矣。</p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2010/06/64_12764139792ekk.jpg" alt="" width="464" height="523" /></p>

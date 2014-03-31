@@ -1,0 +1,23 @@
+---
+layout: post
+title: Build Dense Trajectory Codes in Ubuntu
+categories: []
+tags:
+- Computer Vision
+- DTF
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  publicize_facebook_url: https://facebook.com/
+  publicize_linkedin_url: http://www.linkedin.com/updates?discuss=&scope=74863407&stype=M&topic=5794201405740826624&type=U&a=BjiC
+  _wpas_done_373263: '1'
+  _publicize_done_external: a:1:{s:8:"linkedin";a:1:{s:10:"DFfbe-Shd5";b:1;}}
+  _wpas_skip_373264: '1'
+  _wpas_skip_373263: '1'
+author: 
+---
+<p>Even when the OpenCV and ffmpeg have been successfully installed, you still may meet the error of "<strong>undefined reference to main</strong>" when building the <a href="http://lear.inrialpes.fr/people/wang/dense_trajectories">Dense Trajectory code</a>. Since the author didn't provide a solution, I share my workaround here -- just use command g++ directly:</p>
+<p><code>g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp</code></p>
+<p>The program <em>Video</em> can be built in similar way, just substitute all <em>DenseTrack</em> into Video.</p>

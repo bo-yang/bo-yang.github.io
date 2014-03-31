@@ -1,0 +1,96 @@
+---
+layout: post
+title: Simple Matlab/Octave Commands to Process Data
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _wpas_done_373263: '1'
+  _wpas_skip_373263: '1'
+  _publicize_done_external: a:1:{s:8:"linkedin";a:1:{s:10:"DFfbe-Shd5";b:1;}}
+author: 
+---
+<p>To load data in following format stored in a text file "read_pos' into Matlab/Octave, use commands<br />
+<code><br />
+    f=fopen('read_pos','r'); % open file<br />
+    a=textscan(f,'%s%d');  % read file<br />
+    y=a{2}; % a is a cell: a{1} stores read id, a{2} stores numbers.<br />
+</code><br />
+<br />
+Then data of the second column are stored in variable y.<br />
+<code><br />
+r12353.1 	2407054.5<br />
+r12361.1 	5328858.5<br />
+r12363.1 	2360272<br />
+r12368.1 	4726440.5<br />
+r12372.1 	2224001<br />
+r12373.1 	5165613.5<br />
+r12381.1 	501776<br />
+r12385.1 	3475398<br />
+r12394.1 	3376364<br />
+r12401.1 	2142875.5<br />
+r12411.1 	2191090.5<br />
+r12419.1 	1240590<br />
+r12420.1 	4903572<br />
+r12422.1 	767011.5<br />
+r12426.1 	3575915.5<br />
+r12429.1 	554956<br />
+r12433.1 	4786335<br />
+r12435.1 	3373955.5<br />
+r12442.1 	5363611.5<br />
+r12452.1 	1903660.5<br />
+r12454.1 	2784165<br />
+r12466.1 	5137479<br />
+r12470.1 	592191<br />
+</code><br />
+<br />
+If there are only numbers stored in file "read_pos", following commands should be used:<br />
+<code><br />
+    f=fopen('read_pos','r'); % open file<br />
+    a=textscan(f,'%s%d');  % read file<br />
+    y=cell2mat{a}; % convert cell a to vector<br />
+    size(y) % check the size<br />
+</code></p>
+<p>
+To plot the distribution of all the numbers, you can:<br />
+<code><br />
+    x=zeros(size(y));<br />
+    plot(y,x,'bo');<br />
+</code><br />
+<br />
+If another data set z is also loaded and you want to plot y and z in the same graph, you can:<br />
+<code><br />
+    figure<br />
+    x=zeros(size(y));<br />
+    plot(y,x,'bo');<br />
+    hold on<br />
+    x=ones(size(z));<br />
+    plot(z,x,'r+');<br />
+</code></p>
+<p>
+To annotate and scale the graph, use commands;<br />
+<code><br />
+    xlabel('AMD Data k-mer Occurrances');<br />
+    title('GPD Classification of AMD k-mers')<br />
+    legend('Bin 1','Bin 2')<br />
+    axis([-5 5 0 10000]) % scale axes<br />
+</code></p>
+<p>A matlab function to plot multiple datasets:<br />
+<code><br />
+function result=plot_distr(varargin)</p>
+<p>nVarargs=length(varargin);</p>
+<p>marker={'bo' 'r+' 'k*' 'gs' 'y^' 'md' 'cp' 'bx' 'r.' 'k&gt;' 'gh' 'y&lt;&#039;};<br />
+figure<br />
+for k=1:nVarargs<br />
+	f=fopen(varargin{k},&#039;r&#039;);<br />
+	a=textscan(f,&#039;%d&#039;);<br />
+	y=cell2mat(a);<br />
+	x=zeros(size(y))+k;<br />
+	plot(y,x,marker{k});<br />
+	hold on<br />
+end<br />
+ylim([0-5*nVarargs 6*nVarargs]); % scale y-axis<br />
+</code></p>

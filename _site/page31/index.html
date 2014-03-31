@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/11/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2520notes%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Korn Shell Notes(II)</a></h2>
+
+    <br />
+<h1 style="text-align:center;"><a id="_korn_Shell_Mannual_7321622101" name="_korn_Shell_Mannual_7321622101"></a> Korn Shell Notes<br /></h1>
+<div>
+<h2><a id="1_Useful_Cmds_5672844878149838_07467550420309199" name="1_Useful_Cmds_5672844878149838_07467550420309199"></a><i>1 Useful Cmds</i></h2>
+<p><b>wc</b> - display a count of lines, words and characters in a file.<br />
+&nbsp;&nbsp; &nbsp;It can be used to count the numbers together with other commands, such as ls, who and so on.</p>
+<p><b>cut</b> - cut out selected fields of each line of a file.<br />
+&nbsp;&nbsp;&nbsp; The name of each unique user that is logged on is displayed using this command:<br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ who | cut —f1 —d' ' | sort —u</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;anatole</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;root</p>
+<p></span><b>print</b> is a Korn shell&nbsp;specialized&nbsp;command which is similar to <span style="font-family:Courier New;">echo</span>.</p>
+<p><b>nl</b> - line numbering filter.</div>
+<div>
+<h2><a id="2_Conditional_Execution_938277" name="2_Conditional_Execution_938277"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;"><i>2 Process Execution</i><br /></span></span></h2>
+<h3><a id="2_1_Conditional_Execution_5079_8305832861221516" name="2_1_Conditional_Execution_5079_8305832861221516"></a>2.1 <span style="font-family:Courier New;"><span style="font-family:Verdana;">Conditional Execution</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">You can implement a simple if command by using the &amp;&amp; and || operators together like this:<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">command1 &amp;&amp; command2 || command3</span><br />
+If command1 returns true, then command2 is executed, which causes<br />
+command3 to not be executed. If command1 does not return true, then<br />
+command2 is not executed, which causes command3 to be executed.<br />
+</span></span></div>
+<div>
+<h3><a id="3_Grouping_Commands_3102224048" name="3_Grouping_Commands_3102224048"></a>2.2 Grouping Commands</h3>
+<p>Commands enclosed in {} are executed in current shell. If</div>
+<div><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo "This is file temp:" ; cat temp | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 falls mainly on the plain</span></div>
+<div>
+<div style="padding:1em 0;text-align:center;" id="ozct">
+<div style="text-align:left;">then by using {}s, the output will be:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ { echo "This is file temp:"; cat temp ; } | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;3 falls mainly on the plain</span><br />There must be whitespace after the opening {, and commands within the {}'s must be terminated with a semi-colon.</p>
+<p>Commands<br />
+enclosed in () are executed in a subshell. Subshells are generated<br />
+whenever you enclose commands in ()'s, perform command substitution,<br />
+for background processes, and for coprocesses.A subshell is a separate<br />
+copy of the parent shell, so variables, functions, and aliases from the<br />
+parent shell are available to the subshell. However, subshells cannot<br />
+change the value of parent shell variables, functions, or aliases.</div>
+<p><img src="http://docs.google.com/File?id=dd6nw3mt_104f3ccnmc3_b" style="width:501px;height:609px;" /></div>
+</div>
+<h3><a id="4_Redirecting_Standard_Output_" name="4_Redirecting_Standard_Output_"></a><span style="font-family:Courier New;"></span><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<h2><a id="3_Input_Output_Redirection_262_7061543286301161" name="3_Input_Output_Redirection_262_7061543286301161"></a><i>3 Input/Output Redirection</i></h2>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<h3><a id="3_1_Redirecting_Standard_Outpu_8229576773319682" name="3_1_Redirecting_Standard_Outpu_8229576773319682"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">3.1 Redirecting Standard Output</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">By using the &gt; symbol, the standard output of a command can be redirected to a file, instead of your terminal.</p>
+<p>You can also use the &gt; command to create an empty file:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ &gt; tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ ls —s tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;0 tmp</span><br />This is equivalent to <span style="font-family:Courier New;">touch tmp</span>.</p>
+<p>Standard output can be appended to a file by using the <b>&gt;&gt;</b> redirect operator.</p>
+<p>Standard output is closed with the <b><span style="font-family:Courier New;">&gt;&amp;-</span></b> redirect operator:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ echo "This is going nowhere" &gt;&amp;-</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$</span><br /></span></span><br />
+<h3><a id="5_The_noclobber_Option_4119643" name="5_The_noclobber_Option_4119643"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">3.2 The<span style="font-family:Courier New;"> noclobber</span> Option</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">To<br />
+prevent redirecting output to an existing file, set the noclobber<br />
+option. By default, this feature is usually disabled, but can be<br />
+enabled with the <b>set -o noclobber</b> command:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">$ ls &gt; file.out</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">$ set —o noclobber</span></p>
+<p>The &gt;| operator is used to force overwriting of a file, even if the noclobber option is enabled.<br /></span></span><br />
+<h3><a id="6_Redirecting_Standard_Input_2" name="6_Redirecting_Standard_Input_2"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">3.3 Redirecting Standard Input</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">Standard input to a command is redirected from a file using the &lt; operator.</p>
+<div id="l-l6" style="padding:1em 0;text-align:center;"><img style="width:656px;height:461px;" src="http://docs.google.com/File?id=dd6nw3mt_142zhz6kvd8_b" />
+<div style="text-align:left;">
+<h3><a id="7_Redirecting_Standard_Error_6" name="7_Redirecting_Standard_Error_6"></a>3.4 Redirecting Standard Error</h3>
+<p>As<br />
+with standard output, standard error is by default directed to your<br />
+terminal, but it can be redirected using the standard error file<br />
+descriptor (2) and the &gt; operator, e.g. <b>2&gt;</b>
+<div id="kvf6" style="padding:1em 0;text-align:center;"><img style="width:453px;height:180px;" src="http://docs.google.com/File?id=dd6nw3mt_143dnb47w36_b" />
+<div style="text-align:left;">
+<h3><a id="8_More_With_File_Descriptors_7" name="8_More_With_File_Descriptors_7"></a>3.5 More With File Descriptors</h3>
+<p>The <b>&gt;&amp;n </b>operator<br />
+causes output to be redirected to file descriptor n. This is used when<br />
+you want to direct output to a specific file descriptor.In the next<br />
+command, the standard error and output are sent to ls.out by specifying<br />
+multiple redirections on the same command line. First, <b>&gt;&amp;2</b><br />
+causes standard output to be redirected to standard error. Then,<br />
+2&gt;ls.out causes standard error (which is now standard output and<br />
+standard error) to be sent to ls.out:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ ls tmp t.out 2&gt;ls.out 1&gt;&amp;2</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ cat ls.out</span><br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; tmp not found</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; t.out</span><br style="font-family:Courier New;" /><br />If<br />
+the output of the last command was redirected to a file using the &gt;<br />
+operator, then only the standard output would be redirected. The<br />
+standard error would still be displayed on your terminal.<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ {echo "This is going to stdout"} &gt;&amp;1;/</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;echo "This is going to stderr" &gt;&amp;2;} &gt;out</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is going to stderr</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ cat out</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is going to stdout.</span></p>
+<p>The<b> <span style="font-family:Courier New;">n&gt;&amp;m</span> </b>operator<br />
+causes the output from file descriptors n and m to be merged. This<br />
+operator could be used in the previous command to direct both the<br />
+standard output and standard error to the same file.</div>
+</div>
+<p>If you wanted the standard output and standard error appended to the output file, the <span style="font-family:Courier New;">&gt;&gt;</span> operator could be used.<br />
+<h3><a id="9_Here_Document_78766796044282" name="9_Here_Document_78766796044282"></a>3.6 Here Document</h3>
+<p>&nbsp;<br />
+Here documents is a term used for redirecting multiple lines of<br />
+standard input to a command. In looser terms, they allow batch input to<br />
+be given to programs and are frequently used to execute interactive<br />
+commands from within Korn shell scripts. The format for a here document<br />
+is:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>command &lt;&lt; word</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i><span style="font-family:Courier New;">command &lt;&lt;-word</span></i><br />where lines that follow are used as standard input to command until word is read. </p>
+<p>The<br />
+other variation, command &lt;&lt;- word, deletes leading tab characters<br />
+from the here document. It is often used over the first variation to<br />
+produce more readable code when used within larger scripts. A good use<br />
+for here documents is to automate ftp file transfers. This snippet of<br />
+code could be used within a larger script to automatically ftp code to<br />
+or from another server.<br />
+<h3><a id="10_Discarding_Standard_Output_" name="10_Discarding_Standard_Output_"></a>3.7 Discarding Standard Output</h3>
+<p>&nbsp; The <span style="font-family:Courier New;">/dev/null</span> file is like the system trash bin. Anything redirected to it is discarded by the system.
+<div id="d4na" style="padding:1em 0;text-align:center;"><img style="width:456px;height:653px;" src="http://docs.google.com/File?id=dd6nw3mt_144g6jg94h3_b" />
+<div style="text-align:left;">
+<h2><a id="4_File_Name_Substitution_36576_08147998549624513" name="4_File_Name_Substitution_36576_08147998549624513"></a><i>4 File Name Substitution</i></h2>
+<h3><a id="4_1_The_Character_8811087270296203" name="4_1_The_Character_8811087270296203"></a>4.1 The * Character</h3>
+<p>The<br />
+* matches any zero or more characters in current directory, except<br />
+those begin with the "." character. These must be explicitly matched.<br />
+<h3><a id="4_2_The_Character_9445044472675496" name="4_2_The_Character_9445044472675496"></a>4.2 The ? Character</h3>
+<p>The ? character matches exactly one character.<br />
+<h3><a id="4_3_The_Character_8276669466373929" name="4_3_The_Character_8276669466373929"></a>4.3 The [] Character</h3>
+<p>The [] characters match a single, multiple, or range of characters. <br />This command lists file names beginning with d or m, and ending with any number 1 through 5:
+<div id="b.as" style="padding:1em 0;text-align:center;"><img style="width:574px;height:69px;" src="http://docs.google.com/File?id=dd6nw3mt_145445m29dg_b" /></div>
+<p>In<br />
+the range argument, the first character must be alphabetically less<br />
+than the last character. This means that [c-a] is an invalid range.<br />
+This also means that pattern [0-z] matches any alphabetic or<br />
+alphanumeric character, [A-z] matches any alphabetic character (upper<br />
+and lower case), [0Z] matches any alphanumeric or upper case<br />
+alphabetic character, and [09] matches any alphanumeric character.</p>
+<p>Multiple ranges can also be given. The pattern <span style="font-family:Courier New;">[a-jlmr3-7]</span> would match files names beginning with the letters a through j, l, m, r, and 3 through 7.<br />
+<h3><a id="4_4_The_Character_8385233166155047" name="4_4_The_Character_8385233166155047"></a>4.4 The ! Character</h3>
+<p>The ! character can be used with [ ] to reverse the match. In other words,<span style="font-family:Courier New;"> [!a]</span> matches any character, except <span style="font-family:Courier New;">a</span>.<br />If we want to list all of the file names except those started with d, we could do this:
+<div id="e0s4" style="padding:1em 0;text-align:center;"><img style="width:593px;height:98px;" src="http://docs.google.com/File?id=dd6nw3mt_146g3wh6vf8_b" /></div>
+<p>or it can be done more easily using <b><span style="font-family:Courier New;">[!d]</span></b>:
+<div id="oa2y" style="padding:1em 0;text-align:center;"><img style="width:590px;height:72px;" src="http://docs.google.com/File?id=dd6nw3mt_147ggsj9rdd_b" /></div>
+<p>Multiple and range arguments can also be negated. The pattern <b><span style="font-family:Courier New;">[!lro]*</span></b> would match strings not beginning with l, r, or o, <b>*[!25]</b> would match strings not ending with 2 through 5, and <b><span style="font-family:Courier New;">*.[!Z]</span></b> would match strings not ending in .Z.
+<div id="l82v" style="padding:1em 0;text-align:center;"><img style="width:419px;height:356px;" src="http://docs.google.com/File?id=dd6nw3mt_148f76gd7dg_b" />
+<div style="text-align:left;">
+<h3><a id="4_5_Complex_Patterns_6749485921749048" name="4_5_Complex_Patterns_6749485921749048"></a>4.5 Complex Patterns</h3>
+<p>Korn Shell also provides entire patterns matching.
+<div id="qkd5" style="padding:1em 0;text-align:center;"><img style="width:533px;height:353px;" src="http://docs.google.com/File?id=dd6nw3mt_150dzwchbcf_b" /></div>
+<h4><a id="4_5_1_pattern__7121078334798239" name="4_5_1_pattern__7121078334798239"></a>4.5.1 *(<i>pattern</i>)</h4>
+<p>This format matches any zero or more occurrences of pattern.</div>
+</div>
+<p>This pattern matches anti, antic, antigen, and antique: <b>$ match anti*(c|gen|que)</b><br />
+<h4><a id="4_5_2_pattern__3180494268564732" name="4_5_2_pattern__3180494268564732"></a>4.5.2 ?<span style="font-family:Courier New;"></span>(<i>pattern</i>)</h4>
+<p>This format matches any zero or one occurrences of pattern. Here are some more patterns using this format:
+<div id="ty67" style="padding:1em 0;text-align:left;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<img style="width:328px;height:164px;" src="http://docs.google.com/File?id=dd6nw3mt_1549w8352fj_b" /></div>
+<h4><a id="4_5_3_pattern__1431321966993203" name="4_5_3_pattern__1431321966993203"></a>4.5.3 +(<i>pattern</i>)</h4>
+<p>This format matches one or more occurrences of pattern.<br />
+<h4><a id="4_5_4_pattern__14535345873275873" name="4_5_4_pattern__14535345873275873"></a>4.5.4 @(<i>pattern</i>)</h4>
+<p>This format matches exactly one occurrence of pattern. Let's look for words beginning with <b>Ala</b> or <b>Cla</b>: &nbsp;&nbsp; &nbsp;<b><span style="font-family:Courier New;">$ match @([AC]la)*</span></b><br />
+<h4><a id="4_5_5_pattern__6355112508705647" name="4_5_5_pattern__6355112508705647"></a>4.5.5 !(pattern)</h4>
+<p>This format matches anything except pattern. To match any string that does not end in .c, .Z, or .o:<br /><b><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; !(*.c|*.Z|*.o)</span></b><br />or any string that does not contain digits:<br /><b>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;!(*[0-9]*)</b>
+<div id="i2wj" style="padding:1em 0;text-align:center;"><img style="width:329px;height:256px;" src="http://docs.google.com/File?id=dd6nw3mt_155hnrm7xht_b" /></div>
+<p>
+<h3><a id="4_6_Disabling_File_Name_Substi_16185795665760638" name="4_6_Disabling_File_Name_Substi_16185795665760638"></a>4.6 Disabling File Name Substitution</h3>
+<p>File name substitution can be disabled by setting the noglob option using the set command:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">&nbsp;</span><span style="font-family:Courier New;">$ set —o noglob</span><br />or<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">$ set —f</span></p>
+<p>The <span style="font-family:Courier New;">-o noglob</span> and <span style="font-family:Courier New;">-f options</span><br />
+for the set command are the same. Once file name substitution is<br />
+disabled, pattern-matching characters like *, ?, and ] lose their<br />
+special meaning:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ ls a*</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;a* not found</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ ls b?</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;b? not found</span><br /><b>Within [...] patterns, a / character is used to remove the meaning of the special pattern-matching characters.</b> This means that the [/*/?]* pattern would match file names beginning with * or ?.<br />
+<h2><a id="5_Command_Substitution_8604427133040446" name="5_Command_Substitution_8604427133040446"></a><i>5 Command Substitution</i></h2>
+<p>Command<br />
+substitution is a feature that allows output to be expanded from a<br />
+command. It can be used to assign the output of a command to a<br />
+variable, or to imbed the output of a command within another command.<br />
+The format for command substitution is:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <b>&nbsp;</b><b><span style="font-family:Courier New;">$(<i>command</i>)</span></b><br />where <i>command</i> is executed and the output is substituted for the entire <i>$(command)</i> construct.<br />For example, to print the current date in a friendly format:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo The date is $(date)</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;The date is Fri Jul 27 10:41:21 PST 1996</span><br />
+<h3><a id="5_1_Bourne_Shell_Compatibility" name="5_1_Bourne_Shell_Compatibility"></a>5.1 Bourne Shell Compatibility</h3>
+<p>For compatibility with the Bourne shell, the following format for command substitution can also be used:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<b><span style="font-family:Courier New;">`</span><i>command</i><span style="font-family:Courier New;"> `</span></b><br />Using `. . .` command substitution, we could get the names of the files in the current directory like this:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo `ls` are in this directory</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;NEWS asp bin pc are this directory</span><br />
+<h3><a id="5_2_Directing_File_Input" name="5_2_Directing_File_Input"></a>5.2 Directing File Input</h3>
+<p>There is also a special form of the <b>$(...)</b> command that is used to substitute the contents of a file. The format for file input substitution is:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<b><span style="font-family:Courier New;">$(&lt;file)</span></b><br />This is equivalent to<b><span style="font-family:Courier New;"> $(cat file)</span></b> or `<b>cat file</b>`, except that it is faster, because an extra process does not have to be created to execute the <span style="font-family:Courier New;">cat</span> command.</p>
+<h3><a id="5_3_Arithmetic_Operations" name="5_3_Arithmetic_Operations"></a>5.3 Arithmetic Operations</h3>
+<p>Another form of the $(...) command is used to substitute the output of<br />
+arithmetic expressions. The value of an arithmetic expression is<br />
+returned when enclosed in double parentheses and preceded with a dollar<br />
+sign.<br />
+<b><span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>$((arithmetic-expression))</span></b><br />
+Here are a few examples.<br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>$ echo $((3+5))</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>8</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>$ echo $((8192*16384%23))</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>9</span></p>
+<h3><a id="5_4_Tilde_Substitution" name="5_4_Tilde_Substitution"></a>5.4 Tilde Substitution</h3>
+<p>Tilde substitution is used to substitute the pathname of a user's home<br />
+directory for ~user. Words in the command line that start with the<br />
+tilde character cause the Korn shell to check the rest of the word up<br />
+to a slash. If the tilde character is found alone or is only followed<br />
+by a slash, it is replaced with the value of the <b>HOME</b> variable.</p>
+<div id="xcw:" style="padding:1em 0;text-align:center;"><img style="width:538px;height:198px;" src="http://docs.google.com/File?id=dd6nw3mt_156dqcvxngk_b" /></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p></span></span><span style="background-color:rgb(255,255,0);"></span></p>
+
+
+    <small class="meta">November 24, 2008 | <a href='/bkup/2008/11/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2520notes%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2008/11/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2520notes%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Korn Shell Notes(II)</a></h2>
+
+    <br />
+<h1 style="text-align:center;"><a id="_korn_Shell_Mannual_7321622101" name="_korn_Shell_Mannual_7321622101"></a> Korn Shell Notes<br /></h1>
+<div>
+<h2><a id="1_Useful_Cmds_5672844878149838_07467550420309199" name="1_Useful_Cmds_5672844878149838_07467550420309199"></a><i>1 Useful Cmds</i></h2>
+<p><b>wc</b> - display a count of lines, words and characters in a file.<br />
+&nbsp;&nbsp; &nbsp;It can be used to count the numbers together with other commands, such as ls, who and so on.</p>
+<p><b>cut</b> - cut out selected fields of each line of a file.<br />
+&nbsp;&nbsp;&nbsp; The name of each unique user that is logged on is displayed using this command:<br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ who | cut —f1 —d' ' | sort —u</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;anatole</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;root</p>
+<p></span><b>print</b> is a Korn shell&nbsp;specialized&nbsp;command which is similar to <span style="font-family:Courier New;">echo</span>.</p>
+<p><b>nl</b> - line numbering filter.</div>
+<div>
+<h2><a id="2_Conditional_Execution_938277" name="2_Conditional_Execution_938277"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;"><i>2 Process Execution</i><br /></span></span></h2>
+<h3><a id="2_1_Conditional_Execution_5079_8305832861221516" name="2_1_Conditional_Execution_5079_8305832861221516"></a>2.1 <span style="font-family:Courier New;"><span style="font-family:Verdana;">Conditional Execution</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">You can implement a simple if command by using the &amp;&amp; and || operators together like this:<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">command1 &amp;&amp; command2 || command3</span><br />
+If command1 returns true, then command2 is executed, which causes<br />
+command3 to not be executed. If command1 does not return true, then<br />
+command2 is not executed, which causes command3 to be executed.<br />
+</span></span></div>
+<div>
+<h3><a id="3_Grouping_Commands_3102224048" name="3_Grouping_Commands_3102224048"></a>2.2 Grouping Commands</h3>
+<p>Commands enclosed in {} are executed in current shell. If</div>
+<div><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo "This is file temp:" ; cat temp | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 falls mainly on the plain</span></div>
+<div>
+<div style="padding:1em 0;text-align:center;" id="ozct">
+<div style="text-align:left;">then by using {}s, the output will be:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ { echo "This is file temp:"; cat temp ; } | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;3 falls mainly on the plain</span><br />There must be whitespace after the opening {, and commands within the {}'s must be terminated with a semi-colon.</p>
+<p>Commands<br />
+enclosed in () are executed in a subshell. Subshells are generated<br />
+whenever you enclose commands in ()'s, perform command substitution,<br />
+for background processes, and for coprocesses.A subshell is a separate<br />
+copy of the parent shell, so variables, functions, and aliases from the<br />
+parent shell are available to the subshell. However, subshells cannot<br />
+change the value of parent shell variables, functions, or aliases.</div>
+<p><img src="http://docs.google.com/File?id=dd6nw3mt_104f3ccnmc3_b" style="width:501px;height:609px;" /></div>
+</div>
+<h3><a id="4_Redirecting_Standard_Output_" name="4_Redirecting_Standard_Output_"></a><span style="font-family:Courier New;"></span><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<h2><a id="3_Input_Output_Redirection_262_7061543286301161" name="3_Input_Output_Redirection_262_7061543286301161"></a><i>3 Input/Output Redirection</i></h2>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<h3><a id="3_1_Redirecting_Standard_Outpu_8229576773319682" name="3_1_Redirecting_Standard_Outpu_8229576773319682"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">3.1 Redirecting Standard Output</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">By using the &gt; symbol, the standard output of a command can be redirected to a file, instead of your terminal.</p>
+<p>You can also use the &gt; command to create an empty file:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ &gt; tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ ls —s tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;0 tmp</span><br />This is equivalent to <span style="font-family:Courier New;">touch tmp</span>.</p>
+<p>Standard output can be appended to a file by using the <b>&gt;&gt;</b> redirect operator.</p>
+<p>Standard output is closed with the <b><span style="font-family:Courier New;">&gt;&amp;-</span></b> redirect operator:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ echo "This is going nowhere" &gt;&amp;-</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$</span><br /></span></span><br />
+<h3><a id="5_The_noclobber_Option_4119643" name="5_The_noclobber_Option_4119643"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">3.2 The<span style="font-family:Courier New;"> noclobber</span> Option</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">To<br />
+prevent redirecting output to an existing file, set the noclobber<br />
+option. By default, this feature is usually disabled, but can be<br />
+enabled with the <b>set -o noclobber</b> command:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">$ ls &gt; file.out</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">$ set —o noclobber</span></p>
+<p>The &gt;| operator is used to force overwriting of a file, even if the noclobber option is enabled.<br /></span></span><br />
+<h3><a id="6_Redirecting_Standard_Input_2" name="6_Redirecting_Standard_Input_2"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">3.3 Redirecting Standard Input</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">Standard input to a command is redirected from a file using the &lt; operator.</p>
+<div id="l-l6" style="padding:1em 0;text-align:center;"><img style="width:656px;height:461px;" src="http://docs.google.com/File?id=dd6nw3mt_142zhz6kvd8_b" />
+<div style="text-align:left;">
+<h3><a id="7_Redirecting_Standard_Error_6" name="7_Redirecting_Standard_Error_6"></a>3.4 Redirecting Standard Error</h3>
+<p>As<br />
+with standard output, standard error is by default directed to your<br />
+terminal, but it can be redirected using the standard error file<br />
+descriptor (2) and the &gt; operator, e.g. <b>2&gt;</b>
+<div id="kvf6" style="padding:1em 0;text-align:center;"><img style="width:453px;height:180px;" src="http://docs.google.com/File?id=dd6nw3mt_143dnb47w36_b" />
+<div style="text-align:left;">
+<h3><a id="8_More_With_File_Descriptors_7" name="8_More_With_File_Descriptors_7"></a>3.5 More With File Descriptors</h3>
+<p>The <b>&gt;&amp;n </b>operator<br />
+causes output to be redirected to file descriptor n. This is used when<br />
+you want to direct output to a specific file descriptor.In the next<br />
+command, the standard error and output are sent to ls.out by specifying<br />
+multiple redirections on the same command line. First, <b>&gt;&amp;2</b><br />
+causes standard output to be redirected to standard error. Then,<br />
+2&gt;ls.out causes standard error (which is now standard output and<br />
+standard error) to be sent to ls.out:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ ls tmp t.out 2&gt;ls.out 1&gt;&amp;2</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ cat ls.out</span><br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; tmp not found</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; t.out</span><br style="font-family:Courier New;" /><br />If<br />
+the output of the last command was redirected to a file using the &gt;<br />
+operator, then only the standard output would be redirected. The<br />
+standard error would still be displayed on your terminal.<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ {echo "This is going to stdout"} &gt;&amp;1;/</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;echo "This is going to stderr" &gt;&amp;2;} &gt;out</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is going to stderr</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ cat out</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is going to stdout.</span></p>
+<p>The<b> <span style="font-family:Courier New;">n&gt;&amp;m</span> </b>operator<br />
+causes the output from file descriptors n and m to be merged. This<br />
+operator could be used in the previous command to direct both the<br />
+standard output and standard error to the same file.</div>
+</div>
+<p>If you wanted the standard output and standard error appended to the output file, the <span style="font-family:Courier New;">&gt;&gt;</span> operator could be used.<br />
+<h3><a id="9_Here_Document_78766796044282" name="9_Here_Document_78766796044282"></a>3.6 Here Document</h3>
+<p>&nbsp;<br />
+Here documents is a term used for redirecting multiple lines of<br />
+standard input to a command. In looser terms, they allow batch input to<br />
+be given to programs and are frequently used to execute interactive<br />
+commands from within Korn shell scripts. The format for a here document<br />
+is:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>command &lt;&lt; word</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i><span style="font-family:Courier New;">command &lt;&lt;-word</span></i><br />where lines that follow are used as standard input to command until word is read. </p>
+<p>The<br />
+other variation, command &lt;&lt;- word, deletes leading tab characters<br />
+from the here document. It is often used over the first variation to<br />
+produce more readable code when used within larger scripts. A good use<br />
+for here documents is to automate ftp file transfers. This snippet of<br />
+code could be used within a larger script to automatically ftp code to<br />
+or from another server.<br />
+<h3><a id="10_Discarding_Standard_Output_" name="10_Discarding_Standard_Output_"></a>3.7 Discarding Standard Output</h3>
+<p>&nbsp; The <span style="font-family:Courier New;">/dev/null</span> file is like the system trash bin. Anything redirected to it is discarded by the system.
+<div id="d4na" style="padding:1em 0;text-align:center;"><img style="width:456px;height:653px;" src="http://docs.google.com/File?id=dd6nw3mt_144g6jg94h3_b" />
+<div style="text-align:left;">
+<h2><a id="4_File_Name_Substitution_36576_08147998549624513" name="4_File_Name_Substitution_36576_08147998549624513"></a><i>4 File Name Substitution</i></h2>
+<h3><a id="4_1_The_Character_8811087270296203" name="4_1_The_Character_8811087270296203"></a>4.1 The * Character</h3>
+<p>The<br />
+* matches any zero or more characters in current directory, except<br />
+those begin with the "." character. These must be explicitly matched.<br />
+<h3><a id="4_2_The_Character_9445044472675496" name="4_2_The_Character_9445044472675496"></a>4.2 The ? Character</h3>
+<p>The ? character matches exactly one character.<br />
+<h3><a id="4_3_The_Character_8276669466373929" name="4_3_The_Character_8276669466373929"></a>4.3 The [] Character</h3>
+<p>The [] characters match a single, multiple, or range of characters. <br />This command lists file names beginning with d or m, and ending with any number 1 through 5:
+<div id="b.as" style="padding:1em 0;text-align:center;"><img style="width:574px;height:69px;" src="http://docs.google.com/File?id=dd6nw3mt_145445m29dg_b" /></div>
+<p>In<br />
+the range argument, the first character must be alphabetically less<br />
+than the last character. This means that [c-a] is an invalid range.<br />
+This also means that pattern [0-z] matches any alphabetic or<br />
+alphanumeric character, [A-z] matches any alphabetic character (upper<br />
+and lower case), [0Z] matches any alphanumeric or upper case<br />
+alphabetic character, and [09] matches any alphanumeric character.</p>
+<p>Multiple ranges can also be given. The pattern <span style="font-family:Courier New;">[a-jlmr3-7]</span> would match files names beginning with the letters a through j, l, m, r, and 3 through 7.<br />
+<h3><a id="4_4_The_Character_8385233166155047" name="4_4_The_Character_8385233166155047"></a>4.4 The ! Character</h3>
+<p>The ! character can be used with [ ] to reverse the match. In other words,<span style="font-family:Courier New;"> [!a]</span> matches any character, except <span style="font-family:Courier New;">a</span>.<br />If we want to list all of the file names except those started with d, we could do this:
+<div id="e0s4" style="padding:1em 0;text-align:center;"><img style="width:593px;height:98px;" src="http://docs.google.com/File?id=dd6nw3mt_146g3wh6vf8_b" /></div>
+<p>or it can be done more easily using <b><span style="font-family:Courier New;">[!d]</span></b>:
+<div id="oa2y" style="padding:1em 0;text-align:center;"><img style="width:590px;height:72px;" src="http://docs.google.com/File?id=dd6nw3mt_147ggsj9rdd_b" /></div>
+<p>Multiple and range arguments can also be negated. The pattern <b><span style="font-family:Courier New;">[!lro]*</span></b> would match strings not beginning with l, r, or o, <b>*[!25]</b> would match strings not ending with 2 through 5, and <b><span style="font-family:Courier New;">*.[!Z]</span></b> would match strings not ending in .Z.
+<div id="l82v" style="padding:1em 0;text-align:center;"><img style="width:419px;height:356px;" src="http://docs.google.com/File?id=dd6nw3mt_148f76gd7dg_b" />
+<div style="text-align:left;">
+<h3><a id="4_5_Complex_Patterns_6749485921749048" name="4_5_Complex_Patterns_6749485921749048"></a>4.5 Complex Patterns</h3>
+<p>Korn Shell also provides entire patterns matching.
+<div id="qkd5" style="padding:1em 0;text-align:center;"><img style="width:533px;height:353px;" src="http://docs.google.com/File?id=dd6nw3mt_150dzwchbcf_b" /></div>
+<h4><a id="4_5_1_pattern__7121078334798239" name="4_5_1_pattern__7121078334798239"></a>4.5.1 *(<i>pattern</i>)</h4>
+<p>This format matches any zero or more occurrences of pattern.</div>
+</div>
+<p>This pattern matches anti, antic, antigen, and antique: <b>$ match anti*(c|gen|que)</b><br />
+<h4><a id="4_5_2_pattern__3180494268564732" name="4_5_2_pattern__3180494268564732"></a>4.5.2 ?<span style="font-family:Courier New;"></span>(<i>pattern</i>)</h4>
+<p>This format matches any zero or one occurrences of pattern. Here are some more patterns using this format:
+<div id="ty67" style="padding:1em 0;text-align:left;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<img style="width:328px;height:164px;" src="http://docs.google.com/File?id=dd6nw3mt_1549w8352fj_b" /></div>
+<h4><a id="4_5_3_pattern__1431321966993203" name="4_5_3_pattern__1431321966993203"></a>4.5.3 +(<i>pattern</i>)</h4>
+<p>This format matches one or more occurrences of pattern.<br />
+<h4><a id="4_5_4_pattern__14535345873275873" name="4_5_4_pattern__14535345873275873"></a>4.5.4 @(<i>pattern</i>)</h4>
+<p>This format matches exactly one occurrence of pattern. Let's look for words beginning with <b>Ala</b> or <b>Cla</b>: &nbsp;&nbsp; &nbsp;<b><span style="font-family:Courier New;">$ match @([AC]la)*</span></b><br />
+<h4><a id="4_5_5_pattern__6355112508705647" name="4_5_5_pattern__6355112508705647"></a>4.5.5 !(pattern)</h4>
+<p>This format matches anything except pattern. To match any string that does not end in .c, .Z, or .o:<br /><b><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; !(*.c|*.Z|*.o)</span></b><br />or any string that does not contain digits:<br /><b>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;!(*[0-9]*)</b>
+<div id="i2wj" style="padding:1em 0;text-align:center;"><img style="width:329px;height:256px;" src="http://docs.google.com/File?id=dd6nw3mt_155hnrm7xht_b" /></div>
+<p>
+<h3><a id="4_6_Disabling_File_Name_Substi_16185795665760638" name="4_6_Disabling_File_Name_Substi_16185795665760638"></a>4.6 Disabling File Name Substitution</h3>
+<p>File name substitution can be disabled by setting the noglob option using the set command:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">&nbsp;</span><span style="font-family:Courier New;">$ set —o noglob</span><br />or<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">$ set —f</span></p>
+<p>The <span style="font-family:Courier New;">-o noglob</span> and <span style="font-family:Courier New;">-f options</span><br />
+for the set command are the same. Once file name substitution is<br />
+disabled, pattern-matching characters like *, ?, and ] lose their<br />
+special meaning:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ ls a*</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;a* not found</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ ls b?</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;b? not found</span><br /><b>Within [...] patterns, a / character is used to remove the meaning of the special pattern-matching characters.</b> This means that the [/*/?]* pattern would match file names beginning with * or ?.<br />
+<h2><a id="5_Command_Substitution_8604427133040446" name="5_Command_Substitution_8604427133040446"></a><i>5 Command Substitution</i></h2>
+<p>Command<br />
+substitution is a feature that allows output to be expanded from a<br />
+command. It can be used to assign the output of a command to a<br />
+variable, or to imbed the output of a command within another command.<br />
+The format for command substitution is:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <b>&nbsp;</b><b><span style="font-family:Courier New;">$(<i>command</i>)</span></b><br />where <i>command</i> is executed and the output is substituted for the entire <i>$(command)</i> construct.<br />For example, to print the current date in a friendly format:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo The date is $(date)</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;The date is Fri Jul 27 10:41:21 PST 1996</span><br />
+<h3><a id="5_1_Bourne_Shell_Compatibility" name="5_1_Bourne_Shell_Compatibility"></a>5.1 Bourne Shell Compatibility</h3>
+<p>For compatibility with the Bourne shell, the following format for command substitution can also be used:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<b><span style="font-family:Courier New;">`</span><i>command</i><span style="font-family:Courier New;"> `</span></b><br />Using `. . .` command substitution, we could get the names of the files in the current directory like this:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo `ls` are in this directory</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;NEWS asp bin pc are this directory</span><br />
+<h3><a id="5_2_Directing_File_Input" name="5_2_Directing_File_Input"></a>5.2 Directing File Input</h3>
+<p>There is also a special form of the <b>$(...)</b> command that is used to substitute the contents of a file. The format for file input substitution is:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<b><span style="font-family:Courier New;">$(&lt;file)</span></b><br />This is equivalent to<b><span style="font-family:Courier New;"> $(cat file)</span></b> or `<b>cat file</b>`, except that it is faster, because an extra process does not have to be created to execute the <span style="font-family:Courier New;">cat</span> command.</p>
+<h3><a id="5_3_Arithmetic_Operations" name="5_3_Arithmetic_Operations"></a>5.3 Arithmetic Operations</h3>
+<p>Another form of the $(...) command is used to substitute the output of<br />
+arithmetic expressions. The value of an arithmetic expression is<br />
+returned when enclosed in double parentheses and preceded with a dollar<br />
+sign.<br />
+<b><span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>$((arithmetic-expression))</span></b><br />
+Here are a few examples.<br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>$ echo $((3+5))</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>8</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>$ echo $((8192*16384%23))</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>9</span></p>
+<h3><a id="5_4_Tilde_Substitution" name="5_4_Tilde_Substitution"></a>5.4 Tilde Substitution</h3>
+<p>Tilde substitution is used to substitute the pathname of a user's home<br />
+directory for ~user. Words in the command line that start with the<br />
+tilde character cause the Korn shell to check the rest of the word up<br />
+to a slash. If the tilde character is found alone or is only followed<br />
+by a slash, it is replaced with the value of the <b>HOME</b> variable.</p>
+<div id="xcw:" style="padding:1em 0;text-align:center;"><img style="width:538px;height:198px;" src="http://docs.google.com/File?id=dd6nw3mt_156dqcvxngk_b" /></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p></span></span><span style="background-color:rgb(255,255,0);"></span></p>
+
+
+    <small class="meta">November 24, 2008 | <a href='/unix/linux/2008/11/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2520notes%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2008/11/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2528k%2520shell%2529%2520notes%2520%2528i%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Korn Shell(K Shell) Notes (I)</a></h2>
+
+    <br />
+<h1 style="text-align:center;"><a id="_korn_Shell_Mannual_" name="_korn_Shell_Mannual_"></a> Korn Shell Notes</h1>
+<div>
+<h3><a id="1_Useful_Cmds" name="1_Useful_Cmds"></a>1 Useful Cmds</h3>
+<p><b>wc</b> - display a count of lines, words and characters in a file.<br />
+&nbsp;&nbsp; &nbsp;It can be used to count the numbers together with other commands, such as ls, who and so on.</p>
+<p><b>cut</b> - cut out selected fields of each line of a file.<br />
+&nbsp;&nbsp;&nbsp; The name of each unique user that is logged on is displayed using this command:<br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ who | cut —f1 —d' ' | sort —u</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;anatole</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;root</p>
+<p></span><b>print</b> is a Korn shell&nbsp;specialized&nbsp;command which is similar to <span style="font-family:Courier New;">echo</span>.</p>
+<p><b>nl</b> - line numbering filter.</div>
+<div>
+<h3><a id="2_Conditional_Execution" name="2_Conditional_Execution"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">2 Conditional Execution</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">You can implement a simple if command by using the &amp;&amp; and || operators together like this:<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">command1 &amp;&amp; command2 || command3</span><br />
+If command1 returns true, then command2 is executed, which causes<br />
+command3 to not be executed. If command1 does not return true, then<br />
+command2 is not executed, which causes command3 to be executed.<br />
+</span></span></div>
+<div>
+<h3><a id="3_Grouping_Commands" name="3_Grouping_Commands"></a>3 Grouping Commands</h3>
+<p>Commands enclosed in {} are executed in current shell. If</div>
+<div><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo "This is file temp:" ; cat temp | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 falls mainly on the plain</span></div>
+<div>
+<div style="padding:1em 0;text-align:center;" id="ozct">
+<div style="text-align:left;">then by using {}s, the output will be:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ { echo "This is file temp:"; cat temp ; } | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;3 falls mainly on the plain</span><br />There must be whitespace after the opening {, and commands within the {}'s must be terminated with a semi-colon.</p>
+<p>Commands<br />
+enclosed in () are executed in a subshell. Subshells are generated<br />
+whenever you enclose commands in ()'s, perform command substitution,<br />
+for background processes, and for coprocesses.A subshell is a separate<br />
+copy of the parent shell, so variables, functions, and aliases from the<br />
+parent shell are available to the subshell. However, subshells cannot<br />
+change the value of parent shell variables, functions, or aliases.</div>
+<p><img src="http://docs.google.com/File?id=dd6nw3mt_104f3ccnmc3_b" style="width:501px;height:609px;" /></div>
+</div>
+<h3><a id="4_Redirecting_Standard_Output" name="4_Redirecting_Standard_Output"></a><span style="font-family:Courier New;"></span><span style="font-family:Courier New;"><span style="font-family:Verdana;">4 Redirecting Standard Output</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">By using the &gt; symbol, the standard output of a command can be redirected to a file, instead of your terminal.</p>
+<p>You can also use the &gt; command to create an empty file:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ &gt; tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ ls —s tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;0 tmp</span><br />This is equivalent to <span style="font-family:Courier New;">touch tmp</span>.</p>
+<p>Standard output can be appended to a file by using the <b>&gt;&gt;</b> redirect operator.</p>
+<p>Standard output is closed with the <b><span style="font-family:Courier New;">&gt;&amp;-</span></b> redirect operator:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ echo "This is going nowhere" &gt;&amp;-</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$</span></p>
+<p></span></span></p>
+
+
+    <small class="meta">November 20, 2008 | <a href='/unix/linux/2008/11/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2528k%2520shell%2529%2520notes%2520%2528i%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/11/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2528k%2520shell%2529%2520notes%2520%2528i%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Korn Shell(K Shell) Notes (I)</a></h2>
+
+    <br />
+<h1 style="text-align:center;"><a id="_korn_Shell_Mannual_" name="_korn_Shell_Mannual_"></a> Korn Shell Notes</h1>
+<div>
+<h3><a id="1_Useful_Cmds" name="1_Useful_Cmds"></a>1 Useful Cmds</h3>
+<p><b>wc</b> - display a count of lines, words and characters in a file.<br />
+&nbsp;&nbsp; &nbsp;It can be used to count the numbers together with other commands, such as ls, who and so on.</p>
+<p><b>cut</b> - cut out selected fields of each line of a file.<br />
+&nbsp;&nbsp;&nbsp; The name of each unique user that is logged on is displayed using this command:<br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ who | cut —f1 —d' ' | sort —u</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;anatole</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;root</p>
+<p></span><b>print</b> is a Korn shell&nbsp;specialized&nbsp;command which is similar to <span style="font-family:Courier New;">echo</span>.</p>
+<p><b>nl</b> - line numbering filter.</div>
+<div>
+<h3><a id="2_Conditional_Execution" name="2_Conditional_Execution"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">2 Conditional Execution</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">You can implement a simple if command by using the &amp;&amp; and || operators together like this:<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">command1 &amp;&amp; command2 || command3</span><br />
+If command1 returns true, then command2 is executed, which causes<br />
+command3 to not be executed. If command1 does not return true, then<br />
+command2 is not executed, which causes command3 to be executed.<br />
+</span></span></div>
+<div>
+<h3><a id="3_Grouping_Commands" name="3_Grouping_Commands"></a>3 Grouping Commands</h3>
+<p>Commands enclosed in {} are executed in current shell. If</div>
+<div><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo "This is file temp:" ; cat temp | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 falls mainly on the plain</span></div>
+<div>
+<div style="padding:1em 0;text-align:center;" id="ozct">
+<div style="text-align:left;">then by using {}s, the output will be:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ { echo "This is file temp:"; cat temp ; } | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;3 falls mainly on the plain</span><br />There must be whitespace after the opening {, and commands within the {}'s must be terminated with a semi-colon.</p>
+<p>Commands<br />
+enclosed in () are executed in a subshell. Subshells are generated<br />
+whenever you enclose commands in ()'s, perform command substitution,<br />
+for background processes, and for coprocesses.A subshell is a separate<br />
+copy of the parent shell, so variables, functions, and aliases from the<br />
+parent shell are available to the subshell. However, subshells cannot<br />
+change the value of parent shell variables, functions, or aliases.</div>
+<p><img src="http://docs.google.com/File?id=dd6nw3mt_104f3ccnmc3_b" style="width:501px;height:609px;" /></div>
+</div>
+<h3><a id="4_Redirecting_Standard_Output" name="4_Redirecting_Standard_Output"></a><span style="font-family:Courier New;"></span><span style="font-family:Courier New;"><span style="font-family:Verdana;">4 Redirecting Standard Output</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">By using the &gt; symbol, the standard output of a command can be redirected to a file, instead of your terminal.</p>
+<p>You can also use the &gt; command to create an empty file:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ &gt; tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ ls —s tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;0 tmp</span><br />This is equivalent to <span style="font-family:Courier New;">touch tmp</span>.</p>
+<p>Standard output can be appended to a file by using the <b>&gt;&gt;</b> redirect operator.</p>
+<p>Standard output is closed with the <b><span style="font-family:Courier New;">&gt;&amp;-</span></b> redirect operator:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ echo "This is going nowhere" &gt;&amp;-</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$</span></p>
+<p></span></span></p>
+
+
+    <small class="meta">November 20, 2008 | <a href='/bkup/2008/11/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%2528k%2520shell%2529%2520notes%2520%2528i%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/personal/2008/11/09/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e8%25a1%258c%25e8%25a1%258c%25e5%2587%25ba%25e7%258a%25b6%25e5%2585%2583-%25e8%25a1%25a8%25e6%2589%25ac683%25e8%25b7%25af%25e5%2585%25ac%25e4%25ba%25a4%25e8%25bd%25a6%25e5%2594%25ae%25e7%25a5%25a8%25e5%2591%2598wen%25e5%25b8%2588%25e5%2582%2585%250/">行行出状元——表扬683路公交车售票员wen师傅</a></h2>
+
+    <p>
+    今天坐683路公交车，又遇到了一个月前遇到的那位售票员（<a href="http://blog.csdn.net/bonny95/archive/2008/10/12/3062688.aspx">http://blog.csdn.net/bonny95/archive/2008/10/12/3062688.aspx</a>）。她依然是那样热情的帮助乘客，依然如数家珍的报站名，依然用音乐抚慰着乘客拥挤的心灵。</p>
+<p>不同的是：车厢内更加整洁了；车厢后面多了一排小花；车厢内的高台上（新型公交车有比较大的高台）铺着她自己做的小垫子供人坐，合理利用了空间，也为乘客提供了方便；大多数乘客已经习惯了她的热诚，放心的把东西交给她保管，甚至有些乘客已经成了她的朋友（亲眼见到一位小姐亲切的叫她“wen姐”和她打招呼，不知道是“闻”还是“文”）；绝大多数公交车内一片漆黑（晚上），只有她的车内灯火通明。</p>
+<p>另外，一位中年妇女下车时不小心把买的爆米花弄撒了，wen师傅连忙安慰她。由此令我联想到坐某辆公交车，由于司机急刹车致使某位小姑娘摔倒在地，小姑娘的同伴抱怨时，而那位售票员竟然还大声呵斥摔倒的小姑娘为什么不小心……</p>
+<p>到了某个我家附近不出名的小站，wen师傅一口气将周围所有的饭店统统报了出来。我不禁伸出大拇指称赞，她笑着说“其实我只是比较喜欢吃东西”我抓住机会看了看她的工作牌，只看清了“<font color="#ff0000"><b>120513C</b></font>”，不知道是不是她的工号。</p>
+<p>我要由衷的谢谢她——她用实际行动告诉了我们无论什么事情，哪怕别人都认为没有前途或者无可改进，只要用心，照样也可以做的风生水起。</p>
+
+
+    <small class="meta">November 09, 2008 | <a href='/personal/2008/11/09/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e8%25a1%258c%25e8%25a1%258c%25e5%2587%25ba%25e7%258a%25b6%25e5%2585%2583-%25e8%25a1%25a8%25e6%2589%25ac683%25e8%25b7%25af%25e5%2585%25ac%25e4%25ba%25a4%25e8%25bd%25a6%25e5%2594%25ae%25e7%25a5%25a8%25e5%2591%2598wen%25e5%25b8%2588%25e5%2582%2585%250/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/11/09/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e8%25a1%258c%25e8%25a1%258c%25e5%2587%25ba%25e7%258a%25b6%25e5%2585%2583-%25e8%25a1%25a8%25e6%2589%25ac683%25e8%25b7%25af%25e5%2585%25ac%25e4%25ba%25a4%25e8%25bd%25a6%25e5%2594%25ae%25e7%25a5%25a8%25e5%2591%2598wen%25e5%25b8%2588%25e5%2582%2585%250/">行行出状元——表扬683路公交车售票员wen师傅</a></h2>
+
+    <p>
+    今天坐683路公交车，又遇到了一个月前遇到的那位售票员（<a href="http://blog.csdn.net/bonny95/archive/2008/10/12/3062688.aspx">http://blog.csdn.net/bonny95/archive/2008/10/12/3062688.aspx</a>）。她依然是那样热情的帮助乘客，依然如数家珍的报站名，依然用音乐抚慰着乘客拥挤的心灵。</p>
+<p>不同的是：车厢内更加整洁了；车厢后面多了一排小花；车厢内的高台上（新型公交车有比较大的高台）铺着她自己做的小垫子供人坐，合理利用了空间，也为乘客提供了方便；大多数乘客已经习惯了她的热诚，放心的把东西交给她保管，甚至有些乘客已经成了她的朋友（亲眼见到一位小姐亲切的叫她“wen姐”和她打招呼，不知道是“闻”还是“文”）；绝大多数公交车内一片漆黑（晚上），只有她的车内灯火通明。</p>
+<p>另外，一位中年妇女下车时不小心把买的爆米花弄撒了，wen师傅连忙安慰她。由此令我联想到坐某辆公交车，由于司机急刹车致使某位小姑娘摔倒在地，小姑娘的同伴抱怨时，而那位售票员竟然还大声呵斥摔倒的小姑娘为什么不小心……</p>
+<p>到了某个我家附近不出名的小站，wen师傅一口气将周围所有的饭店统统报了出来。我不禁伸出大拇指称赞，她笑着说“其实我只是比较喜欢吃东西”我抓住机会看了看她的工作牌，只看清了“<font color="#ff0000"><b>120513C</b></font>”，不知道是不是她的工号。</p>
+<p>我要由衷的谢谢她——她用实际行动告诉了我们无论什么事情，哪怕别人都认为没有前途或者无可改进，只要用心，照样也可以做的风生水起。</p>
+
+
+    <small class="meta">November 09, 2008 | <a href='/bkup/2008/11/09/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e8%25a1%258c%25e8%25a1%258c%25e5%2587%25ba%25e7%258a%25b6%25e5%2585%2583-%25e8%25a1%25a8%25e6%2589%25ac683%25e8%25b7%25af%25e5%2585%25ac%25e4%25ba%25a4%25e8%25bd%25a6%25e5%2594%25ae%25e7%25a5%25a8%25e5%2591%2598wen%25e5%25b8%2588%25e5%2582%2585%250/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/11/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25283%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Tcl/Tk Notes (3)</a></h2>
+
+    <br />
+<h2>Part III&nbsp;Tcl&nbsp;Data&nbsp;Structures<br />
+    </h2>
+<h3><a id="1_More_about_Variables_8194860" name="1_More_about_Variables_8194860"></a>1 More&nbsp;about&nbsp;Variables</h3>
+<ul>
+<li>
+        The <span style="font-family:'Courier New';">set </span>command
+      </li>
+</ul>
+<p>    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;The <span style="font-family:'Courier New';">set</span><br />
+command is used to define variables of any type. In addition, the set<br />
+command will return the value &nbsp;of a variable if it is only passed a<br />
+single argument. It treats that argument as a variable name and returns<br />
+the current value of the variable. </p>
+<div style="padding:1em 0;text-align:left;">
+<img src="http://docs.google.com/File?id=dd6nw3mt_126frfnfccm_b" style="width:695px;height:222px;" />
+</div>
+<div style="padding:1em 0;">
+    &nbsp;&nbsp; &nbsp;In the&nbsp;last&nbsp;command,&nbsp;<span style="font-family:'Courier New';">$name</span>&nbsp;gets&nbsp;substituted&nbsp;with&nbsp;<span style="font-family:'Courier New';">var</span>.&nbsp;Then&nbsp;the&nbsp;<span style="font-family:'Courier New';">set</span>&nbsp;command&nbsp;returns&nbsp;the&nbsp;value&nbsp;of&nbsp;<span style="font-family:'Courier New';">var</span>,&nbsp;which&nbsp;is&nbsp;<span style="font-family:'Courier New';">the&nbsp;value&nbsp;of&nbsp;var</span>.&nbsp;Another&nbsp;way&nbsp;to&nbsp;achieve&nbsp;a&nbsp;level&nbsp;of&nbsp;indirection&nbsp;like&nbsp;this&nbsp;is&nbsp;with&nbsp;nested&nbsp;<span style="font-family:'Courier New';">set</span>&nbsp;commands.&nbsp;The&nbsp;last&nbsp;<span style="font-family:'Courier New';">set</span>&nbsp;command&nbsp;above&nbsp;can&nbsp;be&nbsp;written&nbsp;as&nbsp;follows:<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:'Courier New';">set&nbsp;[set&nbsp;name]</span><br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>=&gt;&nbsp;the&nbsp;value&nbsp;of&nbsp;var</i></p>
+<ul>
+<li>
+        The <span style="font-family:'Courier New';">unset </span>command&nbsp;
+      </li>
+</ul>
+<p>    &nbsp;&nbsp; &nbsp;You can&nbsp;delete&nbsp;a&nbsp;variable&nbsp;with&nbsp;the&nbsp;unset&nbsp;command:<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:'Courier New';">unset <i>varName varName2 ...</i></span></p>
+<ul>
+<li>
+        Using info to find out about variables
+      </li>
+</ul>
+<p>    &nbsp;&nbsp; &nbsp;The existence&nbsp;of&nbsp;a&nbsp;variable&nbsp;can&nbsp;be&nbsp;tested&nbsp;with&nbsp;the&nbsp;info&nbsp;exists&nbsp;command.<br />
+    e.g.&nbsp;<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if ![info&nbsp;exists&nbsp;foobar]{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;set&nbsp;foobar&nbsp;0<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}&nbsp;else&nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;incr&nbsp;foobar }<br />
+<h3><a id="2_Tcl_Lists_16283892709607128_38510692397444923" name="2_Tcl_Lists_16283892709607128_38510692397444923"></a>2 Tcl Lists</h3>
+<p>&nbsp;&nbsp; &nbsp;The Tcl list has the same structure as a Tcl command. That is, a<br />
+list is simply a string with list elements separated by white<br />
+space.Braces or quotes can be used to group words with whitespace into<br />
+a single list element.
+<div id="p_lk" style="padding:1em 0;text-align:left;"><font size="2"><img style="width:585px;height:506px;" src="http://docs.google.com/File?id=dd6nw3mt_1272k4p4qgs_b" /><br /></font><br />
+<h3><a id="3_Constructing_Lists_list_lapp_6067784235213389" name="3_Constructing_Lists_list_lapp_6067784235213389"></a><font size="2"><a id="3_Constructing_Lists_list_lapp_064013552814696" name="3_Constructing_Lists_list_lapp_064013552814696"></a><a id="3_Constructing_Lists_list_lapp_48234938647299075" name="3_Constructing_Lists_list_lapp_48234938647299075"></a><a id="3_Constructing_Lists_list_lapp" name="3_Constructing_Lists_list_lapp"></a>3 Constructing Lists: <span style="font-family:Courier New;">list</span>, <span style="font-family:Courier New;">lappend</span> and <span style="font-family:Courier New;">concat</span></font></h3>
+<p><font size="2">&nbsp;&nbsp; &nbsp;The <span style="font-family:Courier New;">list</span><br />
+command constructs a list out of its arguments such that there is one<br />
+list element for each argument. if any of the arguments contain special<br />
+characters, the list command adds some quoting to ensure they are<br />
+parsed as a single element of the resulting list.<br /></font></div>
+<p><font size="2">e.g. <i><span style="font-family:Times New Roman;">Constructing a list with the<span style="font-family:Courier New;"> list </span>command</span></i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set x {1 2}</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">set x</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">list $x /$ foo</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; {1 2} {$} foo</i><br /><span style="color:rgb(0,0,255);">[Note]: The braces used to group the list value into one argument to the set command are not part of the list value.</span></p>
+<p>&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">lappend</span> command is used to append elements to the end of a list. You can call <span style="font-family:Courier New;">lappend</span> with the name of an undefined variable and the variable will be created.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lappend new 1 2</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;"></span><span style="font-family:Courier New;">lappend new 3 "4 5"</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; =&gt; 1 2 3 {4 5}<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set new</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2 3 {4 5}</i></p>
+<p>&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">concat</span><br />
+command is useful for splicing together lists. It works by<br />
+concatenating its arguments together, separating them with spaces. This<br />
+multiple lists into one where the top-level list elements in each input<br />
+list are also top-level list elements in the resulting list.<br />e.g. <i>Using <span style="font-family:Courier New;">concat </span>to splice together lists.</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">concat 1 {2 3} {4 5 6}</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; 1 2 3 4 5 6</i><br />&nbsp;&nbsp;&nbsp; It turns out that double quotes behave much like the <span style="font-family:Courier New;">concat</span> command.<br />e.g. <i><span style="font-family:Times New Roman;">Double quotes compared to the <span style="font-family:Courier New;">list </span>command.</span></i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set x {1 2}</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<i>&nbsp; </i><i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set y "$x 3"</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2 3</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set y [concat $x 3]</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; 1 2 3</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">set z [list $x 3]</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt;{1 2} 3</i><br />&nbsp;&nbsp;&nbsp; The basic rule is that <span style="font-family:Courier New;">list </span>and<span style="font-family:Courier New;"> lappend</span> preserve preserve list structure, while <span style="font-family:Courier New;">concat</span>(or double-quotes)eliminate one level of list structure.<br /></font><br />
+<h3><a id="4_Getting_List_Elements_llengt" name="4_Getting_List_Elements_llengt"></a><font size="2">4 Getting List Elements:<span style="font-family:Courier New;"> llength, lindex, <span style="font-family:Verdana;">and</span> lrange</span></font></h3>
+<p><font size="2">&nbsp;&nbsp; &nbsp;The <span style="font-family:Courier New;">llength</span> command returns the number of elements in a list. <br />&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">lindex</span> command returns a particular element of a list. It takes an index. List indices count from zero. The keyword <i>end</i> means the last element, and it can be used with <span style="font-family:Courier New;">lindex, linsert, lrange </span>and <span style="font-family:Courier New;">lreplace</span>.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">lindex {1 2 3} 0</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</font><font size="2"><span style="font-family:Courier New;">lindex {1 2 3} 2</span><br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 3</i></font><font size="2"><br /> &nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">lrange</span> command returns a range of list elements. It takes a list and two indices as arguments.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lrange {1 2 3 {4 5}} 2 end</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 3 {4 5}</i><br /></font><br />
+<h3><a id="5_Modifying_Lists_linsert_and_" name="5_Modifying_Lists_linsert_and_"></a><font size="2">5 Modifying Lists: <span style="font-family:Courier New;">linsert</span> and <span style="font-family:Courier New;">lreplace</span></font></h3>
+<p><font size="2">&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">linsert</span><br />
+command inserts elements into a list value at a specified index. If the<br />
+index is 0 or less, then elements are added to the front. If the index<br />
+is equal to or greater than the length of the list, then the elements<br />
+are appended to the end. Otherwise, the elements are inserted before<br />
+the element that is currentl as position index.<br />&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lreplace</span><br />
+is used to replace a range of list elements with new elements. If you<br />
+don't specify any new elements, you effectively delete elements from a<br />
+list.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">linsert {1 2} 0 new stuff</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; new stuff 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">set x [list a {b c} e d]</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; a {b c} e d</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lreplace $x 1 2 B C</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; a B C d</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lreplace $x 0 0</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; {b c} e d</i><br /></font><br />
+<h3><a id="6_Searching_Lists_lsearch" name="6_Searching_Lists_lsearch"></a><font size="2">6 Searching Lists: <span style="font-family:Courier New;">lsearch</span></font></h3>
+<p><font size="2"><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">lsearch</span> returns the index of a value in the list, or -1 if it is not present. <span style="font-family:Courier New;">lsearch</span> supports pattern matching in its search. Glob-style pattern matching is default, and this canbe disabled with the <span style="font-family:Courier New;">-exact</span> flag.<br /><span>&nbsp;&nbsp;&nbsp; </span>The example below uses<span style="font-family:Courier New;"> lreplace</span> to delete elements by not specifying any replacement list elements.<br />e.g.<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;</span><span><span style="font-family:Courier New;">&nbsp;&nbsp;&nbsp; proc delete {list value} {</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; set ix [lsearch -exact $list $value]</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; if {$ix&gt;=0} {</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; return [lreplace $list $ix $ix]</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } else {</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; return $list</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }</span><br />&nbsp;<br /></span></font><br />
+<h3><font size="2">7 Sorting List: <span style="font-family:Courier New;">lsort</span></font></h3>
+<p><font size="2"><span>&nbsp;&nbsp;&nbsp; </span>The three basic types of sorts are specified with the <span style="font-family:Courier New;">-ascii, -integer</span>, or <span style="font-family:Courier New;">-real</span> options. The <span style="font-family:Courier New;">-increasing</span> or <span style="font-family:Courier New;">-decreasing</span> option indicate the sirting order. The default option set is <span style="font-family:Courier New;">-ascii -increasing</span>.
+<div id="y4i8" style="padding:1em 0;text-align:left;"><img style="width:700px;height:341px;" src="http://docs.google.com/File?id=dd6nw3mt_12843xpw3gx_b" /></p>
+<h3>8 The split And join Commands</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The <span style="font-family:Courier New;">split </span>command<br />
+takes a string and turns it into a list by breaking it at specified<br />
+characters. Stray double-quotes or curly braces in the input can result<br />
+in invalid list structures and errors in your script. However, the<br />
+split command provides a robust way to turn input lines into proper Tcl<br />
+lists.
+<div id="nj_b" style="padding:1em 0;text-align:left;"><img style="width:659px;height:134px;" src="http://docs.google.com/File?id=dd6nw3mt_129dnrj74dp_b" /></div>
+<div id="s61w" style="padding:1em 0;text-align:left;"><img style="width:672px;height:134px;" src="http://docs.google.com/File?id=dd6nw3mt_130f2ksvcpn_b" /></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>The<br />
+default split character is white space. If there are multiple separator<br />
+characters in a row, these result in empty list elements- the<br />
+separators are not collapsed. The following command splits on commas,<br />
+periods, spaces and tabs:
+<div id="i_2y" style="padding:1em 0;text-align:left;"><img style="width:299px;height:78px;" src="http://docs.google.com/File?id=dd6nw3mt_131fm4hj3gx_b" /></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>The<span style="font-family:Courier New;"> join </span>command<br />
+is the inverse of split. It takes a list value and reformats it with<br />
+specified characters separating the list elements. In doing so, it will<br />
+remove any curly braces from the string representation of the list that<br />
+are used to group the top-level elements.
+<div id="z1an" style="padding:1em 0;text-align:left;"><img style="width:269px;height:55px;" src="http://docs.google.com/File?id=dd6nw3mt_132gxv9m5gb_b" /></div>
+<h3>9 Arrays</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The index of an array is delimited by parentheses. The<br />
+index can have any string value, and it canbe the result of variable or<br />
+command substitution.<br /><span>e.g.<span> &nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">set arra(</span><i>index</i><span style="font-family:Courier New;">) value</span><br /><span>&nbsp;&nbsp;&nbsp; </span>The value of an array element is obtained with $ substitution:<br /><span></span><span></span><span>e.g.<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set foo $arr(</span><i>index</i><span style="font-family:Courier New;">)</span>
+<div id="rrr0" style="padding:1em 0;text-align:left;"><img style="width:551px;height:145px;" src="http://docs.google.com/File?id=dd6nw3mt_133dvtqdmcr_b" /></div>
+<p><span>&nbsp;&nbsp;&nbsp; </span>If<br />
+you have complex indices, use a comma to separate different parts of<br />
+the index. Avoid putting a pace after the comma. It is legal, but a<br />
+space in an index value will cause problems because parenthesis are not<br />
+used as a grouping mechanism. The space in the index needs to be quoted<br />
+with a backslash, or hte whole variable reference needs to be grouped:<br /><span></span><span>e.g.<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set {arr(I'm asking for trouble)} {I told you so.}</span><br /><span></span><span><span>&nbsp;&nbsp;&nbsp; </span>If<br />
+the array index is stored in a variable, then there is no problem with<br />
+spaces in the variable's value. The following works fine:<span><br />e.g.<span>&nbsp;&nbsp; &nbsp;</span><br /><span>&nbsp;&nbsp; &nbsp;<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set index {</span></span></span></span></span></span></span><font><font size="2"><span><span><span>I'm asking for trouble</span></span></span></font></font><span><span><span><span><span><span><span style="font-family:Courier New;">}</span><br /><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set arr($index) {</span></span></span></span></span></span></span><font><font size="2"><span><span><span>I told you so.</span></span></span></font></font><span><span><span><span><span><span><span><span style="font-family:Courier New;">}</span><br /><span>&nbsp;&nbsp;&nbsp; </span>The<br />
+name of the array can be the result of a substitution. If the name of<br />
+the array is stored in another variable, then you must use set as shown<br />
+in the last command below to reference the array elements. 
+<div id="v86g" style="padding:1em 0;text-align:left;"><img style="width:622px;height:266px;" src="http://docs.google.com/File?id=dd6nw3mt_134ckqvbpf3_b" /></div>
+<p></span></span></span></span></span></span></span></p>
+<h3><span><span><span><span><span><span><span>10 The Array Command</span></span></span></span></span></span></span></h3>
+<h3><span><span><span><span><span><span><span></span></span></span></span></span></span></span></h3>
+<p><span><span><span><span><span><span><span>
+<div id="uxsm" style="padding:1em 0;text-align:left;"><img style="width:722px;height:215px;" src="http://docs.google.com/File?id=dd6nw3mt_135g7rtd4rd_b" /></div>
+<div style="padding:1em 0;">
+<div id="j5ji" style="padding:1em 0;text-align:left;"><img style="width:722px;height:215px;" src="http://docs.google.com/File?id=dd6nw3mt_137gkb3k889_b" /></div>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The array names command is perhaps the most useful because it allows easy iteration through an array with a foreach loop:<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">foreach index [array names arr] {command body}</span><br />
+<span>&nbsp;&nbsp;&nbsp; </span>The order of the names returned by array names is<br />
+arbitrary. It is essentially determined by the hash table<br />
+implementation of the array.<br />
+<span>&nbsp;&nbsp;&nbsp; </span>The <span style="font-family:Courier New;">array get</span> and <span style="font-family:Courier New;">array set</span> operations are used to convert between an array and a list. The list returned by <span style="font-family:Courier New;">array get</span><br />
+has an even number of elements.The first element is an index, and the<br />
+next is the corresponding array value. The ordering of the indexes is<br />
+arbitrary. The list argument to <span style="font-family:Courier New;">array se</span>t must have the same structure.</p>
+<div id="h3:o" style="padding:1em 0;text-align:left;"><img style="width:467px;height:159px;" src="http://docs.google.com/File?id=dd6nw3mt_138fgwktmcn_b" /></p>
+<h3>11 Environment Variables</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>In UNIX, the process environment variables are available through the global array <span style="font-family:Courier New;">env</span>.<br />
+The name of the environment variable is the index,e.g. env(PATH), and<br />
+the array element contains the current value of the environment<br />
+variable.</p>
+<h3>12 Tracing Variable Values</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The trace command lets you register a command to be called whenever a variable is accessed, modified or unset. The form is:<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">trace <i>variable name ops command</i></span><br />
+<span>&nbsp;&nbsp;&nbsp; </span>The name is a Tcl variable name, which can be a simple<br />
+variable, an array or a element.If a whole array is traced, then the<br />
+trace is invoked when any element is used according to ops. The ops<br />
+argument is one or more of the letters: r for read traces, w for write<br />
+traces, and u for unset traces. The command is executed when one of<br />
+these events occurs. It is invoked as:<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">command name1 name2 op</span></p>
+<div id="gbxa" style="padding:1em 0;text-align:left;"><img style="width:631px;height:266px;" src="http://docs.google.com/File?id=dd6nw3mt_139f4brdcdj_b" /></p>
+<div id="fq6s" style="padding:1em 0;text-align:left;"><img style="width:565px;height:249px;" src="http://docs.google.com/File?id=dd6nw3mt_140c4szdzcj_b" /></div>
+<p><span>&nbsp;&nbsp;&nbsp; </span>Information about traces on a varible is returned with the vinfo option.<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">trace vinfo dynamic</span><br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><i>=&gt; {r FixDynamic}</i><br />
+<span>&nbsp;&nbsp;&nbsp; </span>A trace is deleted with the <span style="font-family:Courier New;">vdelete <span style="font-family:Verdana;">trace</span></span> option, which has the same form as the <span style="font-family:Courier New;">varible</span> option.</div>
+</div>
+</div>
+<p></span></span></span></span></span></span></span></div>
+<p></font></div>
+
+
+    <small class="meta">November 02, 2008 | <a href='/bkup/2008/11/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25283%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2008/11/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25283%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Tcl/Tk Notes (3)</a></h2>
+
+    <br />
+<h2>Part III&nbsp;Tcl&nbsp;Data&nbsp;Structures<br />
+    </h2>
+<h3><a id="1_More_about_Variables_8194860" name="1_More_about_Variables_8194860"></a>1 More&nbsp;about&nbsp;Variables</h3>
+<ul>
+<li>
+        The <span style="font-family:'Courier New';">set </span>command
+      </li>
+</ul>
+<p>    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;The <span style="font-family:'Courier New';">set</span><br />
+command is used to define variables of any type. In addition, the set<br />
+command will return the value &nbsp;of a variable if it is only passed a<br />
+single argument. It treats that argument as a variable name and returns<br />
+the current value of the variable. </p>
+<div style="padding:1em 0;text-align:left;">
+<img src="http://docs.google.com/File?id=dd6nw3mt_126frfnfccm_b" style="width:695px;height:222px;" />
+</div>
+<div style="padding:1em 0;">
+    &nbsp;&nbsp; &nbsp;In the&nbsp;last&nbsp;command,&nbsp;<span style="font-family:'Courier New';">$name</span>&nbsp;gets&nbsp;substituted&nbsp;with&nbsp;<span style="font-family:'Courier New';">var</span>.&nbsp;Then&nbsp;the&nbsp;<span style="font-family:'Courier New';">set</span>&nbsp;command&nbsp;returns&nbsp;the&nbsp;value&nbsp;of&nbsp;<span style="font-family:'Courier New';">var</span>,&nbsp;which&nbsp;is&nbsp;<span style="font-family:'Courier New';">the&nbsp;value&nbsp;of&nbsp;var</span>.&nbsp;Another&nbsp;way&nbsp;to&nbsp;achieve&nbsp;a&nbsp;level&nbsp;of&nbsp;indirection&nbsp;like&nbsp;this&nbsp;is&nbsp;with&nbsp;nested&nbsp;<span style="font-family:'Courier New';">set</span>&nbsp;commands.&nbsp;The&nbsp;last&nbsp;<span style="font-family:'Courier New';">set</span>&nbsp;command&nbsp;above&nbsp;can&nbsp;be&nbsp;written&nbsp;as&nbsp;follows:<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:'Courier New';">set&nbsp;[set&nbsp;name]</span><br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>=&gt;&nbsp;the&nbsp;value&nbsp;of&nbsp;var</i></p>
+<ul>
+<li>
+        The <span style="font-family:'Courier New';">unset </span>command&nbsp;
+      </li>
+</ul>
+<p>    &nbsp;&nbsp; &nbsp;You can&nbsp;delete&nbsp;a&nbsp;variable&nbsp;with&nbsp;the&nbsp;unset&nbsp;command:<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:'Courier New';">unset <i>varName varName2 ...</i></span></p>
+<ul>
+<li>
+        Using info to find out about variables
+      </li>
+</ul>
+<p>    &nbsp;&nbsp; &nbsp;The existence&nbsp;of&nbsp;a&nbsp;variable&nbsp;can&nbsp;be&nbsp;tested&nbsp;with&nbsp;the&nbsp;info&nbsp;exists&nbsp;command.<br />
+    e.g.&nbsp;<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if ![info&nbsp;exists&nbsp;foobar]{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;set&nbsp;foobar&nbsp;0<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}&nbsp;else&nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;incr&nbsp;foobar }<br />
+<h3><a id="2_Tcl_Lists_16283892709607128_38510692397444923" name="2_Tcl_Lists_16283892709607128_38510692397444923"></a>2 Tcl Lists</h3>
+<p>&nbsp;&nbsp; &nbsp;The Tcl list has the same structure as a Tcl command. That is, a<br />
+list is simply a string with list elements separated by white<br />
+space.Braces or quotes can be used to group words with whitespace into<br />
+a single list element.
+<div id="p_lk" style="padding:1em 0;text-align:left;"><font size="2"><img style="width:585px;height:506px;" src="http://docs.google.com/File?id=dd6nw3mt_1272k4p4qgs_b" /><br /></font><br />
+<h3><a id="3_Constructing_Lists_list_lapp_6067784235213389" name="3_Constructing_Lists_list_lapp_6067784235213389"></a><font size="2"><a id="3_Constructing_Lists_list_lapp_064013552814696" name="3_Constructing_Lists_list_lapp_064013552814696"></a><a id="3_Constructing_Lists_list_lapp_48234938647299075" name="3_Constructing_Lists_list_lapp_48234938647299075"></a><a id="3_Constructing_Lists_list_lapp" name="3_Constructing_Lists_list_lapp"></a>3 Constructing Lists: <span style="font-family:Courier New;">list</span>, <span style="font-family:Courier New;">lappend</span> and <span style="font-family:Courier New;">concat</span></font></h3>
+<p><font size="2">&nbsp;&nbsp; &nbsp;The <span style="font-family:Courier New;">list</span><br />
+command constructs a list out of its arguments such that there is one<br />
+list element for each argument. if any of the arguments contain special<br />
+characters, the list command adds some quoting to ensure they are<br />
+parsed as a single element of the resulting list.<br /></font></div>
+<p><font size="2">e.g. <i><span style="font-family:Times New Roman;">Constructing a list with the<span style="font-family:Courier New;"> list </span>command</span></i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set x {1 2}</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">set x</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">list $x /$ foo</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; {1 2} {$} foo</i><br /><span style="color:rgb(0,0,255);">[Note]: The braces used to group the list value into one argument to the set command are not part of the list value.</span></p>
+<p>&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">lappend</span> command is used to append elements to the end of a list. You can call <span style="font-family:Courier New;">lappend</span> with the name of an undefined variable and the variable will be created.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lappend new 1 2</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;"></span><span style="font-family:Courier New;">lappend new 3 "4 5"</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; =&gt; 1 2 3 {4 5}<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set new</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2 3 {4 5}</i></p>
+<p>&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">concat</span><br />
+command is useful for splicing together lists. It works by<br />
+concatenating its arguments together, separating them with spaces. This<br />
+multiple lists into one where the top-level list elements in each input<br />
+list are also top-level list elements in the resulting list.<br />e.g. <i>Using <span style="font-family:Courier New;">concat </span>to splice together lists.</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">concat 1 {2 3} {4 5 6}</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; 1 2 3 4 5 6</i><br />&nbsp;&nbsp;&nbsp; It turns out that double quotes behave much like the <span style="font-family:Courier New;">concat</span> command.<br />e.g. <i><span style="font-family:Times New Roman;">Double quotes compared to the <span style="font-family:Courier New;">list </span>command.</span></i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set x {1 2}</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<i>&nbsp; </i><i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set y "$x 3"</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2 3</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set y [concat $x 3]</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; 1 2 3</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">set z [list $x 3]</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt;{1 2} 3</i><br />&nbsp;&nbsp;&nbsp; The basic rule is that <span style="font-family:Courier New;">list </span>and<span style="font-family:Courier New;"> lappend</span> preserve preserve list structure, while <span style="font-family:Courier New;">concat</span>(or double-quotes)eliminate one level of list structure.<br /></font><br />
+<h3><a id="4_Getting_List_Elements_llengt" name="4_Getting_List_Elements_llengt"></a><font size="2">4 Getting List Elements:<span style="font-family:Courier New;"> llength, lindex, <span style="font-family:Verdana;">and</span> lrange</span></font></h3>
+<p><font size="2">&nbsp;&nbsp; &nbsp;The <span style="font-family:Courier New;">llength</span> command returns the number of elements in a list. <br />&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">lindex</span> command returns a particular element of a list. It takes an index. List indices count from zero. The keyword <i>end</i> means the last element, and it can be used with <span style="font-family:Courier New;">lindex, linsert, lrange </span>and <span style="font-family:Courier New;">lreplace</span>.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">lindex {1 2 3} 0</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</font><font size="2"><span style="font-family:Courier New;">lindex {1 2 3} 2</span><br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 3</i></font><font size="2"><br /> &nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">lrange</span> command returns a range of list elements. It takes a list and two indices as arguments.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lrange {1 2 3 {4 5}} 2 end</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 3 {4 5}</i><br /></font><br />
+<h3><a id="5_Modifying_Lists_linsert_and_" name="5_Modifying_Lists_linsert_and_"></a><font size="2">5 Modifying Lists: <span style="font-family:Courier New;">linsert</span> and <span style="font-family:Courier New;">lreplace</span></font></h3>
+<p><font size="2">&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">linsert</span><br />
+command inserts elements into a list value at a specified index. If the<br />
+index is 0 or less, then elements are added to the front. If the index<br />
+is equal to or greater than the length of the list, then the elements<br />
+are appended to the end. Otherwise, the elements are inserted before<br />
+the element that is currentl as position index.<br />&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lreplace</span><br />
+is used to replace a range of list elements with new elements. If you<br />
+don't specify any new elements, you effectively delete elements from a<br />
+list.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">linsert {1 2} 0 new stuff</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; new stuff 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">set x [list a {b c} e d]</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; a {b c} e d</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lreplace $x 1 2 B C</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; a B C d</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lreplace $x 0 0</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; {b c} e d</i><br /></font><br />
+<h3><a id="6_Searching_Lists_lsearch" name="6_Searching_Lists_lsearch"></a><font size="2">6 Searching Lists: <span style="font-family:Courier New;">lsearch</span></font></h3>
+<p><font size="2"><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">lsearch</span> returns the index of a value in the list, or -1 if it is not present. <span style="font-family:Courier New;">lsearch</span> supports pattern matching in its search. Glob-style pattern matching is default, and this canbe disabled with the <span style="font-family:Courier New;">-exact</span> flag.<br /><span>&nbsp;&nbsp;&nbsp; </span>The example below uses<span style="font-family:Courier New;"> lreplace</span> to delete elements by not specifying any replacement list elements.<br />e.g.<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;</span><span><span style="font-family:Courier New;">&nbsp;&nbsp;&nbsp; proc delete {list value} {</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; set ix [lsearch -exact $list $value]</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; if {$ix&gt;=0} {</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; return [lreplace $list $ix $ix]</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } else {</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; return $list</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }</span><br />&nbsp;<br /></span></font><br />
+<h3><font size="2">7 Sorting List: <span style="font-family:Courier New;">lsort</span></font></h3>
+<p><font size="2"><span>&nbsp;&nbsp;&nbsp; </span>The three basic types of sorts are specified with the <span style="font-family:Courier New;">-ascii, -integer</span>, or <span style="font-family:Courier New;">-real</span> options. The <span style="font-family:Courier New;">-increasing</span> or <span style="font-family:Courier New;">-decreasing</span> option indicate the sirting order. The default option set is <span style="font-family:Courier New;">-ascii -increasing</span>.
+<div id="y4i8" style="padding:1em 0;text-align:left;"><img style="width:700px;height:341px;" src="http://docs.google.com/File?id=dd6nw3mt_12843xpw3gx_b" /></p>
+<h3>8 The split And join Commands</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The <span style="font-family:Courier New;">split </span>command<br />
+takes a string and turns it into a list by breaking it at specified<br />
+characters. Stray double-quotes or curly braces in the input can result<br />
+in invalid list structures and errors in your script. However, the<br />
+split command provides a robust way to turn input lines into proper Tcl<br />
+lists.
+<div id="nj_b" style="padding:1em 0;text-align:left;"><img style="width:659px;height:134px;" src="http://docs.google.com/File?id=dd6nw3mt_129dnrj74dp_b" /></div>
+<div id="s61w" style="padding:1em 0;text-align:left;"><img style="width:672px;height:134px;" src="http://docs.google.com/File?id=dd6nw3mt_130f2ksvcpn_b" /></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>The<br />
+default split character is white space. If there are multiple separator<br />
+characters in a row, these result in empty list elements- the<br />
+separators are not collapsed. The following command splits on commas,<br />
+periods, spaces and tabs:
+<div id="i_2y" style="padding:1em 0;text-align:left;"><img style="width:299px;height:78px;" src="http://docs.google.com/File?id=dd6nw3mt_131fm4hj3gx_b" /></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>The<span style="font-family:Courier New;"> join </span>command<br />
+is the inverse of split. It takes a list value and reformats it with<br />
+specified characters separating the list elements. In doing so, it will<br />
+remove any curly braces from the string representation of the list that<br />
+are used to group the top-level elements.
+<div id="z1an" style="padding:1em 0;text-align:left;"><img style="width:269px;height:55px;" src="http://docs.google.com/File?id=dd6nw3mt_132gxv9m5gb_b" /></div>
+<h3>9 Arrays</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The index of an array is delimited by parentheses. The<br />
+index can have any string value, and it canbe the result of variable or<br />
+command substitution.<br /><span>e.g.<span> &nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">set arra(</span><i>index</i><span style="font-family:Courier New;">) value</span><br /><span>&nbsp;&nbsp;&nbsp; </span>The value of an array element is obtained with $ substitution:<br /><span></span><span></span><span>e.g.<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set foo $arr(</span><i>index</i><span style="font-family:Courier New;">)</span>
+<div id="rrr0" style="padding:1em 0;text-align:left;"><img style="width:551px;height:145px;" src="http://docs.google.com/File?id=dd6nw3mt_133dvtqdmcr_b" /></div>
+<p><span>&nbsp;&nbsp;&nbsp; </span>If<br />
+you have complex indices, use a comma to separate different parts of<br />
+the index. Avoid putting a pace after the comma. It is legal, but a<br />
+space in an index value will cause problems because parenthesis are not<br />
+used as a grouping mechanism. The space in the index needs to be quoted<br />
+with a backslash, or hte whole variable reference needs to be grouped:<br /><span></span><span>e.g.<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set {arr(I'm asking for trouble)} {I told you so.}</span><br /><span></span><span><span>&nbsp;&nbsp;&nbsp; </span>If<br />
+the array index is stored in a variable, then there is no problem with<br />
+spaces in the variable's value. The following works fine:<span><br />e.g.<span>&nbsp;&nbsp; &nbsp;</span><br /><span>&nbsp;&nbsp; &nbsp;<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set index {</span></span></span></span></span></span></span><font><font size="2"><span><span><span>I'm asking for trouble</span></span></span></font></font><span><span><span><span><span><span><span style="font-family:Courier New;">}</span><br /><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set arr($index) {</span></span></span></span></span></span></span><font><font size="2"><span><span><span>I told you so.</span></span></span></font></font><span><span><span><span><span><span><span><span style="font-family:Courier New;">}</span><br /><span>&nbsp;&nbsp;&nbsp; </span>The<br />
+name of the array can be the result of a substitution. If the name of<br />
+the array is stored in another variable, then you must use set as shown<br />
+in the last command below to reference the array elements. 
+<div id="v86g" style="padding:1em 0;text-align:left;"><img style="width:622px;height:266px;" src="http://docs.google.com/File?id=dd6nw3mt_134ckqvbpf3_b" /></div>
+<p></span></span></span></span></span></span></span></p>
+<h3><span><span><span><span><span><span><span>10 The Array Command</span></span></span></span></span></span></span></h3>
+<h3><span><span><span><span><span><span><span></span></span></span></span></span></span></span></h3>
+<p><span><span><span><span><span><span><span>
+<div id="uxsm" style="padding:1em 0;text-align:left;"><img style="width:722px;height:215px;" src="http://docs.google.com/File?id=dd6nw3mt_135g7rtd4rd_b" /></div>
+<div style="padding:1em 0;">
+<div id="j5ji" style="padding:1em 0;text-align:left;"><img style="width:722px;height:215px;" src="http://docs.google.com/File?id=dd6nw3mt_137gkb3k889_b" /></div>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The array names command is perhaps the most useful because it allows easy iteration through an array with a foreach loop:<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">foreach index [array names arr] {command body}</span><br />
+<span>&nbsp;&nbsp;&nbsp; </span>The order of the names returned by array names is<br />
+arbitrary. It is essentially determined by the hash table<br />
+implementation of the array.<br />
+<span>&nbsp;&nbsp;&nbsp; </span>The <span style="font-family:Courier New;">array get</span> and <span style="font-family:Courier New;">array set</span> operations are used to convert between an array and a list. The list returned by <span style="font-family:Courier New;">array get</span><br />
+has an even number of elements.The first element is an index, and the<br />
+next is the corresponding array value. The ordering of the indexes is<br />
+arbitrary. The list argument to <span style="font-family:Courier New;">array se</span>t must have the same structure.</p>
+<div id="h3:o" style="padding:1em 0;text-align:left;"><img style="width:467px;height:159px;" src="http://docs.google.com/File?id=dd6nw3mt_138fgwktmcn_b" /></p>
+<h3>11 Environment Variables</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>In UNIX, the process environment variables are available through the global array <span style="font-family:Courier New;">env</span>.<br />
+The name of the environment variable is the index,e.g. env(PATH), and<br />
+the array element contains the current value of the environment<br />
+variable.</p>
+<h3>12 Tracing Variable Values</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The trace command lets you register a command to be called whenever a variable is accessed, modified or unset. The form is:<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">trace <i>variable name ops command</i></span><br />
+<span>&nbsp;&nbsp;&nbsp; </span>The name is a Tcl variable name, which can be a simple<br />
+variable, an array or a element.If a whole array is traced, then the<br />
+trace is invoked when any element is used according to ops. The ops<br />
+argument is one or more of the letters: r for read traces, w for write<br />
+traces, and u for unset traces. The command is executed when one of<br />
+these events occurs. It is invoked as:<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">command name1 name2 op</span></p>
+<div id="gbxa" style="padding:1em 0;text-align:left;"><img style="width:631px;height:266px;" src="http://docs.google.com/File?id=dd6nw3mt_139f4brdcdj_b" /></p>
+<div id="fq6s" style="padding:1em 0;text-align:left;"><img style="width:565px;height:249px;" src="http://docs.google.com/File?id=dd6nw3mt_140c4szdzcj_b" /></div>
+<p><span>&nbsp;&nbsp;&nbsp; </span>Information about traces on a varible is returned with the vinfo option.<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">trace vinfo dynamic</span><br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><i>=&gt; {r FixDynamic}</i><br />
+<span>&nbsp;&nbsp;&nbsp; </span>A trace is deleted with the <span style="font-family:Courier New;">vdelete <span style="font-family:Verdana;">trace</span></span> option, which has the same form as the <span style="font-family:Courier New;">varible</span> option.</div>
+</div>
+</div>
+<p></span></span></span></span></span></span></span></div>
+<p></font></div>
+
+
+    <small class="meta">November 02, 2008 | <a href='/2008/11/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25283%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/10/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25281%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Tcl/Tk Notes (1)</a></h2>
+
+    <div>
+<div style="text-align:center;">
+<h1>
+      Tcl/Tk Notes<br />
+    </h1>
+</div>
+<p></p>
+<div></p>
+<h2>
+      Part I TCL Overview<br />
+    </h2>
+<h3>
+      1 Everything Is a String<br />
+    </h3>
+<p>    &nbsp;&nbsp; &nbsp;In Tcl, evrything is a string, and you have to explicitly ask for evaluation of variables and nested commands.</p>
+<h3>
+      2 Substitution<br />
+</h3>
+<ul>
+<li>
+        Variable
+      </li>
+</ul>
+</div>
+<div>
+    &nbsp;&nbsp;&nbsp; The use of dollar sign($) is one kind of substitution. Variables can be assigned values by <span style="font-family:Courier New;">set</span> command.</p>
+<ul>
+<li>
+        Command Substitution
+</li>
+</ul>
+</div>
+<div>
+&nbsp;&nbsp;&nbsp; A nested command is delimited by square brackets, [ and ]. The Tcl<br />
+takes everything between the brackets and evaluates it as a command. It<br />
+Reqrites the outer command by replacing the square brackets and<br />
+everything between them with the result of nested command.
+</div>
+<p></p>
+<ul>
+<li>
+      Math Expression
+    </li>
+</ul>
+</div>
+<div>
+  &nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">expr </span>command is used to evaluate math expressions. The Tcl interpreter treats <span style="font-family:Courier New;">expr <span style="font-family:Verdana;">just like any other command, and it leaves the expression parsing up to the <span style="font-family:Courier New;">expr </span>implementation.</span></span></p>
+</div>
+<div>
+<ul>
+<li>
+      Backslash Substitution
+    </li>
+</ul>
+<p>  &nbsp;&nbsp;&nbsp; Backslash(/) is used to quote characters that have special meaning to the interpreter. <br />&nbsp;&nbsp; &nbsp;You can also specify characters that are hard to type directly by giving their octal or hexadecimal value. <br />&nbsp;&nbsp;<br />
+&nbsp;Another common use of backslashes is to continue long commands on<br />
+multiple lines. A backslash as the last character in a line is<br />
+converted into a space.<br />
+<h3>3 Double Quotes vs. Curly Braces</h3>
+<p>&nbsp;&nbsp;&nbsp;<br />
+Double quotes, like braces, are used to group words together. The<br />
+difference between double quotes and curly braces is that quotes allow<br />
+substitutions to occur in the group, while curly braces prevent<br />
+substitutions.
+<div id="o6jd" style="padding:1em 0;text-align:left;"><a target="_blank" href="http://docs.google.com/File?id=dd6nw3mt_112fm5tm2gc_b"><img style="width:666px;height:166px;" src="http://docs.google.com/File?id=dd6nw3mt_112fm5tm2gc_b" /></a><br />&nbsp;&nbsp;&nbsp;<br />
+In practice, grouping with curly braces is used when substitutions on<br />
+the argument need to be delayed until a later time( or never done at<br />
+all). Examples include contrl flow statements and procedure<br />
+declararions. Double quotes are usefulin simple cases like the <span style="font-family:Courier New;">puts</span> command.</div>
+<p>&nbsp;&nbsp;&nbsp; Another common use of quotes is with the <span style="font-family:Courier New;">format </span>command<br />
+that is similar to C printf function. The only way to effectively group<br />
+special characters in format command into a single argument is with<br />
+quotes.<br />&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">e.g. puts [format "Item: %s/t%5.3f" $name $value]</span><br />
+<h3>4 Procedures</h3>
+<p>&nbsp;&nbsp;&nbsp; Tcl uses the <span style="font-family:Courier New;">proc</span> command to define procedures. The syntax is : <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; proc <i>name arglist body</i><br />&nbsp;&nbsp;&nbsp; <span style="color:rgb(255,0,0);">The <span style="font-family:Courier New;">return</span><br />
+command in Tcl procedure is optional because the interpreter will<br />
+return the value of the last command in the body as the value of the<br />
+procedure.</span><br />
+<h3>5 A While Loop Example </h3>
+<div id="azjc" style="padding:1em 0;text-align:left;"><img style="width:584px;height:205px;" src="http://docs.google.com/File?id=dd6nw3mt_113d4kxm7gt_b" /><br />&nbsp;&nbsp; &nbsp;The loop around boolean expression <span style="font-family:Courier New;">$i&lt;=10</span><br />
+is crucial, because it delays substitution until while command<br />
+implementation tests the expression. The following expression is an<br />
+infinite loop:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set i; while $i&lt;=10 {incr i}</span><br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp; &nbsp;The Tcl interpreter will substitute for $i before while is called, so while gets a constant expression <span style="font-family:Courier New;">1&lt;=10</span><br />
+that will always be ture.You can avoid this kind of errors by adopting<br />
+a consistent coding style that always groups expressions and command<br />
+bodies with curly braces.<br />&nbsp;&nbsp;&nbsp; The command in the example uses <span style="font-family:Courier New;">set</span> with a single argument. When used in this way the <span style="font-family:Courier New;">set</span> command returns the current value of the named variable.</p>
+<h3>6 Grouping And Command Substitution</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>Grouping<br />
+decisions are made before substitutions are performed. This means that<br />
+the values of variables or command results do not affect grouping.<br /><span>&nbsp;&nbsp;&nbsp; </span>A<br />
+single round if substitutions is performed before command invocation.<br />
+That is, the result of a substitution is not interpreted a second time.<br />
+This rule is important if you have a variable value or a command result<br />
+that contains special characters such as spaces, dollar-signs, square<br />
+brackets or braces. Because only a single round of substitution is<br />
+done, you don't have to worry about special characters in values<br />
+causing extra substitutions.</p>
+<h3>7 Comments</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>Tcl<br />
+uses # for comments. Unlike many languages, the # character must occur<br />
+at the begining of a command. An easy trick to append a comment to the<br />
+end of a command is to proceed the # with a semicolon in order to<br />
+terminate the previous command.<br /><span>&nbsp;&nbsp;&nbsp; </span>A backslash(/)<br />
+continues a comment line onto the next line of the script. In addition,<br />
+a semi-colon inside a comment is not significant. only a newline<br />
+terminates comments.<br />
+<h3>8 Reference</h3>
+<ul>
+<li>backslash Sequences</li>
+</ul>
+</div>
+</div>
+<div>
+<div id="z8dm" style="padding:1em 0;text-align:left;"><img style="width:725px;height:491px;" src="http://docs.google.com/File?id=dd6nw3mt_114hkq332ct_b" /></div>
+<p>
+<ul>
+<li>Arithmetic Operators</li>
+</ul>
+</div>
+<div>
+<div id="t0kt" style="padding:1em 0;text-align:left;"><img style="width:713px;height:448px;" src="http://docs.google.com/File?id=dd6nw3mt_115cx6tf2gk_b" /></div>
+<ul>
+<li>Built-in Math Function</li>
+</ul>
+</div>
+<div>
+<div id="wkim" style="padding:1em 0;text-align:left;"><img style="width:584px;height:625px;" src="http://docs.google.com/File?id=dd6nw3mt_116gqq38zfc_b" /></div>
+<ul>
+<li>Core Tcl Commands</li>
+</ul>
+</div>
+<div>
+<div id="dwzb" style="padding:1em 0;text-align:left;"><img style="width:584px;height:94px;" src="http://docs.google.com/File?id=dd6nw3mt_117fsn9v3dj_b" />
+<div id="f3wa" style="padding:1em 0;text-align:left;"><img style="width:561px;height:804px;" src="http://docs.google.com/File?id=dd6nw3mt_118vb3288fz_b" /></div>
+<div id="vr6z" style="padding:1em 0;text-align:left;"><img style="width:561px;height:804px;" src="http://docs.google.com/File?id=dd6nw3mt_119vq4tt6fx_b" /></p>
+<ul>
+<li>Predefined Variables
+</li>
+</ul>
+</div>
+<div id="gq9h" style="padding:1em 0;text-align:left;"><img style="width:562px;height:376px;" src="http://docs.google.com/File?id=dd6nw3mt_120c9tpw3fv_b" /></div>
+<p></div>
+<p>
+</div>
+<p>
+<div>
+<div>
+<div><span style="background-color:rgb(255,255,0);"></span></div>
+<p></div>
+<p></div>
+<p></p>
+
+
+    <small class="meta">October 27, 2008 | <a href='/bkup/2008/10/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25281%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2008/10/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25281%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Tcl/Tk Notes (1)</a></h2>
+
+    <div>
+<div style="text-align:center;">
+<h1>
+      Tcl/Tk Notes<br />
+    </h1>
+</div>
+<p></p>
+<div></p>
+<h2>
+      Part I TCL Overview<br />
+    </h2>
+<h3>
+      1 Everything Is a String<br />
+    </h3>
+<p>    &nbsp;&nbsp; &nbsp;In Tcl, evrything is a string, and you have to explicitly ask for evaluation of variables and nested commands.</p>
+<h3>
+      2 Substitution<br />
+</h3>
+<ul>
+<li>
+        Variable
+      </li>
+</ul>
+</div>
+<div>
+    &nbsp;&nbsp;&nbsp; The use of dollar sign($) is one kind of substitution. Variables can be assigned values by <span style="font-family:Courier New;">set</span> command.</p>
+<ul>
+<li>
+        Command Substitution
+</li>
+</ul>
+</div>
+<div>
+&nbsp;&nbsp;&nbsp; A nested command is delimited by square brackets, [ and ]. The Tcl<br />
+takes everything between the brackets and evaluates it as a command. It<br />
+Reqrites the outer command by replacing the square brackets and<br />
+everything between them with the result of nested command.
+</div>
+<p></p>
+<ul>
+<li>
+      Math Expression
+    </li>
+</ul>
+</div>
+<div>
+  &nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">expr </span>command is used to evaluate math expressions. The Tcl interpreter treats <span style="font-family:Courier New;">expr <span style="font-family:Verdana;">just like any other command, and it leaves the expression parsing up to the <span style="font-family:Courier New;">expr </span>implementation.</span></span></p>
+</div>
+<div>
+<ul>
+<li>
+      Backslash Substitution
+    </li>
+</ul>
+<p>  &nbsp;&nbsp;&nbsp; Backslash(/) is used to quote characters that have special meaning to the interpreter. <br />&nbsp;&nbsp; &nbsp;You can also specify characters that are hard to type directly by giving their octal or hexadecimal value. <br />&nbsp;&nbsp;<br />
+&nbsp;Another common use of backslashes is to continue long commands on<br />
+multiple lines. A backslash as the last character in a line is<br />
+converted into a space.<br />
+<h3>3 Double Quotes vs. Curly Braces</h3>
+<p>&nbsp;&nbsp;&nbsp;<br />
+Double quotes, like braces, are used to group words together. The<br />
+difference between double quotes and curly braces is that quotes allow<br />
+substitutions to occur in the group, while curly braces prevent<br />
+substitutions.
+<div id="o6jd" style="padding:1em 0;text-align:left;"><a target="_blank" href="http://docs.google.com/File?id=dd6nw3mt_112fm5tm2gc_b"><img style="width:666px;height:166px;" src="http://docs.google.com/File?id=dd6nw3mt_112fm5tm2gc_b" /></a><br />&nbsp;&nbsp;&nbsp;<br />
+In practice, grouping with curly braces is used when substitutions on<br />
+the argument need to be delayed until a later time( or never done at<br />
+all). Examples include contrl flow statements and procedure<br />
+declararions. Double quotes are usefulin simple cases like the <span style="font-family:Courier New;">puts</span> command.</div>
+<p>&nbsp;&nbsp;&nbsp; Another common use of quotes is with the <span style="font-family:Courier New;">format </span>command<br />
+that is similar to C printf function. The only way to effectively group<br />
+special characters in format command into a single argument is with<br />
+quotes.<br />&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">e.g. puts [format "Item: %s/t%5.3f" $name $value]</span><br />
+<h3>4 Procedures</h3>
+<p>&nbsp;&nbsp;&nbsp; Tcl uses the <span style="font-family:Courier New;">proc</span> command to define procedures. The syntax is : <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; proc <i>name arglist body</i><br />&nbsp;&nbsp;&nbsp; <span style="color:rgb(255,0,0);">The <span style="font-family:Courier New;">return</span><br />
+command in Tcl procedure is optional because the interpreter will<br />
+return the value of the last command in the body as the value of the<br />
+procedure.</span><br />
+<h3>5 A While Loop Example </h3>
+<div id="azjc" style="padding:1em 0;text-align:left;"><img style="width:584px;height:205px;" src="http://docs.google.com/File?id=dd6nw3mt_113d4kxm7gt_b" /><br />&nbsp;&nbsp; &nbsp;The loop around boolean expression <span style="font-family:Courier New;">$i&lt;=10</span><br />
+is crucial, because it delays substitution until while command<br />
+implementation tests the expression. The following expression is an<br />
+infinite loop:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set i; while $i&lt;=10 {incr i}</span><br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp; &nbsp;The Tcl interpreter will substitute for $i before while is called, so while gets a constant expression <span style="font-family:Courier New;">1&lt;=10</span><br />
+that will always be ture.You can avoid this kind of errors by adopting<br />
+a consistent coding style that always groups expressions and command<br />
+bodies with curly braces.<br />&nbsp;&nbsp;&nbsp; The command in the example uses <span style="font-family:Courier New;">set</span> with a single argument. When used in this way the <span style="font-family:Courier New;">set</span> command returns the current value of the named variable.</p>
+<h3>6 Grouping And Command Substitution</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>Grouping<br />
+decisions are made before substitutions are performed. This means that<br />
+the values of variables or command results do not affect grouping.<br /><span>&nbsp;&nbsp;&nbsp; </span>A<br />
+single round if substitutions is performed before command invocation.<br />
+That is, the result of a substitution is not interpreted a second time.<br />
+This rule is important if you have a variable value or a command result<br />
+that contains special characters such as spaces, dollar-signs, square<br />
+brackets or braces. Because only a single round of substitution is<br />
+done, you don't have to worry about special characters in values<br />
+causing extra substitutions.</p>
+<h3>7 Comments</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>Tcl<br />
+uses # for comments. Unlike many languages, the # character must occur<br />
+at the begining of a command. An easy trick to append a comment to the<br />
+end of a command is to proceed the # with a semicolon in order to<br />
+terminate the previous command.<br /><span>&nbsp;&nbsp;&nbsp; </span>A backslash(/)<br />
+continues a comment line onto the next line of the script. In addition,<br />
+a semi-colon inside a comment is not significant. only a newline<br />
+terminates comments.<br />
+<h3>8 Reference</h3>
+<ul>
+<li>backslash Sequences</li>
+</ul>
+</div>
+</div>
+<div>
+<div id="z8dm" style="padding:1em 0;text-align:left;"><img style="width:725px;height:491px;" src="http://docs.google.com/File?id=dd6nw3mt_114hkq332ct_b" /></div>
+<p>
+<ul>
+<li>Arithmetic Operators</li>
+</ul>
+</div>
+<div>
+<div id="t0kt" style="padding:1em 0;text-align:left;"><img style="width:713px;height:448px;" src="http://docs.google.com/File?id=dd6nw3mt_115cx6tf2gk_b" /></div>
+<ul>
+<li>Built-in Math Function</li>
+</ul>
+</div>
+<div>
+<div id="wkim" style="padding:1em 0;text-align:left;"><img style="width:584px;height:625px;" src="http://docs.google.com/File?id=dd6nw3mt_116gqq38zfc_b" /></div>
+<ul>
+<li>Core Tcl Commands</li>
+</ul>
+</div>
+<div>
+<div id="dwzb" style="padding:1em 0;text-align:left;"><img style="width:584px;height:94px;" src="http://docs.google.com/File?id=dd6nw3mt_117fsn9v3dj_b" />
+<div id="f3wa" style="padding:1em 0;text-align:left;"><img style="width:561px;height:804px;" src="http://docs.google.com/File?id=dd6nw3mt_118vb3288fz_b" /></div>
+<div id="vr6z" style="padding:1em 0;text-align:left;"><img style="width:561px;height:804px;" src="http://docs.google.com/File?id=dd6nw3mt_119vq4tt6fx_b" /></p>
+<ul>
+<li>Predefined Variables
+</li>
+</ul>
+</div>
+<div id="gq9h" style="padding:1em 0;text-align:left;"><img style="width:562px;height:376px;" src="http://docs.google.com/File?id=dd6nw3mt_120c9tpw3fv_b" /></div>
+<p></div>
+<p>
+</div>
+<p>
+<div>
+<div>
+<div><span style="background-color:rgb(255,255,0);"></span></div>
+<p></div>
+<p></div>
+<p></p>
+
+
+    <small class="meta">October 27, 2008 | <a href='/unix/linux/2008/10/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%2520notes%2520%25281%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page32' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page30' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

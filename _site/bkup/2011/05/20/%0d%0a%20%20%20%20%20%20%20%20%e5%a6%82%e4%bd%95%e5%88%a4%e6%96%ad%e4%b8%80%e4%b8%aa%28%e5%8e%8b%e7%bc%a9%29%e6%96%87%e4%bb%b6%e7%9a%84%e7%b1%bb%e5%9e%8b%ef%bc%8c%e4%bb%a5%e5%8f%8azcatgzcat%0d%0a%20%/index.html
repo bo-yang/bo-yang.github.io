@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - 如何判断一个(压缩)文件的类型，以及zcat/gzcat </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>如何判断一个(压缩)文件的类型，以及zcat/gzcat</h1>
+    <p>恰似&ldquo;一师是个好学校&rdquo;，dd是个好工具&mdash;&mdash;只消用它逐字copy出某个文件第一个block的内容，就可以判断出该文件的类型！！！</p>
+<p>&nbsp;</p>
+<p>
+<pre>bjbldd&gt;1&gt; dd if=MMEgolden.tar bs=512 count=1 &gt; dd_tmp
+1+0 records in
+1+0 records out
+bjbldd&gt;&gt; file dd_tmp
+dd_tmp:         USTAR tar archive
+bjbldd&gt;&gt; dd if=varofvar bs=512 count=1 &gt; dd_tmp
+0+1 records in
+0+1 records out
+bjbldd&gt;&gt; file dd_tmp
+dd_tmp:         executable /bin/ksh script
+bjbldd&gt;&gt; dd if=Tk-804.029.tar.gz bs=512 count=1 &gt; dd_tmp
+1+0 records in
+1+0 records out
+bjbldd&gt;&gt; file dd_tmp
+dd_tmp:         gzip compressed data - deflate method , original file name , max compression
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>另外，zcat或者gzcat是用于cat gzip压缩文件的工具，只是在不同的平台有些差异：/bin/zcat在Linux上work的很好，可是当它在Solaris上cat gzip文件的内容时，就会报错。Solaris上cat gzip文件只能用/bin/gzcat. &mdash;&mdash;就是这个小小的差异，浪费了我一天的时间！</p>
+<p>&nbsp;</p>
+<p>跨平台的cat gzip文件的代码如下：</p>
+<p>
+<pre>OS="`/bin/uname`"
+if [ "${OS}" != "Linux" ]
+then
+	ZCAT="/bin/zcat"
+else
+	ZCAT="/bin/gzcat"
+fi
+.......
+${ZCAT} ${TMPDIR}/ngn_platform.cpio.Z | /bin/cpio -idmvu  -H odc ${SAT_CPIO_FLAG}</pre>
+<p>&nbsp;</p>
+<p>貌似cpio的用法也很强大哦～</p>
+
+</div>
+
+<small class="meta">Posted May 20, 2011</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

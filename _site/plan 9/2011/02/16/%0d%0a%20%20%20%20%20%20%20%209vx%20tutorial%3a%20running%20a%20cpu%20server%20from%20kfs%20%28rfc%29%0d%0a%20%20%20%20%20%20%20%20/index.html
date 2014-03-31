@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - 9vx tutorial: running a cpu server from kfs (RFC) </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>9vx tutorial: running a cpu server from kfs (RFC)</h1>
+    <p>原文：<a href="http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd">&nbsp;http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div>
+<p><span>【说明】</span></p>
+<p><span>本文是yiyus发布在9fans上的一篇教程。文中用到的9vx是yiyus维护的分支：</span><a href="http://bytebucket.org/yiyus/vx32/overview">http://bytebucket.org/yiyus/vx32/overview</a>。根据yiyus在9fans中的说明，他的9vx分支是从ron的分支上更改的。vx32/9vx的创始人Russ Cox最近在9fans中声明他本人已经放弃了对9vx的维护，准备将所有权限转交给ron minnich（八卦一下：Russ Cox现在是Google Go语言的核心成员之一，正与Rob Pike，Ken Tompson等原plan9的元老一起维护Go&hellip;&hellip;）。</p>
+</div>
+<div>&nbsp;-------------------------------------------------------</div>
+<p>&nbsp;</p>
+<div>
+<h1 id="zw-12e2e7c010cc6H2Tp3916c"><span id="zw-12e2ede98aavnmvgj3916c">9vx tutorial:</span><span id="zw-12e2edec946BgJF9J3916c">&nbsp;</span><span id="zw-12e2ede99882FtZgu3916c">running a cpu server from kfs (RFC)</span><span id="zw-12e2ede9988SM7byw3916c">&nbsp;&nbsp;</span></h1>
+<p id="zw-12e2e7c3536WlOKdt3916c"><span id="zw-12e2e7c3537XVH5MS3916c">This tutorial is a work in progress (it will eventually be added to&nbsp;</span><span id="zw-12e2e7c3537arcii83916c">the 9vx documentation and probably to the Plan 9 wiki). Please let me&nbsp;</span><span id="zw-12e2e7c3537TL8RB33916c">know if you see anything I'm doing wrong (unfortunately I don't have&nbsp;</span><span id="zw-12e2e7c3537whmwf43916c">too much experience&nbsp;with real Plan 9 systems of more than one&nbsp;</span><span id="zw-12e2e7c3537XtRCA3916c">machine). In particular, I don't know why I could not use mkfs instead&nbsp;</span><span id="zw-12e2e7c3537gPJh1d3916c">of dircp. The line&nbsp;</span></p>
+<p id="zw-12e2e94864bSyqBpZ3916c"><span id="zw-12e2e94864bEE4NC33916c">&nbsp;&nbsp;
+<pre> % disk/mkfs -s /n/9660 /sys/lib/sysconfig/proto/allproto </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e3eEKEBu13916c"><span id="zw-12e2e95854a9D-czm3916c">gave me this error:&nbsp;</span><span id="zw-12e2edec95bhi6LFZ3916c">&nbsp;</span></p>
+<p id="zw-12e2e7c1df8QFHSYZ3916c"><span id="zw-12e2e7c1df9E8SbsK3916c">&nbsp; &nbsp;</span><span id="zw-12e2e960dcaLCGKRy3916c">&nbsp;</span><span style="font-family:mceinline;"><span id="zw-12e2edf46e0GLLVZ3916c">mkfs: /sys/lib/sysconfig/proto/allproto:1: can't move tmp file to&nbsp;</span><span id="zw-12e2e95e07btk4zLw3916c">/n/kfs/dist/replica/plan9.compressed.db: wstat -- unknown type/mode&nbsp;</span></span></p>
+<p id="zw-12e2e7c1dfaWgaIQN3916c"><span id="zw-12e2e7c1dfbpYEmbw3916c">Anyway, these instructions are working here. Please, let me know if&nbsp;</span><span id="zw-12e2e965525WjSCTn3916c">they work for you too.&nbsp;</span></p>
+<p id="zw-12e2e7c1dfcHzaUAw3916c"><span id="zw-12e2e7c1dfdxBy3T73916c">By the way, this tutorial is only the first one, but I'd like to have&nbsp;</span><span id="zw-12e2e967f47zy0X-O3916c">some more. For example, to run several 9vx instances in a private&nbsp;</span><span id="zw-12e2e9686a5ISlVW83916c">network using the tap device and to run 9vx from fossil backed up by&nbsp;</span><span id="zw-12e2e968f83cjlZom3916c">p9p's venti. Contributions are welcomed ;-)&nbsp;</span></p>
+<p id="zw-12e2e7c1e00sZ2bi3916c"><span id="zw-12e2e7c1e01DWUEbQ3916c">----------------------------------------------------------------------</span><span id="zw-12e2edec95cu_sRsD3916c">​</span></p>
+<p id="zw-12e2e7c1e02ZfffOa3916c"><span id="zw-12e2e7c1e03rCtzas3916c">This is a brief tutorial on how to run a 9vx cpu server from a kfs&nbsp;</span><span id="zw-12e2e970b10h9TSbm3916c">file system. You will need 9vx, a plan9.iso and some free disk space.&nbsp;</span></p>
+<p id="zw-12e2e7c1e04R1Jx63916c"><span id="zw-12e2e7c1e05bbvaaI3916c">First, go to the destination directory and install 9vx:&nbsp;</span></p>
+<p id="zw-12e2e7c1e05svn39h3916c"><span id="zw-12e2eefeb87mcWL1O3916c">&nbsp;&nbsp;
+<pre>$ hg clone http://bitbucket.org/yiyus/vx32/ 
+$ cd vx32/src/ 
+$ make 9vx/9vx &amp;&amp; sudo make 9vx/install </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e09V3a83916c"><span id="zw-12e2e7c1e09GQZ4fp3916c">(<strong>Commands run on the host are preceded by $, commands run from inside&nbsp;</strong></span><span id="zw-12e2e988e4bNr603d3916c"><strong>9vx are preceded with %</strong>)&nbsp;</span></p>
+<p id="zw-12e2e7c1e0aSQCEmh3916c"><span id="zw-12e2e7c1e0b-b3A9E3916c">You can check that 9vx is working running the minimal system embedded&nbsp;</span><span id="zw-12e2e98ab92nzZNTv3916c">in the executable. The rcvx script should take you to a vx32% rc&nbsp;</span><span id="zw-12e2e98b4ffnklqHV3916c">prompt in the current directory. Once you have played a bit with a&nbsp;</span><span id="zw-12e2e98c1bbOW6Z2h3916c">rootless 9vx type exit to go back to your host system.&nbsp;</span></p>
+<p id="zw-12e2e7c1e0d_O1Dd3916c"><span id="zw-12e2e7c1e0eZiwMVZ3916c">rcvx is cool but you will want a full Plan 9 tree to have real fun.&nbsp;</span><span id="zw-12e2edec95f8uPmz3916c">&nbsp;</span></p>
+<p id="zw-12e2e7c1e41YAeJd_3916c"><span id="zw-12e2e7c1e0ezorRNc3916c">Let's boot from the iso file:&nbsp;</span></p>
+<p id="zw-12e2e7c1e0f5rF-Fj3916c"><span id="zw-12e2e7c1e0fW1F1Cf3916c">&nbsp;&nbsp;
+<pre> $ 9vx -r plan9.iso -u glenda "CWD=#Z`pwd`" "nvram=#Z`pwd`/plan9.nvr" </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e41-SWd8A3916c"><span id="zw-12e2e99b018PJMlg63916c">You should be in rio now, have an acme and a rio window, stats,&nbsp;</span><span id="zw-12e2e9a8581RJi33V3916c">faces... This is the live system in the iso that you probably already&nbsp;</span><span id="zw-12e2e9a93b7IDfw_43916c">know. The CWD=... and nvram=... arguments are interpreted as plan9.ini&nbsp;</span><span id="zw-12e2e9a9a949Ka7In3916c">lines and passed as environment variables, we will use them later.&nbsp;</span></p>
+<p id="zw-12e2e7c1e13HHsmwG3916c"><span id="zw-12e2e7c1e14E_-xFU3916c">Open a new rio window:&nbsp;</span></p>
+<p id="zw-12e2e7c1e14r-aZU3916c"><span id="zw-12e2ef48ddf7wmF-E3916c">&nbsp;&nbsp; &nbsp;
+<pre>% cd $CWD 
+% dd -if /dev/random -of plan9.nvr -bs 512 -count 1 
+% dd -if /dev/zero -of plan9.kfs -bs 1024 -count 320000 </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e16Q2tDoO3916c"><span id="zw-12e2e7c1e178Xvjp33916c">Those files will be our nvram and kfs partitions (check the size of&nbsp;</span><span id="zw-12e2ebb332fVCtHPl3916c">your kfs file, 320Mb is not too much, but will be enough). Nvram needs&nbsp;</span><span id="zw-12e2ebb437bvlQGlr3916c">to be initialized:&nbsp;</span></p>
+<p id="zw-12e2e7c1e18-UPMoz3916c">
+<pre>    % auth/wrkey 
+    authid: bootes 
+    authdom: 9vx 
+    secstore key: 
+    password: </pre>
+<p>&nbsp;</p>
+<p id="zw-12e2e7c1e1cJK0W053916c"><span id="zw-12e2e7c1e1cHkXjtz3916c">We can populate the file system now:&nbsp;</span></p>
+<p id="zw-12e2e7c1e43SMA8A3916c"><span style="font-family:monospace;font-size:x-small;"><span style="white-space:pre-wrap;">
+<pre>% 9660srv -f plan9.iso 
+% 9fs 9660 
+% disk/kfs -f plan9.kfs 
+File system main inconsistent 
+Would you like to ream it (y/n)? y 
+% 9fs kfs 
+% dircp /n/9660 /n/kfs </pre>
+<p> </span></span></p>
+<p id="zw-12e2e7c1e21S6igCx3916c"><span id="zw-12e2e7c1e22xV5I8q3916c">The system is now installed. You should be able to open a new 9vx&nbsp;</span><span id="zw-12e2e9d16dcxMQUuw3916c">instance from your new root:&nbsp;</span></p>
+<p id="zw-12e2e7c1e22cfR4fL3916c"><span id="zw-12e2ef4e62b1b7gn83916c">&nbsp;&nbsp; &nbsp;
+<pre>$ 9vx "nvram=#Z`pwd`/plan9.nvr" -r plan9.kfs -u glenda </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e43i5zhP3916c"><span id="zw-12e2e9d829dcizCED3916c">You can also boot a cpu server. We will use the canopenpath option, so&nbsp;</span><span id="zw-12e2e9d8d67pWo5o3916c">that only the files which begin with `pwd`/plan9 can be opened from&nbsp;</span><span id="zw-12e2e9d940dlOmSsY3916c">9vx, the -ic flags tell 9vx to pass -c to /386/init:&nbsp;</span></p>
+<p id="zw-12e2e7c1e252kexP-3916c"><span id="zw-12e2ef4fea6GrOSQ3916c">&nbsp;</span><span id="zw-12e2e9db9feHedRAA3916c">&nbsp;
+<pre>$ 9vx -gic -r plan9.kfs "nvram=#Z`pwd`/plan9.nvr" "canopenpath=`pwd`/plan9" -u bootes </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e27kMzC7K3916c"><span id="zw-12e2e7c1e27aKeSLj3916c">When you see the vx32# prompt add a key so that you can cpu as glenda:&nbsp;</span></p>
+<p id="zw-12e2e7c1e44wabKIv3916c"><span id="zw-12e2ef51c08DQfrMq3916c">&nbsp;&nbsp; &nbsp;
+<pre>vx32# echo 'key proto=p9sk1 dom=9vx user=glenda !password=password' &gt;/mnt/factotum/ctl </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e29dHLgZ3916c"><span id="zw-12e2e7c1e2a_uAPXD3916c">Now you can cpu to your new server. From another 9vx instance (for&nbsp;</span><span id="zw-12e2ea171ccTkGuT3916c">example, booted from the iso):&nbsp;</span></p>
+<p id="zw-12e2e7c1e2aM_7KT83916c"><span id="zw-12e2e7c1e2bZTc5Ep3916c">&nbsp;&nbsp; &nbsp;
+<pre>% cpu -h 127.0.0.1 </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e44vK_Dc3916c">&nbsp;</p>
+<p id="zw-12e2e7c1e2bmcFPV3916c"><span id="zw-12e2e7c1e2dErEswl3916c">If it worked we are done.&nbsp;</span></p>
+<p id="zw-12e2e7c1e44N-mz8b3916c">&nbsp;</p>
+<p id="zw-12e2e7c1e2dlCMKe73916c"><span id="zw-12e2e7c1e2dz_k0Ct3916c">Now you will probably want to adjust to your needs the 9vxc script to&nbsp;</span><span id="zw-12e2ef0574aISfLe3916c">launch cpu servers (also, think about adding a /cfg/vx32/cpurc file).&nbsp;</span></p>
+<p id="zw-12e2e7c1e451b74Pj3916c"><span id="zw-12e2e7c1e2eN3pQF3916c">You could be interested in the options localroot, canopenpath,&nbsp;</span><span id="zw-12e2e7c1e2fXsSTFb3916c">cpulimit and memsize. Or maybe you want to setup a virtual ethernet&nbsp;</span><span id="zw-12e2e7c1e2fCMPtOk3916c">device (have a look at the tap script and the 9vx man page).&nbsp;</span></p>
+<p id="zw-12e2e7c1e2frKWNh93916c"><span id="zw-12e2e7c1e30E_qQB83916c">Have fun! (and please, report bugs)&nbsp;</span></p>
+<p id="zw-12e2e7c1e45ChSS03916c">&nbsp;</p>
+<p id="zw-12e2e7c1e31k8xSAq3916c"><span id="zw-12e2e7c1e32ahNphh3916c">--&nbsp;</span></p>
+<p id="zw-12e2e7c1e45mXjHMA3916c"></p>
+<p id="zw-12e2e7c1e45WjjzbV3916c"><span id="zw-12e2e7c1e33mjLvWi3916c">- yiyus || JGL . 4l77.com&nbsp;</span><span id="zw-12e2e7c1e330DFFyj3916c">&nbsp;&nbsp;</span></p>
+<p id="zw-12e2e7c1e4d8qBIi3916c">&nbsp;</p>
+</div>
+
+</div>
+
+<small class="meta">Posted February 16, 2011</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,65 @@
+<p>在使用Shell写程序时，有时不得不面对交互的问题——可惜shell往往无法自动完成交互。如果交互的内容很多，自然是直接应用Expect脚本比较方便；如果交互的内容很少，而且考虑到Shell的易用性，在Shell脚本中创建一个Expect 的Here Document更加方便灵活。</p>
+<p>如下例所示，Expect&nbsp;Here Document可以直接运行并将运行结果赋给KSH变量rcs_stat。</p>
+<p>
+<pre>#!/bin/ksh
+
+autoload formatAPnum
+
+# Set the lab name, COOLLAB
+. $COOLXDIR/.netlabs
+# Get the RCS cell list
+set -A RCSs
+typeset -i nx=0
+cat $COOLXDIR/.coolcell2dcs | while read cell
+do
+	if [[ &quot;$cell&quot; = c* ]]
+	then
+		rcs=${cell%%$COOLLAB*}
+		RCSs[$nx]=${rcs#c}
+		nx=$nx+1
+	fi
+done
+
+# Check RCS status
+typeset -i loopCount=0
+rcs_cnt=${#RCSs[*]}
+B_server=$(formatAPnum $BserverAP)
+while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
+do
+	loopCount=${loopCount}+1
+
+	nx=0
+	while [ $nx -lt $rcs_cnt ]
+	do
+		rcs_stat=&quot;OOS&quot;
+		rcs_stat=$(
+expect - &lt;&lt;!
+log_user 0
+set timeout 20
+spawn $COOL_RSH ap$B_server TICLI
+send &quot;op:cell ${RCSs[$nx]}r&quot;
+expect {
+	timeout {puts &quot;OOSn&quot;}
+	&quot;*DL(S) DOWN&quot; {puts &quot;OOSn&quot;}
+	&quot;*DL(S) UP&quot; {puts &quot;UPn&quot;}
+}
+!
+		)
+
+		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
+		then
+			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
+			unset RCSs[$nx]
+		fi
+
+		nx=${nx}+1
+	done
+
+	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
+done
+
+coolprint - &quot;All RCSs are up.&quot;
+exit 0
+</pre></p>
+<p></p>
+<p></p>

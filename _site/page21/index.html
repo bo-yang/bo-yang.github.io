@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/05/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fixing%2520the%2520error%253a%2520db_runrecovery%253a%2520fatal%2520error%252c%2520run%2520database%2520recovery%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fixing The Error: DB_RUNRECOVERY: Fatal error, run database recovery</a></h2>
+
+    </p>
+<p><strong>If you get a message similar to this:</strong></p>
+<p><code>[username@localhost ~]$ sudo yum update<br />rpmdb: Thread/process 2402/139688794072832 failed: Thread died in Berkeley DB library<br />error: db4 error(-30974) from dbenv-&gt;failchk: DB_RUNRECOVERY: Fatal error, run database recovery<br />error: cannot open Packages index using db3 - (-30974)<br />error: cannot open Packages database in /var/lib/rpm<br />CRITICAL:yum.main:</code></p>
+<p>Error: rpmdb open failed</p>
+<p>&nbsp;</p>
+<p><strong>You can fix it by running the following 3 commands:</strong></p>
+<p><code>[username@localhost ~]$ sudo rm -f /var/lib/rpm/__db*<br />[username@localhost ~]$ sudo db_verify /var/lib/rpm/Packages<br />[username@localhost ~]$ sudo rpm --rebuilddb</code></p>
+
+
+    <small class="meta">May 22, 2010 | <a href='/unix/linux/2010/05/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fixing%2520the%2520error%253a%2520db_runrecovery%253a%2520fatal%2520error%252c%2520run%2520database%2520recovery%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/05/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fixing%2520the%2520error%253a%2520db_runrecovery%253a%2520fatal%2520error%252c%2520run%2520database%2520recovery%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fixing The Error: DB_RUNRECOVERY: Fatal error, run database recovery</a></h2>
+
+    </p>
+<p><strong>If you get a message similar to this:</strong></p>
+<p><code>[username@localhost ~]$ sudo yum update<br />rpmdb: Thread/process 2402/139688794072832 failed: Thread died in Berkeley DB library<br />error: db4 error(-30974) from dbenv-&gt;failchk: DB_RUNRECOVERY: Fatal error, run database recovery<br />error: cannot open Packages index using db3 - (-30974)<br />error: cannot open Packages database in /var/lib/rpm<br />CRITICAL:yum.main:</code></p>
+<p>Error: rpmdb open failed</p>
+<p>&nbsp;</p>
+<p><strong>You can fix it by running the following 3 commands:</strong></p>
+<p><code>[username@localhost ~]$ sudo rm -f /var/lib/rpm/__db*<br />[username@localhost ~]$ sudo db_verify /var/lib/rpm/Packages<br />[username@localhost ~]$ sudo rpm --rebuilddb</code></p>
+
+
+    <small class="meta">May 22, 2010 | <a href='/bkup/2010/05/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fixing%2520the%2520error%253a%2520db_runrecovery%253a%2520fatal%2520error%252c%2520run%2520database%2520recovery%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/04/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bb%2595%25e8%25bf%2587enter%2520password%2520for%2520default%2520keyring%2520to%2520unlock%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">绕过“Enter password for default keyring to unlock”的方法</a></h2>
+
+    <p>当你在Gnome下使用无线网络时，很有可能会遇到如下窗口：</p>
+<p>&nbsp;</p>
+<p><img src="http://lifehacker.com/assets/resources/2007/07/nmapplet.png" alt="" width="478" height="233" /></p>
+<p>&nbsp;</p>
+<p>估计很多人和我一样对此窗口不知所云，输入N多自己知道的密码仍然无效。</p>
+<p>&nbsp;</p>
+<p>这时你需要做的就是删除&nbsp;/home/.gnome2/keyring/下面的所有文件，然后重启，如果再次遇到这个窗口，什么也不要输入直接点OK就可以了。</p>
+<p>&nbsp;</p>
+<p>其他更完美的解决方案请Google。</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">April 21, 2010 | <a href='/bkup/2010/04/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bb%2595%25e8%25bf%2587enter%2520password%2520for%2520default%2520keyring%2520to%2520unlock%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/04/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bb%2595%25e8%25bf%2587enter%2520password%2520for%2520default%2520keyring%2520to%2520unlock%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">绕过“Enter password for default keyring to unlock”的方法</a></h2>
+
+    <p>当你在Gnome下使用无线网络时，很有可能会遇到如下窗口：</p>
+<p>&nbsp;</p>
+<p><img src="http://lifehacker.com/assets/resources/2007/07/nmapplet.png" alt="" width="478" height="233" /></p>
+<p>&nbsp;</p>
+<p>估计很多人和我一样对此窗口不知所云，输入N多自己知道的密码仍然无效。</p>
+<p>&nbsp;</p>
+<p>这时你需要做的就是删除&nbsp;/home/.gnome2/keyring/下面的所有文件，然后重启，如果再次遇到这个窗口，什么也不要输入直接点OK就可以了。</p>
+<p>&nbsp;</p>
+<p>其他更完美的解决方案请Google。</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">April 21, 2010 | <a href='/unix/linux/2010/04/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bb%2595%25e8%25bf%2587enter%2520password%2520for%2520default%2520keyring%2520to%2520unlock%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/android/2010/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520sprint%2520htc%2520hero%2528hero%2520200%2529%25e8%258e%25b7%25e5%258f%2596root%25e6%259d%2583%25e9%2599%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Sprint HTC Hero(Hero 200)获取ROOT权限</a></h2>
+
+    <p>I. 开始之前你需要完成的：</p>
+<div class="comment_count">你需要确认你能通过ADB来访问你的HERO。如果不行的话就先看看如何安装HERO的驱动（这个方法转自<span style="text-decoration:underline;"><strong>draculading</strong></span>的帖子<a href="http://www.hiapk.com/bbs/thread-13053-1-1.html" target="_blank"><span class="t_tag">HTC</span>&nbsp;HERO 取得<span class="t_tag">root</span><span class="t_tag">权限</span>完全傻瓜<span class="t_tag">教程</span>，适合<span class="t_tag">新人</span>。。。</a>其中安装驱动部分。）</div>
+<div class="comment_count"></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><strong>1.&nbsp;<span class="t_tag">下载</span><span class="t_tag">Android</span>&nbsp;SDK</strong><br />到<span class="t_tag">Google</span>官网去下个SDK里面有root要用的工具和驱动，网址&nbsp;<span><a href="http://developer.android.com/index.html" target="_blank">http://developer.android.com/index.html</a>（<em>博主：该网页已经被墙，尝试这个网页</em><a href="http://androidappdocs.appspot.com/sdk/index.html"><em>http://androidappdocs.appspot.com/sdk/index.html</em></a><span>）</span><span>下载以后可以解压到任意位置，建议解压到C:/sdk/ ,后面的教程里说的sdk<span class="t_tag">文件</span>夹就是指的这个文件夹</span></span></span></span></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><br /><strong>2.安装</strong><strong><span class="t_tag">USB</span></strong><strong>&nbsp;de</strong><strong><span class="t_tag">bug</span></strong><strong>ging驱动</strong><br />确定你的<span class="t_tag">手机</span>已经打开USB Debugging，在<span>Settings - Applications -Development - USB Debugging</span><br /><span>现在把手机通过usb线连到<span class="t_tag">电脑</span>上，电脑会<span class="t_tag">提示</span>你安装驱动，驱动的位置在sdk文件夹里的usb_driver, 如果是32位的<span class="t_tag">系统</span>选择x86文件夹安装驱动，如果是64位系统选择amd64文件夹（驱动可以兼容win7,我用的是64位的win7）</span><span>另外最好从始至终使用同一个usb接口，不然有可能会再次提示你安装驱动</span></span></span></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><span><br /></span></span></span></div>
+<div class="comment_count">【<em>博主：如果安装了HTCsync2.0.8，那么USB驱动就已经安装好了，以上第二步可以省略。</em>】</p>
+<p><strong>驱动搞定后就可以开始啦（以下部分是从</strong><a href="http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4" target="_blank">http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4</a><strong>翻译而来）</strong></p>
+<p>II. 获取CDMA HERO的root权限
+<ol>
+<li>下载附件中的asroot2.zip，并解压.</li>
+<li>把解压后的asroot2放到SDK的TOOLS目录里</li>
+<li>&nbsp;卸下<span class="t_tag">SD卡</span>，然后手机连接电脑</li>
+<li>打开XP的命令行工具，到SDK的TOOLS目录输入以下指令，</li>
+</ol>
+<pre>cd/
+cd AndroidSDK/Tools/ （到这里是进入SDK的TOOLS目录）
+adb devices（与手机建立连接）</pre>
+<p>请确认你手机的序列号有列出，并提示成功，否则请确认第一步是否完成（也就是说如果没有出现你HERO的序列，那就是驱动没装成功）</p>
+<p>5. 然后输入
+<pre>adb push asroot2 /data/local/ （回车）
+adb shell chmod 0755 /data/local/asroot2 （回车）
+adb shell （回车，会变成$提示符）
+/data/local/asroot2 /system/bin/sh （回车，会变成#提示符）</pre>
+<p>6. 然后输入
+<pre>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system（回车）
+cd /system/bin（回车）
+cat sh &gt; su（回车）
+chmod 4775 su（回车）</pre>
+<p>7.退出一直输入exit回车就可以了</div>
+<div class="comment_count"><strong>然后就OK了! 重启机子吧!&nbsp;</strong></div>
+<div class="comment_count"><strong><br /></strong></div>
+<p>以上步骤完成后，安装Root Explorer试验以上操作是否成功，请参考《<span style="white-space:pre;"><a href="http://www.hiapk.com/bbs/thread-7350-1-1.html">冒死体验～～～Root Explorer文件管理</a>》</span></p>
+<p><span style="white-space:pre;"><br /></span></p>
+<div class="comment_count">============================================================</div>
+<div class="comment_count">【英文原文】</div>
+<h2>HOW TO ROOT YOUR CDMA HTC HERO</h2>
+<p>Posted by&nbsp;<a href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/"></a>on 8th November 2009</p>
+<div class="entry">
+<p>This guide will walk you through gaining root access to your CDMA HTC Hero currently on the Sprint and Verizon&nbsp;<a id="KonaLink0" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Networks</span></span></a>. &nbsp;</p>
+<p>I. Before You Begin</p>
+<p>You need to be able to access the phone via ADB.</p>
+<p>Follow this procedure to get ADB setup on your Hero.</p>
+<p><a href="http://theunlockr.com/2009/10/06/how-to-set-up-adb-usb-drivers-for-android-devices/" target="_blank">How To Setup ADB/Install USB Drivers</a></p>
+<p>II. Root the CDMA Hero</p>
+<p>1. Download the following file and then&nbsp;<a id="KonaLink1" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">unzip</span></span></a>&nbsp;it.</p>
+<p><a href="http://forum.xda-developers.com/attachment.php?attachmentid=244212&amp;d=1257621154" target="_blank">AsRoot2</a></p>
+<p>2. Take the unzipped file and save it into the Tools folder of your AndroidSDK.<br />3. Plug your phone in via USB and do NOT mount the SD card.<br />4. Open the&nbsp;<a id="KonaLink2" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Command&nbsp;</span><span class="kLink">Prompt</span></span></a>&nbsp;and type the following (hitting enter at the end of every line):</p>
+<blockquote>
+<p>cd/<br />cd AndroidSDK/Tools/<br />adb devices</p>
+</blockquote>
+<p>And make sure your phones&rsquo;s serial number&nbsp;<a id="KonaLink3" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">pops&nbsp;</span><span class="kLink">up</span></span></a><br />(if not redo section I).</p>
+<p>5. Then type:</p>
+<blockquote>
+<p>adb push asroot2 /data/local/<br />adb shell chmod 0755 /data/local/asroot2<br />adb shell<br />/data/local/asroot2 /<a id="KonaLink5" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">system</span></span></a>/bin/sh</p>
+</blockquote>
+<p>6. Then type:</p>
+<blockquote>
+<p>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system<br />cd /system/bin<br />cat sh &gt; su<br />chmod 4775 su</p>
+</blockquote>
+<p>All Done! You now have root access! Try to download a root program from the Market and see if it works&nbsp;<img class="wp-smiley" src="http://www.androidspin.com/wp-includes/images/smilies/icon_razz.gif" alt=":P" /></p>
+<p>&nbsp;</p>
+<p>-------------------------------------------------------------------------------------------------------</p>
+</div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 05, 2010 | <a href='/android/2010/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520sprint%2520htc%2520hero%2528hero%2520200%2529%25e8%258e%25b7%25e5%258f%2596root%25e6%259d%2583%25e9%2599%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520sprint%2520htc%2520hero%2528hero%2520200%2529%25e8%258e%25b7%25e5%258f%2596root%25e6%259d%2583%25e9%2599%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Sprint HTC Hero(Hero 200)获取ROOT权限</a></h2>
+
+    <p>I. 开始之前你需要完成的：</p>
+<div class="comment_count">你需要确认你能通过ADB来访问你的HERO。如果不行的话就先看看如何安装HERO的驱动（这个方法转自<span style="text-decoration:underline;"><strong>draculading</strong></span>的帖子<a href="http://www.hiapk.com/bbs/thread-13053-1-1.html" target="_blank"><span class="t_tag">HTC</span>&nbsp;HERO 取得<span class="t_tag">root</span><span class="t_tag">权限</span>完全傻瓜<span class="t_tag">教程</span>，适合<span class="t_tag">新人</span>。。。</a>其中安装驱动部分。）</div>
+<div class="comment_count"></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><strong>1.&nbsp;<span class="t_tag">下载</span><span class="t_tag">Android</span>&nbsp;SDK</strong><br />到<span class="t_tag">Google</span>官网去下个SDK里面有root要用的工具和驱动，网址&nbsp;<span><a href="http://developer.android.com/index.html" target="_blank">http://developer.android.com/index.html</a>（<em>博主：该网页已经被墙，尝试这个网页</em><a href="http://androidappdocs.appspot.com/sdk/index.html"><em>http://androidappdocs.appspot.com/sdk/index.html</em></a><span>）</span><span>下载以后可以解压到任意位置，建议解压到C:/sdk/ ,后面的教程里说的sdk<span class="t_tag">文件</span>夹就是指的这个文件夹</span></span></span></span></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><br /><strong>2.安装</strong><strong><span class="t_tag">USB</span></strong><strong>&nbsp;de</strong><strong><span class="t_tag">bug</span></strong><strong>ging驱动</strong><br />确定你的<span class="t_tag">手机</span>已经打开USB Debugging，在<span>Settings - Applications -Development - USB Debugging</span><br /><span>现在把手机通过usb线连到<span class="t_tag">电脑</span>上，电脑会<span class="t_tag">提示</span>你安装驱动，驱动的位置在sdk文件夹里的usb_driver, 如果是32位的<span class="t_tag">系统</span>选择x86文件夹安装驱动，如果是64位系统选择amd64文件夹（驱动可以兼容win7,我用的是64位的win7）</span><span>另外最好从始至终使用同一个usb接口，不然有可能会再次提示你安装驱动</span></span></span></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><span><br /></span></span></span></div>
+<div class="comment_count">【<em>博主：如果安装了HTCsync2.0.8，那么USB驱动就已经安装好了，以上第二步可以省略。</em>】</p>
+<p><strong>驱动搞定后就可以开始啦（以下部分是从</strong><a href="http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4" target="_blank">http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4</a><strong>翻译而来）</strong></p>
+<p>II. 获取CDMA HERO的root权限
+<ol>
+<li>下载附件中的asroot2.zip，并解压.</li>
+<li>把解压后的asroot2放到SDK的TOOLS目录里</li>
+<li>&nbsp;卸下<span class="t_tag">SD卡</span>，然后手机连接电脑</li>
+<li>打开XP的命令行工具，到SDK的TOOLS目录输入以下指令，</li>
+</ol>
+<pre>cd/
+cd AndroidSDK/Tools/ （到这里是进入SDK的TOOLS目录）
+adb devices（与手机建立连接）</pre>
+<p>请确认你手机的序列号有列出，并提示成功，否则请确认第一步是否完成（也就是说如果没有出现你HERO的序列，那就是驱动没装成功）</p>
+<p>5. 然后输入
+<pre>adb push asroot2 /data/local/ （回车）
+adb shell chmod 0755 /data/local/asroot2 （回车）
+adb shell （回车，会变成$提示符）
+/data/local/asroot2 /system/bin/sh （回车，会变成#提示符）</pre>
+<p>6. 然后输入
+<pre>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system（回车）
+cd /system/bin（回车）
+cat sh &gt; su（回车）
+chmod 4775 su（回车）</pre>
+<p>7.退出一直输入exit回车就可以了</div>
+<div class="comment_count"><strong>然后就OK了! 重启机子吧!&nbsp;</strong></div>
+<div class="comment_count"><strong><br /></strong></div>
+<p>以上步骤完成后，安装Root Explorer试验以上操作是否成功，请参考《<span style="white-space:pre;"><a href="http://www.hiapk.com/bbs/thread-7350-1-1.html">冒死体验～～～Root Explorer文件管理</a>》</span></p>
+<p><span style="white-space:pre;"><br /></span></p>
+<div class="comment_count">============================================================</div>
+<div class="comment_count">【英文原文】</div>
+<h2>HOW TO ROOT YOUR CDMA HTC HERO</h2>
+<p>Posted by&nbsp;<a href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/"></a>on 8th November 2009</p>
+<div class="entry">
+<p>This guide will walk you through gaining root access to your CDMA HTC Hero currently on the Sprint and Verizon&nbsp;<a id="KonaLink0" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Networks</span></span></a>. &nbsp;</p>
+<p>I. Before You Begin</p>
+<p>You need to be able to access the phone via ADB.</p>
+<p>Follow this procedure to get ADB setup on your Hero.</p>
+<p><a href="http://theunlockr.com/2009/10/06/how-to-set-up-adb-usb-drivers-for-android-devices/" target="_blank">How To Setup ADB/Install USB Drivers</a></p>
+<p>II. Root the CDMA Hero</p>
+<p>1. Download the following file and then&nbsp;<a id="KonaLink1" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">unzip</span></span></a>&nbsp;it.</p>
+<p><a href="http://forum.xda-developers.com/attachment.php?attachmentid=244212&amp;d=1257621154" target="_blank">AsRoot2</a></p>
+<p>2. Take the unzipped file and save it into the Tools folder of your AndroidSDK.<br />3. Plug your phone in via USB and do NOT mount the SD card.<br />4. Open the&nbsp;<a id="KonaLink2" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Command&nbsp;</span><span class="kLink">Prompt</span></span></a>&nbsp;and type the following (hitting enter at the end of every line):</p>
+<blockquote>
+<p>cd/<br />cd AndroidSDK/Tools/<br />adb devices</p>
+</blockquote>
+<p>And make sure your phones&rsquo;s serial number&nbsp;<a id="KonaLink3" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">pops&nbsp;</span><span class="kLink">up</span></span></a><br />(if not redo section I).</p>
+<p>5. Then type:</p>
+<blockquote>
+<p>adb push asroot2 /data/local/<br />adb shell chmod 0755 /data/local/asroot2<br />adb shell<br />/data/local/asroot2 /<a id="KonaLink5" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">system</span></span></a>/bin/sh</p>
+</blockquote>
+<p>6. Then type:</p>
+<blockquote>
+<p>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system<br />cd /system/bin<br />cat sh &gt; su<br />chmod 4775 su</p>
+</blockquote>
+<p>All Done! You now have root access! Try to download a root program from the Market and see if it works&nbsp;<img class="wp-smiley" src="http://www.androidspin.com/wp-includes/images/smilies/icon_razz.gif" alt=":P" /></p>
+<p>&nbsp;</p>
+<p>-------------------------------------------------------------------------------------------------------</p>
+</div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">March 05, 2010 | <a href='/bkup/2010/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520sprint%2520htc%2520hero%2528hero%2520200%2529%25e8%258e%25b7%25e5%258f%2596root%25e6%259d%2583%25e9%2599%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520cpio%25e8%25a7%25a3%25e5%258e%258b%25e5%258f%2582%25e6%2595%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">cpio解压参数</a></h2>
+
+    <p>解压cpio文件&nbsp;<br />cpio -idmv &lt; filename.cpio&nbsp;</p>
+<p>同样可以解压img文件：<br />cpio -idmv &lt; filename.img</p>
+<p>cpio 备份命令<br />备份：cpio -covB &gt; [file|device] 将数据备份到文件或设备上<br />还原：cpio -icduv &lt; [file|device} 将数据还原到系统中</p>
+<p>常用参数：<br />-o&nbsp;&nbsp; ：将数据copy到文件或设备上<br />-i&nbsp;&nbsp;&nbsp; ：将数据从文件或设备上还原到系统中<br />-t&nbsp;&nbsp;&nbsp; ：查看cpio建立的文件或设备内容<br />-c&nbsp;&nbsp; ：一种比较新的portable format方式存储<br />-v&nbsp;&nbsp; ：在屏幕上显示备份过程中的文件名<br />-B&nbsp;&nbsp; ：让预设的blocks可以增加到5120bytes，默认是512bytes，这样可以使备份速度加快<br />-d&nbsp;&nbsp; ：自动建立目录，这样还原时才不会出现找不到路径的问题<br />-u&nbsp;&nbsp; ：更新，用较新的文件覆盖旧的文件</p>
+<p>cpio常与find 配合使用</p>
+
+
+    <small class="meta">March 03, 2010 | <a href='/unix/linux/2010/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520cpio%25e8%25a7%25a3%25e5%258e%258b%25e5%258f%2582%25e6%2595%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520cpio%25e8%25a7%25a3%25e5%258e%258b%25e5%258f%2582%25e6%2595%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">cpio解压参数</a></h2>
+
+    <p>解压cpio文件&nbsp;<br />cpio -idmv &lt; filename.cpio&nbsp;</p>
+<p>同样可以解压img文件：<br />cpio -idmv &lt; filename.img</p>
+<p>cpio 备份命令<br />备份：cpio -covB &gt; [file|device] 将数据备份到文件或设备上<br />还原：cpio -icduv &lt; [file|device} 将数据还原到系统中</p>
+<p>常用参数：<br />-o&nbsp;&nbsp; ：将数据copy到文件或设备上<br />-i&nbsp;&nbsp;&nbsp; ：将数据从文件或设备上还原到系统中<br />-t&nbsp;&nbsp;&nbsp; ：查看cpio建立的文件或设备内容<br />-c&nbsp;&nbsp; ：一种比较新的portable format方式存储<br />-v&nbsp;&nbsp; ：在屏幕上显示备份过程中的文件名<br />-B&nbsp;&nbsp; ：让预设的blocks可以增加到5120bytes，默认是512bytes，这样可以使备份速度加快<br />-d&nbsp;&nbsp; ：自动建立目录，这样还原时才不会出现找不到路径的问题<br />-u&nbsp;&nbsp; ：更新，用较新的文件覆盖旧的文件</p>
+<p>cpio常与find 配合使用</p>
+
+
+    <small class="meta">March 03, 2010 | <a href='/bkup/2010/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520cpio%25e8%25a7%25a3%25e5%258e%258b%25e5%258f%2582%25e6%2595%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2010/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a0%25e9%2599%25a4linux%25e7%2589%2588adobe%2520reader%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">删除Linux版Adobe Reader的方法</a></h2>
+
+    <p>Linux版的Adobe Reader的启动速度太慢了，每次打开pdf文档的时候都不得不通过右键来选择使用Fedora自带的阅读器，有点麻烦，因此打算把它删除。我的Adobe Reader是通过AdobeReader.bin来安装的，尝试了yum remove acroread和rpm -e acroread都无效，很是郁闷。连Add/Remove Software都找不到该package，因此也不能通过这种方法删除了。</p>
+<p>&nbsp;</p>
+<p>花了很长时间在这个网页上（<a href="http://ubuntuforums.org/showthread.php?t=1409179">http://ubuntuforums.org/showthread.php?t=1409179</a>）看到的解决方法：</p>
+<p>&nbsp;</p>
+<p>/opt/Adobe/Reader9/bin下有一个UNINSTALL 脚本，只要使用root帐号执行./UNINSTALL就可以了。</p>
+
+
+    <small class="meta">March 02, 2010 | <a href='/bkup/2010/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a0%25e9%2599%25a4linux%25e7%2589%2588adobe%2520reader%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a0%25e9%2599%25a4linux%25e7%2589%2588adobe%2520reader%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">删除Linux版Adobe Reader的方法</a></h2>
+
+    <p>Linux版的Adobe Reader的启动速度太慢了，每次打开pdf文档的时候都不得不通过右键来选择使用Fedora自带的阅读器，有点麻烦，因此打算把它删除。我的Adobe Reader是通过AdobeReader.bin来安装的，尝试了yum remove acroread和rpm -e acroread都无效，很是郁闷。连Add/Remove Software都找不到该package，因此也不能通过这种方法删除了。</p>
+<p>&nbsp;</p>
+<p>花了很长时间在这个网页上（<a href="http://ubuntuforums.org/showthread.php?t=1409179">http://ubuntuforums.org/showthread.php?t=1409179</a>）看到的解决方法：</p>
+<p>&nbsp;</p>
+<p>/opt/Adobe/Reader9/bin下有一个UNINSTALL 脚本，只要使用root帐号执行./UNINSTALL就可以了。</p>
+
+
+    <small class="meta">March 02, 2010 | <a href='/unix/linux/2010/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a0%25e9%2599%25a4linux%25e7%2589%2588adobe%2520reader%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page22' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page20' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

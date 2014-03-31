@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - c++filt </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>c++filt</h1>
+    <p>
+<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
+<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><strong>c&#043;&#043;filt<br />
+<span style="font-family:Arial;font-size:15px;white-space:pre-wrap;">decodes (demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</span></strong></span></div>
+<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><br />
+</span></div>
+<div style="background-color:transparent;"><span id="internal-source-marker_0.33872447651810944" style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You<br />
+ may use </span><strong>c&#043;&#043;filt </strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">to demangle<br />
+ the symbols.</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">$ c&#043;&#043;filt _ZNSt8ios_base4InitD1Ev</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">std::ios_base::Init::~Init()</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You may try adding<br />
+</span><strong>-lstdc&#043;&#043;</strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"> to your link command<br />
+ to resolve the issue.</span><br />
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<strong><a href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#c++filt">c&#043;&#043;filt</a></strong><br />
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">&nbsp;&nbsp;</span></p>
+<pre class="smallexample" style="font-size:undefined;">     c&#043;&#043;filt [<code>-_</code>|<code>--strip-underscores</code>]
+             [<code>-j</code>|<code>--java</code>]
+             [<code>-n</code>|<code>--no-strip-underscores</code>]
+             [<code>-p</code>|<code>--no-params</code>]
+             [<code>-s</code> <var>format</var>|<code>--format=</code><var>format</var>]
+             [<code>--help</code>]  [<code>--version</code>]  [<var>symbol</var>...]
+     </pre>
+<p>The C&#043;&#043; and Java languages provides function overloading, which means that you can write many functions with the same name (providing each takes parameters of different types). All C&#043;&#043; and Java function names are encoded into a low-level assembly label (this<br />
+ process is known as&nbsp;mangling). The&nbsp;<code>c&#043;&#043;filt</code>&nbsp;<a rel="footnote" href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#fn-1"><sup>1</sup></a>&nbsp;program does the inverse mapping: it decodes (demangles) low-level<br />
+ names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
+<p>Every alphanumeric word (consisting of letters, digits, underscores, dollars, or periods) seen in the input is a potential label. If the label decodes into a C&#043;&#043; name, the C&#043;&#043; name replaces the low-level name in the output.</p>
+<p>You can use&nbsp;<code>c&#043;&#043;filt</code>&nbsp;to decipher individual symbols:</p>
+<pre class="example">     c&#043;&#043;filt <var>symbol</var>
+     </pre>
+<p>If no&nbsp;<var>symbol</var>&nbsp;arguments are given,&nbsp;<code>c&#043;&#043;filt</code>&nbsp;reads symbol names from the standard input and writes the demangled names to the standard output. All results are printed on the standard output.</p>
+<dl>
+<dt><code>-_</code></dt>
+<dd></dd>
+<dt><code>--strip-underscores</code></dt>
+<dd>On some systems, both the C and C&#043;&#043; compilers put an underscore in front of every name. For example, the C name&nbsp;<code>foo</code>&nbsp;gets the low-level name&nbsp;<code>_foo</code>. This option removes the initial underscore. Whether&nbsp;<code>c&#043;&#043;filt</code>&nbsp;removes<br />
+ the underscore by default is target dependent.&nbsp;
+</dd>
+<dt><code>-j</code></dt>
+<dd></dd>
+<dt><code>--java</code></dt>
+<dd>Prints demangled names using Java syntax. The default is to use C&#043;&#043; syntax.&nbsp;
+</dd>
+<dt><code>-n</code></dt>
+<dd></dd>
+<dt><code>--no-strip-underscores</code></dt>
+<dd>Do not remove the initial underscore.&nbsp;
+</dd>
+<dt><code>-p</code></dt>
+<dd></dd>
+<dt><code>--no-params</code></dt>
+<dd>When demangling the name of a function, do not display the types of the function's parameters.&nbsp;
+</dd>
+<dt><code>-s&nbsp;</code><var>format</var><code></code></dt>
+<dd></dd>
+<dt><code>--format=</code><var>format</var><code></code></dt>
+<dd><code>c&#043;&#043;filt</code>&nbsp;can decode various methods of mangling, used by different compilers. The argument to this option selects which method it uses:</p>
+<dl>
+<dt><code>auto</code></dt>
+<dd>Automatic selection based on executable (the default method)&nbsp;
+</dd>
+<dt><code>gnu</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;)&nbsp;
+</dd>
+<dt><code>lucid</code></dt>
+<dd>the one used by the Lucid compiler (lcc)&nbsp;
+</dd>
+<dt><code>arm</code></dt>
+<dd>the one specified by the C&#043;&#043; Annotated Reference Manual&nbsp;
+</dd>
+<dt><code>hp</code></dt>
+<dd>the one used by the HP compiler (aCC)&nbsp;
+</dd>
+<dt><code>edg</code></dt>
+<dd>the one used by the EDG compiler&nbsp;
+</dd>
+<dt><code>gnu-v3</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;) with the V3 ABI.&nbsp;
+</dd>
+<dt><code>java</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Java compiler (gcj)&nbsp;
+</dd>
+<dt><code>gnat</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Ada compiler (GNAT).</dd>
+</dl>
+<p>
+</dd>
+<dt><code>--help</code></dt>
+<dd>Print a summary of the options to&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.&nbsp;
+</dd>
+<dt><code>--version</code></dt>
+<dd>Print the version number of&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.</dd>
+</dl>
+<blockquote><p><em>Warning:</em>&nbsp;<code>c&#043;&#043;filt</code>&nbsp;is a new utility, and the details of its user interface are subject to change in future releases. In particular, a command-line option may be required in the the future to decode a name passed as an argument<br />
+ on the command line; in other words,</p>
+<pre class="example">          c&#043;&#043;filt <var>symbol</var>
+          </pre>
+<p>may in a future release become</p>
+<pre class="example">          c&#043;&#043;filt <var>option</var> <var>symbol</var>
+          </pre>
+</blockquote>
+<div class="footnote">
+<hr />
+<h4>Footnotes</h4>
+<ol type="1">
+<li><a name="fn-1"></a>
+<p>MS-DOS does not allow&nbsp;<kbd>&#043;</kbd>&nbsp;characters in file names, so on MS-DOS this program is named&nbsp;<code>cxxfilt</code>.</p>
+<div>
+</div>
+</li>
+</ol>
+</div>
+<p>
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span></div>
+
+</div>
+
+<small class="meta">Posted September 14, 2011</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+
