@@ -3,11 +3,11 @@ layout: nil
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>John Duff's Blog</title>
-    <link href="http://jduff.github.com/atom.xml" rel="self"/>
-    <link href="http://jduff.github.com/"/>
+    <title>Bo Yang's Blog</title>
+    <link href="http://bo-yang.github.io/atom.xml" rel="self"/>
+    <link href="http://bo-yang.github.io/"/>
     <updated>{{ site.time | date_to_xmlschema }}</updated>
-    <id>http://jduff.github.com/</id>
+    <id>http://bo-yang.github.io/</id>
     
     {% for post in site.posts %}
     <entry>
@@ -15,9 +15,9 @@ layout: nil
         {% for category in post.categories %}
         <category term="{{category}}" scheme="http://www.sixapart.com/ns/types#tag" />
         {% endfor %}
-        <link href="http://jduff.github.com{{ post.url }}"/>
+        <link href="http://bo-yang.github.io{{ post.url }}"/>
         <updated>{{ post.date | date_to_xmlschema }}</updated>
-        <id>jduff.github.com:{{ post.id }}</id>
+        <id>bo-yang.github.io:{{ post.id }}</id>
         <content type="html">{{ post.content | h}}</content>
         <author>
             <name>{{post.author_name}}</name>
