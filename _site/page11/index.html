@@ -36,1155 +36,907 @@
           <div id='index'>
 
   <div class="post">
-    <h2><a href="/bkup/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">选中Excel单元格自动导入多个Excel worksheets</a></h2>
+    <h2><a href="/unix/linux/2010/05/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fixing%2520the%2520error%253a%2520db_runrecovery%253a%2520fatal%2520error%252c%2520run%2520database%2520recovery%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fixing The Error: DB_RUNRECOVERY: Fatal error, run database recovery</a></h2>
 
-    <p>前日完成<a href="http://blog.csdn.net/bonny95/article/details/6597776">将多个Excel文件批量导入某个Excel文件中</a>老婆规定的任务后，老婆又提出了新的要求：</p></p>
+    </p>
+<p><strong>If you get a message similar to this:</strong></p>
+<p><code>[username@localhost ~]$ sudo yum update<br />rpmdb: Thread/process 2402/139688794072832 failed: Thread died in Berkeley DB library<br />error: db4 error(-30974) from dbenv-&gt;failchk: DB_RUNRECOVERY: Fatal error, run database recovery<br />error: cannot open Packages index using db3 - (-30974)<br />error: cannot open Packages database in /var/lib/rpm<br />CRITICAL:yum.main:</code></p>
+<p>Error: rpmdb open failed</p>
+<p>&nbsp;</p>
+<p><strong>You can fix it by running the following 3 commands:</strong></p>
+<p><code>[username@localhost ~]$ sudo rm -f /var/lib/rpm/__db*<br />[username@localhost ~]$ sudo db_verify /var/lib/rpm/Packages<br />[username@localhost ~]$ sudo rpm --rebuilddb</code></p>
+
+
+    <small class="meta">May 22, 2010 | <a href='/unix/linux/2010/05/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fixing%2520the%2520error%253a%2520db_runrecovery%253a%2520fatal%2520error%252c%2520run%2520database%2520recovery%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/04/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bb%2595%25e8%25bf%2587enter%2520password%2520for%2520default%2520keyring%2520to%2520unlock%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">绕过“Enter password for default keyring to unlock”的方法</a></h2>
+
+    <p>当你在Gnome下使用无线网络时，很有可能会遇到如下窗口：</p>
+<p>&nbsp;</p>
+<p><img src="http://lifehacker.com/assets/resources/2007/07/nmapplet.png" alt="" width="478" height="233" /></p>
+<p>&nbsp;</p>
+<p>估计很多人和我一样对此窗口不知所云，输入N多自己知道的密码仍然无效。</p>
+<p>&nbsp;</p>
+<p>这时你需要做的就是删除&nbsp;/home/.gnome2/keyring/下面的所有文件，然后重启，如果再次遇到这个窗口，什么也不要输入直接点OK就可以了。</p>
+<p>&nbsp;</p>
+<p>其他更完美的解决方案请Google。</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">April 21, 2010 | <a href='/unix/linux/2010/04/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bb%2595%25e8%25bf%2587enter%2520password%2520for%2520default%2520keyring%2520to%2520unlock%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/android/2010/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520sprint%2520htc%2520hero%2528hero%2520200%2529%25e8%258e%25b7%25e5%258f%2596root%25e6%259d%2583%25e9%2599%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Sprint HTC Hero(Hero 200)获取ROOT权限</a></h2>
+
+    <p>I. 开始之前你需要完成的：</p>
+<div class="comment_count">你需要确认你能通过ADB来访问你的HERO。如果不行的话就先看看如何安装HERO的驱动（这个方法转自<span style="text-decoration:underline;"><strong>draculading</strong></span>的帖子<a href="http://www.hiapk.com/bbs/thread-13053-1-1.html" target="_blank"><span class="t_tag">HTC</span>&nbsp;HERO 取得<span class="t_tag">root</span><span class="t_tag">权限</span>完全傻瓜<span class="t_tag">教程</span>，适合<span class="t_tag">新人</span>。。。</a>其中安装驱动部分。）</div>
+<div class="comment_count"></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><strong>1.&nbsp;<span class="t_tag">下载</span><span class="t_tag">Android</span>&nbsp;SDK</strong><br />到<span class="t_tag">Google</span>官网去下个SDK里面有root要用的工具和驱动，网址&nbsp;<span><a href="http://developer.android.com/index.html" target="_blank">http://developer.android.com/index.html</a>（<em>博主：该网页已经被墙，尝试这个网页</em><a href="http://androidappdocs.appspot.com/sdk/index.html"><em>http://androidappdocs.appspot.com/sdk/index.html</em></a><span>）</span><span>下载以后可以解压到任意位置，建议解压到C:/sdk/ ,后面的教程里说的sdk<span class="t_tag">文件</span>夹就是指的这个文件夹</span></span></span></span></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><br /><strong>2.安装</strong><strong><span class="t_tag">USB</span></strong><strong>&nbsp;de</strong><strong><span class="t_tag">bug</span></strong><strong>ging驱动</strong><br />确定你的<span class="t_tag">手机</span>已经打开USB Debugging，在<span>Settings - Applications -Development - USB Debugging</span><br /><span>现在把手机通过usb线连到<span class="t_tag">电脑</span>上，电脑会<span class="t_tag">提示</span>你安装驱动，驱动的位置在sdk文件夹里的usb_driver, 如果是32位的<span class="t_tag">系统</span>选择x86文件夹安装驱动，如果是64位系统选择amd64文件夹（驱动可以兼容win7,我用的是64位的win7）</span><span>另外最好从始至终使用同一个usb接口，不然有可能会再次提示你安装驱动</span></span></span></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><span><br /></span></span></span></div>
+<div class="comment_count">【<em>博主：如果安装了HTCsync2.0.8，那么USB驱动就已经安装好了，以上第二步可以省略。</em>】</p>
+<p><strong>驱动搞定后就可以开始啦（以下部分是从</strong><a href="http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4" target="_blank">http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4</a><strong>翻译而来）</strong></p>
+<p>II. 获取CDMA HERO的root权限
 <ol>
-<li>可以update每个worksheet</li>
-<li>对导入的worksheets进行排序</li>
-<li>自动匹配代导入文件的文件名</li>
-<li>将导入的worksheets中的特定多个单元&#26684;（cells）的内容自动填充到某一表&#26684;的特定区域</li>
+<li>下载附件中的asroot2.zip，并解压.</li>
+<li>把解压后的asroot2放到SDK的TOOLS目录里</li>
+<li>&nbsp;卸下<span class="t_tag">SD卡</span>，然后手机连接电脑</li>
+<li>打开XP的命令行工具，到SDK的TOOLS目录输入以下指令，</li>
 </ol>
-<p><strong><span style="color:#ff0000;">本文中用到的Excel文件及VBA宏可以在<a href="http://download.csdn.net/detail/bonny95/3438424">此处</a>下载。</span></strong></p>
-<p></p>
-<table border="1" width="200" cellspacing="1" cellpadding="1" style="text-align:center;">
-<caption><span style="font-size:16px;">表1 &nbsp;选中的单元&#26684;</span><br />
-</caption>
-<tbody>
-<tr>
-<td style="text-align:center;">1</td>
-<td style="text-align:center;">工作表 1</td>
-</tr>
-<tr>
-<td style="text-align:center;">2</td>
-<td style="text-align:center;">工作表 2</td>
-</tr>
-<tr>
-<td style="text-align:center;">3</td>
-<td style="text-align:center;">工作表 3</td>
-</tr>
-<tr>
-<td style="text-align:center;">4</td>
-<td style="text-align:center;">工作表 4</td>
-</tr>
-<tr>
-<td style="text-align:center;">5</td>
-<td style="text-align:center;">工作表 5</td>
-</tr>
-<tr>
-<td style="text-align:center;">6</td>
-<td style="text-align:center;">工作表 6</td>
-</tr>
-<tr>
-<td style="text-align:center;">7</td>
-<td style="text-align:center;">工作表 7</td>
-</tr>
-<tr>
-<td style="text-align:center;">8</td>
-<td style="text-align:center;">工作表 8</td>
-</tr>
-<tr>
-<td style="text-align:center;">9</td>
-<td style="text-align:center;">工作表 9</td>
-</tr>
-<tr>
-<td style="text-align:center;">10</td>
-<td style="text-align:center;">工作表 10</td>
-</tr>
-</tbody>
-</table></p>
-<p>对应的各个worksheet的名字(Name)是：<em>01&nbsp;工作表 1，&nbsp;02&nbsp;工作表 2，03&nbsp;工作表 3，……，10&nbsp;工作表 10.</em></p>
-<p><em><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521133c6e4.gif" alt="" /><br />
-</em></p>
-<p>待导入的Excel文件的名字为“<em>02 某某银行XX项目_工作表 1_20110701.xls</em>”。</p>
-<p></p>
-<p><span style="color:#ff0000;"><em>Update 2011-07-13 21:50</em></span></p>
-<p>应老婆的要求，更新了程序，遇到并解决的问题有：</p></p>
-<ol>
-<li>Office 2003和2007不兼容——有些method在office2003中正常工作但在office2007中却不再支持，如判定某文件是否存在的函数，解决方法参见<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">FindFileName函数。</span></li>
-<li>如果某个表中的一些单元&#26684;被筛选，则会遇到“不能复制合并的单元&#26684;”(Can't copy merged cell)的问题，解决方法就是在copy前强制关闭autofilter: &nbsp;&nbsp;<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter</span></li>
-<li><span style="font-family:monospace;"><span style="white-space:pre-wrap;">关闭打开的Excel文件或者copy单元&#26684;时会有各种各样的对话框弹出来，解决办法就是加上下面语句：</span></span></li>
-</ol>
-<p><span style="font-family:monospace;"><span style="white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);"></span></span></span></p>
-<pre style="word-wrap:break-word;white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre-wrap;"></span></pre>
-<pre style="word-wrap:break-word;white-space:pre-wrap;">Application.DisplayAlerts = True</pre>
-<pre style="word-wrap:break-word;white-space:pre-wrap;">newWB.Close SaveChanges:=False  ' close without change
-Application.DisplayAlerts = True</pre></p>
-<p><em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em></p>
-<p>傻瓜型用户的需求就是无穷无尽啊……我老婆发现在选择不连续的区域时，只有第一个区域会被处理，其他的没有变化。顶着挨骂的压力Google之后才知道，原来Slection.Areas可以包含所有不连续的选择，然后通过遍历，处理所有的选择……程序改动如下。</p></p>
-<pre>       ' Create new worksheets
-        ' Discontinuous selection is supported by Selection.Areas
-        For Each Rng In Selection.Areas
-            Set SelRange = Rng.Cells
-            Set ColNo = Rng.Columns(1)
-            Set ColDepart = Rng.Columns(2)
-            idx = 1
-            For Each cell In ColDepart.Cells
-                no_str = ColNo.Cells(idx).Value
-                If Len(no_str) = 1 Then
-                    no_str = &quot;0&quot; + no_str
-                End If
-                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
-                idx = idx + 1
-            Next
-        Next</pre>
-<p></p></p>
-<p>实现以上所有需求的代码如下（<em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em>）：</p></p>
-<pre>&lt;span style="font-family: 'Times New Roman';font-size:16px; "&gt;&lt;/span&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap; "&gt;                                         
-Option Explicit
-Dim curWS As Worksheet
+<pre>cd/
+cd AndroidSDK/Tools/ （到这里是进入SDK的TOOLS目录）
+adb devices（与手机建立连接）</pre>
+<p>请确认你手机的序列号有列出，并提示成功，否则请确认第一步是否完成（也就是说如果没有出现你HERO的序列，那就是驱动没装成功）</p>
+<p>5. 然后输入
+<pre>adb push asroot2 /data/local/ （回车）
+adb shell chmod 0755 /data/local/asroot2 （回车）
+adb shell （回车，会变成$提示符）
+/data/local/asroot2 /system/bin/sh （回车，会变成#提示符）</pre>
+<p>6. 然后输入
+<pre>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system（回车）
+cd /system/bin（回车）
+cat sh &gt; su（回车）
+chmod 4775 su（回车）</pre>
+<p>7.退出一直输入exit回车就可以了</div>
+<div class="comment_count"><strong>然后就OK了! 重启机子吧!&nbsp;</strong></div>
+<div class="comment_count"><strong><br /></strong></div>
+<p>以上步骤完成后，安装Root Explorer试验以上操作是否成功，请参考《<span style="white-space:pre;"><a href="http://www.hiapk.com/bbs/thread-7350-1-1.html">冒死体验～～～Root Explorer文件管理</a>》</span></p>
+<p><span style="white-space:pre;"><br /></span></p>
+<div class="comment_count">============================================================</div>
+<div class="comment_count">【英文原文】</div>
+<h2>HOW TO ROOT YOUR CDMA HTC HERO</h2>
+<p>Posted by&nbsp;<a href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/"></a>on 8th November 2009</p>
+<div class="entry">
+<p>This guide will walk you through gaining root access to your CDMA HTC Hero currently on the Sprint and Verizon&nbsp;<a id="KonaLink0" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Networks</span></span></a>. &nbsp;</p>
+<p>I. Before You Begin</p>
+<p>You need to be able to access the phone via ADB.</p>
+<p>Follow this procedure to get ADB setup on your Hero.</p>
+<p><a href="http://theunlockr.com/2009/10/06/how-to-set-up-adb-usb-drivers-for-android-devices/" target="_blank">How To Setup ADB/Install USB Drivers</a></p>
+<p>II. Root the CDMA Hero</p>
+<p>1. Download the following file and then&nbsp;<a id="KonaLink1" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">unzip</span></span></a>&nbsp;it.</p>
+<p><a href="http://forum.xda-developers.com/attachment.php?attachmentid=244212&amp;d=1257621154" target="_blank">AsRoot2</a></p>
+<p>2. Take the unzipped file and save it into the Tools folder of your AndroidSDK.<br />3. Plug your phone in via USB and do NOT mount the SD card.<br />4. Open the&nbsp;<a id="KonaLink2" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Command&nbsp;</span><span class="kLink">Prompt</span></span></a>&nbsp;and type the following (hitting enter at the end of every line):</p>
+<blockquote>
+<p>cd/<br />cd AndroidSDK/Tools/<br />adb devices</p>
+</blockquote>
+<p>And make sure your phones&rsquo;s serial number&nbsp;<a id="KonaLink3" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">pops&nbsp;</span><span class="kLink">up</span></span></a><br />(if not redo section I).</p>
+<p>5. Then type:</p>
+<blockquote>
+<p>adb push asroot2 /data/local/<br />adb shell chmod 0755 /data/local/asroot2<br />adb shell<br />/data/local/asroot2 /<a id="KonaLink5" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">system</span></span></a>/bin/sh</p>
+</blockquote>
+<p>6. Then type:</p>
+<blockquote>
+<p>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system<br />cd /system/bin<br />cat sh &gt; su<br />chmod 4775 su</p>
+</blockquote>
+<p>All Done! You now have root access! Try to download a root program from the Market and see if it works&nbsp;<img class="wp-smiley" src="http://www.androidspin.com/wp-includes/images/smilies/icon_razz.gif" alt=":P" /></p>
+<p>&nbsp;</p>
+<p>-------------------------------------------------------------------------------------------------------</p>
+</div>
+<p>&nbsp;</p>
 
 
-Sub LoadWorksheets()
-'
-' LoadWorksheets Macro
-' Macro recorded 7/13/2011 by Bo Yang
-'
-' Keyboard Shortcut: Ctrl+Shift+L
-'
-' *How to use this macro?*
-' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*
-'
-&nbsp; &nbsp; Application.ScreenUpdating = False &nbsp;' stop screen flickering
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; ' Create new sheets according to selected cells and copy the
-&nbsp; &nbsp; ' contebts of other files into the new sheets
-&nbsp; &nbsp; Dim YesNo As Variant, myFolder As String, MyLF As String
-&nbsp; &nbsp; Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range
-&nbsp; &nbsp; Dim SheetName As String, SheetToBeCopy As String
-&nbsp; &nbsp; Dim ColCnt As Integer
-&nbsp; &nbsp; Dim no_str As String, idx As Integer
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; myFolder = &quot;D:&quot; &nbsp; '*****Change this value as you need*****
-&nbsp; &nbsp; SheetToBeCopy = &quot;信息资产风险评估&quot; &nbsp;' *****Change this value as you need*****
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; MyLF = Chr(10) &amp; Chr(13) &nbsp; &nbsp;' a line feed command
-&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; ' check that if user select valid columns
-&nbsp; &nbsp; ColCnt = Selection.Columns.Count
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; If ColCnt &lt;&gt; 2 Then
-&nbsp; &nbsp; &nbsp; &nbsp; MsgBox (&quot;Please select 2 columns!!!&quot; &amp; MyLF &amp; _
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;The first column must be digital numbers,&quot; &amp; MyLF &amp; _
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;And the Second column must be department names&quot; _
-&nbsp; &nbsp; &nbsp; &nbsp; )
-&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
-&nbsp; &nbsp; End If
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; MyLF &amp; _
-&nbsp; &nbsp; &nbsp; &nbsp; &quot;Do you want to continue?&quot;, _
-&nbsp; &nbsp; &nbsp; &nbsp; vbYesNo, &quot;Caution&quot;)
-&nbsp; &nbsp; Select Case YesNo
-&nbsp; &nbsp; Case vbYes
-&nbsp; &nbsp; &nbsp; &nbsp; myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)
-&nbsp; &nbsp; &nbsp; &nbsp; SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; ' Create new worksheets
-&nbsp; &nbsp; &nbsp; &nbsp; ' Discontinuous selection is supported by Selection.Areas
-&nbsp; &nbsp; &nbsp; &nbsp; For Each Rng In Selection.Areas
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set SelRange = Rng.Cells
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColNo = Rng.Columns(1)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColDepart = Rng.Columns(2)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = 1
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For Each cell In ColDepart.Cells
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = ColNo.Cells(idx).Value
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Len(no_str) = 1 Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = &quot;0&quot; + no_str
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = idx + 1
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next
-&nbsp; &nbsp; &nbsp; &nbsp; Next
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; curWS.Activate
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; ' Sort worksheets
-&nbsp; &nbsp; &nbsp; &nbsp; Call SortWorksheets
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; Case vbNo
-&nbsp; &nbsp; &nbsp; &nbsp; Application.ScreenUpdating = True
-&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
-&nbsp; &nbsp; End Select
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; curWS.Activate
-&nbsp; &nbsp; Application.ScreenUpdating = True
-End Sub
+    <small class="meta">March 05, 2010 | <a href='/android/2010/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520sprint%2520htc%2520hero%2528hero%2520200%2529%25e8%258e%25b7%25e5%258f%2596root%25e6%259d%2583%25e9%2599%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520cpio%25e8%25a7%25a3%25e5%258e%258b%25e5%258f%2582%25e6%2595%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">cpio解压参数</a></h2>
+
+    <p>解压cpio文件&nbsp;<br />cpio -idmv &lt; filename.cpio&nbsp;</p>
+<p>同样可以解压img文件：<br />cpio -idmv &lt; filename.img</p>
+<p>cpio 备份命令<br />备份：cpio -covB &gt; [file|device] 将数据备份到文件或设备上<br />还原：cpio -icduv &lt; [file|device} 将数据还原到系统中</p>
+<p>常用参数：<br />-o&nbsp;&nbsp; ：将数据copy到文件或设备上<br />-i&nbsp;&nbsp;&nbsp; ：将数据从文件或设备上还原到系统中<br />-t&nbsp;&nbsp;&nbsp; ：查看cpio建立的文件或设备内容<br />-c&nbsp;&nbsp; ：一种比较新的portable format方式存储<br />-v&nbsp;&nbsp; ：在屏幕上显示备份过程中的文件名<br />-B&nbsp;&nbsp; ：让预设的blocks可以增加到5120bytes，默认是512bytes，这样可以使备份速度加快<br />-d&nbsp;&nbsp; ：自动建立目录，这样还原时才不会出现找不到路径的问题<br />-u&nbsp;&nbsp; ：更新，用较新的文件覆盖旧的文件</p>
+<p>cpio常与find 配合使用</p>
 
 
-Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String
-&nbsp; &nbsp; Dim oSheet As Worksheet, vRet As Variant
-&nbsp; &nbsp; Dim SheetName As String, FileName As String
-&nbsp; &nbsp; Dim Entry As Integer, i As Integer
+    <small class="meta">March 03, 2010 | <a href='/unix/linux/2010/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520cpio%25e8%25a7%25a3%25e5%258e%258b%25e5%258f%2582%25e6%2595%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a0%25e9%2599%25a4linux%25e7%2589%2588adobe%2520reader%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">删除Linux版Adobe Reader的方法</a></h2>
+
+    <p>Linux版的Adobe Reader的启动速度太慢了，每次打开pdf文档的时候都不得不通过右键来选择使用Fedora自带的阅读器，有点麻烦，因此打算把它删除。我的Adobe Reader是通过AdobeReader.bin来安装的，尝试了yum remove acroread和rpm -e acroread都无效，很是郁闷。连Add/Remove Software都找不到该package，因此也不能通过这种方法删除了。</p>
+<p>&nbsp;</p>
+<p>花了很长时间在这个网页上（<a href="http://ubuntuforums.org/showthread.php?t=1409179">http://ubuntuforums.org/showthread.php?t=1409179</a>）看到的解决方法：</p>
+<p>&nbsp;</p>
+<p>/opt/Adobe/Reader9/bin下有一个UNINSTALL 脚本，只要使用root帐号执行./UNINSTALL就可以了。</p>
 
 
-&nbsp; &nbsp; ' Determine where to insert new worksheet
-&nbsp; &nbsp; Entry = 0
-&nbsp; &nbsp; For i = Sheets.Count To 1 Step -1
-&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
-&nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; Next i
-Determ_Entry:
-&nbsp; &nbsp; If Entry = 0 Then
-&nbsp; &nbsp; &nbsp; &nbsp; Entry = Sheets.Count
-&nbsp; &nbsp; End If
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; 'Example of one worksheet name:
-&nbsp; &nbsp; ' &nbsp; 07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls
-&nbsp; &nbsp; SheetName = no + &quot; &quot; + Depart
-&nbsp; &nbsp; If Not SheetExists(SheetName) Then
-&nbsp; &nbsp; &nbsp; &nbsp; 'worksheet XXX doesn't exist in current workbook
-&nbsp; &nbsp; &nbsp; &nbsp; 'creating a new excel worksheet
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; Set oSheet = Worksheets.Add
-&nbsp; &nbsp; &nbsp; &nbsp; With oSheet
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Name = SheetName
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Move After:=Sheets(Entry)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Activate
-&nbsp; &nbsp; &nbsp; &nbsp; End With
-&nbsp; &nbsp; End If
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; FileName = FindFileName(no, Depart, FolderName)
-&nbsp; &nbsp; If FileName &lt;&gt; &quot;&quot; Then
-&nbsp; &nbsp; &nbsp; &nbsp; Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)
-&nbsp; &nbsp; End If
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; Exit Function
+    <small class="meta">March 02, 2010 | <a href='/unix/linux/2010/03/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a0%25e9%2599%25a4linux%25e7%2589%2588adobe%2520reader%25e7%259a%2584%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
 
+  <div class="post">
+    <h2><a href="/unix/linux/2010/01/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520list%2520of%2520solaris%2520commands%2520for%2520process%2520management%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">List of Solaris commands for process management</a></h2>
 
-End Function
-
-
-Function SheetExists(SheetName As String) As Boolean
-' returns TRUE if the sheet exists in the active workbook
-&nbsp; &nbsp; SheetExists = False
-&nbsp; &nbsp; On Error GoTo NoSuchSheet
-&nbsp; &nbsp; If Len(Sheets(SheetName).Name) &gt; 0 Then
-&nbsp; &nbsp; &nbsp; &nbsp; SheetExists = True
-&nbsp; &nbsp; &nbsp; &nbsp; Exit Function
-&nbsp; &nbsp; End If
-NoSuchSheet:
-End Function
-
-
-Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String
-&nbsp; &nbsp; 'open Excel files and copy the contents to this sheet
-&nbsp; &nbsp; Dim newWB As Workbook, curWB As Workbook
-&nbsp; &nbsp; Dim startRange As Range
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; If Dir(FileName) &lt;&gt; &quot;&quot; Then
-&nbsp; &nbsp; &nbsp; &nbsp; ' file exists
-&nbsp; &nbsp; &nbsp; &nbsp; ' Clear all cells of current worksheet
-&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).UsedRange.Clear
-&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = False ' disable alerts
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; ' Open workbooks to be copied
-&nbsp; &nbsp; &nbsp; &nbsp; Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
-&nbsp; &nbsp; &nbsp; &nbsp; Set newWB = Workbooks.Open(FileName)
-&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter
-&nbsp; &nbsp; &nbsp; &nbsp; Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied
-&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).UsedRange.Copy
-&nbsp; &nbsp; &nbsp; &nbsp; ' paste to target worksheet
-&nbsp; &nbsp; &nbsp; &nbsp; curWB.Activate
-&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).Range(startRange.Address).PasteSpecial
-&nbsp; &nbsp; &nbsp; &nbsp; Application.CutCopyMode = False &nbsp;'Clear Clipboard
-&nbsp; &nbsp; &nbsp; &nbsp; newWB.Close SaveChanges:=False &nbsp;' close without change
-&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = True
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; End If
-
-
-End Function
-
-
-Function FindFileName(no As String, Depart As String, FolderName As String) As String
-&nbsp; &nbsp; Dim Coll_Docs As New Collection
-&nbsp; &nbsp; Dim Search_path, Search_Filter, Search_Fullname As String
-&nbsp; &nbsp; Dim DocName As String
-&nbsp; &nbsp; Dim i As Long
-
-
-&nbsp; &nbsp; Search_path = FolderName &nbsp; ' where ?
-&nbsp; &nbsp; Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?
-&nbsp; &nbsp; Set Coll_Docs = Nothing
-
-
-&nbsp; &nbsp; DocName = Dir(Search_path &amp; &quot;&quot; &amp; Search_Filter)
-
-
-&nbsp; &nbsp; Do Until DocName = &quot;&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;' build the collection
-&nbsp; &nbsp; &nbsp; &nbsp; Coll_Docs.Add Item:=DocName
-&nbsp; &nbsp; &nbsp; &nbsp; DocName = Dir
-&nbsp; &nbsp; Loop
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; If Coll_Docs.Count = 1 Then
-&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = Search_path &amp; &quot;&quot; &amp; Coll_Docs(1)
-&nbsp; &nbsp; Else
-&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = &quot;&quot;
-&nbsp; &nbsp; End If
-
-
-End Function
-
-
-Function SortWorksheetsByName() As String
-&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
-&nbsp; &nbsp; Dim sCount As Integer, i As Integer, j As Integer
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; Application.ScreenUpdating = False
-&nbsp; &nbsp; sCount = Worksheets.Count
-&nbsp; &nbsp; If sCount = 1 Then Exit Function
-&nbsp; &nbsp; For i = 1 To sCount - 1
-&nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To sCount
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Worksheets(j).Name &lt; Worksheets(i).Name Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; &nbsp; &nbsp; Next j
-&nbsp; &nbsp; Next i
-&nbsp; &nbsp;&nbsp;
-End Function
-
-
-Function SortWorksheets() As String
-&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
-&nbsp; &nbsp; Dim cnt As Integer, i As Integer, j As Integer
-&nbsp; &nbsp; Dim Entry As Integer
-&nbsp; &nbsp; Dim curWS As Worksheet
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet
-&nbsp; &nbsp; 'Application.ScreenUpdating = False
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; cnt = Worksheets.Count
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; ' Determine where to start sorting
-&nbsp; &nbsp; Entry = 0
-&nbsp; &nbsp; For i = 1 To cnt
-&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
-&nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; Next i
-Determ_Entry:
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; For i = Entry To cnt - 1
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To cnt
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; Val(Worksheets(j).Name) Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next j
-&nbsp; &nbsp; Next i
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; curWS.Activate
-&nbsp; &nbsp; 'Application.ScreenUpdating = True
-End Function
+    <p>原文地址：<a href="http://it.toolbox.com/wiki/index.php/List_of_Solaris_commands_for_process_management">http://it.toolbox.com/wiki/index.php/List_of_Solaris_commands_for_process_management</a></p>
+<p>&nbsp;</p>
+<div id="greybox">
+<div class="top_left">
+<div class="top_right">
+<div class="bottom_left">
+<div class="bottom_right">
+<div class="content clearfix">
+<h1 class="h1-title clearfix">List of Solaris commands for process management</h1>
+<div class="spacer5"><img src="http://images.ittoolbox.com/vt/spacer.gif" alt="" width="1" height="1" /></div>
+<div class="dotSep"><img src="http://images.ittoolbox.com/vt/spacer.gif" alt="" width="1" height="1" /></div>
+<div class="spacer5"><img src="http://images.ittoolbox.com/vt/spacer.gif" alt="" width="1" height="1" /></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2><span class="mw-headline">Commands</span></h2></p>
+<p>apptrace &ndash; for tracing library calls<br />dtrace &ndash; debugger, new in version 10<br />pargs &ndash; get list of arguments and environment variables with which process was started<br />pfiles &ndash; list of file descriptors, associated with process<br />pgrep &ndash; get the PID's of processes by name i.e. Something like ps -efl|grep -v grep|grep process_name<br />pkill &ndash; send signal to process. For example pkill -9 init&nbsp;:-P<br />pldd &ndash; list dynamic libraries, associated with process, similar to ldd for executable<br />plockstat &ndash; see list of locked by process files. Lock can be mutex i.e. exclusive and reader/writer for shared access<br />pmap &ndash; get memory map (segments) of process<br />preap &ndash; try to kick-off zombie process<br />prstat &ndash; fullscreen view of processes sorted by different criteria, similar to Linux top command<br />prun &ndash; continue hold with pstop process<br />ps - print process information and status. In Solaris exist SYSV and BSD variants, respectively /usr/bin/ps and /usr/ucb/ps<br />psig &ndash; list signals that can be handled by process<br />pstack &ndash; get backtrace stack of process for debugging purposes<br />pstop &ndash; temporary hold process<br />ptree - print the tree of processes<br />pwait &ndash; wait till process finish<br />pwdx &ndash; list working directory for process, like pwd command<br />truss &ndash; for tracing user/library/system calls and signals</p>
+<p><a name="Examples"></a></p>
+<h2>
+<div class="editsection">[<a title="Edit section: Examples" href="http://it.toolbox.com/wiki/index.php?title=List_of_Solaris_commands_for_process_management&amp;action=edit&amp;section=2">edit</a>]</div>
+<p><span class="mw-headline">Examples</span></h2>
+<p><strong>apptrace</strong></p>
+<pre># apptrace man
+-&gt; man      -&gt; libc.so.1:int atexit(int (*)() = 0xd27d6bfc)
+&lt;- man      -&gt; libc.so.1:atexit()
+-&gt; man      -&gt; libc.so.1:int atexit(int (*)() = 0x8054e8c)
+&lt;- man      -&gt; libc.so.1:atexit()
+-&gt; man      -&gt; libc.so.1:void __fpstart(void)
+&lt;- man      -&gt; libc.so.1:__fpstart() = 0xd251fc94
+-&gt; man      -&gt; libc.so.1:access(0x8055984, 0x1, 0x8047e30) ** NR
+-&gt; man      -&gt; libc.so.1:char * setlocale(int = 0x6, const char * = 0x8055980 "")
+&lt;- man      -&gt; libc.so.1:setlocale() = 0xd25002ed
+-&gt; man      -&gt; libc.so.1:char * setlocale(int = 0x5, const char * = 0x0 &lt;NULL&gt;)
+&lt;- man      -&gt; libc.so.1:setlocale() = 0xd25002ed
+-&gt; man      -&gt; libc.so.1:strcpy(0x80669e8, 0xd25002ed, 0x8047e30) ** NR
+-&gt; man      -&gt; libc.so.1:int strcmp(const char * = 0x805597c "C", const char * = 0x80669e8 "C")
+&lt;- man      -&gt; libc.so.1:strcmp()
+-&gt; man      -&gt; libc.so.1:char * textdomain(const char * = 0x8055968 "SUNW_OST_OSCMD")
+&lt;- man      -&gt; libc.so.1:textdomain() = 0x80683e0
+-&gt; man      -&gt; libc.so.1:strcpy(0x80665e8, 0x8055960, 0x8047e30) ** NR
+-&gt; man      -&gt; libc.so.1:char * getenv(const char * = 0x8054fc0 "MANPATH")
+&lt;- man      -&gt; libc.so.1:getenv()
+-&gt; man      -&gt; libc.so.1:strrchr(0x8047e98, 0x2f, 0x8047e30) ** NR
+-&gt; man      -&gt; libc.so.1:int strcmp(const char * = 0x8047e98 "man", const char * = 0x8054fb8 "apropos")
+&lt;- man      -&gt; libc.so.1:strcmp() = 0xc
+-&gt; man      -&gt; libc.so.1:int strcmp(const char * = 0x8047e98 "man", const char * = 0x8055958 "whatis")
+&lt;- man      -&gt; libc.so.1:strcmp() = 0xfffffff6
+-&gt; man      -&gt; libc.so.1:int strcmp(const char * = 0x8047e98 "man", const char * = 0x8055944 "catman")
+&lt;- man      -&gt; libc.so.1:strcmp() = 0xa
+-&gt; man      -&gt; libc.so.1:int getopt(int = 0x1, char *const * = 0x8047de4, const char * = 0x8066420 "FfkrP:M:T:ts:lad")
+&lt;- man      -&gt; libc.so.1:getopt() = 0xffffffff
+-&gt; man      -&gt; libc.so.1:char * gettext(const char * = 0x8055838 "usage:        man [-] [-adFlrt] [-M path] [-T macro-package ] [ -s  section ] name ...
+        man [-M path] -k keyword ...
+        man [-M path] -f file ...")
+&lt;- man      -&gt; libc.so.1:gettext() = 0x8055838
+-&gt; man      -&gt; libc.so.1:int fprintf(FILE * = 0x8067610, const char * = 0x8054f7c "%s
+", void * = 0x8055838, ...)
+usage:  man [-] [-adFlrt] [-M path] [-T macro-package ] [ -s section ] name ...
+        man [-M path] -k keyword ...
+        man [-M path] -f file ...
+&lt;- man      -&gt; libc.so.1:fprintf() = 0x88
+-&gt; man      -&gt; libc.so.1:exit(0x2, 0x8047e30, 0x8047da0) ** NR
 </pre>
+<p><em>in the above example you can clearly see library calls as fprintf(), strcmp(), getenv(), etc.</em></p>
+<hr />
+<p><strong>pargs</strong></p>
+<pre># pargs 558
+558:    /usr/lib/sendmail -Ac -q15m
+argv[0]: sendmail: Queue runner@00:15:00 for /var/spool/clientmqueue
+
+argv[1]: &lt;NULL&gt;
+argv[2]: @00:15:00 for /var/spool/clientmqueue
+</pre>
+<p><em>in above example you see the arguments for starting sendmail as a daemon</em></p>
+<hr />
+<p><strong>pfiles</strong></p>
+<pre># pfiles 558
+558:    /usr/lib/sendmail -Ac -q15m
+  Current rlimit: 1024 file descriptors
+   0: S_IFCHR mode:0666 dev:270,0 ino:6815752 uid:0 gid:3 rdev:13,2
+      O_RDONLY
+      /devices/pseudo/mm@0:null
+   1: S_IFCHR mode:0666 dev:270,0 ino:6815752 uid:0 gid:3 rdev:13,2
+      O_WRONLY
+      /devices/pseudo/mm@0:null
+   2: S_IFCHR mode:0666 dev:270,0 ino:6815752 uid:0 gid:3 rdev:13,2
+      O_WRONLY
+      /devices/pseudo/mm@0:null
+   3: S_IFDOOR mode:0444 dev:279,0 ino:53 uid:0 gid:0 size:0
+      O_RDONLY|O_LARGEFILE FD_CLOEXEC  door to nscd[366]
+      /var/run/name_service_door
+   4: S_IFCHR mode:0666 dev:270,0 ino:11010052 uid:0 gid:3 rdev:21,0
+      O_WRONLY FD_CLOEXEC
+      /devices/pseudo/log@0:conslog
+   5: S_IFREG mode:0600 dev:102,0 ino:189384 uid:25 gid:25 size:32
+      O_WRONLY|O_CREAT|O_EXCL
+      /var/spool/clientmqueue/sm-client.pid
+</pre>
+<p><em>Here you see a list of files as NULL, console log, some PID files. On the top you can see the maximum number of file handlers for this process, with info that can be helpful for troubleshooting of applications</em></p>
+<hr />
+<p><strong>pgrep</strong></p>
+<pre># pgrep named
+586
+</pre>
+<p><em>Something like ps -efl|grep -v grep|grep process_name|awk '{print $1}'</em></p>
+<pre># ps -e|grep -v grep|grep named|awk '{print $1}'
+586
+</pre>
+<hr />
+<p><strong>pkill</strong></p>
+<pre># pgrep named
+628
+# pkill named
+# pgrep named
+636
+#
+</pre>
+<p><em>As you see, the named daemon was killed and respawned (with new PID)</em></p>
+<hr />
+<p><strong>pldd</strong></p>
+<pre># pldd 636
+636:    /usr/sbin/named
+/usr/lib/dns/liblwres.so.1.1.2
+/usr/lib/dns/libdns.so.16.0.0
+/usr/lib/dns/libisccfg.so.0.0.11
+/usr/sfw/lib/libcrypto.so.0.9.7
+/usr/lib/dns/libisccc.so.0.1.0
+/usr/lib/dns/libisc.so.7.1.5
+/lib/libnsl.so.1
+/lib/libsocket.so.1
+/lib/libscf.so.1
+/lib/libpthread.so.1
+/lib/libthread.so.1
+/lib/libc.so.1
+/lib/libdoor.so.1
+/lib/libuutil.so.1
+# ldd /usr/sbin/named
+        liblwres.so.1 =&gt;         /usr/lib/dns/liblwres.so.1
+        libdns.so.16 =&gt;  /usr/lib/dns/libdns.so.16
+        libisccfg.so.0 =&gt;        /usr/lib/dns/libisccfg.so.0
+        libcrypto.so.0.9.7 =&gt;    /usr/sfw/lib/libcrypto.so.0.9.7
+        libisccc.so.0 =&gt;         /usr/lib/dns/libisccc.so.0
+        libisc.so.7 =&gt;   /usr/lib/dns/libisc.so.7
+        libnsl.so.1 =&gt;   /lib/libnsl.so.1
+        libsocket.so.1 =&gt;        /lib/libsocket.so.1
+        libscf.so.1 =&gt;   /lib/libscf.so.1
+        libpthread.so.1 =&gt;       /lib/libpthread.so.1
+        libthread.so.1 =&gt;        /lib/libthread.so.1
+        libc.so.1 =&gt;     /lib/libc.so.1
+        libmp.so.2 =&gt;    /lib/libmp.so.2
+        libmd5.so.1 =&gt;   /lib/libmd5.so.1
+        libdoor.so.1 =&gt;  /lib/libdoor.so.1
+        libuutil.so.1 =&gt;         /lib/libuutil.so.1
+        libm.so.2 =&gt;     /lib/libm.so.2
+</pre>
+<p><em>Results from both commands are almost the same&nbsp;:-) Why? Ask SUN</em></p>
+<hr />
+<p><strong>pmap</strong></p>
+<pre># pmap 636
+636:    /usr/sbin/named
+08046000       8K rw----    [ stack ]
+08050000     232K r-x--  /usr/sbin/named
+08099000      16K rwx--  /usr/sbin/named
+0809D000     544K rwx--    [ heap ]
+D21ED000       4K rw--R    [ stack tid=4 ]
+D21F0000      64K rwx--    [ anon ]
+D2218000       4K rw--R    [ stack tid=3 ]
+D221B000       4K rwxs-    [ anon ]
+D2236000      16K rw--R    [ stack tid=2 ]
+D223C000      64K rw----    [ anon ]
+D224E000      64K rw----    [ anon ]
+D2260000      24K rwx--    [ anon ]
+D2270000       4K rwx--    [ anon ]
+D2280000      24K r-x--  /lib/libuutil.so.1
+D2296000       4K rw----  /lib/libuutil.so.1
+D22A0000       4K r-x--  /lib/libdoor.so.1
+D22B1000       4K rw----  /lib/libdoor.so.1
+D22C0000       4K rwx--    [ anon ]
+D22D0000     740K r-x--  /lib/libc.so.1
+D2399000      24K rw----  /lib/libc.so.1
+D239F000       8K rw----  /lib/libc.so.1
+D23B0000      16K r-x--  /lib/libthread.so.1
+D23C0000      12K r-x--  /lib/libpthread.so.1
+D23D0000      88K r-x--  /lib/libscf.so.1
+D23F6000       4K rw----  /lib/libscf.so.1
+D2400000       4K rwx--    [ anon ]
+D2410000      44K r-x--  /lib/libsocket.so.1
+D242B000       4K rw----  /lib/libsocket.so.1
+D2430000     512K r-x--  /lib/libnsl.so.1
+D24B0000      20K rw----  /lib/libnsl.so.1
+D24B5000      32K rw----  /lib/libnsl.so.1
+D24C0000     228K r-x--  /usr/lib/dns/libisc.so.7.1.5
+D2508000       8K rwx--  /usr/lib/dns/libisc.so.7.1.5
+D2510000      24K r-x--  /usr/lib/dns/libisccc.so.0.1.0
+D2525000       4K rwx--  /usr/lib/dns/libisccc.so.0.1.0
+D2530000       4K rwx--    [ anon ]
+D2540000     924K r-x--  /usr/sfw/lib/libcrypto.so.0.9.7
+D2637000      84K rw----  /usr/sfw/lib/libcrypto.so.0.9.7
+D264C000       8K rw----  /usr/sfw/lib/libcrypto.so.0.9.7
+D2650000      48K r-x--  /usr/lib/dns/libisccfg.so.0.0.11
+D266B000      12K rwx--  /usr/lib/dns/libisccfg.so.0.0.11
+D2670000    1024K r-x--  /usr/lib/dns/libdns.so.16.0.0
+D277F000      20K rwx--  /usr/lib/dns/libdns.so.16.0.0
+D2790000       4K rwx--    [ anon ]
+D27A0000      56K r-x--  /usr/lib/dns/liblwres.so.1.1.2
+D27BD000       4K rwx--  /usr/lib/dns/liblwres.so.1.1.2
+D27CA000     132K r-x--  /lib/ld.so.1
+D27FB000       4K rwx--  /lib/ld.so.1
+D27FC000       8K rwx--  /lib/ld.so.1
+ total      5192K
+</pre>
+<p><em>This command helps in the process of fine-tuning large applications, especially for resolving emory leak issues</em></p>
+<hr />
+<p><strong>preap</strong></p>
+<pre># ps -efl|grep 551
+ 0 Z     root   551   550   0   0  -        -      0        -        -&nbsp;?           0:00 &lt;defunct&gt;
+# preap 551
+551: exited with status 0
+# ps -efl|grep 551
+</pre>
+<p><em>In above example, this tool successfully removes zombie process. Otherwise the only way to kill them is to reboot</em></p>
+<hr />
+<p><strong>prstat</strong></p>
+<pre># prstat
+   PID USERNAME  SIZE   RSS STATE  PRI NICE      TIME  CPU PROCESS/NLWP
+   744 root     4376K 4080K cpu0    39    0   0:00:00 0.4% prstat/1
+   560 root     6988K 1944K sleep   59    0   0:00:01 0.1% sshd/1
+   468 root       31M   13M sleep   59    0   0:00:04 0.1% Xorg/1
+   550 root     9576K 6856K sleep   59    0   0:00:01 0.0% dtgreet/1
+   577 root     1160K  892K sleep   59    0   0:00:00 0.0% ksh/1
+   366 root     3476K 2472K sleep   59    0   0:00:00 0.0% nscd/27
+   699 root     6984K 1948K sleep   59    0   0:00:00 0.0% sshd/1
+   506 root     6672K 4776K sleep   59    0   0:00:00 0.0% snmpd/1
+   476 root     2724K 1552K sleep   59    0   0:00:00 0.0% dmispd/1
+   481 root     3268K 1964K sleep   59    0   0:00:00 0.0% snmpXdmid/2
+   532 root     2492K 1928K sleep   59    0   0:00:00 0.0% vold/5
+   538 root     2352K 1564K sleep   59    0   0:00:00 0.0% devfsadm/6
+   457 root     4448K 1668K sleep   59    0   0:00:00 0.0% dtlogin/1
+   458 root     2040K 1240K sleep   59    0   0:00:00 0.0% snmpdx/1
+   466 root     1468K  724K sleep   59    0   0:00:00 0.0% fbconsole/1
+   413 root     1700K  700K sleep   59    0   0:00:00 0.0% smcboot/1
+   562 root     1076K  824K sleep   59    0   0:00:00 0.0% sh/1
+   412 root     1700K  700K sleep   59    0   0:00:00 0.0% smcboot/1
+   356 root     3336K 1176K sleep   59    0   0:00:00 0.0% sshd/1
+   533 root     7480K 2860K sleep   59    0   0:00:00 0.0% dtlogin/1
+   411 root     1704K 1032K sleep   59    0   0:00:00 0.0% smcboot/1
+   263 root     1064K  620K sleep   59    0   0:00:00 0.0% utmpd/1
+   359 root     4400K 2212K sleep   59    0   0:00:00 0.0% syslogd/16
+   261 root     3936K 3004K sleep   59    0   0:00:02 0.0% inetd/4
+   264 root     1888K 1084K sleep   59    0   0:00:00 0.0% ttymon/1
+   241 daemon   2340K 1520K sleep   59    0   0:00:00 0.0% statd/1
+   122 root     1328K  904K sleep   59    0   0:00:00 0.0% powerd/3
+   202 root     2228K  884K sleep   59    0   0:00:00 0.0% cron/1
+    96 root     2128K 1288K sleep   59    0   0:00:00 0.0% syseventd/14
+   554 root     7200K 3664K sleep   59    0   0:00:00 0.0% sshd/1
+   361 root     9272K 5640K sleep   59    0   0:00:00 0.0% fmd/14
+   244 daemon   2072K 1312K sleep   60  -20   0:00:00 0.0% lockd/2
+    55 root     1952K  924K sleep   59    0   0:00:00 0.0% dhcpagent/1
+   253 root     1700K  892K sleep   59    0   0:00:00 0.0% sac/1
+   232 daemon   2288K 1012K sleep   59    0   0:00:00 0.0% rpcbind/1
+   123 daemon   3908K 2016K sleep   59    0   0:00:00 0.0% kcfd/3
+   117 root     2468K 1544K sleep   59    0   0:00:00 0.0% picld/4
+   339 root     4252K 1592K sleep   59    0   0:00:00 0.0% automountd/3
+   175 root     1852K  952K sleep   59    0   0:00:00 0.0% in.routed/1
+     9 root     9000K 8068K sleep   59    0   0:00:11 0.0% svc.configd/18
+     7 root     8888K 7940K sleep   59    0   0:00:05 0.0% svc.startd/13
+   260 root     1948K 1168K sleep   59    0   0:00:00 0.0% ttymon/1
+</pre>
+<p><em>The program in default view is less informative that top, but can give you info for zones, projects and even for processes bind to specific processor. Use the -u option to limit display to specific users. Use the -p option to limit display to specific processes</em></p>
+<hr />
+<p><strong>prun</strong>&nbsp;- see example of pstop</p>
+<hr />
+<p><strong>ps</strong></p>
+<pre># /usr/bin/ps
+   PID TTY         TIME CMD
+   562 pts/2       0:00 sh
+   577 pts/2       0:00 ksh
+   757 pts/2       0:00 ps
+# /usr/ucb/ps
+   PID TT       S  TIME COMMAND
+   260 console  S  0:00 /usr/lib/saf/ttymon -g -d /dev/console -l console -T sun-color -m ldterm,ttcompat -h -p unknown console lo
+   562 pts/2    S  0:00 -sh
+   577 pts/2    S  0:00 ksh -o ksh
+   759 pts/2    O  0:00 /usr/ucb/ps
+   701 pts/3    S  0:00 -sh
+</pre>
+<hr />
+<p><strong>psig</strong></p>
+<pre># psig 636
+636:    /usr/sbin/named
+HUP     default
+INT     default
+QUIT    default
+ILL     default
+TRAP    default
+ABRT    default
+EMT     default
+FPE     default
+KILL    default
+BUS     default
+SEGV    default
+SYS     default
+PIPE    ignored
+ALRM    default
+TERM    default
+USR1    default
+USR2    default
+CLD     default                 NOCLDSTOP
+PWR     default
+WINCH   default
+URG     default
+POLL    default
+STOP    default
+TSTP    ignored
+CONT    default
+TTIN    ignored
+TTOU    ignored
+VTALRM  default
+PROF    default
+XCPU    default
+XFSZ    ignored
+WAITING default
+LWP     default
+FREEZE  default
+THAW    default
+CANCEL  default
+LOST    default
+XRES    default
+JVM1    default
+JVM2    default
+RTMIN   default
+RTMIN+1 default
+RTMIN+2 default
+RTMIN+3 default
+RTMAX-3 default
+RTMAX-2 default
+RTMAX-1 default
+RTMAX   default
+</pre>
+<hr />
+<p><strong>pstack</strong></p>
+<pre># pstack 636
+636:    /usr/sbin/named
+----------------------  lwp# 1 / thread# 1  --------------------------
+ d23700a5 sigtimedwait (8047ce0, 8047cf0, 0)
+ d23655a6 sigwait  (8047dc0) + 1c
+ d235e206 __posix_sigwait (8047dc0, 8047e60) + 2e
+ d24db3dd isc_app_run (8047ec8, 8047e60, d27fb840, 0, 8047e98, 805c33e) + 158
+ 08066da7 main     (1, 8047ea4, 8047eac) + fe
+ 0805c33e&nbsp;???????? (1, 8047f30, 0, 8047f40, 8047f47, 8047f5f)
+----------------------  lwp# 2 / thread# 2  --------------------------
+ d236fc99 lwp_park (0, 0, 0)
+ d236a501 cond_wait_queue (80a2a7c, 80a2a48, 0, 0) + 3b
+ d236a9fa _cond_wait (80a2a7c, 80a2a48) + 66
+ d236aa3c cond_wait (80a2a7c, 80a2a48) + 21
+ d236aa75 pthread_cond_wait (80a2a7c, 80a2a48) + 1b
+ d24d871b dispatch (80a2a40, d2239fec, d236f93e, 80a2a40, 0, 0) + a0
+ d24d8ba2 run      (80a2a40) + c
+ d236f93e _thr_setup (d2262400) + 4e
+ d236fc20 _lwp_start (d2262400, 0, 0, d2239ff8, d236fc20, d2262400)
+----------------------  lwp# 3 / thread# 3  --------------------------
+ d236fc99 lwp_park (0, d2218ec8, 0)
+ d236a501 cond_wait_queue (80a2ae8, 80a2ab8, d2218ec8, 0) + 3b
+ d236a8a1 cond_wait_common (80a2ae8, 80a2ab8, d2218ec8) + 1df
+ d236aad5 _cond_timedwait (80a2ae8, 80a2ab8, d2218f28) + 51
+ d236ab40 cond_timedwait (80a2ae8, 80a2ab8, d2218f28) + 24
+ d236ab7c pthread_cond_timedwait (80a2ae8, 80a2ab8, d2218f28) + 1e
+ d24e7601 isc_condition_waituntil (80a2ae8, 80a2ab8, 80a2ae0) + 81
+ d24da800 run      (80a2ab0) + a2
+ d236f93e _thr_setup (d21f0000) + 4e
+ d236fc20 _lwp_start (d21f0000, 0, 0, d2218ff8, d236fc20, d21f0000)
+----------------------  lwp# 4 / thread# 4  --------------------------
+ d2370cd5 pollsys  (d21edce0, 6, 0, 0)
+ d231ecca pselect  (1c, d21ede40, d21edec0, d239a868, 0, 0) + 18e
+ d231efad select   (1c, d21ede40, d21edec0, 0, 0) + 6f
+ d24e355c watcher  (80a5bd0) + bd
+ d236f93e _thr_setup (d21f0400) + 4e
+ d236fc20 _lwp_start (d21f0400, 0, 0, d21edff8, d236fc20, d21f0400)
+</pre>
+<p><em>This command can sometimes be very helpful for debugging daemons. You can see the function call stack by thread, in real-time</em></p>
+<hr />
+<p><strong>pstop</strong></p>
+<pre># ps -efl|grep ssh
+ 0 S     root   554   356   0  40 20 d419b870   1800 d4c87e72 21:03:52&nbsp;?           0:00 /usr/lib/ssh/sshd
+ 0 S     root   356     1   0  40 20 d4195320    834 d49f3432 21:02:46&nbsp;?           0:00 /usr/lib/ssh/sshd
+ 0 S     root   560   554   0  40 20 d41931a0   1747 d4c87ab2 21:05:03&nbsp;?           0:02 /usr/lib/ssh/sshd
+ 0 S     root   812   809   0  40 20 d418a270   1746 d50402f2 22:09:00&nbsp;?           0:00 /usr/lib/ssh/sshd
+ 0 S     root   809   356   0  40 20 d4189a10   1801 d4c874f2 22:08:47&nbsp;?           0:00 /usr/lib/ssh/sshd
+# pstop 356
+# ssh localhost
+<em>(here I stop with ctrl-C ssh client after 5 minutes of waiting)</em>
+# prun 356
+# ssh localhost
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+RSA key fingerprint is da:14:db:bc:2f:e0:0f:ef:f6:3f:12:0e:f4:77:0c:00.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'localhost' (RSA) to the list of known hosts.
+Password:
+Last login: Wed Jun 13 22:09:00 2007 from gateway
+Sun Microsystems Inc.   SunOS 5.10      Generic January 2005
+#
+</pre>
+<p><em>Command is interesting, but I don't see much benefit for daily tasks</em></p>
+<hr />
+<p><strong>ptree</strong></p>
+<pre># ptree
+7     /lib/svc/bin/svc.startd
+  253   /usr/lib/saf/sac -t 300
+    264   /usr/lib/saf/ttymon
+  260   /usr/lib/saf/ttymon -g -d /dev/console -l console -T sun-color -m ldterm,ttcomp
+9     /lib/svc/bin/svc.configd
+55    /sbin/dhcpagent
+96    /usr/lib/sysevent/syseventd
+117   /usr/lib/picl/picld
+122   /usr/lib/power/powerd
+123   /usr/lib/crypto/kcfd
+175   /usr/sbin/in.routed
+202   /usr/sbin/cron
+232   /usr/sbin/rpcbind
+241   /usr/lib/nfs/statd
+244   /usr/lib/nfs/lockd
+261   /usr/lib/inet/inetd start
+263   /usr/lib/utmpd
+339   /usr/lib/autofs/automountd
+356   /usr/lib/ssh/sshd
+  554   /usr/lib/ssh/sshd
+    560   /usr/lib/ssh/sshd
+      562   -sh
+        577   ksh -o vi
+          771   ptree
+  696   /usr/lib/ssh/sshd
+    699   /usr/lib/ssh/sshd
+      701   -sh
+359   /usr/sbin/syslogd
+361   /usr/lib/fm/fmd/fmd
+366   /usr/sbin/nscd
+411   /usr/sadm/lib/smc/bin/smcboot
+  412   /usr/sadm/lib/smc/bin/smcboot
+  413   /usr/sadm/lib/smc/bin/smcboot
+457   /usr/dt/bin/dtlogin -daemon
+  466   /usr/openwin/bin/fbconsole -n -d&nbsp;:0
+  468   /usr/X11/bin/Xorg&nbsp;:0 -depth 24 -nobanner -auth /var/dt/A:0-Zgai5a
+  533   /usr/dt/bin/dtlogin -daemon
+    550   dtgreet -display&nbsp;:0
+458   /usr/lib/snmp/snmpdx -y -c /etc/snmp/conf
+476   /usr/lib/dmi/dmispd
+481   /usr/lib/dmi/snmpXdmid -s unknown
+506   /usr/sfw/sbin/snmpd
+532   /usr/sbin/vold -f /etc/vold.conf
+538   devfsadmd
+636   /usr/sbin/named
+</pre>
+<p><em>No need for comments&nbsp;:-)</em></p>
+<hr />
+<p><strong>pwait</strong></p>
+<pre># ps -efl|grep name
+ 0 S     root   875     1   0  45 20 d4188950   1298 d553ab16 22:17:58&nbsp;?           0:00 /usr/sbin/named
+# pwait 875
+(in this moment from another terminal I execute svcadm disable dns/server)
+#
+</pre>
+<p><em>Maybe this command will be great in some specific scripts</em></p>
+<hr />
+<p><strong>pwdx</strong></p>
+<pre># pwdx 636
+636:    /var/named
+</pre>
+<p><em>Can be helpful in case of strange errors when unmount some filesystem</em></p>
+<hr />
+<p><strong>truss</strong></p>
+<pre># truss ls
+execve("/usr/bin/ls", 0x08047E40, 0x08047E48)  argc = 1
+resolvepath("/usr/lib/ld.so.1", "/lib/ld.so.1", 1023) = 12
+resolvepath("/usr/bin/ls", "/usr/bin/ls", 1023) = 11
+sysconfig(_CONFIG_PAGESIZE)                     = 4096
+xstat(2, "/usr/bin/ls", 0x08047C38)             = 0
+open("/var/ld/ld.config", O_RDONLY)             Err#2 ENOENT
+xstat(2, "/lib/libsec.so.1", 0x080474D0)        = 0
+resolvepath("/lib/libsec.so.1", "/lib/libsec.so.1", 1023) = 16
+open("/lib/libsec.so.1", O_RDONLY)              = 3
+mmap(0x00010000, 4096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_ALIGN, 3, 0) = 0xD27C0000
+mmap(0x00010000, 139264, PROT_NONE, MAP_PRIVATE|MAP_NORESERVE|MAP_ANON|MAP_ALIGN, -1, 0) = 0xD2790000
+mmap(0xD2790000, 49071, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_TEXT, 3, 0) = 0xD2790000
+mmap(0xD27AC000, 12169, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_INITDATA, 3, 49152) = 0xD27AC000
+mmap(0xD27AF000, 8536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANON, -1, 0) = 0xD27AF000
+munmap(0xD279C000, 65536)                       = 0
+memcntl(0xD2790000, 8776, MC_ADVISE, MADV_WILLNEED, 0, 0) = 0
+close(3)                                        = 0
+
+mmap(0x00000000, 4096, PROT_READ|PROT_WRITE|PROT_EXEC, MAP_PRIVATE|MAP_ANON, -1, 0) = 0xD2780000
+xstat(2, "/lib/libc.so.1", 0x080474D0)          = 0
+resolvepath("/lib/libc.so.1", "/lib/libc.so.1", 1023) = 14
+open("/lib/libc.so.1", O_RDONLY)                = 3
+mmap(0xD27C0000, 4096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED, 3, 0) = 0xD27C0000
+mmap(0x00010000, 856064, PROT_NONE, MAP_PRIVATE|MAP_NORESERVE|MAP_ANON|MAP_ALIGN, -1, 0) = 0xD26A0000
+mmap(0xD26A0000, 754581, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_TEXT, 3, 0) = 0xD26A0000
+mmap(0xD2769000, 24239, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_INITDATA, 3, 757760) = 0xD2769000
+mmap(0xD276F000, 5656, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANON, -1, 0) = 0xD276F000
+munmap(0xD2759000, 65536)                       = 0
+memcntl(0xD26A0000, 120300, MC_ADVISE, MADV_WILLNEED, 0, 0) = 0
+close(3)                                        = 0
+xstat(2, "/lib/libavl.so.1", 0x080474D0)        = 0
+resolvepath("/lib/libavl.so.1", "/lib/libavl.so.1", 1023) = 16
+open("/lib/libavl.so.1", O_RDONLY)              = 3
+mmap(0xD27C0000, 4096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED, 3, 0) = 0xD27C0000
+mmap(0x00010000, 73728, PROT_NONE, MAP_PRIVATE|MAP_NORESERVE|MAP_ANON|MAP_ALIGN, -1, 0) = 0xD2680000
+mmap(0xD2680000, 2788, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_TEXT, 3, 0) = 0xD2680000
+mmap(0xD2691000, 204, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_INITDATA, 3, 4096) = 0xD2691000
+munmap(0xD2681000, 65536)                       = 0
+memcntl(0xD2680000, 1056, MC_ADVISE, MADV_WILLNEED, 0, 0) = 0
+close(3)                                        = 0
+munmap(0xD27C0000, 4096)                        = 0
+mmap(0x00010000, 24576, PROT_READ|PROT_WRITE|PROT_EXEC, MAP_PRIVATE|MAP_ANON|MAP_ALIGN, -1, 0) = 0xD27C0000
+getcontext(0x080479D0)
+getrlimit(RLIMIT_STACK, 0x080479C8)             = 0
+getpid()                                        = 786 [785]
+lwp_private(0, 1, 0xD27C2000)                   = 0x000001C3
+setustack(0xD27C2060)
+sysi86(SI86FPSTART, 0xD276FCD8, 0x0000133F, 0x00001F80) = 0x00000001
+brk(0x080651E8)                                 = 0
+brk(0x080671E8)                                 = 0
+time()                                          = 1181761288
+ioctl(1, TCGETA, 0x08047B9C)                    = 0
+ioctl(1, TIOCGWINSZ, 0x08064460)                = 0
+brk(0x080671E8)                                 = 0
+brk(0x080711E8)                                 = 0
+lstat64(".", 0x08046A70)                        = 0
+openat(-3041965, ".", O_RDONLY|O_NDELAY|O_LARGEFILE) = 3
+fcntl(3, F_SETFD, 0x00000001)                   = 0
+fstat64(3, 0x08047AC0)                          = 0
+getdents64(3, 0xD27C4000, 8192)                 = 992
+getdents64(3, 0xD27C4000, 8192)                 = 0
+close(3)                                        = 0
+ioctl(1, TCGETA, 0x08045E44)                    = 0
+fstat64(1, 0x08045DB0)                          = 0
+TT_DB       cdrom       etc         kernel      mnt         platform    system      var
+write(1, " T T _ D B              ".., 88)      = 88
+bin         dev         export      lib         net         proc        tmp         vol
+write(1, " b i n                  ".., 88)      = 88
+boot        devices     home        lost+found  opt         sbin        usr
+write(1, " b o o t                ".., 76)      = 76
+_exit(0)
+</pre>
+<p><em>Shows you system calls made by a process along with parameters of the function - very good for program execution traces. Use -u a.out to see user-level function calls. Note "a.out" is typed literally as "a.out" - not replaced with the name of the program</em></p>
+
+
+    <small class="meta">January 12, 2010 | <a href='/unix/linux/2010/01/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520list%2520of%2520solaris%2520commands%2520for%2520process%2520management%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2009/12/23/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%252012%25e5%258d%2587%25e7%25ba%25a7chromium%25e9%2581%2587%25e5%2588%25b0%25e7%259a%2584%25e9%2597%25ae%25e9%25a2%2598%25e5%258f%258a%25e8%25a7%25a3%25e5%2586%25b3%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fedora 12升级Chromium遇到的问题及解决方法</a></h2>
+
+    <p>自打装好Fedora 12之后就发现chromium不能用rpm安装了，安装时总是缺这少那，很是费劲，于是按照网上的方法，在/etc/yum.repos.d/下创建一个chromium.repo，内容如下：</p>
+<p>
+<pre>[chromium]
+name=Chromium Test Packages
+baseurl=http://spot.fedorapeople.org/chromium/F$releasever/
+enabled=0
+gpgcheck=0
+</pre>
+<p>&nbsp;</p>
+<p>然后通过yum安装就可以了。</p>
+<p>&nbsp;</p>
+<p>今天在Fedora People看到有新的chromium安装包出现，于是打算升级chromium。下载了所有的rpm包(忘记了最初是通过yum安装的)。安装时chromium, chromium-libs都能通过rpm -Uvh正常安装，可是升级v8时还是出了问题。想起以前的教训，打算先把v8完全卸载再安装，可是缺无法卸载，无论是通过rpm -e还是yum remove都不行。</p>
+<p>&nbsp;</p>
+<p>这时想到了用yum upodate v8-*，结果却出现了&ldquo;Package v8-devel-2.0.3-1.20091209svn3443.fc12.i686.rpm is not signed&rdquo;的错误。在网上找到一个办法，就是编辑&nbsp;<strong>/etc/yum.conf</strong><br />
+，把gpgcheck=1 改为 gpgcheck=0。不过这样做有潜在的风险，因此在安装完v8之后就立刻把gpgcheck重新设为1.</p>
+<p>&nbsp;</p>
+<p>另外一个奇怪的问题是，打开Chromium时，浏览器打不开，而且SELinux总是报错：</p>
+<p>&nbsp;</p>
+<p>
+<pre>Summary:
+SELinux is preventing /usr/lib/chromium-browser/chromium-browser from loading
+/usr/lib/chromium-browser/libmedia.so which requires text relocation.
+Detailed Description:
+The chromium-browse application attempted to load
+/usr/lib/chromium-browser/libmedia.so which requires text relocation. This is a
+potential security problem. Most libraries do not need this permission.
+Libraries are sometimes coded incorrectly and request this permission. The
+SELinux Memory Protection Tests
+(http://people.redhat.com/drepper/selinux-mem.html) web page explains how to
+remove this requirement. You can configure SELinux temporarily to allow
+/usr/lib/chromium-browser/libmedia.so to use relocation as a workaround, until
+the library is fixed. Please file a bug report.
+Allowing Access:
+If you trust /usr/lib/chromium-browser/libmedia.so to run correctly, you can
+change the file context to textrel_shlib_t. &quot;chcon -t textrel_shlib_t
+'/usr/lib/chromium-browser/libmedia.so'&quot; You must also change the default file
+context files on the system in order to preserve them even on a full relabel.
+&quot;semanage fcontext -a -t textrel_shlib_t
+'/usr/lib/chromium-browser/libmedia.so'&quot;
+Fix Command:
+chcon -t textrel_shlib_t '/usr/lib/chromium-browser/libmedia.so'
+Additional Information:
+Source Context                unconfined_u:unconfined_r:unconfined_execmem_t:s0-
+                              s0:c0.c1023
+Target Context                system_u:object_r:lib_t:s0
+Target Objects                /usr/lib/chromium-browser/libmedia.so [ file ]
+Source                        chromium-browse
+Source Path                   /usr/lib/chromium-browser/chromium-browser
+Port                          &lt;Unknown&gt;
+Host                          bonn.yang
+Source RPM Packages           chromium-4.0.273.0-0.1.20091216svn34775.fc12
+Target RPM Packages           chromium-libs-4.0.273.0-0.1.20091216svn34775.fc12
+Policy RPM                    selinux-policy-3.6.32-56.fc12
+Selinux Enabled               True
+Policy Type                   targeted
+Enforcing Mode                Enforcing
+Plugin Name                   allow_execmod
+Host Name                     bonn.yang
+Platform                      Linux bonn.yang 2.6.31.6-166.fc12.i686.PAE #1 SMP
+                              Wed Dec 9 11:00:30 EST 2009 i686 i686
+Alert Count                   11
+First Seen                    Wed 23 Dec 2009 09:38:16 PM CST
+Last Seen                     Wed 23 Dec 2009 10:28:36 PM CST
+Local ID                      b1f55f28-145d-48dd-9d71-6fb7fe6a57c8
+Line Numbers                  
+Raw Audit Messages            
+node=bonn.yang type=AVC msg=audit(1261578516.240:27332): avc:  denied  { execmod } for  pid=2946 comm=&quot;chromium-browse&quot; path=&quot;/usr/lib/chromium-browser/libmedia.so&quot; dev=sda2 ino=277322 scontext=unconfined_u:unconfined_r:unconfined_execmem_t:s0-s0:c0.c1023 tcontext=system_u:object_r:lib_t:s0 tclass=file
+node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 syscall=125 success=no exit=-13 a0=8ff8000 a1=63000 a2=5 a3=bf899bf0 items=0 ppid=1 pid=2946 auid=500 uid=500 gid=500 euid=500 suid=500 fsuid=500 egid=500 sgid=500 fsgid=500 tty=(none) ses=1 comm=&quot;chromium-browse&quot; exe=&quot;/usr/lib/chromium-browser/chromium-browser&quot; subj=unconfined_u:unconfined_r:unconfined_execmem_t:s0-s0:c0.c1023 key=(null)
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>试了半天也没能在SELinux中设好libmedia.so的permission（有人说只要把libmedia.so的permission设为permissive就可以）。后来在一个法语的网页上(<a href="http://tuxmaya.wordpress.com/2009/12/21/nuevos-paquetes-de-chormium-en-fedora/">http://tuxmaya.wordpress.com/2009/12/21/nuevos-paquetes-de-chormium-en-fedora/</a><br />
+)发现了这样一条命令来取消 SELinux 对 /usr/lib/chromium-browser/下的所有.so文件的permission 的检查。</p>
+<p>&nbsp;</p>
+<p>
+<pre>chcon -t texrel_shlib_t /usr/lib*/chromium-browser/*.so</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>另外，该网页(<a href="http://forums.fedoraforum.org/showthread.php?t=237029">http://forums.fedoraforum.org/showthread.php?t=237029</a><br />
+)上也提到了这种方法。</p>
+<p>&nbsp;</p>
+<p>设置之后，chromium就可以正常工作了。这篇博文就是用chromium来写的。</p>
+<p>&nbsp;</p>
+<p>PS:&nbsp;</p>
+<p>&nbsp;</p>
+<p>写完博文后在SELinux的错误信息中发现了fix的方法：</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>
+<pre>hcon -t textrel_shlib_t '/usr/lib/chromium-browser/libmedia.so'</pre>
+<p>&nbsp;</p>
+<p>
+<pre>semanage fcontext -a -t textrel_shlib_t
+'/usr/lib/chromium-browser/libmedia.so'</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>实在是太粗心了，当时竟然没有仔细看&hellip;&hellip; 谨记这一教训！</p>
+
+
+    <small class="meta">December 23, 2009 | <a href='/unix/linux/2009/12/23/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%252012%25e5%258d%2587%25e7%25ba%25a7chromium%25e9%2581%2587%25e5%2588%25b0%25e7%259a%2584%25e9%2597%25ae%25e9%25a2%2598%25e5%258f%258a%25e8%25a7%25a3%25e5%2586%25b3%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/android/unix/linux/2009/11/29/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%252012%25e5%25ae%2589%25e8%25a3%2585android%2520sdk%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fedora 12安装Android SDK</a></h2>
+
+    <p>
+    &nbsp;</p>
+<div>
+<h1>Fedora 12安装Android SDK</h1>
+<h3>1. 下载Android SDK</h3>
+<h3><span><span style="font-size:x-small;">由于android网站国内不能直接访问， 请通过以下网址下载</span></span></h3>
+<p><span><br />
+</span>
+<p><a id="bkhs" title="http://androidappdocs.appspot.com/index.html" href="http://androidappdocs.appspot.com/index.html"><span style="font-size:x-small;">http://androidappdocs.appspot.com/index.html</span></a></p>
+<p><a title="http://dl.google.com/android/android-sdk-windows-1.6_r1.zip" href="http://dl.google.com/android/android-sdk-windows-1.6_r1.zip"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-windows-1.6_r1.zip</span></a></p>
+<p><span style="font-size:x-small;">Windows：&nbsp;</span><a href="http://dl.google.com/android/android-sdk-windows-1.6_r1.zip"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-windows-1.6_r1.zip</span></a></p>
+<p><span style="font-size:x-small;">Mac OS X (intel)：&nbsp;</span><a href="http://dl.google.com/android/android-sdk-mac_x86-1.6_r1.zip"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-mac_x86-1.6_r1.zip</span></a></p>
+<p><span style="font-size:x-small;">Linux (i386)：&nbsp;</span><a href="http://dl.google.com/android/android-sdk-linux_x86-1.6_r1.tgz"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-linux_x86-1.6_r1.tgz</span></a></p>
+<p><span style="font-size:x-small;">ADT Plugin for Eclipse 0.9.3：&nbsp;</span><a href="http://dl.google.com/android/ADT-0.9.3.zip"><span style="font-size:x-small;">http://dl.google.com/android/ADT-0.9.3.zip</span></a></p>
+<p><span style="font-size:x-small;">ophone develop ：</span><a href="http://www.ophonesdn.com/"><span style="font-size:x-small;">http://www.ophonesdn.com/</span></a></p>
+<p><span style="font-size:x-small;">&nbsp;</span><a href="http://blog.csdn.net/vagrxie/archive/2009/08/04/4409464.aspx"><span style="font-size:x-small;">http://blog.csdn.net/vagrxie/archive/2009/08/04/4409464.aspx</span></a></p>
+<p><span style="font-size:x-small;">android developer：&nbsp;</span><a href="http://www.anddev.org/"><span style="font-size:x-small;">http://www.anddev.org/</span></a></p>
+<div><span style="font-size:small;"><br /></span></div>
+<h3>2. 添加Android SDK</h3>
+<div>运行android后，在选择Available Packages时遇到错误消息：</div>
+<div>Failed to fetch URL https://dl-ssl.google.com/android/repository/repository.xml, reason: HTTPS SSL error. You might want to force download through HTTP in the settings.</div>
+<div>解决方法是：</div>
+<div>
+<ul>
+<li><span><span style="font-size:x-small;">创建配置文件： ~/.android/androidtool.cfg，在该文件中添加一行</span></span></li>
+</ul>
+<p><span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">sdkman.force.http=true&nbsp;</span></span></div>
+<div><span style="font-family:arial, sans-serif;"><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; （该方法无效）</span><span style="font-size:x-small;"><br /></span></span></p>
+<ul>
+<li><span><span style="font-size:x-small;">打开"Settings" 选项并选中misc section "force https:// ... sources to be fetched using http://..." ，重启android. (点击Save后没有反应，重启后发现该选项并没有选中，无效)</span></span></li>
+<li><span><span style="font-size:x-small;"><strong><em>export GDK_NATIVE_WINDOWS=true</em></strong>&nbsp;before running android sdk manager.&nbsp;<br />It fixes both the save button and the install button for me. （该方法可行）</span></span></li>
+</ul>
+<p><span><span style="font-size:x-small;">&nbsp;</span></span></div>
+<div><a id="p1rm" title="http://groups.google.com/group/android-developers/browse_thread/thread/63a44163a8d07cd9" href="http://groups.google.com/group/android-developers/browse_thread/thread/63a44163a8d07cd9">http://groups.google.com/group/android-developers/browse_thread/thread/63a44163a8d07cd9</a></div>
+<h3>3. 为Eclipse安装ADT插件</h3>
+<div>安装ADT的方法<span style="font-family:Arial;"><span style="font-size:x-small;">：</span></span><span><a id="f9:j" title="Installing and Updating ADT" href="http://androidappdocs.appspot.com/sdk/eclipse-adt.html"><span style="font-family:Arial;"><strong><span style="font-size:x-small;">Installing and Updating ADT</span></strong></span></a></span></div>
+<div>遇到的问题：<span><span style="font-size:x-small;">During installation, there's an error about requiring org.eclipse.wst.sse.ui.&nbsp;</span></span></div>
+<div><span><span style="font-size:x-small;">完整的解决方法参见<a id="ccnw" title="http://code.google.com/eclipse/docs/faq.html#wstinstallerror" href="http://code.google.com/eclipse/docs/faq.html#wstinstallerror">http://code.google.com/eclipse/docs/faq.html#wstinstallerror</a>。</span></span></div>
+<div><span style="font-family:Helvetica, Arial, sans-serif;"><span style="font-size:x-small;">下面是我的经验：</span></span></div>
+<div><span style="font-size:x-small;"><br />
+</span>
+<p><span style="font-size:x-small;">The Google Plugin for Eclipse depends on other specific Eclipse components, such as&nbsp;<a href="http://www.eclipse.org/webtools/wst/main.php">WST</a>. Your installation of Eclipse may not yet include all of them, but they can be easily installed by following these instructions.</span></p>
+<h4><strong><span style="font-size:small;">Eclipse 3.5 (Galileo)</span></strong></h4>
+<p>&nbsp;</p>
+<ol>
+<li><span style="font-size:x-small;">Select&nbsp;<strong>Help &gt; Install New Software...</strong></span></li>
+<li><span style="font-size:x-small;">Click the hyperlink for&nbsp;<strong>Available Software Sites</strong>.</span></li>
+<li><span style="font-size:x-small;">Ensure there is an update site named&nbsp;<strong>Galileo</strong>. If this is not present, click&nbsp;<strong>Add...</strong>&nbsp;and enter&nbsp;</span><span style="font-family:'Courier New';">http://download.eclipse.org/releases/galileo</span><span style="font-size:x-small;">&nbsp;for the Location.（在这一步，添加完Galileo之后，最好能安装一下这个site的可用的关键更新）</span></li>
+<li><span style="font-size:x-small;">Now go through the&nbsp;<a href="http://blog.csdn.net/eclipse/docs/install-eclipse-3.5.html">installation steps</a>; Eclipse should download and install the plugin's dependencies.</span></li>
+</ol>
+<p>完成上面的步骤之后，Google App Engine和 Web Toolkit插件就被安装到了Eclipse。此时你仍然需要按照<a id="gv2d" title="http://androidappdocs.appspot.com/sdk/eclipse-adt.html" href="http://androidappdocs.appspot.com/sdk/eclipse-adt.html">http://androidappdocs.appspot.com/sdk/eclipse-adt.html</a>所陈述的步骤再安装ADT并配置SDK。</div>
+<div><span style="font-size:x-small;"><br /></span></div>
+<div><span style="font-size:x-small;">如果按照上述方法仍然无法安装ADT，最好通过System-&gt;Administration-&gt;Add/Remove Software彻底删除Eclipse，删除$HOME/.eclipse文件夹，更新操作系统，然后重装Eclipse。如果选择自己下载Eclipse,运行时很可能会遇到"JVM terminated. Exit Code=-1"的问题。因此还是建议通过Add/Remove Software或者yum install eclipse安装。重新安装完eclipse,再按照上述步骤先安装GAE和GWT，然后安装ADT。</span></div>
+<div><span style="font-size:x-small;"><br /></span></div>
+<div><span style="font-size:x-small;">ADT成功安装后，在Eclipse的Window-&gt;Preferences中，可以找到Android这一项：</span></div>
+<div>
+<div id="mqrl"><img src="File?id=dd6nw3mt_346fcv5wnfh_b" alt="" /></div>
+<div id="gtqx">装完ADT之后就可以按照<a id="u3vv" title="http://androidappdocs.appspot.com/guide/tutorials/hello-world.html" href="http://androidappdocs.appspot.com/guide/tutorials/hello-world.html">http://androidappdocs.appspot.com/guide/tutorials/hello-world.html</a>的示例开始体验Android程序了！</div>
+<p><span style="font-size:x-small;"><br /></span></div>
+</div>
+
+
+    <small class="meta">November 29, 2009 | <a href='/android/unix/linux/2009/11/29/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%252012%25e5%25ae%2589%25e8%25a3%2585android%2520sdk%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2009/10/30/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25e5%258d%2587%25e7%25ba%25a7%25e5%25ae%2589%25e8%25a3%2585chromium%2528chrome%2529%25e6%2580%25bb%25e7%25bb%2593%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fedora升级/安装Chromium(Chrome)总结</a></h2>
+
+    <p>&nbsp;尽管Linux版Chrome浏览器还没有正式发布，Fedora早已官方支持Google的Chromium了。Fedora社区会定期build最新的稳定版Chromium，可以在<a href="http://spot.fedorapeople.org/chromium/">http://spot.fedorapeople.org/chromium/</a>下载到。当然也可以下载Google 每天build的二进制版Chromium，不过就是这些都不一定稳定：<a href="http://build.chromium.org/buildbot/snapshots/">http://build.chromium.org/buildbot/snapshots/</a>。</p>
+<p>&nbsp;</p>
+<p>如果要安装Fedora社区的Chromium，需要下载v8, v8-devel和chromium，目前最新的版本是</p>
+<p>&nbsp;</p>
+<pre><a href="v8-1.3.16-1.20091027svn3152.fc11.i586.rpm">v8-1.3.16-1.20091027svn3152.fc11.i586.rpm</a> </pre>
 <pre></pre>
-<p>如要自动导入每个worksheet的特定单元&#26684;（L2:L6）到表2中的D，E，F，G，H列，可以使用下面的UpdateCells宏。</p>
-<p><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521124rpsk.gif" alt="" /></p></p></p>
-<pre>Option Explicit
-
-Sub UpdateCells()
-'
-' UpdateCells Macro
-' Macro recorded 7/13/2011 by Bo Yang
-'
-' Keyboard Shortcut: Ctrl+Shift+C
-'
-' Risk:Cell
-' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6
-Dim Risk5 As Range
-Dim num As String, depart As Range, idx As Integer
-Dim SheetName As String
-Dim SelRange As Range
-Dim curWS As Worksheet
-
-Application.ScreenUpdating = False
-
-Set curWS = ActiveSheet
-Set SelRange = Selection
-
-idx = 1
-For Each depart In SelRange.Columns(2).Cells
-    num = SelRange.Columns(1).Cells(idx).value
-    If Len(num) = 1 Then
-        num = &quot;0&quot; + num
-    End If
-    SheetName = num + &quot; &quot; + depart.value
-    
-    Set Risk5 = SelRange.Columns(3).Cells(idx)
-    
-    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy
-    Risk5.Select
-    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True
-    Application.CutCopyMode = False 'Clear Clipboard
-    
-    idx = idx + 1
-Next
-
-Application.ScreenUpdating = True
-End Sub
-</pre>
-<p></p>
-<pre></pre>
+<pre><a href="v8-devel-1.3.16-1.20091027svn3152.fc11.i586.rpm">v8-devel-1.3.16-1.20091027svn3152.fc11.i586.rpm</a></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<pre><a href="chromium-4.0.227.0-0.1.20091027svn30269.fc11.i586.rpm">chromium-4.0.227.0-0.1.20091027svn30269.fc11.i586.rpm</a></pre>
+<pre>安装时需要先安装v8,然后是v8-devel，最后安装chromium。如果要升级的话，最好先把老版本的删除，然后再安装新版本的chromium。</pre>
+<pre>删除的时候按照和安装时相反的顺序，先删除chromium,再删除v8-devel,最后删除v8。</pre>
+<p>&nbsp;</p>
 
 
-    <small class="meta">July 13, 2011 | <a href='/bkup/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+    <small class="meta">October 30, 2009 | <a href='/unix/linux/2009/10/30/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25e5%258d%2587%25e7%25ba%25a7%25e5%25ae%2589%25e8%25a3%2585chromium%2528chrome%2529%25e6%2580%25bb%25e7%25bb%2593%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
   </div>
 
   <div class="post">
-    <h2><a href="/vba/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">选中Excel单元格自动导入多个Excel worksheets</a></h2>
+    <h2><a href="/c/c++/unix/linux/2009/10/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%2590%25e6%2580%25bb%25e7%25bb%2593%25e3%2580%2591linux%25e4%25b8%258bc%25e5%25bc%2580%25e5%258f%2591%25ef%25bc%258c%25e6%2580%258e%25e4%25b9%2588%25e5%2581%259a%25e6%2588%2590%25e5%25ba%2593%25e6%2596%2587%25e4%25bb%25b6%25ef%25bc%258c%25e5%258f%2588%25e6%2580%258e%25e/">【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？</a></h2>
 
-    <p>前日完成<a href="http://blog.csdn.net/bonny95/article/details/6597776">将多个Excel文件批量导入某个Excel文件中</a>老婆规定的任务后，老婆又提出了新的要求：</p></p>
-<ol>
-<li>可以update每个worksheet</li>
-<li>对导入的worksheets进行排序</li>
-<li>自动匹配代导入文件的文件名</li>
-<li>将导入的worksheets中的特定多个单元&#26684;（cells）的内容自动填充到某一表&#26684;的特定区域</li>
-</ol>
-<p><strong><span style="color:#ff0000;">本文中用到的Excel文件及VBA宏可以在<a href="http://download.csdn.net/detail/bonny95/3438424">此处</a>下载。</span></strong></p>
-<p></p>
-<table border="1" width="200" cellspacing="1" cellpadding="1" style="text-align:center;">
-<caption><span style="font-size:16px;">表1 &nbsp;选中的单元&#26684;</span><br />
-</caption>
-<tbody>
-<tr>
-<td style="text-align:center;">1</td>
-<td style="text-align:center;">工作表 1</td>
-</tr>
-<tr>
-<td style="text-align:center;">2</td>
-<td style="text-align:center;">工作表 2</td>
-</tr>
-<tr>
-<td style="text-align:center;">3</td>
-<td style="text-align:center;">工作表 3</td>
-</tr>
-<tr>
-<td style="text-align:center;">4</td>
-<td style="text-align:center;">工作表 4</td>
-</tr>
-<tr>
-<td style="text-align:center;">5</td>
-<td style="text-align:center;">工作表 5</td>
-</tr>
-<tr>
-<td style="text-align:center;">6</td>
-<td style="text-align:center;">工作表 6</td>
-</tr>
-<tr>
-<td style="text-align:center;">7</td>
-<td style="text-align:center;">工作表 7</td>
-</tr>
-<tr>
-<td style="text-align:center;">8</td>
-<td style="text-align:center;">工作表 8</td>
-</tr>
-<tr>
-<td style="text-align:center;">9</td>
-<td style="text-align:center;">工作表 9</td>
-</tr>
-<tr>
-<td style="text-align:center;">10</td>
-<td style="text-align:center;">工作表 10</td>
-</tr>
-</tbody>
-</table></p>
-<p>对应的各个worksheet的名字(Name)是：<em>01&nbsp;工作表 1，&nbsp;02&nbsp;工作表 2，03&nbsp;工作表 3，……，10&nbsp;工作表 10.</em></p>
-<p><em><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521133c6e4.gif" alt="" /><br />
-</em></p>
-<p>待导入的Excel文件的名字为“<em>02 某某银行XX项目_工作表 1_20110701.xls</em>”。</p>
-<p></p>
-<p><span style="color:#ff0000;"><em>Update 2011-07-13 21:50</em></span></p>
-<p>应老婆的要求，更新了程序，遇到并解决的问题有：</p></p>
-<ol>
-<li>Office 2003和2007不兼容——有些method在office2003中正常工作但在office2007中却不再支持，如判定某文件是否存在的函数，解决方法参见<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">FindFileName函数。</span></li>
-<li>如果某个表中的一些单元&#26684;被筛选，则会遇到“不能复制合并的单元&#26684;”(Can't copy merged cell)的问题，解决方法就是在copy前强制关闭autofilter: &nbsp;&nbsp;<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter</span></li>
-<li><span style="font-family:monospace;"><span style="white-space:pre-wrap;">关闭打开的Excel文件或者copy单元&#26684;时会有各种各样的对话框弹出来，解决办法就是加上下面语句：</span></span></li>
-</ol>
-<p><span style="font-family:monospace;"><span style="white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);"></span></span></span></p>
-<pre style="word-wrap:break-word;white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre-wrap;"></span></pre>
-<pre style="word-wrap:break-word;white-space:pre-wrap;">Application.DisplayAlerts = True</pre>
-<pre style="word-wrap:break-word;white-space:pre-wrap;">newWB.Close SaveChanges:=False  ' close without change
-Application.DisplayAlerts = True</pre></p>
-<p><em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em></p>
-<p>傻瓜型用户的需求就是无穷无尽啊……我老婆发现在选择不连续的区域时，只有第一个区域会被处理，其他的没有变化。顶着挨骂的压力Google之后才知道，原来Slection.Areas可以包含所有不连续的选择，然后通过遍历，处理所有的选择……程序改动如下。</p></p>
-<pre>       ' Create new worksheets
-        ' Discontinuous selection is supported by Selection.Areas
-        For Each Rng In Selection.Areas
-            Set SelRange = Rng.Cells
-            Set ColNo = Rng.Columns(1)
-            Set ColDepart = Rng.Columns(2)
-            idx = 1
-            For Each cell In ColDepart.Cells
-                no_str = ColNo.Cells(idx).Value
-                If Len(no_str) = 1 Then
-                    no_str = &quot;0&quot; + no_str
-                End If
-                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
-                idx = idx + 1
-            Next
-        Next</pre>
-<p></p></p>
-<p>实现以上所有需求的代码如下（<em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em>）：</p></p>
-<pre>&lt;span style="font-family: 'Times New Roman';font-size:16px; "&gt;&lt;/span&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap; "&gt;                                         
-Option Explicit
-Dim curWS As Worksheet
-
-
-Sub LoadWorksheets()
-'
-' LoadWorksheets Macro
-' Macro recorded 7/13/2011 by Bo Yang
-'
-' Keyboard Shortcut: Ctrl+Shift+L
-'
-' *How to use this macro?*
-' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*
-'
-&nbsp; &nbsp; Application.ScreenUpdating = False &nbsp;' stop screen flickering
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; ' Create new sheets according to selected cells and copy the
-&nbsp; &nbsp; ' contebts of other files into the new sheets
-&nbsp; &nbsp; Dim YesNo As Variant, myFolder As String, MyLF As String
-&nbsp; &nbsp; Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range
-&nbsp; &nbsp; Dim SheetName As String, SheetToBeCopy As String
-&nbsp; &nbsp; Dim ColCnt As Integer
-&nbsp; &nbsp; Dim no_str As String, idx As Integer
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; myFolder = &quot;D:&quot; &nbsp; '*****Change this value as you need*****
-&nbsp; &nbsp; SheetToBeCopy = &quot;信息资产风险评估&quot; &nbsp;' *****Change this value as you need*****
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; MyLF = Chr(10) &amp; Chr(13) &nbsp; &nbsp;' a line feed command
-&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; ' check that if user select valid columns
-&nbsp; &nbsp; ColCnt = Selection.Columns.Count
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; If ColCnt &lt;&gt; 2 Then
-&nbsp; &nbsp; &nbsp; &nbsp; MsgBox (&quot;Please select 2 columns!!!&quot; &amp; MyLF &amp; _
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;The first column must be digital numbers,&quot; &amp; MyLF &amp; _
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;And the Second column must be department names&quot; _
-&nbsp; &nbsp; &nbsp; &nbsp; )
-&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
-&nbsp; &nbsp; End If
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; MyLF &amp; _
-&nbsp; &nbsp; &nbsp; &nbsp; &quot;Do you want to continue?&quot;, _
-&nbsp; &nbsp; &nbsp; &nbsp; vbYesNo, &quot;Caution&quot;)
-&nbsp; &nbsp; Select Case YesNo
-&nbsp; &nbsp; Case vbYes
-&nbsp; &nbsp; &nbsp; &nbsp; myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)
-&nbsp; &nbsp; &nbsp; &nbsp; SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; ' Create new worksheets
-&nbsp; &nbsp; &nbsp; &nbsp; ' Discontinuous selection is supported by Selection.Areas
-&nbsp; &nbsp; &nbsp; &nbsp; For Each Rng In Selection.Areas
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set SelRange = Rng.Cells
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColNo = Rng.Columns(1)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColDepart = Rng.Columns(2)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = 1
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For Each cell In ColDepart.Cells
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = ColNo.Cells(idx).Value
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Len(no_str) = 1 Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = &quot;0&quot; + no_str
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = idx + 1
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next
-&nbsp; &nbsp; &nbsp; &nbsp; Next
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; curWS.Activate
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; ' Sort worksheets
-&nbsp; &nbsp; &nbsp; &nbsp; Call SortWorksheets
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; Case vbNo
-&nbsp; &nbsp; &nbsp; &nbsp; Application.ScreenUpdating = True
-&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
-&nbsp; &nbsp; End Select
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; curWS.Activate
-&nbsp; &nbsp; Application.ScreenUpdating = True
-End Sub
-
-
-Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String
-&nbsp; &nbsp; Dim oSheet As Worksheet, vRet As Variant
-&nbsp; &nbsp; Dim SheetName As String, FileName As String
-&nbsp; &nbsp; Dim Entry As Integer, i As Integer
-
-
-&nbsp; &nbsp; ' Determine where to insert new worksheet
-&nbsp; &nbsp; Entry = 0
-&nbsp; &nbsp; For i = Sheets.Count To 1 Step -1
-&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
-&nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; Next i
-Determ_Entry:
-&nbsp; &nbsp; If Entry = 0 Then
-&nbsp; &nbsp; &nbsp; &nbsp; Entry = Sheets.Count
-&nbsp; &nbsp; End If
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; 'Example of one worksheet name:
-&nbsp; &nbsp; ' &nbsp; 07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls
-&nbsp; &nbsp; SheetName = no + &quot; &quot; + Depart
-&nbsp; &nbsp; If Not SheetExists(SheetName) Then
-&nbsp; &nbsp; &nbsp; &nbsp; 'worksheet XXX doesn't exist in current workbook
-&nbsp; &nbsp; &nbsp; &nbsp; 'creating a new excel worksheet
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; Set oSheet = Worksheets.Add
-&nbsp; &nbsp; &nbsp; &nbsp; With oSheet
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Name = SheetName
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Move After:=Sheets(Entry)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Activate
-&nbsp; &nbsp; &nbsp; &nbsp; End With
-&nbsp; &nbsp; End If
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; FileName = FindFileName(no, Depart, FolderName)
-&nbsp; &nbsp; If FileName &lt;&gt; &quot;&quot; Then
-&nbsp; &nbsp; &nbsp; &nbsp; Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)
-&nbsp; &nbsp; End If
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; Exit Function
-
-
-End Function
-
-
-Function SheetExists(SheetName As String) As Boolean
-' returns TRUE if the sheet exists in the active workbook
-&nbsp; &nbsp; SheetExists = False
-&nbsp; &nbsp; On Error GoTo NoSuchSheet
-&nbsp; &nbsp; If Len(Sheets(SheetName).Name) &gt; 0 Then
-&nbsp; &nbsp; &nbsp; &nbsp; SheetExists = True
-&nbsp; &nbsp; &nbsp; &nbsp; Exit Function
-&nbsp; &nbsp; End If
-NoSuchSheet:
-End Function
-
-
-Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String
-&nbsp; &nbsp; 'open Excel files and copy the contents to this sheet
-&nbsp; &nbsp; Dim newWB As Workbook, curWB As Workbook
-&nbsp; &nbsp; Dim startRange As Range
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; If Dir(FileName) &lt;&gt; &quot;&quot; Then
-&nbsp; &nbsp; &nbsp; &nbsp; ' file exists
-&nbsp; &nbsp; &nbsp; &nbsp; ' Clear all cells of current worksheet
-&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).UsedRange.Clear
-&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = False ' disable alerts
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; &nbsp; &nbsp; ' Open workbooks to be copied
-&nbsp; &nbsp; &nbsp; &nbsp; Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
-&nbsp; &nbsp; &nbsp; &nbsp; Set newWB = Workbooks.Open(FileName)
-&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter
-&nbsp; &nbsp; &nbsp; &nbsp; Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied
-&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).UsedRange.Copy
-&nbsp; &nbsp; &nbsp; &nbsp; ' paste to target worksheet
-&nbsp; &nbsp; &nbsp; &nbsp; curWB.Activate
-&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).Range(startRange.Address).PasteSpecial
-&nbsp; &nbsp; &nbsp; &nbsp; Application.CutCopyMode = False &nbsp;'Clear Clipboard
-&nbsp; &nbsp; &nbsp; &nbsp; newWB.Close SaveChanges:=False &nbsp;' close without change
-&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = True
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; End If
-
-
-End Function
-
-
-Function FindFileName(no As String, Depart As String, FolderName As String) As String
-&nbsp; &nbsp; Dim Coll_Docs As New Collection
-&nbsp; &nbsp; Dim Search_path, Search_Filter, Search_Fullname As String
-&nbsp; &nbsp; Dim DocName As String
-&nbsp; &nbsp; Dim i As Long
-
-
-&nbsp; &nbsp; Search_path = FolderName &nbsp; ' where ?
-&nbsp; &nbsp; Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?
-&nbsp; &nbsp; Set Coll_Docs = Nothing
-
-
-&nbsp; &nbsp; DocName = Dir(Search_path &amp; &quot;&quot; &amp; Search_Filter)
-
-
-&nbsp; &nbsp; Do Until DocName = &quot;&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;' build the collection
-&nbsp; &nbsp; &nbsp; &nbsp; Coll_Docs.Add Item:=DocName
-&nbsp; &nbsp; &nbsp; &nbsp; DocName = Dir
-&nbsp; &nbsp; Loop
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; If Coll_Docs.Count = 1 Then
-&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = Search_path &amp; &quot;&quot; &amp; Coll_Docs(1)
-&nbsp; &nbsp; Else
-&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = &quot;&quot;
-&nbsp; &nbsp; End If
-
-
-End Function
-
-
-Function SortWorksheetsByName() As String
-&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
-&nbsp; &nbsp; Dim sCount As Integer, i As Integer, j As Integer
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; Application.ScreenUpdating = False
-&nbsp; &nbsp; sCount = Worksheets.Count
-&nbsp; &nbsp; If sCount = 1 Then Exit Function
-&nbsp; &nbsp; For i = 1 To sCount - 1
-&nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To sCount
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Worksheets(j).Name &lt; Worksheets(i).Name Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; &nbsp; &nbsp; Next j
-&nbsp; &nbsp; Next i
-&nbsp; &nbsp;&nbsp;
-End Function
-
-
-Function SortWorksheets() As String
-&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
-&nbsp; &nbsp; Dim cnt As Integer, i As Integer, j As Integer
-&nbsp; &nbsp; Dim Entry As Integer
-&nbsp; &nbsp; Dim curWS As Worksheet
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet
-&nbsp; &nbsp; 'Application.ScreenUpdating = False
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; cnt = Worksheets.Count
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; ' Determine where to start sorting
-&nbsp; &nbsp; Entry = 0
-&nbsp; &nbsp; For i = 1 To cnt
-&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
-&nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; Next i
-Determ_Entry:
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; For i = Entry To cnt - 1
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To cnt
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; Val(Worksheets(j).Name) Then
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next j
-&nbsp; &nbsp; Next i
-&nbsp; &nbsp;&nbsp;
-&nbsp; &nbsp; curWS.Activate
-&nbsp; &nbsp; 'Application.ScreenUpdating = True
-End Function
-</pre>
-<pre></pre>
-<p>如要自动导入每个worksheet的特定单元&#26684;（L2:L6）到表2中的D，E，F，G，H列，可以使用下面的UpdateCells宏。</p>
-<p><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521124rpsk.gif" alt="" /></p></p></p>
-<pre>Option Explicit
-
-Sub UpdateCells()
-'
-' UpdateCells Macro
-' Macro recorded 7/13/2011 by Bo Yang
-'
-' Keyboard Shortcut: Ctrl+Shift+C
-'
-' Risk:Cell
-' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6
-Dim Risk5 As Range
-Dim num As String, depart As Range, idx As Integer
-Dim SheetName As String
-Dim SelRange As Range
-Dim curWS As Worksheet
-
-Application.ScreenUpdating = False
-
-Set curWS = ActiveSheet
-Set SelRange = Selection
-
-idx = 1
-For Each depart In SelRange.Columns(2).Cells
-    num = SelRange.Columns(1).Cells(idx).value
-    If Len(num) = 1 Then
-        num = &quot;0&quot; + num
-    End If
-    SheetName = num + &quot; &quot; + depart.value
-    
-    Set Risk5 = SelRange.Columns(3).Cells(idx)
-    
-    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy
-    Risk5.Select
-    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True
-    Application.CutCopyMode = False 'Clear Clipboard
-    
-    idx = idx + 1
-Next
-
-Application.ScreenUpdating = True
-End Sub
-</pre>
-<p></p>
-<pre></pre>
-
-
-    <small class="meta">July 13, 2011 | <a href='/vba/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">将多个Excel文件批量导入某个Excel文件中</a></h2>
-
-    <p>这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。</p>
-<p>下面是搜索了半天之后搞出来的Macro，没有异常处理，而且使用了copy/paste，文件太多时效率肯定不高。其实完全可以参照<span style="font-family:Arial, Helvetica, sans-serif;"></span></p>
-<p><a href="http://www.exceltip.com/st/Copy_a_sheet_from_each_workbook_into_your_workbook_in_a_folder_using_VBA_in_Microsoft_Excel/560.html">Copy a sheet from each workbook into your workbook in a folder using VBA in Microsoft Excel</a>&nbsp;和 <a href="http://www.ozgrid.com/VBA/SpeedingUpVBACode.htm">Optimize Slow VBA Code</a> 中的方法来优化。</p></p>
-<pre>Sub LoadSheets()
-    Application.ScreenUpdating = False  ' stop screen flickering
-    
-    ' Create new sheets according to selected cells and copy the
-    ' contebts of other files into the new sheets
-    Dim YesNo As Variant, myFolder As String, MyLF As String
-        
-    MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
-    myFolder = &quot;D:Documents and SettingsbonnyMy Documentstools&quot;   'change this to the location of saved XML files
-    'Windows 7下C盘默认不可写，请修改DefFolder的值
-    
-    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; myclf &amp; _
-        &quot;Do you want to continue?&quot;, _
-        vbYesNo, &quot;Caution&quot;)
-    Select Case YesNo
-    Case vbYes
-        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates&quot;, Default:=myFolder)
-        'Create new worksheets
-        For Each cell In Selection.Cells
-            Call CreateNewWorksheet(cell.Value, myFolder)
-        Next
-    Case vbNo
-        Exit Sub
-    End Select
-    
-    Application.ScreenUpdating = True
-End Sub
-
-Function CreateNewWorksheet(SheetName As String, FolderName As String) As String
-
-    Dim oSheet As Worksheet, vRet As Variant
-    Dim fName As String
-    
-    'creating a new excel worksheet
-    Set oSheet = Worksheets.Add
-    With oSheet
-        .Name = SheetName
-        .Move after:=Sheets(Sheets.Count) '在当前所有worksheet后创建新的工作表
-        .Activate
-    End With
-    
-    'open Excel files and copy the contents to this sheet
-    Dim newWB As Workbook, curWB As Workbook
-    Dim startRange As Range
-    
-    Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
-    fName = FolderName + &quot;&quot; + SheetName + &quot;.xls&quot;
-    Set newWB = Workbooks.Open(fName)
-    newWB.Activate
-    newWB.Sheets(1).Activate ' 假定只有第一个worksheet需要copy
-    Set startRange = newWB.Sheets(1).UsedRange ' Only used range will be copied
-    newWB.Sheets(1).UsedRange.Copy
-    
-    'select the destination cell
-    curWB.Activate
-    Sheets(SheetName).Activate
-    Range(startRange.Address).Select
-    ActiveSheet.Paste
-    Application.CutCopyMode = False  'Clear Clipboard
-    newWB.Close
-    
-    Exit Function
-
-End Function
-
-</pre></p>
-
-
-    <small class="meta">July 11, 2011 | <a href='/bkup/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/vba/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">将多个Excel文件批量导入某个Excel文件中</a></h2>
-
-    <p>这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。</p>
-<p>下面是搜索了半天之后搞出来的Macro，没有异常处理，而且使用了copy/paste，文件太多时效率肯定不高。其实完全可以参照<span style="font-family:Arial, Helvetica, sans-serif;"></span></p>
-<p><a href="http://www.exceltip.com/st/Copy_a_sheet_from_each_workbook_into_your_workbook_in_a_folder_using_VBA_in_Microsoft_Excel/560.html">Copy a sheet from each workbook into your workbook in a folder using VBA in Microsoft Excel</a>&nbsp;和 <a href="http://www.ozgrid.com/VBA/SpeedingUpVBACode.htm">Optimize Slow VBA Code</a> 中的方法来优化。</p></p>
-<pre>Sub LoadSheets()
-    Application.ScreenUpdating = False  ' stop screen flickering
-    
-    ' Create new sheets according to selected cells and copy the
-    ' contebts of other files into the new sheets
-    Dim YesNo As Variant, myFolder As String, MyLF As String
-        
-    MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
-    myFolder = &quot;D:Documents and SettingsbonnyMy Documentstools&quot;   'change this to the location of saved XML files
-    'Windows 7下C盘默认不可写，请修改DefFolder的值
-    
-    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; myclf &amp; _
-        &quot;Do you want to continue?&quot;, _
-        vbYesNo, &quot;Caution&quot;)
-    Select Case YesNo
-    Case vbYes
-        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates&quot;, Default:=myFolder)
-        'Create new worksheets
-        For Each cell In Selection.Cells
-            Call CreateNewWorksheet(cell.Value, myFolder)
-        Next
-    Case vbNo
-        Exit Sub
-    End Select
-    
-    Application.ScreenUpdating = True
-End Sub
-
-Function CreateNewWorksheet(SheetName As String, FolderName As String) As String
-
-    Dim oSheet As Worksheet, vRet As Variant
-    Dim fName As String
-    
-    'creating a new excel worksheet
-    Set oSheet = Worksheets.Add
-    With oSheet
-        .Name = SheetName
-        .Move after:=Sheets(Sheets.Count) '在当前所有worksheet后创建新的工作表
-        .Activate
-    End With
-    
-    'open Excel files and copy the contents to this sheet
-    Dim newWB As Workbook, curWB As Workbook
-    Dim startRange As Range
-    
-    Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
-    fName = FolderName + &quot;&quot; + SheetName + &quot;.xls&quot;
-    Set newWB = Workbooks.Open(fName)
-    newWB.Activate
-    newWB.Sheets(1).Activate ' 假定只有第一个worksheet需要copy
-    Set startRange = newWB.Sheets(1).UsedRange ' Only used range will be copied
-    newWB.Sheets(1).UsedRange.Copy
-    
-    'select the destination cell
-    curWB.Activate
-    Sheets(SheetName).Activate
-    Range(startRange.Address).Select
-    ActiveSheet.Paste
-    Application.CutCopyMode = False  'Clear Clipboard
-    newWB.Close
-    
-    Exit Function
-
-End Function
-
-</pre></p>
-
-
-    <small class="meta">July 11, 2011 | <a href='/vba/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Solaris下/usr/lib/secure/0@0.so.1的错误</a></h2>
-
-    <p>&nbsp;</p>
-<p>这两天一直被下面的错误所困扰：</p>
-<p>
-<pre>AP13: lb -m ccmscell uptime 
-ld.so.1: uname: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
-ksh[216]: 4412 Killed
-ld.so.1: uptime: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
-</pre>
-<p>&nbsp;&nbsp;</p>
-<p>lb是一个调用rsh的脚本，ccmscell是一个server pool，uname是在lb中被调用的。</p>
+    <p>本文根据<a href="http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487">http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487</a>的回复总结而成。</p>
 <p>&nbsp;</p>
-<p>仔细研究了N遍相关的脚本，Google了N次相关的错误信息，都没有找到有价&#20540;的线索。后来问了一位做过IT的同事，她说以前遇见过类&#20284;的问题，可她的解决方案最终被证明无效。</p>
+<p>1. 共享库</p>
 <p>&nbsp;</p>
-<p>最终发现不是所有的server上执行这条命令都有问题，有些是可以执行的。对比了之后发现，如果/usr/lib/secure/0@0.so.1的group设置为bin，owner设为root，就不会出现上面的问题。出问题的server上/usr/lib/secure/0@0.so.1的group为other。</p>
+<p>通常做成共享库的话，在编绎时加上-shared参数，并把链接生成的文件名命名libxxx.so，可以放在/usr/lib下&nbsp;</p>
+<p>其他程序引用这个库时，在链接的时候加上-lxxx就可以了。</p>
 <p>&nbsp;</p>
-<p>进一步调查后发现，/usr/lib/secure/0@0.so.1是在Solaris 5.8上被设为LD_PRELOAD_32的，因为很多程序要被setuid&#043;chroot的伪root调用。当且仅当上面的命令被该伪root执行时，才会出现上面的错误！</p>
+<p>编辑好代码以后,编译时采用类似下面的命令可生成"共享库"(假如源文件是myfun.c):&nbsp;<br />gcc -shared -fPIC -Wmyfun.c -0 libmy.so&nbsp;<br />解释: -shared 生成共享库;&nbsp;<br />&nbsp; &nbsp; &nbsp; -fIPC 表示&ldquo;位置无关代码&rdquo;（Position Independent Code),可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; -W 表示输出警告信息,可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; 库文件的命名要按照libxxxx.so的格式;&nbsp;</p>
+<p>要引用这个库时:&nbsp;<br />&nbsp; &nbsp; &nbsp; gcc xxx.c -0 xxx.out -lmy&nbsp;<br />&nbsp; &nbsp; -l 表示设定要连接的库(libmy.so,输my便可)&nbsp;</p>
 <p>&nbsp;</p>
-<p>幸亏Solaris 5.8已经开始走进坟墓了，即使在落后如我们公司的地方！</p>
-<p>&nbsp;</p>
-<p><strong><span style="font-family:mceinline;">【update2011-06-23】：</span></strong></p>
-<p><strong><span style="font-family:mceinline;">今天发现root cause 不是由于/usr/lib/secure/0@0.so.1的group不对，而是因为remote server（比如pool&nbsp;ccmscell中的server）上没有/usr/lib/secure/0@0.so.1 —— 执行rsh命令的login是setuid&#043;chroot实现的伪root，因此远程的server就需要/usr/lib/secure/0@0.so.1了。</span></strong></p>
-<p><span style="font-family:mceinline;font-weight:bold;">【update 2012-03-12】</span></p>
-<p><strong><span style="font-family:mceinline;">今天在Solaris 9上遇到了这样一个错误：</span></strong></p>
-<p><span style="font-family:mceinline;">&nbsp; &nbsp; ld.so.1: pt_chmod: warning: /lib/0@0.so.1: open failed: illegal insecure pathname<br />
-</span></p>
-<p><strong><span style="font-family:mceinline;">查了很久才想起来有可能是</span></strong><strong>/usr/lib/secure/0@0.so.1造成的。一检查</strong><strong>/usr/lib/secure/0@0.so.1，果然不存在。</strong></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在一个正常工作的server上，</strong></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
-<pre>AP31: echo $LD_PRELOAD_32
-/usr/lib/secure/0@0.so.1</pre></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在不能工作的server上，</strong></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
-<pre>AP13: echo $LD_PRELOAD_32
-/lib/0@0.so.1</pre></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>——仅仅升级了一个软件就又把这个library搞丢了，某些同志们啊，唉……</strong></p>
+<p>2.&nbsp;静态库&nbsp;</p>
+<p>文件名：lib.c&nbsp;<br />先编译成目标文件 gcc -o mylib.o -c lib.c&nbsp;<br />然后创建静态库,将mylib.o放到libmylib.a中 ar rcs libmylib.a mylib.o&nbsp;<br />最后copy到库目录下/usr/lib&nbsp; cp libmylib.a /usr/lib/libmylib.a&nbsp;</p>
+<p>在编写的时候直接调用其中的函数就是了，只不过在编译的时候要加入-l选项后面跟上库名&nbsp;<br />如 gcc -o test test.c -lmylib&nbsp; //mylib是前面创建的库的名称&nbsp;</p>
+<p>3. 动态库 </p>
+<p>创建就是 gcc -fPIC -share -o mylib.so lib.c&nbsp;<br />调用也分两种方法&nbsp;<br />一种方法是 gcc -o test test.c ./libmylib.so (注意这里跟的是动态库的路径 )<br />第二种方法是使用动态库的函数 你man dlopen看下那几个函数看下就知道了就不多说了</p>
 
 
-    <small class="meta">June 22, 2011 | <a href='/bkup/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Solaris下/usr/lib/secure/0@0.so.1的错误</a></h2>
-
-    <p>&nbsp;</p>
-<p>这两天一直被下面的错误所困扰：</p>
-<p>
-<pre>AP13: lb -m ccmscell uptime 
-ld.so.1: uname: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
-ksh[216]: 4412 Killed
-ld.so.1: uptime: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
-</pre>
-<p>&nbsp;&nbsp;</p>
-<p>lb是一个调用rsh的脚本，ccmscell是一个server pool，uname是在lb中被调用的。</p>
-<p>&nbsp;</p>
-<p>仔细研究了N遍相关的脚本，Google了N次相关的错误信息，都没有找到有价&#20540;的线索。后来问了一位做过IT的同事，她说以前遇见过类&#20284;的问题，可她的解决方案最终被证明无效。</p>
-<p>&nbsp;</p>
-<p>最终发现不是所有的server上执行这条命令都有问题，有些是可以执行的。对比了之后发现，如果/usr/lib/secure/0@0.so.1的group设置为bin，owner设为root，就不会出现上面的问题。出问题的server上/usr/lib/secure/0@0.so.1的group为other。</p>
-<p>&nbsp;</p>
-<p>进一步调查后发现，/usr/lib/secure/0@0.so.1是在Solaris 5.8上被设为LD_PRELOAD_32的，因为很多程序要被setuid&#043;chroot的伪root调用。当且仅当上面的命令被该伪root执行时，才会出现上面的错误！</p>
-<p>&nbsp;</p>
-<p>幸亏Solaris 5.8已经开始走进坟墓了，即使在落后如我们公司的地方！</p>
-<p>&nbsp;</p>
-<p><strong><span style="font-family:mceinline;">【update2011-06-23】：</span></strong></p>
-<p><strong><span style="font-family:mceinline;">今天发现root cause 不是由于/usr/lib/secure/0@0.so.1的group不对，而是因为remote server（比如pool&nbsp;ccmscell中的server）上没有/usr/lib/secure/0@0.so.1 —— 执行rsh命令的login是setuid&#043;chroot实现的伪root，因此远程的server就需要/usr/lib/secure/0@0.so.1了。</span></strong></p>
-<p><span style="font-family:mceinline;font-weight:bold;">【update 2012-03-12】</span></p>
-<p><strong><span style="font-family:mceinline;">今天在Solaris 9上遇到了这样一个错误：</span></strong></p>
-<p><span style="font-family:mceinline;">&nbsp; &nbsp; ld.so.1: pt_chmod: warning: /lib/0@0.so.1: open failed: illegal insecure pathname<br />
-</span></p>
-<p><strong><span style="font-family:mceinline;">查了很久才想起来有可能是</span></strong><strong>/usr/lib/secure/0@0.so.1造成的。一检查</strong><strong>/usr/lib/secure/0@0.so.1，果然不存在。</strong></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在一个正常工作的server上，</strong></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
-<pre>AP31: echo $LD_PRELOAD_32
-/usr/lib/secure/0@0.so.1</pre></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在不能工作的server上，</strong></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
-<pre>AP13: echo $LD_PRELOAD_32
-/lib/0@0.so.1</pre></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>——仅仅升级了一个软件就又把这个library搞丢了，某些同志们啊，唉……</strong></p>
-
-
-    <small class="meta">June 22, 2011 | <a href='/unix/linux/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">ksh中包含变量的命令调用</a></h2>
-
-    <p>当一个含有变量a的命令存储在某个变量b中时, 利用$($b)时有可能会报错。如下面的代码，有时可以成功执行，有时会发生&ldquo;ipcs|grep xxx can not be found"的错误。&nbsp;</p>
-<p>
-<pre>IFS="
-"
-if isLinux
-then
-	IPCSCMD="ipcs"
-else
-	IPCSCMD="ipcs|grep $LOGNAME"
-fi
-for Eachline in $($IPCSCMD)
-do
-	IFS=" " # Space
-	# Handle IPCs
-	...
-done</pre>
-<p>&nbsp;</p>
-<p>究其根源，应该是对IPCSCMD的解析出了问题。将代码改为下面的形式，就可以正确执行了。注意IFS的变化&mdash;&mdash;改成下面的形式后必须将循环内的IFS改为Space和Tab。</p>
-<p>
-<pre>IFS="
-"
-if isLinux
-then
-	ipcs
-else
-	ipcs|grep $LOGNAME
-fi | while read Eachline
-do
-	IFS=" 	" # Space and tab
-	# Handle IPCs
-	...
-done
-</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-
-    <small class="meta">June 03, 2011 | <a href='/bkup/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">ksh中包含变量的命令调用</a></h2>
-
-    <p>当一个含有变量a的命令存储在某个变量b中时, 利用$($b)时有可能会报错。如下面的代码，有时可以成功执行，有时会发生&ldquo;ipcs|grep xxx can not be found"的错误。&nbsp;</p>
-<p>
-<pre>IFS="
-"
-if isLinux
-then
-	IPCSCMD="ipcs"
-else
-	IPCSCMD="ipcs|grep $LOGNAME"
-fi
-for Eachline in $($IPCSCMD)
-do
-	IFS=" " # Space
-	# Handle IPCs
-	...
-done</pre>
-<p>&nbsp;</p>
-<p>究其根源，应该是对IPCSCMD的解析出了问题。将代码改为下面的形式，就可以正确执行了。注意IFS的变化&mdash;&mdash;改成下面的形式后必须将循环内的IFS改为Space和Tab。</p>
-<p>
-<pre>IFS="
-"
-if isLinux
-then
-	ipcs
-else
-	ipcs|grep $LOGNAME
-fi | while read Eachline
-do
-	IFS=" 	" # Space and tab
-	# Handle IPCs
-	...
-done
-</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-
-    <small class="meta">June 03, 2011 | <a href='/unix/linux/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">chroot, setuid() & set gid</a></h2>
-
-    <p>这篇文章搜集整理了网上chroot, setuid() &amp; set gid相关的文章。</p>
-<ol>
-<li><a href="http://www.unixwiz.net/techtips/chroot-practices.html">Best Practices for UNIX chroot() Operations</a></li>
-<li><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">How to break out of a&nbsp;<tt>chroot()</tt></a></strong><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">&nbsp;jail</a></strong></li>
-<li><strong><a href="http://www.cs.berkeley.edu/~daw/papers/setuid-usenix02.pdf">Setuid Demystifid</a></strong></li>
-<li><strong><a href="http://oldfield.wattle.id.au/luv/permissions.html">Introduction to Unix file permissions</a></strong></li>
-</ol>
-
-
-    <small class="meta">June 02, 2011 | <a href='/unix/linux/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">chroot, setuid() & set gid</a></h2>
-
-    <p>这篇文章搜集整理了网上chroot, setuid() &amp; set gid相关的文章。</p>
-<ol>
-<li><a href="http://www.unixwiz.net/techtips/chroot-practices.html">Best Practices for UNIX chroot() Operations</a></li>
-<li><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">How to break out of a&nbsp;<tt>chroot()</tt></a></strong><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">&nbsp;jail</a></strong></li>
-<li><strong><a href="http://www.cs.berkeley.edu/~daw/papers/setuid-usenix02.pdf">Setuid Demystifid</a></strong></li>
-<li><strong><a href="http://oldfield.wattle.id.au/luv/permissions.html">Introduction to Unix file permissions</a></strong></li>
-</ol>
-
-
-    <small class="meta">June 02, 2011 | <a href='/bkup/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+    <small class="meta">October 27, 2009 | <a href='/c/c++/unix/linux/2009/10/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%2590%25e6%2580%25bb%25e7%25bb%2593%25e3%2580%2591linux%25e4%25b8%258bc%25e5%25bc%2580%25e5%258f%2591%25ef%25bc%258c%25e6%2580%258e%25e4%25b9%2588%25e5%2581%259a%25e6%2588%2590%25e5%25ba%2593%25e6%2596%2587%25e4%25bb%25b6%25ef%25bc%258c%25e5%258f%2588%25e6%2580%258e%25e/#disqus_thread'>View Comments</a></small>
   </div>
 
 </div>

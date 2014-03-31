@@ -36,1185 +36,457 @@
           <div id='index'>
 
   <div class="post">
-    <h2><a href="/bkup/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">c++filt</a></h2>
+    <h2><a href="/industry/2010/09/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520splashtop%2520remote-%25e8%25ae%25a9%25e4%25bd%25a0%25e5%259c%25a8ipad%25e4%25b8%258a%25e4%25b9%259f%25e8%2583%25bd%25e7%2594%25a8windows%25e4%25b8%258b%25e7%259a%2584%25e5%25ba%2594%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520/">Splashtop Remote——让你在iPad上也能用Windows下的应用</a></h2>
 
-    <p>
-<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
-<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><strong>c&#043;&#043;filt<br />
-<span style="font-family:Arial;font-size:15px;white-space:pre-wrap;">decodes (demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</span></strong></span></div>
-<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><br />
-</span></div>
-<div style="background-color:transparent;"><span id="internal-source-marker_0.33872447651810944" style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You<br />
- may use </span><strong>c&#043;&#043;filt </strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">to demangle<br />
- the symbols.</span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">$ c&#043;&#043;filt _ZNSt8ios_base4InitD1Ev</span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">std::ios_base::Init::~Init()</span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You may try adding<br />
-</span><strong>-lstdc&#043;&#043;</strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"> to your link command<br />
- to resolve the issue.</span><br />
-<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
-<strong><a href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#c++filt">c&#043;&#043;filt</a></strong><br />
-<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">&nbsp;&nbsp;</span></p>
-<pre class="smallexample" style="font-size:undefined;">     c&#043;&#043;filt [<code>-_</code>|<code>--strip-underscores</code>]
-             [<code>-j</code>|<code>--java</code>]
-             [<code>-n</code>|<code>--no-strip-underscores</code>]
-             [<code>-p</code>|<code>--no-params</code>]
-             [<code>-s</code> <var>format</var>|<code>--format=</code><var>format</var>]
-             [<code>--help</code>]  [<code>--version</code>]  [<var>symbol</var>...]
-     </pre>
-<p>The C&#043;&#043; and Java languages provides function overloading, which means that you can write many functions with the same name (providing each takes parameters of different types). All C&#043;&#043; and Java function names are encoded into a low-level assembly label (this<br />
- process is known as&nbsp;mangling). The&nbsp;<code>c&#043;&#043;filt</code>&nbsp;<a rel="footnote" href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#fn-1"><sup>1</sup></a>&nbsp;program does the inverse mapping: it decodes (demangles) low-level<br />
- names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
-<p>Every alphanumeric word (consisting of letters, digits, underscores, dollars, or periods) seen in the input is a potential label. If the label decodes into a C&#043;&#043; name, the C&#043;&#043; name replaces the low-level name in the output.</p>
-<p>You can use&nbsp;<code>c&#043;&#043;filt</code>&nbsp;to decipher individual symbols:</p>
-<pre class="example">     c&#043;&#043;filt <var>symbol</var>
-     </pre>
-<p>If no&nbsp;<var>symbol</var>&nbsp;arguments are given,&nbsp;<code>c&#043;&#043;filt</code>&nbsp;reads symbol names from the standard input and writes the demangled names to the standard output. All results are printed on the standard output.</p>
-<dl>
-<dt><code>-_</code></dt>
-<dd></dd>
-<dt><code>--strip-underscores</code></dt>
-<dd>On some systems, both the C and C&#043;&#043; compilers put an underscore in front of every name. For example, the C name&nbsp;<code>foo</code>&nbsp;gets the low-level name&nbsp;<code>_foo</code>. This option removes the initial underscore. Whether&nbsp;<code>c&#043;&#043;filt</code>&nbsp;removes<br />
- the underscore by default is target dependent.&nbsp;
-</dd>
-<dt><code>-j</code></dt>
-<dd></dd>
-<dt><code>--java</code></dt>
-<dd>Prints demangled names using Java syntax. The default is to use C&#043;&#043; syntax.&nbsp;
-</dd>
-<dt><code>-n</code></dt>
-<dd></dd>
-<dt><code>--no-strip-underscores</code></dt>
-<dd>Do not remove the initial underscore.&nbsp;
-</dd>
-<dt><code>-p</code></dt>
-<dd></dd>
-<dt><code>--no-params</code></dt>
-<dd>When demangling the name of a function, do not display the types of the function's parameters.&nbsp;
-</dd>
-<dt><code>-s&nbsp;</code><var>format</var><code></code></dt>
-<dd></dd>
-<dt><code>--format=</code><var>format</var><code></code></dt>
-<dd><code>c&#043;&#043;filt</code>&nbsp;can decode various methods of mangling, used by different compilers. The argument to this option selects which method it uses:</p>
-<dl>
-<dt><code>auto</code></dt>
-<dd>Automatic selection based on executable (the default method)&nbsp;
-</dd>
-<dt><code>gnu</code></dt>
-<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;)&nbsp;
-</dd>
-<dt><code>lucid</code></dt>
-<dd>the one used by the Lucid compiler (lcc)&nbsp;
-</dd>
-<dt><code>arm</code></dt>
-<dd>the one specified by the C&#043;&#043; Annotated Reference Manual&nbsp;
-</dd>
-<dt><code>hp</code></dt>
-<dd>the one used by the HP compiler (aCC)&nbsp;
-</dd>
-<dt><code>edg</code></dt>
-<dd>the one used by the EDG compiler&nbsp;
-</dd>
-<dt><code>gnu-v3</code></dt>
-<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;) with the V3 ABI.&nbsp;
-</dd>
-<dt><code>java</code></dt>
-<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Java compiler (gcj)&nbsp;
-</dd>
-<dt><code>gnat</code></dt>
-<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Ada compiler (GNAT).</dd>
-</dl>
-<p>
-</dd>
-<dt><code>--help</code></dt>
-<dd>Print a summary of the options to&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.&nbsp;
-</dd>
-<dt><code>--version</code></dt>
-<dd>Print the version number of&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.</dd>
-</dl>
-<blockquote><p><em>Warning:</em>&nbsp;<code>c&#043;&#043;filt</code>&nbsp;is a new utility, and the details of its user interface are subject to change in future releases. In particular, a command-line option may be required in the the future to decode a name passed as an argument<br />
- on the command line; in other words,</p>
-<pre class="example">          c&#043;&#043;filt <var>symbol</var>
-          </pre>
-<p>may in a future release become</p>
-<pre class="example">          c&#043;&#043;filt <var>option</var> <var>symbol</var>
-          </pre>
-</blockquote>
-<div class="footnote">
-<hr />
-<h4>Footnotes</h4>
-<ol type="1">
-<li><a name="fn-1"></a>
-<p>MS-DOS does not allow&nbsp;<kbd>&#043;</kbd>&nbsp;characters in file names, so on MS-DOS this program is named&nbsp;<code>cxxfilt</code>.</p>
-<div>
-</div>
-</li>
-</ol>
-</div>
-<p>
-<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span></div>
+    <p>今天看到这样一篇博文：<a href="http://blog.sina.com.cn/s/blog_679720260100ky5a.html?tj=1">在iPad上也能用Windows下的应用？我能！</a></p>
+<p>&nbsp;</p>
+<p>对于文中介绍的可以在iPad上也能用Windows软件的Splashtop Remote很感兴趣，因为传说Chrome OS也会用类似的机制来解决Windows软件的兼容问题，即&ldquo;一部分运行在PC上，起daemon的作用，另外一个运行在iPad上，跟PC的软件进行通信，使用户能够控制或管理PC上的软件程序和数据。&rdquo; 这应该和VNC起的作用类似。</p>
+<p>&nbsp;</p>
+<p>估计iPad和即将发布的gPad（Chrome OS Tablet）乃至Android Pad们很快就会利用这种方式开拓市场，甚至蚕食PC市场了。试想如果将来有公司（比如这个DeviceVM）推出一项服务（可以免费，也可收费），为用户提供现成的Windows应用，而用户所需要做的就是在iPad或gPad上安装Splashtop Remote，打开这个应用就可以自动连接到DeviceVM的Windows PC/Server，利用现成的Windows程序了&mdash;&mdash;省去了自己购买并维护PC的很多麻烦，节省了购买大量Windows软件的开支，何乐而不为呢？而且这也正契合了时下的云计算潮流。</p>
+<p>&nbsp;</p>
+<p>我能想到的问题是，这种方式使用Windows软件的体验会不会大打折扣？因为在使用VNC登录到Mac OS X的时候，即使在局域网内，图像质量很差，操作很不流畅。也许像Splashtop Remote这样的应用可以保证图像的质量，但是网络本身也会成为一个瓶颈，尤其是3G网络。看来在LTE普及之前，这种应用只能使用WIFI了。</p>
+<p>&nbsp;</p>
+<p>顺便到Apple App Store里看了一下，发现了几张官方的截图，可以看出，图像质量还是有一定的损失的：</p>
+<p>&nbsp;</p>
+<p><img src="http://a1.phobos.apple.com/us/r1000/053/Purple/c5/a5/f6/mzl.vcvzpnec.480x480-75.jpg" alt="" width="480" height="360" /></p>
+<p>&nbsp;</p>
+<p><img src="http://a1.phobos.apple.com/us/r1000/036/Purple/ff/b6/63/mzl.ncmtyrzu.480x480-75.jpg" alt="" width="480" height="360" /></p>
+<p>&nbsp;</p>
+<p><img src="http://a1.phobos.apple.com/us/r1000/026/Purple/a7/73/4a/mzl.zngpsfkj.480x480-75.jpg" alt="" width="480" height="360" /></p>
+<p>&nbsp;</p>
+<p><img src="http://a1.phobos.apple.com/us/r1000/033/Purple/34/71/31/mzl.nzoufixg.480x480-75.jpg" alt="" width="480" height="360" /></p>
+<p>&nbsp;</p>
+<p><img src="http://a1.phobos.apple.com/us/r1000/004/Purple/1c/8b/bf/mzl.phnrdjsj.480x480-75.jpg" alt="" width="480" height="360" /></p>
+<p>&nbsp;</p>
 
 
-    <small class="meta">September 14, 2011 | <a href='/bkup/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+    <small class="meta">September 02, 2010 | <a href='/industry/2010/09/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520splashtop%2520remote-%25e8%25ae%25a9%25e4%25bd%25a0%25e5%259c%25a8ipad%25e4%25b8%258a%25e4%25b9%259f%25e8%2583%25bd%25e7%2594%25a8windows%25e4%25b8%258b%25e7%259a%2584%25e5%25ba%2594%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
   </div>
 
   <div class="post">
-    <h2><a href="/c/c++/unix/linux/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">c++filt</a></h2>
+    <h2><a href="/tcl/tk/unix/linux/2010/08/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tclexpect%25e4%25b8%25ad%25e5%2588%25a9%25e7%2594%25a8exec%25e8%25b0%2583%25e7%2594%25a8%25e7%25ae%25a1%25e9%2581%2593%2526quot%253b%257c%2526quot%253b%25e5%2592%258cawk%25e7%259a%2584%25e6%25b3%25a8%25e6%2584%258f%25e4%25ba%258b%25e9%25a1%25b9%250d%250a%2520%2520%25/">Tcl/Expect中利用exec调用管道"|"和awk的注意事项</a></h2>
 
-    <p>
-<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
-<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><strong>c&#043;&#043;filt<br />
-<span style="font-family:Arial;font-size:15px;white-space:pre-wrap;">decodes (demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</span></strong></span></div>
-<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><br />
-</span></div>
-<div style="background-color:transparent;"><span id="internal-source-marker_0.33872447651810944" style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You<br />
- may use </span><strong>c&#043;&#043;filt </strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">to demangle<br />
- the symbols.</span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">$ c&#043;&#043;filt _ZNSt8ios_base4InitD1Ev</span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">std::ios_base::Init::~Init()</span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
-<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You may try adding<br />
-</span><strong>-lstdc&#043;&#043;</strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"> to your link command<br />
- to resolve the issue.</span><br />
-<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
-<strong><a href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#c++filt">c&#043;&#043;filt</a></strong><br />
-<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">&nbsp;&nbsp;</span></p>
-<pre class="smallexample" style="font-size:undefined;">     c&#043;&#043;filt [<code>-_</code>|<code>--strip-underscores</code>]
-             [<code>-j</code>|<code>--java</code>]
-             [<code>-n</code>|<code>--no-strip-underscores</code>]
-             [<code>-p</code>|<code>--no-params</code>]
-             [<code>-s</code> <var>format</var>|<code>--format=</code><var>format</var>]
-             [<code>--help</code>]  [<code>--version</code>]  [<var>symbol</var>...]
-     </pre>
-<p>The C&#043;&#043; and Java languages provides function overloading, which means that you can write many functions with the same name (providing each takes parameters of different types). All C&#043;&#043; and Java function names are encoded into a low-level assembly label (this<br />
- process is known as&nbsp;mangling). The&nbsp;<code>c&#043;&#043;filt</code>&nbsp;<a rel="footnote" href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#fn-1"><sup>1</sup></a>&nbsp;program does the inverse mapping: it decodes (demangles) low-level<br />
- names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
-<p>Every alphanumeric word (consisting of letters, digits, underscores, dollars, or periods) seen in the input is a potential label. If the label decodes into a C&#043;&#043; name, the C&#043;&#043; name replaces the low-level name in the output.</p>
-<p>You can use&nbsp;<code>c&#043;&#043;filt</code>&nbsp;to decipher individual symbols:</p>
-<pre class="example">     c&#043;&#043;filt <var>symbol</var>
-     </pre>
-<p>If no&nbsp;<var>symbol</var>&nbsp;arguments are given,&nbsp;<code>c&#043;&#043;filt</code>&nbsp;reads symbol names from the standard input and writes the demangled names to the standard output. All results are printed on the standard output.</p>
-<dl>
-<dt><code>-_</code></dt>
-<dd></dd>
-<dt><code>--strip-underscores</code></dt>
-<dd>On some systems, both the C and C&#043;&#043; compilers put an underscore in front of every name. For example, the C name&nbsp;<code>foo</code>&nbsp;gets the low-level name&nbsp;<code>_foo</code>. This option removes the initial underscore. Whether&nbsp;<code>c&#043;&#043;filt</code>&nbsp;removes<br />
- the underscore by default is target dependent.&nbsp;
-</dd>
-<dt><code>-j</code></dt>
-<dd></dd>
-<dt><code>--java</code></dt>
-<dd>Prints demangled names using Java syntax. The default is to use C&#043;&#043; syntax.&nbsp;
-</dd>
-<dt><code>-n</code></dt>
-<dd></dd>
-<dt><code>--no-strip-underscores</code></dt>
-<dd>Do not remove the initial underscore.&nbsp;
-</dd>
-<dt><code>-p</code></dt>
-<dd></dd>
-<dt><code>--no-params</code></dt>
-<dd>When demangling the name of a function, do not display the types of the function's parameters.&nbsp;
-</dd>
-<dt><code>-s&nbsp;</code><var>format</var><code></code></dt>
-<dd></dd>
-<dt><code>--format=</code><var>format</var><code></code></dt>
-<dd><code>c&#043;&#043;filt</code>&nbsp;can decode various methods of mangling, used by different compilers. The argument to this option selects which method it uses:</p>
-<dl>
-<dt><code>auto</code></dt>
-<dd>Automatic selection based on executable (the default method)&nbsp;
-</dd>
-<dt><code>gnu</code></dt>
-<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;)&nbsp;
-</dd>
-<dt><code>lucid</code></dt>
-<dd>the one used by the Lucid compiler (lcc)&nbsp;
-</dd>
-<dt><code>arm</code></dt>
-<dd>the one specified by the C&#043;&#043; Annotated Reference Manual&nbsp;
-</dd>
-<dt><code>hp</code></dt>
-<dd>the one used by the HP compiler (aCC)&nbsp;
-</dd>
-<dt><code>edg</code></dt>
-<dd>the one used by the EDG compiler&nbsp;
-</dd>
-<dt><code>gnu-v3</code></dt>
-<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;) with the V3 ABI.&nbsp;
-</dd>
-<dt><code>java</code></dt>
-<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Java compiler (gcj)&nbsp;
-</dd>
-<dt><code>gnat</code></dt>
-<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Ada compiler (GNAT).</dd>
-</dl>
+    <p>Tcl/Expect中利用exec调用稍微复杂的shell命令时，经常会遇到一些小问题，常见的就是pipeline(|)和awk。</p>
+<p>&nbsp;</p>
+<p>Tcl/Expect调用多个shell命令并使用|将其串接在一起时，需要注意的是必须在"|"前后加上空格" "，否则tcl/Expect会报奇怪的错。</p>
+<p>&nbsp;</p>
+<p>Tcl/Expect调用awk命令时，需要把awk的' '中的命令改为用" "，并把$1, $2之类的变量改为/$1, /$2。</p>
+<p>&nbsp;</p>
+<p>下面的ksh命令判断test_process是否在运行：</p>
 <p>
-</dd>
-<dt><code>--help</code></dt>
-<dd>Print a summary of the options to&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.&nbsp;
-</dd>
-<dt><code>--version</code></dt>
-<dd>Print the version number of&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.</dd>
-</dl>
-<blockquote><p><em>Warning:</em>&nbsp;<code>c&#043;&#043;filt</code>&nbsp;is a new utility, and the details of its user interface are subject to change in future releases. In particular, a command-line option may be required in the the future to decode a name passed as an argument<br />
- on the command line; in other words,</p>
-<pre class="example">          c&#043;&#043;filt <var>symbol</var>
-          </pre>
-<p>may in a future release become</p>
-<pre class="example">          c&#043;&#043;filt <var>option</var> <var>symbol</var>
-          </pre>
-</blockquote>
-<div class="footnote">
-<hr />
-<h4>Footnotes</h4>
-<ol type="1">
-<li><a name="fn-1"></a>
-<p>MS-DOS does not allow&nbsp;<kbd>&#043;</kbd>&nbsp;characters in file names, so on MS-DOS this program is named&nbsp;<code>cxxfilt</code>.</p>
-<div>
-</div>
-</li>
-</ol>
-</div>
+<pre>ps -fu bonny|grep -v ps|grep MMCAP|grep -v grep|awk '{print $2}'</pre>
+<p>&nbsp;</p>
+<p>改为Tcl/Expect后，为：</p>
 <p>
-<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span></div>
+<pre>exec ps -fu $myname | grep -v ps | grep COOLrunMMCAP | grep -v grep | awk "{print /$2}"</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>另外，&nbsp;<a href="http://www.linuxquestions.org/questions/linux-software-2/ksh-tcl-173092/">http://www.linuxquestions.org/questions/linux-software-2/ksh-tcl-173092/</a>&nbsp;列出了一些ksh命令转换为tcl语句时经常遇到的问题（本人未曾验证过，请谨慎使用）。</p>
+<p>&nbsp;</p>
+<p>Here's some conversion rules that I have proven, if anyone has any more info ( in any fashion ) , please advise.</p>
+<p>-----------------------------------------------------------------<br />Rule: Remove "<br />-----------------------------------------------------------------<br />ksh: cat *.passwd 2&gt;/dev/null | cut -d":" -f1 | sort | uniq<br />tcl: exec cat *.passwd 2&gt;/dev/null | cut -d: -f1 | sort | uniq<br />-----------------------------------------------------------------</p>
+<p>-----------------------------------------------------------------<br />Rule: Replace '(..$1..)' with "{../$1..}"<br />-----------------------------------------------------------------<br />ksh: ps -eaf | awk '(print $1}' | grep $1 2&gt;&amp;1<br />tcl: exec ps -eaf | awk "{print /$1}" | grep $user_login_to_test<br />-----------------------------------------------------------------</p>
+<p>-----------------------------------------------------------------<br />Rule: Replace "..." with {...}<br />-----------------------------------------------------------------<br />ksh: grep "^$(user_login:" /etc/passwd /etc/shadow 2&gt;&amp;1<br />tcl: exec grep {^$user_login:} /etc/passwd /etc/shadow<br />-----------------------------------------------------------------</p>
+<p>-----------------------------------------------------------------<br />Rule: Replace '...' with "..." or {...}<br />-----------------------------------------------------------------<br />ksh: grep 'Version' user.tcl<br />tcl: exec grep {Version} user.tcl<br />tcl: exec grep "Version" user.tcl<br />-----------------------------------------------------------------</p>
+<p>&nbsp;</p>
+<p>还有就是<a href="http://wiki.tcl.tk/1039">http://wiki.tcl.tk/1039</a>列出了使用exec的一些常见问题。</p>
 
 
-    <small class="meta">September 14, 2011 | <a href='/c/c++/unix/linux/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+    <small class="meta">August 03, 2010 | <a href='/tcl/tk/unix/linux/2010/08/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tclexpect%25e4%25b8%25ad%25e5%2588%25a9%25e7%2594%25a8exec%25e8%25b0%2583%25e7%2594%25a8%25e7%25ae%25a1%25e9%2581%2593%2526quot%253b%257c%2526quot%253b%25e5%2592%258cawk%25e7%259a%2584%25e6%25b3%25a8%25e6%2584%258f%25e4%25ba%258b%25e9%25a1%25b9%250d%250a%2520%2520%25/#disqus_thread'>View Comments</a></small>
   </div>
 
   <div class="post">
-    <h2><a href="/bkup/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">RHEL5和RHEL6中的sctp_event_subscribe定义大不同</a></h2>
+    <h2><a href="/tcl/tk/unix/linux/2010/07/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520expect_out%2528buffer%2529%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25absend%25e7%259a%2584%25e6%2595%25b0%25e6%258d%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">expect_out(buffer)中包含send的数据</a></h2>
+
+    <p>&nbsp;</p>
+<div>
+<h1 id="zw-129f916d484wZwN43916c">expect_out(buffer)中包含send的数据</h1>
+<p id="zw-129f9095e02SqGVnn3916c"><span id="zw-129f9081eab6rVFjl3916c">我一直以为在Expect中一旦执行send之后，</span><span id="zw-129f9081eab0LvB_n3916c">expect_out(buffer)就会被清空，直到有新的数据被填入，而恰恰就是这些数据被用在expect语句中。而今天在调试时发现的问题却令我大吃一惊，原来expect_out(buffer)不会被自动清空，而expect到的数据很可能不是你真正想要的，非常有可能是历史数据。</span><span id="zw-129f9095dc2QusTdp3916c"><a id="zw-129f9081f1cN6cQM93916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378">"expect_out(buffer) has the content of the previous send"</a>&nbsp;</span><span id="zw-129f9099e0e7RHXvZ3916c">一文</span><span id="zw-129f908ec42SOcAlE3916c">也指出了这个问题。</span></p>
+<h4></h4>
+<p id="zw-129f8fe7303mkLwZ3916c">&nbsp;</p>
+<p id="zw-129f9000807KX0na03916c">&nbsp;</p>
+<div id="zw-129f900a60bRM8gME3916c"><span id="zw-129f900a60cjSAA9Y3916c">比如在我的代码中，有如下片段：</span></div>
+<div id="zw-129f90d0f92fIcFt93916c">
+<pre>set prompt "#"
+set lockfile "/root/tmp/.cool.lock" 
+send "
+if /[ -e $lockfile ]; then
+        cat $lockfile
+else 
+        echo /"COOLID: $coolid/" &gt; $lockfile
+        echo DONE!
+fi
+/r"
+sleep 1 ;# necessary
+expect {
+        timeout {
+                puts stderr "WARNING: $ME: cannot verify if the Linux AP is locked by other COOL session!";
+                exit 2;
+        }
+       -re "COOLID: (/[1-9](/[0-9])*).*$prompt" {
+                puts stdout "expect_out(buffer)=$expect_out(buffer)"
+                puts stdout "expect_out(0,string)=$expect_out(0,string)"
+                puts stdout "expect_out(1,string)=$expect_out(1,string)"
+                puts stdout "expect_out(2,string)=$expect_out(2,string)"
+                puts stdout "expect_out(3,string)=$expect_out(3,string)"
+        }
+        "DONE!"  ;# do nothing    
+}
+</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f90da827xtgjkZ3916c">无论$<span id="zw-129f90e1718nSGeGs3916c">lockfile是否存在，expect总会得到COOLID: 68，而expect_out(buffer)的出如下：</span></div>
+<div id="zw-129f90b2476dtXxBy3916c"><span id="zw-129f90b2476oxjVv3916c"><br /></span></div>
+<div id="zw-129f909c0f6KIKdhr3916c">
+<pre>[root@bjvsmcl05 ~]# expect_out(buffer)= 
+Last login: Fri Jul 23 09:32:13 2010 from bjbldd
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]# if [ -e /root/tmp/.cool.lock ]; then
+&gt;         cat /root/tmp/.cool.lock
+&gt; else 
+&gt;         echo "COOLID: 68" &gt; /root/tmp/.cool.lock
+&gt;         echo DONE!
+&gt; fi
+COOLID: 1234
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]#
+expect_out(0,string)=23 09:32:13 2010 from bjbldd
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]# if [ -e /root/tmp/.cool.lock ]; then
+&gt;         cat /root/tmp/.cool.lock
+&gt; else 
+&gt;         echo "COOLID: 68" &gt; /root/tmp/.cool.lock
+&gt;         echo DONE!
+&gt; fi
+COOLID: 1234</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f900a6154k9vr_3916c"></div>
+<div id="zw-129f9105181rk1x3916c"><span id="zw-129f910e606ulQUt93916c">由此可见，由于</span><span id="zw-129f910e6063BF84J3916c">expect_out(buffer)中含有send的</span><span id="zw-129f910e666C0g_Fp3916c">echo "COOLID: 68"</span><span id="zw-129f910e607avGslF3916c">，因此永远都能匹配到这个数据。</span></div>
+<div id="zw-129f912e050bsjfk33916c"><span id="zw-129f912e0513SIKJW3916c"><br /></span></div>
+<div id="zw-129f912eb9dtLDgK3916c"><span id="zw-129f91d3abebAfTcg3916c">由于没有找到一种可以清空</span><span id="zw-129f91d3ac0nlD1Le3916c">expect_out(buffer)的方法，无法实时地将</span><span id="zw-129f91d3b3fb8YqAR3916c">expect_out(buffer)清空。</span><span id="zw-129f91d3ac3QUsX9u3916c">我能想到的解决方法有两种：一是更改send和expect的内容或方式，避免send的内容中出现expect的模式(pattern)。比如在我的程序中把上述代码段改为：</span></div>
+<div id="zw-129f9158fb2IWSJh63916c">
+<pre>set lockfile "/root/tmp/.cool.lock"   
+send "cat $lockfile/r"
+expect {
+        -re "COOLID: (/[1-9](/[0-9])*)" {
+                puts stdout "expect_out(buffer)=$expect_out(buffer)"
+                puts stdout "expect_out(0,string)=$expect_out(0,string)"
+                puts stdout "expect_out(1,string)=$expect_out(1,string)"
+                if { [string compare $expect_out(1,string) $coolid] } {
+                        puts stdout "ERROR: $ME: $pcname has been reserverd by COOL session $expect_out(1,string), please choose another Linux PC instead./n"
+                        exit 2;
+                }
+        }
+        "cat: $lockfile: No such file or directory*" {
+                send "echo /"COOLID: $coolid/" &gt; $lockfile/r"
+        }
+}</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f9158fbfu4Bqbj3916c">就可以正常工作了。</div>
+<div id="zw-129f915d6eatVpx_B3916c"></div>
+<div id="zw-129f915ddd2JF4vnX3916c"><span id="zw-129f9193cbaAjqmW43916c">另一种方法是按照</span><a id="zw-129f9193cbcDH9aOQ3916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378"><span id="zw-129f9193cbdI49BAL3916c">"expect_out(buffer) has the content of the previous send"</span></a><span id="zw-129f9193cbfZkPuN3916c">的例子中的方法，set prompt，保持原始代码中send的内容不变，将expect的正则表达式改为&nbsp;</span><span id="zw-129f9193d30IyWK1h3916c">-re "fi(</span><span id="zw-129f9193d30nUI-eL3916c">.*)</span><span id="zw-129f9193d30LfTLJL3916c">$prompt"，如此一来希望的输出就在expect_out(1,string)中了，然后利用string或者lsearch命令对匹配到的数据进行分析。</span></div>
+<div id="zw-129f91aeeb09SBIGu3916c"><span id="zw-129f91aeeb1poW5U3916c"><br /></span></div>
+<div id="zw-129f91af02eanEEu3916c"><span id="zw-129f91af02eiHWs1G3916c">结论：今后在编写Expect脚本时，不仅要考虑每一步的send/expect，也还要考虑到这一步的expect的内容有可能出现在之前的历史数据中。</span></div>
+<div><span id="zw-129f91af02eiHWs1G3916c"><br /></span></div>
+<p id="zw-129f9158fca-kkq893916c">&nbsp;</p>
+</div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">July 22, 2010 | <a href='/tcl/tk/unix/linux/2010/07/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520expect_out%2528buffer%2529%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25absend%25e7%259a%2584%25e6%2595%25b0%25e6%258d%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/07/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520here%2520document%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Here Document</a></h2>
 
     </p>
-<p>近来碰到一个关于SCTP的问题：某个产品跑在Monta Vista上，其内核版本号为2.6.21；可每次该产品泡在我们的Red Hat Enterprise Linux 5.5上时，都会报错错误信息如下：
-<pre>^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt() setsockopt - Invalid argument
-^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts(): failed to set SCTP_EVENTS for socket 6</pre></p>
-<p>ammsSetSockOpt()调用了Linux API setsockopt()。产品的同事告诉我们他们升级过libsctp.so，于是我们copy了MV中的这个shared lib到RHEL中，问题依旧。后来我们以为是RHEL5.5的内核和Monta Vista的内核不一致，于是我把RHEL的内核从2.6.18-194.el5升级到2.6.18-238.9.1.el5，问题还在。当我们还在考虑要不要把我们的server替换为Monta Vista时，一位同事受<a href="http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500">http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500</a><br />
- 的启发，把setsockopt()最后一个参数由sizeof(events)改为8，竟然成功了！ events定义如下。
-<pre>struct sctp_event_subscribe events; </pre></p>
-<pre></pre>
-<p>最终，发现RHEL5和RHEL6中struct<span style="font-family:'Times New Roman';font-size:13px;">&nbsp;</span><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);">sctp_event_subscribe</span>的定义竟然完全不同！要想根本解决上面的问题，只能升级操作系统到RHEL6了。</p></p>
-<p>RHEL5中的定义：<a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">http://rhkernel.org/RHEL5&#043;2.6.18-194.el5/include/net/sctp/user.h#L367</a></p></p>
-<pre>/*
- 364 * Described in Section 7.3
- 365 *   Ancillary Data and Notification Interest Options
- 366 */
- 367struct sctp_event_subscribe {
- 368        __u8 sctp_data_io_event;
- 369        __u8 sctp_association_event;
- 370        __u8 sctp_address_event;
- 371        __u8 sctp_send_failure_event;
- 372        __u8 sctp_peer_error_event;
- 373        __u8 sctp_shutdown_event;
- 374        __u8 sctp_partial_delivery_event;
- 375        __u8 sctp_adaption_layer_event;
- 376};</pre></p>
-<p>RHEL 6中的定义：<a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">http://rhkernel.org/RHEL6&#043;2.6.32-71.18.2.el6/include/net/sctp/user.h#L406</a></p></p>
-<pre>/*
- 403 * Described in Section 7.3
- 404 *   Ancillary Data and Notification Interest Options
- 405 */
- 406struct sctp_event_subscribe {
- 407        __u8 sctp_data_io_event;
- 408        __u8 sctp_association_event;
- 409        __u8 sctp_address_event;
- 410        __u8 sctp_send_failure_event;
- 411        __u8 sctp_peer_error_event;
- 412        __u8 sctp_shutdown_event;
- 413        __u8 sctp_partial_delivery_event;
- 414        __u8 sctp_adaptation_layer_event;
- 415        __u8 sctp_authentication_event;
- 416};
- 417</pre></p>
+<p id="zw-129ed8c28af2dvqtt15bea0" class="MsoNormal">
+<h1>Here Document</h1></p>
+<p>Syntax:</p>
+<p><em>command &lt;&lt; label&nbsp;<br />input line 1&nbsp;<br />&hellip;&nbsp;<br />input line n&nbsp;<br />label</em></p>
+<p>This allows you to redirect input to a shell script from within the shell script itself.</p>
+<ul>
+<li>&lt;&lt; label indicates that label marks the end of the here document</li>
+<li>label must appear on a line by itself to end the here document</li>
+<li>&lt;&lt; 'label' prevents the shell from doing parameter and command substitution in the here document</li>
+<li>&lt;&lt;- label deletes leading tabs (but not spaces) from the here document</li>
+</ul>
+<h2>Here Document Example&nbsp;<br /><span>(from page 189 in "Learning the Korn Shell")</span></h2>
+<p>pgmname=$1&nbsp;<br />for user in $(ypcat passwd | cut -f1 -d:)&nbsp;<br />do&nbsp;<br />&nbsp;&nbsp;mail $user &lt;&lt;- EOF<br />&nbsp;&nbsp;Dear user,&nbsp;<br />&nbsp;&nbsp;A new version of $pgmname has been installed&nbsp;<br />&nbsp;&nbsp;in $(whence $pgmname).&nbsp;<br />&nbsp;&nbsp;Regards,&nbsp;<br />&nbsp;&nbsp;Your friendly sysadmin&nbsp;<br />EOF&nbsp;<br />done</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal"><span>原文：&nbsp;</span><a href="http://snap.nlc.dcccd.edu/reference/scarlatos/cis2.50/note6.html">http://snap.nlc.dcccd.edu/reference/scarlatos/cis2.50/note6.html</a></p>
 
 
-    <small class="meta">August 24, 2011 | <a href='/bkup/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+    <small class="meta">July 20, 2010 | <a href='/unix/linux/2010/07/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520here%2520document%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
   </div>
 
   <div class="post">
-    <h2><a href="/c/c++/unix/linux/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">RHEL5和RHEL6中的sctp_event_subscribe定义大不同</a></h2>
+    <h2><a href="/industry/2010/07/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e6%25b5%2585%25e6%259e%2590apple%2520iphone4%25e5%25a4%25a9%25e7%25ba%25bf%25e9%2597%25ae%25e9%25a2%2598%25e7%259a%2584%25e5%258d%25b1%25e6%259c%25ba%25e5%2585%25ac%25e5%2585%25b3%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">浅析Apple iPhone4天线问题的危机公关</a></h2>
 
-    </p>
-<p>近来碰到一个关于SCTP的问题：某个产品跑在Monta Vista上，其内核版本号为2.6.21；可每次该产品泡在我们的Red Hat Enterprise Linux 5.5上时，都会报错错误信息如下：
-<pre>^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt() setsockopt - Invalid argument
-^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts(): failed to set SCTP_EVENTS for socket 6</pre></p>
-<p>ammsSetSockOpt()调用了Linux API setsockopt()。产品的同事告诉我们他们升级过libsctp.so，于是我们copy了MV中的这个shared lib到RHEL中，问题依旧。后来我们以为是RHEL5.5的内核和Monta Vista的内核不一致，于是我把RHEL的内核从2.6.18-194.el5升级到2.6.18-238.9.1.el5，问题还在。当我们还在考虑要不要把我们的server替换为Monta Vista时，一位同事受<a href="http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500">http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500</a><br />
- 的启发，把setsockopt()最后一个参数由sizeof(events)改为8，竟然成功了！ events定义如下。
-<pre>struct sctp_event_subscribe events; </pre></p>
-<pre></pre>
-<p>最终，发现RHEL5和RHEL6中struct<span style="font-family:'Times New Roman';font-size:13px;">&nbsp;</span><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);">sctp_event_subscribe</span>的定义竟然完全不同！要想根本解决上面的问题，只能升级操作系统到RHEL6了。</p></p>
-<p>RHEL5中的定义：<a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">http://rhkernel.org/RHEL5&#043;2.6.18-194.el5/include/net/sctp/user.h#L367</a></p></p>
-<pre>/*
- 364 * Described in Section 7.3
- 365 *   Ancillary Data and Notification Interest Options
- 366 */
- 367struct sctp_event_subscribe {
- 368        __u8 sctp_data_io_event;
- 369        __u8 sctp_association_event;
- 370        __u8 sctp_address_event;
- 371        __u8 sctp_send_failure_event;
- 372        __u8 sctp_peer_error_event;
- 373        __u8 sctp_shutdown_event;
- 374        __u8 sctp_partial_delivery_event;
- 375        __u8 sctp_adaption_layer_event;
- 376};</pre></p>
-<p>RHEL 6中的定义：<a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">http://rhkernel.org/RHEL6&#043;2.6.32-71.18.2.el6/include/net/sctp/user.h#L406</a></p></p>
-<pre>/*
- 403 * Described in Section 7.3
- 404 *   Ancillary Data and Notification Interest Options
- 405 */
- 406struct sctp_event_subscribe {
- 407        __u8 sctp_data_io_event;
- 408        __u8 sctp_association_event;
- 409        __u8 sctp_address_event;
- 410        __u8 sctp_send_failure_event;
- 411        __u8 sctp_peer_error_event;
- 412        __u8 sctp_shutdown_event;
- 413        __u8 sctp_partial_delivery_event;
- 414        __u8 sctp_adaptation_layer_event;
- 415        __u8 sctp_authentication_event;
- 416};
- 417</pre></p>
-
-
-    <small class="meta">August 24, 2011 | <a href='/c/c++/unix/linux/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2011/08/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520displacement%2520activity%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Displacement Activity</a></h2>
-
-    <p>
-<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
-<div style="font-family:Arial;background-color:rgb(255,255,255);overflow-y:scroll;word-wrap:break-word;word-break:break-all;line-height:1.6;font-size:14px;margin:1px 4px 2px 2px;">
-<p style="margin-top:0;margin-bottom:.5em;">你是否有过这样的经历：&#30524;看考试或某个任务、活动的大限将至，自己很是担心，可你却不是在努力准备，而是看电影、玩游戏或者和朋友聊天？ 至少对于我，这样的矛盾行为并不罕见。今天才知道，这种行为叫做Displacement Activity，是人和动物身上的一种普遍存在的行为。</p>
-<p style="margin-top:0;margin-bottom:.5em;">Displacement Activity貌&#20284;还没有确切的中文翻译，有在线词典译作“替换行为”，个人认为翻译不准确，不予采纳。根据我的理解，<span style="font-family:楷体_GB2312;color:#ff0000;line-height:1.3em;"><strong>Displacement Activity就是当你不得不去做某件事情的时候，你担心会失败于是产生一种不去做的消极心态，当你无法做出一个做还是不做的决定时，纠结中你下意识得选择逃避——不由自主的做一些让自己感觉舒服（但很明显不在状态）的事情，比如吃饭、看电影、睡觉、玩游戏、逛街等等。恰恰由于你的逃避，往往会使事情办的更糟，所以等到下一个你不得不面对的抉择时，你的这种表现会更严重，由此造成恶性的循环往复……</strong></span></p>
-<p style="margin-top:0;margin-bottom:.5em;">个人感觉Displacement Activity还是心理不够强大的表现。真的强者不会有这种表现的。悲哀的是这种状态已伴随我十几年，至少在高中时就有这种表现，目前看来已经越来越严重了。我能想到的解决这种现象的根本方法就是：1. 深入研究你要做的事情，搞清楚你要做什么，想清楚怎么做，多看一些别人成功的经验（以及别人失败的教训，当然这种东西比较少了）；2. 制定一个达到目标所需要的可行的计划；3. 每天坚持执行你的计划；4.<br />
- 尽量不要调整你的计划。这只是一个设想，目前本人还没有真正实践过。</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">下面是搜集的相关解释。</p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement Activities are behaviors that animals(including human beings) have conflicting drives. Such behaviors are completely out of place.</strong></p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement behavior is usually thought of as self-grooming, touching, or scratching, which is displayed when an animal has a conflict between two drives, such as the desire to approach an object, while<br />
- at the same time being fearful of that object.&nbsp;</strong>With the fall of drive theory into disfavor, animal behaviorists paid little attention to displacement behavior until Maestripieri et al. (1992) pointed out that displacement behavior might be a good<br />
- measure of anxiety levels.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">------------------------------</p>
-<p style="margin-top:0;margin-bottom:.5em;">From Wiki:&nbsp;<a href="http://en.wikipedia.org/wiki/Displacement_activity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://en.wikipedia.org/wiki/Displacement_activity</a></p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>A displacement activity is the result of two contradicting instincts in a particular situation.&nbsp;</strong>Birds, for example, may peck at grass when uncertain whether to attack or flee from an opponent;<br />
- similarly, a human may scratch his or her head when they do not know which of two options to choose.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities often involve actions to bring comfort such as scratching, drinking or feeding.</strong></p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">The first description of a displacement activity (though not the use of the term) is probably by Julian Huxley in 1914. The subsequent development of research on displacement activities was a direct consequence<br />
- of Konrad Lorenz's works on instincts. However, the first mentions of the phenomenon came in 1940 by the two Dutch researchers Nikolaas Tinbergen and Adriaan Kortlandt.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">---------------------------</p>
-<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://c2.com/cgi/wiki?DisplacementActivity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://c2.com/cgi/wiki?DisplacementActivity</a></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Activity undertaken when some more important task's deadline is looming.</strong></p>
-<p style="margin-top:0;margin-bottom:.5em;">When I was studying for my final degree examinations I played more bridge than ever before. That was pretty much a pure DisplacementActivity.</p>
-<p style="margin-top:0;margin-bottom:.5em;">I'm wondering how much other authors and programmers suffer from this weakness -- SteveHolden</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">----------------------------</p>
-<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://baillement.com/displacement-delius.html" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://baillement.com/displacement-delius.html</a></p>
-<p style="margin-top:0;margin-bottom:.5em;">In 1940 Tinbergen and Kortlandt independently drew attention to a behavioural phenomenon which has since been called displacement activity and has received a good deal of attention. Although no binding rules exist<br />
- by which displacement behaviour can be recognized, the term is applied to behaviour patterns which appear to be out of context with the behaviour which closely precedes or follows them either in the sense that they do not seem functionally integrated with<br />
- the preceding or following behaviour or that they occur in situations in which causal factors usually responsible for them appear to be absent or at least weak compared with those determining the behavioural envelope.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities occur in three situations: motivational, conflict, frustration of consummatory acts and physical thwarting of performance.</strong>&nbsp;Several theories have been put forward to explain<br />
- the causal mechanism involved. A variety of behaviour patterns have been reported as displacement activities, even in a single species, but this variety needs revision.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">Monographie treatments of the behaviour of any one species usually indicate only two or three activities which according te the judgment of the observer occur commonly as displacement. None of the theories on displacement<br />
- activities gives cogent reasons why particular behaviour patterns should be more common than others as displacement activities, apart from stating that the causal agents which usually elicit them in non-displacement situations can also be presumed te be present,<br />
- if only weakly, in the displacement context, or remarking that those patterns are prepotent in the repertoire of the animal.</p>
+    <p>&nbsp;</p>
 <div>
+<h1 id="zw-129e3d10a83QJWE-15bea0" style="text-align:center;">浅析A<span id="zw-129e3ac83d3_bPs9e15bea0">pple iPhone4天线问题的危机公关</span></h1>
+<p id="zw-129e3ac83d3CFDfYy15bea0">&nbsp;</p>
+<p id="zw-129e3ace966fegbrD15bea0"><span id="zw-129e3ace967cO2dP15bea0">iPhone4的天线问题甫一曝光，乔帮主就故态复萌了，拿出25年前打死不认亲生女儿的尽头，摆出死猪不怕开水烫的嘴脸，直言这个问题是由于用户的握手机的姿势不对引起的，言外之意就是碰到问题的这些用户太白痴，连如何正确握手机都得要别人教。很不幸的是，敝人也是习惯左手握手机，也是被乔帮主鄙视的那群人之一。</span></p>
+<p id="zw-129e3bfa69dUjg1BQ15bea0">乔帮主的言论客观上激起了媒体和更多用户的不满，一大撮人巴不得Apple出事呢，现在苦苦等待了好几年的机会终于来到了，岂有坐视的道理？于是媒体铺天盖地的报道iPhone4的天线问题，科技专栏作家不断发表自己的看法，评测公司不断发布最新的评测&hellip;&hellip;</p>
+<p id="zw-129e3c45695rq97mN15bea0">Apple深知此事不能不了了之，于是又宣称会尽快推出新的固件来修正之前iPhone的信号显示的bug&mdash;&mdash;iPhone4的信号之所以在握住某个点之后会大幅下降，主要原因是之前的信号显示是被夸大了的，也就是说之前的信号其实本来没有那么好，iPhone会故意将信号条设为满格，给用户以iPhone信号良好的假象。我相信这样做的绝不只Apple一家，其他厂家肯定也会搞这种小动作，只是程度不同而已。</p>
+<p id="zw-129e3c5287eFTOTLj15bea0">但很快就有新的分析和测试出炉，固件升级不可能解决iPhone4掉话的问题，因为这个问题是由硬件引起的，确切而言是天线的设计缺陷&mdash;&mdash;软件不可能修复这种硬件的缺陷。而直到此时，Apple还没有同意免费为用户提供可以解决掉话问题的iPhone4保护套，用户还不得不掏30美元去买保护套。</p>
+<p id="zw-129e3c8ff4erCaAr315bea0"><span id="zw-129e3d0c290zcxAbx15bea0">媒体继续穷追猛打，Apple必须得给出一个说法了。于是本周五，乔帮主专门召开了一个发布会来解释iPhone4的信号问题。一向喜欢在最后5分钟报道米国人民生活于水深火热之中的《新闻联播》当然不会放弃这样一个好机会，专门报道了这个消息&mdash;&mdash;</span><span id="zw-129e3d0c317LKBufn15bea0">迷信水果出品的一小撮不明真相的群众们，你们该醒醒了！即便牛B如iPhone4者，照样问题多多！还是赶紧买我天朝自产的XX吧！&hellip;&hellip;</span></p>
+<p id="zw-129e3b99ae6BemeBk15bea0"><span id="zw-129e3d5aac4iEW14D15bea0">感谢CCAV，在我吃饭的时候报道了这条消息，吃完饭后我赶紧上网仔细看了看相关报道。今天在新浪科技上看到了《</span><a id="zw-129e4b8ff5frYBH3215bea0" title="直播实录：苹果iPhone 4信号问题发布会" href="http://tech.sina.com.cn/t/2010-07-17/01104438749.shtml" target="_blank"><span id="zw-129e4b8ff5eyLK11U15bea0">直播实录：苹果iPhone 4信号问题发布会</span></a><span id="zw-129e4b8ff5eNw8vUx15bea0">》。看完之后，坦白讲，我被乔帮主的真诚感动了。下面简单分析一下乔帮主的思路。</span></p>
+<p id="zw-129e3d5b65dLO6jCz15bea0">&nbsp;</p>
+<div id="zw-129e490e626TplBJT15bea0"><span id="zw-129e490e627NPEeNZ15bea0">首先，在所有智能手机中iPhone4拥有最好的销量和最佳的口碑&mdash;&mdash;iPhone4天赋异禀，瑕不掩瑜&mdash;&mdash;先定好基调很重要。</span></div>
+<div id="zw-129e490f1dfAY5D2x15bea0"><span id="zw-129e490f1dfS9Qoiq15bea0"><br /></span></div>
+<div id="zw-129e490e6272R8F15bea0"><span id="zw-129e490e627t0Jes415bea0">所有的手机都不是完美的，iPhone4不是，其他手机也不是，iPhone4存在的天线问题在其他手机上照样存在&mdash;&mdash;老乔我阴沟里翻船了，你们在岸上的也休想有好日子过！空口无凭，图片为证，老乔把其他手机的信号锐减的情况逐一摆在大家面前。需要注意的是老乔在演讲中提到说类似的问题也存在在诺基亚手机中，但在presentation中却不见又诺记的图片，因此我怀疑Apple至今肯定还没有诺记信号问题的切实证据，老乔故意制造烟雾弹。也有另外一种可能是，在乔帮主眼中，就诺基亚那样低劣的工业设计，根本不配是Apple的对手，因此在presentation中放它一码。</span></div>
+<p id="zw-129e490e62eIdY0Ue15bea0">&nbsp;</p>
+<p id="zw-129e490e62eNfX3gi15bea0">&nbsp;</p>
+<div id="zw-129e49bafa92zPQZ-15bea0"><span id="zw-129e49bafaahdOOuP15bea0">接下来乔帮主介绍了Apple在手机天线上的投入&mdash;&mdash;神秘的&ldquo;black&rdquo;实验室、过硬的技术人员和大量的资金投入&mdash;&mdash;两层含义：我们很重视手机天线的设计的，尽管iPhone4的天线存在问题，但绝对不可能是大问题；我们有这么大的投入尚不能解决的问题，其他公司又怎么能彻底解决呢？</span></div>
+<div id="zw-129e49bafaaUZbLpI15bea0"></div>
+<div id="zw-129e49bafab_EUqk15bea0"><span id="zw-129e49bafabFvyYtb15bea0">然后乔帮主拿出了hard data来说明iPhone4的问题，除了掉话率iPhone4比iPhone 3GS稍高一点之外，返修率和退货率都要低很多。在这里，乔帮主的下面这张slide制作的实在是太有水平了，不仔细看怎么都不觉得他是在承认iPhone4的问题，分明是在炫耀他的成绩嘛！</span></div>
+<div id="zw-129e49bafabCPL2At15bea0"><img src="http://i0.sinaimg.cn/IT/2010/0717/201071723455.jpeg" border="0" alt="" hspace="0" vspace="0" /></div>
+<p id="zw-129e49bafb06hOzSx15bea0">&nbsp;</p>
+<p id="zw-129e4a1188ftS6F15bea0">其实iPhone4的这些数据很难说明问题，因为一是因为它上市的时间太短了，而且上市的地区有限（iPhone 3GS是在欧美多国同时上市的，而iPhone4只有少数几个国家）；再者就是天线信号显示条都可以随意更改，这数据又有何不可呢？</p>
+<div id="zw-129e4adebdb9JDl4Y15bea0"></div>
+<div id="zw-129e4adebdcVQ5Xz15bea0"><span id="zw-129e4adebdcT8Nwro15bea0">至于问题的解决方法，乔帮主终于同意了免费为用户提供手机套&mdash;&mdash;这是对他们最为有利的方案，如果接受媒体和业内人士的召回的建议，Apple的损失将是惨重的。为了进一步打消某些人仍然抱有的召回的幻想，乔帮主在Q&amp;A的环节中干脆暗示召回也很难解决问题，原因就是这是智能手机的通病，不可能在短期内有最终解决方案。</span></div>
+<div id="zw-129e4adebdcth46IY15bea0"></div>
+<div id="zw-129e4adebdcmY6Yds15bea0"><span id="zw-129e4adebddh5-O0815bea0">最后，乔帮主竟然主动爆出了正在调查iPhone4的距离感应器的问题&mdash;&mdash;如果有谁还幻想着在天线问题过去之后再炒作距离感应器的问题，还是省省吧！</span></div>
+<div id="zw-129e4adebddBfU2VJ15bea0"></div>
+<div id="zw-129e4adebdeVf30_J15bea0"><span id="zw-129e4adebdecOwZat15bea0">另外，乔帮主还深情的自我表白：&ldquo;我们这样做的原因是，我们爱自己的用户；如果我们把事情搞砸了，我们会自我检讨，并更加努力地工作。当我们取得成功时，我们所获得的奖励就是留住了用户。或许我们本应让公关人员来打发这些麻烦事，但我们没有，而是亲自来解决。所以，在过去22天时间里，我们一直都努力解决这个问题。我们认为，已经抓住了问题的核心。&rdquo;</span></div>
+<div id="zw-129e4adebdeXJLvPH15bea0"></div>
+<div id="zw-129e4adebdfA85PY215bea0"><span id="zw-129e4adebdfcUIB8Z15bea0">这是一个堪称经典的危机公关演讲！</span></div>
+<div id="zw-129e4aeace8Bm15Ac15bea0"><span id="zw-129e4aeace8bX2vv15bea0"><br /></span></div>
+<div id="zw-129e4aeaf80JHU7o15bea0"><span id="zw-129e4aeaf80v6SWKE15bea0">联想起最近国内的唐俊面对&ldquo;学历门&rdquo;的态度，汪晖教授面对&ldquo;抄袭门&rdquo;的反应，乔帮主的水平实在比他们高出一个档次&mdash;&mdash;既承认了自己的错误，又捎带打击了对手，既安抚了消费者和媒体，又能使自己的利益最大化。谢谢乔帮主又给我们上了一课！</span></div>
+<div><span id="zw-129e4aeaf80v6SWKE15bea0"><br /></span></div>
+<p id="zw-129e4adebe7O4HTKQ15bea0">PS:</p>
+<p>&nbsp;</p>
+<p>根据Apple的声明，很多人推测Apple很可能在10月份推出重新设计的iPhone4.我认为这很有可能，因Steve Jobs不可能容忍有瑕疵的产品在市场上销售太久。另外，至于有很多人质疑乔帮主在iPhone4发部前就已经知道它的天线问题，我觉得可能性也不是很大，凭着乔帮主要求Mac开发者搞半年才能拿出一个入他老人家法眼的的滚动条而最终发布时又不得不把这滚动条放弃的高要求，很难想象他会容忍有问题的iPhone流入市场&mdash;&mdash;即使事先他真的已经知道了这个问题，估计那也是离WWDC很近的时间内才知道的，箭在弦上不得不发了&hellip;&hellip;</p>
 </div>
-</div>
+<p>&nbsp;</p>
 
 
-    <small class="meta">August 02, 2011 | <a href='/bkup/2011/08/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520displacement%2520activity%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+    <small class="meta">July 18, 2010 | <a href='/industry/2010/07/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e6%25b5%2585%25e6%259e%2590apple%2520iphone4%25e5%25a4%25a9%25e7%25ba%25bf%25e9%2597%25ae%25e9%25a2%2598%25e7%259a%2584%25e5%258d%25b1%25e6%259c%25ba%25e5%2585%25ac%25e5%2585%25b3%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
   </div>
 
   <div class="post">
-    <h2><a href="/personal/2011/08/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520displacement%2520activity%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Displacement Activity</a></h2>
+    <h2><a href="/unix/linux/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%25e4%25b8%25adifs%25e7%259a%2584%25e5%25a6%2599%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Korn Shell中IFS的妙用</a></h2>
 
-    <p>
-<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
-<div style="font-family:Arial;background-color:rgb(255,255,255);overflow-y:scroll;word-wrap:break-word;word-break:break-all;line-height:1.6;font-size:14px;margin:1px 4px 2px 2px;">
-<p style="margin-top:0;margin-bottom:.5em;">你是否有过这样的经历：&#30524;看考试或某个任务、活动的大限将至，自己很是担心，可你却不是在努力准备，而是看电影、玩游戏或者和朋友聊天？ 至少对于我，这样的矛盾行为并不罕见。今天才知道，这种行为叫做Displacement Activity，是人和动物身上的一种普遍存在的行为。</p>
-<p style="margin-top:0;margin-bottom:.5em;">Displacement Activity貌&#20284;还没有确切的中文翻译，有在线词典译作“替换行为”，个人认为翻译不准确，不予采纳。根据我的理解，<span style="font-family:楷体_GB2312;color:#ff0000;line-height:1.3em;"><strong>Displacement Activity就是当你不得不去做某件事情的时候，你担心会失败于是产生一种不去做的消极心态，当你无法做出一个做还是不做的决定时，纠结中你下意识得选择逃避——不由自主的做一些让自己感觉舒服（但很明显不在状态）的事情，比如吃饭、看电影、睡觉、玩游戏、逛街等等。恰恰由于你的逃避，往往会使事情办的更糟，所以等到下一个你不得不面对的抉择时，你的这种表现会更严重，由此造成恶性的循环往复……</strong></span></p>
-<p style="margin-top:0;margin-bottom:.5em;">个人感觉Displacement Activity还是心理不够强大的表现。真的强者不会有这种表现的。悲哀的是这种状态已伴随我十几年，至少在高中时就有这种表现，目前看来已经越来越严重了。我能想到的解决这种现象的根本方法就是：1. 深入研究你要做的事情，搞清楚你要做什么，想清楚怎么做，多看一些别人成功的经验（以及别人失败的教训，当然这种东西比较少了）；2. 制定一个达到目标所需要的可行的计划；3. 每天坚持执行你的计划；4.<br />
- 尽量不要调整你的计划。这只是一个设想，目前本人还没有真正实践过。</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">下面是搜集的相关解释。</p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement Activities are behaviors that animals(including human beings) have conflicting drives. Such behaviors are completely out of place.</strong></p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement behavior is usually thought of as self-grooming, touching, or scratching, which is displayed when an animal has a conflict between two drives, such as the desire to approach an object, while<br />
- at the same time being fearful of that object.&nbsp;</strong>With the fall of drive theory into disfavor, animal behaviorists paid little attention to displacement behavior until Maestripieri et al. (1992) pointed out that displacement behavior might be a good<br />
- measure of anxiety levels.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">------------------------------</p>
-<p style="margin-top:0;margin-bottom:.5em;">From Wiki:&nbsp;<a href="http://en.wikipedia.org/wiki/Displacement_activity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://en.wikipedia.org/wiki/Displacement_activity</a></p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>A displacement activity is the result of two contradicting instincts in a particular situation.&nbsp;</strong>Birds, for example, may peck at grass when uncertain whether to attack or flee from an opponent;<br />
- similarly, a human may scratch his or her head when they do not know which of two options to choose.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities often involve actions to bring comfort such as scratching, drinking or feeding.</strong></p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">The first description of a displacement activity (though not the use of the term) is probably by Julian Huxley in 1914. The subsequent development of research on displacement activities was a direct consequence<br />
- of Konrad Lorenz's works on instincts. However, the first mentions of the phenomenon came in 1940 by the two Dutch researchers Nikolaas Tinbergen and Adriaan Kortlandt.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">---------------------------</p>
-<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://c2.com/cgi/wiki?DisplacementActivity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://c2.com/cgi/wiki?DisplacementActivity</a></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Activity undertaken when some more important task's deadline is looming.</strong></p>
-<p style="margin-top:0;margin-bottom:.5em;">When I was studying for my final degree examinations I played more bridge than ever before. That was pretty much a pure DisplacementActivity.</p>
-<p style="margin-top:0;margin-bottom:.5em;">I'm wondering how much other authors and programmers suffer from this weakness -- SteveHolden</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">----------------------------</p>
-<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://baillement.com/displacement-delius.html" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://baillement.com/displacement-delius.html</a></p>
-<p style="margin-top:0;margin-bottom:.5em;">In 1940 Tinbergen and Kortlandt independently drew attention to a behavioural phenomenon which has since been called displacement activity and has received a good deal of attention. Although no binding rules exist<br />
- by which displacement behaviour can be recognized, the term is applied to behaviour patterns which appear to be out of context with the behaviour which closely precedes or follows them either in the sense that they do not seem functionally integrated with<br />
- the preceding or following behaviour or that they occur in situations in which causal factors usually responsible for them appear to be absent or at least weak compared with those determining the behavioural envelope.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities occur in three situations: motivational, conflict, frustration of consummatory acts and physical thwarting of performance.</strong>&nbsp;Several theories have been put forward to explain<br />
- the causal mechanism involved. A variety of behaviour patterns have been reported as displacement activities, even in a single species, but this variety needs revision.</p>
-<p style="margin-top:0;margin-bottom:.5em;"></p>
-<p style="margin-top:0;margin-bottom:.5em;">Monographie treatments of the behaviour of any one species usually indicate only two or three activities which according te the judgment of the observer occur commonly as displacement. None of the theories on displacement<br />
- activities gives cogent reasons why particular behaviour patterns should be more common than others as displacement activities, apart from stating that the causal agents which usually elicit them in non-displacement situations can also be presumed te be present,<br />
- if only weakly, in the displacement context, or remarking that those patterns are prepotent in the repertoire of the animal.</p>
-<div>
-</div>
-</div>
-
-
-    <small class="meta">August 02, 2011 | <a href='/personal/2011/08/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520displacement%2520activity%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/2011/07/26/immaneul-kants-philosophy-of-morality/">Immaneul Kant's Philosophy of Morality</a></h2>
-
-    <p>Following are part of my notes of the famous Harvard open course <strong><em>Justice</em></strong>. Kant's theory is too hard to be understood in a shot time. I think the best way is to record his main idea and try to digest in the future.</p>
-<p>===============================================================================================</p>
-<p><strong>Part 1  Kant's Conception of Freedom</p>
-<p></strong>Kant thinks that the individual person, all human beings, have a certain dignity that commands our respect.</p>
-<p>The reason the individual is sacred or the bearer of rights, doesn't stem from the idea that we own ourselves, but instead from the we are all rational beings, which means we are beings who are capable of reason.</p>
-<p>We are also autonomous beings, which is to say that we are beings capable of acting and choosing freely.</p>
-<p>The capacity of reason and freedom, isn't the only capacity we have. It is our rational capacity that makes our distinctive.</p>
-<p>Freedom is the opposite of necessity.</p>
-<p>Kant's Conception of Freedom<br />
-Autonomy:<br />
-To act freely (= to act autonomously =)<br />
-To act according to a law I give myself<br />
-Heteronomy:<br />
-To act according to desires I haven't chosen myself</p>
-<p>To act freely is not to choose the best means to a given end; it's choose the end itself for its own sake. In so far we act on inclination or pursue pleasure, we act as means to the realization of ends given outside of us. We are instruments rather than  authors of the purposes we pursue, that's the heteronymous determination of the will.<br />
-On the other hand, in so fas as we act autonomously, according to a law we give ourselves, we do something for its own sake as an end in itself. When we act autonomously, wee seems to be instruments to purposes given outside us, we become as ends in ourselves. This capacity to act freely, is what gives human life its special dignity.<br />
-Respecting human dignity means regarding persons not just as means, but also as ends in themselves. This is why it is wrong to use people for the sake of other people's well-being or happiness. This is the real reason that utilitarianism goes wrong.</p>
-<p>------------------------------------<br />
-<strong>Part 2. Kant's Conception of Morality</p>
-<p></strong>Kant's Conception of Morality<br />
-*moral worth of an action depends on motive (do the right thing for the right reason, or for the sake of duty)</p>
-<p>What makes an action morally worthy, consists not in the consequences or in the results that flow from it, what makes an action morally worthy has to do with the motive, with the quality of the will, with the Intention for which the act is done. What matters is the motive, and the motive must be of a certain kind.</p>
-<p>A good will isn't good because of what it effects or accomplishes, it's good in itself. Even if by utmost effort the good will accomplishes nothing it would still shine like a jewel for it's own sake as something which has it's full value in itself. -- Immanuel Kant<br />
-The idea is that the motive confers the moral worth on an action and the only kind of motive that can confer moral worth on an action is the motive of duty.<br />
-The opposite of acting out of duty, is all of the motives having to do with our inclinations. Inclinations refer to all of our desires, all of our contingently given wants, preferences, impulses, and the like.<br />
-Only actions done for the sake of the moral law, for the sake of duty, only these actions have moral duty.</p>
-<p>-------------------------------<br />
-<strong>Part 3. Kant's Conception of Supreme Morality</p>
-<p></strong>What's the supreme principle of morality?<br />
-Only one kind of motive is consistent with morality, the motive of duty, doing the right thing for the right reason. Other motives are summed up by Kant in the category of inclination.<br />
-Every thine the motive for what we do is to satisfy a desire or a preference that we may have, to pursue some interest, we are acting of inclination.<br />
-It's fine to have sentiments and feelings that support the right thing provided they don't provide the reason for acting. One may have more than one motive, but it doesn't mean that the action is devoid of moral worth, just because he has one other motive -- the motive which involves duty is what gives the moral worth.</p>
-<p>Kant's Three Contrasts:<br />
-(MORALITY) Motives:                         Duty vs. Inclination<br />
-(FREEDOM)  Determination of will :   autonomous  vs. Heteronomous<br />
-(REASON) Imperatives:                      Categorical vs. Hypothetical</p>
-<p>If reason determines my will, then the will becomes a power to choose indecent of the dictates of nature, or inclination or circumstance. So, connected with Kant's demanding notions of morality and freedom, is a specially demanding notion of reason.</p>
-<p>How can reason determine the will?<br />
-There are two ways. There are two different commands of reason. One is an imperative. An imperative is an *ought*.<br />
-One kind of imperative, perhaps the most familiar kind, is a *hypothetical* imperative. Hypothetical imperatives use instrumental reason. If want X then do y. It's means-ends reason.<br />
-If the action would be good solely as a means to something else, the imperative is hypothetical; if the action is represented as good in itself and therefore as necessary... for a will which of itself accords with reason, then the imperative is *categorical*.</p>
-<p>What is the categorical imperative? What is the supreme principle of morality? What does it command of us?<br />
-THE CATEGORICAL IMPERATIVE<br />
-(1) The Formula of Universal Law<br />
-Act only on that maxim whereby you can at the same time will that is should become a universal law. "the maxim", he means a rule that explains the reason for what you are doing, a principle. For example, promise keeping.<br />
-And the test, the way we can determine that the false promise is at odds with the categorical imperative, is try to universalize it, universalize the maxim upon which you are about to act. If the maxim universalized would undermine itself, then it's not categorical.</p>
-<p>(2) The Formula of Humanity as End<br />
-We can't base the categorical imperative on any particular interests, purposes, or ends, because then it would be only relative to the person whose ends they were. But suppose, however, there were something whose existence has in itself an absolute value.... an end in itself.... then in it, and in it alone, would there be the ground of a possible categorical imperative.<br />
-"I say that man, and in general every rational being, exists as an end in himself, not merely as a means for arbitrary used by this or that will." -- Kant</p>
-<p>Act in such a way that you always treat humanity, whether in your own person or in the person of any other, never simply as a means, but always at the same time, as an end.</p>
-<p>Respect is respect for humanity which is universal, for a rational capacity which is universal, and that's why violating it, in my own case, is as objectionable as violating it in the case of any other.</p>
-<p>-------------------------------<br />
-<strong>Part 4. The Application of Kant' Categorical Imperative on Lying</p>
-<p></strong>How is a categorical imperative possible? How is morality possible?</p>
-<p>"when we think of ourselves as free, we transfer ourselves into the intelligible world as members and recognize the autonomy of the will." --immanuel Kant<br />
-Only because the idea of freedom makes me a member of an intelligible world, the categorical imperative is possible.</p>
-<p>Since we inhabits simultaneously the two standpoints, the two realms, the realm of freedom and the realm of necessity, there is always potentially a gap between what we do and what we ought to to, between is and ought.<br />
-Morality is not empirical. Whatever you see in the world, whatever you discover through science, can't decide moral questions. Morality stands at a certain distance from the world, from the empirical world. That's why no science could deliver moral truth.</p>
-<p>From Kant's point of view, there actually is a world of difference between a lie and a misleading truth.</p>
-<p>White lie 善意的谎言<br />
-Kant preferred leading truth(误导的真相) to a white lie.<br />
-Unlike a falsehood, unlike a lie, a misleading truth pays a certain homage to duty.</p>
-<p>-----------------------------------<br />
-<strong>Part 5  The Application of Kant's Categorical Imperative On Contract</p>
-<p></strong>Just laws arise from a certain kind of social contract, which is of an exceptional nature. What makes the contract exceptional is that it is not an actual contract, that happens when people come together and try to figure out what the constitution should be. That the contract generates justice is an idea of reason.</p>
-<p>A contract that generates principles of right is merely an idea of reason, but it has undoubted practical reality, because it can oblige every legislator to frame his laws in such a way that they could have been produced by the united will of the whole nation.</p>
-<p>"Each person possesses an inviolability founded on justice that even the welfare of society as a whole cannot override... The rights secured by justice are not subject to political bargaining or to the calculus of social interests." -- John Rawls</p>
-<p>Moral Force of Actual Contracts<br />
-1. How do they bind or obligate?<br />
-(1) consent-based -&gt; AUTONOMY(自律)<br />
-(2) benefit- based -&gt; RECIPROCITY(互惠) : contracts sometimes bind us in so far as they are instruments of mutual benefit.</p>
-<p>2. How do they justify the terms they produce?<br />
-Actual contracts are not self-sufficient moral instruments of any actual contract or agreement. The fact of the agreement never guarantees the fairness of the agreement.</p>
-
-
-    <small class="meta">July 26, 2011 | <a href='/2011/07/26/immaneul-kants-philosophy-of-morality/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2011/07/26/immaneul-kants-philosophy-of-morality/">Immaneul Kant's Philosophy of Morality</a></h2>
-
-    <p>Following are part of my notes of the famous Harvard open course <strong><em>Justice</em></strong>. Kant's theory is too hard to be understood in a shot time. I think the best way is to record his main idea and try to digest in the future.</p>
-<p>===============================================================================================</p>
-<p><strong>Part 1  Kant's Conception of Freedom</p>
-<p></strong>Kant thinks that the individual person, all human beings, have a certain dignity that commands our respect.</p>
-<p>The reason the individual is sacred or the bearer of rights, doesn't stem from the idea that we own ourselves, but instead from the we are all rational beings, which means we are beings who are capable of reason.</p>
-<p>We are also autonomous beings, which is to say that we are beings capable of acting and choosing freely.</p>
-<p>The capacity of reason and freedom, isn't the only capacity we have. It is our rational capacity that makes our distinctive.</p>
-<p>Freedom is the opposite of necessity.</p>
-<p>Kant's Conception of Freedom<br />
-Autonomy:<br />
-To act freely (= to act autonomously =)<br />
-To act according to a law I give myself<br />
-Heteronomy:<br />
-To act according to desires I haven't chosen myself</p>
-<p>To act freely is not to choose the best means to a given end; it's choose the end itself for its own sake. In so far we act on inclination or pursue pleasure, we act as means to the realization of ends given outside of us. We are instruments rather than  authors of the purposes we pursue, that's the heteronymous determination of the will.<br />
-On the other hand, in so fas as we act autonomously, according to a law we give ourselves, we do something for its own sake as an end in itself. When we act autonomously, wee seems to be instruments to purposes given outside us, we become as ends in ourselves. This capacity to act freely, is what gives human life its special dignity.<br />
-Respecting human dignity means regarding persons not just as means, but also as ends in themselves. This is why it is wrong to use people for the sake of other people's well-being or happiness. This is the real reason that utilitarianism goes wrong.</p>
-<p>------------------------------------<br />
-<strong>Part 2. Kant's Conception of Morality</p>
-<p></strong>Kant's Conception of Morality<br />
-*moral worth of an action depends on motive (do the right thing for the right reason, or for the sake of duty)</p>
-<p>What makes an action morally worthy, consists not in the consequences or in the results that flow from it, what makes an action morally worthy has to do with the motive, with the quality of the will, with the Intention for which the act is done. What matters is the motive, and the motive must be of a certain kind.</p>
-<p>A good will isn't good because of what it effects or accomplishes, it's good in itself. Even if by utmost effort the good will accomplishes nothing it would still shine like a jewel for it's own sake as something which has it's full value in itself. -- Immanuel Kant<br />
-The idea is that the motive confers the moral worth on an action and the only kind of motive that can confer moral worth on an action is the motive of duty.<br />
-The opposite of acting out of duty, is all of the motives having to do with our inclinations. Inclinations refer to all of our desires, all of our contingently given wants, preferences, impulses, and the like.<br />
-Only actions done for the sake of the moral law, for the sake of duty, only these actions have moral duty.</p>
-<p>-------------------------------<br />
-<strong>Part 3. Kant's Conception of Supreme Morality</p>
-<p></strong>What's the supreme principle of morality?<br />
-Only one kind of motive is consistent with morality, the motive of duty, doing the right thing for the right reason. Other motives are summed up by Kant in the category of inclination.<br />
-Every thine the motive for what we do is to satisfy a desire or a preference that we may have, to pursue some interest, we are acting of inclination.<br />
-It's fine to have sentiments and feelings that support the right thing provided they don't provide the reason for acting. One may have more than one motive, but it doesn't mean that the action is devoid of moral worth, just because he has one other motive -- the motive which involves duty is what gives the moral worth.</p>
-<p>Kant's Three Contrasts:<br />
-(MORALITY) Motives:                         Duty vs. Inclination<br />
-(FREEDOM)  Determination of will :   autonomous  vs. Heteronomous<br />
-(REASON) Imperatives:                      Categorical vs. Hypothetical</p>
-<p>If reason determines my will, then the will becomes a power to choose indecent of the dictates of nature, or inclination or circumstance. So, connected with Kant's demanding notions of morality and freedom, is a specially demanding notion of reason.</p>
-<p>How can reason determine the will?<br />
-There are two ways. There are two different commands of reason. One is an imperative. An imperative is an *ought*.<br />
-One kind of imperative, perhaps the most familiar kind, is a *hypothetical* imperative. Hypothetical imperatives use instrumental reason. If want X then do y. It's means-ends reason.<br />
-If the action would be good solely as a means to something else, the imperative is hypothetical; if the action is represented as good in itself and therefore as necessary... for a will which of itself accords with reason, then the imperative is *categorical*.</p>
-<p>What is the categorical imperative? What is the supreme principle of morality? What does it command of us?<br />
-THE CATEGORICAL IMPERATIVE<br />
-(1) The Formula of Universal Law<br />
-Act only on that maxim whereby you can at the same time will that is should become a universal law. "the maxim", he means a rule that explains the reason for what you are doing, a principle. For example, promise keeping.<br />
-And the test, the way we can determine that the false promise is at odds with the categorical imperative, is try to universalize it, universalize the maxim upon which you are about to act. If the maxim universalized would undermine itself, then it's not categorical.</p>
-<p>(2) The Formula of Humanity as End<br />
-We can't base the categorical imperative on any particular interests, purposes, or ends, because then it would be only relative to the person whose ends they were. But suppose, however, there were something whose existence has in itself an absolute value.... an end in itself.... then in it, and in it alone, would there be the ground of a possible categorical imperative.<br />
-"I say that man, and in general every rational being, exists as an end in himself, not merely as a means for arbitrary used by this or that will." -- Kant</p>
-<p>Act in such a way that you always treat humanity, whether in your own person or in the person of any other, never simply as a means, but always at the same time, as an end.</p>
-<p>Respect is respect for humanity which is universal, for a rational capacity which is universal, and that's why violating it, in my own case, is as objectionable as violating it in the case of any other.</p>
-<p>-------------------------------<br />
-<strong>Part 4. The Application of Kant' Categorical Imperative on Lying</p>
-<p></strong>How is a categorical imperative possible? How is morality possible?</p>
-<p>"when we think of ourselves as free, we transfer ourselves into the intelligible world as members and recognize the autonomy of the will." --immanuel Kant<br />
-Only because the idea of freedom makes me a member of an intelligible world, the categorical imperative is possible.</p>
-<p>Since we inhabits simultaneously the two standpoints, the two realms, the realm of freedom and the realm of necessity, there is always potentially a gap between what we do and what we ought to to, between is and ought.<br />
-Morality is not empirical. Whatever you see in the world, whatever you discover through science, can't decide moral questions. Morality stands at a certain distance from the world, from the empirical world. That's why no science could deliver moral truth.</p>
-<p>From Kant's point of view, there actually is a world of difference between a lie and a misleading truth.</p>
-<p>White lie 善意的谎言<br />
-Kant preferred leading truth(误导的真相) to a white lie.<br />
-Unlike a falsehood, unlike a lie, a misleading truth pays a certain homage to duty.</p>
-<p>-----------------------------------<br />
-<strong>Part 5  The Application of Kant's Categorical Imperative On Contract</p>
-<p></strong>Just laws arise from a certain kind of social contract, which is of an exceptional nature. What makes the contract exceptional is that it is not an actual contract, that happens when people come together and try to figure out what the constitution should be. That the contract generates justice is an idea of reason.</p>
-<p>A contract that generates principles of right is merely an idea of reason, but it has undoubted practical reality, because it can oblige every legislator to frame his laws in such a way that they could have been produced by the united will of the whole nation.</p>
-<p>"Each person possesses an inviolability founded on justice that even the welfare of society as a whole cannot override... The rights secured by justice are not subject to political bargaining or to the calculus of social interests." -- John Rawls</p>
-<p>Moral Force of Actual Contracts<br />
-1. How do they bind or obligate?<br />
-(1) consent-based -&gt; AUTONOMY(自律)<br />
-(2) benefit- based -&gt; RECIPROCITY(互惠) : contracts sometimes bind us in so far as they are instruments of mutual benefit.</p>
-<p>2. How do they justify the terms they produce?<br />
-Actual contracts are not self-sufficient moral instruments of any actual contract or agreement. The fact of the agreement never guarantees the fairness of the agreement.</p>
-
-
-    <small class="meta">July 26, 2011 | <a href='/bkup/2011/07/26/immaneul-kants-philosophy-of-morality/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook/">Importing Multi-Excel Files/Worksheets Into An Excel Workbook</a></h2>
-
-    <p>Two days ago, my wife asked me to write an Excel VBA script to automatically import multi-Excel worksheets stored in different workbooks into an already opened Excel workbook.  Her requirements were:</p>
-<ol>
-<li>Select a range in a worksheet, which stores the names of worksheets to be imported. After executing the macro, worksheets will be created if it doesn't exist, or it will be updated according to the specified  Excel worksheet in another Excel workbook. Table 1 is the range selected in the worksheet, in which the first column is the serial number of worksheet, the second column denotes department name and the worksheet name should be like "01 Department A".</li>
-<li>The imported/created worksheets should be sorted by the serial number of Table 1.</li>
-<li>The macro should be smart enough to match the Excel files to be imported. The name is like "01 XXXX_Department  A_20110707.xls".</li>
-<li>After importing, specified cells in every other worksheets should be automatically copied to cells on the same row next to department.</li>
-</ol>
-<p style="text-align:center;">Table 1  Selected Range of a worksheet</p>
-<table class="aligncenter" width="200" border="1" cellspacing="1" cellpadding="1">
+    <p>IFS是internal field separator的缩写，shell的特殊环境变量。ksh根据IFS存储的值，可以是空格、tab、换行符或者其他自定义符号，来解析输入和输出的变量值。</p>
+<p>&nbsp;</p>
+<p>如果有一IP地址220.112.253.111, 欲将这个IP地址颠倒顺序，你可以定义IFS为"."，然后直接echo这个地址即可得到此IP的4个数值，然后c重新把IFS设为空格，重新组合四个IP地址的数值即可。</p>
+<p>
+<pre># The following code segment will only work in ksh, 
+# and it will fail in bash
+IP=220.112.253.111
+IFS="."
+TMPIP=$(echo $IP)
+IFS=" " # space
+echo $TMPIP | read ip1 ip2 ip3 ip4
+INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>更详细的IFS的介绍参见下文：（原文地址：<a href="http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm">http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm</a>）</p>
+<p>&nbsp;</p>
+<table style="width:100%;" border="0" cellspacing="0" cellpadding="0">
 <tbody>
 <tr>
-<td>1</td>
-<td>Department  A</td>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Another shell variable that you should become comfortable using is the IFS, or internal field separator, variable.<span>&nbsp;&nbsp;</span>The shell uses the value stored in IFS, which is the space, tab, and newline characters by default, to delimit words for the read and set commands, when parsing output from command substitution, and when performing variable substitution.</span><span></p>
+<p><span style="text-decoration:underline;">IFS can be redefined to parse one or more lines of data whose fields are not delimited by the default white-space characters.</span><span>&nbsp;&nbsp;</span>Consider this sequence of variable assignments and for loops:</p>
+<p></span></span></p>
+</td>
 </tr>
 <tr>
-<td>2</td>
-<td>Department  B</td>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">$ line=learn:unix:at:livefire:labs<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn:unix:at:livefire:labs<br />$ OIFS=$IFS<br />$ IFS=:<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn<br />unix<br />at<br />livefire<br />labs<br />$</p>
+<p></span></p>
+</td>
 </tr>
 <tr>
-<td>3</td>
-<td>Department  C</td>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>The first command assigns the string &ldquo;learn:unix:at:livefire:labs&rdquo; to the variable named line.<span>&nbsp;&nbsp;</span>You can see from the first for loop that the shell treats the entire string as a single field.<span>&nbsp;&nbsp;</span>This is because the string does not contain a space, tab, or newline character.&nbsp;</p>
+<p></span><span>After redefining IFS, the second for loop treats the string as four separated fields, each delimited by a colon.<span>&nbsp;&nbsp;</span>Using a colon for IFS would be appropriate when parsing the fields in a record from /etc/passwd, the user account information file:</p>
+<p></span></span></p>
+</td>
 </tr>
 <tr>
-<td>4</td>
-<td>Department  D</td>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">livefire:x:100:1::/export/home/livefire:/bin/ksh</p>
+<p></span></p>
+</td>
 </tr>
 <tr>
-<td>5</td>
-<td>Department  E</td>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Notice that the original value of IFS was stored in OIFS (&ldquo;O&rdquo; for original) prior to changing its value.<span>&nbsp;&nbsp;</span>After you are finished using the new definition, it would be wise to return it to its original value to avoid unexpected side effects that may surface later on in your script.&nbsp;</p>
+<p></span><span>TIP &ndash; The current value of IFS may be viewed using the following pipeline:</p>
+<p></span></span></p>
+</td>
 </tr>
 <tr>
-<td>6</td>
-<td>Department  F</td>
+<td width="100%">
+<blockquote>
+<p><span style="font-family:Arial;font-size:x-small;">$ echo "$IFS" | od -b<br />0000000 040 011 012 012<br />0000004<br />$</span></p>
+</blockquote>
+</td>
 </tr>
 <tr>
-<td>7</td>
-<td>Department  G</td>
-</tr>
-<tr>
-<td>8</td>
-<td>Department  H</td>
-</tr>
-<tr>
-<td>9</td>
-<td>Department  I</td>
-</tr>
-<tr>
-<td>10</td>
-<td>Department  J</td>
+<td width="100%"><span style="font-family:Arial;font-size:x-small;"><span>The output of the echo command is piped into the octal dump command, giving you its octal equivalent.<span>&nbsp;&nbsp;</span>You can then use an ASCII table to determine what characters are stored in the variable.<span>&nbsp;&nbsp;</span>Hint: Ignore the first set of zeros and the second newline character (012), which was generated by echo.<br /></span></span></td>
 </tr>
 </tbody>
 </table>
-<p>Actually I am not familiar with VBA, although I studied Visual Basic 6.0 for several months, I rarely touched it after passing the Jiangsu Province Computer Rank Test Level 2 in 2003. Besides, almost all my work was done in Linux/UNIX last 3 years.  As a result, I have to Google every VBA syntax and tips all day long.</p>
-<p>Finally, I finishes the VBA macros and meet my wife's requirement in a inelegant way. Following is the verbose source code.</p>
-<p>Following the macro to implement first 3 requirements.<br />
-[sourcecode language="vb"]<br />
-Option Explicit<br />
-Dim curWS As Worksheet</p>
-<p>Sub LoadWorksheets()<br />
-'<br />
-' LoadWorksheets Macro<br />
-' Macro recorded 7/13/2011 by Bo Yang<br />
-'<br />
-' Keyboard Shortcut: Ctrl+Shift+L<br />
-'<br />
-' *How to use this macro?*<br />
-' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*<br />
-'<br />
-    Application.ScreenUpdating = False  ' stop screen flickering</p>
-<p>    ' Create new sheets according to selected cells and copy the<br />
-    ' contebts of other files into the new sheets<br />
-    Dim YesNo As Variant, myFolder As String, MyLF As String<br />
-    Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range<br />
-    Dim SheetName As String, SheetToBeCopy As String<br />
-    Dim ColCnt As Integer<br />
-    Dim no_str As String, idx As Integer</p>
-<p>    myFolder = &quot;D:\&quot;   '*****Change this value as you need*****<br />
-    SheetToBeCopy = &quot;信息资产风险评估&quot;  ' *****Change this value as you need*****</p>
-<p>    MyLF = Chr(10) &amp;amp; Chr(13)    ' a line feed command<br />
-    Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet</p>
-<p>    ' check that if user select valid columns<br />
-    ColCnt = Selection.Columns.Count</p>
-<p>    If ColCnt  2 Then<br />
-        MsgBox (&quot;Please select 2 columns!!!&quot; &amp;amp; MyLF &amp;amp; _<br />
-            &quot;The first column must be digital numbers,&quot; &amp;amp; MyLF &amp;amp; _<br />
-            &quot;And the Second column must be department names&quot; _<br />
-        )<br />
-        Exit Sub<br />
-    End If</p>
-<p>    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp;amp; MyLF &amp;amp; _<br />
-        &quot;Do you want to continue?&quot;, _<br />
-        vbYesNo, &quot;Caution&quot;)<br />
-    Select Case YesNo<br />
-    Case vbYes<br />
-        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)<br />
-        SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)</p>
-<p>        ' Create new worksheets<br />
-        ' Discontinuous selection is supported by Selection.Areas<br />
-        For Each Rng In Selection.Areas<br />
-            Set SelRange = Rng.Cells<br />
-            Set ColNo = Rng.Columns(1)<br />
-            Set ColDepart = Rng.Columns(2)<br />
-            idx = 1<br />
-            For Each cell In ColDepart.Cells<br />
-                no_str = ColNo.Cells(idx).Value<br />
-                If Len(no_str) = 1 Then<br />
-                    no_str = &quot;0&quot; + no_str<br />
-                End If<br />
-                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here<br />
-                idx = idx + 1<br />
-            Next<br />
-        Next</p>
-<p>        curWS.Activate</p>
-<p>        ' Sort worksheets<br />
-        Call SortWorksheets</p>
-<p>    Case vbNo<br />
-        Application.ScreenUpdating = True<br />
-        Exit Sub<br />
-    End Select</p>
-<p>    curWS.Activate<br />
-    Application.ScreenUpdating = True<br />
-End Sub</p>
-<p>Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String<br />
-    Dim oSheet As Worksheet, vRet As Variant<br />
-    Dim SheetName As String, FileName As String<br />
-    Dim Entry As Integer, i As Integer</p>
-<p>    ' Determine where to insert new worksheet<br />
-    Entry = 0<br />
-    For i = Sheets.Count To 1 Step -1<br />
-        If Val(Worksheets(i).Name) &amp;gt; 0 Then<br />
-            Entry = i<br />
-            GoTo Determ_Entry<br />
-        End If<br />
-    Next i<br />
-Determ_Entry:<br />
-    If Entry = 0 Then<br />
-        Entry = Sheets.Count<br />
-    End If</p>
-<p>    'Example of one worksheet name:<br />
-    '   07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls<br />
-    SheetName = no + &quot; &quot; + Depart<br />
-    If Not SheetExists(SheetName) Then<br />
-        'worksheet XXX doesn't exist in current workbook<br />
-        'creating a new excel worksheet</p>
-<p>        Set oSheet = Worksheets.Add<br />
-        With oSheet<br />
-            .Name = SheetName<br />
-            .Move After:=Sheets(Entry)<br />
-            .Activate<br />
-        End With<br />
-    End If</p>
-<p>    FileName = FindFileName(no, Depart, FolderName)<br />
-    If FileName  &quot;&quot; Then<br />
-        Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)<br />
-    End If</p>
-<p>    Exit Function</p>
-<p>End Function</p>
-<p>Function SheetExists(SheetName As String) As Boolean<br />
-' returns TRUE if the sheet exists in the active workbook<br />
-    SheetExists = False<br />
-    On Error GoTo NoSuchSheet<br />
-    If Len(Sheets(SheetName).Name) &amp;gt; 0 Then<br />
-        SheetExists = True<br />
-        Exit Function<br />
-    End If<br />
-NoSuchSheet:<br />
-End Function</p>
-<p>Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String<br />
-    'open Excel files and copy the contents to this sheet<br />
-    Dim newWB As Workbook, curWB As Workbook<br />
-    Dim startRange As Range</p>
-<p>    If Dir(FileName)  &quot;&quot; Then<br />
-        ' file exists<br />
-        ' Clear all cells of current worksheet<br />
-        Sheets(SheetName).UsedRange.Clear<br />
-        Application.DisplayAlerts = False ' disable alerts</p>
-<p>        ' Open workbooks to be copied<br />
-        Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment<br />
-        Set newWB = Workbooks.Open(FileName)<br />
-        newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter<br />
-        Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied<br />
-        newWB.Sheets(SheetToBeCopy).UsedRange.Copy<br />
-        ' paste to target worksheet<br />
-        curWB.Activate<br />
-        Sheets(SheetName).Range(startRange.Address).PasteSpecial<br />
-        Application.CutCopyMode = False  'Clear Clipboard<br />
-        newWB.Close SaveChanges:=False  ' close without change<br />
-        Application.DisplayAlerts = True</p>
-<p>    End If</p>
-<p>End Function</p>
-<p>Function FindFileName(no As String, Depart As String, FolderName As String) As String<br />
-    Dim Coll_Docs As New Collection<br />
-    Dim Search_path, Search_Filter, Search_Fullname As String<br />
-    Dim DocName As String<br />
-    Dim i As Long</p>
-<p>    Search_path = FolderName   ' where ?<br />
-    Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?<br />
-    Set Coll_Docs = Nothing</p>
-<p>    DocName = Dir(Search_path &amp;amp; &quot;\&quot; &amp;amp; Search_Filter)</p>
-<p>    Do Until DocName = &quot;&quot;            ' build the collection<br />
-        Coll_Docs.Add Item:=DocName<br />
-        DocName = Dir<br />
-    Loop</p>
-<p>    If Coll_Docs.Count = 1 Then<br />
-        FindFileName = Search_path &amp;amp; &quot;\&quot; &amp;amp; Coll_Docs(1)<br />
-    Else<br />
-        FindFileName = &quot;&quot;<br />
-    End If</p>
-<p>End Function</p>
-<p>Function SortWorksheetsByName() As String<br />
-    ' sort worksheets in a workbook in ascending order<br />
-    Dim sCount As Integer, i As Integer, j As Integer</p>
-<p>    Application.ScreenUpdating = False<br />
-    sCount = Worksheets.Count<br />
-    If sCount = 1 Then Exit Function<br />
-    For i = 1 To sCount - 1<br />
-        For j = i + 1 To sCount<br />
-            If Worksheets(j).Name  0 Then<br />
-            Entry = i<br />
-            GoTo Determ_Entry<br />
-        End If<br />
-    Next i<br />
-Determ_Entry:</p>
-<p>    For i = Entry To cnt - 1<br />
-            For j = i + 1 To cnt<br />
-                    If Val(Worksheets(i).Name) &amp;gt; Val(Worksheets(j).Name) Then<br />
-                            Worksheets(j).Move Before:=Worksheets(i)<br />
-                    End If<br />
-            Next j<br />
-    Next i</p>
-<p>    curWS.Activate<br />
-    'Application.ScreenUpdating = True<br />
-End Function<br />
-[/sourcecode]</p>
-<p>And here comes the macro to implement the 4th requirement.<br />
-[sourcecode language="vb"]<br />
-Option Explicit</p>
-<p>Sub UpdateCells()<br />
-'<br />
-' UpdateCells Macro<br />
-' Macro recorded 7/13/2011 by Bo Yang<br />
-'<br />
-' Keyboard Shortcut: Ctrl+Shift+C<br />
-'<br />
-' Risk:Cell<br />
-' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6<br />
-Dim Risk5 As Range<br />
-Dim num As String, depart As Range, idx As Integer<br />
-Dim SheetName As String<br />
-Dim SelRange As Range<br />
-Dim curWS As Worksheet</p>
-<p>Application.ScreenUpdating = False</p>
-<p>Set curWS = ActiveSheet<br />
-Set SelRange = Selection</p>
-<p>idx = 1<br />
-For Each depart In SelRange.Columns(2).Cells<br />
-    num = SelRange.Columns(1).Cells(idx).value<br />
-    If Len(num) = 1 Then<br />
-        num = &quot;0&quot; + num<br />
-    End If<br />
-    SheetName = num + &quot; &quot; + depart.value</p>
-<p>    Set Risk5 = SelRange.Columns(3).Cells(idx)</p>
-<p>    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy<br />
-    Risk5.Select<br />
-    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True<br />
-    Application.CutCopyMode = False 'Clear Clipboard</p>
-<p>    idx = idx + 1<br />
-Next</p>
-<p>Application.ScreenUpdating = True<br />
-End Sub<br />
-[/sourcecode]<br />
-<span style="font-size:small;"><span class="Apple-style-span" style="line-height:normal;"><br />
-</span></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
 
-    <small class="meta">July 13, 2011 | <a href='/bkup/2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook/#disqus_thread'>View Comments</a></small>
+    <small class="meta">July 17, 2010 | <a href='/unix/linux/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520korn%2520shell%25e4%25b8%25adifs%25e7%259a%2584%25e5%25a6%2599%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
   </div>
 
   <div class="post">
-    <h2><a href="/scripts/vba/2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook/">Importing Multi-Excel Files/Worksheets Into An Excel Workbook</a></h2>
+    <h2><a href="/unix/linux/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520awk%25e6%25ad%25a3%25e5%2588%2599%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e4%25b8%25ad%25e8%25b0%2583%25e7%2594%25a8ksh%25e5%258f%2598%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">awk正则表达式中调用ksh变量</a></h2>
 
-    <p>Two days ago, my wife asked me to write an Excel VBA script to automatically import multi-Excel worksheets stored in different workbooks into an already opened Excel workbook.  Her requirements were:</p>
-<ol>
-<li>Select a range in a worksheet, which stores the names of worksheets to be imported. After executing the macro, worksheets will be created if it doesn't exist, or it will be updated according to the specified  Excel worksheet in another Excel workbook. Table 1 is the range selected in the worksheet, in which the first column is the serial number of worksheet, the second column denotes department name and the worksheet name should be like "01 Department A".</li>
-<li>The imported/created worksheets should be sorted by the serial number of Table 1.</li>
-<li>The macro should be smart enough to match the Excel files to be imported. The name is like "01 XXXX_Department  A_20110707.xls".</li>
-<li>After importing, specified cells in every other worksheets should be automatically copied to cells on the same row next to department.</li>
-</ol>
-<p style="text-align:center;">Table 1  Selected Range of a worksheet</p>
-<table class="aligncenter" width="200" border="1" cellspacing="1" cellpadding="1">
-<tbody>
-<tr>
-<td>1</td>
-<td>Department  A</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Department  B</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Department  C</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Department  D</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Department  E</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Department  F</td>
-</tr>
-<tr>
-<td>7</td>
-<td>Department  G</td>
-</tr>
-<tr>
-<td>8</td>
-<td>Department  H</td>
-</tr>
-<tr>
-<td>9</td>
-<td>Department  I</td>
-</tr>
-<tr>
-<td>10</td>
-<td>Department  J</td>
-</tr>
-</tbody>
-</table>
-<p>Actually I am not familiar with VBA, although I studied Visual Basic 6.0 for several months, I rarely touched it after passing the Jiangsu Province Computer Rank Test Level 2 in 2003. Besides, almost all my work was done in Linux/UNIX last 3 years.  As a result, I have to Google every VBA syntax and tips all day long.</p>
-<p>Finally, I finishes the VBA macros and meet my wife's requirement in a inelegant way. Following is the verbose source code.</p>
-<p>Following the macro to implement first 3 requirements.<br />
-[sourcecode language="vb"]<br />
-Option Explicit<br />
-Dim curWS As Worksheet</p>
-<p>Sub LoadWorksheets()<br />
-'<br />
-' LoadWorksheets Macro<br />
-' Macro recorded 7/13/2011 by Bo Yang<br />
-'<br />
-' Keyboard Shortcut: Ctrl+Shift+L<br />
-'<br />
-' *How to use this macro?*<br />
-' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*<br />
-'<br />
-    Application.ScreenUpdating = False  ' stop screen flickering</p>
-<p>    ' Create new sheets according to selected cells and copy the<br />
-    ' contebts of other files into the new sheets<br />
-    Dim YesNo As Variant, myFolder As String, MyLF As String<br />
-    Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range<br />
-    Dim SheetName As String, SheetToBeCopy As String<br />
-    Dim ColCnt As Integer<br />
-    Dim no_str As String, idx As Integer</p>
-<p>    myFolder = &quot;D:\&quot;   '*****Change this value as you need*****<br />
-    SheetToBeCopy = &quot;信息资产风险评估&quot;  ' *****Change this value as you need*****</p>
-<p>    MyLF = Chr(10) &amp;amp; Chr(13)    ' a line feed command<br />
-    Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet</p>
-<p>    ' check that if user select valid columns<br />
-    ColCnt = Selection.Columns.Count</p>
-<p>    If ColCnt  2 Then<br />
-        MsgBox (&quot;Please select 2 columns!!!&quot; &amp;amp; MyLF &amp;amp; _<br />
-            &quot;The first column must be digital numbers,&quot; &amp;amp; MyLF &amp;amp; _<br />
-            &quot;And the Second column must be department names&quot; _<br />
-        )<br />
-        Exit Sub<br />
-    End If</p>
-<p>    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp;amp; MyLF &amp;amp; _<br />
-        &quot;Do you want to continue?&quot;, _<br />
-        vbYesNo, &quot;Caution&quot;)<br />
-    Select Case YesNo<br />
-    Case vbYes<br />
-        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)<br />
-        SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)</p>
-<p>        ' Create new worksheets<br />
-        ' Discontinuous selection is supported by Selection.Areas<br />
-        For Each Rng In Selection.Areas<br />
-            Set SelRange = Rng.Cells<br />
-            Set ColNo = Rng.Columns(1)<br />
-            Set ColDepart = Rng.Columns(2)<br />
-            idx = 1<br />
-            For Each cell In ColDepart.Cells<br />
-                no_str = ColNo.Cells(idx).Value<br />
-                If Len(no_str) = 1 Then<br />
-                    no_str = &quot;0&quot; + no_str<br />
-                End If<br />
-                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here<br />
-                idx = idx + 1<br />
-            Next<br />
-        Next</p>
-<p>        curWS.Activate</p>
-<p>        ' Sort worksheets<br />
-        Call SortWorksheets</p>
-<p>    Case vbNo<br />
-        Application.ScreenUpdating = True<br />
-        Exit Sub<br />
-    End Select</p>
-<p>    curWS.Activate<br />
-    Application.ScreenUpdating = True<br />
-End Sub</p>
-<p>Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String<br />
-    Dim oSheet As Worksheet, vRet As Variant<br />
-    Dim SheetName As String, FileName As String<br />
-    Dim Entry As Integer, i As Integer</p>
-<p>    ' Determine where to insert new worksheet<br />
-    Entry = 0<br />
-    For i = Sheets.Count To 1 Step -1<br />
-        If Val(Worksheets(i).Name) &amp;gt; 0 Then<br />
-            Entry = i<br />
-            GoTo Determ_Entry<br />
-        End If<br />
-    Next i<br />
-Determ_Entry:<br />
-    If Entry = 0 Then<br />
-        Entry = Sheets.Count<br />
-    End If</p>
-<p>    'Example of one worksheet name:<br />
-    '   07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls<br />
-    SheetName = no + &quot; &quot; + Depart<br />
-    If Not SheetExists(SheetName) Then<br />
-        'worksheet XXX doesn't exist in current workbook<br />
-        'creating a new excel worksheet</p>
-<p>        Set oSheet = Worksheets.Add<br />
-        With oSheet<br />
-            .Name = SheetName<br />
-            .Move After:=Sheets(Entry)<br />
-            .Activate<br />
-        End With<br />
-    End If</p>
-<p>    FileName = FindFileName(no, Depart, FolderName)<br />
-    If FileName  &quot;&quot; Then<br />
-        Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)<br />
-    End If</p>
-<p>    Exit Function</p>
-<p>End Function</p>
-<p>Function SheetExists(SheetName As String) As Boolean<br />
-' returns TRUE if the sheet exists in the active workbook<br />
-    SheetExists = False<br />
-    On Error GoTo NoSuchSheet<br />
-    If Len(Sheets(SheetName).Name) &amp;gt; 0 Then<br />
-        SheetExists = True<br />
-        Exit Function<br />
-    End If<br />
-NoSuchSheet:<br />
-End Function</p>
-<p>Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String<br />
-    'open Excel files and copy the contents to this sheet<br />
-    Dim newWB As Workbook, curWB As Workbook<br />
-    Dim startRange As Range</p>
-<p>    If Dir(FileName)  &quot;&quot; Then<br />
-        ' file exists<br />
-        ' Clear all cells of current worksheet<br />
-        Sheets(SheetName).UsedRange.Clear<br />
-        Application.DisplayAlerts = False ' disable alerts</p>
-<p>        ' Open workbooks to be copied<br />
-        Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment<br />
-        Set newWB = Workbooks.Open(FileName)<br />
-        newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter<br />
-        Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied<br />
-        newWB.Sheets(SheetToBeCopy).UsedRange.Copy<br />
-        ' paste to target worksheet<br />
-        curWB.Activate<br />
-        Sheets(SheetName).Range(startRange.Address).PasteSpecial<br />
-        Application.CutCopyMode = False  'Clear Clipboard<br />
-        newWB.Close SaveChanges:=False  ' close without change<br />
-        Application.DisplayAlerts = True</p>
-<p>    End If</p>
-<p>End Function</p>
-<p>Function FindFileName(no As String, Depart As String, FolderName As String) As String<br />
-    Dim Coll_Docs As New Collection<br />
-    Dim Search_path, Search_Filter, Search_Fullname As String<br />
-    Dim DocName As String<br />
-    Dim i As Long</p>
-<p>    Search_path = FolderName   ' where ?<br />
-    Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?<br />
-    Set Coll_Docs = Nothing</p>
-<p>    DocName = Dir(Search_path &amp;amp; &quot;\&quot; &amp;amp; Search_Filter)</p>
-<p>    Do Until DocName = &quot;&quot;            ' build the collection<br />
-        Coll_Docs.Add Item:=DocName<br />
-        DocName = Dir<br />
-    Loop</p>
-<p>    If Coll_Docs.Count = 1 Then<br />
-        FindFileName = Search_path &amp;amp; &quot;\&quot; &amp;amp; Coll_Docs(1)<br />
-    Else<br />
-        FindFileName = &quot;&quot;<br />
-    End If</p>
-<p>End Function</p>
-<p>Function SortWorksheetsByName() As String<br />
-    ' sort worksheets in a workbook in ascending order<br />
-    Dim sCount As Integer, i As Integer, j As Integer</p>
-<p>    Application.ScreenUpdating = False<br />
-    sCount = Worksheets.Count<br />
-    If sCount = 1 Then Exit Function<br />
-    For i = 1 To sCount - 1<br />
-        For j = i + 1 To sCount<br />
-            If Worksheets(j).Name  0 Then<br />
-            Entry = i<br />
-            GoTo Determ_Entry<br />
-        End If<br />
-    Next i<br />
-Determ_Entry:</p>
-<p>    For i = Entry To cnt - 1<br />
-            For j = i + 1 To cnt<br />
-                    If Val(Worksheets(i).Name) &amp;gt; Val(Worksheets(j).Name) Then<br />
-                            Worksheets(j).Move Before:=Worksheets(i)<br />
-                    End If<br />
-            Next j<br />
-    Next i</p>
-<p>    curWS.Activate<br />
-    'Application.ScreenUpdating = True<br />
-End Function<br />
-[/sourcecode]</p>
-<p>And here comes the macro to implement the 4th requirement.<br />
-[sourcecode language="vb"]<br />
-Option Explicit</p>
-<p>Sub UpdateCells()<br />
-'<br />
-' UpdateCells Macro<br />
-' Macro recorded 7/13/2011 by Bo Yang<br />
-'<br />
-' Keyboard Shortcut: Ctrl+Shift+C<br />
-'<br />
-' Risk:Cell<br />
-' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6<br />
-Dim Risk5 As Range<br />
-Dim num As String, depart As Range, idx As Integer<br />
-Dim SheetName As String<br />
-Dim SelRange As Range<br />
-Dim curWS As Worksheet</p>
-<p>Application.ScreenUpdating = False</p>
-<p>Set curWS = ActiveSheet<br />
-Set SelRange = Selection</p>
-<p>idx = 1<br />
-For Each depart In SelRange.Columns(2).Cells<br />
-    num = SelRange.Columns(1).Cells(idx).value<br />
-    If Len(num) = 1 Then<br />
-        num = &quot;0&quot; + num<br />
-    End If<br />
-    SheetName = num + &quot; &quot; + depart.value</p>
-<p>    Set Risk5 = SelRange.Columns(3).Cells(idx)</p>
-<p>    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy<br />
-    Risk5.Select<br />
-    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True<br />
-    Application.CutCopyMode = False 'Clear Clipboard</p>
-<p>    idx = idx + 1<br />
-Next</p>
-<p>Application.ScreenUpdating = True<br />
-End Sub<br />
-[/sourcecode]<br />
-<span style="font-size:small;"><span class="Apple-style-span" style="line-height:normal;"><br />
-</span></span></p>
+    </p>
+<p>如果ksh中定义了变量pcname,而在嵌入ksh中的awk程序中又要使用这个环境变量，并且用它在正则表达式中，该如何用它呢？</p>
+<p>最简单的方法就是：</p>
+<p>
+<pre>#!/bin/ksh
+pcname="ap201"
+nawk '/'"$pcname"'/{print $2}' $FILE</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>更多方法，参见下面转载的《<strong><a href="http://www.91linux.com/html/article/shell/20090405/16355.html">AWK 使用 Shell 变量</a></strong>》一文：</p>
+<p>&nbsp;</p>
+<p>最近闲着没事，想写个Shell脚本，其中用到了 AWK。想在AWK中读取／设置Shell脚本中定义的变量，搜索些资源，总结了一些东东。</p>
+<p><span style="font-size:large;">读取变量</span></p>
+<p>在通过如下方式<span>读取</span>Shell变量<br />1&gt; awk -v varName=varValue '...' ...<br />2&gt; awk '...{print "'"${USER}"'"}' ...<br />&nbsp;&nbsp; 此种方式可以访问系统环境变量（如USER等），和自定义Shell变量。若这些变量中没有空格及其他特殊字符，则可以少写两个双引号：awk '...{print "'${USER}"}' ...<br />3&gt; awk '...{print ENVIRON["USER"]}...' ...<br />&nbsp;&nbsp; 但是这种方法只能访问系统变量</p>
+<p><span style="font-size:large;">设置变量</span></p>
+<p><span>在AWK中尚未找到设置</span>Shell变量的方法，因为像上面的读取的方法中，一旦awk开始执行，这些环境变量都是一个副本，无论处理多少条记录，不管主Shell中如何变化，所引用的这些变量值都保持不变。而且，通过下面的实验可以看出来，在AWK中执行system函数调用命令是另起一个Shell线程，所以无法依靠system来设置外部环境变量。<br />如果你的AWK只打印一条结果的话，可以使用如下方式<span>在shell环境中设置</span>变量<br />&nbsp;&nbsp; myVar="`echo | awk '{print "AA/nBB/nCC"}'`"<br />注意，这种方式在awk打印多行情况下会将回车用空格替代后赋值。</p>
+<p>实验过程如下：</p>
+<p><span style="font-size:medium;"><span>$ vi tmp.sh</span></span><br />// 编辑内容如下<br /><span><span style="font-family:新宋体;">
+<pre>#!/bin/bash
+echo
+echo "SHELL VERSION : ${SHELL} ${BASH_VERSION}"
+echo "AWK VERSION : `awk -W version | sed -n '1p'`"
+echo
+myVar="AAA BBB CCC DDD"
+echo "IN SHELL : PID=$"
+echo "IN SHELL : /${myVar}=/"${myVar}/""
+echo
+echo | awk -v var1="${myVar}" '{
+    print "IN AWK : how to print single quote : " "'"'"'" 
+    print "No." NR
+    print "IN AWK : -v : var1=/"" var1 "/""
+    print "IN AWK : get : ENVIRON[/"USER/"]=/"" ENVIRON["USER"] "/""
+    print "IN AWK : get : ENVIRON[/"myVar/"]=/"" ENVIRON["myVar"] "/""
+    print "IN AWK : get : ${USER} =/"" "'"${USER}"'" "/"" 
+    print "IN AWK : get : ${myVar}=/"" "'"${myVar}"'" "/"" 
+    print
+    system("echo /"IN AWK : system() : PID=$/"")
+}' 
+myVar="`echo | awk '{print "AA/nBB/nCC"}'`"
+#/n is replaced by space character
+echo ${myVar}</pre>
+<p></span><br /><span style="font-size:medium;"><span style="font-family:新宋体;"><span>$ . tmp.sh</span><br /></span></span></span>//输出结果如下
+<pre>
+SHELL VERSION : /bin/bash 3.2.25(1)-release
+AWK VERSION : GNU Awk 3.1.5
+IN SHELL : PID=10627
+IN SHELL : ${myVar}="AAA BBB CCC DDD"
+IN AWK : how to print single quote : ' 
+No.1
+IN AWK : -v : var1="AAA BBB CCC DDD"
+IN AWK : get : ENVIRON["USER"]="zhangll"
+IN AWK : get : ENVIRON["myVar"]=""
+IN AWK : get : ${USER} ="zhangll"
+IN AWK : get : ${myVar}="AAA BBB CCC DDD"
+IN AWK : system() : PID=17468
+AA BB CC</pre>
+<p>&nbsp;</p>
 
 
-    <small class="meta">July 13, 2011 | <a href='/scripts/vba/2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook/#disqus_thread'>View Comments</a></small>
+    <small class="meta">July 17, 2010 | <a href='/unix/linux/2010/07/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520awk%25e6%25ad%25a3%25e5%2588%2599%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e4%25b8%25ad%25e8%25b0%2583%25e7%2594%25a8ksh%25e5%258f%2598%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/06/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apache%2520%2526amp%253b%2520subversion%25e9%2585%258d%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Apache & Subversion配置</a></h2>
+
+    <p>&nbsp;</p>
+<h2>I.&nbsp;<span style="color:#000000;"><a href="http://xuebingnanmm.javaeye.com/blog/629810">CentOS Apache配置详解</a></span></h2>
+<p><span style="color:#000000;">(</span><a href="http://xuebingnanmm.javaeye.com/blog/629810">http://xuebingnanmm.javaeye.com/blog/629810</a>)</p>
+<p>&nbsp;</p>
+<p><span style="color:#000000;"><br />
+</span></p>
+<h2>II.<span style="color:#000000;"><a id="vqhi" title="Subversion on CentOS" href="http://wiki.centos.org/HowTos/Subversion#head-63b296629e14e219beb2a4b866521947afe58d68">Subversion on CentOS</a>&nbsp;</span></h2>
+<pre><span style="color:#000000;">(</span><a href="http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9">http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9</a>)</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>III. How to customize the path of svn repository?&nbsp;</h2>
+<p>The URL of svn repository is like http://&lt;server_name&gt;/&lt;location&gt;/&lt;project&gt;. You can store the svn repository to anywhere you want.&nbsp;</p>
+<p>&nbsp;</p>
+<div>If the location is not defined in&nbsp;/etc/httpd/conf/httpd.conf, add such definition in it:</div>
+<div><span style="font-family:'Courier New';">&lt;Directory /path&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;Options FollowSymLinks<br /></span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;AllowOverride None</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Directory&gt;</span></div>
+<p>&nbsp;</p>
+<div>Then change the&nbsp;<strong>/etc/httpd/conf.d/subversion.conf</strong>, such as:</div>
+<div><span style="font-family:'Courier New';">&lt;Location /tmp&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;DAV svn</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;SVNParentPath /var/www/svn/repos</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;AuthzSVNAccessFile /etc/svn-acl-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;SVNPath /tmp/svn/project</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthType Basic</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthName "Subversion repos"</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthUserFile /etc/svn-auth-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;Require valid-user</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Location&gt;</span></div>
+<p>
+<br />However,&nbsp;<span style="font-family:'courier new';">SVNParentPath&nbsp;</span>is can not be used here and only&nbsp;<span style="font-family:'courier new';">SVNPath&nbsp;</span>is supported (<a href="http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html">http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html</a>).</p>
+<div>The &lt;Location /&gt;...&lt;/Location&gt; tags also can be added in /etc/httpd/conf/httpd.conf (<a href="http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn">http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn</a>).</div>
+<div>Command to stop SELinux: &nbsp;<span style="font-family:'courier new';"><span style="font-size:x-small;">setenforce 0</span></span></div>
+<p>&nbsp;</p>
+
+
+    <small class="meta">June 24, 2010 | <a href='/unix/linux/2010/06/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apache%2520%2526amp%253b%2520subversion%25e9%2585%258d%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/vba/2010/06/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8excel%2520vba%25e5%25a4%2584%25e7%2590%2586%25e6%2596%2587%25e6%25a1%25a3%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">利用Excel VBA处理文档</a></h2>
+
+    <p>遇到如下格式的一篇WORD文档，格式混乱，不适合打印：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;"><img src="http://bonny95.files.wordpress.com/2010/06/64_1276413753mmbm.jpg" alt="" width="232" height="614" /></span></span></p>
+<p>&nbsp;</p>
+<p>由于没有接触过Word VBA，因此决定用Excel VBA来处理这篇文档。首先全选该文档的内容，粘贴到Excel文档中。然后创建一个新的macro,修改该Macro为以下代码：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;">
+<pre>Sub FormatSheet()'' FormatSheet Macro' Macro recorded 6/13/2010 by Bo Yang'' Keyboard Shortcut: Ctrl+f'    Dim str As String    Dim i As Long        ' Remove blank rows    rownumber = Range(&quot;A65536&quot;).End(xlUp).Row    Do While rownumber &gt;= 1        If Cells(rownumber, 1).Value = &quot;&quot; Then            Rows(rownumber).Delete            rownumber = rownumber - 1        End If        rownumber = rownumber - 1    Loop        ' Copy the Chinese intepretation    For rownumber = 2 To 65535        Cells(rownumber, 2).Value = Cells(rownumber + 1, 1).Value    Next        ' Delete rows which contians Chinese character    ' in their first cells    For rownumber = 2 To 65535        For i = 1 To Len(Cells(rownumber, 1).Value)            str = Mid(Cells(rownumber, 1).Value, i, 1)            If str Like &quot;[Ò»£­ý›]&quot; Then                Rows(rownumber).Delete            End If        Next    Next    End Sub</pre>
+<p> </span></span></p>
+<p>&nbsp;</p>
+<p>然后按自定义快捷键Ctrl+f， 数秒钟后，文档处理完毕，秩序井然矣。</p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2010/06/64_12764139792ekk.jpg" alt="" width="464" height="523" /></p>
+
+
+    <small class="meta">June 13, 2010 | <a href='/vba/2010/06/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2588%25a9%25e7%2594%25a8excel%2520vba%25e5%25a4%2584%25e7%2590%2586%25e6%2596%2587%25e6%25a1%25a3%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2010/06/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520find%2520cpu%2520speed%2520and%2520memory%2520size%2520on%2520solaris%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Find CPU Speed and Memory Size on Solaris</a></h2>
+
+    <p><h2>Find CPU Speed and Memory Size on Solaris</h2>
+<div class="entry">
+<p>As I&rsquo;m writing my thesis I&rsquo;m running tests on an old SMP Solaris machine. Obviously, I need to provide the specs of this machine in the paper so that the readers can see my results in context (ie why everything is taking forever. On linux I would just use&nbsp;<kbd>lshw</kbd>&nbsp;which is your ultimate hardware information goldmine. If you don&rsquo;t have it on your system, go install it now. You will thank me later.</p>
+<p>The ancient Solaris machine I was working with did not have it, so I was forced to find other ways of finding information such as CPU speed and memory size.</p>
+<p>First you can try&nbsp;<kbd>prtdiag</kbd>&nbsp;&ndash; it will tell you detailed information about all your CPU&rsquo;s and memory banks. Unfortunately it is in a weird directory that is not in your $path so you will need to run it with the absolute path:</p>
+<p><code>/usr/platform/sun4u/sbin/prtdiag -v</code></p>
+<p>If you just want information on the CPU&rsquo;s you can also try:</p>
+<p><code>psrinfo -v</code></p>
+<p>Finally, to just get your total memory size do:</p>
+<p><code>prtconf | grep Memory</code></p>
+<p>There might be better ways to do this, but these worked for me. Craig will probably be able to add to this list or correct me.&nbsp;<img class="wp-smiley" src="http://www.terminally-incoherent.com/blog/wp-includes/images/smilies/icon_smile.gif" alt=":)" /></p>
+</div>
+
+
+    <small class="meta">June 11, 2010 | <a href='/unix/linux/2010/06/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520find%2520cpu%2520speed%2520and%2520memory%2520size%2520on%2520solaris%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
   </div>
 
 </div>

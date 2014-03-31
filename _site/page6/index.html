@@ -36,597 +36,785 @@
           <div id='index'>
 
   <div class="post">
-    <h2><a href="/bkup/2012/03/06/using-expect-here-document-in-shell-scripts-4/">Using Expect Here Document in Shell Scripts</a></h2>
+    <h2><a href="/vba/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">选中Excel单元格自动导入多个Excel worksheets</a></h2>
 
-    <p>Sometimes simple interactions are needed for Shell scripts. In this scenario, a here document written in Expect will work well. In following example, the output of Expect here document is assigned to KSH variable rcs_stat.<br />
-<P></p>
-<pre class="python">#!/bin/ksh
+    <p>前日完成<a href="http://blog.csdn.net/bonny95/article/details/6597776">将多个Excel文件批量导入某个Excel文件中</a>老婆规定的任务后，老婆又提出了新的要求：</p></p>
+<ol>
+<li>可以update每个worksheet</li>
+<li>对导入的worksheets进行排序</li>
+<li>自动匹配代导入文件的文件名</li>
+<li>将导入的worksheets中的特定多个单元&#26684;（cells）的内容自动填充到某一表&#26684;的特定区域</li>
+</ol>
+<p><strong><span style="color:#ff0000;">本文中用到的Excel文件及VBA宏可以在<a href="http://download.csdn.net/detail/bonny95/3438424">此处</a>下载。</span></strong></p>
+<p></p>
+<table border="1" width="200" cellspacing="1" cellpadding="1" style="text-align:center;">
+<caption><span style="font-size:16px;">表1 &nbsp;选中的单元&#26684;</span><br />
+</caption>
+<tbody>
+<tr>
+<td style="text-align:center;">1</td>
+<td style="text-align:center;">工作表 1</td>
+</tr>
+<tr>
+<td style="text-align:center;">2</td>
+<td style="text-align:center;">工作表 2</td>
+</tr>
+<tr>
+<td style="text-align:center;">3</td>
+<td style="text-align:center;">工作表 3</td>
+</tr>
+<tr>
+<td style="text-align:center;">4</td>
+<td style="text-align:center;">工作表 4</td>
+</tr>
+<tr>
+<td style="text-align:center;">5</td>
+<td style="text-align:center;">工作表 5</td>
+</tr>
+<tr>
+<td style="text-align:center;">6</td>
+<td style="text-align:center;">工作表 6</td>
+</tr>
+<tr>
+<td style="text-align:center;">7</td>
+<td style="text-align:center;">工作表 7</td>
+</tr>
+<tr>
+<td style="text-align:center;">8</td>
+<td style="text-align:center;">工作表 8</td>
+</tr>
+<tr>
+<td style="text-align:center;">9</td>
+<td style="text-align:center;">工作表 9</td>
+</tr>
+<tr>
+<td style="text-align:center;">10</td>
+<td style="text-align:center;">工作表 10</td>
+</tr>
+</tbody>
+</table></p>
+<p>对应的各个worksheet的名字(Name)是：<em>01&nbsp;工作表 1，&nbsp;02&nbsp;工作表 2，03&nbsp;工作表 3，……，10&nbsp;工作表 10.</em></p>
+<p><em><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521133c6e4.gif" alt="" /><br />
+</em></p>
+<p>待导入的Excel文件的名字为“<em>02 某某银行XX项目_工作表 1_20110701.xls</em>”。</p>
+<p></p>
+<p><span style="color:#ff0000;"><em>Update 2011-07-13 21:50</em></span></p>
+<p>应老婆的要求，更新了程序，遇到并解决的问题有：</p></p>
+<ol>
+<li>Office 2003和2007不兼容——有些method在office2003中正常工作但在office2007中却不再支持，如判定某文件是否存在的函数，解决方法参见<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">FindFileName函数。</span></li>
+<li>如果某个表中的一些单元&#26684;被筛选，则会遇到“不能复制合并的单元&#26684;”(Can't copy merged cell)的问题，解决方法就是在copy前强制关闭autofilter: &nbsp;&nbsp;<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter</span></li>
+<li><span style="font-family:monospace;"><span style="white-space:pre-wrap;">关闭打开的Excel文件或者copy单元&#26684;时会有各种各样的对话框弹出来，解决办法就是加上下面语句：</span></span></li>
+</ol>
+<p><span style="font-family:monospace;"><span style="white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);"></span></span></span></p>
+<pre style="word-wrap:break-word;white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre-wrap;"></span></pre>
+<pre style="word-wrap:break-word;white-space:pre-wrap;">Application.DisplayAlerts = True</pre>
+<pre style="word-wrap:break-word;white-space:pre-wrap;">newWB.Close SaveChanges:=False  ' close without change
+Application.DisplayAlerts = True</pre></p>
+<p><em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em></p>
+<p>傻瓜型用户的需求就是无穷无尽啊……我老婆发现在选择不连续的区域时，只有第一个区域会被处理，其他的没有变化。顶着挨骂的压力Google之后才知道，原来Slection.Areas可以包含所有不连续的选择，然后通过遍历，处理所有的选择……程序改动如下。</p></p>
+<pre>       ' Create new worksheets
+        ' Discontinuous selection is supported by Selection.Areas
+        For Each Rng In Selection.Areas
+            Set SelRange = Rng.Cells
+            Set ColNo = Rng.Columns(1)
+            Set ColDepart = Rng.Columns(2)
+            idx = 1
+            For Each cell In ColDepart.Cells
+                no_str = ColNo.Cells(idx).Value
+                If Len(no_str) = 1 Then
+                    no_str = &quot;0&quot; + no_str
+                End If
+                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
+                idx = idx + 1
+            Next
+        Next</pre>
+<p></p></p>
+<p>实现以上所有需求的代码如下（<em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em>）：</p></p>
+<pre>&lt;span style="font-family: 'Times New Roman';font-size:16px; "&gt;&lt;/span&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap; "&gt;                                         
+Option Explicit
+Dim curWS As Worksheet
 
-autoload formatAPnum
 
-# Set the lab name, COOLLAB
-. $COOLXDIR/.netlabs
-# Get the RCS cell list
-set -A RCSs
-typeset -i nx=0
-cat $COOLXDIR/.coolcell2dcs | while read cell
+Sub LoadWorksheets()
+'
+' LoadWorksheets Macro
+' Macro recorded 7/13/2011 by Bo Yang
+'
+' Keyboard Shortcut: Ctrl+Shift+L
+'
+' *How to use this macro?*
+' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*
+'
+&nbsp; &nbsp; Application.ScreenUpdating = False &nbsp;' stop screen flickering
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' Create new sheets according to selected cells and copy the
+&nbsp; &nbsp; ' contebts of other files into the new sheets
+&nbsp; &nbsp; Dim YesNo As Variant, myFolder As String, MyLF As String
+&nbsp; &nbsp; Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range
+&nbsp; &nbsp; Dim SheetName As String, SheetToBeCopy As String
+&nbsp; &nbsp; Dim ColCnt As Integer
+&nbsp; &nbsp; Dim no_str As String, idx As Integer
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; myFolder = &quot;D:&quot; &nbsp; '*****Change this value as you need*****
+&nbsp; &nbsp; SheetToBeCopy = &quot;信息资产风险评估&quot; &nbsp;' *****Change this value as you need*****
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; MyLF = Chr(10) &amp; Chr(13) &nbsp; &nbsp;' a line feed command
+&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' check that if user select valid columns
+&nbsp; &nbsp; ColCnt = Selection.Columns.Count
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If ColCnt &lt;&gt; 2 Then
+&nbsp; &nbsp; &nbsp; &nbsp; MsgBox (&quot;Please select 2 columns!!!&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;The first column must be digital numbers,&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;And the Second column must be department names&quot; _
+&nbsp; &nbsp; &nbsp; &nbsp; )
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &quot;Do you want to continue?&quot;, _
+&nbsp; &nbsp; &nbsp; &nbsp; vbYesNo, &quot;Caution&quot;)
+&nbsp; &nbsp; Select Case YesNo
+&nbsp; &nbsp; Case vbYes
+&nbsp; &nbsp; &nbsp; &nbsp; myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)
+&nbsp; &nbsp; &nbsp; &nbsp; SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Create new worksheets
+&nbsp; &nbsp; &nbsp; &nbsp; ' Discontinuous selection is supported by Selection.Areas
+&nbsp; &nbsp; &nbsp; &nbsp; For Each Rng In Selection.Areas
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set SelRange = Rng.Cells
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColNo = Rng.Columns(1)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColDepart = Rng.Columns(2)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For Each cell In ColDepart.Cells
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = ColNo.Cells(idx).Value
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Len(no_str) = 1 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = &quot;0&quot; + no_str
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = idx + 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next
+&nbsp; &nbsp; &nbsp; &nbsp; Next
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Sort worksheets
+&nbsp; &nbsp; &nbsp; &nbsp; Call SortWorksheets
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Case vbNo
+&nbsp; &nbsp; &nbsp; &nbsp; Application.ScreenUpdating = True
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
+&nbsp; &nbsp; End Select
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; Application.ScreenUpdating = True
+End Sub
+
+
+Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String
+&nbsp; &nbsp; Dim oSheet As Worksheet, vRet As Variant
+&nbsp; &nbsp; Dim SheetName As String, FileName As String
+&nbsp; &nbsp; Dim Entry As Integer, i As Integer
+
+
+&nbsp; &nbsp; ' Determine where to insert new worksheet
+&nbsp; &nbsp; Entry = 0
+&nbsp; &nbsp; For i = Sheets.Count To 1 Step -1
+&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
+&nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; Next i
+Determ_Entry:
+&nbsp; &nbsp; If Entry = 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; Entry = Sheets.Count
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; 'Example of one worksheet name:
+&nbsp; &nbsp; ' &nbsp; 07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls
+&nbsp; &nbsp; SheetName = no + &quot; &quot; + Depart
+&nbsp; &nbsp; If Not SheetExists(SheetName) Then
+&nbsp; &nbsp; &nbsp; &nbsp; 'worksheet XXX doesn't exist in current workbook
+&nbsp; &nbsp; &nbsp; &nbsp; 'creating a new excel worksheet
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; Set oSheet = Worksheets.Add
+&nbsp; &nbsp; &nbsp; &nbsp; With oSheet
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Name = SheetName
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Move After:=Sheets(Entry)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Activate
+&nbsp; &nbsp; &nbsp; &nbsp; End With
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; FileName = FindFileName(no, Depart, FolderName)
+&nbsp; &nbsp; If FileName &lt;&gt; &quot;&quot; Then
+&nbsp; &nbsp; &nbsp; &nbsp; Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Exit Function
+
+
+End Function
+
+
+Function SheetExists(SheetName As String) As Boolean
+' returns TRUE if the sheet exists in the active workbook
+&nbsp; &nbsp; SheetExists = False
+&nbsp; &nbsp; On Error GoTo NoSuchSheet
+&nbsp; &nbsp; If Len(Sheets(SheetName).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; SheetExists = True
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Function
+&nbsp; &nbsp; End If
+NoSuchSheet:
+End Function
+
+
+Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String
+&nbsp; &nbsp; 'open Excel files and copy the contents to this sheet
+&nbsp; &nbsp; Dim newWB As Workbook, curWB As Workbook
+&nbsp; &nbsp; Dim startRange As Range
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If Dir(FileName) &lt;&gt; &quot;&quot; Then
+&nbsp; &nbsp; &nbsp; &nbsp; ' file exists
+&nbsp; &nbsp; &nbsp; &nbsp; ' Clear all cells of current worksheet
+&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).UsedRange.Clear
+&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = False ' disable alerts
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Open workbooks to be copied
+&nbsp; &nbsp; &nbsp; &nbsp; Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
+&nbsp; &nbsp; &nbsp; &nbsp; Set newWB = Workbooks.Open(FileName)
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter
+&nbsp; &nbsp; &nbsp; &nbsp; Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).UsedRange.Copy
+&nbsp; &nbsp; &nbsp; &nbsp; ' paste to target worksheet
+&nbsp; &nbsp; &nbsp; &nbsp; curWB.Activate
+&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).Range(startRange.Address).PasteSpecial
+&nbsp; &nbsp; &nbsp; &nbsp; Application.CutCopyMode = False &nbsp;'Clear Clipboard
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Close SaveChanges:=False &nbsp;' close without change
+&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = True
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; End If
+
+
+End Function
+
+
+Function FindFileName(no As String, Depart As String, FolderName As String) As String
+&nbsp; &nbsp; Dim Coll_Docs As New Collection
+&nbsp; &nbsp; Dim Search_path, Search_Filter, Search_Fullname As String
+&nbsp; &nbsp; Dim DocName As String
+&nbsp; &nbsp; Dim i As Long
+
+
+&nbsp; &nbsp; Search_path = FolderName &nbsp; ' where ?
+&nbsp; &nbsp; Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?
+&nbsp; &nbsp; Set Coll_Docs = Nothing
+
+
+&nbsp; &nbsp; DocName = Dir(Search_path &amp; &quot;&quot; &amp; Search_Filter)
+
+
+&nbsp; &nbsp; Do Until DocName = &quot;&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;' build the collection
+&nbsp; &nbsp; &nbsp; &nbsp; Coll_Docs.Add Item:=DocName
+&nbsp; &nbsp; &nbsp; &nbsp; DocName = Dir
+&nbsp; &nbsp; Loop
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If Coll_Docs.Count = 1 Then
+&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = Search_path &amp; &quot;&quot; &amp; Coll_Docs(1)
+&nbsp; &nbsp; Else
+&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = &quot;&quot;
+&nbsp; &nbsp; End If
+
+
+End Function
+
+
+Function SortWorksheetsByName() As String
+&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
+&nbsp; &nbsp; Dim sCount As Integer, i As Integer, j As Integer
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Application.ScreenUpdating = False
+&nbsp; &nbsp; sCount = Worksheets.Count
+&nbsp; &nbsp; If sCount = 1 Then Exit Function
+&nbsp; &nbsp; For i = 1 To sCount - 1
+&nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To sCount
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Worksheets(j).Name &lt; Worksheets(i).Name Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; Next j
+&nbsp; &nbsp; Next i
+&nbsp; &nbsp;&nbsp;
+End Function
+
+
+Function SortWorksheets() As String
+&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
+&nbsp; &nbsp; Dim cnt As Integer, i As Integer, j As Integer
+&nbsp; &nbsp; Dim Entry As Integer
+&nbsp; &nbsp; Dim curWS As Worksheet
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet
+&nbsp; &nbsp; 'Application.ScreenUpdating = False
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; cnt = Worksheets.Count
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' Determine where to start sorting
+&nbsp; &nbsp; Entry = 0
+&nbsp; &nbsp; For i = 1 To cnt
+&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
+&nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; Next i
+Determ_Entry:
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; For i = Entry To cnt - 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To cnt
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; Val(Worksheets(j).Name) Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next j
+&nbsp; &nbsp; Next i
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; 'Application.ScreenUpdating = True
+End Function
+</pre>
+<pre></pre>
+<p>如要自动导入每个worksheet的特定单元&#26684;（L2:L6）到表2中的D，E，F，G，H列，可以使用下面的UpdateCells宏。</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521124rpsk.gif" alt="" /></p></p></p>
+<pre>Option Explicit
+
+Sub UpdateCells()
+'
+' UpdateCells Macro
+' Macro recorded 7/13/2011 by Bo Yang
+'
+' Keyboard Shortcut: Ctrl+Shift+C
+'
+' Risk:Cell
+' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6
+Dim Risk5 As Range
+Dim num As String, depart As Range, idx As Integer
+Dim SheetName As String
+Dim SelRange As Range
+Dim curWS As Worksheet
+
+Application.ScreenUpdating = False
+
+Set curWS = ActiveSheet
+Set SelRange = Selection
+
+idx = 1
+For Each depart In SelRange.Columns(2).Cells
+    num = SelRange.Columns(1).Cells(idx).value
+    If Len(num) = 1 Then
+        num = &quot;0&quot; + num
+    End If
+    SheetName = num + &quot; &quot; + depart.value
+    
+    Set Risk5 = SelRange.Columns(3).Cells(idx)
+    
+    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy
+    Risk5.Select
+    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True
+    Application.CutCopyMode = False 'Clear Clipboard
+    
+    idx = idx + 1
+Next
+
+Application.ScreenUpdating = True
+End Sub
+</pre>
+<p></p>
+<pre></pre>
+
+
+    <small class="meta">July 13, 2011 | <a href='/vba/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/vba/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">将多个Excel文件批量导入某个Excel文件中</a></h2>
+
+    <p>这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。</p>
+<p>下面是搜索了半天之后搞出来的Macro，没有异常处理，而且使用了copy/paste，文件太多时效率肯定不高。其实完全可以参照<span style="font-family:Arial, Helvetica, sans-serif;"></span></p>
+<p><a href="http://www.exceltip.com/st/Copy_a_sheet_from_each_workbook_into_your_workbook_in_a_folder_using_VBA_in_Microsoft_Excel/560.html">Copy a sheet from each workbook into your workbook in a folder using VBA in Microsoft Excel</a>&nbsp;和 <a href="http://www.ozgrid.com/VBA/SpeedingUpVBACode.htm">Optimize Slow VBA Code</a> 中的方法来优化。</p></p>
+<pre>Sub LoadSheets()
+    Application.ScreenUpdating = False  ' stop screen flickering
+    
+    ' Create new sheets according to selected cells and copy the
+    ' contebts of other files into the new sheets
+    Dim YesNo As Variant, myFolder As String, MyLF As String
+        
+    MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
+    myFolder = &quot;D:Documents and SettingsbonnyMy Documentstools&quot;   'change this to the location of saved XML files
+    'Windows 7下C盘默认不可写，请修改DefFolder的值
+    
+    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; myclf &amp; _
+        &quot;Do you want to continue?&quot;, _
+        vbYesNo, &quot;Caution&quot;)
+    Select Case YesNo
+    Case vbYes
+        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates&quot;, Default:=myFolder)
+        'Create new worksheets
+        For Each cell In Selection.Cells
+            Call CreateNewWorksheet(cell.Value, myFolder)
+        Next
+    Case vbNo
+        Exit Sub
+    End Select
+    
+    Application.ScreenUpdating = True
+End Sub
+
+Function CreateNewWorksheet(SheetName As String, FolderName As String) As String
+
+    Dim oSheet As Worksheet, vRet As Variant
+    Dim fName As String
+    
+    'creating a new excel worksheet
+    Set oSheet = Worksheets.Add
+    With oSheet
+        .Name = SheetName
+        .Move after:=Sheets(Sheets.Count) '在当前所有worksheet后创建新的工作表
+        .Activate
+    End With
+    
+    'open Excel files and copy the contents to this sheet
+    Dim newWB As Workbook, curWB As Workbook
+    Dim startRange As Range
+    
+    Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
+    fName = FolderName + &quot;&quot; + SheetName + &quot;.xls&quot;
+    Set newWB = Workbooks.Open(fName)
+    newWB.Activate
+    newWB.Sheets(1).Activate ' 假定只有第一个worksheet需要copy
+    Set startRange = newWB.Sheets(1).UsedRange ' Only used range will be copied
+    newWB.Sheets(1).UsedRange.Copy
+    
+    'select the destination cell
+    curWB.Activate
+    Sheets(SheetName).Activate
+    Range(startRange.Address).Select
+    ActiveSheet.Paste
+    Application.CutCopyMode = False  'Clear Clipboard
+    newWB.Close
+    
+    Exit Function
+
+End Function
+
+</pre></p>
+
+
+    <small class="meta">July 11, 2011 | <a href='/vba/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Solaris下/usr/lib/secure/0@0.so.1的错误</a></h2>
+
+    <p>&nbsp;</p>
+<p>这两天一直被下面的错误所困扰：</p>
+<p>
+<pre>AP13: lb -m ccmscell uptime 
+ld.so.1: uname: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
+ksh[216]: 4412 Killed
+ld.so.1: uptime: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
+</pre>
+<p>&nbsp;&nbsp;</p>
+<p>lb是一个调用rsh的脚本，ccmscell是一个server pool，uname是在lb中被调用的。</p>
+<p>&nbsp;</p>
+<p>仔细研究了N遍相关的脚本，Google了N次相关的错误信息，都没有找到有价&#20540;的线索。后来问了一位做过IT的同事，她说以前遇见过类&#20284;的问题，可她的解决方案最终被证明无效。</p>
+<p>&nbsp;</p>
+<p>最终发现不是所有的server上执行这条命令都有问题，有些是可以执行的。对比了之后发现，如果/usr/lib/secure/0@0.so.1的group设置为bin，owner设为root，就不会出现上面的问题。出问题的server上/usr/lib/secure/0@0.so.1的group为other。</p>
+<p>&nbsp;</p>
+<p>进一步调查后发现，/usr/lib/secure/0@0.so.1是在Solaris 5.8上被设为LD_PRELOAD_32的，因为很多程序要被setuid&#043;chroot的伪root调用。当且仅当上面的命令被该伪root执行时，才会出现上面的错误！</p>
+<p>&nbsp;</p>
+<p>幸亏Solaris 5.8已经开始走进坟墓了，即使在落后如我们公司的地方！</p>
+<p>&nbsp;</p>
+<p><strong><span style="font-family:mceinline;">【update2011-06-23】：</span></strong></p>
+<p><strong><span style="font-family:mceinline;">今天发现root cause 不是由于/usr/lib/secure/0@0.so.1的group不对，而是因为remote server（比如pool&nbsp;ccmscell中的server）上没有/usr/lib/secure/0@0.so.1 —— 执行rsh命令的login是setuid&#043;chroot实现的伪root，因此远程的server就需要/usr/lib/secure/0@0.so.1了。</span></strong></p>
+<p><span style="font-family:mceinline;font-weight:bold;">【update 2012-03-12】</span></p>
+<p><strong><span style="font-family:mceinline;">今天在Solaris 9上遇到了这样一个错误：</span></strong></p>
+<p><span style="font-family:mceinline;">&nbsp; &nbsp; ld.so.1: pt_chmod: warning: /lib/0@0.so.1: open failed: illegal insecure pathname<br />
+</span></p>
+<p><strong><span style="font-family:mceinline;">查了很久才想起来有可能是</span></strong><strong>/usr/lib/secure/0@0.so.1造成的。一检查</strong><strong>/usr/lib/secure/0@0.so.1，果然不存在。</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在一个正常工作的server上，</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
+<pre>AP31: echo $LD_PRELOAD_32
+/usr/lib/secure/0@0.so.1</pre></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在不能工作的server上，</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
+<pre>AP13: echo $LD_PRELOAD_32
+/lib/0@0.so.1</pre></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>——仅仅升级了一个软件就又把这个library搞丢了，某些同志们啊，唉……</strong></p>
+
+
+    <small class="meta">June 22, 2011 | <a href='/unix/linux/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">ksh中包含变量的命令调用</a></h2>
+
+    <p>当一个含有变量a的命令存储在某个变量b中时, 利用$($b)时有可能会报错。如下面的代码，有时可以成功执行，有时会发生&ldquo;ipcs|grep xxx can not be found"的错误。&nbsp;</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	IPCSCMD="ipcs"
+else
+	IPCSCMD="ipcs|grep $LOGNAME"
+fi
+for Eachline in $($IPCSCMD)
 do
-	if [[ &quot;$cell&quot; = c* ]]
-	then
-		rcs=${cell%%$COOLLAB*}
-		RCSs[$nx]=${rcs#c}
-		nx=$nx+1
-	fi
-done
-
-# Check RCS status
-typeset -i loopCount=0
-rcs_cnt=${#RCSs[*]}
-B_server=$(formatAPnum $BserverAP)
-while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
+	IFS=" " # Space
+	# Handle IPCs
+	...
+done</pre>
+<p>&nbsp;</p>
+<p>究其根源，应该是对IPCSCMD的解析出了问题。将代码改为下面的形式，就可以正确执行了。注意IFS的变化&mdash;&mdash;改成下面的形式后必须将循环内的IFS改为Space和Tab。</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	ipcs
+else
+	ipcs|grep $LOGNAME
+fi | while read Eachline
 do
-	loopCount=${loopCount}+1
-
-	nx=0
-	while [ $nx -lt $rcs_cnt ]
-	do
-		rcs_stat=&quot;OOS&quot;
-		rcs_stat=$(
-expect - &lt;&lt;!
-log_user 0
-set timeout 20
-spawn $COOL_RSH ap$B_server TICLI
-send &quot;op:cell ${RCSs[$nx]}\r&quot;
-expect {
-	timeout {puts &quot;OOS\n&quot;}
-	&quot;*DL(S) DOWN&quot; {puts &quot;OOS\n&quot;}
-	&quot;*DL(S) UP&quot; {puts &quot;UP\n&quot;}
-}
-!
-		)
-
-		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
-		then
-			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
-			unset RCSs[$nx]
-		fi
-
-		nx=${nx}+1
-	done
-
-	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
+	IFS=" 	" # Space and tab
+	# Handle IPCs
+	...
 done
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
-coolprint - &quot;All RCSs are up.&quot;
-exit 0
+
+    <small class="meta">June 03, 2011 | <a href='/unix/linux/2011/06/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520ksh%25e4%25b8%25ad%25e5%258c%2585%25e5%2590%25ab%25e5%258f%2598%25e9%2587%258f%25e7%259a%2584%25e5%2591%25bd%25e4%25bb%25a4%25e8%25b0%2583%25e7%2594%25a8%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">chroot, setuid() & set gid</a></h2>
+
+    <p>这篇文章搜集整理了网上chroot, setuid() &amp; set gid相关的文章。</p>
+<ol>
+<li><a href="http://www.unixwiz.net/techtips/chroot-practices.html">Best Practices for UNIX chroot() Operations</a></li>
+<li><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">How to break out of a&nbsp;<tt>chroot()</tt></a></strong><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">&nbsp;jail</a></strong></li>
+<li><strong><a href="http://www.cs.berkeley.edu/~daw/papers/setuid-usenix02.pdf">Setuid Demystifid</a></strong></li>
+<li><strong><a href="http://oldfield.wattle.id.au/luv/permissions.html">Introduction to Unix file permissions</a></strong></li>
+</ol>
+
+
+    <small class="meta">June 02, 2011 | <a href='/unix/linux/2011/06/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520chroot%252c%2520setuid%2528%2529%2520%2526amp%253b%2520set%2520gid%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/05/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25a6%2582%25e4%25bd%2595%25e5%2588%25a4%25e6%2596%25ad%25e4%25b8%2580%25e4%25b8%25aa%2528%25e5%258e%258b%25e7%25bc%25a9%2529%25e6%2596%2587%25e4%25bb%25b6%25e7%259a%2584%25e7%25b1%25bb%25e5%259e%258b%25ef%25bc%258c%25e4%25bb%25a5%25e5%258f%258azcatgzcat%250d%250a%2520%25/">如何判断一个(压缩)文件的类型，以及zcat/gzcat</a></h2>
+
+    <p>恰似&ldquo;一师是个好学校&rdquo;，dd是个好工具&mdash;&mdash;只消用它逐字copy出某个文件第一个block的内容，就可以判断出该文件的类型！！！</p>
+<p>&nbsp;</p>
+<p>
+<pre>bjbldd&gt;1&gt; dd if=MMEgolden.tar bs=512 count=1 &gt; dd_tmp
+1+0 records in
+1+0 records out
+bjbldd&gt;&gt; file dd_tmp
+dd_tmp:         USTAR tar archive
+bjbldd&gt;&gt; dd if=varofvar bs=512 count=1 &gt; dd_tmp
+0+1 records in
+0+1 records out
+bjbldd&gt;&gt; file dd_tmp
+dd_tmp:         executable /bin/ksh script
+bjbldd&gt;&gt; dd if=Tk-804.029.tar.gz bs=512 count=1 &gt; dd_tmp
+1+0 records in
+1+0 records out
+bjbldd&gt;&gt; file dd_tmp
+dd_tmp:         gzip compressed data - deflate method , original file name , max compression
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>另外，zcat或者gzcat是用于cat gzip压缩文件的工具，只是在不同的平台有些差异：/bin/zcat在Linux上work的很好，可是当它在Solaris上cat gzip文件的内容时，就会报错。Solaris上cat gzip文件只能用/bin/gzcat. &mdash;&mdash;就是这个小小的差异，浪费了我一天的时间！</p>
+<p>&nbsp;</p>
+<p>跨平台的cat gzip文件的代码如下：</p>
+<p>
+<pre>OS="`/bin/uname`"
+if [ "${OS}" != "Linux" ]
+then
+	ZCAT="/bin/zcat"
+else
+	ZCAT="/bin/gzcat"
+fi
+.......
+${ZCAT} ${TMPDIR}/ngn_platform.cpio.Z | /bin/cpio -idmvu  -H odc ${SAT_CPIO_FLAG}</pre>
+<p>&nbsp;</p>
+<p>貌似cpio的用法也很强大哦～</p>
+
+
+    <small class="meta">May 20, 2011 | <a href='/unix/linux/2011/05/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25a6%2582%25e4%25bd%2595%25e5%2588%25a4%25e6%2596%25ad%25e4%25b8%2580%25e4%25b8%25aa%2528%25e5%258e%258b%25e7%25bc%25a9%2529%25e6%2596%2587%25e4%25bb%25b6%25e7%259a%2584%25e7%25b1%25bb%25e5%259e%258b%25ef%25bc%258c%25e4%25bb%25a5%25e5%258f%258azcatgzcat%250d%250a%2520%25/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/05/16/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520yum%25e7%259a%2584proxy%25e8%25ae%25be%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">yum的proxy设置</a></h2>
+
+    <p>方法一：</p>
+<p>
+<pre>export http_proxy="proxy:portnum"</pre>
+<p>&nbsp;</p>
+<p>方法二：（<a href="http://www.fedoraforum.org/forum/showthread.php?t=742">http://www.fedoraforum.org/forum/showthread.php?t=742</a>）</p>
+<table id="post4089" class="tborder" style="width:100%;" border="0" cellspacing="1" cellpadding="6" align="center">
+<tbody>
+<tr>
+<td class="alt1">
+<div id="post_message_4089">create the following files in /etc/profile.d, and then this will work in *any* shell for *any* user of the system</p>
+<pre>#proxy.sh
+export http_proxy=http://host.com:port/
+export ftp_proxy=http://host.com:port/
+export no_proxy=.domain.com
+export HTTP_PROXY=http://host.com:port/
+export FTP_PROXY=http://host.com:port/
+#proxy.csh
+setenv http_proxy http://host.com:port/
+setenv ftp_proxy http://host.com:port/
+setenv no_proxy .domain.com
+setenv HTTP_PROXY http://host.com:port/
+setenv FTP_PROXY http://host.com:port/</pre>
+<p>&nbsp;</p></div>
+<div>方法三：(<a href="http://linux.die.net/man/5/yum.conf">http://linux.die.net/man/5/yum.conf</a>)</div>
+<div>在/etc/yum.conf中设置proxy，prox_username和proxy_password选项。</div>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+    <small class="meta">May 16, 2011 | <a href='/unix/linux/2011/05/16/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520yum%25e7%259a%2584proxy%25e8%25ae%25be%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/perl/unix/linux/2011/05/16/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e7%259a%2584library%25e8%25ae%25be%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Perl的library设置</a></h2>
+
+    <p>参考链接：</p>
+<ol>
+<li><a href="http://stackoverflow.com/questions/841785/how-do-i-include-a-perl-module-thats-in-a-different-directory">http://stackoverflow.com/questions/841785/how-do-i-include-a-perl-module-thats-in-a-different-directory</a></li>
+<li><a href="http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc">http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc</a></li>
+</ol>
+<p>&nbsp;</p>
+<p>在Fedora/RHEL/CentOS中，perl 的library默认安装路径为：</p>
+<p>
+<pre>@INC (@INC contains: /usr/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi /usr/lib/perl5/site_perl/5.8.8 /usr/lib/perl5/site_perl /usr/lib64/perl5/vendor_perl/5.8.8/x86_64-linux-thread-multi /usr/lib/perl5/vendor_perl/5.8.8 /usr/lib/perl5/vendor_perl /usr/lib64/perl5/5.8.8/x86_64-linux-thread-multi /usr/lib/perl5/5.8.8 .)</pre>
+<p>&nbsp;</p>
+<p>如果要使用自定义的perllib，就需要参考以下的设置了。</p>
+<p>&nbsp;</p>
+<p>EDIT: Putting the right solution first, originally from&nbsp;<a href="http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc">this question</a>. It's the only one that searches relative to the&nbsp;<strong>module</strong>&nbsp;directory:</p>
+<pre class="lang-perl prettyprint"><code><span class="kwd">use</span><span class="pln"> </span><span class="typ">FindBin</span><span class="pun">;</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="com"># locate this script</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> lib </span><span class="str">"$FindBin::Bin/.."</span><span class="pun">;</span><span class="pln"> &nbsp;</span><span class="com"># use the parent directory</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> yourlib</span><span class="pun">;</span><span class="pln"><br /></span></code></pre>
+<p>There's many other ways that search for libraries relative to the&nbsp;<strong>current</strong>&nbsp;directory. You can invoke perl with the -I argument, passing the directory of the other module:</p>
+<pre class="lang-perl prettyprint"><code><span class="pln">perl </span><span class="pun">-</span><span class="pln">I</span><span class="pun">..</span><span class="pln"> yourscript</span><span class="pun">.</span><span class="pln">pl<br /></span></code></pre>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0">You can include a line near the top of your perl script:</span></p>
+<pre class="lang-perl prettyprint"><code><span class="kwd"><span class="goog_qs-tidbit goog_qs-tidbit-0">use</span></span><span class="pln"><span class="goog_qs-tidbit goog_qs-tidbit-0"> lib </span></span><span class="str"><span class="goog_qs-tidbit goog_qs-tidbit-0">'..'</span></span><span class="pun"><span class="goog_qs-tidbit goog_qs-tidbit-0">;</span></span><span class="pln"><br /></span></code></pre>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0">You can modify the environment variable PERL5LIB before you run the</span>&nbsp;script:</p>
+<pre class="lang-perl prettyprint"><code><span class="pln">export PERL5LIB</span><span class="pun">=</span><span class="pln">$PERL5LIB</span><span class="pun">:..</span><span class="pln"><br /></span></code></pre>
+<p>The push(@INC) strategy can also work, but it has to be wrapped in BEGIN{} to make sure that the push is run before the module search:</p>
+<pre class="lang-perl prettyprint"><code><span class="kwd">BEGIN</span><span class="pln"> </span><span class="pun">{</span><span class="pln">push </span><span class="lit">@INC</span><span class="pun">,</span><span class="pln"> </span><span class="str">'..'</span><span class="pun">}</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> yourlib</span><span class="pun">;</span></code></pre>
+<p>&nbsp;</p>
+
+
+    <small class="meta">May 16, 2011 | <a href='/perl/unix/linux/2011/05/16/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e7%259a%2584library%25e8%25ae%25be%25e7%25bd%25ae%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2011/05/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520how%2520to%2520list%2520processes%2520attached%2520to%2520a%2520shared%2520memory%2520segment%2520in%2520linux%253f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">How to list processes attached to a shared memory segment in linux?</a></h2>
+
+    <p>本文整理自网络，参考网页(references):</p>
+<ol>
+<li><a href="http://stackoverflow.com/questions/5658568/how-to-list-processes-attached-to-a-shared-memory-segment-in-linux">http://stackoverflow.com/questions/5658568/how-to-list-processes-attached-to-a-shared-memory-segment-in-linux</a></li>
+<li><a href="http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Frzahz%2Fipcs.htm">http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Frzahz%2Fipcs.htm</a></li>
+</ol>
+<p>[Question]:</p>
+<p><span><br />
+</span></p>
+<p>How do I determine what process is attached to a shared memory segment?</p>
+<pre><code>awagner@tree:/home/awagner$ ipcs -m
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x00000000 0          root       777        102400     1                       
+0x00000000 32769      root       774        96         1          dest         
+0x00000000 98306      awagner    600        393216     2          dest         
+0x00000000 131075     awagner    600        393216     2          dest    
+</code></pre>
+<p>i.e. how do I figure out which two processes are attached to segment 98305?</p>
+<p>&nbsp;</p>
+<p>[Answer]:</p>
+<p>
+<span><br />
+</span></p>
+<p>I don't think you can do this with the standard tools. You can use&nbsp;<code>ipcs -mp</code>&nbsp;to get the process ID of the<em>last</em>&nbsp;process to attach/detach but I'm not aware of how to get&nbsp;<em>all</em>&nbsp;attached processes with&nbsp;<code>ipcs</code>.</p>
+<p>With a two-process-attached segment, assuming they both&nbsp;<em>stayed</em>&nbsp;attached, you can possibly figure out from the creator PID&nbsp;<code>cpid</code>&nbsp;and last-attached PID&nbsp;<code>lpid</code>&nbsp;which are the two processes but that won't scale to more than two processes so its usefulness is limited.</p>
+<p>The&nbsp;<code>cat /proc/sysvipc/shm</code>&nbsp;method seems similarly limited but I believe there's a way to do it with other parts of the&nbsp;<code>/proc</code>&nbsp;filesystem, as shown below:</p>
+<p>When I do a&nbsp;<code>grep</code>&nbsp;on the&nbsp;<code>procfs</code>&nbsp;maps for all processes, I get entries containing lines for the&nbsp;<code>cpid</code>and&nbsp;<code>lpid</code>&nbsp;processes.</p>
+<p>For example, I get the following shared memory segment from&nbsp;<code>ipcs -m</code>:</p>
+<pre><code>------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x00000000 123456     pax        600        1024       2          dest
+</code></pre>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0">and, from&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">ipcs -mp</span></code><span class="goog_qs-tidbit goog_qs-tidbit-0">, the&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">cpid</span></code><span class="goog_qs-tidbit goog_qs-tidbit-0">&nbsp;is 3956 and the&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">lpid</span></code><span class="goog_qs-tidbit goog_qs-tidbit-0">&nbsp;is 9999 for that given shared memory segment (123456).</span></p>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0">Then, with the command&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">grep 123456</span>&nbsp;/proc/*/maps</code>, I see:</p>
+<pre><code>/proc/3956/maps: blah blah blah 123456 /SYSV000000 (deleted)
+/proc/9999/maps: blah blah blah 123456 /SYSV000000 (deleted)
+</code></pre>
+<p>So there&nbsp;<em>is</em>&nbsp;a way to get the processes that attached to it. I'm pretty certain that the&nbsp;<code>dest</code>&nbsp;status and<code>(deleted)</code>&nbsp;indicator are because the creator has marked the segment for destruction once the final detach occurs, not that it's already been destroyed.</p>
+<p>So, by scanning of the&nbsp;<code>/proc/*/maps</code>&nbsp;"files", you should be able to discover which PIDs are currently attached to a given segment.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+<p>
+<span>
+<dt><strong>CPID</strong>&nbsp;(-p, -a)</dt>
+<dd>The process ID of the job that created the shared memory segment.</dd>
+<p></span><span><br />
+</span></p>
+<p>&nbsp;</p>
+<p><span>
+<dt><strong>LPID</strong>&nbsp;(-p, -a)</dt>
+<dd>The process ID of the last job to attach or detach from the shared memory segment or change the semaphore value.</dd>
+<p></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+    <small class="meta">May 13, 2011 | <a href='/unix/linux/2011/05/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520how%2520to%2520list%2520processes%2520attached%2520to%2520a%2520shared%2520memory%2520segment%2520in%2520linux%253f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/perl/unix/linux/2011/05/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520shell%25e6%25b5%25ae%25e7%2582%25b9%25e6%2595%25b0%25e8%25bf%2590%25e7%25ae%2597%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Shell浮点数运算</a></h2>
+
+    <p>Shell本身不支持浮点数运算，(())之类的数学运算符只能进行整数运算。要想在shell中运算浮点数，只能借助于bc, Awk或者Perl。 如</p>
+<p>
+<pre>a=0.1
+b=0.2
+c=$(echo "$a+$b" | bc -l)</pre>
+<p>&nbsp;</p>
+<p>或者</p>
+<p>
+<pre>perl -e "print STDOUT $a + $b;"</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>需要注意的是，如果数学表达式中有负数，则必须确保运算符(+ - * /)与其前后的表达式之间至少有一空格。如：</p>
+<p>
+<pre>[bonn@bonn Downloads]$ echo $a $b
+-0.1 -0.2
+[bonn@bonn Downloads]$ echo "$a - $b" | bc -l
+.1
+[bonn@bonn Downloads]$ perl -e "print STDOUT $a - $b;"
+0.1
 </pre>
 <p>&nbsp;</p>
 
 
-    <small class="meta">March 06, 2012 | <a href='/bkup/2012/03/06/using-expect-here-document-in-shell-scripts-4/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/shell/2012/03/06/using-expect-here-document-in-shell-scripts-4/">Using Expect Here Document in Shell Scripts</a></h2>
-
-    <p>Sometimes simple interactions are needed for Shell scripts. In this scenario, a here document written in Expect will work well. In following example, the output of Expect here document is assigned to KSH variable rcs_stat.<br />
-<P></p>
-<pre class="python">#!/bin/ksh
-
-autoload formatAPnum
-
-# Set the lab name, COOLLAB
-. $COOLXDIR/.netlabs
-# Get the RCS cell list
-set -A RCSs
-typeset -i nx=0
-cat $COOLXDIR/.coolcell2dcs | while read cell
-do
-	if [[ &quot;$cell&quot; = c* ]]
-	then
-		rcs=${cell%%$COOLLAB*}
-		RCSs[$nx]=${rcs#c}
-		nx=$nx+1
-	fi
-done
-
-# Check RCS status
-typeset -i loopCount=0
-rcs_cnt=${#RCSs[*]}
-B_server=$(formatAPnum $BserverAP)
-while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
-do
-	loopCount=${loopCount}+1
-
-	nx=0
-	while [ $nx -lt $rcs_cnt ]
-	do
-		rcs_stat=&quot;OOS&quot;
-		rcs_stat=$(
-expect - &lt;&lt;!
-log_user 0
-set timeout 20
-spawn $COOL_RSH ap$B_server TICLI
-send &quot;op:cell ${RCSs[$nx]}\r&quot;
-expect {
-	timeout {puts &quot;OOS\n&quot;}
-	&quot;*DL(S) DOWN&quot; {puts &quot;OOS\n&quot;}
-	&quot;*DL(S) UP&quot; {puts &quot;UP\n&quot;}
-}
-!
-		)
-
-		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
-		then
-			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
-			unset RCSs[$nx]
-		fi
-
-		nx=${nx}+1
-	done
-
-	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
-done
-
-coolprint - &quot;All RCSs are up.&quot;
-exit 0
-</pre>
-<p>&nbsp;</p>
-
-
-    <small class="meta">March 06, 2012 | <a href='/shell/2012/03/06/using-expect-here-document-in-shell-scripts-4/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2012/03/06/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520shell%25e4%25b8%25ad%25e4%25bd%25bf%25e7%2594%25a8expect%2520here%2520document%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Shell中使用Expect Here Document</a></h2>
-
-    <p>在使用Shell写程序时，有时不得不面对交互的问题——可惜shell往往无法自动完成交互。如果交互的内容很多，自然是直接应用Expect脚本比较方便；如果交互的内容很少，而且考虑到Shell的易用性，在Shell脚本中创建一个Expect 的Here Document更加方便灵活。</p>
-<p>如下例所示，Expect&nbsp;Here Document可以直接运行并将运行结果赋给KSH变量rcs_stat。</p>
-<p>
-<pre>#!/bin/ksh
-
-autoload formatAPnum
-
-# Set the lab name, COOLLAB
-. $COOLXDIR/.netlabs
-# Get the RCS cell list
-set -A RCSs
-typeset -i nx=0
-cat $COOLXDIR/.coolcell2dcs | while read cell
-do
-	if [[ &quot;$cell&quot; = c* ]]
-	then
-		rcs=${cell%%$COOLLAB*}
-		RCSs[$nx]=${rcs#c}
-		nx=$nx+1
-	fi
-done
-
-# Check RCS status
-typeset -i loopCount=0
-rcs_cnt=${#RCSs[*]}
-B_server=$(formatAPnum $BserverAP)
-while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
-do
-	loopCount=${loopCount}+1
-
-	nx=0
-	while [ $nx -lt $rcs_cnt ]
-	do
-		rcs_stat=&quot;OOS&quot;
-		rcs_stat=$(
-expect - &lt;&lt;!
-log_user 0
-set timeout 20
-spawn $COOL_RSH ap$B_server TICLI
-send &quot;op:cell ${RCSs[$nx]}r&quot;
-expect {
-	timeout {puts &quot;OOSn&quot;}
-	&quot;*DL(S) DOWN&quot; {puts &quot;OOSn&quot;}
-	&quot;*DL(S) UP&quot; {puts &quot;UPn&quot;}
-}
-!
-		)
-
-		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
-		then
-			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
-			unset RCSs[$nx]
-		fi
-
-		nx=${nx}+1
-	done
-
-	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
-done
-
-coolprint - &quot;All RCSs are up.&quot;
-exit 0
-</pre></p>
-<p></p>
-<p></p>
-
-
-    <small class="meta">March 06, 2012 | <a href='/bkup/2012/03/06/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520shell%25e4%25b8%25ad%25e4%25bd%25bf%25e7%2594%25a8expect%2520here%2520document%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/tips/unix/linux/2012/03/06/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520shell%25e4%25b8%25ad%25e4%25bd%25bf%25e7%2594%25a8expect%2520here%2520document%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Shell中使用Expect Here Document</a></h2>
-
-    <p>在使用Shell写程序时，有时不得不面对交互的问题——可惜shell往往无法自动完成交互。如果交互的内容很多，自然是直接应用Expect脚本比较方便；如果交互的内容很少，而且考虑到Shell的易用性，在Shell脚本中创建一个Expect 的Here Document更加方便灵活。</p>
-<p>如下例所示，Expect&nbsp;Here Document可以直接运行并将运行结果赋给KSH变量rcs_stat。</p>
-<p>
-<pre>#!/bin/ksh
-
-autoload formatAPnum
-
-# Set the lab name, COOLLAB
-. $COOLXDIR/.netlabs
-# Get the RCS cell list
-set -A RCSs
-typeset -i nx=0
-cat $COOLXDIR/.coolcell2dcs | while read cell
-do
-	if [[ &quot;$cell&quot; = c* ]]
-	then
-		rcs=${cell%%$COOLLAB*}
-		RCSs[$nx]=${rcs#c}
-		nx=$nx+1
-	fi
-done
-
-# Check RCS status
-typeset -i loopCount=0
-rcs_cnt=${#RCSs[*]}
-B_server=$(formatAPnum $BserverAP)
-while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
-do
-	loopCount=${loopCount}+1
-
-	nx=0
-	while [ $nx -lt $rcs_cnt ]
-	do
-		rcs_stat=&quot;OOS&quot;
-		rcs_stat=$(
-expect - &lt;&lt;!
-log_user 0
-set timeout 20
-spawn $COOL_RSH ap$B_server TICLI
-send &quot;op:cell ${RCSs[$nx]}r&quot;
-expect {
-	timeout {puts &quot;OOSn&quot;}
-	&quot;*DL(S) DOWN&quot; {puts &quot;OOSn&quot;}
-	&quot;*DL(S) UP&quot; {puts &quot;UPn&quot;}
-}
-!
-		)
-
-		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
-		then
-			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
-			unset RCSs[$nx]
-		fi
-
-		nx=${nx}+1
-	done
-
-	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
-done
-
-coolprint - &quot;All RCSs are up.&quot;
-exit 0
-</pre></p>
-<p></p>
-<p></p>
-
-
-    <small class="meta">March 06, 2012 | <a href='/tips/unix/linux/2012/03/06/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520shell%25e4%25b8%25ad%25e4%25bd%25bf%25e7%2594%25a8expect%2520here%2520document%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2012/02/02/file-descriptors-per-process/">File Descriptors per Process</a></h2>
-
-    <p>A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:</p>
-<ol>
-<li><code>ulimit -a # all limitations</code></li>
-<li><code>ulimit -Sn # soft limit</code></li>
-<li><code>ulimit -Hn # hard limit</code></li>
-</ol>
-<p>If the file descriptor limit is exceeded for a process, you may see the error <code>Too Many Open Files</code>.</p>
-<p>And if you want to change the limit per process temporarily, you can:</p>
-<ol>
-<li><code>ulimit -n &lt;desired_#&gt; # both</code></li>
-<li><code>ulimit -Sn &lt;desired_#&gt; # soft limit</code></li>
-<li><code>ulimit -Hn &lt;desired_#&gt; # hard limit</code></li>
-</ol>
-<p>To check the open files of a process, you can use command <code>pfiles &lt;PID&gt;</code>.</p>
-<p>To check the run time limit of each process in Solaris, you can <code>plimit &lt;PID&gt;</code>(it seems this command is not supported in Linux). If you have the root permission and you want to change the limit of an process without killing or restarting the process, you can <code>plimit -n &lt;desired_#&gt;</code>.</p>
-<p>It was said that it may be dangerous to set the soft limit higher than 256 or hard limit greater than 1024 due to limitations with the stdio library.If programs require more file descriptors, they should use setrlimit directly.</p>
-<p>-------------<br />
-References:</p>
-<ol>
-<li><a href="http://www.brandonhutchinson.com/File_descriptors.html">File descriptors</a></li>
-<li><a href="http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/">Linux Increase The Maximum Number Of Open Files / File Descriptors (FD)</a></li>
-<li><a href="http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/">Linux / UNIX: List Open Files for Process</a></li>
-<li><a href="http://www.princeton.edu/~unix/Solaris/troubleshoot/filedesc.html">Princeton University Enterprise Servers and Storage, File Descriptors</a></li>
-<li><a href="http://compute.cnr.berkeley.edu/cgi-bin/man-cgi?plimit+1">plimit</a></li>
-</ol>
-
-
-    <small class="meta">February 02, 2012 | <a href='/bkup/2012/02/02/file-descriptors-per-process/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2012/02/02/file-descriptors-per-process/">File Descriptors per Process</a></h2>
-
-    <p>A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:</p>
-<ol>
-<li><code>ulimit -a # all limitations</code></li>
-<li><code>ulimit -Sn # soft limit</code></li>
-<li><code>ulimit -Hn # hard limit</code></li>
-</ol>
-<p>If the file descriptor limit is exceeded for a process, you may see the error <code>Too Many Open Files</code>.</p>
-<p>And if you want to change the limit per process temporarily, you can:</p>
-<ol>
-<li><code>ulimit -n &lt;desired_#&gt; # both</code></li>
-<li><code>ulimit -Sn &lt;desired_#&gt; # soft limit</code></li>
-<li><code>ulimit -Hn &lt;desired_#&gt; # hard limit</code></li>
-</ol>
-<p>To check the open files of a process, you can use command <code>pfiles &lt;PID&gt;</code>.</p>
-<p>To check the run time limit of each process in Solaris, you can <code>plimit &lt;PID&gt;</code>(it seems this command is not supported in Linux). If you have the root permission and you want to change the limit of an process without killing or restarting the process, you can <code>plimit -n &lt;desired_#&gt;</code>.</p>
-<p>It was said that it may be dangerous to set the soft limit higher than 256 or hard limit greater than 1024 due to limitations with the stdio library.If programs require more file descriptors, they should use setrlimit directly.</p>
-<p>-------------<br />
-References:</p>
-<ol>
-<li><a href="http://www.brandonhutchinson.com/File_descriptors.html">File descriptors</a></li>
-<li><a href="http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/">Linux Increase The Maximum Number Of Open Files / File Descriptors (FD)</a></li>
-<li><a href="http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/">Linux / UNIX: List Open Files for Process</a></li>
-<li><a href="http://www.princeton.edu/~unix/Solaris/troubleshoot/filedesc.html">Princeton University Enterprise Servers and Storage, File Descriptors</a></li>
-<li><a href="http://compute.cnr.berkeley.edu/cgi-bin/man-cgi?plimit+1">plimit</a></li>
-</ol>
-
-
-    <small class="meta">February 02, 2012 | <a href='/unix/linux/2012/02/02/file-descriptors-per-process/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/industry/2012/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520onlive-%25e5%259c%25a8ipad%25e4%25b8%258a%25e4%25bd%25bf%25e7%2594%25a8ms%2520word%252c%2520excel%252c%2520powerpoint%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">OnLive——在iPad上使用MS Word, Excel, PowerPoint</a></h2>
-
-    <p>昨晚睡前看到Walter Mossburg的最新文章<a href="http://allthingsd.com/20120111/working-in-word-excel-powerpoint-on-an-ipad/">Working in Word, Excel, PowerPoint on an iPad</a>：尽管iPad上已经有office软件，可以在上面编辑或创建文档，但这些软件对MS Office的兼容性并不好，而且还是收费的。<a href="http://desktop.onlive.com/">OnLive<br />
- Desktop</a>即将推出一个免费的应用，该应用可以利用云端的MS Word, Excel, PowerPoint创建并编辑文档，文档保存在云端，可以在iPad和PC上（今后会有Android版）编辑。免费版每人2G云端存储空间，付费版$10每月每人50G空间。&nbsp;除常用的Office软件，还支持常用的Windows小程序，如计算器，画图板，记事本等。</p>
-<p>OnLive对于网络要求较高，低于1M的网络很可能无法连接到服务器。另外，文档输入时的虚拟键盘不是iPad的虚拟键盘而是Windows的键盘，编辑长文档时会很麻烦。</p>
-<p style="text-align:center;"><img src="http://online.wsj.com/public/resources/images/PJ-BE740_PTECHJ_G_20120111170747.jpg" alt="" /></p>
-<p>看过视频之后，我认为这个软件就是一个高级版的VNC应用，创新之处就在于云端的Windows服务器集群，能维护Windows环境以及自动为用户分配Windows服务器。一年多以前，在《<a href="http://blog.csdn.net/bonny95/article/details/5857256">Splashtop Remote——让你在iPad上也能用Windows下的应用</a>》一文中，我曾预言</p>
-<p><span style="background-color:rgb(204,204,204);">&quot;<span style="color:rgb(51,51,51);font-family:Arial;font-size:14px;line-height:26px;text-align:left;">试想如果将来有公司（比如这个DeviceVM）推出一项服务（可以免费，也可收费），为用户提供现成的Windows应用，而用户所需要做的就是在iPad或gPad上安装Splashtop Remote，打开这个应用就可以自动连接到DeviceVM的Windows<br />
- PC/Server，利用现成的Windows程序了——省去了自己购买并维护PC的很多麻烦，节省了购买大量Windows软件的开支，何乐而不为呢？而且这也正契合了时下的云计算潮流。</span>&quot;</span></p>
-<p>果然英雄所见略同，已经有人开始提供这样的服务了。不过OnLive能否流行开来，还有待用户和市场的检验。使用体验是否可以被用户接受？如何解决网速（无论有线或无线）慢的情况？ 微软会不会推出iPad版的Office软件？即使该服务的终极目标不仅仅限于Windows或者Office软件，其他只能能在PC运行的程序会不会有替代解决方案在iPad或者Android平板上？以及现存的很多类VNC的软件……凡此种种，都构成了该服务的不确定因素。</p>
-<p>无论如何，这都是一个很好的尝试。</p>
-
-
-    <small class="meta">January 13, 2012 | <a href='/industry/2012/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520onlive-%25e5%259c%25a8ipad%25e4%25b8%258a%25e4%25bd%25bf%25e7%2594%25a8ms%2520word%252c%2520excel%252c%2520powerpoint%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2012/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520onlive-%25e5%259c%25a8ipad%25e4%25b8%258a%25e4%25bd%25bf%25e7%2594%25a8ms%2520word%252c%2520excel%252c%2520powerpoint%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">OnLive——在iPad上使用MS Word, Excel, PowerPoint</a></h2>
-
-    <p>昨晚睡前看到Walter Mossburg的最新文章<a href="http://allthingsd.com/20120111/working-in-word-excel-powerpoint-on-an-ipad/">Working in Word, Excel, PowerPoint on an iPad</a>：尽管iPad上已经有office软件，可以在上面编辑或创建文档，但这些软件对MS Office的兼容性并不好，而且还是收费的。<a href="http://desktop.onlive.com/">OnLive<br />
- Desktop</a>即将推出一个免费的应用，该应用可以利用云端的MS Word, Excel, PowerPoint创建并编辑文档，文档保存在云端，可以在iPad和PC上（今后会有Android版）编辑。免费版每人2G云端存储空间，付费版$10每月每人50G空间。&nbsp;除常用的Office软件，还支持常用的Windows小程序，如计算器，画图板，记事本等。</p>
-<p>OnLive对于网络要求较高，低于1M的网络很可能无法连接到服务器。另外，文档输入时的虚拟键盘不是iPad的虚拟键盘而是Windows的键盘，编辑长文档时会很麻烦。</p>
-<p style="text-align:center;"><img src="http://online.wsj.com/public/resources/images/PJ-BE740_PTECHJ_G_20120111170747.jpg" alt="" /></p>
-<p>看过视频之后，我认为这个软件就是一个高级版的VNC应用，创新之处就在于云端的Windows服务器集群，能维护Windows环境以及自动为用户分配Windows服务器。一年多以前，在《<a href="http://blog.csdn.net/bonny95/article/details/5857256">Splashtop Remote——让你在iPad上也能用Windows下的应用</a>》一文中，我曾预言</p>
-<p><span style="background-color:rgb(204,204,204);">&quot;<span style="color:rgb(51,51,51);font-family:Arial;font-size:14px;line-height:26px;text-align:left;">试想如果将来有公司（比如这个DeviceVM）推出一项服务（可以免费，也可收费），为用户提供现成的Windows应用，而用户所需要做的就是在iPad或gPad上安装Splashtop Remote，打开这个应用就可以自动连接到DeviceVM的Windows<br />
- PC/Server，利用现成的Windows程序了——省去了自己购买并维护PC的很多麻烦，节省了购买大量Windows软件的开支，何乐而不为呢？而且这也正契合了时下的云计算潮流。</span>&quot;</span></p>
-<p>果然英雄所见略同，已经有人开始提供这样的服务了。不过OnLive能否流行开来，还有待用户和市场的检验。使用体验是否可以被用户接受？如何解决网速（无论有线或无线）慢的情况？ 微软会不会推出iPad版的Office软件？即使该服务的终极目标不仅仅限于Windows或者Office软件，其他只能能在PC运行的程序会不会有替代解决方案在iPad或者Android平板上？以及现存的很多类VNC的软件……凡此种种，都构成了该服务的不确定因素。</p>
-<p>无论如何，这都是一个很好的尝试。</p>
-
-
-    <small class="meta">January 13, 2012 | <a href='/bkup/2012/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520onlive-%25e5%259c%25a8ipad%25e4%25b8%258a%25e4%25bd%25bf%25e7%2594%25a8ms%2520word%252c%2520excel%252c%2520powerpoint%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/bkup/2012/01/09/updating-fedora-to-fedora16-and-installing-ubuntu-11-04/">Updating Fedora to Fedora16 and Installing Ubuntu 11.04</a></h2>
-
-    <p>2.5years ago I installed Fedora11 on my Thinkpad R61,and then updated it to Fedora 12 and then Fedora 14. A bunch of software were installed, and as a result, the system went slower and slower... 固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。<br />
-基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。<br />
-Ubuntu很快就下完。首先在Fedora下创建启动U盘，参照 How to create and use Live USB：<br />
-Check the size of your USB stick<br />
-Many USB sticks indicate the size on the packaging or the outside of the stick.</p>
-<p>If you don't know the size of the stick, or want to check it for data, you should be able to auto-mount the USB stick by inserting it into a USB port. You can check the contents and size using the graphical file manager. In Linux, you can also use the command line:</p>
-<p>$ df -h<br />
-Filesystem Size Used Avail Use% Mounted on<br />
-/dev/mapper/VolGroup00-LogVol00<br />
-143G 14G 122G 10% /<br />
-/dev/sda1 99M 12M 82M 13% /boot<br />
-tmpfs 1009M 0 1009M 0% /dev/shm<br />
-/dev/sdb1 3.9G 4.0K 3.9G 1% /media/usbdisk<br />
-USB drives are usually mounted in /media. In this case, the device is /dev/sdb1, has a 3.9GB capacity and is almost empty.</p>
-<p>Take note of "/dev/sdb1" or equivalent; you will be specifying the device name if you use the command line method.</p>
-<p>How to Partition</p>
-<p>CAUTION<br />
-This will erase all data on the USB drive! Please read the instructions below carefully.<br />
-If the drive has not been partitioned properly (or if you are unsure), use fdisk to repartition it.</p>
-<p>It is also possible to do a non-destructive installation of a LiveUSB image, if you have sufficient empty space. See How to install non-destructively below.</p>
-<p>The fdisk command must be run as root. Include only the drive name in the command, not the partition number. Be sure to select the correct disk, or you may erase important data! Check the output of "df -h" if you are unsure. For example, if your partition will be /dev/sdb1, do:</p>
-<p>$ /sbin/fdisk /dev/sdb<br />
-If you don't have fdisk installed, run</p>
-<p>yum install util-linux-ng<br />
-as root.<br />
-The following session output from fdisk shows the responses to give to the prompts. The line starting Last cylinder ... refers to the size of the flash drive, so may be different than in the example.</p>
-<p>Command (m for help): d<br />
-Selected partition 1</p>
-<p>Command (m for help): n<br />
-Command action<br />
-e extended<br />
-p primary partition (1-4)<br />
-p<br />
-Partition number (1-4): 1<br />
-First cylinder (1-960, default 1): ↵<br />
-Using default value 1<br />
-Last cylinder or +size or +sizeM or +sizeK (1-960, default 960): ↵<br />
-Using default value 960</p>
-<p>Command (m for help): t<br />
-Selected partition 1<br />
-Hex code (type L to list codes): 6<br />
-Changed system type of partition 1 to 6 (FAT16)</p>
-<p>Command (m for help): a<br />
-Partition number (1-4): 1</p>
-<p>Command (m for help): w<br />
-The partition table has been altered!</p>
-<p>Calling ioctl() to re-read partition table.</p>
-<p>WARNING: If you have created or modified any DOS 6.x<br />
-partitions, please see the fdisk manual page for additional<br />
-information.<br />
-Syncing disks.<br />
-How to Format</p>
-<p>CAUTION<br />
-This will erase all data on the USB drive! Please read the instructions below carefully.<br />
-If your USB media has sufficient free space on a vfat file system already, you do not need to perform this step.</p>
-<p>To finish, the partition must be formatted with an actual file system using mkdosfs as the root user. Unmount the device before using mkdosfs. In the below example, /dev/USBPARTITIONNAME might be, for example, /dev/sdb1. Be sure to select the correct partition; formatting destroys all data on it!</p>
-<p>$ umount /dev/USBPARTITIONNAME<br />
-$ /sbin/mkdosfs -F 32 -n usbdisk /dev/USBPARTITIONNAME<br />
-If you don't have mkdosfs installed, run "yum install dosfstools" as root.</p>
-<p>通过命令<br />
-su -c "yum install liveusb-creator"<br />
-安装了Fedora的liveusb-creator，但是发现Fedora的这个程序无法制作Ubuntu的启动盘。无奈之下，试着把Ubuntu的iso文件复制到U盘里：<br />
-sudo dd if=F12-Live-i686.iso of=/dev/sdX bs=8M</p>
-<p>之后重启电脑，开机之后按c进入grub引导程序。尝试以往的通过kernel指定vmlinuz时失败，才发现Grub2中已经没有了kernel命令，尝试legacy_kernel和xnu_kernel，结果均遭失败。于是我尝试直接指定 initrd (hd1,4)/casper/initrd.gz，然后exit，没成想Ubuntu的安装界面竟然出现了！<br />
-安装Ubuntu的过程中竟然就已经支持了WIFI，着实令我欣慰，看来Ubuntu这么多年在用户友好性上改进不少。<br />
-安装完成后重启，结果Grub无法正常工作，进入grub rescue模式。用iPad百度之后，发现好文Ubuntu启动问题以及Grub Rescue修复方法，逐步去试，果然灵验。转载该文如下：<br />
-Ubuntu启动问题以及Grub Rescue修复方法</p>
-<p>问题：<br />
-之前系统是Windows7 64bit（C盘） + D，E盘（都是NTFS） + Ubuntu。<br />
-今天，在Windows7中删除了E盘，准备向其中安装RedHat 6。 重启Windows7之后发现Ubuntu的grub菜单不能启动。屏幕显示Invalid FileSystem。 （如果没有记错的话，呵呵）<br />
-分析<br />
-由于在Windows下面更改了分区状态，删掉了Ubuntu之前的一个分区，造成Ubuntu的分区由sda5变为sda4了，这样找不到grub了，开机显示<br />
-grub rescue&gt;<br />
-解决<br />
-1. 先使用ls命令，找到Ubuntu的安装在哪个分区：<br />
-grub rescue&gt;ls<br />
-会罗列所有的磁盘分区信息，比方说：<br />
-(hd0,1),(hd0,5),(hd0,3),(hd0,2)<br />
-2. 然后依次调用如下命令： X表示各个分区号码<br />
-grub rescue&gt;ls (hd0,X)/boot/grub<br />
-如果都找不到的话，需要查一下是否因为Linux版本差异，造成grub的路径不对，例如直接ls(hd0,X)/grub等等。<br />
-3. 假设找到（hd0,5）时，显示了文件夹中的文件，则表示Linux安装在这个分区。<br />
-4. 调用如下命令：<br />
-grub rescue&gt;set root=(hd0,5)<br />
-grub rescue&gt;set prefix=(hd0,5)/boot/grub<br />
-grub rescue&gt;insmod /boot/grub/normal.mod<br />
-5. 然后调用如下命令，就可以显示出丢失的grub菜单了。<br />
-grub rescue&gt;normal<br />
-6. 不过不要高兴，如果这时重启，问题依旧存在，我们需要进入Linux中，对grub进行修复。<br />
-进入Linux之后，在命令行执行：<br />
-sudo update-grub<br />
-sudo grub-install /dev/sda<br />
-（sda是你的硬盘号码，千万不要指定分区号码，例如sda1，sda5等都不对）<br />
-7. 重启测试是否已经恢复了grub的启动菜单？ 恭喜你恢复成功！</p>
-<p>Grub恢复成功后，开始安装常用软件。Ubuntu新的界面不像以前想象中那么难用，而且他们终于部分放弃了以前屎黄色的界面风格，最难得的是在我那破本本上速度还是很快滴！期待Ubuntu12.04早日发布，到时直接升级之。</p>
-
-
-    <small class="meta">January 09, 2012 | <a href='/bkup/2012/01/09/updating-fedora-to-fedora16-and-installing-ubuntu-11-04/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2012/01/09/updating-fedora-to-fedora16-and-installing-ubuntu-11-04/">Updating Fedora to Fedora16 and Installing Ubuntu 11.04</a></h2>
-
-    <p>2.5years ago I installed Fedora11 on my Thinkpad R61,and then updated it to Fedora 12 and then Fedora 14. A bunch of software were installed, and as a result, the system went slower and slower... 固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。<br />
-基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。<br />
-Ubuntu很快就下完。首先在Fedora下创建启动U盘，参照 How to create and use Live USB：<br />
-Check the size of your USB stick<br />
-Many USB sticks indicate the size on the packaging or the outside of the stick.</p>
-<p>If you don't know the size of the stick, or want to check it for data, you should be able to auto-mount the USB stick by inserting it into a USB port. You can check the contents and size using the graphical file manager. In Linux, you can also use the command line:</p>
-<p>$ df -h<br />
-Filesystem Size Used Avail Use% Mounted on<br />
-/dev/mapper/VolGroup00-LogVol00<br />
-143G 14G 122G 10% /<br />
-/dev/sda1 99M 12M 82M 13% /boot<br />
-tmpfs 1009M 0 1009M 0% /dev/shm<br />
-/dev/sdb1 3.9G 4.0K 3.9G 1% /media/usbdisk<br />
-USB drives are usually mounted in /media. In this case, the device is /dev/sdb1, has a 3.9GB capacity and is almost empty.</p>
-<p>Take note of "/dev/sdb1" or equivalent; you will be specifying the device name if you use the command line method.</p>
-<p>How to Partition</p>
-<p>CAUTION<br />
-This will erase all data on the USB drive! Please read the instructions below carefully.<br />
-If the drive has not been partitioned properly (or if you are unsure), use fdisk to repartition it.</p>
-<p>It is also possible to do a non-destructive installation of a LiveUSB image, if you have sufficient empty space. See How to install non-destructively below.</p>
-<p>The fdisk command must be run as root. Include only the drive name in the command, not the partition number. Be sure to select the correct disk, or you may erase important data! Check the output of "df -h" if you are unsure. For example, if your partition will be /dev/sdb1, do:</p>
-<p>$ /sbin/fdisk /dev/sdb<br />
-If you don't have fdisk installed, run</p>
-<p>yum install util-linux-ng<br />
-as root.<br />
-The following session output from fdisk shows the responses to give to the prompts. The line starting Last cylinder ... refers to the size of the flash drive, so may be different than in the example.</p>
-<p>Command (m for help): d<br />
-Selected partition 1</p>
-<p>Command (m for help): n<br />
-Command action<br />
-e extended<br />
-p primary partition (1-4)<br />
-p<br />
-Partition number (1-4): 1<br />
-First cylinder (1-960, default 1): ↵<br />
-Using default value 1<br />
-Last cylinder or +size or +sizeM or +sizeK (1-960, default 960): ↵<br />
-Using default value 960</p>
-<p>Command (m for help): t<br />
-Selected partition 1<br />
-Hex code (type L to list codes): 6<br />
-Changed system type of partition 1 to 6 (FAT16)</p>
-<p>Command (m for help): a<br />
-Partition number (1-4): 1</p>
-<p>Command (m for help): w<br />
-The partition table has been altered!</p>
-<p>Calling ioctl() to re-read partition table.</p>
-<p>WARNING: If you have created or modified any DOS 6.x<br />
-partitions, please see the fdisk manual page for additional<br />
-information.<br />
-Syncing disks.<br />
-How to Format</p>
-<p>CAUTION<br />
-This will erase all data on the USB drive! Please read the instructions below carefully.<br />
-If your USB media has sufficient free space on a vfat file system already, you do not need to perform this step.</p>
-<p>To finish, the partition must be formatted with an actual file system using mkdosfs as the root user. Unmount the device before using mkdosfs. In the below example, /dev/USBPARTITIONNAME might be, for example, /dev/sdb1. Be sure to select the correct partition; formatting destroys all data on it!</p>
-<p>$ umount /dev/USBPARTITIONNAME<br />
-$ /sbin/mkdosfs -F 32 -n usbdisk /dev/USBPARTITIONNAME<br />
-If you don't have mkdosfs installed, run "yum install dosfstools" as root.</p>
-<p>通过命令<br />
-su -c "yum install liveusb-creator"<br />
-安装了Fedora的liveusb-creator，但是发现Fedora的这个程序无法制作Ubuntu的启动盘。无奈之下，试着把Ubuntu的iso文件复制到U盘里：<br />
-sudo dd if=F12-Live-i686.iso of=/dev/sdX bs=8M</p>
-<p>之后重启电脑，开机之后按c进入grub引导程序。尝试以往的通过kernel指定vmlinuz时失败，才发现Grub2中已经没有了kernel命令，尝试legacy_kernel和xnu_kernel，结果均遭失败。于是我尝试直接指定 initrd (hd1,4)/casper/initrd.gz，然后exit，没成想Ubuntu的安装界面竟然出现了！<br />
-安装Ubuntu的过程中竟然就已经支持了WIFI，着实令我欣慰，看来Ubuntu这么多年在用户友好性上改进不少。<br />
-安装完成后重启，结果Grub无法正常工作，进入grub rescue模式。用iPad百度之后，发现好文Ubuntu启动问题以及Grub Rescue修复方法，逐步去试，果然灵验。转载该文如下：<br />
-Ubuntu启动问题以及Grub Rescue修复方法</p>
-<p>问题：<br />
-之前系统是Windows7 64bit（C盘） + D，E盘（都是NTFS） + Ubuntu。<br />
-今天，在Windows7中删除了E盘，准备向其中安装RedHat 6。 重启Windows7之后发现Ubuntu的grub菜单不能启动。屏幕显示Invalid FileSystem。 （如果没有记错的话，呵呵）<br />
-分析<br />
-由于在Windows下面更改了分区状态，删掉了Ubuntu之前的一个分区，造成Ubuntu的分区由sda5变为sda4了，这样找不到grub了，开机显示<br />
-grub rescue&gt;<br />
-解决<br />
-1. 先使用ls命令，找到Ubuntu的安装在哪个分区：<br />
-grub rescue&gt;ls<br />
-会罗列所有的磁盘分区信息，比方说：<br />
-(hd0,1),(hd0,5),(hd0,3),(hd0,2)<br />
-2. 然后依次调用如下命令： X表示各个分区号码<br />
-grub rescue&gt;ls (hd0,X)/boot/grub<br />
-如果都找不到的话，需要查一下是否因为Linux版本差异，造成grub的路径不对，例如直接ls(hd0,X)/grub等等。<br />
-3. 假设找到（hd0,5）时，显示了文件夹中的文件，则表示Linux安装在这个分区。<br />
-4. 调用如下命令：<br />
-grub rescue&gt;set root=(hd0,5)<br />
-grub rescue&gt;set prefix=(hd0,5)/boot/grub<br />
-grub rescue&gt;insmod /boot/grub/normal.mod<br />
-5. 然后调用如下命令，就可以显示出丢失的grub菜单了。<br />
-grub rescue&gt;normal<br />
-6. 不过不要高兴，如果这时重启，问题依旧存在，我们需要进入Linux中，对grub进行修复。<br />
-进入Linux之后，在命令行执行：<br />
-sudo update-grub<br />
-sudo grub-install /dev/sda<br />
-（sda是你的硬盘号码，千万不要指定分区号码，例如sda1，sda5等都不对）<br />
-7. 重启测试是否已经恢复了grub的启动菜单？ 恭喜你恢复成功！</p>
-<p>Grub恢复成功后，开始安装常用软件。Ubuntu新的界面不像以前想象中那么难用，而且他们终于部分放弃了以前屎黄色的界面风格，最难得的是在我那破本本上速度还是很快滴！期待Ubuntu12.04早日发布，到时直接升级之。</p>
-
-
-    <small class="meta">January 09, 2012 | <a href='/unix/linux/2012/01/09/updating-fedora-to-fedora16-and-installing-ubuntu-11-04/#disqus_thread'>View Comments</a></small>
+    <small class="meta">May 03, 2011 | <a href='/perl/unix/linux/2011/05/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520shell%25e6%25b5%25ae%25e7%2582%25b9%25e6%2595%25b0%25e8%25bf%2590%25e7%25ae%2597%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
   </div>
 
 </div>
