@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">c++filt</a></h2>
+
+    <p>
+<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
+<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><strong>c&#043;&#043;filt<br />
+<span style="font-family:Arial;font-size:15px;white-space:pre-wrap;">decodes (demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</span></strong></span></div>
+<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><br />
+</span></div>
+<div style="background-color:transparent;"><span id="internal-source-marker_0.33872447651810944" style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You<br />
+ may use </span><strong>c&#043;&#043;filt </strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">to demangle<br />
+ the symbols.</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">$ c&#043;&#043;filt _ZNSt8ios_base4InitD1Ev</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">std::ios_base::Init::~Init()</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You may try adding<br />
+</span><strong>-lstdc&#043;&#043;</strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"> to your link command<br />
+ to resolve the issue.</span><br />
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<strong><a href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#c++filt">c&#043;&#043;filt</a></strong><br />
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">&nbsp;&nbsp;</span></p>
+<pre class="smallexample" style="font-size:undefined;">     c&#043;&#043;filt [<code>-_</code>|<code>--strip-underscores</code>]
+             [<code>-j</code>|<code>--java</code>]
+             [<code>-n</code>|<code>--no-strip-underscores</code>]
+             [<code>-p</code>|<code>--no-params</code>]
+             [<code>-s</code> <var>format</var>|<code>--format=</code><var>format</var>]
+             [<code>--help</code>]  [<code>--version</code>]  [<var>symbol</var>...]
+     </pre>
+<p>The C&#043;&#043; and Java languages provides function overloading, which means that you can write many functions with the same name (providing each takes parameters of different types). All C&#043;&#043; and Java function names are encoded into a low-level assembly label (this<br />
+ process is known as&nbsp;mangling). The&nbsp;<code>c&#043;&#043;filt</code>&nbsp;<a rel="footnote" href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#fn-1"><sup>1</sup></a>&nbsp;program does the inverse mapping: it decodes (demangles) low-level<br />
+ names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
+<p>Every alphanumeric word (consisting of letters, digits, underscores, dollars, or periods) seen in the input is a potential label. If the label decodes into a C&#043;&#043; name, the C&#043;&#043; name replaces the low-level name in the output.</p>
+<p>You can use&nbsp;<code>c&#043;&#043;filt</code>&nbsp;to decipher individual symbols:</p>
+<pre class="example">     c&#043;&#043;filt <var>symbol</var>
+     </pre>
+<p>If no&nbsp;<var>symbol</var>&nbsp;arguments are given,&nbsp;<code>c&#043;&#043;filt</code>&nbsp;reads symbol names from the standard input and writes the demangled names to the standard output. All results are printed on the standard output.</p>
+<dl>
+<dt><code>-_</code></dt>
+<dd></dd>
+<dt><code>--strip-underscores</code></dt>
+<dd>On some systems, both the C and C&#043;&#043; compilers put an underscore in front of every name. For example, the C name&nbsp;<code>foo</code>&nbsp;gets the low-level name&nbsp;<code>_foo</code>. This option removes the initial underscore. Whether&nbsp;<code>c&#043;&#043;filt</code>&nbsp;removes<br />
+ the underscore by default is target dependent.&nbsp;
+</dd>
+<dt><code>-j</code></dt>
+<dd></dd>
+<dt><code>--java</code></dt>
+<dd>Prints demangled names using Java syntax. The default is to use C&#043;&#043; syntax.&nbsp;
+</dd>
+<dt><code>-n</code></dt>
+<dd></dd>
+<dt><code>--no-strip-underscores</code></dt>
+<dd>Do not remove the initial underscore.&nbsp;
+</dd>
+<dt><code>-p</code></dt>
+<dd></dd>
+<dt><code>--no-params</code></dt>
+<dd>When demangling the name of a function, do not display the types of the function's parameters.&nbsp;
+</dd>
+<dt><code>-s&nbsp;</code><var>format</var><code></code></dt>
+<dd></dd>
+<dt><code>--format=</code><var>format</var><code></code></dt>
+<dd><code>c&#043;&#043;filt</code>&nbsp;can decode various methods of mangling, used by different compilers. The argument to this option selects which method it uses:</p>
+<dl>
+<dt><code>auto</code></dt>
+<dd>Automatic selection based on executable (the default method)&nbsp;
+</dd>
+<dt><code>gnu</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;)&nbsp;
+</dd>
+<dt><code>lucid</code></dt>
+<dd>the one used by the Lucid compiler (lcc)&nbsp;
+</dd>
+<dt><code>arm</code></dt>
+<dd>the one specified by the C&#043;&#043; Annotated Reference Manual&nbsp;
+</dd>
+<dt><code>hp</code></dt>
+<dd>the one used by the HP compiler (aCC)&nbsp;
+</dd>
+<dt><code>edg</code></dt>
+<dd>the one used by the EDG compiler&nbsp;
+</dd>
+<dt><code>gnu-v3</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;) with the V3 ABI.&nbsp;
+</dd>
+<dt><code>java</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Java compiler (gcj)&nbsp;
+</dd>
+<dt><code>gnat</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Ada compiler (GNAT).</dd>
+</dl>
+<p>
+</dd>
+<dt><code>--help</code></dt>
+<dd>Print a summary of the options to&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.&nbsp;
+</dd>
+<dt><code>--version</code></dt>
+<dd>Print the version number of&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.</dd>
+</dl>
+<blockquote><p><em>Warning:</em>&nbsp;<code>c&#043;&#043;filt</code>&nbsp;is a new utility, and the details of its user interface are subject to change in future releases. In particular, a command-line option may be required in the the future to decode a name passed as an argument<br />
+ on the command line; in other words,</p>
+<pre class="example">          c&#043;&#043;filt <var>symbol</var>
+          </pre>
+<p>may in a future release become</p>
+<pre class="example">          c&#043;&#043;filt <var>option</var> <var>symbol</var>
+          </pre>
+</blockquote>
+<div class="footnote">
+<hr />
+<h4>Footnotes</h4>
+<ol type="1">
+<li><a name="fn-1"></a>
+<p>MS-DOS does not allow&nbsp;<kbd>&#043;</kbd>&nbsp;characters in file names, so on MS-DOS this program is named&nbsp;<code>cxxfilt</code>.</p>
+<div>
+</div>
+</li>
+</ol>
+</div>
+<p>
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span></div>
+
+
+    <small class="meta">September 14, 2011 | <a href='/bkup/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/c/c++/unix/linux/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">c++filt</a></h2>
+
+    <p>
+<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
+<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><strong>c&#043;&#043;filt<br />
+<span style="font-family:Arial;font-size:15px;white-space:pre-wrap;">decodes (demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</span></strong></span></div>
+<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><br />
+</span></div>
+<div style="background-color:transparent;"><span id="internal-source-marker_0.33872447651810944" style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You<br />
+ may use </span><strong>c&#043;&#043;filt </strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">to demangle<br />
+ the symbols.</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">$ c&#043;&#043;filt _ZNSt8ios_base4InitD1Ev</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">std::ios_base::Init::~Init()</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You may try adding<br />
+</span><strong>-lstdc&#043;&#043;</strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"> to your link command<br />
+ to resolve the issue.</span><br />
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<strong><a href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#c++filt">c&#043;&#043;filt</a></strong><br />
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">&nbsp;&nbsp;</span></p>
+<pre class="smallexample" style="font-size:undefined;">     c&#043;&#043;filt [<code>-_</code>|<code>--strip-underscores</code>]
+             [<code>-j</code>|<code>--java</code>]
+             [<code>-n</code>|<code>--no-strip-underscores</code>]
+             [<code>-p</code>|<code>--no-params</code>]
+             [<code>-s</code> <var>format</var>|<code>--format=</code><var>format</var>]
+             [<code>--help</code>]  [<code>--version</code>]  [<var>symbol</var>...]
+     </pre>
+<p>The C&#043;&#043; and Java languages provides function overloading, which means that you can write many functions with the same name (providing each takes parameters of different types). All C&#043;&#043; and Java function names are encoded into a low-level assembly label (this<br />
+ process is known as&nbsp;mangling). The&nbsp;<code>c&#043;&#043;filt</code>&nbsp;<a rel="footnote" href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#fn-1"><sup>1</sup></a>&nbsp;program does the inverse mapping: it decodes (demangles) low-level<br />
+ names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
+<p>Every alphanumeric word (consisting of letters, digits, underscores, dollars, or periods) seen in the input is a potential label. If the label decodes into a C&#043;&#043; name, the C&#043;&#043; name replaces the low-level name in the output.</p>
+<p>You can use&nbsp;<code>c&#043;&#043;filt</code>&nbsp;to decipher individual symbols:</p>
+<pre class="example">     c&#043;&#043;filt <var>symbol</var>
+     </pre>
+<p>If no&nbsp;<var>symbol</var>&nbsp;arguments are given,&nbsp;<code>c&#043;&#043;filt</code>&nbsp;reads symbol names from the standard input and writes the demangled names to the standard output. All results are printed on the standard output.</p>
+<dl>
+<dt><code>-_</code></dt>
+<dd></dd>
+<dt><code>--strip-underscores</code></dt>
+<dd>On some systems, both the C and C&#043;&#043; compilers put an underscore in front of every name. For example, the C name&nbsp;<code>foo</code>&nbsp;gets the low-level name&nbsp;<code>_foo</code>. This option removes the initial underscore. Whether&nbsp;<code>c&#043;&#043;filt</code>&nbsp;removes<br />
+ the underscore by default is target dependent.&nbsp;
+</dd>
+<dt><code>-j</code></dt>
+<dd></dd>
+<dt><code>--java</code></dt>
+<dd>Prints demangled names using Java syntax. The default is to use C&#043;&#043; syntax.&nbsp;
+</dd>
+<dt><code>-n</code></dt>
+<dd></dd>
+<dt><code>--no-strip-underscores</code></dt>
+<dd>Do not remove the initial underscore.&nbsp;
+</dd>
+<dt><code>-p</code></dt>
+<dd></dd>
+<dt><code>--no-params</code></dt>
+<dd>When demangling the name of a function, do not display the types of the function's parameters.&nbsp;
+</dd>
+<dt><code>-s&nbsp;</code><var>format</var><code></code></dt>
+<dd></dd>
+<dt><code>--format=</code><var>format</var><code></code></dt>
+<dd><code>c&#043;&#043;filt</code>&nbsp;can decode various methods of mangling, used by different compilers. The argument to this option selects which method it uses:</p>
+<dl>
+<dt><code>auto</code></dt>
+<dd>Automatic selection based on executable (the default method)&nbsp;
+</dd>
+<dt><code>gnu</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;)&nbsp;
+</dd>
+<dt><code>lucid</code></dt>
+<dd>the one used by the Lucid compiler (lcc)&nbsp;
+</dd>
+<dt><code>arm</code></dt>
+<dd>the one specified by the C&#043;&#043; Annotated Reference Manual&nbsp;
+</dd>
+<dt><code>hp</code></dt>
+<dd>the one used by the HP compiler (aCC)&nbsp;
+</dd>
+<dt><code>edg</code></dt>
+<dd>the one used by the EDG compiler&nbsp;
+</dd>
+<dt><code>gnu-v3</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;) with the V3 ABI.&nbsp;
+</dd>
+<dt><code>java</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Java compiler (gcj)&nbsp;
+</dd>
+<dt><code>gnat</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Ada compiler (GNAT).</dd>
+</dl>
+<p>
+</dd>
+<dt><code>--help</code></dt>
+<dd>Print a summary of the options to&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.&nbsp;
+</dd>
+<dt><code>--version</code></dt>
+<dd>Print the version number of&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.</dd>
+</dl>
+<blockquote><p><em>Warning:</em>&nbsp;<code>c&#043;&#043;filt</code>&nbsp;is a new utility, and the details of its user interface are subject to change in future releases. In particular, a command-line option may be required in the the future to decode a name passed as an argument<br />
+ on the command line; in other words,</p>
+<pre class="example">          c&#043;&#043;filt <var>symbol</var>
+          </pre>
+<p>may in a future release become</p>
+<pre class="example">          c&#043;&#043;filt <var>option</var> <var>symbol</var>
+          </pre>
+</blockquote>
+<div class="footnote">
+<hr />
+<h4>Footnotes</h4>
+<ol type="1">
+<li><a name="fn-1"></a>
+<p>MS-DOS does not allow&nbsp;<kbd>&#043;</kbd>&nbsp;characters in file names, so on MS-DOS this program is named&nbsp;<code>cxxfilt</code>.</p>
+<div>
+</div>
+</li>
+</ol>
+</div>
+<p>
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span></div>
+
+
+    <small class="meta">September 14, 2011 | <a href='/c/c++/unix/linux/2011/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%252b%252bfilt%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">RHEL5和RHEL6中的sctp_event_subscribe定义大不同</a></h2>
+
+    </p>
+<p>近来碰到一个关于SCTP的问题：某个产品跑在Monta Vista上，其内核版本号为2.6.21；可每次该产品泡在我们的Red Hat Enterprise Linux 5.5上时，都会报错错误信息如下：
+<pre>^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt() setsockopt - Invalid argument
+^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts(): failed to set SCTP_EVENTS for socket 6</pre></p>
+<p>ammsSetSockOpt()调用了Linux API setsockopt()。产品的同事告诉我们他们升级过libsctp.so，于是我们copy了MV中的这个shared lib到RHEL中，问题依旧。后来我们以为是RHEL5.5的内核和Monta Vista的内核不一致，于是我把RHEL的内核从2.6.18-194.el5升级到2.6.18-238.9.1.el5，问题还在。当我们还在考虑要不要把我们的server替换为Monta Vista时，一位同事受<a href="http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500">http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500</a><br />
+ 的启发，把setsockopt()最后一个参数由sizeof(events)改为8，竟然成功了！ events定义如下。
+<pre>struct sctp_event_subscribe events; </pre></p>
+<pre></pre>
+<p>最终，发现RHEL5和RHEL6中struct<span style="font-family:'Times New Roman';font-size:13px;">&nbsp;</span><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);">sctp_event_subscribe</span>的定义竟然完全不同！要想根本解决上面的问题，只能升级操作系统到RHEL6了。</p></p>
+<p>RHEL5中的定义：<a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">http://rhkernel.org/RHEL5&#043;2.6.18-194.el5/include/net/sctp/user.h#L367</a></p></p>
+<pre>/*
+ 364 * Described in Section 7.3
+ 365 *   Ancillary Data and Notification Interest Options
+ 366 */
+ 367struct sctp_event_subscribe {
+ 368        __u8 sctp_data_io_event;
+ 369        __u8 sctp_association_event;
+ 370        __u8 sctp_address_event;
+ 371        __u8 sctp_send_failure_event;
+ 372        __u8 sctp_peer_error_event;
+ 373        __u8 sctp_shutdown_event;
+ 374        __u8 sctp_partial_delivery_event;
+ 375        __u8 sctp_adaption_layer_event;
+ 376};</pre></p>
+<p>RHEL 6中的定义：<a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">http://rhkernel.org/RHEL6&#043;2.6.32-71.18.2.el6/include/net/sctp/user.h#L406</a></p></p>
+<pre>/*
+ 403 * Described in Section 7.3
+ 404 *   Ancillary Data and Notification Interest Options
+ 405 */
+ 406struct sctp_event_subscribe {
+ 407        __u8 sctp_data_io_event;
+ 408        __u8 sctp_association_event;
+ 409        __u8 sctp_address_event;
+ 410        __u8 sctp_send_failure_event;
+ 411        __u8 sctp_peer_error_event;
+ 412        __u8 sctp_shutdown_event;
+ 413        __u8 sctp_partial_delivery_event;
+ 414        __u8 sctp_adaptation_layer_event;
+ 415        __u8 sctp_authentication_event;
+ 416};
+ 417</pre></p>
+
+
+    <small class="meta">August 24, 2011 | <a href='/bkup/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/c/c++/unix/linux/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">RHEL5和RHEL6中的sctp_event_subscribe定义大不同</a></h2>
+
+    </p>
+<p>近来碰到一个关于SCTP的问题：某个产品跑在Monta Vista上，其内核版本号为2.6.21；可每次该产品泡在我们的Red Hat Enterprise Linux 5.5上时，都会报错错误信息如下：
+<pre>^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt() setsockopt - Invalid argument
+^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts(): failed to set SCTP_EVENTS for socket 6</pre></p>
+<p>ammsSetSockOpt()调用了Linux API setsockopt()。产品的同事告诉我们他们升级过libsctp.so，于是我们copy了MV中的这个shared lib到RHEL中，问题依旧。后来我们以为是RHEL5.5的内核和Monta Vista的内核不一致，于是我把RHEL的内核从2.6.18-194.el5升级到2.6.18-238.9.1.el5，问题还在。当我们还在考虑要不要把我们的server替换为Monta Vista时，一位同事受<a href="http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500">http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500</a><br />
+ 的启发，把setsockopt()最后一个参数由sizeof(events)改为8，竟然成功了！ events定义如下。
+<pre>struct sctp_event_subscribe events; </pre></p>
+<pre></pre>
+<p>最终，发现RHEL5和RHEL6中struct<span style="font-family:'Times New Roman';font-size:13px;">&nbsp;</span><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);">sctp_event_subscribe</span>的定义竟然完全不同！要想根本解决上面的问题，只能升级操作系统到RHEL6了。</p></p>
+<p>RHEL5中的定义：<a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">http://rhkernel.org/RHEL5&#043;2.6.18-194.el5/include/net/sctp/user.h#L367</a></p></p>
+<pre>/*
+ 364 * Described in Section 7.3
+ 365 *   Ancillary Data and Notification Interest Options
+ 366 */
+ 367struct sctp_event_subscribe {
+ 368        __u8 sctp_data_io_event;
+ 369        __u8 sctp_association_event;
+ 370        __u8 sctp_address_event;
+ 371        __u8 sctp_send_failure_event;
+ 372        __u8 sctp_peer_error_event;
+ 373        __u8 sctp_shutdown_event;
+ 374        __u8 sctp_partial_delivery_event;
+ 375        __u8 sctp_adaption_layer_event;
+ 376};</pre></p>
+<p>RHEL 6中的定义：<a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">http://rhkernel.org/RHEL6&#043;2.6.32-71.18.2.el6/include/net/sctp/user.h#L406</a></p></p>
+<pre>/*
+ 403 * Described in Section 7.3
+ 404 *   Ancillary Data and Notification Interest Options
+ 405 */
+ 406struct sctp_event_subscribe {
+ 407        __u8 sctp_data_io_event;
+ 408        __u8 sctp_association_event;
+ 409        __u8 sctp_address_event;
+ 410        __u8 sctp_send_failure_event;
+ 411        __u8 sctp_peer_error_event;
+ 412        __u8 sctp_shutdown_event;
+ 413        __u8 sctp_partial_delivery_event;
+ 414        __u8 sctp_adaptation_layer_event;
+ 415        __u8 sctp_authentication_event;
+ 416};
+ 417</pre></p>
+
+
+    <small class="meta">August 24, 2011 | <a href='/c/c++/unix/linux/2011/08/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520rhel5%25e5%2592%258crhel6%25e4%25b8%25ad%25e7%259a%2584sctp_event_subscribe%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e4%25b8%258d%25e5%2590%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/08/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520displacement%2520activity%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Displacement Activity</a></h2>
+
+    <p>
+<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
+<div style="font-family:Arial;background-color:rgb(255,255,255);overflow-y:scroll;word-wrap:break-word;word-break:break-all;line-height:1.6;font-size:14px;margin:1px 4px 2px 2px;">
+<p style="margin-top:0;margin-bottom:.5em;">你是否有过这样的经历：&#30524;看考试或某个任务、活动的大限将至，自己很是担心，可你却不是在努力准备，而是看电影、玩游戏或者和朋友聊天？ 至少对于我，这样的矛盾行为并不罕见。今天才知道，这种行为叫做Displacement Activity，是人和动物身上的一种普遍存在的行为。</p>
+<p style="margin-top:0;margin-bottom:.5em;">Displacement Activity貌&#20284;还没有确切的中文翻译，有在线词典译作“替换行为”，个人认为翻译不准确，不予采纳。根据我的理解，<span style="font-family:楷体_GB2312;color:#ff0000;line-height:1.3em;"><strong>Displacement Activity就是当你不得不去做某件事情的时候，你担心会失败于是产生一种不去做的消极心态，当你无法做出一个做还是不做的决定时，纠结中你下意识得选择逃避——不由自主的做一些让自己感觉舒服（但很明显不在状态）的事情，比如吃饭、看电影、睡觉、玩游戏、逛街等等。恰恰由于你的逃避，往往会使事情办的更糟，所以等到下一个你不得不面对的抉择时，你的这种表现会更严重，由此造成恶性的循环往复……</strong></span></p>
+<p style="margin-top:0;margin-bottom:.5em;">个人感觉Displacement Activity还是心理不够强大的表现。真的强者不会有这种表现的。悲哀的是这种状态已伴随我十几年，至少在高中时就有这种表现，目前看来已经越来越严重了。我能想到的解决这种现象的根本方法就是：1. 深入研究你要做的事情，搞清楚你要做什么，想清楚怎么做，多看一些别人成功的经验（以及别人失败的教训，当然这种东西比较少了）；2. 制定一个达到目标所需要的可行的计划；3. 每天坚持执行你的计划；4.<br />
+ 尽量不要调整你的计划。这只是一个设想，目前本人还没有真正实践过。</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">下面是搜集的相关解释。</p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement Activities are behaviors that animals(including human beings) have conflicting drives. Such behaviors are completely out of place.</strong></p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement behavior is usually thought of as self-grooming, touching, or scratching, which is displayed when an animal has a conflict between two drives, such as the desire to approach an object, while<br />
+ at the same time being fearful of that object.&nbsp;</strong>With the fall of drive theory into disfavor, animal behaviorists paid little attention to displacement behavior until Maestripieri et al. (1992) pointed out that displacement behavior might be a good<br />
+ measure of anxiety levels.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">------------------------------</p>
+<p style="margin-top:0;margin-bottom:.5em;">From Wiki:&nbsp;<a href="http://en.wikipedia.org/wiki/Displacement_activity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://en.wikipedia.org/wiki/Displacement_activity</a></p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>A displacement activity is the result of two contradicting instincts in a particular situation.&nbsp;</strong>Birds, for example, may peck at grass when uncertain whether to attack or flee from an opponent;<br />
+ similarly, a human may scratch his or her head when they do not know which of two options to choose.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities often involve actions to bring comfort such as scratching, drinking or feeding.</strong></p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">The first description of a displacement activity (though not the use of the term) is probably by Julian Huxley in 1914. The subsequent development of research on displacement activities was a direct consequence<br />
+ of Konrad Lorenz's works on instincts. However, the first mentions of the phenomenon came in 1940 by the two Dutch researchers Nikolaas Tinbergen and Adriaan Kortlandt.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">---------------------------</p>
+<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://c2.com/cgi/wiki?DisplacementActivity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://c2.com/cgi/wiki?DisplacementActivity</a></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Activity undertaken when some more important task's deadline is looming.</strong></p>
+<p style="margin-top:0;margin-bottom:.5em;">When I was studying for my final degree examinations I played more bridge than ever before. That was pretty much a pure DisplacementActivity.</p>
+<p style="margin-top:0;margin-bottom:.5em;">I'm wondering how much other authors and programmers suffer from this weakness -- SteveHolden</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">----------------------------</p>
+<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://baillement.com/displacement-delius.html" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://baillement.com/displacement-delius.html</a></p>
+<p style="margin-top:0;margin-bottom:.5em;">In 1940 Tinbergen and Kortlandt independently drew attention to a behavioural phenomenon which has since been called displacement activity and has received a good deal of attention. Although no binding rules exist<br />
+ by which displacement behaviour can be recognized, the term is applied to behaviour patterns which appear to be out of context with the behaviour which closely precedes or follows them either in the sense that they do not seem functionally integrated with<br />
+ the preceding or following behaviour or that they occur in situations in which causal factors usually responsible for them appear to be absent or at least weak compared with those determining the behavioural envelope.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities occur in three situations: motivational, conflict, frustration of consummatory acts and physical thwarting of performance.</strong>&nbsp;Several theories have been put forward to explain<br />
+ the causal mechanism involved. A variety of behaviour patterns have been reported as displacement activities, even in a single species, but this variety needs revision.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">Monographie treatments of the behaviour of any one species usually indicate only two or three activities which according te the judgment of the observer occur commonly as displacement. None of the theories on displacement<br />
+ activities gives cogent reasons why particular behaviour patterns should be more common than others as displacement activities, apart from stating that the causal agents which usually elicit them in non-displacement situations can also be presumed te be present,<br />
+ if only weakly, in the displacement context, or remarking that those patterns are prepotent in the repertoire of the animal.</p>
+<div>
+</div>
+</div>
+
+
+    <small class="meta">August 02, 2011 | <a href='/bkup/2011/08/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520displacement%2520activity%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/personal/2011/08/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520displacement%2520activity%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Displacement Activity</a></h2>
+
+    <p>
+<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
+<div style="font-family:Arial;background-color:rgb(255,255,255);overflow-y:scroll;word-wrap:break-word;word-break:break-all;line-height:1.6;font-size:14px;margin:1px 4px 2px 2px;">
+<p style="margin-top:0;margin-bottom:.5em;">你是否有过这样的经历：&#30524;看考试或某个任务、活动的大限将至，自己很是担心，可你却不是在努力准备，而是看电影、玩游戏或者和朋友聊天？ 至少对于我，这样的矛盾行为并不罕见。今天才知道，这种行为叫做Displacement Activity，是人和动物身上的一种普遍存在的行为。</p>
+<p style="margin-top:0;margin-bottom:.5em;">Displacement Activity貌&#20284;还没有确切的中文翻译，有在线词典译作“替换行为”，个人认为翻译不准确，不予采纳。根据我的理解，<span style="font-family:楷体_GB2312;color:#ff0000;line-height:1.3em;"><strong>Displacement Activity就是当你不得不去做某件事情的时候，你担心会失败于是产生一种不去做的消极心态，当你无法做出一个做还是不做的决定时，纠结中你下意识得选择逃避——不由自主的做一些让自己感觉舒服（但很明显不在状态）的事情，比如吃饭、看电影、睡觉、玩游戏、逛街等等。恰恰由于你的逃避，往往会使事情办的更糟，所以等到下一个你不得不面对的抉择时，你的这种表现会更严重，由此造成恶性的循环往复……</strong></span></p>
+<p style="margin-top:0;margin-bottom:.5em;">个人感觉Displacement Activity还是心理不够强大的表现。真的强者不会有这种表现的。悲哀的是这种状态已伴随我十几年，至少在高中时就有这种表现，目前看来已经越来越严重了。我能想到的解决这种现象的根本方法就是：1. 深入研究你要做的事情，搞清楚你要做什么，想清楚怎么做，多看一些别人成功的经验（以及别人失败的教训，当然这种东西比较少了）；2. 制定一个达到目标所需要的可行的计划；3. 每天坚持执行你的计划；4.<br />
+ 尽量不要调整你的计划。这只是一个设想，目前本人还没有真正实践过。</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">下面是搜集的相关解释。</p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement Activities are behaviors that animals(including human beings) have conflicting drives. Such behaviors are completely out of place.</strong></p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement behavior is usually thought of as self-grooming, touching, or scratching, which is displayed when an animal has a conflict between two drives, such as the desire to approach an object, while<br />
+ at the same time being fearful of that object.&nbsp;</strong>With the fall of drive theory into disfavor, animal behaviorists paid little attention to displacement behavior until Maestripieri et al. (1992) pointed out that displacement behavior might be a good<br />
+ measure of anxiety levels.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">------------------------------</p>
+<p style="margin-top:0;margin-bottom:.5em;">From Wiki:&nbsp;<a href="http://en.wikipedia.org/wiki/Displacement_activity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://en.wikipedia.org/wiki/Displacement_activity</a></p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>A displacement activity is the result of two contradicting instincts in a particular situation.&nbsp;</strong>Birds, for example, may peck at grass when uncertain whether to attack or flee from an opponent;<br />
+ similarly, a human may scratch his or her head when they do not know which of two options to choose.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities often involve actions to bring comfort such as scratching, drinking or feeding.</strong></p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">The first description of a displacement activity (though not the use of the term) is probably by Julian Huxley in 1914. The subsequent development of research on displacement activities was a direct consequence<br />
+ of Konrad Lorenz's works on instincts. However, the first mentions of the phenomenon came in 1940 by the two Dutch researchers Nikolaas Tinbergen and Adriaan Kortlandt.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">---------------------------</p>
+<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://c2.com/cgi/wiki?DisplacementActivity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://c2.com/cgi/wiki?DisplacementActivity</a></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Activity undertaken when some more important task's deadline is looming.</strong></p>
+<p style="margin-top:0;margin-bottom:.5em;">When I was studying for my final degree examinations I played more bridge than ever before. That was pretty much a pure DisplacementActivity.</p>
+<p style="margin-top:0;margin-bottom:.5em;">I'm wondering how much other authors and programmers suffer from this weakness -- SteveHolden</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">----------------------------</p>
+<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://baillement.com/displacement-delius.html" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://baillement.com/displacement-delius.html</a></p>
+<p style="margin-top:0;margin-bottom:.5em;">In 1940 Tinbergen and Kortlandt independently drew attention to a behavioural phenomenon which has since been called displacement activity and has received a good deal of attention. Although no binding rules exist<br />
+ by which displacement behaviour can be recognized, the term is applied to behaviour patterns which appear to be out of context with the behaviour which closely precedes or follows them either in the sense that they do not seem functionally integrated with<br />
+ the preceding or following behaviour or that they occur in situations in which causal factors usually responsible for them appear to be absent or at least weak compared with those determining the behavioural envelope.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities occur in three situations: motivational, conflict, frustration of consummatory acts and physical thwarting of performance.</strong>&nbsp;Several theories have been put forward to explain<br />
+ the causal mechanism involved. A variety of behaviour patterns have been reported as displacement activities, even in a single species, but this variety needs revision.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">Monographie treatments of the behaviour of any one species usually indicate only two or three activities which according te the judgment of the observer occur commonly as displacement. None of the theories on displacement<br />
+ activities gives cogent reasons why particular behaviour patterns should be more common than others as displacement activities, apart from stating that the causal agents which usually elicit them in non-displacement situations can also be presumed te be present,<br />
+ if only weakly, in the displacement context, or remarking that those patterns are prepotent in the repertoire of the animal.</p>
+<div>
+</div>
+</div>
+
+
+    <small class="meta">August 02, 2011 | <a href='/personal/2011/08/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520displacement%2520activity%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2011/07/26/immaneul-kants-philosophy-of-morality/">Immaneul Kant's Philosophy of Morality</a></h2>
+
+    <p>Following are part of my notes of the famous Harvard open course <strong><em>Justice</em></strong>. Kant's theory is too hard to be understood in a shot time. I think the best way is to record his main idea and try to digest in the future.</p>
+<p>===============================================================================================</p>
+<p><strong>Part 1  Kant's Conception of Freedom</p>
+<p></strong>Kant thinks that the individual person, all human beings, have a certain dignity that commands our respect.</p>
+<p>The reason the individual is sacred or the bearer of rights, doesn't stem from the idea that we own ourselves, but instead from the we are all rational beings, which means we are beings who are capable of reason.</p>
+<p>We are also autonomous beings, which is to say that we are beings capable of acting and choosing freely.</p>
+<p>The capacity of reason and freedom, isn't the only capacity we have. It is our rational capacity that makes our distinctive.</p>
+<p>Freedom is the opposite of necessity.</p>
+<p>Kant's Conception of Freedom<br />
+Autonomy:<br />
+To act freely (= to act autonomously =)<br />
+To act according to a law I give myself<br />
+Heteronomy:<br />
+To act according to desires I haven't chosen myself</p>
+<p>To act freely is not to choose the best means to a given end; it's choose the end itself for its own sake. In so far we act on inclination or pursue pleasure, we act as means to the realization of ends given outside of us. We are instruments rather than  authors of the purposes we pursue, that's the heteronymous determination of the will.<br />
+On the other hand, in so fas as we act autonomously, according to a law we give ourselves, we do something for its own sake as an end in itself. When we act autonomously, wee seems to be instruments to purposes given outside us, we become as ends in ourselves. This capacity to act freely, is what gives human life its special dignity.<br />
+Respecting human dignity means regarding persons not just as means, but also as ends in themselves. This is why it is wrong to use people for the sake of other people's well-being or happiness. This is the real reason that utilitarianism goes wrong.</p>
+<p>------------------------------------<br />
+<strong>Part 2. Kant's Conception of Morality</p>
+<p></strong>Kant's Conception of Morality<br />
+*moral worth of an action depends on motive (do the right thing for the right reason, or for the sake of duty)</p>
+<p>What makes an action morally worthy, consists not in the consequences or in the results that flow from it, what makes an action morally worthy has to do with the motive, with the quality of the will, with the Intention for which the act is done. What matters is the motive, and the motive must be of a certain kind.</p>
+<p>A good will isn't good because of what it effects or accomplishes, it's good in itself. Even if by utmost effort the good will accomplishes nothing it would still shine like a jewel for it's own sake as something which has it's full value in itself. -- Immanuel Kant<br />
+The idea is that the motive confers the moral worth on an action and the only kind of motive that can confer moral worth on an action is the motive of duty.<br />
+The opposite of acting out of duty, is all of the motives having to do with our inclinations. Inclinations refer to all of our desires, all of our contingently given wants, preferences, impulses, and the like.<br />
+Only actions done for the sake of the moral law, for the sake of duty, only these actions have moral duty.</p>
+<p>-------------------------------<br />
+<strong>Part 3. Kant's Conception of Supreme Morality</p>
+<p></strong>What's the supreme principle of morality?<br />
+Only one kind of motive is consistent with morality, the motive of duty, doing the right thing for the right reason. Other motives are summed up by Kant in the category of inclination.<br />
+Every thine the motive for what we do is to satisfy a desire or a preference that we may have, to pursue some interest, we are acting of inclination.<br />
+It's fine to have sentiments and feelings that support the right thing provided they don't provide the reason for acting. One may have more than one motive, but it doesn't mean that the action is devoid of moral worth, just because he has one other motive -- the motive which involves duty is what gives the moral worth.</p>
+<p>Kant's Three Contrasts:<br />
+(MORALITY) Motives:                         Duty vs. Inclination<br />
+(FREEDOM)  Determination of will :   autonomous  vs. Heteronomous<br />
+(REASON) Imperatives:                      Categorical vs. Hypothetical</p>
+<p>If reason determines my will, then the will becomes a power to choose indecent of the dictates of nature, or inclination or circumstance. So, connected with Kant's demanding notions of morality and freedom, is a specially demanding notion of reason.</p>
+<p>How can reason determine the will?<br />
+There are two ways. There are two different commands of reason. One is an imperative. An imperative is an *ought*.<br />
+One kind of imperative, perhaps the most familiar kind, is a *hypothetical* imperative. Hypothetical imperatives use instrumental reason. If want X then do y. It's means-ends reason.<br />
+If the action would be good solely as a means to something else, the imperative is hypothetical; if the action is represented as good in itself and therefore as necessary... for a will which of itself accords with reason, then the imperative is *categorical*.</p>
+<p>What is the categorical imperative? What is the supreme principle of morality? What does it command of us?<br />
+THE CATEGORICAL IMPERATIVE<br />
+(1) The Formula of Universal Law<br />
+Act only on that maxim whereby you can at the same time will that is should become a universal law. "the maxim", he means a rule that explains the reason for what you are doing, a principle. For example, promise keeping.<br />
+And the test, the way we can determine that the false promise is at odds with the categorical imperative, is try to universalize it, universalize the maxim upon which you are about to act. If the maxim universalized would undermine itself, then it's not categorical.</p>
+<p>(2) The Formula of Humanity as End<br />
+We can't base the categorical imperative on any particular interests, purposes, or ends, because then it would be only relative to the person whose ends they were. But suppose, however, there were something whose existence has in itself an absolute value.... an end in itself.... then in it, and in it alone, would there be the ground of a possible categorical imperative.<br />
+"I say that man, and in general every rational being, exists as an end in himself, not merely as a means for arbitrary used by this or that will." -- Kant</p>
+<p>Act in such a way that you always treat humanity, whether in your own person or in the person of any other, never simply as a means, but always at the same time, as an end.</p>
+<p>Respect is respect for humanity which is universal, for a rational capacity which is universal, and that's why violating it, in my own case, is as objectionable as violating it in the case of any other.</p>
+<p>-------------------------------<br />
+<strong>Part 4. The Application of Kant' Categorical Imperative on Lying</p>
+<p></strong>How is a categorical imperative possible? How is morality possible?</p>
+<p>"when we think of ourselves as free, we transfer ourselves into the intelligible world as members and recognize the autonomy of the will." --immanuel Kant<br />
+Only because the idea of freedom makes me a member of an intelligible world, the categorical imperative is possible.</p>
+<p>Since we inhabits simultaneously the two standpoints, the two realms, the realm of freedom and the realm of necessity, there is always potentially a gap between what we do and what we ought to to, between is and ought.<br />
+Morality is not empirical. Whatever you see in the world, whatever you discover through science, can't decide moral questions. Morality stands at a certain distance from the world, from the empirical world. That's why no science could deliver moral truth.</p>
+<p>From Kant's point of view, there actually is a world of difference between a lie and a misleading truth.</p>
+<p>White lie 善意的谎言<br />
+Kant preferred leading truth(误导的真相) to a white lie.<br />
+Unlike a falsehood, unlike a lie, a misleading truth pays a certain homage to duty.</p>
+<p>-----------------------------------<br />
+<strong>Part 5  The Application of Kant's Categorical Imperative On Contract</p>
+<p></strong>Just laws arise from a certain kind of social contract, which is of an exceptional nature. What makes the contract exceptional is that it is not an actual contract, that happens when people come together and try to figure out what the constitution should be. That the contract generates justice is an idea of reason.</p>
+<p>A contract that generates principles of right is merely an idea of reason, but it has undoubted practical reality, because it can oblige every legislator to frame his laws in such a way that they could have been produced by the united will of the whole nation.</p>
+<p>"Each person possesses an inviolability founded on justice that even the welfare of society as a whole cannot override... The rights secured by justice are not subject to political bargaining or to the calculus of social interests." -- John Rawls</p>
+<p>Moral Force of Actual Contracts<br />
+1. How do they bind or obligate?<br />
+(1) consent-based -&gt; AUTONOMY(自律)<br />
+(2) benefit- based -&gt; RECIPROCITY(互惠) : contracts sometimes bind us in so far as they are instruments of mutual benefit.</p>
+<p>2. How do they justify the terms they produce?<br />
+Actual contracts are not self-sufficient moral instruments of any actual contract or agreement. The fact of the agreement never guarantees the fairness of the agreement.</p>
+
+
+    <small class="meta">July 26, 2011 | <a href='/2011/07/26/immaneul-kants-philosophy-of-morality/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/07/26/immaneul-kants-philosophy-of-morality/">Immaneul Kant's Philosophy of Morality</a></h2>
+
+    <p>Following are part of my notes of the famous Harvard open course <strong><em>Justice</em></strong>. Kant's theory is too hard to be understood in a shot time. I think the best way is to record his main idea and try to digest in the future.</p>
+<p>===============================================================================================</p>
+<p><strong>Part 1  Kant's Conception of Freedom</p>
+<p></strong>Kant thinks that the individual person, all human beings, have a certain dignity that commands our respect.</p>
+<p>The reason the individual is sacred or the bearer of rights, doesn't stem from the idea that we own ourselves, but instead from the we are all rational beings, which means we are beings who are capable of reason.</p>
+<p>We are also autonomous beings, which is to say that we are beings capable of acting and choosing freely.</p>
+<p>The capacity of reason and freedom, isn't the only capacity we have. It is our rational capacity that makes our distinctive.</p>
+<p>Freedom is the opposite of necessity.</p>
+<p>Kant's Conception of Freedom<br />
+Autonomy:<br />
+To act freely (= to act autonomously =)<br />
+To act according to a law I give myself<br />
+Heteronomy:<br />
+To act according to desires I haven't chosen myself</p>
+<p>To act freely is not to choose the best means to a given end; it's choose the end itself for its own sake. In so far we act on inclination or pursue pleasure, we act as means to the realization of ends given outside of us. We are instruments rather than  authors of the purposes we pursue, that's the heteronymous determination of the will.<br />
+On the other hand, in so fas as we act autonomously, according to a law we give ourselves, we do something for its own sake as an end in itself. When we act autonomously, wee seems to be instruments to purposes given outside us, we become as ends in ourselves. This capacity to act freely, is what gives human life its special dignity.<br />
+Respecting human dignity means regarding persons not just as means, but also as ends in themselves. This is why it is wrong to use people for the sake of other people's well-being or happiness. This is the real reason that utilitarianism goes wrong.</p>
+<p>------------------------------------<br />
+<strong>Part 2. Kant's Conception of Morality</p>
+<p></strong>Kant's Conception of Morality<br />
+*moral worth of an action depends on motive (do the right thing for the right reason, or for the sake of duty)</p>
+<p>What makes an action morally worthy, consists not in the consequences or in the results that flow from it, what makes an action morally worthy has to do with the motive, with the quality of the will, with the Intention for which the act is done. What matters is the motive, and the motive must be of a certain kind.</p>
+<p>A good will isn't good because of what it effects or accomplishes, it's good in itself. Even if by utmost effort the good will accomplishes nothing it would still shine like a jewel for it's own sake as something which has it's full value in itself. -- Immanuel Kant<br />
+The idea is that the motive confers the moral worth on an action and the only kind of motive that can confer moral worth on an action is the motive of duty.<br />
+The opposite of acting out of duty, is all of the motives having to do with our inclinations. Inclinations refer to all of our desires, all of our contingently given wants, preferences, impulses, and the like.<br />
+Only actions done for the sake of the moral law, for the sake of duty, only these actions have moral duty.</p>
+<p>-------------------------------<br />
+<strong>Part 3. Kant's Conception of Supreme Morality</p>
+<p></strong>What's the supreme principle of morality?<br />
+Only one kind of motive is consistent with morality, the motive of duty, doing the right thing for the right reason. Other motives are summed up by Kant in the category of inclination.<br />
+Every thine the motive for what we do is to satisfy a desire or a preference that we may have, to pursue some interest, we are acting of inclination.<br />
+It's fine to have sentiments and feelings that support the right thing provided they don't provide the reason for acting. One may have more than one motive, but it doesn't mean that the action is devoid of moral worth, just because he has one other motive -- the motive which involves duty is what gives the moral worth.</p>
+<p>Kant's Three Contrasts:<br />
+(MORALITY) Motives:                         Duty vs. Inclination<br />
+(FREEDOM)  Determination of will :   autonomous  vs. Heteronomous<br />
+(REASON) Imperatives:                      Categorical vs. Hypothetical</p>
+<p>If reason determines my will, then the will becomes a power to choose indecent of the dictates of nature, or inclination or circumstance. So, connected with Kant's demanding notions of morality and freedom, is a specially demanding notion of reason.</p>
+<p>How can reason determine the will?<br />
+There are two ways. There are two different commands of reason. One is an imperative. An imperative is an *ought*.<br />
+One kind of imperative, perhaps the most familiar kind, is a *hypothetical* imperative. Hypothetical imperatives use instrumental reason. If want X then do y. It's means-ends reason.<br />
+If the action would be good solely as a means to something else, the imperative is hypothetical; if the action is represented as good in itself and therefore as necessary... for a will which of itself accords with reason, then the imperative is *categorical*.</p>
+<p>What is the categorical imperative? What is the supreme principle of morality? What does it command of us?<br />
+THE CATEGORICAL IMPERATIVE<br />
+(1) The Formula of Universal Law<br />
+Act only on that maxim whereby you can at the same time will that is should become a universal law. "the maxim", he means a rule that explains the reason for what you are doing, a principle. For example, promise keeping.<br />
+And the test, the way we can determine that the false promise is at odds with the categorical imperative, is try to universalize it, universalize the maxim upon which you are about to act. If the maxim universalized would undermine itself, then it's not categorical.</p>
+<p>(2) The Formula of Humanity as End<br />
+We can't base the categorical imperative on any particular interests, purposes, or ends, because then it would be only relative to the person whose ends they were. But suppose, however, there were something whose existence has in itself an absolute value.... an end in itself.... then in it, and in it alone, would there be the ground of a possible categorical imperative.<br />
+"I say that man, and in general every rational being, exists as an end in himself, not merely as a means for arbitrary used by this or that will." -- Kant</p>
+<p>Act in such a way that you always treat humanity, whether in your own person or in the person of any other, never simply as a means, but always at the same time, as an end.</p>
+<p>Respect is respect for humanity which is universal, for a rational capacity which is universal, and that's why violating it, in my own case, is as objectionable as violating it in the case of any other.</p>
+<p>-------------------------------<br />
+<strong>Part 4. The Application of Kant' Categorical Imperative on Lying</p>
+<p></strong>How is a categorical imperative possible? How is morality possible?</p>
+<p>"when we think of ourselves as free, we transfer ourselves into the intelligible world as members and recognize the autonomy of the will." --immanuel Kant<br />
+Only because the idea of freedom makes me a member of an intelligible world, the categorical imperative is possible.</p>
+<p>Since we inhabits simultaneously the two standpoints, the two realms, the realm of freedom and the realm of necessity, there is always potentially a gap between what we do and what we ought to to, between is and ought.<br />
+Morality is not empirical. Whatever you see in the world, whatever you discover through science, can't decide moral questions. Morality stands at a certain distance from the world, from the empirical world. That's why no science could deliver moral truth.</p>
+<p>From Kant's point of view, there actually is a world of difference between a lie and a misleading truth.</p>
+<p>White lie 善意的谎言<br />
+Kant preferred leading truth(误导的真相) to a white lie.<br />
+Unlike a falsehood, unlike a lie, a misleading truth pays a certain homage to duty.</p>
+<p>-----------------------------------<br />
+<strong>Part 5  The Application of Kant's Categorical Imperative On Contract</p>
+<p></strong>Just laws arise from a certain kind of social contract, which is of an exceptional nature. What makes the contract exceptional is that it is not an actual contract, that happens when people come together and try to figure out what the constitution should be. That the contract generates justice is an idea of reason.</p>
+<p>A contract that generates principles of right is merely an idea of reason, but it has undoubted practical reality, because it can oblige every legislator to frame his laws in such a way that they could have been produced by the united will of the whole nation.</p>
+<p>"Each person possesses an inviolability founded on justice that even the welfare of society as a whole cannot override... The rights secured by justice are not subject to political bargaining or to the calculus of social interests." -- John Rawls</p>
+<p>Moral Force of Actual Contracts<br />
+1. How do they bind or obligate?<br />
+(1) consent-based -&gt; AUTONOMY(自律)<br />
+(2) benefit- based -&gt; RECIPROCITY(互惠) : contracts sometimes bind us in so far as they are instruments of mutual benefit.</p>
+<p>2. How do they justify the terms they produce?<br />
+Actual contracts are not self-sufficient moral instruments of any actual contract or agreement. The fact of the agreement never guarantees the fairness of the agreement.</p>
+
+
+    <small class="meta">July 26, 2011 | <a href='/bkup/2011/07/26/immaneul-kants-philosophy-of-morality/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook/">Importing Multi-Excel Files/Worksheets Into An Excel Workbook</a></h2>
+
+    <p>Two days ago, my wife asked me to write an Excel VBA script to automatically import multi-Excel worksheets stored in different workbooks into an already opened Excel workbook.  Her requirements were:</p>
+<ol>
+<li>Select a range in a worksheet, which stores the names of worksheets to be imported. After executing the macro, worksheets will be created if it doesn't exist, or it will be updated according to the specified  Excel worksheet in another Excel workbook. Table 1 is the range selected in the worksheet, in which the first column is the serial number of worksheet, the second column denotes department name and the worksheet name should be like "01 Department A".</li>
+<li>The imported/created worksheets should be sorted by the serial number of Table 1.</li>
+<li>The macro should be smart enough to match the Excel files to be imported. The name is like "01 XXXX_Department  A_20110707.xls".</li>
+<li>After importing, specified cells in every other worksheets should be automatically copied to cells on the same row next to department.</li>
+</ol>
+<p style="text-align:center;">Table 1  Selected Range of a worksheet</p>
+<table class="aligncenter" width="200" border="1" cellspacing="1" cellpadding="1">
+<tbody>
+<tr>
+<td>1</td>
+<td>Department  A</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Department  B</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Department  C</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Department  D</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Department  E</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Department  F</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Department  G</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Department  H</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Department  I</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Department  J</td>
+</tr>
+</tbody>
+</table>
+<p>Actually I am not familiar with VBA, although I studied Visual Basic 6.0 for several months, I rarely touched it after passing the Jiangsu Province Computer Rank Test Level 2 in 2003. Besides, almost all my work was done in Linux/UNIX last 3 years.  As a result, I have to Google every VBA syntax and tips all day long.</p>
+<p>Finally, I finishes the VBA macros and meet my wife's requirement in a inelegant way. Following is the verbose source code.</p>
+<p>Following the macro to implement first 3 requirements.<br />
+[sourcecode language="vb"]<br />
+Option Explicit<br />
+Dim curWS As Worksheet</p>
+<p>Sub LoadWorksheets()<br />
+'<br />
+' LoadWorksheets Macro<br />
+' Macro recorded 7/13/2011 by Bo Yang<br />
+'<br />
+' Keyboard Shortcut: Ctrl+Shift+L<br />
+'<br />
+' *How to use this macro?*<br />
+' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*<br />
+'<br />
+    Application.ScreenUpdating = False  ' stop screen flickering</p>
+<p>    ' Create new sheets according to selected cells and copy the<br />
+    ' contebts of other files into the new sheets<br />
+    Dim YesNo As Variant, myFolder As String, MyLF As String<br />
+    Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range<br />
+    Dim SheetName As String, SheetToBeCopy As String<br />
+    Dim ColCnt As Integer<br />
+    Dim no_str As String, idx As Integer</p>
+<p>    myFolder = &quot;D:\&quot;   '*****Change this value as you need*****<br />
+    SheetToBeCopy = &quot;信息资产风险评估&quot;  ' *****Change this value as you need*****</p>
+<p>    MyLF = Chr(10) &amp;amp; Chr(13)    ' a line feed command<br />
+    Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet</p>
+<p>    ' check that if user select valid columns<br />
+    ColCnt = Selection.Columns.Count</p>
+<p>    If ColCnt  2 Then<br />
+        MsgBox (&quot;Please select 2 columns!!!&quot; &amp;amp; MyLF &amp;amp; _<br />
+            &quot;The first column must be digital numbers,&quot; &amp;amp; MyLF &amp;amp; _<br />
+            &quot;And the Second column must be department names&quot; _<br />
+        )<br />
+        Exit Sub<br />
+    End If</p>
+<p>    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp;amp; MyLF &amp;amp; _<br />
+        &quot;Do you want to continue?&quot;, _<br />
+        vbYesNo, &quot;Caution&quot;)<br />
+    Select Case YesNo<br />
+    Case vbYes<br />
+        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)<br />
+        SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)</p>
+<p>        ' Create new worksheets<br />
+        ' Discontinuous selection is supported by Selection.Areas<br />
+        For Each Rng In Selection.Areas<br />
+            Set SelRange = Rng.Cells<br />
+            Set ColNo = Rng.Columns(1)<br />
+            Set ColDepart = Rng.Columns(2)<br />
+            idx = 1<br />
+            For Each cell In ColDepart.Cells<br />
+                no_str = ColNo.Cells(idx).Value<br />
+                If Len(no_str) = 1 Then<br />
+                    no_str = &quot;0&quot; + no_str<br />
+                End If<br />
+                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here<br />
+                idx = idx + 1<br />
+            Next<br />
+        Next</p>
+<p>        curWS.Activate</p>
+<p>        ' Sort worksheets<br />
+        Call SortWorksheets</p>
+<p>    Case vbNo<br />
+        Application.ScreenUpdating = True<br />
+        Exit Sub<br />
+    End Select</p>
+<p>    curWS.Activate<br />
+    Application.ScreenUpdating = True<br />
+End Sub</p>
+<p>Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String<br />
+    Dim oSheet As Worksheet, vRet As Variant<br />
+    Dim SheetName As String, FileName As String<br />
+    Dim Entry As Integer, i As Integer</p>
+<p>    ' Determine where to insert new worksheet<br />
+    Entry = 0<br />
+    For i = Sheets.Count To 1 Step -1<br />
+        If Val(Worksheets(i).Name) &amp;gt; 0 Then<br />
+            Entry = i<br />
+            GoTo Determ_Entry<br />
+        End If<br />
+    Next i<br />
+Determ_Entry:<br />
+    If Entry = 0 Then<br />
+        Entry = Sheets.Count<br />
+    End If</p>
+<p>    'Example of one worksheet name:<br />
+    '   07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls<br />
+    SheetName = no + &quot; &quot; + Depart<br />
+    If Not SheetExists(SheetName) Then<br />
+        'worksheet XXX doesn't exist in current workbook<br />
+        'creating a new excel worksheet</p>
+<p>        Set oSheet = Worksheets.Add<br />
+        With oSheet<br />
+            .Name = SheetName<br />
+            .Move After:=Sheets(Entry)<br />
+            .Activate<br />
+        End With<br />
+    End If</p>
+<p>    FileName = FindFileName(no, Depart, FolderName)<br />
+    If FileName  &quot;&quot; Then<br />
+        Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)<br />
+    End If</p>
+<p>    Exit Function</p>
+<p>End Function</p>
+<p>Function SheetExists(SheetName As String) As Boolean<br />
+' returns TRUE if the sheet exists in the active workbook<br />
+    SheetExists = False<br />
+    On Error GoTo NoSuchSheet<br />
+    If Len(Sheets(SheetName).Name) &amp;gt; 0 Then<br />
+        SheetExists = True<br />
+        Exit Function<br />
+    End If<br />
+NoSuchSheet:<br />
+End Function</p>
+<p>Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String<br />
+    'open Excel files and copy the contents to this sheet<br />
+    Dim newWB As Workbook, curWB As Workbook<br />
+    Dim startRange As Range</p>
+<p>    If Dir(FileName)  &quot;&quot; Then<br />
+        ' file exists<br />
+        ' Clear all cells of current worksheet<br />
+        Sheets(SheetName).UsedRange.Clear<br />
+        Application.DisplayAlerts = False ' disable alerts</p>
+<p>        ' Open workbooks to be copied<br />
+        Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment<br />
+        Set newWB = Workbooks.Open(FileName)<br />
+        newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter<br />
+        Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied<br />
+        newWB.Sheets(SheetToBeCopy).UsedRange.Copy<br />
+        ' paste to target worksheet<br />
+        curWB.Activate<br />
+        Sheets(SheetName).Range(startRange.Address).PasteSpecial<br />
+        Application.CutCopyMode = False  'Clear Clipboard<br />
+        newWB.Close SaveChanges:=False  ' close without change<br />
+        Application.DisplayAlerts = True</p>
+<p>    End If</p>
+<p>End Function</p>
+<p>Function FindFileName(no As String, Depart As String, FolderName As String) As String<br />
+    Dim Coll_Docs As New Collection<br />
+    Dim Search_path, Search_Filter, Search_Fullname As String<br />
+    Dim DocName As String<br />
+    Dim i As Long</p>
+<p>    Search_path = FolderName   ' where ?<br />
+    Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?<br />
+    Set Coll_Docs = Nothing</p>
+<p>    DocName = Dir(Search_path &amp;amp; &quot;\&quot; &amp;amp; Search_Filter)</p>
+<p>    Do Until DocName = &quot;&quot;            ' build the collection<br />
+        Coll_Docs.Add Item:=DocName<br />
+        DocName = Dir<br />
+    Loop</p>
+<p>    If Coll_Docs.Count = 1 Then<br />
+        FindFileName = Search_path &amp;amp; &quot;\&quot; &amp;amp; Coll_Docs(1)<br />
+    Else<br />
+        FindFileName = &quot;&quot;<br />
+    End If</p>
+<p>End Function</p>
+<p>Function SortWorksheetsByName() As String<br />
+    ' sort worksheets in a workbook in ascending order<br />
+    Dim sCount As Integer, i As Integer, j As Integer</p>
+<p>    Application.ScreenUpdating = False<br />
+    sCount = Worksheets.Count<br />
+    If sCount = 1 Then Exit Function<br />
+    For i = 1 To sCount - 1<br />
+        For j = i + 1 To sCount<br />
+            If Worksheets(j).Name  0 Then<br />
+            Entry = i<br />
+            GoTo Determ_Entry<br />
+        End If<br />
+    Next i<br />
+Determ_Entry:</p>
+<p>    For i = Entry To cnt - 1<br />
+            For j = i + 1 To cnt<br />
+                    If Val(Worksheets(i).Name) &amp;gt; Val(Worksheets(j).Name) Then<br />
+                            Worksheets(j).Move Before:=Worksheets(i)<br />
+                    End If<br />
+            Next j<br />
+    Next i</p>
+<p>    curWS.Activate<br />
+    'Application.ScreenUpdating = True<br />
+End Function<br />
+[/sourcecode]</p>
+<p>And here comes the macro to implement the 4th requirement.<br />
+[sourcecode language="vb"]<br />
+Option Explicit</p>
+<p>Sub UpdateCells()<br />
+'<br />
+' UpdateCells Macro<br />
+' Macro recorded 7/13/2011 by Bo Yang<br />
+'<br />
+' Keyboard Shortcut: Ctrl+Shift+C<br />
+'<br />
+' Risk:Cell<br />
+' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6<br />
+Dim Risk5 As Range<br />
+Dim num As String, depart As Range, idx As Integer<br />
+Dim SheetName As String<br />
+Dim SelRange As Range<br />
+Dim curWS As Worksheet</p>
+<p>Application.ScreenUpdating = False</p>
+<p>Set curWS = ActiveSheet<br />
+Set SelRange = Selection</p>
+<p>idx = 1<br />
+For Each depart In SelRange.Columns(2).Cells<br />
+    num = SelRange.Columns(1).Cells(idx).value<br />
+    If Len(num) = 1 Then<br />
+        num = &quot;0&quot; + num<br />
+    End If<br />
+    SheetName = num + &quot; &quot; + depart.value</p>
+<p>    Set Risk5 = SelRange.Columns(3).Cells(idx)</p>
+<p>    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy<br />
+    Risk5.Select<br />
+    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True<br />
+    Application.CutCopyMode = False 'Clear Clipboard</p>
+<p>    idx = idx + 1<br />
+Next</p>
+<p>Application.ScreenUpdating = True<br />
+End Sub<br />
+[/sourcecode]<br />
+<span style="font-size:small;"><span class="Apple-style-span" style="line-height:normal;"><br />
+</span></span></p>
+
+
+    <small class="meta">July 13, 2011 | <a href='/bkup/2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/scripts/vba/2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook/">Importing Multi-Excel Files/Worksheets Into An Excel Workbook</a></h2>
+
+    <p>Two days ago, my wife asked me to write an Excel VBA script to automatically import multi-Excel worksheets stored in different workbooks into an already opened Excel workbook.  Her requirements were:</p>
+<ol>
+<li>Select a range in a worksheet, which stores the names of worksheets to be imported. After executing the macro, worksheets will be created if it doesn't exist, or it will be updated according to the specified  Excel worksheet in another Excel workbook. Table 1 is the range selected in the worksheet, in which the first column is the serial number of worksheet, the second column denotes department name and the worksheet name should be like "01 Department A".</li>
+<li>The imported/created worksheets should be sorted by the serial number of Table 1.</li>
+<li>The macro should be smart enough to match the Excel files to be imported. The name is like "01 XXXX_Department  A_20110707.xls".</li>
+<li>After importing, specified cells in every other worksheets should be automatically copied to cells on the same row next to department.</li>
+</ol>
+<p style="text-align:center;">Table 1  Selected Range of a worksheet</p>
+<table class="aligncenter" width="200" border="1" cellspacing="1" cellpadding="1">
+<tbody>
+<tr>
+<td>1</td>
+<td>Department  A</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Department  B</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Department  C</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Department  D</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Department  E</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Department  F</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Department  G</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Department  H</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Department  I</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Department  J</td>
+</tr>
+</tbody>
+</table>
+<p>Actually I am not familiar with VBA, although I studied Visual Basic 6.0 for several months, I rarely touched it after passing the Jiangsu Province Computer Rank Test Level 2 in 2003. Besides, almost all my work was done in Linux/UNIX last 3 years.  As a result, I have to Google every VBA syntax and tips all day long.</p>
+<p>Finally, I finishes the VBA macros and meet my wife's requirement in a inelegant way. Following is the verbose source code.</p>
+<p>Following the macro to implement first 3 requirements.<br />
+[sourcecode language="vb"]<br />
+Option Explicit<br />
+Dim curWS As Worksheet</p>
+<p>Sub LoadWorksheets()<br />
+'<br />
+' LoadWorksheets Macro<br />
+' Macro recorded 7/13/2011 by Bo Yang<br />
+'<br />
+' Keyboard Shortcut: Ctrl+Shift+L<br />
+'<br />
+' *How to use this macro?*<br />
+' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*<br />
+'<br />
+    Application.ScreenUpdating = False  ' stop screen flickering</p>
+<p>    ' Create new sheets according to selected cells and copy the<br />
+    ' contebts of other files into the new sheets<br />
+    Dim YesNo As Variant, myFolder As String, MyLF As String<br />
+    Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range<br />
+    Dim SheetName As String, SheetToBeCopy As String<br />
+    Dim ColCnt As Integer<br />
+    Dim no_str As String, idx As Integer</p>
+<p>    myFolder = &quot;D:\&quot;   '*****Change this value as you need*****<br />
+    SheetToBeCopy = &quot;信息资产风险评估&quot;  ' *****Change this value as you need*****</p>
+<p>    MyLF = Chr(10) &amp;amp; Chr(13)    ' a line feed command<br />
+    Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet</p>
+<p>    ' check that if user select valid columns<br />
+    ColCnt = Selection.Columns.Count</p>
+<p>    If ColCnt  2 Then<br />
+        MsgBox (&quot;Please select 2 columns!!!&quot; &amp;amp; MyLF &amp;amp; _<br />
+            &quot;The first column must be digital numbers,&quot; &amp;amp; MyLF &amp;amp; _<br />
+            &quot;And the Second column must be department names&quot; _<br />
+        )<br />
+        Exit Sub<br />
+    End If</p>
+<p>    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp;amp; MyLF &amp;amp; _<br />
+        &quot;Do you want to continue?&quot;, _<br />
+        vbYesNo, &quot;Caution&quot;)<br />
+    Select Case YesNo<br />
+    Case vbYes<br />
+        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)<br />
+        SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)</p>
+<p>        ' Create new worksheets<br />
+        ' Discontinuous selection is supported by Selection.Areas<br />
+        For Each Rng In Selection.Areas<br />
+            Set SelRange = Rng.Cells<br />
+            Set ColNo = Rng.Columns(1)<br />
+            Set ColDepart = Rng.Columns(2)<br />
+            idx = 1<br />
+            For Each cell In ColDepart.Cells<br />
+                no_str = ColNo.Cells(idx).Value<br />
+                If Len(no_str) = 1 Then<br />
+                    no_str = &quot;0&quot; + no_str<br />
+                End If<br />
+                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here<br />
+                idx = idx + 1<br />
+            Next<br />
+        Next</p>
+<p>        curWS.Activate</p>
+<p>        ' Sort worksheets<br />
+        Call SortWorksheets</p>
+<p>    Case vbNo<br />
+        Application.ScreenUpdating = True<br />
+        Exit Sub<br />
+    End Select</p>
+<p>    curWS.Activate<br />
+    Application.ScreenUpdating = True<br />
+End Sub</p>
+<p>Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String<br />
+    Dim oSheet As Worksheet, vRet As Variant<br />
+    Dim SheetName As String, FileName As String<br />
+    Dim Entry As Integer, i As Integer</p>
+<p>    ' Determine where to insert new worksheet<br />
+    Entry = 0<br />
+    For i = Sheets.Count To 1 Step -1<br />
+        If Val(Worksheets(i).Name) &amp;gt; 0 Then<br />
+            Entry = i<br />
+            GoTo Determ_Entry<br />
+        End If<br />
+    Next i<br />
+Determ_Entry:<br />
+    If Entry = 0 Then<br />
+        Entry = Sheets.Count<br />
+    End If</p>
+<p>    'Example of one worksheet name:<br />
+    '   07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls<br />
+    SheetName = no + &quot; &quot; + Depart<br />
+    If Not SheetExists(SheetName) Then<br />
+        'worksheet XXX doesn't exist in current workbook<br />
+        'creating a new excel worksheet</p>
+<p>        Set oSheet = Worksheets.Add<br />
+        With oSheet<br />
+            .Name = SheetName<br />
+            .Move After:=Sheets(Entry)<br />
+            .Activate<br />
+        End With<br />
+    End If</p>
+<p>    FileName = FindFileName(no, Depart, FolderName)<br />
+    If FileName  &quot;&quot; Then<br />
+        Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)<br />
+    End If</p>
+<p>    Exit Function</p>
+<p>End Function</p>
+<p>Function SheetExists(SheetName As String) As Boolean<br />
+' returns TRUE if the sheet exists in the active workbook<br />
+    SheetExists = False<br />
+    On Error GoTo NoSuchSheet<br />
+    If Len(Sheets(SheetName).Name) &amp;gt; 0 Then<br />
+        SheetExists = True<br />
+        Exit Function<br />
+    End If<br />
+NoSuchSheet:<br />
+End Function</p>
+<p>Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String<br />
+    'open Excel files and copy the contents to this sheet<br />
+    Dim newWB As Workbook, curWB As Workbook<br />
+    Dim startRange As Range</p>
+<p>    If Dir(FileName)  &quot;&quot; Then<br />
+        ' file exists<br />
+        ' Clear all cells of current worksheet<br />
+        Sheets(SheetName).UsedRange.Clear<br />
+        Application.DisplayAlerts = False ' disable alerts</p>
+<p>        ' Open workbooks to be copied<br />
+        Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment<br />
+        Set newWB = Workbooks.Open(FileName)<br />
+        newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter<br />
+        Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied<br />
+        newWB.Sheets(SheetToBeCopy).UsedRange.Copy<br />
+        ' paste to target worksheet<br />
+        curWB.Activate<br />
+        Sheets(SheetName).Range(startRange.Address).PasteSpecial<br />
+        Application.CutCopyMode = False  'Clear Clipboard<br />
+        newWB.Close SaveChanges:=False  ' close without change<br />
+        Application.DisplayAlerts = True</p>
+<p>    End If</p>
+<p>End Function</p>
+<p>Function FindFileName(no As String, Depart As String, FolderName As String) As String<br />
+    Dim Coll_Docs As New Collection<br />
+    Dim Search_path, Search_Filter, Search_Fullname As String<br />
+    Dim DocName As String<br />
+    Dim i As Long</p>
+<p>    Search_path = FolderName   ' where ?<br />
+    Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?<br />
+    Set Coll_Docs = Nothing</p>
+<p>    DocName = Dir(Search_path &amp;amp; &quot;\&quot; &amp;amp; Search_Filter)</p>
+<p>    Do Until DocName = &quot;&quot;            ' build the collection<br />
+        Coll_Docs.Add Item:=DocName<br />
+        DocName = Dir<br />
+    Loop</p>
+<p>    If Coll_Docs.Count = 1 Then<br />
+        FindFileName = Search_path &amp;amp; &quot;\&quot; &amp;amp; Coll_Docs(1)<br />
+    Else<br />
+        FindFileName = &quot;&quot;<br />
+    End If</p>
+<p>End Function</p>
+<p>Function SortWorksheetsByName() As String<br />
+    ' sort worksheets in a workbook in ascending order<br />
+    Dim sCount As Integer, i As Integer, j As Integer</p>
+<p>    Application.ScreenUpdating = False<br />
+    sCount = Worksheets.Count<br />
+    If sCount = 1 Then Exit Function<br />
+    For i = 1 To sCount - 1<br />
+        For j = i + 1 To sCount<br />
+            If Worksheets(j).Name  0 Then<br />
+            Entry = i<br />
+            GoTo Determ_Entry<br />
+        End If<br />
+    Next i<br />
+Determ_Entry:</p>
+<p>    For i = Entry To cnt - 1<br />
+            For j = i + 1 To cnt<br />
+                    If Val(Worksheets(i).Name) &amp;gt; Val(Worksheets(j).Name) Then<br />
+                            Worksheets(j).Move Before:=Worksheets(i)<br />
+                    End If<br />
+            Next j<br />
+    Next i</p>
+<p>    curWS.Activate<br />
+    'Application.ScreenUpdating = True<br />
+End Function<br />
+[/sourcecode]</p>
+<p>And here comes the macro to implement the 4th requirement.<br />
+[sourcecode language="vb"]<br />
+Option Explicit</p>
+<p>Sub UpdateCells()<br />
+'<br />
+' UpdateCells Macro<br />
+' Macro recorded 7/13/2011 by Bo Yang<br />
+'<br />
+' Keyboard Shortcut: Ctrl+Shift+C<br />
+'<br />
+' Risk:Cell<br />
+' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6<br />
+Dim Risk5 As Range<br />
+Dim num As String, depart As Range, idx As Integer<br />
+Dim SheetName As String<br />
+Dim SelRange As Range<br />
+Dim curWS As Worksheet</p>
+<p>Application.ScreenUpdating = False</p>
+<p>Set curWS = ActiveSheet<br />
+Set SelRange = Selection</p>
+<p>idx = 1<br />
+For Each depart In SelRange.Columns(2).Cells<br />
+    num = SelRange.Columns(1).Cells(idx).value<br />
+    If Len(num) = 1 Then<br />
+        num = &quot;0&quot; + num<br />
+    End If<br />
+    SheetName = num + &quot; &quot; + depart.value</p>
+<p>    Set Risk5 = SelRange.Columns(3).Cells(idx)</p>
+<p>    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy<br />
+    Risk5.Select<br />
+    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True<br />
+    Application.CutCopyMode = False 'Clear Clipboard</p>
+<p>    idx = idx + 1<br />
+Next</p>
+<p>Application.ScreenUpdating = True<br />
+End Sub<br />
+[/sourcecode]<br />
+<span style="font-size:small;"><span class="Apple-style-span" style="line-height:normal;"><br />
+</span></span></p>
+
+
+    <small class="meta">July 13, 2011 | <a href='/scripts/vba/2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page11' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page9' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,46 @@
+---
+layout: post
+title: Linux下安装aMule
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '269'
+  original_post_id: '40'
+  _wp_old_slug: '40'
+author: 
+---
+
+<p>今晚打算在Fedora 10下安装aMule，以便电驴下载。本打算yum安装，结果发现无法yum安装，于是只好下载了aMule的源代码（无Linux下的二进制安装文件）。解压之后，./configure，却出现了&quot;wxWindows&quot;的错误。</p>
+<p>&nbsp;</p>
+<p>在网上搜了半天之后，发现除了系统已经装好的wxGTK之外，还要安装wxGTK-devel，于是我便yum install wxGTK-devel,成功。</p>
+<p>&nbsp;</p>
+<p>重新在aMule的目录下./configure，这次却又报了更奇怪的错误：</p>
+<p>&nbsp;</p>
+<pre style="margin-top:0;display:inline;">&quot;checking for crypto++ version &gt;= 5.1... configure: error:<br />
+Could not find cryptopp header file &quot;cryptlib.h&quot;.<br />
+Please check if the path &quot;/usr&quot; is valid.&quot;</pre>
+<p>&nbsp;</p>
+<p>在网上找到一个解决办法：</p>
+<p>&nbsp;</p>
+<p>Download the latest crypto package from &quot;<a href="http://www.cryptopp.com/#download" target="_blank">http://www.cryptopp.com/#download</a><br />
+&quot;<br />
+in this case package &quot;Crypto++ 5.5.2&quot;. Now open your console terminal<br />
+and do the following commands to install the crypto package.</p>
+<p>A) mkdir crypto<br />
+B) mv cryptopp552.zip ./crypto<br />
+C) cd crypto<br />
+D) unzip cryptopp552.zip<br />
+E) make<br />
+F) cp libcryptopp.a /usr/lib/<br />
+G) mkdir /usr/include/cryptopp<br />
+H) cp *.h /usr/include/cryptopp/<br />
+I) ldconfig</p>
+<p>&nbsp;</p>
+<p>完成之后继续./configure，成功。（有一个关于uPnP的warning可以忽略。）然后make,成功，只是时间比较长。然后make install，成功！</p>
+<p>&nbsp;</p>
+<p>aMule终于可以用了！</p>

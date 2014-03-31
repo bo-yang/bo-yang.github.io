@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - How To Install Jekyll in Mac OSX Mavericks </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>How To Install Jekyll in Mac OSX Mavericks</h1>
+    <ol>
+<li>
+<p dir="ltr"><a href="http://xthinking.com/github/2014/03/17/github_install_jekyll_mavericks.html">Procedure of installing Jekyll in Mac OS X</a></p>
+</li>
+<li>
+<p dir="ltr">Install Xcode Command line tools: <a href="http://stackoverflow.com/questions/9329243/xcode-4-4-and-later-install-command-line-tools">http://stackoverflow.com/questions/9329243/xcode-4-4-and-later-install-command-line-tools</a></p>
+</li>
+<li>
+<p dir="ltr">Clang error during install Jekyll</p>
+</li>
+</ol>
+<p> </p>
+<div dir="ltr">
+<table>
+<col width="*" />
+<tbody>
+<tr>
+<td>
+<p dir="ltr">clang: error: unknown argument: '-multiply_definedsuppress' [-Wunused-command-line-argument-hard-error-in-future]</p>
+<p dir="ltr">clang: note: this will be a hard error (cannot be downgraded to a warning) in the future</p>
+<p dir="ltr">make: *** [redcarpet.bundle] Error 1</p>
+<p>
+<p dir="ltr">make failed, exit code 2</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> </p>
+<p dir="ltr">Solution:</p>
+<p> </p>
+<div dir="ltr">
+<table>
+<col width="*" />
+<tbody>
+<tr>
+<td>
+<p dir="ltr">export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"</p>
+<p dir="ltr">export CFLAGS=-Wunused-command-line-argument-hard-error-in-future</p>
+<p dir="ltr">export CPPFLAGS=-Qunused-arguments</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p dir="ltr">[Note]: Above is a temporary workaround for Xcode 5.1 only.</p>
+<p> </p>
+<p dir="ltr">References:</p>
+<ol>
+<li>
+<p dir="ltr"><a href="http://xthinking.com/github/2014/03/17/github_install_jekyll_mavericks.html">http://xthinking.com/github/2014/03/17/github_install_jekyll_mavericks.html</a></p>
+</li>
+<li>
+<p dir="ltr"><a href="http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa">http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa</a></p>
+</li>
+<li>
+<p dir="ltr"><a href="http://forums.getpebble.com/discussion/11862/installation-error-perhaps-due-to-xcode-5-1">http://forums.getpebble.com/discussion/11862/installation-error-perhaps-due-to-xcode-5-1</a></p>
+</li>
+<li>
+<p dir="ltr"><a href="https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/">https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/</a></p>
+</li>
+<li>
+<p dir="ltr"><a href="http://stackoverflow.com/questions/9329243/xcode-4-4-and-later-install-command-line-tools">http://stackoverflow.com/questions/9329243/xcode-4-4-and-later-install-command-line-tools</a></p>
+</li>
+</ol>
+<p> </p>
+
+</div>
+
+<small class="meta">Posted March 29, 2014</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/bkup/2013/10/11/notes-of-advanced-machine-learningi/">Notes of Advanced Machine Learning(I)</a></h2>
+
+    <ol>
+<li>Two different ways represent a distribution over several random variables: (1) product of conditional probabilities: \(p(x_1,x_2,x_3,x_4)=p(x_4)p(x_3|x_4)p(x_2|x_3,x_4)p(x_1|x_2,x_3,x_4)\) and (2) global energy function: \(p(x_1,x_2,x_3,x_4)=\frac{1}{Z}e^{-E(x_1,x_2,x_3,x_4)}\), where \(Z\) is the partition function.</li>
+<li>Directed graphical models use conditional probabilities, which undirected graphical models use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</li>
+<li>
+<ol>
+<li>
+<h3>Probabilistic Model</h3>
+</li>
+</ol>
+<p dir="ltr">Two different ways represent a distribution over several random variables:</p>
+<ul>
+<li>
+<p dir="ltr">product of conditional probabilities: p(x1,x2,x3,x4)=p(x4)p(x3|x4)p(x2|x3,x4)p(x1|x2,x3,x4)</p>
+</li>
+<li>
+<p dir="ltr">global energy function:</p>
+</li>
+</ul>
+<p dir="ltr">p(x1,x2,x3,x4)=1Ze{-E(x1,x2,x3,x4)},</p>
+<p dir="ltr">where Zis the partition function.</p>
+<p dir="ltr">Directed graphical models use conditional probabilities(Bayesian networks), while undirected graphical models(Markov random fields, Boltzmann machines) use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</p>
+<h4>Directed Graphs</h4>
+<p dir="ltr">Directed graphs are useful for expressing causal relationships between random variables.</p>
+<ul>
+<li>
+<p dir="ltr">The joint distribution defined by the graph is given by the product of a conditional distribution for each node conditioned on its parents.</p>
+</li>
+<li>
+<p dir="ltr">For example, the joint distribution over x1,,x7 factorizes:</p>
+</li>
+</ul>
+<p dir="ltr">p(x)=p(x1)p(x2)p(x3)p(x4|x1,x2,x3)p(x5|x1,x3)p(x6|x4)p(x7|x4,x5)</p>
+<h4>Markov Random Fields</h4>
+<p dir="ltr">p(x)=1Zcc(xc)</p>
+<ul>
+<li>
+<p dir="ltr">Each potential function is a mapping from joint configurations of random variables in a clique to non-negative real numbers.</p>
+</li>
+<li>
+<p dir="ltr">The choice of potential functions is not restricted to having specific probabilistic interpretations.</p>
+</li>
+<li>
+<p dir="ltr">Potential functions are often represented as exponentials:</p>
+</li>
+</ul>
+<p dir="ltr">p(x)=1Zcc(xc)=1Z(-cE(xc))=1Z(-E(x)) (Boltzmann distribution)</p>
+<ul>
+<li>
+<p dir="ltr">Computing Z is very hard, which represents a major limitation of undirected models.</p>
+</li>
+</ul>
+<p dir="ltr">
+<hr />
+<p>&nbsp;</p>
+<ol start="2">
+<li>
+<h3>Singular Value Decomposition</h3>
+</li>
+</ol>
+<p dir="ltr">Singular Value Decomposition(SVD) is a factorization of a real or complex matrix. Formally, the singular value decomposition of an mn matrix M is a factorization of the form</p>
+<p dir="ltr">M=UV*</p>
+<p dir="ltr">where U is a mm unitary matrix,  is an mn rectangular diagonal matrix with nonnegative real numbers on the diagonal, and V*(the conjugate transpose of V: (V*)ij=Vji, for real matrix, it equals the transpose) is an nn unitary matrix.</p>
+<p dir="ltr">A complex square matrix U is unitary if U*U=UU*=I.</p>
+<p dir="ltr">The diagonal entries ij of  are known as the singular values of M, which means they are the square roots of the eigenvalues of matrix MM*. The m columns of U and n columns of V are called the left-singular vectors and right-singular vectors of M, respectively.</p>
+<p dir="ltr">The SVD and the eigendecomposition are closely related:</p>
+<ul>
+<li>
+<p dir="ltr">The left-singular vectors of M(columns of U) are eigenvectors of MM*.</p>
+</li>
+<li>
+<p dir="ltr">The right-singular vectors of M(columns of V) are eigenvectors of M*M.</p>
+</li>
+<li>
+<p dir="ltr">The non-zero singular values of M(diagonal entries of ) are the square roots of the non-zero eigenvalues of both M*M and MM*.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>References:</p>
+<ol>
+<li>U Toronto CSC2535: <a href="http://www.cs.toronto.edu/~hinton/csc2535/lectures.html">http://www.cs.toronto.edu/~hinton/csc2535/lectures.html</a></li>
+</ol>
+
+
+    <small class="meta">October 11, 2013 | <a href='/bkup/2013/10/11/notes-of-advanced-machine-learningi/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2013/10/11/notes-of-advanced-machine-learningi/">Notes of Advanced Machine Learning(I)</a></h2>
+
+    <ol>
+<li>Two different ways represent a distribution over several random variables: (1) product of conditional probabilities: \(p(x_1,x_2,x_3,x_4)=p(x_4)p(x_3|x_4)p(x_2|x_3,x_4)p(x_1|x_2,x_3,x_4)\) and (2) global energy function: \(p(x_1,x_2,x_3,x_4)=\frac{1}{Z}e^{-E(x_1,x_2,x_3,x_4)}\), where \(Z\) is the partition function.</li>
+<li>Directed graphical models use conditional probabilities, which undirected graphical models use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</li>
+<li>
+<ol>
+<li>
+<h3>Probabilistic Model</h3>
+</li>
+</ol>
+<p dir="ltr">Two different ways represent a distribution over several random variables:</p>
+<ul>
+<li>
+<p dir="ltr">product of conditional probabilities: p(x1,x2,x3,x4)=p(x4)p(x3|x4)p(x2|x3,x4)p(x1|x2,x3,x4)</p>
+</li>
+<li>
+<p dir="ltr">global energy function:</p>
+</li>
+</ul>
+<p dir="ltr">p(x1,x2,x3,x4)=1Ze{-E(x1,x2,x3,x4)},</p>
+<p dir="ltr">where Zis the partition function.</p>
+<p dir="ltr">Directed graphical models use conditional probabilities(Bayesian networks), while undirected graphical models(Markov random fields, Boltzmann machines) use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</p>
+<h4>Directed Graphs</h4>
+<p dir="ltr">Directed graphs are useful for expressing causal relationships between random variables.</p>
+<ul>
+<li>
+<p dir="ltr">The joint distribution defined by the graph is given by the product of a conditional distribution for each node conditioned on its parents.</p>
+</li>
+<li>
+<p dir="ltr">For example, the joint distribution over x1,,x7 factorizes:</p>
+</li>
+</ul>
+<p dir="ltr">p(x)=p(x1)p(x2)p(x3)p(x4|x1,x2,x3)p(x5|x1,x3)p(x6|x4)p(x7|x4,x5)</p>
+<h4>Markov Random Fields</h4>
+<p dir="ltr">p(x)=1Zcc(xc)</p>
+<ul>
+<li>
+<p dir="ltr">Each potential function is a mapping from joint configurations of random variables in a clique to non-negative real numbers.</p>
+</li>
+<li>
+<p dir="ltr">The choice of potential functions is not restricted to having specific probabilistic interpretations.</p>
+</li>
+<li>
+<p dir="ltr">Potential functions are often represented as exponentials:</p>
+</li>
+</ul>
+<p dir="ltr">p(x)=1Zcc(xc)=1Z(-cE(xc))=1Z(-E(x)) (Boltzmann distribution)</p>
+<ul>
+<li>
+<p dir="ltr">Computing Z is very hard, which represents a major limitation of undirected models.</p>
+</li>
+</ul>
+<p dir="ltr">
+<hr />
+<p>&nbsp;</p>
+<ol start="2">
+<li>
+<h3>Singular Value Decomposition</h3>
+</li>
+</ol>
+<p dir="ltr">Singular Value Decomposition(SVD) is a factorization of a real or complex matrix. Formally, the singular value decomposition of an mn matrix M is a factorization of the form</p>
+<p dir="ltr">M=UV*</p>
+<p dir="ltr">where U is a mm unitary matrix,  is an mn rectangular diagonal matrix with nonnegative real numbers on the diagonal, and V*(the conjugate transpose of V: (V*)ij=Vji, for real matrix, it equals the transpose) is an nn unitary matrix.</p>
+<p dir="ltr">A complex square matrix U is unitary if U*U=UU*=I.</p>
+<p dir="ltr">The diagonal entries ij of  are known as the singular values of M, which means they are the square roots of the eigenvalues of matrix MM*. The m columns of U and n columns of V are called the left-singular vectors and right-singular vectors of M, respectively.</p>
+<p dir="ltr">The SVD and the eigendecomposition are closely related:</p>
+<ul>
+<li>
+<p dir="ltr">The left-singular vectors of M(columns of U) are eigenvectors of MM*.</p>
+</li>
+<li>
+<p dir="ltr">The right-singular vectors of M(columns of V) are eigenvectors of M*M.</p>
+</li>
+<li>
+<p dir="ltr">The non-zero singular values of M(diagonal entries of ) are the square roots of the non-zero eigenvalues of both M*M and MM*.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>References:</p>
+<ol>
+<li>U Toronto CSC2535: <a href="http://www.cs.toronto.edu/~hinton/csc2535/lectures.html">http://www.cs.toronto.edu/~hinton/csc2535/lectures.html</a></li>
+</ol>
+
+
+    <small class="meta">October 11, 2013 | <a href='/2013/10/11/notes-of-advanced-machine-learningi/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2013/10/10/undefined-reference-error-during-installing-opencv/">"undefined reference" error during installing OpenCV</a></h2>
+
+    <p>Many people(including me) met the infamous "undefined reference" error during installing OpenCV, such as</p>
+<pre>../../lib/libopencv_highgui.so.2.4.1: undefined reference to `avpriv_vorbis_parse_extradata’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_init’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_rc4_crypt’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_aes_crypt’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_mac’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_tree_destroy’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_sha_update’
+collect2: ld returned 1 exit status
+make[2]: *** [bin/opencv_perf_imgproc] Error 1
+make[1]: *** [modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/all] Error 2
+make: *** [all] Error 2</pre>
+<p>This error was caused by lacking of or improper installation of <a href="http://www.ffmpeg.org/">ffmpeg</a>. If you are sure the ffmpeg is successfully installed, and you can find "– FFMPEG: YES" after cmake opencv, then you'd better think about adding option "<code>--enable-shared</code> " when <i>configure</i> ffmpeg. After re-installing ffmpeg, then this "undefined reference" error should disappear.</p>
+<p>PS: A very good guideline of installing OpenCV on Ubuntu: </p>
+<h1><a href="http://www.ozbotz.org/opencv-installation/">A Comprehensive Guide to Installing and Configuring OpenCV 2.4.2 on Ubuntu</a></h1>
+<p>PPS: Damn Ubuntu!!!</p>
+
+
+    <small class="meta">October 10, 2013 | <a href='/2013/10/10/undefined-reference-error-during-installing-opencv/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2013/10/10/undefined-reference-error-during-installing-opencv/">"undefined reference" error during installing OpenCV</a></h2>
+
+    <p>Many people(including me) met the infamous "undefined reference" error during installing OpenCV, such as</p>
+<pre>../../lib/libopencv_highgui.so.2.4.1: undefined reference to `avpriv_vorbis_parse_extradata’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_init’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_rc4_crypt’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_aes_crypt’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_mac’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_tree_destroy’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_sha_update’
+collect2: ld returned 1 exit status
+make[2]: *** [bin/opencv_perf_imgproc] Error 1
+make[1]: *** [modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/all] Error 2
+make: *** [all] Error 2</pre>
+<p>This error was caused by lacking of or improper installation of <a href="http://www.ffmpeg.org/">ffmpeg</a>. If you are sure the ffmpeg is successfully installed, and you can find "– FFMPEG: YES" after cmake opencv, then you'd better think about adding option "<code>--enable-shared</code> " when <i>configure</i> ffmpeg. After re-installing ffmpeg, then this "undefined reference" error should disappear.</p>
+<p>PS: A very good guideline of installing OpenCV on Ubuntu: </p>
+<h1><a href="http://www.ozbotz.org/opencv-installation/">A Comprehensive Guide to Installing and Configuring OpenCV 2.4.2 on Ubuntu</a></h1>
+<p>PPS: Damn Ubuntu!!!</p>
+
+
+    <small class="meta">October 10, 2013 | <a href='/bkup/2013/10/10/undefined-reference-error-during-installing-opencv/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu/">Build Dense Trajectory Codes in Ubuntu</a></h2>
+
+    <p>Even when the OpenCV and ffmpeg have been successfully installed, you still may meet the error of "<strong>undefined reference to main</strong>" when building the <a href="http://lear.inrialpes.fr/people/wang/dense_trajectories">Dense Trajectory code</a>. Since the author didn't provide a solution, I share my workaround here -- just use command g++ directly:</p>
+<p><code>g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp</code></p>
+<p>The program <em>Video</em> can be built in similar way, just substitute all <em>DenseTrack</em> into Video.</p>
+
+
+    <small class="meta">October 10, 2013 | <a href='/2013/10/10/build-dense-trajectory-codes-in-ubuntu/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2013/10/10/build-dense-trajectory-codes-in-ubuntu/">Build Dense Trajectory Codes in Ubuntu</a></h2>
+
+    <p>Even when the OpenCV and ffmpeg have been successfully installed, you still may meet the error of "<strong>undefined reference to main</strong>" when building the <a href="http://lear.inrialpes.fr/people/wang/dense_trajectories">Dense Trajectory code</a>. Since the author didn't provide a solution, I share my workaround here -- just use command g++ directly:</p>
+<p><code>g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp</code></p>
+<p>The program <em>Video</em> can be built in similar way, just substitute all <em>DenseTrack</em> into Video.</p>
+
+
+    <small class="meta">October 10, 2013 | <a href='/bkup/2013/10/10/build-dense-trajectory-codes-in-ubuntu/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/matlab/2013/06/12/matlab-startup-script/">Matlab Startup Script</a></h2>
+
+    <p>You can create a script named <code>startup.m</code> under <em>userpath</em>(in Windows and Mac OSX, default path is <tt><code>Documents/MATLAB</code></tt>). You can add whatever Matlab commands you want into <code>startup.m</code>. For example, to add <code>/usr/local/bin</code> into PATH, you can add command</p>
+<p><code>setenv('PATH', [getenv('PATH') ':/usr/local/bin']);</code></p>
+<p>into <code>startup.m</code>.</p>
+<p>BTW, every time Matlab starts, configure file <code>$MATLABROOT/toolbox/local/matlabrc.m</code> will be executed.</p>
+
+
+    <small class="meta">June 12, 2013 | <a href='/matlab/2013/06/12/matlab-startup-script/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2013/06/12/matlab-startup-script/">Matlab Startup Script</a></h2>
+
+    <p>You can create a script named <code>startup.m</code> under <em>userpath</em>(in Windows and Mac OSX, default path is <tt><code>Documents/MATLAB</code></tt>). You can add whatever Matlab commands you want into <code>startup.m</code>. For example, to add <code>/usr/local/bin</code> into PATH, you can add command</p>
+<p><code>setenv('PATH', [getenv('PATH') ':/usr/local/bin']);</code></p>
+<p>into <code>startup.m</code>.</p>
+<p>BTW, every time Matlab starts, configure file <code>$MATLABROOT/toolbox/local/matlabrc.m</code> will be executed.</p>
+
+
+    <small class="meta">June 12, 2013 | <a href='/bkup/2013/06/12/matlab-startup-script/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/2013/06/05/latex-tips/">LaTeX Tips</a></h2>
+
+    <p>\algsetup{linenosize=\tiny}	% font size of line number<br />
+\scriptsize 	% font size of algorithm<br />
+\caption{Approximate Learning Algorithm for a Fully Boltzmann Machine} 	% name of the algorithm<br />
+\label{ala} 	% reference of this algorithm<br />
+\begin{algorithmic}[1]<br />
+\STATE Given a data set $X=\lbrace x^1,...,x^N \rbrace $ randomly initialize $\theta^0$ and $M$ sample particles $\lbrace {\tilde { x } }^{ 0,1 }, \cdots, {\tilde { x }}^{ 0,M } \rbrace$.<br />
+\FOR{$t=0:T$(number of iterations)}<br />
+	\FOR{$i=1:M$(number of parallel Markov chains)}<br />
+		\STATE Sample ${\tilde { x } }^{ t+1,i }$ given 	${\tilde { x }  }^{ t,i }$ using transition operator $T_{\theta^t}({\tilde { x }  }^{ t+1,i } \gets {\tilde { x }  }^{ t+,i } )$.<br />
+	\ENDFOR<br />
+	\STATE Using statistics vector $\Phi$ update: \\ $\theta^{t+1}=\theta^t + \alpha_t \left[ \frac{1}{N} \sum_{n=1}^{N} \Phi(x^n) - \frac{1}{M} \sum_{m=1}^{M} \Phi({\tilde { x } }^{ t+1,m } ) \right]$.<br />
+	\STATE Decrease $\alpha_t$.<br />
+\ENDFOR<br />
+\end{algorithmic}<br />
+\end{algorithm}</p>
+
+
+    <small class="meta">June 05, 2013 | <a href='/2013/06/05/latex-tips/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2013/06/05/latex-tips/">LaTeX Tips</a></h2>
+
+    <p>\algsetup{linenosize=\tiny}	% font size of line number<br />
+\scriptsize 	% font size of algorithm<br />
+\caption{Approximate Learning Algorithm for a Fully Boltzmann Machine} 	% name of the algorithm<br />
+\label{ala} 	% reference of this algorithm<br />
+\begin{algorithmic}[1]<br />
+\STATE Given a data set $X=\lbrace x^1,...,x^N \rbrace $ randomly initialize $\theta^0$ and $M$ sample particles $\lbrace {\tilde { x } }^{ 0,1 }, \cdots, {\tilde { x }}^{ 0,M } \rbrace$.<br />
+\FOR{$t=0:T$(number of iterations)}<br />
+	\FOR{$i=1:M$(number of parallel Markov chains)}<br />
+		\STATE Sample ${\tilde { x } }^{ t+1,i }$ given 	${\tilde { x }  }^{ t,i }$ using transition operator $T_{\theta^t}({\tilde { x }  }^{ t+1,i } \gets {\tilde { x }  }^{ t+,i } )$.<br />
+	\ENDFOR<br />
+	\STATE Using statistics vector $\Phi$ update: \\ $\theta^{t+1}=\theta^t + \alpha_t \left[ \frac{1}{N} \sum_{n=1}^{N} \Phi(x^n) - \frac{1}{M} \sum_{m=1}^{M} \Phi({\tilde { x } }^{ t+1,m } ) \right]$.<br />
+	\STATE Decrease $\alpha_t$.<br />
+\ENDFOR<br />
+\end{algorithmic}<br />
+\end{algorithm}</p>
+
+
+    <small class="meta">June 05, 2013 | <a href='/bkup/2013/06/05/latex-tips/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page3' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

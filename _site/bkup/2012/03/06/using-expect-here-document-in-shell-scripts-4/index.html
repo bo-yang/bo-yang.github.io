@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Using Expect Here Document in Shell Scripts </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div class="post">
+    <h1>Using Expect Here Document in Shell Scripts</h1>
+    <p>Sometimes simple interactions are needed for Shell scripts. In this scenario, a here document written in Expect will work well. In following example, the output of Expect here document is assigned to KSH variable rcs_stat.<br />
+<P></p>
+<pre class="python">#!/bin/ksh
+
+autoload formatAPnum
+
+# Set the lab name, COOLLAB
+. $COOLXDIR/.netlabs
+# Get the RCS cell list
+set -A RCSs
+typeset -i nx=0
+cat $COOLXDIR/.coolcell2dcs | while read cell
+do
+	if [[ &quot;$cell&quot; = c* ]]
+	then
+		rcs=${cell%%$COOLLAB*}
+		RCSs[$nx]=${rcs#c}
+		nx=$nx+1
+	fi
+done
+
+# Check RCS status
+typeset -i loopCount=0
+rcs_cnt=${#RCSs[*]}
+B_server=$(formatAPnum $BserverAP)
+while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
+do
+	loopCount=${loopCount}+1
+
+	nx=0
+	while [ $nx -lt $rcs_cnt ]
+	do
+		rcs_stat=&quot;OOS&quot;
+		rcs_stat=$(
+expect - &lt;&lt;!
+log_user 0
+set timeout 20
+spawn $COOL_RSH ap$B_server TICLI
+send &quot;op:cell ${RCSs[$nx]}\r&quot;
+expect {
+	timeout {puts &quot;OOS\n&quot;}
+	&quot;*DL(S) DOWN&quot; {puts &quot;OOS\n&quot;}
+	&quot;*DL(S) UP&quot; {puts &quot;UP\n&quot;}
+}
+!
+		)
+
+		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
+		then
+			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
+			unset RCSs[$nx]
+		fi
+
+		nx=${nx}+1
+	done
+
+	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
+done
+
+coolprint - &quot;All RCSs are up.&quot;
+exit 0
+</pre>
+<p>&nbsp;</p>
+
+</div>
+
+<small class="meta">Posted March 06, 2012</small>
+
+<div id="comments">
+  <h3>Comments</h3>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname = 'johnduff';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+

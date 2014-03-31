@@ -1,0 +1,63 @@
+---
+layout: post
+title: Fedora11声卡不能外放
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+status: publish
+type: post
+published: true
+meta:
+  views: '435'
+  original_post_id: '46'
+  _wp_old_slug: '46'
+  _oembed_a182f67d8c4dd0d72c6a266c19888dd3: '{{unknown}}'
+  _oembed_839fe1e0e5e68d8bfc3d12bb7eb873c4: '{{unknown}}'
+author: 
+---
+</p>
+<p>这些天一直苦恼于在Thinkpad R61上新装的Fedora声音无法外放，上网搜索了各种各样的方法，结果全都未果。</p>
+<p>&nbsp;</p>
+<p>昨晚怀疑是Linux Kernel的问题，因为Kernel不是最新的，于是下载了最新的Kernel，编译了一晚上才装上。</p>
+<p>&nbsp;</p>
+<p>今晚上再次对下载的ALSA源代码编译，由于是最新的Kernel，编译过程中遇到了一些问题，好在或者是缺少一些头文件(version.h,autoconf.h)或者是某个文件不存在。解决方法就是通过locate -e &lt;source_file&gt;找到系统中已经有的源文件，通过which找到可执行文件，然后在目标目录创建符号链接，编译通过。</p>
+<p>&nbsp;</p>
+<p>装完ALSA重启之后，再次通过alsamixer -c 0对alsa驱动进行设置。结果这时发现一直按向右的方向键会一直有新的item出现，最后一个是speaker，这些是我之前使用alsamixer时所没有发现的，而这个speaker恰恰就是我一直苦恼的！那个speaker项默认是MM，mute也即静音的，必须按M键将其unmute.设好之后，声卡终于可以外放了！</p>
+<p>&nbsp;</p>
+<p>尽管在网上找到的很多资料没有真正起作用，但还是将其中一些至今仍然有效的摘抄如下，以飨读者。</p>
+<p>&nbsp;</p>
+<p>**********************************************************************************</p>
+<p>原文链接：<a href="http://www.thinkwiki.org/wiki/Installing_Ubuntu_7.04_(Feisty_Fawn)_on_a_ThinkPad_T61#ALSA_driver_update_.28hard_fix.2C_recommended_for_advanced_users.29">http://www.thinkwiki.org/wiki/Installing_Ubuntu_7.04_(Feisty_Fawn)_on_a_ThinkPad_T61#ALSA_driver_update_.28hard_fix.2C_recommended_for_advanced_users.29</a></p>
+<p>&nbsp;</p>
+<p>ALSA driver update (hard fix, recommended for advanced users)</p>
+<p>&nbsp;</p>
+<p>Note: This section assumes a high level of technical proficiency. Please fix it.</p>
+<p>At www.asla-project.org, did you download only alsa-driver-1.0.14? That and alsa-lib-1.0.14a?</p>
+<p>Download alsa-driver, alsa-kernel, alsa-lib, and alsa-utils, according to http://alsa.opensrc.org/index.php/AlsaCVS. Other sources, however, say only the driver is necessary. Perhaps alsa-project.org simply recommends the other two?</p>
+<p>&nbsp;</p>
+<p>How did you compile it from source? How did you add the patch?</p>
+<p>&nbsp;</p>
+<p>In short, please explain how you did these things in addition to just telling us what you did. I&acute;m not trying to be rude but seriously, not all Linux users are programmers ;). Thanks. SteveSims 22:19, 11 August 2007 (UTC)</p>
+<p>After upgrading to 1.0.14 I still had no sound, and this took about a week to solved (though it was so sadly obvious though). Just upgrading to alsa 1.0.14 will not be enough, there were a few patches released right after the release that fix the Thinkpad's. The reason I missed this was because it was the same day so the release of 1.0.14!</p>
+<p>VERY SIMPLE METHOD OF MAKING SOUND WORK [<a href="http://forums.fedoraforum.org/showthread.php?t=159516&amp;page=1&amp;pp=15">http://forums.fedoraforum.org/showthread.php?t=159516&amp;page=1&amp;pp=15</a>] Just follow the instructions step by step, except for two small things: When doing "cp ../patch_analog.c alsa-driver-1.0.14/alsa-kernel/pci/hda/" use "cp ../patch_analog.c alsa-kernel/pci/hda/" instead. Also, when you get to the part about modifying the /etc/modprobe.conf file, it doesn't exist in ubuntu. Adding "options snd-hda-intel index=0 model=thinkpad" to any file (even one you make yourself) inside /etc/modprobe.d should work. I personally added it to the options file, and it works fine.(这种情况在Fedora 11中也是如此，解决方法也应是在/etc/modprobe.d/下自己创建一个*.conf文件，或者添加到dist.conf中去。)</p>
+<p>&nbsp;</p>
+<p><span> </span>-credit for the guide goes to ciphermonk, and credit to the small changes needed to make this work on ubuntu go to my friend John.</p>
+<p><span> </span>-hotkeys control mic volume, not speaker volume for some reason. I do not know how to fix this -- If you're using Gnome, from the System menu, click Preferences -&gt; Sound, and in the Default Mixer Tracks field, choose PCM.(在Fedora 11的Sound中没有这个选项。)</p>
+<p>&nbsp;</p>
+<p>-this fix should provide sound for both headphones and speakers.</p>
+<p>-this edit by fatalchaos</p>
+<p>&nbsp;</p>
+<p>First make sure these packages are installed (System -&gt; Administration -&gt; Synaptic Package Manager) : automake, autoconfig, cvs, libtool, python-dev, build-essential</p>
+<p>&nbsp;</p>
+<p>Then download the source code to the alsa-driver and apply these patches: (links to the revisions)</p>
+<p>&nbsp;</p>
+<p>Fix Oops with AD1984 thinkpad model (http://hg.alsa-project.org/alsa-kernel/rev/958b39f3e8dd)</p>
+<p>Fix AD1984 basic model (http://hg.alsa-project.org/alsa-kernel/rev/47ca87407c84)</p>
+<p>Fix Thinkpad X61/T61 outputs (http://hg.alsa-project.org/alsa-kernel/rev/ca37aeeeb0ea)</p>
+<p>**********************************************************************************************</p>
+<p>查看安装了哪些alsa的模块：<span> </span><strong>rpm -qa|grep alsa</strong></p>
+<p>查看声卡信息：<span><strong> </strong></span><strong>lspci|grep Audio</strong></p>
+<p>另外就是常用的alsamixer和amixer。</p>
+<p>***********************************************************************************************</p>
+<p>还有就是其他的针对Fedora 10之前的版本的资料基本上都已经过时了，大多从fedora中移除了(比如alsaconf就已经不支持了)。貌似Fedora 11中只能用alsamixer来设置声卡，Preferences -&gt; Sound的功能非常弱。</p>

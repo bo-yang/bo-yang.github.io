@@ -1,0 +1,112 @@
+---
+layout: post
+title: BACI Simple Install and Compile Guide
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _wpas_facebook_publicize_failure: 'O:13:"Keyring_Error":2:{s:6:"errors";a:1:{s:21:"keyring-request-error";a:1:{i:0;a:5:{s:7:"headers";a:11:{s:27:"access-control-allow-origin";s:1:"*";s:13:"cache-control";s:8:"no-store";s:12:"content-type";s:31:"application/json;
+    charset=UTF-8";s:7:"expires";s:29:"Sat, 01 Jan 2000 00:00:00 GMT";s:6:"pragma";s:8:"no-cache";s:16:"www-authenticate";s:150:"OAuth
+    "Facebook Platform" "invalid_token" "Error validating access token: The session
+    has been invalidated because the user has changed the password."";s:8:"x-fb-rev";s:7:"1089685";s:10:"x-fb-debug";s:44:"9NH//NYJ+iB9UHEYjtoyygfSR374zc6JqDkx1uGTLhc=";s:4:"date";s:29:"Wed,
+    22 Jan 2014 21:11:42 GMT";s:10:"connection";s:5:"close";s:14:"content-length";s:3:"185";}s:4:"body";s:185:"{"error":{"message":"Error
+    validating access token: The session has been invalidated because the user has
+    changed the password.","type":"OAuthException","code":190,"error_subcode":460}}";s:8:"response";a:2:{s:4:"code";i:401;s:7:"message";s:12:"Unauthorized";}s:7:"cookies";a:0:{}s:8:"filename";N;}}}s:10:"error_data";a:0:{}}'
+  publicize_facebook_url: https://facebook.com/
+  publicize_linkedin_url: http://www.linkedin.com/updates?discuss=&scope=74863407&stype=M&topic=5831865570772910080&type=U&a=U61Y
+  _wpas_done_373263: '1'
+  _publicize_done_external: a:1:{s:8:"linkedin";a:1:{s:10:"DFfbe-Shd5";b:1;}}
+  _wpas_skip_373264: '1'
+  _wpas_skip_373263: '1'
+author: 
+---
+<p>This is a guideline for a course of this semester, for which I am serving as a teaching assistant. I publish it here in hope that it can also help someone else who want to use BACI.</p>
+<h2>Install BACI</h2>
+<ol>
+<li>
+<p dir="ltr">Go to <a href="http://inside.mines.edu/~tcamp/baci/baci_index.html#Obtain">http://inside.mines.edu/~tcamp/baci/baci_index.html#Obtain</a> and download BACI executables:</p>
+<ul>
+<li>
+<p dir="ltr"><a href="http://inside.mines.edu/~tcamp/baci/badosxe-2005Nov09.zip">BACI DOS executables</a> for Windows,</p>
+</li>
+<li>
+<p dir="ltr"><a href="http://inside.mines.edu/~tcamp/baci/balnxxe32-2007Nov25.tar.gz">BACI LINUX executables (32 bit)</a> and <a href="http://inside.mines.edu/~tcamp/baci/balnxxe64-2012Oct01.tar.gz">BACI LINUX executables (64 bit)</a> for Linux.</p>
+</li>
+</ul>
+</li>
+<li>
+<p dir="ltr">For windows user, after download and unzip the BACI DOS executables, please put the folder called badosxe directly under the C:\ drive so it’s easy to find it. You can do all your BACI work inside this directory.</p>
+<ul>
+<li>
+<p dir="ltr">If your badosxe folder is C:\badosxe, then in your command prompt (cmd) your path should be C:\badosxe&gt; bacc &lt;file_name&gt; .</p>
+</li>
+</ul>
+</li>
+<li>
+<p dir="ltr">For Linux user, after download and gunzip the BACI executables, please make sure to add balnxxe into your PATH: export PATH=$PATH:/path/to/your/balnxxe (You also can add this line into $HOME/.profile, so that this command will be executed every time you login).</p>
+</li>
+<li>
+<p dir="ltr">If you want to use jBACI(BACI with a graphical IDE), please go to <a href="https://code.google.com/p/jbaci/downloads/list">https://code.google.com/p/jbaci/downloads/list</a>, and choose the <a href="https://code.google.com/p/jbaci/downloads/detail?name=jbaci-1.4.6.binaries.zip&amp;can=2&amp;q=">jbaci-1.4.6.binaries.zip</a>. Unfortunately, currently jBACI is only available for Windows.</p>
+</li>
+<li>
+<p dir="ltr">If you want to use BACI on the Eustis server, please download Linux version BACI first, gunzip it and then upload them into your home folder of Eustis server. Please remember to add BACI executables into your PATH(as step 3).</p>
+</li>
+<li>
+<p dir="ltr">NetBeans + BACI plugin is the best choice for people who prefer a modern IDE or MAC users. You need to install NetBeans first, and then follow the <a href="http://www.cslab.pepperdine.edu/warford/cosc450/cosc-450-Setup-for-BACI.pdf">guide of setting up BaciBeans</a>. NetBeans is a cross-platform IDE, so it can work on all operating systems that have Java JDK installed.</p>
+</li>
+</ol>
+<h2>Compile and run BACI program</h2>
+<ol>
+<li>
+<p dir="ltr">Make sure that bacc is in your PATH, or put your BACI program in the same folder of bacc. Note the .cm extension. This is the extension that identifies BACI source files to the BACI compiler.</p>
+</li>
+<li>
+<p dir="ltr">Invoke the compile command bacc your_prog.cm. This creates an object file called your_prog.pco and also a listing file called your_prog.lst.</p>
+</li>
+<li>
+<p dir="ltr">Invoke the interpreter through the command bainterp your_prog (please note, there is no suffix here) to execute your code. bainterp has an option -t that will display the order in which processes terminate within the program.</p>
+</li>
+</ol>
+<h2>Verify the installation of BACI</h2>
+<ol>
+<li>
+<p dir="ltr">Download <a href="http://www.cs.ucf.edu/courses/cop4020/spr2014/BACI/example.cm">example.cm</a>.</p>
+</li>
+<li>
+<p dir="ltr">Run command  bacc example.cm. If you see following outputs, then the example.cm is successfully compiled:</p>
+</li>
+</ol>
+<p dir="ltr">bo@HEC-2GQFTK1:~/Documents/BACI$ bacc example.cm</p>
+<p dir="ltr">Pcode and tables are stored in example.pco</p>
+<p dir="ltr">Compilation listing is stored in example.lst</p>
+<ol start="3">
+<li>
+<p dir="ltr">Execute command  bainterp -t example. If you get following message, then bainterp runs correctly.</p>
+</li>
+</ol>
+<p dir="ltr">bo@HEC-2GQFTK1:~/Documents/BACI$ bainterp -t example</p>
+<p dir="ltr">Source file: example.cm  Wed Jan 22 15:16:12 2014</p>
+<p dir="ltr">Executing PCODE ...</p>
+<p dir="ltr">before v(count) value of count is 0</p>
+<p dir="ltr">process 2 increment,  procedure increment ended</p>
+<p dir="ltr">before p(count) value of count is 1</p>
+<p dir="ltr">process 1 decrement,  procedure decrement ended</p>
+<h2><a href="http://inside.mines.edu/~tcamp/baci/baci_index.html#Using">More Options of BACI Compiler</a></h2>
+<p dir="ltr">A BACI source file using the C-- compiler should use a .cm suffix. To execute a program in BACI, there are two steps:</p>
+<p dir="ltr">1. Compile a ".cm" file to obtain a PCODE file (.pco)</p>
+<p dir="ltr">Usage: bacc [optional_flags] source_filename</p>
+<p dir="ltr">Optional_flags:</p>
+<p dir="ltr">-h show this help</p>
+<p dir="ltr">-c make a .pob object file for subsequent linkingInterpret a PCODE file (.pco) to execute the program</p>
+<p dir="ltr">2. Usage bainterp [optional_flags] pcode_filename</p>
+<p dir="ltr">Optional_flags:</p>
+<p dir="ltr">-d enter the debugger, single step, set breakpoints</p>
+<p dir="ltr">-e show the activation record (AR) on entry to each process</p>
+<p dir="ltr">-x show the AR on exit from each process</p>
+<p dir="ltr">-t announce process termination</p>
+<p dir="ltr">-h show this help</p>
+<p dir="ltr">-p show PCODE instructions as they are executed</p>
+<p dir="ltr">There is a shell script, baccint, that will call the compiler and then call the interpreter for you. It passes the options that you give it along to the interpreter. If you are using the Pascal compiler syntax, then the source file should be with a .pm suffix, and you compile the program with the bapas compiler.</p>

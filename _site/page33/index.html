@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>John Duff - Home </title>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
+  <meta name="y_key" content="6c948e75a617b12d" />
+  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="John Duff's blog" />
+</head>
+
+<body class='blog'>
+  <div class="container">
+    <div class="row">
+      <div class="span4 sidebar affix">
+        <div class="well">
+          <h2 class='site-title'>
+            <a href="http://bo-yang.github.io">Bo Yang</a>
+          </h2>
+
+		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
+
+          <ul id="navigation" class="clearfix">
+            <li class='about'><a href='/about/'>About</a></li>
+            <li class='archives'><a href='/archives/'>Archives</a></li>
+            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="span8 main offset4">
+        <div class="well">
+          <div id='index'>
+
+  <div class="post">
+    <h2><a href="/2008/09/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeiginning%2520linux%2520programming%2520%257c%257c%2520linux%2520%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2589%2529%250d%250a%2520%2520%25/">《Beiginning Linux programming || Linux 程序设计》读书笔记(三)</a></h2>
+
+    <p>
+<span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;">
+<div style="margin-top:0;margin-bottom:0;">(8) Shell Function<br />    <span style="background-color:rgb(204,204,204);">function_name () {</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        statements</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">    }</span><br />    </div>
+<div style="margin-top:0;margin-bottom:0;">    You must always define a function before you can invoke it.When a function is invoked, the positional parameters to the script, <span style="color:rgb(0,0,255);">$*, $@, $#, $1, $2,</span> and so on, are replaced by the parameters to the function.When the function finishes, they are restored to their previous values.</div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<div style="margin-top:0;margin-bottom:0;">    You can make functions return numeric values using the return command. The usual way to make functions return strings is for the function to store the string in a variable, which can then be used after the function finishes. Alternatively, you can echo a string and catch the result, like this:<br />        <span style="background-color:rgb(204,204,204);">foo () { echo JAY;}</span>
+<div style="margin-top:0;margin-bottom:0;"><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">...</span></div>
+<div style="margin-top:0;margin-bottom:0;"><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">result=”$(foo)“</span></div>
+<div style="margin-top:0;margin-bottom:0;">    </div>
+<div style="margin-top:0;margin-bottom:0;">    You can declare local variables within shell functions by using the <span style="font-family:'Courier New';">local</span> keyword. The variable is then only in scope within the function.</div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<p>(9) <span style="color:rgb(0,0,255);"><i>break</i></span></div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<div style="margin-top:0;margin-bottom:0;">(10) The <span style="color:rgb(0,0,255);"><b>:</b></span> Command</div>
+<div style="margin-top:0;margin-bottom:0;">    The colon command is an alias for true.</div>
+<div style="margin-top:0;margin-bottom:0;">    The : construct is also useful in the conditional setting of variables. For example,
+<div style="margin-top:0;margin-bottom:0;">        <span style="font-family:'Courier New';"><span style="background-color:rgb(204,204,204);">: ${var:=value}</span></span></div>
+<div style="margin-top:0;margin-bottom:0;">Without the :, the shell would try to evaluate <span style="font-family:'Courier New';">$var</span> as a command.</div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<p>(11) Continue</p></div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<div style="margin-top:0;margin-bottom:0;">(12) The <span style="color:rgb(0,0,255);"><b>.</b></span> Command</div>
+<div style="margin-top:0;margin-bottom:0;">(13) eval<br />    The eval command enables you to evaluate arguments. It’s built into the shell and doesn’t normally exist as a separate command. <span style="font-family:'Courier New';">eval</span> is a bit like an extra $: It gives you the value of the value of a variable.</p>
+</div>
+<div style="margin-top:0;margin-bottom:0;">(14) exec<br />    The exec command has two different uses. Its typical use is to replace the current shell with a different program.<br />    The second use of exec is to modify the current file descriptors:<br />        <span style="background-color:rgb(204,204,204);">exec 3&lt; afile</span><br />    This causes file descriptor three to be opened for reading from file afile. It’s rarely used.</p>
+<p>(15) export<br />    The <span style="font-family:'Courier New';">export</span> command creates an environment variable from its parameter that can be seen by other scripts and programs invoked from the current program. </p>
+<p>(16) expr<br />    The expr command evaluates its arguments as an expression. It’s most commonly used for simple arithmetic in the following form:<br />        <span style="background-color:rgb(204,204,204);">x=`expr $x + 1`</span><br />   The `` (backtick) characters make x take the result of executing the command expr $x + 1. You could also write it using the syntax $( ) rather than backticks, like this:<br />        <span style="background-color:rgb(204,204,204);">x=$(expr $x + 1)</span></p>
+<p>(17) printf<br />(18) return <br />(19) set<br />    The set command sets the parameter variables for the shell. It can be a useful way of using fields in commands that output space-separated values.<br />        <span style="background-color:rgb(204,204,204);">#!/bin/sh</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        echo the date is $(date)</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        set $(date)</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        echo The month is $2</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        exit 0</span></p>
+<p>This program sets the parameter list to the date command’s output and then uses the positional parameter $2 to get at the month.Since the date command is sensitive to the language locale, in reality you would have extracted the name of the month using date +%B. </p>
+<p>    The most commonly used form of the command is set -x, which makes a script display a trace of its currently executing command. </p>
+<p>(20) Shift<br />    The <i>shift</i> command moves all the parameter variables down by one, so that $2 becomes $1, $3 becomes $2, and so on. The previous value of <span style="color:rgb(0,0,255);">$1</span> is discarded, while <span style="color:rgb(0,0,255);">$0</span> remains unchanged. If a numerical parameter is specified in the call to shift, the parameters move that many spaces. The other variables, <span style="color:rgb(0,0,255);">$*</span>, <span style="color:rgb(0,0,255);">$@</span>, and <span style="color:rgb(0,0,255);">$#</span>, are also modified in line with the new arrangement of parameter variables.</p>
+</div>
+<div style="margin-top:0;margin-bottom:0;">(21) Trap</div>
+<div style="margin-top:0;margin-bottom:0;"><span>    </span>The trap command is used to specify the actions to take on receipt of signals. A common use is to tidy up a script when it is interrupted.<br /><span>    The trap command is passed the action to take, followed by the signal name (or names) to trap on:</span>
+<div style="margin-top:0;margin-bottom:0;"><span>    <span>    </span></span>trap command signal</div>
+<div style="margin-top:0;margin-bottom:0;">Remember that the scripts are normally interpreted from top to bottom, so you must specify the trap command before the part of the script you wish to protect.</div>
+<div></div>
+</div>
+<p></span></p>
+
+
+    <small class="meta">September 18, 2008 | <a href='/2008/09/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeiginning%2520linux%2520programming%2520%257c%257c%2520linux%2520%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2589%2529%250d%250a%2520%2520%25/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/09/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeiginning%2520linux%2520programming%2520%257c%257c%2520linux%2520%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2589%2529%250d%250a%2520%2520%25/">《Beiginning Linux programming || Linux 程序设计》读书笔记(三)</a></h2>
+
+    <p>
+<span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;">
+<div style="margin-top:0;margin-bottom:0;">(8) Shell Function<br />    <span style="background-color:rgb(204,204,204);">function_name () {</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        statements</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">    }</span><br />    </div>
+<div style="margin-top:0;margin-bottom:0;">    You must always define a function before you can invoke it.When a function is invoked, the positional parameters to the script, <span style="color:rgb(0,0,255);">$*, $@, $#, $1, $2,</span> and so on, are replaced by the parameters to the function.When the function finishes, they are restored to their previous values.</div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<div style="margin-top:0;margin-bottom:0;">    You can make functions return numeric values using the return command. The usual way to make functions return strings is for the function to store the string in a variable, which can then be used after the function finishes. Alternatively, you can echo a string and catch the result, like this:<br />        <span style="background-color:rgb(204,204,204);">foo () { echo JAY;}</span>
+<div style="margin-top:0;margin-bottom:0;"><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">...</span></div>
+<div style="margin-top:0;margin-bottom:0;"><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">result=”$(foo)“</span></div>
+<div style="margin-top:0;margin-bottom:0;">    </div>
+<div style="margin-top:0;margin-bottom:0;">    You can declare local variables within shell functions by using the <span style="font-family:'Courier New';">local</span> keyword. The variable is then only in scope within the function.</div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<p>(9) <span style="color:rgb(0,0,255);"><i>break</i></span></div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<div style="margin-top:0;margin-bottom:0;">(10) The <span style="color:rgb(0,0,255);"><b>:</b></span> Command</div>
+<div style="margin-top:0;margin-bottom:0;">    The colon command is an alias for true.</div>
+<div style="margin-top:0;margin-bottom:0;">    The : construct is also useful in the conditional setting of variables. For example,
+<div style="margin-top:0;margin-bottom:0;">        <span style="font-family:'Courier New';"><span style="background-color:rgb(204,204,204);">: ${var:=value}</span></span></div>
+<div style="margin-top:0;margin-bottom:0;">Without the :, the shell would try to evaluate <span style="font-family:'Courier New';">$var</span> as a command.</div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<p>(11) Continue</p></div>
+<div style="margin-top:0;margin-bottom:0;"></div>
+<div style="margin-top:0;margin-bottom:0;">(12) The <span style="color:rgb(0,0,255);"><b>.</b></span> Command</div>
+<div style="margin-top:0;margin-bottom:0;">(13) eval<br />    The eval command enables you to evaluate arguments. It’s built into the shell and doesn’t normally exist as a separate command. <span style="font-family:'Courier New';">eval</span> is a bit like an extra $: It gives you the value of the value of a variable.</p>
+</div>
+<div style="margin-top:0;margin-bottom:0;">(14) exec<br />    The exec command has two different uses. Its typical use is to replace the current shell with a different program.<br />    The second use of exec is to modify the current file descriptors:<br />        <span style="background-color:rgb(204,204,204);">exec 3&lt; afile</span><br />    This causes file descriptor three to be opened for reading from file afile. It’s rarely used.</p>
+<p>(15) export<br />    The <span style="font-family:'Courier New';">export</span> command creates an environment variable from its parameter that can be seen by other scripts and programs invoked from the current program. </p>
+<p>(16) expr<br />    The expr command evaluates its arguments as an expression. It’s most commonly used for simple arithmetic in the following form:<br />        <span style="background-color:rgb(204,204,204);">x=`expr $x + 1`</span><br />   The `` (backtick) characters make x take the result of executing the command expr $x + 1. You could also write it using the syntax $( ) rather than backticks, like this:<br />        <span style="background-color:rgb(204,204,204);">x=$(expr $x + 1)</span></p>
+<p>(17) printf<br />(18) return <br />(19) set<br />    The set command sets the parameter variables for the shell. It can be a useful way of using fields in commands that output space-separated values.<br />        <span style="background-color:rgb(204,204,204);">#!/bin/sh</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        echo the date is $(date)</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        set $(date)</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        echo The month is $2</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        exit 0</span></p>
+<p>This program sets the parameter list to the date command’s output and then uses the positional parameter $2 to get at the month.Since the date command is sensitive to the language locale, in reality you would have extracted the name of the month using date +%B. </p>
+<p>    The most commonly used form of the command is set -x, which makes a script display a trace of its currently executing command. </p>
+<p>(20) Shift<br />    The <i>shift</i> command moves all the parameter variables down by one, so that $2 becomes $1, $3 becomes $2, and so on. The previous value of <span style="color:rgb(0,0,255);">$1</span> is discarded, while <span style="color:rgb(0,0,255);">$0</span> remains unchanged. If a numerical parameter is specified in the call to shift, the parameters move that many spaces. The other variables, <span style="color:rgb(0,0,255);">$*</span>, <span style="color:rgb(0,0,255);">$@</span>, and <span style="color:rgb(0,0,255);">$#</span>, are also modified in line with the new arrangement of parameter variables.</p>
+</div>
+<div style="margin-top:0;margin-bottom:0;">(21) Trap</div>
+<div style="margin-top:0;margin-bottom:0;"><span>    </span>The trap command is used to specify the actions to take on receipt of signals. A common use is to tidy up a script when it is interrupted.<br /><span>    The trap command is passed the action to take, followed by the signal name (or names) to trap on:</span>
+<div style="margin-top:0;margin-bottom:0;"><span>    <span>    </span></span>trap command signal</div>
+<div style="margin-top:0;margin-bottom:0;">Remember that the scripts are normally interpreted from top to bottom, so you must specify the trap command before the part of the script you wish to protect.</div>
+<div></div>
+</div>
+<p></span></p>
+
+
+    <small class="meta">September 18, 2008 | <a href='/bkup/2008/09/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeiginning%2520linux%2520programming%2520%257c%257c%2520linux%2520%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2589%2529%250d%250a%2520%2520%25/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/09/15/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e4%25b8%25adfirefox%25e5%2590%25af%25e5%258a%25a8%25e5%2590%258e%25e8%25bf%259b%25e5%2585%25a5www-s-com%25e7%259a%2584%25e8%25a7%25a3%25e5%2586%25b3%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fedora 9中Firefox启动后进入www.s.com的解决方法</a></h2>
+
+    <p>
+    几个月来，自从手动装上Firefox3.0之后，在Fedora桌面上点击图标启动Firefox一直进入www.s.com（本来我的主页设置为iGoogle），而且图标也不再显示为Firefox的图标。很是让人郁闷。（注：据说该问题只是在图形界面下点击图标才会出现，若在命令行下面直接用命令启动Firefox不会有这个问题。）</p>
+<p>今天搜了一下，发现有这个问题的人还比较多，但大多没有解决方法。找了半天之后总算发现有人给出了方法。原来问题出自 ~/.local/share/applications/preferred-web-browser.desktop 中的Exec选项。</p>
+<p>手动装完Firefox之后把我的preferred-web-browser.desktop中的Exec改成了<br /><font color="#ff0000">Exec=/opt/firefox/firefox "%s"</font></p>
+<p>由于我是在我的个人用户下装的Firefox 3，因此root用户并没有受到影响，root用户的preferred-web-browser.desktop也没有被该变。于是我参照root用户的配置把Exec改成了<br /><font color="#0000ff">Exec=/opt/firefox/firefox %u</font></p>
+<p>同时把Icon选项改成了 <font color="#0000ff">Icon=firefox</font><br />把Name改为 <font color="#0000ff">Name=Firefox Web Browser</font></p>
+<p>再重新启动Firefox，一切正常！</p>
+<p></p>
+
+
+    <small class="meta">September 15, 2008 | <a href='/bkup/2008/09/15/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e4%25b8%25adfirefox%25e5%2590%25af%25e5%258a%25a8%25e5%2590%258e%25e8%25bf%259b%25e5%2585%25a5www-s-com%25e7%259a%2584%25e8%25a7%25a3%25e5%2586%25b3%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2008/09/15/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e4%25b8%25adfirefox%25e5%2590%25af%25e5%258a%25a8%25e5%2590%258e%25e8%25bf%259b%25e5%2585%25a5www-s-com%25e7%259a%2584%25e8%25a7%25a3%25e5%2586%25b3%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fedora 9中Firefox启动后进入www.s.com的解决方法</a></h2>
+
+    <p>
+    几个月来，自从手动装上Firefox3.0之后，在Fedora桌面上点击图标启动Firefox一直进入www.s.com（本来我的主页设置为iGoogle），而且图标也不再显示为Firefox的图标。很是让人郁闷。（注：据说该问题只是在图形界面下点击图标才会出现，若在命令行下面直接用命令启动Firefox不会有这个问题。）</p>
+<p>今天搜了一下，发现有这个问题的人还比较多，但大多没有解决方法。找了半天之后总算发现有人给出了方法。原来问题出自 ~/.local/share/applications/preferred-web-browser.desktop 中的Exec选项。</p>
+<p>手动装完Firefox之后把我的preferred-web-browser.desktop中的Exec改成了<br /><font color="#ff0000">Exec=/opt/firefox/firefox "%s"</font></p>
+<p>由于我是在我的个人用户下装的Firefox 3，因此root用户并没有受到影响，root用户的preferred-web-browser.desktop也没有被该变。于是我参照root用户的配置把Exec改成了<br /><font color="#0000ff">Exec=/opt/firefox/firefox %u</font></p>
+<p>同时把Icon选项改成了 <font color="#0000ff">Icon=firefox</font><br />把Name改为 <font color="#0000ff">Name=Firefox Web Browser</font></p>
+<p>再重新启动Firefox，一切正常！</p>
+<p></p>
+
+
+    <small class="meta">September 15, 2008 | <a href='/unix/linux/2008/09/15/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e4%25b8%25adfirefox%25e5%2590%25af%25e5%258a%25a8%25e5%2590%258e%25e8%25bf%259b%25e5%2585%25a5www-s-com%25e7%259a%2584%25e8%25a7%25a3%25e5%2586%25b3%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2008/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeginning%2520linux%2520programming%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25ba%258c%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">《Beginning Linux Programming》读书笔记（二）</a></h2>
+
+    <p>
+    &nbsp;<font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
+"&gt;", by default, if the file already exists, then it will be<br />
+overwritten. If you want to change the default behavior, you can use<br />
+the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
+<p>&nbsp;&nbsp;&nbsp;<br />
+File descriptor 0 is the standard input to a program, file descriptor 1<br />
+is the standard output, and file descriptor 2 is the standard error<br />
+output. It’s unusual to want to redirect any other than the standard<br />
+ones: 0, 1, and 2.</p>
+<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
+standard error output, preface the &gt; operator with the number of the<br />
+file descriptor you wish to redirect. Because the standard error is on<br />
+file descriptor 2, use the 2&gt; operator. This is often useful to<br />
+discard error information and prevent it from appearing on the screen.</p>
+<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
+<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
+put both the output and error outputs into the same file. Notice the<br />
+order of the operators. This reads as “redirect standard output to the<br />
+file killouterr.txt, and then direct standard error to the same place<br />
+as the standard output.” If you get the order wrong, the redirect won’t<br />
+work as you expect.</p>
+<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
+<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
+<p>3.4 <span style="color:rgb(0,0,255);"><i>file</i></span> command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
+<p>3.5 <span style="color:rgb(0,0,255);"><i>read</i></span> command
+<div>&nbsp;&nbsp; &nbsp;You can assign user input to a variable by using the <span style="color:rgb(0,0,255);"><i>read</i></span> command.The read normally&nbsp;completes when the user presses Enter.</div>
+<div></div>
+<div>3.6 <span style="color:rgb(0,0,255);"><i>which</i></span></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>Check which command is used, e.g. <i>which test</i>.</p>
+<p>3.7 <i>touch</i> filename<br /><span>&nbsp;&nbsp;&nbsp; </span>Check whether it exists and create it if it doesn’t.
+<div><font size="4">4 Shell Scripts</font></div>
+<div>4.1 Quoting</div>
+<div>&nbsp;&nbsp;<br />
+&nbsp;If you&nbsp;enclose a $ variable expression in double quotes, then it’s<br />
+replaced with its value when the line is executed.&nbsp;If you enclose it in<br />
+single quotes, then no substitution takes place. You can also remove<br />
+the special&nbsp;meaning of the $ symbol by prefacing it with a /.</div>
+<div></div>
+<div>&nbsp;&nbsp;<br />
+&nbsp;Usually, strings are enclosed in double quotes, which protects<br />
+variables from being separated by whitespace but allows $ expansion to<br />
+take place.</div>
+<div></div>
+<div>4.2 Environment Variables</div>
+<div style="padding:1em 0;text-align:center;" id="tfjq"><img src="http://docs.google.com/File?id=dd6nw3mt_59g32fh2hs_b" style="width:830px;height:522px;" /></div>
+<div style="padding:1em 0;text-align:left;" id="tfjq">&nbsp;&nbsp; &nbsp;If you want to check out how the program works in a different environment by running&nbsp;the <span style="color:rgb(0,0,255);"><i>env &lt;command&gt;</i></span>, try looking at the env manual pages.</div>
+<p>4.3 Parameter&nbsp;Variables<br />&nbsp;&nbsp;<br />
+&nbsp;If<br />
+your&nbsp;script&nbsp;is&nbsp;invoked&nbsp;with&nbsp;parameters,&nbsp;some&nbsp;additional&nbsp;variables&nbsp;are&nbsp;created.&nbsp;If&nbsp;no&nbsp;parameters&nbsp;are&nbsp;passed,&nbsp;the&nbsp;environment&nbsp;variable&nbsp;<span style="color:rgb(0,0,255);">$#</span>&nbsp;still&nbsp;exists&nbsp;but&nbsp;has&nbsp;a&nbsp;value&nbsp;of&nbsp;0.
+<div style="padding:1em 0;text-align:center;" id="mmzl"><img src="http://docs.google.com/File?id=dd6nw3mt_60d6q52vkg_b" style="width:822px;height:231px;" /></div>
+<div>&nbsp;&nbsp;&nbsp;<br />
+As&nbsp;you&nbsp;can&nbsp;see,&nbsp;within&nbsp;double&nbsp;quotes,&nbsp;$@&nbsp;expands&nbsp;the&nbsp;positional&nbsp;parameters&nbsp;as&nbsp;separate&nbsp;fields,&nbsp;regardless&nbsp;of&nbsp;the&nbsp;IFS&nbsp;value.&nbsp;In&nbsp;general,&nbsp;if&nbsp;you&nbsp;want&nbsp;access&nbsp;to&nbsp;the&nbsp;parameters,&nbsp;$@&nbsp;is&nbsp;the&nbsp;sensible&nbsp;choice.</p>
+</div>
+<div>4.4 A Problem With Variables<br />&nbsp;&nbsp;&nbsp; &nbsp;For a script<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);font-family:Courier New;">if [ $timeofday = “yes” ]</span><br />, if just press "Enter",rather than answer anything.When the variable <span style="background-color:rgb(204,204,204);"><span style="font-family:Courier New;">timeofday </span><span style="background-color:rgb(255,255,255);">was tested,</span></span> it consisted of a blank string. Therefore, the <span style="background-color:rgb(204,204,204);">if</span> clause looks like<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ = “yes” ]</span><br />which isn't a valid condition. To avoid this, you must use quotes around the variable:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “$timeofday” = “yes” ]</span><br />An empty variable then gives the valid test:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “” = “yes” ]</span></p>
+<p>&nbsp;&nbsp; &nbsp;<span style="color:rgb(0,0,255);">Remember<br />
+that adding the quotes tells the shell to consider everything between<br />
+them as a single string. This is one way of getting spaces to be stored<br />
+in a variable.</span></p>
+<p>4.5 The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> Command</div>
+<div>&nbsp;&nbsp; &nbsp;The <span style="color:rgb(0,0,255);"><i>[</i></span> and <span style="color:rgb(0,0,255);"><i>test</i></span> commands are synonymous, except that when the <span style="color:rgb(0,0,255);"><i>[</i></span> command is used, a trailing <span style="color:rgb(0,0,255);"><i>]</i></span> is also used. The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> can be used to check to see whether a file exists.</div>
+<div>e.g.&nbsp;&nbsp; &nbsp;<i>test -f &lt;filename&gt; </i>or<i> [ -f &lt;filename&gt; ]</i></div>
+<div>&nbsp;&nbsp; &nbsp;(<span style="color:rgb(255,0,0);">Note: You must put spaces between the [ braces and the condition being checked.</span>)</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp;Conditions that you can use <span style="color:rgb(0,0,255);"><i>test</i></span> command are:</div>
+<div style="padding:1em 0;text-align:center;" id="p1.x"><img src="http://docs.google.com/File?id=dd6nw3mt_61fhn45rcs_b" style="width:546px;height:645px;" /></div>
+<div>4.6 Control Structures</div>
+<div>(1)<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">if</span> <i>condition</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">then</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">elif</span> <i>condition</i><span style="font-family:Courier New;">; then</span> <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">else</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">fi</p>
+<p></span>(2)</div>
+<p>&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">for</span> <i><span style="font-family:Arial;">variable</span></i> <span style="font-family:Courier New;">in</span> <i>values</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p>Note: <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="background-color:rgb(204,204,204);">for file in $(ls f*.sh); do</span><br />In this example,&nbsp; the parameter list for the for command is provided by the output of the command enclosed in the $() sequence.</p>
+<p>(3) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">while</span> <i>condition</i> <span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p>(4) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">until </span><i>condition</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p><font size="3"><span style="background-color:rgb(255,229,153);font-family:Arial;">Note:&nbsp;&nbsp;&nbsp; In general, if a loop should always execute at least once, use a <span style="font-family:Courier New;">while</span> loop; if it may not need to execute at all, use an <span style="font-family:Courier New;">until</span> loop.</span></font></p>
+<p>(5)</p>
+<p>&nbsp;&nbsp; &nbsp;case variable in<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;...<br />&nbsp;&nbsp; &nbsp;esac</p>
+<p>&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(255,229,153);">Note:<br /><span></span></span>
+<ul>
+<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp;&nbsp; </span>Notice<br />
+that each pattern line is terminated with double semicolons (;;). You<br />
+can put multiple statements between each pattern and the next, so a<br />
+double semicolon is needed to mark where one statement ends and the<br />
+next pattern begins.</span></span></li>
+</ul>
+<p><span style="background-color:rgb(255,229,153);"><br /><span> </span></span>
+<ul>
+<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp; &nbsp;</span></span>Be<br />
+careful with the case construct if you are using wildcards such as ‘*‘<br />
+in the pattern. The problem is that the first matching pattern will be<br />
+taken, even if a later pattern matches more exactly.</span></li>
+</ul>
+<p>(6) Lists
+<ul>
+<li><span>&nbsp;&nbsp;&nbsp; </span><b>AND</b><br />
+List: The AND list construct enables you to execute a series of<br />
+commands, executing the next command only if all the previous commands<br />
+have succeeded. The syntax is<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 &amp;&amp; statement2 &amp;&amp; statement3 &amp;&amp; ...</span></li>
+</ul>
+<ul>
+<li><span>&nbsp;&nbsp;&nbsp; </span><b>OR</b><br />
+List: The OR list construct enables us to execute a series of commands<br />
+until one succeeds, and then not execute any more. The syntax is as<br />
+follows:<br />&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 || statement2 || statement3 || ...</span></p>
+</li>
+</ul>
+<p>(7) Statement Blocks<br />
+<span>&nbsp;&nbsp; &nbsp;</span>If you want to use multiple statements in a place<br />
+where only one is allowed, such as in an AND or OR list, you can do so<br />
+by enclosing them in braces {} to make a statement block.</p>
+<p>(8) Shell Function<br />
+<span>&nbsp;&nbsp;&nbsp; </span><span style="background-color:rgb(204,204,204);">function_name () {</span><br style="background-color:rgb(204,204,204);" /><br />
+<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;statements</span><br style="background-color:rgb(204,204,204);" /><br />
+<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;}</span></p>
+
+
+    <small class="meta">September 14, 2008 | <a href='/unix/linux/2008/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeginning%2520linux%2520programming%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25ba%258c%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeginning%2520linux%2520programming%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25ba%258c%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">《Beginning Linux Programming》读书笔记（二）</a></h2>
+
+    <p>
+    &nbsp;<font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
+"&gt;", by default, if the file already exists, then it will be<br />
+overwritten. If you want to change the default behavior, you can use<br />
+the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
+<p>&nbsp;&nbsp;&nbsp;<br />
+File descriptor 0 is the standard input to a program, file descriptor 1<br />
+is the standard output, and file descriptor 2 is the standard error<br />
+output. It’s unusual to want to redirect any other than the standard<br />
+ones: 0, 1, and 2.</p>
+<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
+standard error output, preface the &gt; operator with the number of the<br />
+file descriptor you wish to redirect. Because the standard error is on<br />
+file descriptor 2, use the 2&gt; operator. This is often useful to<br />
+discard error information and prevent it from appearing on the screen.</p>
+<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
+<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
+put both the output and error outputs into the same file. Notice the<br />
+order of the operators. This reads as “redirect standard output to the<br />
+file killouterr.txt, and then direct standard error to the same place<br />
+as the standard output.” If you get the order wrong, the redirect won’t<br />
+work as you expect.</p>
+<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
+<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
+<p>3.4 <span style="color:rgb(0,0,255);"><i>file</i></span> command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
+<p>3.5 <span style="color:rgb(0,0,255);"><i>read</i></span> command
+<div>&nbsp;&nbsp; &nbsp;You can assign user input to a variable by using the <span style="color:rgb(0,0,255);"><i>read</i></span> command.The read normally&nbsp;completes when the user presses Enter.</div>
+<div></div>
+<div>3.6 <span style="color:rgb(0,0,255);"><i>which</i></span></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>Check which command is used, e.g. <i>which test</i>.</p>
+<p>3.7 <i>touch</i> filename<br /><span>&nbsp;&nbsp;&nbsp; </span>Check whether it exists and create it if it doesn’t.
+<div><font size="4">4 Shell Scripts</font></div>
+<div>4.1 Quoting</div>
+<div>&nbsp;&nbsp;<br />
+&nbsp;If you&nbsp;enclose a $ variable expression in double quotes, then it’s<br />
+replaced with its value when the line is executed.&nbsp;If you enclose it in<br />
+single quotes, then no substitution takes place. You can also remove<br />
+the special&nbsp;meaning of the $ symbol by prefacing it with a /.</div>
+<div></div>
+<div>&nbsp;&nbsp;<br />
+&nbsp;Usually, strings are enclosed in double quotes, which protects<br />
+variables from being separated by whitespace but allows $ expansion to<br />
+take place.</div>
+<div></div>
+<div>4.2 Environment Variables</div>
+<div style="padding:1em 0;text-align:center;" id="tfjq"><img src="http://docs.google.com/File?id=dd6nw3mt_59g32fh2hs_b" style="width:830px;height:522px;" /></div>
+<div style="padding:1em 0;text-align:left;" id="tfjq">&nbsp;&nbsp; &nbsp;If you want to check out how the program works in a different environment by running&nbsp;the <span style="color:rgb(0,0,255);"><i>env &lt;command&gt;</i></span>, try looking at the env manual pages.</div>
+<p>4.3 Parameter&nbsp;Variables<br />&nbsp;&nbsp;<br />
+&nbsp;If<br />
+your&nbsp;script&nbsp;is&nbsp;invoked&nbsp;with&nbsp;parameters,&nbsp;some&nbsp;additional&nbsp;variables&nbsp;are&nbsp;created.&nbsp;If&nbsp;no&nbsp;parameters&nbsp;are&nbsp;passed,&nbsp;the&nbsp;environment&nbsp;variable&nbsp;<span style="color:rgb(0,0,255);">$#</span>&nbsp;still&nbsp;exists&nbsp;but&nbsp;has&nbsp;a&nbsp;value&nbsp;of&nbsp;0.
+<div style="padding:1em 0;text-align:center;" id="mmzl"><img src="http://docs.google.com/File?id=dd6nw3mt_60d6q52vkg_b" style="width:822px;height:231px;" /></div>
+<div>&nbsp;&nbsp;&nbsp;<br />
+As&nbsp;you&nbsp;can&nbsp;see,&nbsp;within&nbsp;double&nbsp;quotes,&nbsp;$@&nbsp;expands&nbsp;the&nbsp;positional&nbsp;parameters&nbsp;as&nbsp;separate&nbsp;fields,&nbsp;regardless&nbsp;of&nbsp;the&nbsp;IFS&nbsp;value.&nbsp;In&nbsp;general,&nbsp;if&nbsp;you&nbsp;want&nbsp;access&nbsp;to&nbsp;the&nbsp;parameters,&nbsp;$@&nbsp;is&nbsp;the&nbsp;sensible&nbsp;choice.</p>
+</div>
+<div>4.4 A Problem With Variables<br />&nbsp;&nbsp;&nbsp; &nbsp;For a script<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);font-family:Courier New;">if [ $timeofday = “yes” ]</span><br />, if just press "Enter",rather than answer anything.When the variable <span style="background-color:rgb(204,204,204);"><span style="font-family:Courier New;">timeofday </span><span style="background-color:rgb(255,255,255);">was tested,</span></span> it consisted of a blank string. Therefore, the <span style="background-color:rgb(204,204,204);">if</span> clause looks like<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ = “yes” ]</span><br />which isn't a valid condition. To avoid this, you must use quotes around the variable:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “$timeofday” = “yes” ]</span><br />An empty variable then gives the valid test:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “” = “yes” ]</span></p>
+<p>&nbsp;&nbsp; &nbsp;<span style="color:rgb(0,0,255);">Remember<br />
+that adding the quotes tells the shell to consider everything between<br />
+them as a single string. This is one way of getting spaces to be stored<br />
+in a variable.</span></p>
+<p>4.5 The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> Command</div>
+<div>&nbsp;&nbsp; &nbsp;The <span style="color:rgb(0,0,255);"><i>[</i></span> and <span style="color:rgb(0,0,255);"><i>test</i></span> commands are synonymous, except that when the <span style="color:rgb(0,0,255);"><i>[</i></span> command is used, a trailing <span style="color:rgb(0,0,255);"><i>]</i></span> is also used. The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> can be used to check to see whether a file exists.</div>
+<div>e.g.&nbsp;&nbsp; &nbsp;<i>test -f &lt;filename&gt; </i>or<i> [ -f &lt;filename&gt; ]</i></div>
+<div>&nbsp;&nbsp; &nbsp;(<span style="color:rgb(255,0,0);">Note: You must put spaces between the [ braces and the condition being checked.</span>)</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp;Conditions that you can use <span style="color:rgb(0,0,255);"><i>test</i></span> command are:</div>
+<div style="padding:1em 0;text-align:center;" id="p1.x"><img src="http://docs.google.com/File?id=dd6nw3mt_61fhn45rcs_b" style="width:546px;height:645px;" /></div>
+<div>4.6 Control Structures</div>
+<div>(1)<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">if</span> <i>condition</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">then</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">elif</span> <i>condition</i><span style="font-family:Courier New;">; then</span> <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">else</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">fi</p>
+<p></span>(2)</div>
+<p>&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">for</span> <i><span style="font-family:Arial;">variable</span></i> <span style="font-family:Courier New;">in</span> <i>values</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p>Note: <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="background-color:rgb(204,204,204);">for file in $(ls f*.sh); do</span><br />In this example,&nbsp; the parameter list for the for command is provided by the output of the command enclosed in the $() sequence.</p>
+<p>(3) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">while</span> <i>condition</i> <span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p>(4) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">until </span><i>condition</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p><font size="3"><span style="background-color:rgb(255,229,153);font-family:Arial;">Note:&nbsp;&nbsp;&nbsp; In general, if a loop should always execute at least once, use a <span style="font-family:Courier New;">while</span> loop; if it may not need to execute at all, use an <span style="font-family:Courier New;">until</span> loop.</span></font></p>
+<p>(5)</p>
+<p>&nbsp;&nbsp; &nbsp;case variable in<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;...<br />&nbsp;&nbsp; &nbsp;esac</p>
+<p>&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(255,229,153);">Note:<br /><span></span></span>
+<ul>
+<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp;&nbsp; </span>Notice<br />
+that each pattern line is terminated with double semicolons (;;). You<br />
+can put multiple statements between each pattern and the next, so a<br />
+double semicolon is needed to mark where one statement ends and the<br />
+next pattern begins.</span></span></li>
+</ul>
+<p><span style="background-color:rgb(255,229,153);"><br /><span> </span></span>
+<ul>
+<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp; &nbsp;</span></span>Be<br />
+careful with the case construct if you are using wildcards such as ‘*‘<br />
+in the pattern. The problem is that the first matching pattern will be<br />
+taken, even if a later pattern matches more exactly.</span></li>
+</ul>
+<p>(6) Lists
+<ul>
+<li><span>&nbsp;&nbsp;&nbsp; </span><b>AND</b><br />
+List: The AND list construct enables you to execute a series of<br />
+commands, executing the next command only if all the previous commands<br />
+have succeeded. The syntax is<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 &amp;&amp; statement2 &amp;&amp; statement3 &amp;&amp; ...</span></li>
+</ul>
+<ul>
+<li><span>&nbsp;&nbsp;&nbsp; </span><b>OR</b><br />
+List: The OR list construct enables us to execute a series of commands<br />
+until one succeeds, and then not execute any more. The syntax is as<br />
+follows:<br />&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 || statement2 || statement3 || ...</span></p>
+</li>
+</ul>
+<p>(7) Statement Blocks<br />
+<span>&nbsp;&nbsp; &nbsp;</span>If you want to use multiple statements in a place<br />
+where only one is allowed, such as in an AND or OR list, you can do so<br />
+by enclosing them in braces {} to make a statement block.</p>
+<p>(8) Shell Function<br />
+<span>&nbsp;&nbsp;&nbsp; </span><span style="background-color:rgb(204,204,204);">function_name () {</span><br style="background-color:rgb(204,204,204);" /><br />
+<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;statements</span><br style="background-color:rgb(204,204,204);" /><br />
+<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;}</span></p>
+
+
+    <small class="meta">September 14, 2008 | <a href='/bkup/2008/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeginning%2520linux%2520programming%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25ba%258c%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/unix/linux/2008/09/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258alinux%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">《Linux程序设计》读书笔记（一）</a></h2>
+
+    <p>
+    &nbsp;
+<div id="xrgo" style="text-align:center;"><font size="5"><span id="y5c80" style="font-family:SimHei, 黑体, MS Hei, sans-serif;">《Linux程序设计》读书笔记</span></font></div>
+<p><b><br /><font size="4">1、编译C程序的技巧</font></b><br />&nbsp;&nbsp;&nbsp;&nbsp;在调用C语言编译器的时候可以通过给出“-I”标志来引用保存在下级子目录或者非标准目录下的头文件，如：<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;$ gcc -I /usr/openwin/include fred.c<br />它会使编译器在/usr/openwin/include的子目录和标准目录两个地方去查找fred.c程序里所包含的头文件。</p>
+<p>&nbsp;&nbsp;&nbsp; 用grep查找含有某些特定定义与函数生命的头文件是很方便的。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ grep EXIT_ *.h<br />grep命令会在该子目录下的所有名字以.h结尾的文件里查找字符串“EXIT_”。</p>
+<p><font size="4"><b>2、库文件</b></font><br />&nbsp;&nbsp;&nbsp;<br />
+标准的系统库文件一般保存在/lib或/usr/lib子目录中。库文件的名字永远以“lib”这几个字母打头，随后便是函数库说明的部分（比如用c表示<br />
+这是一个C语言函数库，用m表示一个数学运算库），文件名的最后部分以一个“.”开始，然后给出这个库文件的类型：静态函数库.a;共享函数库.so<br />
+或.sa。<br />&nbsp;&nbsp;&nbsp; 在通知编译器查找某个库文件的时候，既可以给出其完整的路径名，也可以使用“-l”标志，。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c /usr/lib/libm.a<br />或<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c -lm<br />-lm代表标准目录库中名为libm.a的函数库。 更详细的解释参见下面的例子。<br />&nbsp;&nbsp;&nbsp;&nbsp;虽然库文件与头文件相似，都是被保存在某个标准位置，但我们仍然可以通过“-L”标志给编译器增加搜索子目录库。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o x11fred -L/usr/openwin/lib x11fred.c -lX11<br />该命令在编译和链接程序x11fred时将使用在子目录/usr/openwin/lib中找到的libX11函数库版本。</p>
+<p>&nbsp;&nbsp;&nbsp; 2.1 静态库(archive)<br />&nbsp;&nbsp;&nbsp; 假设现有源文件bill.c和fred.c，则建立静态库的方法：<br />&nbsp;&nbsp;&nbsp; （1）编译源文件生成二进制目标文件，需要在调用C编译器时加上“-c”选项以防止生成最终应用程序。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -c bill.c fred.c<br />&nbsp;&nbsp;&nbsp; （2）为函数库建立一个头文件（lib.h），它的作用是在我们的函数库里对这两个函数进行声明；如果有程序要使用这个函数库，就必须使用include引用。<br />&nbsp;&nbsp;&nbsp; <img alt="" /><img alt="" />（3）调用程序（program.c）引用库函数头文件并调用其中的函数。<br />&nbsp;&nbsp;&nbsp; （4）使用ar工具简历档案并把目标代码加入其中。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ar crv</b> libfoo.a bill.o fred.o<br />&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;另外，某些系统（尤其是Berkley&nbsp;UNIX操作系统发展而来的系统）上，要想成功是用函数库，必须先为这个函数库建立一个内容表：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ranlib</b> libfoo.a</p>
+<p>&nbsp;&nbsp;&nbsp; 可以通过使用“-L”选项告诉编译器静态库的位置：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o program program.o -L. -lfoo<br />“-L.”告诉编译器在当前子目录中查找函数库。“-lfoo”选项告诉编译器使用那个名为libfoo.a的函数库（或者一个名为libfoo.so的共享库，如果有的话）。</p>
+<p>&nbsp;&nbsp;&nbsp; 可以使用nm命令查看某个目标代码文件、函数库或者可执行程序里都包含那些函数。</p>
+<p>&nbsp;&nbsp;&nbsp; 2.2 共享库<br />&nbsp;&nbsp;&nbsp;<br />
+如果一个程序使用了共享库，它的连接方式是这样的：它本身不再保存函数的代码，而只保存共享代码的调用线索，共享代码是在运行的时候才加入其中的。对<br />
+Linux系统而言，负责加载共享库并解析客户程序中函数调用线索的程序（即共享库动态加载器）是ld.so或ld-linux.so.2；查找共享库的<br />
+其他地点是在/etc/ld.so.conf文件里配置的；如果这个文件进行了修改，就需要用ldconfig命令进行处理。<br />&nbsp;&nbsp;&nbsp; 可以使用<b>ldd</b>程序查看某个程序要求使用的是哪一个共享库：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ ldd program</p>
+<p>&nbsp;&nbsp;&nbsp; .so类似于Windows中的.DLL文件，是运行时加入程序的；.sa类似于Windows中的.LIB文件，是加入到可执行文件里面的。</p>
+<p><font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
+"&gt;", by default, if the file already exists, then it will be<br />
+overwritten. If you want to change the default behavior, you can use<br />
+the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
+<p>&nbsp;&nbsp;&nbsp;<br />
+File descriptor 0 is the standard input to a program, file descriptor 1<br />
+is the standard output, and file descriptor 2 is the standard error<br />
+output. It’s unusual to want to redirect any other than the standard<br />
+ones: 0, 1, and 2.</p>
+<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
+standard error output, preface the &gt; operator with the number of the<br />
+file descriptor you wish to redirect. Because the standard error is on<br />
+file descriptor 2, use the 2&gt; operator. This is often useful to<br />
+discard error information and prevent it from appearing on the screen.</p>
+<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
+<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
+put both the output and error outputs into the same file. Notice the<br />
+order of the operators. This reads as “redirect standard output to the<br />
+file killouterr.txt, and then direct standard error to the same place<br />
+as the standard output.” If you get the order wrong, the redirect won’t<br />
+work as you expect.</p>
+<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
+<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
+<p>3.4 file command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
+<p><font size="4">4 Shell Scripts</font></p>
+<p>P60, to be continued...</p>
+
+
+    <small class="meta">September 11, 2008 | <a href='/unix/linux/2008/09/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258alinux%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/09/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258alinux%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">《Linux程序设计》读书笔记（一）</a></h2>
+
+    <p>
+    &nbsp;
+<div id="xrgo" style="text-align:center;"><font size="5"><span id="y5c80" style="font-family:SimHei, 黑体, MS Hei, sans-serif;">《Linux程序设计》读书笔记</span></font></div>
+<p><b><br /><font size="4">1、编译C程序的技巧</font></b><br />&nbsp;&nbsp;&nbsp;&nbsp;在调用C语言编译器的时候可以通过给出“-I”标志来引用保存在下级子目录或者非标准目录下的头文件，如：<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;$ gcc -I /usr/openwin/include fred.c<br />它会使编译器在/usr/openwin/include的子目录和标准目录两个地方去查找fred.c程序里所包含的头文件。</p>
+<p>&nbsp;&nbsp;&nbsp; 用grep查找含有某些特定定义与函数生命的头文件是很方便的。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ grep EXIT_ *.h<br />grep命令会在该子目录下的所有名字以.h结尾的文件里查找字符串“EXIT_”。</p>
+<p><font size="4"><b>2、库文件</b></font><br />&nbsp;&nbsp;&nbsp;<br />
+标准的系统库文件一般保存在/lib或/usr/lib子目录中。库文件的名字永远以“lib”这几个字母打头，随后便是函数库说明的部分（比如用c表示<br />
+这是一个C语言函数库，用m表示一个数学运算库），文件名的最后部分以一个“.”开始，然后给出这个库文件的类型：静态函数库.a;共享函数库.so<br />
+或.sa。<br />&nbsp;&nbsp;&nbsp; 在通知编译器查找某个库文件的时候，既可以给出其完整的路径名，也可以使用“-l”标志，。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c /usr/lib/libm.a<br />或<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c -lm<br />-lm代表标准目录库中名为libm.a的函数库。 更详细的解释参见下面的例子。<br />&nbsp;&nbsp;&nbsp;&nbsp;虽然库文件与头文件相似，都是被保存在某个标准位置，但我们仍然可以通过“-L”标志给编译器增加搜索子目录库。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o x11fred -L/usr/openwin/lib x11fred.c -lX11<br />该命令在编译和链接程序x11fred时将使用在子目录/usr/openwin/lib中找到的libX11函数库版本。</p>
+<p>&nbsp;&nbsp;&nbsp; 2.1 静态库(archive)<br />&nbsp;&nbsp;&nbsp; 假设现有源文件bill.c和fred.c，则建立静态库的方法：<br />&nbsp;&nbsp;&nbsp; （1）编译源文件生成二进制目标文件，需要在调用C编译器时加上“-c”选项以防止生成最终应用程序。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -c bill.c fred.c<br />&nbsp;&nbsp;&nbsp; （2）为函数库建立一个头文件（lib.h），它的作用是在我们的函数库里对这两个函数进行声明；如果有程序要使用这个函数库，就必须使用include引用。<br />&nbsp;&nbsp;&nbsp; <img alt="" /><img alt="" />（3）调用程序（program.c）引用库函数头文件并调用其中的函数。<br />&nbsp;&nbsp;&nbsp; （4）使用ar工具简历档案并把目标代码加入其中。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ar crv</b> libfoo.a bill.o fred.o<br />&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;另外，某些系统（尤其是Berkley&nbsp;UNIX操作系统发展而来的系统）上，要想成功是用函数库，必须先为这个函数库建立一个内容表：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ranlib</b> libfoo.a</p>
+<p>&nbsp;&nbsp;&nbsp; 可以通过使用“-L”选项告诉编译器静态库的位置：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o program program.o -L. -lfoo<br />“-L.”告诉编译器在当前子目录中查找函数库。“-lfoo”选项告诉编译器使用那个名为libfoo.a的函数库（或者一个名为libfoo.so的共享库，如果有的话）。</p>
+<p>&nbsp;&nbsp;&nbsp; 可以使用nm命令查看某个目标代码文件、函数库或者可执行程序里都包含那些函数。</p>
+<p>&nbsp;&nbsp;&nbsp; 2.2 共享库<br />&nbsp;&nbsp;&nbsp;<br />
+如果一个程序使用了共享库，它的连接方式是这样的：它本身不再保存函数的代码，而只保存共享代码的调用线索，共享代码是在运行的时候才加入其中的。对<br />
+Linux系统而言，负责加载共享库并解析客户程序中函数调用线索的程序（即共享库动态加载器）是ld.so或ld-linux.so.2；查找共享库的<br />
+其他地点是在/etc/ld.so.conf文件里配置的；如果这个文件进行了修改，就需要用ldconfig命令进行处理。<br />&nbsp;&nbsp;&nbsp; 可以使用<b>ldd</b>程序查看某个程序要求使用的是哪一个共享库：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ ldd program</p>
+<p>&nbsp;&nbsp;&nbsp; .so类似于Windows中的.DLL文件，是运行时加入程序的；.sa类似于Windows中的.LIB文件，是加入到可执行文件里面的。</p>
+<p><font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
+"&gt;", by default, if the file already exists, then it will be<br />
+overwritten. If you want to change the default behavior, you can use<br />
+the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
+<p>&nbsp;&nbsp;&nbsp;<br />
+File descriptor 0 is the standard input to a program, file descriptor 1<br />
+is the standard output, and file descriptor 2 is the standard error<br />
+output. It’s unusual to want to redirect any other than the standard<br />
+ones: 0, 1, and 2.</p>
+<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
+standard error output, preface the &gt; operator with the number of the<br />
+file descriptor you wish to redirect. Because the standard error is on<br />
+file descriptor 2, use the 2&gt; operator. This is often useful to<br />
+discard error information and prevent it from appearing on the screen.</p>
+<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
+<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
+put both the output and error outputs into the same file. Notice the<br />
+order of the operators. This reads as “redirect standard output to the<br />
+file killouterr.txt, and then direct standard error to the same place<br />
+as the standard output.” If you get the order wrong, the redirect won’t<br />
+work as you expect.</p>
+<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
+<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
+<p>3.4 file command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
+<p><font size="4">4 Shell Scripts</font></p>
+<p>P60, to be continued...</p>
+
+
+    <small class="meta">September 11, 2008 | <a href='/bkup/2008/09/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258alinux%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/c/c++/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25b1%25bb%25e6%2588%2590%25e5%2591%2598%25e5%2587%25bd%25e6%2595%25b0%25e6%258c%2587%25e9%2592%2588%25e6%25b5%2585%25e6%259e%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">类成员函数指针浅析</a></h2>
+
+    <p>
+    今天看某软件的源代码时，发现有这样一行
+<div class="highlighter">
+<ol class="highlighter-c" start="1">
+<li><span>typedef&nbsp;CPB_RETVAL&nbsp;(CPBprb_Prb::*CPBprb_action)(CPBprb_Prb&nbsp;&amp;,&nbsp;unsigned);</span></li>
+</ol>
+</div>
+<p>其中CPB_RETVAL是一个enum类型，CPBprb_Prb是一个类，CPBprb_action在代码中其他地方没有找到定义。因不知这行代码所为何意，遂在论坛发贴请教<a href="http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230">http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230</a>。</p>
+<p>承蒙众多高手赐教，才知上段代码定义了成员函数指针<span>类型CPBprb_action，</span>该类型函数有2个参数，类型分别为CPBprb_Prb &amp;, unsigned，返回值类型为CPB_RETVAL。此函数指针的类型有个定义域，它是类CPBprb_Prb的成员<span>（CPBprb_Prb::*CPBprb_action）。</p>
+<p>另外，</span><span>CPBprb_action不仅可以指向</span>CPBprb_Prb的成员函数，也可以指向CPBprb_Prb的派生类成员函数。甚至,CPBprb_Prb里可以根本就没有任何诸如CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned)这样的函数,而完全可以在CPBprb_Prb的派生类里去增加 CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned);这样的函数，如：</p>
+<div class="highlighter">
+<ol class="highlighter-c" start="1">
+<li><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><span></span></li>
+<li class="alt"><span></span></li>
+<li><span></span><span class="keyword">class</span><span>&nbsp;A</span></li>
+<li class="alt"><span>{</span></li>
+<li><span></span><span class="keyword">public</span><span>:</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;A(){};</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">virtual</span><span>&nbsp;~A(){};</span></li>
+<li class="alt"><span>};</span></li>
+<li><span></span></li>
+<li class="alt"><span></span><span class="keyword">class</span><span>&nbsp;B&nbsp;:&nbsp;</span><span class="keyword">public</span><span>&nbsp;&nbsp;A</span></li>
+<li><span>{</span></li>
+<li class="alt"><span></span><span class="keyword">public</span><span>:</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B(){};</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;~B(){};</span></li>
+<li><span></span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;Fb(</span><span class="keyword">int</span><span>&nbsp;a){&nbsp;</span><span class="keyword">return</span><span>&nbsp;a*a;}</span></li>
+<li><span>};</span></li>
+<li class="alt"><span></span></li>
+<li><span>typedef&nbsp;</span><span class="keyword">int</span><span>&nbsp;(A::*Myfunction)(</span><span class="keyword">int</span><span>);</span></li>
+<li class="alt"><span></span></li>
+<li><span></span><span class="keyword">int</span><span>&nbsp;main()</span></li>
+<li class="alt"><span>{</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B*&nbsp;pB&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;B;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;Myfunction&nbsp;pf&nbsp;=&nbsp;(Myfunction)(&amp;B::Fb);</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;retValue&nbsp;=&nbsp;(pB-&gt;*pf)(3);</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cout&lt;&lt;retValue;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cin&gt;&gt;retValue;</span></li>
+<li class="alt"><span></span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;1;</span></li>
+<li class="alt"><span>}</span></li>
+</ol>
+</div>
+<p>通过typedef int (A::*Myfunction)(int);定义的Myfunction是A的成员（函数指针），但只能在类外定义。</p>
+<p>需要指出的是，使用指向成员函数的指针变量是比较危险的!因此不建议这么用。</p>
+<p>（<font color="#800000">上文引用了论坛中对我帖子的回复，再次对关心并帮助我的人表示感谢。</font>）</p>
+<p><font color="#000080">PS：</font><br />
+<h1>函数指针(全局函数/类成员函数)和函数对象</h1>
+<p>（原文链接：<a href="http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og">http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</a>）</p>
+<h2>关键字：函数指针 全局函数 类成员函数 函数对象 Function object </h2>
+<h2>作者：ErranLi&nbsp; &nbsp; 更新：2007-01-06 02:31:47&nbsp; &nbsp; 浏览：9166</h2>
+<div id="divCodeArea">
+<div class="source">
+<p>
+函数指针(全局函数/类成员函数)、函数对象(Function&nbsp;object)</p>
+<p>一.&nbsp;函数指针类型为全局函数.</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(*fp)(<span class="reserved">int</span>);</p>
+<p><span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
+{<br />
+&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+}</p>
+<p><span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
+{<br />
+&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+}</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; fp&nbsp;testAct;</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;(testAct&nbsp;!=&nbsp;NULL)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Drink;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Eat;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>二.&nbsp;函数指针类型为类成员函数.</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Action;<br />
+<span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="comment">//&nbsp;函数指针类型为类&nbsp;Action&nbsp;的成员函数</span><br />
+<span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(Action::*fp)(<span class="reserved">int</span>);</p>
+<p><span class="reserved">class</span>&nbsp;Action<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="comment">//&nbsp;定义一个函数指针</span><br />
+&nbsp; &nbsp; fp&nbsp;testAct;<br />
+&nbsp; &nbsp; <span class="comment">//Action&nbsp;对象实例&nbsp;,&nbsp;该指针用于记录被实例化的&nbsp;Action&nbsp;对象</span><br />
+&nbsp; &nbsp; Action&nbsp;*&nbsp;pAction;</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;((pAction&nbsp;!=&nbsp;NULL)&nbsp;&amp;&amp;&nbsp;(testAct&nbsp;!=&nbsp;NULL))<br />
+&nbsp; &nbsp; &nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">//&nbsp;调用</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (pAction-&gt;*testAct)(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; Action&nbsp;act;<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.pAction&nbsp;=&nbsp;&amp;act;<br />
+&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Drink;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Eat;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>三.&nbsp;函数对象&nbsp;(Function&nbsp;object)<br />
+<span class="sp874">// 本文转自 C++Builder研究 - http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</span></p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="preprocessor">#include&nbsp;&lt;functional&gt;</span></p>
+<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Action;<br />
+<span class="reserved">class</span>&nbsp;Drink;<br />
+<span class="reserved">class</span>&nbsp;Eat;<br />
+<span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="reserved">class</span>&nbsp;Action<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">int</span>&nbsp;<span class="reserved">operator</span>()(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Act(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;i;<br />
+&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; <span class="reserved">virtual</span>&nbsp;<span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)&nbsp;=&nbsp;0;<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;Drink&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
+{<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;Eat&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
+{<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i,&nbsp;Action&amp;&nbsp;testAct)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.TestAct(0,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(1,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(2,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(0,&nbsp;Eat());<br />
+&nbsp; &nbsp; doact.TestAct(1,&nbsp;Eat());<br />
+&nbsp; &nbsp; doact.TestAct(2,&nbsp;Eat());<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>虽然传递函数指针被广泛应用于事件驱动系统中，以此实现回调函数通过指针来调用。但&nbsp;C++&nbsp;还是提供了另外一种可供选择的办法，即函数对象，利用它可以<br />
+避免使用函数指针。这样做有几个优点。首先，&nbsp;因为对象可以在内部修改而不用改动外部接口，因此设计更灵活，更富有弹性。函数对象也具备有存储先前调用结<br />
+果的数据成员。。&nbsp;此外，编译器可以内联函数对象，从而进一步增强性能。函数对象可以具体表达依赖成员模板的通用算法&nbsp;,&nbsp;这些算法借助普通的函数指针难<br />
+以完成。例用函数对象实现了一个通用的&nbsp;Negation&nbsp;算法操作：</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span><br />
+<span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span></p>
+<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Negate<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">template</span>&lt;<span class="reserved">class</span>&nbsp;T&gt;&nbsp;T&nbsp;<span class="reserved">operator</span>()(T&nbsp;t)&nbsp;const<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;-t;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">void</span>&nbsp;Callback(<span class="reserved">int</span>&nbsp;n,&nbsp;<span class="reserved">const</span>&nbsp;Negate&amp;&nbsp;neg)&nbsp; <span class="comment">//&nbsp;传递一个函数对象</span><br />
+{<br />
+&nbsp; &nbsp; n&nbsp;=&nbsp;neg(n);&nbsp; <span class="comment">//&nbsp;调用重载的&nbsp;()&nbsp;操作&nbsp;来对&nbsp;n&nbsp;进行&nbsp;negate&nbsp;操作</span><br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;n&nbsp;&lt;&lt;&nbsp;endl;<br />
+}</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式一</span><br />
+&nbsp; &nbsp; Callback(5,&nbsp;Negate());</p>
+<p>&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式二</span><br />
+&nbsp; &nbsp; Negate&nbsp;neg;<br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(9.99999)&nbsp;&lt;&lt;&nbsp;endl;<br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(<span class="reserved">__int32</span>(39999999))&nbsp;&lt;&lt;&nbsp;endl;</p>
+<p>&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>&nbsp; &nbsp; STL&nbsp;库中定义了很多函数对象以供相关算法调用，如&nbsp;模板化的函数对象&nbsp;greater&lt;&gt;&nbsp;或者&nbsp;less&lt;&gt;:</p>
+<p>vector&nbsp;&lt;<span class="reserved">int</span>&gt;&nbsp;vi;<br />
+<span class="comment">//..&nbsp;填充向量</span><br />
+sort(vi.begin(),&nbsp;vi.end(),&nbsp;greater&lt;<span class="reserved">int</span>&gt;()&nbsp;);<span class="comment">//&nbsp;降序&nbsp;(descending)</span><br />
+sort(vi.begin(),&nbsp;vi.end(),&nbsp;less&lt;<span class="reserved">int</span>&gt;()&nbsp;);&nbsp;<span class="comment">//&nbsp;升序&nbsp;(ascending)</span></p>
+</div>
+</div>
+<p><!-- end of divCodeArea --></p>
+<p>本文转自：http://www.cppblog.com/erran/archive/2006/12/26/16868.html</p>
+<p><span style="color:rgb(255,0,0);">函数对象（function&nbsp;<br />
+object）,又名仿函数（functor),是重载了operator（）的一个类，其实在stl算法中有大量运用，c++标准预定义的如<br />
+less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么引入仿函数？&nbsp;  <br /> &nbsp; 原因：&nbsp;  <br /> &nbsp; １．仿函数有具体型别，可用在模板参数，而函数不行&nbsp;  <br /> &nbsp; ２．同类仿函数可有不同植，可代表不同状态，比函数灵活（须定义多个）&nbsp;  <br /> &nbsp; ３．仿函数可能比普通函数快&nbsp;  <br /> &nbsp; ．．．．．．．．可能还有，不过凭印象就这些了</span> </p>
+<p></p>
+
+
+    <small class="meta">September 08, 2008 | <a href='/c/c++/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25b1%25bb%25e6%2588%2590%25e5%2591%2598%25e5%2587%25bd%25e6%2595%25b0%25e6%258c%2587%25e9%2592%2588%25e6%25b5%2585%25e6%259e%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+  <div class="post">
+    <h2><a href="/bkup/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25b1%25bb%25e6%2588%2590%25e5%2591%2598%25e5%2587%25bd%25e6%2595%25b0%25e6%258c%2587%25e9%2592%2588%25e6%25b5%2585%25e6%259e%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">类成员函数指针浅析</a></h2>
+
+    <p>
+    今天看某软件的源代码时，发现有这样一行
+<div class="highlighter">
+<ol class="highlighter-c" start="1">
+<li><span>typedef&nbsp;CPB_RETVAL&nbsp;(CPBprb_Prb::*CPBprb_action)(CPBprb_Prb&nbsp;&amp;,&nbsp;unsigned);</span></li>
+</ol>
+</div>
+<p>其中CPB_RETVAL是一个enum类型，CPBprb_Prb是一个类，CPBprb_action在代码中其他地方没有找到定义。因不知这行代码所为何意，遂在论坛发贴请教<a href="http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230">http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230</a>。</p>
+<p>承蒙众多高手赐教，才知上段代码定义了成员函数指针<span>类型CPBprb_action，</span>该类型函数有2个参数，类型分别为CPBprb_Prb &amp;, unsigned，返回值类型为CPB_RETVAL。此函数指针的类型有个定义域，它是类CPBprb_Prb的成员<span>（CPBprb_Prb::*CPBprb_action）。</p>
+<p>另外，</span><span>CPBprb_action不仅可以指向</span>CPBprb_Prb的成员函数，也可以指向CPBprb_Prb的派生类成员函数。甚至,CPBprb_Prb里可以根本就没有任何诸如CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned)这样的函数,而完全可以在CPBprb_Prb的派生类里去增加 CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned);这样的函数，如：</p>
+<div class="highlighter">
+<ol class="highlighter-c" start="1">
+<li><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><span></span></li>
+<li class="alt"><span></span></li>
+<li><span></span><span class="keyword">class</span><span>&nbsp;A</span></li>
+<li class="alt"><span>{</span></li>
+<li><span></span><span class="keyword">public</span><span>:</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;A(){};</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">virtual</span><span>&nbsp;~A(){};</span></li>
+<li class="alt"><span>};</span></li>
+<li><span></span></li>
+<li class="alt"><span></span><span class="keyword">class</span><span>&nbsp;B&nbsp;:&nbsp;</span><span class="keyword">public</span><span>&nbsp;&nbsp;A</span></li>
+<li><span>{</span></li>
+<li class="alt"><span></span><span class="keyword">public</span><span>:</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B(){};</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;~B(){};</span></li>
+<li><span></span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;Fb(</span><span class="keyword">int</span><span>&nbsp;a){&nbsp;</span><span class="keyword">return</span><span>&nbsp;a*a;}</span></li>
+<li><span>};</span></li>
+<li class="alt"><span></span></li>
+<li><span>typedef&nbsp;</span><span class="keyword">int</span><span>&nbsp;(A::*Myfunction)(</span><span class="keyword">int</span><span>);</span></li>
+<li class="alt"><span></span></li>
+<li><span></span><span class="keyword">int</span><span>&nbsp;main()</span></li>
+<li class="alt"><span>{</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B*&nbsp;pB&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;B;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;Myfunction&nbsp;pf&nbsp;=&nbsp;(Myfunction)(&amp;B::Fb);</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;retValue&nbsp;=&nbsp;(pB-&gt;*pf)(3);</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cout&lt;&lt;retValue;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cin&gt;&gt;retValue;</span></li>
+<li class="alt"><span></span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;1;</span></li>
+<li class="alt"><span>}</span></li>
+</ol>
+</div>
+<p>通过typedef int (A::*Myfunction)(int);定义的Myfunction是A的成员（函数指针），但只能在类外定义。</p>
+<p>需要指出的是，使用指向成员函数的指针变量是比较危险的!因此不建议这么用。</p>
+<p>（<font color="#800000">上文引用了论坛中对我帖子的回复，再次对关心并帮助我的人表示感谢。</font>）</p>
+<p><font color="#000080">PS：</font><br />
+<h1>函数指针(全局函数/类成员函数)和函数对象</h1>
+<p>（原文链接：<a href="http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og">http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</a>）</p>
+<h2>关键字：函数指针 全局函数 类成员函数 函数对象 Function object </h2>
+<h2>作者：ErranLi&nbsp; &nbsp; 更新：2007-01-06 02:31:47&nbsp; &nbsp; 浏览：9166</h2>
+<div id="divCodeArea">
+<div class="source">
+<p>
+函数指针(全局函数/类成员函数)、函数对象(Function&nbsp;object)</p>
+<p>一.&nbsp;函数指针类型为全局函数.</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(*fp)(<span class="reserved">int</span>);</p>
+<p><span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
+{<br />
+&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+}</p>
+<p><span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
+{<br />
+&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+}</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; fp&nbsp;testAct;</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;(testAct&nbsp;!=&nbsp;NULL)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Drink;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Eat;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>二.&nbsp;函数指针类型为类成员函数.</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Action;<br />
+<span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="comment">//&nbsp;函数指针类型为类&nbsp;Action&nbsp;的成员函数</span><br />
+<span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(Action::*fp)(<span class="reserved">int</span>);</p>
+<p><span class="reserved">class</span>&nbsp;Action<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="comment">//&nbsp;定义一个函数指针</span><br />
+&nbsp; &nbsp; fp&nbsp;testAct;<br />
+&nbsp; &nbsp; <span class="comment">//Action&nbsp;对象实例&nbsp;,&nbsp;该指针用于记录被实例化的&nbsp;Action&nbsp;对象</span><br />
+&nbsp; &nbsp; Action&nbsp;*&nbsp;pAction;</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;((pAction&nbsp;!=&nbsp;NULL)&nbsp;&amp;&amp;&nbsp;(testAct&nbsp;!=&nbsp;NULL))<br />
+&nbsp; &nbsp; &nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">//&nbsp;调用</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (pAction-&gt;*testAct)(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; Action&nbsp;act;<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.pAction&nbsp;=&nbsp;&amp;act;<br />
+&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Drink;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Eat;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>三.&nbsp;函数对象&nbsp;(Function&nbsp;object)<br />
+<span class="sp874">// 本文转自 C++Builder研究 - http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</span></p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="preprocessor">#include&nbsp;&lt;functional&gt;</span></p>
+<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Action;<br />
+<span class="reserved">class</span>&nbsp;Drink;<br />
+<span class="reserved">class</span>&nbsp;Eat;<br />
+<span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="reserved">class</span>&nbsp;Action<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">int</span>&nbsp;<span class="reserved">operator</span>()(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Act(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;i;<br />
+&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; <span class="reserved">virtual</span>&nbsp;<span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)&nbsp;=&nbsp;0;<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;Drink&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
+{<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;Eat&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
+{<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i,&nbsp;Action&amp;&nbsp;testAct)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.TestAct(0,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(1,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(2,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(0,&nbsp;Eat());<br />
+&nbsp; &nbsp; doact.TestAct(1,&nbsp;Eat());<br />
+&nbsp; &nbsp; doact.TestAct(2,&nbsp;Eat());<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>虽然传递函数指针被广泛应用于事件驱动系统中，以此实现回调函数通过指针来调用。但&nbsp;C++&nbsp;还是提供了另外一种可供选择的办法，即函数对象，利用它可以<br />
+避免使用函数指针。这样做有几个优点。首先，&nbsp;因为对象可以在内部修改而不用改动外部接口，因此设计更灵活，更富有弹性。函数对象也具备有存储先前调用结<br />
+果的数据成员。。&nbsp;此外，编译器可以内联函数对象，从而进一步增强性能。函数对象可以具体表达依赖成员模板的通用算法&nbsp;,&nbsp;这些算法借助普通的函数指针难<br />
+以完成。例用函数对象实现了一个通用的&nbsp;Negation&nbsp;算法操作：</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span><br />
+<span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span></p>
+<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Negate<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">template</span>&lt;<span class="reserved">class</span>&nbsp;T&gt;&nbsp;T&nbsp;<span class="reserved">operator</span>()(T&nbsp;t)&nbsp;const<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;-t;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">void</span>&nbsp;Callback(<span class="reserved">int</span>&nbsp;n,&nbsp;<span class="reserved">const</span>&nbsp;Negate&amp;&nbsp;neg)&nbsp; <span class="comment">//&nbsp;传递一个函数对象</span><br />
+{<br />
+&nbsp; &nbsp; n&nbsp;=&nbsp;neg(n);&nbsp; <span class="comment">//&nbsp;调用重载的&nbsp;()&nbsp;操作&nbsp;来对&nbsp;n&nbsp;进行&nbsp;negate&nbsp;操作</span><br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;n&nbsp;&lt;&lt;&nbsp;endl;<br />
+}</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式一</span><br />
+&nbsp; &nbsp; Callback(5,&nbsp;Negate());</p>
+<p>&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式二</span><br />
+&nbsp; &nbsp; Negate&nbsp;neg;<br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(9.99999)&nbsp;&lt;&lt;&nbsp;endl;<br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(<span class="reserved">__int32</span>(39999999))&nbsp;&lt;&lt;&nbsp;endl;</p>
+<p>&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>&nbsp; &nbsp; STL&nbsp;库中定义了很多函数对象以供相关算法调用，如&nbsp;模板化的函数对象&nbsp;greater&lt;&gt;&nbsp;或者&nbsp;less&lt;&gt;:</p>
+<p>vector&nbsp;&lt;<span class="reserved">int</span>&gt;&nbsp;vi;<br />
+<span class="comment">//..&nbsp;填充向量</span><br />
+sort(vi.begin(),&nbsp;vi.end(),&nbsp;greater&lt;<span class="reserved">int</span>&gt;()&nbsp;);<span class="comment">//&nbsp;降序&nbsp;(descending)</span><br />
+sort(vi.begin(),&nbsp;vi.end(),&nbsp;less&lt;<span class="reserved">int</span>&gt;()&nbsp;);&nbsp;<span class="comment">//&nbsp;升序&nbsp;(ascending)</span></p>
+</div>
+</div>
+<p><!-- end of divCodeArea --></p>
+<p>本文转自：http://www.cppblog.com/erran/archive/2006/12/26/16868.html</p>
+<p><span style="color:rgb(255,0,0);">函数对象（function&nbsp;<br />
+object）,又名仿函数（functor),是重载了operator（）的一个类，其实在stl算法中有大量运用，c++标准预定义的如<br />
+less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么引入仿函数？&nbsp;  <br /> &nbsp; 原因：&nbsp;  <br /> &nbsp; １．仿函数有具体型别，可用在模板参数，而函数不行&nbsp;  <br /> &nbsp; ２．同类仿函数可有不同植，可代表不同状态，比函数灵活（须定义多个）&nbsp;  <br /> &nbsp; ３．仿函数可能比普通函数快&nbsp;  <br /> &nbsp; ．．．．．．．．可能还有，不过凭印象就这些了</span> </p>
+<p></p>
+
+
+    <small class="meta">September 08, 2008 | <a href='/bkup/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25b1%25bb%25e6%2588%2590%25e5%2591%2598%25e5%2587%25bd%25e6%2595%25b0%25e6%258c%2587%25e9%2592%2588%25e6%25b5%2585%25e6%259e%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+  </div>
+
+</div>
+
+<div class='paging'>
+  
+    <a href='/page34' class='older'>Older Posts</a>
+  
+
+  
+    <a href='/page32' class='newer'>Newer Posts</a>
+  
+
+  
+  <div class='clear'></div>
+</div>
+
+        </div>
+      </div>
+
+      <div id="bottom" class="span8 offset4">
+        <div class="well">
+          <a href="/about/">About</a> |
+          <a href="/archives/">Archives</a> |
+          <a href="/atom.xml">feed</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.min.js"></script>
+
+  <!-- Google Analytics Code -->
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-9947336-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script');
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
+          'http://www') + '.google-analytics.com/ga.js';
+      ga.setAttribute('async', 'true');
+      document.documentElement.firstChild.appendChild(ga);
+    })();
+
+  </script>
+</body>
+</html>
+
