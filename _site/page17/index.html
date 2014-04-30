@@ -1,91 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
 <head>
-  <title>Bo Yang - Home </title>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
-  <meta name="y_key" content="6c948e75a617b12d" />
-  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="/css/default.css" />
-  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
-  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Bo Yang's blog" />
+  <title>Bo Yang | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
-<body class='blog'>
-  <div class="container">
-    <div class="row">
-      <div class="span4 sidebar affix">
-        <div class="well">
-          <h2 class='site-title'>
-            <a href="http://bo-yang.github.io">Bo Yang</a>
-          </h2>
+<body>
 
-		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
-
-          <ul id="navigation" class="clearfix">
-            <li class='about'><a href='/about/'>About</a></li>
-            <li class='archives'><a href='/archives/'>Archives</a></li>
-            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
-          </ul>
-        </div>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
       </div>
-      <div class="span8 main offset4">
-        <div class="well">
-          <div id='index'>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2008/09/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeiginning%2520linux%2520programming%2520%257c%257c%2520linux%2520%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2589%2529%250d%250a%2520%2520%25/">《Beiginning Linux programming || Linux 程序设计》读书笔记(三)</a></h2>
-
-    <p>
-<span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;">
-<div style="margin-top:0;margin-bottom:0;">(8) Shell Function<br />    <span style="background-color:rgb(204,204,204);">function_name () {</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        statements</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">    }</span><br />    </div>
-<div style="margin-top:0;margin-bottom:0;">    You must always define a function before you can invoke it.When a function is invoked, the positional parameters to the script, <span style="color:rgb(0,0,255);">$*, $@, $#, $1, $2,</span> and so on, are replaced by the parameters to the function.When the function finishes, they are restored to their previous values.</div>
-<div style="margin-top:0;margin-bottom:0;"></div>
-<div style="margin-top:0;margin-bottom:0;">    You can make functions return numeric values using the return command. The usual way to make functions return strings is for the function to store the string in a variable, which can then be used after the function finishes. Alternatively, you can echo a string and catch the result, like this:<br />        <span style="background-color:rgb(204,204,204);">foo () { echo JAY;}</span>
-<div style="margin-top:0;margin-bottom:0;"><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">...</span></div>
-<div style="margin-top:0;margin-bottom:0;"><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">    </span><span style="background-color:rgb(204,204,204);">result=”$(foo)“</span></div>
-<div style="margin-top:0;margin-bottom:0;">    </div>
-<div style="margin-top:0;margin-bottom:0;">    You can declare local variables within shell functions by using the <span style="font-family:'Courier New';">local</span> keyword. The variable is then only in scope within the function.</div>
-<div style="margin-top:0;margin-bottom:0;"></div>
-<p>(9) <span style="color:rgb(0,0,255);"><i>break</i></span></div>
-<div style="margin-top:0;margin-bottom:0;"></div>
-<div style="margin-top:0;margin-bottom:0;">(10) The <span style="color:rgb(0,0,255);"><b>:</b></span> Command</div>
-<div style="margin-top:0;margin-bottom:0;">    The colon command is an alias for true.</div>
-<div style="margin-top:0;margin-bottom:0;">    The : construct is also useful in the conditional setting of variables. For example,
-<div style="margin-top:0;margin-bottom:0;">        <span style="font-family:'Courier New';"><span style="background-color:rgb(204,204,204);">: ${var:=value}</span></span></div>
-<div style="margin-top:0;margin-bottom:0;">Without the :, the shell would try to evaluate <span style="font-family:'Courier New';">$var</span> as a command.</div>
-<div style="margin-top:0;margin-bottom:0;"></div>
-<p>(11) Continue</p></div>
-<div style="margin-top:0;margin-bottom:0;"></div>
-<div style="margin-top:0;margin-bottom:0;">(12) The <span style="color:rgb(0,0,255);"><b>.</b></span> Command</div>
-<div style="margin-top:0;margin-bottom:0;">(13) eval<br />    The eval command enables you to evaluate arguments. It’s built into the shell and doesn’t normally exist as a separate command. <span style="font-family:'Courier New';">eval</span> is a bit like an extra $: It gives you the value of the value of a variable.</p>
-</div>
-<div style="margin-top:0;margin-bottom:0;">(14) exec<br />    The exec command has two different uses. Its typical use is to replace the current shell with a different program.<br />    The second use of exec is to modify the current file descriptors:<br />        <span style="background-color:rgb(204,204,204);">exec 3&lt; afile</span><br />    This causes file descriptor three to be opened for reading from file afile. It’s rarely used.</p>
-<p>(15) export<br />    The <span style="font-family:'Courier New';">export</span> command creates an environment variable from its parameter that can be seen by other scripts and programs invoked from the current program. </p>
-<p>(16) expr<br />    The expr command evaluates its arguments as an expression. It’s most commonly used for simple arithmetic in the following form:<br />        <span style="background-color:rgb(204,204,204);">x=`expr $x + 1`</span><br />   The `` (backtick) characters make x take the result of executing the command expr $x + 1. You could also write it using the syntax $( ) rather than backticks, like this:<br />        <span style="background-color:rgb(204,204,204);">x=$(expr $x + 1)</span></p>
-<p>(17) printf<br />(18) return <br />(19) set<br />    The set command sets the parameter variables for the shell. It can be a useful way of using fields in commands that output space-separated values.<br />        <span style="background-color:rgb(204,204,204);">#!/bin/sh</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        echo the date is $(date)</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        set $(date)</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        echo The month is $2</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">        exit 0</span></p>
-<p>This program sets the parameter list to the date command’s output and then uses the positional parameter $2 to get at the month.Since the date command is sensitive to the language locale, in reality you would have extracted the name of the month using date +%B. </p>
-<p>    The most commonly used form of the command is set -x, which makes a script display a trace of its currently executing command. </p>
-<p>(20) Shift<br />    The <i>shift</i> command moves all the parameter variables down by one, so that $2 becomes $1, $3 becomes $2, and so on. The previous value of <span style="color:rgb(0,0,255);">$1</span> is discarded, while <span style="color:rgb(0,0,255);">$0</span> remains unchanged. If a numerical parameter is specified in the call to shift, the parameters move that many spaces. The other variables, <span style="color:rgb(0,0,255);">$*</span>, <span style="color:rgb(0,0,255);">$@</span>, and <span style="color:rgb(0,0,255);">$#</span>, are also modified in line with the new arrangement of parameter variables.</p>
-</div>
-<div style="margin-top:0;margin-bottom:0;">(21) Trap</div>
-<div style="margin-top:0;margin-bottom:0;"><span>    </span>The trap command is used to specify the actions to take on receipt of signals. A common use is to tidy up a script when it is interrupted.<br /><span>    The trap command is passed the action to take, followed by the signal name (or names) to trap on:</span>
-<div style="margin-top:0;margin-bottom:0;"><span>    <span>    </span></span>trap command signal</div>
-<div style="margin-top:0;margin-bottom:0;">Remember that the scripts are normally interpreted from top to bottom, so you must specify the trap command before the part of the script you wish to protect.</div>
-<div></div>
-</div>
-<p></span></p>
-
-
-    <small class="meta">September 18, 2008 | <a href='/unix/linux/2008/09/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeiginning%2520linux%2520programming%2520%257c%257c%2520linux%2520%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2589%2529%250d%250a%2520%2520%25/#disqus_thread'>View Comments</a></small>
+    </div>
   </div>
 
-  <div class="post">
-    <h2><a href="/unix/linux/2008/09/15/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e4%25b8%25adfirefox%25e5%2590%25af%25e5%258a%25a8%25e5%2590%258e%25e8%25bf%259b%25e5%2585%25a5www-s-com%25e7%259a%2584%25e8%25a7%25a3%25e5%2586%25b3%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fedora 9中Firefox启动后进入www.s.com的解决方法</a></h2>
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>Bo Yang  <small>Beginner's mind.</small></h1>
+</div>
 
-    <p>
+<div class="row-fluid page-body">
+  <div class="span12">
+    
+
+<div class="row-fluid page-body">
+
+  <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/09/15/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e4%25b8%25adfirefox%25e5%2590%25af%25e5%258a%25a8%25e5%2590%258e%25e8%25bf%259b%25e5%2585%25a5www-s-com%25e7%259a%2584%25e8%25a7%25a3%25e5%2586%25b3%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Fedora 9中Firefox启动后进入www.s.com的解决方法</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-09-15</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
     几个月来，自从手动装上Firefox3.0之后，在Fedora桌面上点击图标启动Firefox一直进入www.s.com（本来我的主页设置为iGoogle），而且图标也不再显示为Firefox的图标。很是让人郁闷。（注：据说该问题只是在图形界面下点击图标才会出现，若在命令行下面直接用命令启动Firefox不会有这个问题。）</p>
 <p>今天搜了一下，发现有这个问题的人还比较多，但大多没有解决方法。找了半天之后总算发现有人给出了方法。原来问题出自 ~/.local/share/applications/preferred-web-browser.desktop 中的Exec选项。</p>
 <p>手动装完Firefox之后把我的preferred-web-browser.desktop中的Exec改成了<br /><font color="#ff0000">Exec=/opt/firefox/firefox "%s"</font></p>
@@ -94,14 +90,21 @@
 <p>再重新启动Firefox，一切正常！</p>
 <p></p>
 
-
-    <small class="meta">September 15, 2008 | <a href='/unix/linux/2008/09/15/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e4%25b8%25adfirefox%25e5%2590%25af%25e5%258a%25a8%25e5%2590%258e%25e8%25bf%259b%25e5%2585%25a5www-s-com%25e7%259a%2584%25e8%25a7%25a3%25e5%2586%25b3%25e6%2596%25b9%25e6%25b3%2595%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2008/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeginning%2520linux%2520programming%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25ba%258c%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">《Beginning Linux Programming》读书笔记（二）</a></h2>
-
-    <p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeginning%2520linux%2520programming%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25ba%258c%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">《Beginning Linux Programming》读书笔记（二）</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-09-14</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
     &nbsp;<font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
 "&gt;", by default, if the file already exists, then it will be<br />
 overwritten. If you want to change the default behavior, you can use<br />
@@ -215,14 +218,21 @@ by enclosing them in braces {} to make a statement block.</p>
 <span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;statements</span><br style="background-color:rgb(204,204,204);" /><br />
 <span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;}</span></p>
 
-
-    <small class="meta">September 14, 2008 | <a href='/unix/linux/2008/09/14/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258abeginning%2520linux%2520programming%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25ba%258c%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2008/09/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258alinux%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">《Linux程序设计》读书笔记（一）</a></h2>
-
-    <p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/09/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258alinux%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">《Linux程序设计》读书笔记（一）</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-09-11</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
     &nbsp;
 <div id="xrgo" style="text-align:center;"><font size="5"><span id="y5c80" style="font-family:SimHei, 黑体, MS Hei, sans-serif;">《Linux程序设计》读书笔记</span></font></div>
 <p><b><br /><font size="4">1、编译C程序的技巧</font></b><br />&nbsp;&nbsp;&nbsp;&nbsp;在调用C语言编译器的时候可以通过给出“-I”标志来引用保存在下级子目录或者非标准目录下的头文件，如：<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;$ gcc -I /usr/openwin/include fred.c<br />它会使编译器在/usr/openwin/include的子目录和标准目录两个地方去查找fred.c程序里所包含的头文件。</p>
@@ -266,14 +276,21 @@ work as you expect.</p>
 <p><font size="4">4 Shell Scripts</font></p>
 <p>P60, to be continued...</p>
 
-
-    <small class="meta">September 11, 2008 | <a href='/unix/linux/2008/09/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258alinux%25e7%25a8%258b%25e5%25ba%258f%25e8%25ae%25be%25e8%25ae%25a1%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/c/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25b1%25bb%25e6%2588%2590%25e5%2591%2598%25e5%2587%25bd%25e6%2595%25b0%25e6%258c%2587%25e9%2592%2588%25e6%25b5%2585%25e6%259e%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">类成员函数指针浅析</a></h2>
-
-    <p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25b1%25bb%25e6%2588%2590%25e5%2591%2598%25e5%2587%25bd%25e6%2595%25b0%25e6%258c%2587%25e9%2592%2588%25e6%25b5%2585%25e6%259e%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">类成员函数指针浅析</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-09-08</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
     今天看某软件的源代码时，发现有这样一行
 <div class="highlighter">
 <ol class="highlighter-c" start="1">
@@ -516,14 +533,21 @@ object）,又名仿函数（functor),是重载了operator（）的一个类，�
 less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么引入仿函数？&nbsp;  <br /> &nbsp; 原因：&nbsp;  <br /> &nbsp; １．仿函数有具体型别，可用在模板参数，而函数不行&nbsp;  <br /> &nbsp; ２．同类仿函数可有不同植，可代表不同状态，比函数灵活（须定义多个）&nbsp;  <br /> &nbsp; ３．仿函数可能比普通函数快&nbsp;  <br /> &nbsp; ．．．．．．．．可能还有，不过凭印象就这些了</span> </p>
 <p></p>
 
-
-    <small class="meta">September 08, 2008 | <a href='/c/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25b1%25bb%25e6%2588%2590%25e5%2591%2598%25e5%2587%25bd%25e6%2595%25b0%25e6%258c%2587%25e9%2592%2588%25e6%25b5%2585%25e6%259e%2590%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/c/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2587%25bd%25e6%2595%25b0%25e5%25af%25b9%25e8%25b1%25a1%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">函数对象</a></h2>
-
-    <p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2587%25bd%25e6%2595%25b0%25e5%25af%25b9%25e8%25b1%25a1%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">函数对象</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-09-08</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
     看到有个概念叫“函数对象”，搜了一下关于它的解释： </p>
 <p> <span style="color:rgb(255,0,0);">函<br />
 数对象（function&nbsp;<br />
@@ -659,14 +683,21 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
 <p>} </p>
 <p></p>
 
-
-    <small class="meta">September 08, 2008 | <a href='/c/2008/09/08/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%2587%25bd%25e6%2595%25b0%25e5%25af%25b9%25e8%25b1%25a1%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/c/2008/08/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%25e8%25af%25ad%25e8%25a8%2580%25e5%2587%25bd%25e6%2595%25b0%25e4%25b8%25ad%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e6%2595%25b0%25e7%25bb%2584%25e8%2580%2597%25e5%25b0%25bd%25e5%25a0%2586%25e6%25a0%2588%25e7%259a%2584%25e9%2597%25ae%25e9%25a2%2598%250d%250a%2520%2520%2520%25/">C语言函数中定义大数组耗尽堆栈的问题</a></h2>
-
-    <p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/08/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%25e8%25af%25ad%25e8%25a8%2580%25e5%2587%25bd%25e6%2595%25b0%25e4%25b8%25ad%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e6%2595%25b0%25e7%25bb%2584%25e8%2580%2597%25e5%25b0%25bd%25e5%25a0%2586%25e6%25a0%2588%25e7%259a%2584%25e9%2597%25ae%25e9%25a2%2598%250d%250a%2520%2520%2520%25">C语言函数中定义大数组耗尽堆栈的问题</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-08-26</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
     今晚上一同学请我帮忙看一个C程序，GCC编译时一直抱错，说是段错误。<br />程序本身写的比较差，但编译能通过，只是有几十个警告。<br />两个小时过去了，在Eclipse+GCC下没有找到问题（这个环境还不熟悉），换到了VC下面，逐步调试，才发现问题出在被main调用的一个叫做readmctal()的函数的前面几行中。该函数如下：
 <div class="highlighter">
 <ol class="highlighter-c" start="1">
@@ -749,14 +780,21 @@ calloc和malloc基本一样，不同的是有两点，一是calloc分配的空�
 基本就这些了，这些都是比较基础的话题，高级话题和细节问题还有很多，这里就不进行说明了，有机会我会继续总结一番的</div>
 <p></p>
 
-
-    <small class="meta">August 26, 2008 | <a href='/c/2008/08/26/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520c%25e8%25af%25ad%25e8%25a8%2580%25e5%2587%25bd%25e6%2595%25b0%25e4%25b8%25ad%25e5%25ae%259a%25e4%25b9%2589%25e5%25a4%25a7%25e6%2595%25b0%25e7%25bb%2584%25e8%2580%2597%25e5%25b0%25bd%25e5%25a0%2586%25e6%25a0%2588%25e7%259a%2584%25e9%2597%25ae%25e9%25a2%2598%250d%250a%2520%2520%2520%25/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2008/08/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258aunix%25e6%2595%2599%25e7%25a8%258b%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2580%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">《UNIX教程》读书笔记(一)</a></h2>
-
-    <p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/08/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258aunix%25e6%2595%2599%25e7%25a8%258b%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2580%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">《UNIX教程》读书笔记(一)</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-08-21</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
     《UNIX教程》读书笔记</p>
 <p>Part I&nbsp;&nbsp;&nbsp;&nbsp;UNIX Shell</p>
 <p><b>1 文件类型</b>
@@ -794,14 +832,21 @@ calloc和malloc基本一样，不同的是有两点，一是calloc分配的空�
 n表示文件更改时间距现在n天以前。Find命令还有-atime和-ctime选项，但它们都和-mtime选项相似，所以我们在这里只介绍<br />
 -mtime选项。<br />&nbsp;&nbsp;&nbsp;&nbsp;-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。<br />&nbsp;&nbsp;&nbsp;&nbsp;-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。<br />&nbsp;&nbsp;&nbsp;&nbsp;-newer file1 ! file2 查找更改时间比文件f i l e 1新但比文件f i l e 2旧的文件。<br />&nbsp;&nbsp;&nbsp;&nbsp;-type 查找某一类型的文件，诸如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b - 块设备文件。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d - 目录。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c - 字符设备文件。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p - 管道文件。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l - 符号链接文件。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f - 普通文件。<br />&nbsp;&nbsp;&nbsp;&nbsp;-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。<br />&nbsp;&nbsp;&nbsp;&nbsp;-depth 在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。<br />&nbsp;&nbsp;&nbsp;&nbsp;-fstype 查找位于某一类型文件系统中的文件，这些文件系统类型通常可以在配置文件/etc/fstab中找到，该配置文件中包含了本系统中有关文件系统的信息。<br />&nbsp;&nbsp;&nbsp;&nbsp;-mount 在查找文件时不跨越文件系统m o u n t点。<br />&nbsp;&nbsp;&nbsp;&nbsp;-follow 如果f i n d命令遇到符号链接文件，就跟踪至链接所指向的文件。<br />&nbsp;&nbsp;&nbsp;&nbsp;-cpio 对匹配的文件使用c p i o命令，将这些文件备份到磁带设备中。</p>
 
-
-    <small class="meta">August 21, 2008 | <a href='/unix/linux/2008/08/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258aunix%25e6%2595%2599%25e7%25a8%258b%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%2528%25e4%25b8%2580%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2008/07/31/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e5%25ae%2589%25e8%25a3%2585%25e6%2598%259f%25e9%2599%2585%25e8%25af%2591%25e7%258e%258b%2528stardict%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Fedora 9安装星际译王(stardict)</a></h2>
-
-    <p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/07/31/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e5%25ae%2589%25e8%25a3%2585%25e6%2598%259f%25e9%2599%2585%25e8%25af%2591%25e7%258e%258b%2528stardict%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Fedora 9安装星际译王(stardict)</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-07-31</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
     Fedora 9安装星际译王(stardict)</p>
 <p>一直苦于Linux下没有好用的翻译软件，一直再用Google的在线辞典，感觉还好。但Google在线词典最大的问题就是不能屏幕取词，而且用起来也不怎么方便，于是下决心找到一款比较好的翻译软件。</p>
 <p>Google了一下，发现了星际译王的口碑不错，于是去<a id="aa:_3" href="http://stardict.sourceforge.net/cn/download.php"><span id="aa:_4" class="articlebody">http://stardict.sourceforge.net/cn/download.php </span></a>上下了一个rpm安装包，结果安装时报错：</p>
@@ -815,14 +860,21 @@ error: Failed dependencies:<br />
 <p>试着在终端敲入 stardict运行了一下，界面很漂亮，效果很不错。顿时感觉国产开源软件还是有希望的。</p>
 <p>谢谢胡正等前辈！</span></p>
 
-
-    <small class="meta">July 31, 2008 | <a href='/unix/linux/2008/07/31/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520fedora%25209%25e5%25ae%2589%25e8%25a3%2585%25e6%2598%259f%25e9%2599%2585%25e8%25af%2591%25e7%258e%258b%2528stardict%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/2008/07/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520cdma2000%2520channel%2520naming%2520conventions%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">CDMA2000 Channel Naming Conventions</a></h2>
-
-    <div id="j5f." style="text-align:left;"><font size="5" face="Arial"><b>CDMA2000 Channel Naming Conventions</b></font><font face="Arial"></p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/07/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520cdma2000%2520channel%2520naming%2520conventions%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">CDMA2000 Channel Naming Conventions</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-07-20</strong> with tags <a href="/tags.html#网络/通信-ref" rel="nofollow">网络/通信</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <div id="j5f." style="text-align:left;"><font size="5" face="Arial"><b>CDMA2000 Channel Naming Conventions</b></font><font face="Arial"></p>
 <p></font></div>
 <p><font face="Arial">&nbsp;Many<br />
 cdma2000 standards refer to logical channels, physical channels, or<br />
@@ -836,57 +888,569 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
 <p>For example, the physical channel name for the Forward Fundamental Channel is F-FCH.</p>
 <p>References:<br />&nbsp;<i>3GPP2 C.S0001-D v2.0</i><br /></font></p>
 
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e3%2580%258aadvanced%2520programming%2520in%2520the%2520unix%2520environment%25e3%2580%258b%25e8%25af%25bb%25e4%25b9%25a6%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%25882%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">《Advanced Programming in the UNIX Environment》读书笔记（2）</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2008-07-13</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <div class="Section1">
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><span lang="EN-US">8</span><span>、<span lang="EN-US">UNIX Standards<a name="mw921"></a></span></span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 35.35pt;text-indent:-14.15pt;"><a name="mw923"></a><a name="mw922"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">ISO C </span></p>
+<p class="MsoBodyText"><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In late 1989, ANSI Standard X3.1591989 for the C programming language was approved. This standard has also been adopted as international standard ISO/IEC 9899:1990.<a name="uowh"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In 1999, the ISO C standard was updated and approved as ISO/IEC 9899:1999, largely to improve support for applications that perform numerical processing.<a name="gvok"></a><a name="q_4m"></a></span></p>
+</div>
+<p><span lang="EN-US" style='font-size:10pt;font-family:"Verdana", "sans-serif";'><br style="page-break-before:auto;" /> </span></p>
+<div class="Section2">
+<p class="MsoBodyText" style="margin:0 0 14.15pt 35.35pt;text-indent:-14.15pt;"><a name="xg.0"></a><a name="gvok1"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">IEEE POSIX </span></p>
+</div>
+<p><span lang="EN-US" style='font-size:10pt;font-family:"Verdana", "sans-serif";'><br style="page-break-before:auto;" /> </span></p>
+<div class="Section3">
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="ns.o1"></a><a name="ns.o0"></a><a name="ns.o"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">ISO/IEC 9945-1 (IEEE Standard 1003.1-1996), which includes </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IEEE Standard 1003.1-1990<a name="ns.o2"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IEEE Standard 1003.1b-1993 (real-time extensions)<a name="ns.o3"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IEEE Standard 1003.1c-1995 (pthreads)<a name="ns.o4"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IEEE Standard 1003.1i-1995 (real-time technical corrigenda)<a name="ns.o5"></a></span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="ns.o8"></a><a name="ns.o7"></a><a name="ns.o6"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">IEEE P1003.1a draft standard (system interface revision) </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="u0gs1"></a><a name="u0gs0"></a><a name="u0gs"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">IEEE Standard 1003.1d-1999 (advanced real-time extensions) </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="u0gs4"></a><a name="u0gs3"></a><a name="u0gs2"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">IEEE Standard 1003.1j-2000 (more advanced real-time extensions) </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="u0gs7"></a><a name="u0gs6"></a><a name="u0gs5"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">IEEE Standard 1003.1q-2000 (tracing) </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="u0gs10"></a><a name="u0gs9"></a><a name="u0gs8"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">IEEE Standard 1003.2d-1994 (batch extensions) </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="u0gs13"></a><a name="u0gs12"></a><a name="u0gs11"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">IEEE P1003.2b draft standard (additional utilities) </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="u0gs16"></a><a name="u0gs15"></a><a name="u0gs14"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">Parts of IEEE Standard 1003.1g-2000 (protocol-independent interfaces) </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="u0gs19"></a><a name="u0gs18"></a><a name="u0gs17"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">ISO/IEC 9945-2 (IEEE Standard 1003.2-1993) </span></p>
+<p class="MsoBodyText" style="margin-left:70.7pt;text-indent:-14.15pt;"><a name="u0gs22"></a><a name="u0gs21"></a><a name="u0gs20"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">The Base Specifications of the Single UNIX Specification, version 2, which include<a name="is6n"></a></span></p>
+<p class="MsoBodyText" style="margin-left:106.05pt;text-indent:-14.15pt;"><a name="is6n1"></a><a name="is6n0"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">System Interface Definitions, Issue 5<a name="ns.o17"></a></span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 106.05pt;text-indent:-14.15pt;"><a name="is6n2"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">Commands and Utilities, Issue 5 </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 106.05pt;text-indent:-14.15pt;"><a name="x_8b2"></a><a name="x_8b1"></a><a name="x_8b0"></a><a name="x_8b"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">System Interfaces and Headers, Issue 5 </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="buwi1"></a><a name="buwi0"></a><a name="buwi"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">Open Group Technical Standard, Networking Services, Issue 5.2 </span></p>
+<p class="MsoBodyText" style="margin:0 0 14.15pt 70.7pt;text-indent:-14.15pt;"><a name="xv1g1"></a><a name="xv1g0"></a><a name="xv1g"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">ISO/IEC 9899:1999, Programming Languages - C </span></p>
+<p class="MsoBodyText"><a name="z5bm0"></a><span lang="EN-US"><br /> <!--[if !supportLineBreakNewLine]--><br /> <!--[endif]--></span></p>
+</div>
+<p><span lang="EN-US" style='font-size:10pt;font-family:"Verdana", "sans-serif";'><br style="page-break-before:auto;" /> </span></p>
+<div class="Section4">
+<p class="MsoBodyText" style="margin:0 0 14.15pt 35.35pt;text-indent:-14.15pt;"><a name="ega3"></a><a name="z5bm2"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">The Single UNIX Specification </span></p>
+</div>
+<p><span lang="EN-US" style='font-size:10pt;font-family:"Verdana", "sans-serif";'><br style="page-break-before:auto;" /> </span></p>
+<div class="Section5">
+<p class="MsoBodyText"><span lang="EN-US">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A superset of the POSIX.1 standard, specifies additional interfaces that extend the functionality provided by the basic POSIX.1 specification.<a name="cz0e0"></a> <a name="cz0e1"></a><br /> <!--[if !supportLineBreakNewLine]--><br /> <!--[endif]--></span></p>
+</div>
+<p><span lang="EN-US" style='font-size:10pt;font-family:"Verdana", "sans-serif";'><br style="page-break-before:auto;" /> </span></p>
+<div class="Section6">
+<p class="MsoBodyText" style="margin:0 0 14.15pt 35.35pt;text-indent:-14.15pt;"><a name="cz0e4"></a><a name="cz0e3"></a><!--[if !supportLists]--><span lang="EN-US" style="font-size:9pt;font-family:Symbol;"><span>&middot;<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span lang="EN-US">FIPS </span></p>
+</div>
+<p><span lang="EN-US" style='font-size:10pt;font-family:"Verdana", "sans-serif";'><br style="page-break-before:auto;" /> </span></p>
+<div class="Section7">
+<p class="MsoBodyText"><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a name="q_4m1"></a><br /> <!--[if !supportLineBreakNewLine]--><br /> <!--[endif]--></span></p>
+</div>
+<p><span lang="EN-US" style='font-size:10pt;font-family:"Verdana", "sans-serif";'><br style="page-break-before:always;" /> </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><span lang="EN-US">9</span><span>、<span lang="EN-US">The header &lt;sys/types.h&gt; defines some implementation-dependent data types, called theprimitive system data types. More of these data types are defined in other headers also. These data types are defined in the headers with the C typedef facility. Most end in <a name="y1vk"></a><span style="color:red;">_t</span>.<a name="y1vk0"></a> <a name="psmj"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Figure 2.20. Some common primitive system data types<a name="psmj0"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Description<a name="psmj1"></a>  caddr_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; core address (Section 14.9)<a name="psmj2"></a>  clock_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; counter of clock ticks (process time) (Section 1.10)<a name="psmj3"></a>  comp_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; compressed clock ticks (Section 8.14)<a name="psmj4"></a>  dev_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; device numbers (major and minor) (Section 4.23)<a name="psmj5"></a>  fd_set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file descriptor sets (Section 14.5.1)<a name="psmj6"></a>  fpos_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file position (Section 5.10)<a name="psmj7"></a>  gid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; numeric group IDs<a name="psmj8"></a>  ino_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i-node numbers (Section 4.14)<a name="psmj9"></a>  mode_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file type, file creation mode ( ection 4.5)<a name="psmj10"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S<a name="psmj11"></a>  nlink_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link counts for directory entries (Section 4.14)<a name="psmj12"></a>  off_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file sizes and offsets (signed) (seek, Section 3.6)<a name="psmj13"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; l<a name="psmj14"></a>  pid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; process IDs and process group IDs (signed) ( ections 8.2 and 9.4)<a name="psmj15"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S<a name="psmj16"></a>  ptrdiff_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; result of subtracting two pointers (signed)<a name="psmj17"></a>  rlim_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; resource limits (Section 7.11)<a name="psmj18"></a>  sig_atomic_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data type that can be accessed atomically ( ection 10.15)<a name="psmj19"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S<a name="psmj20"></a>  sigset_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; signal set (Section 10.11)<a name="psmj21"></a>  size_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizes of objects (such as strings) (unsigned) ( ection 3.7)<a name="psmj22"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S<a name="psmj23"></a>  ssize_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; functions that return a count of bytes (signed) (ead, write, Section 3.7)<a name="psmj24"></a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; r<a name="psmj25"></a>  time_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; counter of seconds of calendar time (Section 1.10)<a name="psmj26"></a>  uid_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; numeric user IDs<a name="psmj27"></a>  wchar_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; can represent all distinct character codes<a name="psmj28"></a> <a name="jawo"></a>  10 Conflicts Between Standards<a name="tx.f"></a>  &nbsp;&nbsp;&nbsp; ISO C defines the function clock to return the amount of CPU time used by a process. The value returned is a value. To convert this value to seconds, we divide it by CLOCKS_PER_SEC, which is defined in the&lt;time.h&gt; header. POSIX.1 defines clock_t the function times that returns both the CPU time (for the caller and all its terminated children) and the clock time. All these time values are clock_t values. The sysconf function is used to obtain the number of clock ticks per second for use with the return values from the&nbsp; times function. What we have is the same term, clock ticks per second, defined differently by ISO C and POSIX.1. Both standards also use the same data type (clock_t ) to hold these different values. The difference can be seen in Solaris, whereclock returns microseconds (hence CLOCKS_PER_SEC is 1 million), whereassysyconf returns the value 100 for clock ticks per second.<a name="dlcl6"></a>  &nbsp;&nbsp;&nbsp; Another area of potential conflict is when the ISO C standard specifies a function, but doesn't specify it as strongly as POSIX.1 does.<a name="dlcl7"></a>  This is the case for functions that require a different implementation in a POSIX environment (with multiple processes) than in an ISO C<a name="dlcl8"></a>  environment (where very little can be assumed about the host operating system). Nevertheless, many POSIX-compliant systems<a name="dlcl9"></a>  implement the ISO C function, for compatibility. The signal function is an example. If we unknowingly use thesignal function provided by<a name="dlcl10"></a>  Solaris (hoping to write portable code that can be run in ISO C environments and under older UNIX systems), it'll provide semantics<a name="dlcl11"></a>  different from the POSIX.1 sigaction function.<a name="j9.."></a> <a name="j9..0"></a>  11 Most file I/O on a UNIX system can be performed using only five functions: </span></span><a name="ysfe"></a><span class="Teletype"><span lang="EN-US">open</span></span><span lang="EN-US">, </span><a name="ysfe0"></a><span class="Teletype"><span lang="EN-US">read</span></span><span lang="EN-US">, </span><a name="ysfe1"></a><span class="Teletype"><span lang="EN-US">write</span></span><span lang="EN-US">, </span><a name="ysfe2"></a><span class="Teletype"><span lang="EN-US">lseek</span></span><span lang="EN-US">, and </span><a name="ysfe3"></a><span class="Teletype"><span lang="EN-US">close</span></span><span lang="EN-US">.They're are often referred to as <a name="i_f:"></a>unbuffered I/O, in contrast to the standard I/O routines. The term <a name="fj4f"></a>unbuffered means that each </span><a name="fj4f0"></a><span class="Teletype"><span lang="EN-US">read</span></span><span lang="EN-US"> or </span><a name="fj4f1"></a><span class="Teletype"><span lang="EN-US">write</span></span><span lang="EN-US"> invokes a system call in the kernel. These unbuffered I/O functions are not part of ISO C, but are part of POSIX.1 and the Single UNIX Specification.<a name="fj4f2"></a> <a name="dlcl12"></a>  12 File Descriptors<a name="mwcb"></a></span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="mwcb0"></a><span lang="EN-US">&nbsp;&nbsp;&nbsp; To the kernel, all open files are referred to by file descriptors. A file descriptor is a non-negative integer. When we open an existing file or create a new file, the kernel returns a file descriptor to the process. When we want to read or write a file, we identify the file with the file descriptor that was returned by </span><a name="mwcb1"></a><span class="Teletype"><span lang="EN-US">open</span></span><span lang="EN-US"> or </span><a name="mwcb2"></a><span class="Teletype"><span lang="EN-US">creat</span></span><span lang="EN-US"> as an argument to either </span><a name="mwcb3"></a><span class="Teletype"><span lang="EN-US">read</span></span><span lang="EN-US"> or </span><a name="mwcb4"></a><span class="Teletype"><span lang="EN-US">write</span></span><span lang="EN-US">. </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="idd1e17659"></a><a name="mwcb20"></a><a name="idd1e17654"></a><a name="mwcb19"></a><a name="idd1e17649"></a><a name="mwcb18"></a><a name="idd1e17644"></a><a name="mwcb17"></a><a name="idd1e17641"></a><a name="mwcb16"></a><a name="idd1e17636"></a><a name="mwcb15"></a><a name="idd1e17631"></a><a name="mwcb14"></a><a name="idd1e17626"></a><a name="mwcb13"></a><a name="idd1e17621"></a><a name="mwcb12"></a><a name="idd1e17614"></a><a name="mwcb11"></a><a name="idd1e17609"></a><a name="mwcb10"></a><a name="idd1e17606"></a><a name="mwcb9"></a><a name="idd1e17603"></a><a name="mwcb8"></a><a name="idd1e17600"></a><a name="mwcb7"></a><a name="idd1e17595"></a><a name="mwcb6"></a><a name="mwcb5"></a><span lang="EN-US">&nbsp;&nbsp;&nbsp; By convention, UNIX System shells associate file descriptor 0 with the standard input of a process, file descriptor 1 with the standard output, and file descriptor 2 with the standard error. This convention is used by the shells and many applications; it is not a feature of the UNIX kernel. </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="s7u6"></a><span lang="EN-US">&nbsp;&nbsp; The magic numbers 0, 1, and 2 should be replaced in POSIX-compliant applications with the symbolic constants </span><a name="s7u60"></a><span class="Teletype"><span lang="EN-US">STDIN_FILENO</span></span><span lang="EN-US">, </span><a name="s7u61"></a><span class="Teletype"><span lang="EN-US">STDOUT_FILENO</span></span><span lang="EN-US">, and </span><a name="s7u62"></a><span class="Teletype"><span lang="EN-US">STDERR_FILENO</span></span><span lang="EN-US">. These constants are defined in the </span><a name="s7u63"></a><span class="Teletype"><span lang="EN-US">&lt;unistd.h&gt;</span></span><span lang="EN-US"> header. </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="s7u65"></a><a name="s7u64"></a><span lang="EN-US">&nbsp;</span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="s7u66"></a><span lang="EN-US">13<a name="s1x1"></a></span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="zn8x"></a><a name="s1x10"></a><span class="Teletype"><span lang="EN-US">&nbsp;&nbsp;&nbsp; (1) open</span></span><span lang="EN-US"> Function </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="zn8x0"></a><span lang="EN-US">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;A file is opened or created by calling the </span><a name="zn8x1"></a><span class="Teletype"><span lang="EN-US">open</span></span><span lang="EN-US"> function. </span></p>
+<p class="MsoNormal" style="margin:0 4.3pt .0001pt;"><a name="zn8x9"></a><a name="zn8x8"></a><a name="zn8x7"></a><a name="zn8x6"></a><a name="zn8x5"></a><a name="zn8x4"></a><a name="zn8x3"></a><a name="inta172"></a><a name="zn8x2"></a><span lang="EN-US" style="font-size:2pt;">&nbsp;</span></p>
+<table cellspacing="0" cellpadding="0" border="0" class="MsoNormalTable" style="margin-left:3.6pt;border-collapse:collapse;">
+<tbody>
+<tr>
+<td width="539" valign="top" style="border-style:solid solid none;border-color:gray gray -moz-use-text-color;border-width:1pt 1pt medium;padding:3.6pt;width:404.6pt;">
+<p class="TableContents"><a name="zn8x14"></a><span lang="EN-US"><a href="http://blog.csdn.net/unreadable/ch03lev1sec3.html#PLID0">[View full width]</a> </span></p>
+<p class="PreformattedText"><a name="zn8x15"></a><span lang="EN-US">#include   &lt;fcntl.h&gt;</span></p>
+<p class="PreformattedText"><a name="zn8x17"></a><a name="zn8x16"></a><span lang="EN-US">int open(const char *<a name="zn8x18"></a>pathname, int <a name="zn8x19"></a>oflag, ... /*</span></p>
+<p class="PreformattedText" style="margin-bottom:14.15pt;"><span lang="EN-US"><a name="zn8x21"></a><a name="zn8x20"></a><span>&nbsp;</span>mode_t <a name="zn8x22"></a>mode<span>&nbsp;&nbsp; </span>*/ );</span></p>
+<p><a name="zn8x23"></a><a name="zn8x25"></a><a name="zn8x24"></a></p>
+<p class="TableContents"><span lang="EN-US">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td width="539" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color gray gray;border-width:medium 1pt 1pt;padding:3.6pt;width:404.6pt;">
+<p align="right" class="TableContents" style="margin-bottom:14.15pt;text-align:right;"><a name="zn8x26"></a><span lang="EN-US">Returns:   file descriptor if OK, 1 on error </span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="s1x11"></a><span lang="EN-US">  &nbsp;&nbsp;&nbsp;&nbsp;(2)</span><a name="s1x12"></a><span class="Teletype"><span lang="EN-US"> creat</span></span><span lang="EN-US"> Function </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="s1x13"></a><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;A new file can also be created by calling the </span><a name="s1x14"></a><span class="Teletype"><span lang="EN-US">creat</span></span><span lang="EN-US"> function. </span></p>
+<p class="MsoNormal" style="margin:0 4.3pt .0001pt;"><a name="s1x112"></a><a name="s1x111"></a><a name="s1x110"></a><a name="s1x19"></a><a name="s1x18"></a><a name="s1x17"></a><a name="s1x16"></a><a name="inta25"></a><a name="s1x15"></a><span lang="EN-US" style="font-size:2pt;">&nbsp;</span></p>
+<table cellspacing="0" cellpadding="0" border="0" class="MsoNormalTable" style="margin-left:3.6pt;border-collapse:collapse;">
+<tbody>
+<tr>
+<td width="491" valign="top" style="border-style:solid solid none;border-color:gray gray -moz-use-text-color;border-width:1pt 1pt medium;padding:3.6pt;width:368.6pt;">
+<p class="PreformattedText"><a name="s1x114"></a><a name="s1x113"></a><span lang="EN-US">#include &lt;fcntl.h&gt;</span></p>
+<p class="PreformattedText" style="margin-bottom:14.15pt;"><a name="s1x116"></a><a name="s1x115"></a><span lang="EN-US">int creat(const char *<a name="s1x117"></a>pathname,   mode_t <a name="s1x118"></a>mode);</span></p>
+<p><a name="s1x119"></a><a name="s1x121"></a><a name="s1x120"></a></p>
+<p class="TableContents"><span lang="EN-US">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td width="491" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color gray gray;border-width:medium 1pt 1pt;padding:3.6pt;width:368.6pt;">
+<p align="right" class="TableContents" style="margin-bottom:14.15pt;text-align:right;"><a name="s1x122"></a><span lang="EN-US">Returns:   file descriptor opened for write-only if OK, 1 on error </span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="iy57"></a><span lang="EN-US">&nbsp;</span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="idd1e18450"></a><a name="gus07"></a><a name="idd1e18445"></a><a name="gus06"></a><a name="idd1e18440"></a><a name="gus05"></a><a name="idd1e18433"></a><a name="gus04"></a><a name="idd1e18428"></a><a name="gus03"></a><a name="idd1e18423"></a><a name="gus02"></a><a name="idd1e18416"></a><a name="gus01"></a><a name="idd1e18411"></a><a name="gus00"></a><a name="gus0"></a><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;Note that this function is equivalent to </span></p>
+<p class="PreformattedText" style="margin-bottom:14.15pt;"><a name="gus08"></a><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp; </span>open (<a name="gus09"></a>pathname, O_WRONLY | O_CREAT | O_TRUNC, <a name="gus010"></a>mode);</span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><span lang="EN-US">&nbsp;&nbsp;&nbsp; (3) </span><a name="gus011"></a><span class="Teletype"><span lang="EN-US">close</span></span><span lang="EN-US"> Function </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="gus012"></a><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;An open file is closed by calling the </span><a name="gus013"></a><span class="Teletype"><span lang="EN-US">close</span></span><span lang="EN-US"> function. </span></p>
+<p class="MsoNormal" style="margin:0 4.3pt .0001pt;"><a name="gus021"></a><a name="gus020"></a><a name="gus019"></a><a name="gus018"></a><a name="gus017"></a><a name="gus016"></a><a name="gus015"></a><a name="inta17"></a><a name="gus014"></a><span lang="EN-US" style="font-size:2pt;">&nbsp;</span></p>
+<table cellspacing="0" cellpadding="0" border="0" class="MsoNormalTable" style="margin-left:3.6pt;border-collapse:collapse;">
+<tbody>
+<tr>
+<td width="491" valign="top" style="border-style:solid solid none;border-color:gray gray -moz-use-text-color;border-width:1pt 1pt medium;padding:3.6pt;width:368.6pt;">
+<p class="PreformattedText"><a name="gus023"></a><a name="gus022"></a><span lang="EN-US">#include &lt;unistd.h&gt;</span></p>
+<p class="PreformattedText" style="margin-bottom:14.15pt;"><a name="gus025"></a><a name="gus024"></a><span lang="EN-US">int close(int <a name="gus026"></a>filedes);</span></p>
+<p><a name="gus027"></a><a name="gus029"></a><a name="gus028"></a></p>
+<p class="TableContents"><span lang="EN-US">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td width="491" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color gray gray;border-width:medium 1pt 1pt;padding:3.6pt;width:368.6pt;">
+<p align="right" class="TableContents" style="margin-bottom:14.15pt;text-align:right;"><a name="gus030"></a><span lang="EN-US">Returns:   0 if OK, 1 on error </span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><span lang="EN-US">&nbsp;&nbsp;&nbsp;<a name="c1z6"></a>  &nbsp;&nbsp;&nbsp; (4) </span><a name="c1z60"></a><span class="Teletype"><span lang="EN-US">lseek</span></span><span lang="EN-US"> Function<a name="c1z61"></a></span></p>
+<p class="MsoNormal" style="margin:0 4.3pt .0001pt;"><a name="c1z65"></a><a name="c1z64"></a><a name="c1z63"></a><a name="c1z62"></a><span lang="EN-US" style="font-size:2pt;">&nbsp;</span></p>
+<table cellspacing="0" cellpadding="0" border="0" class="MsoNormalTable" style="margin-left:3.6pt;border-collapse:collapse;">
+<tbody>
+<tr>
+<td width="417" valign="top" style="border-style:solid solid none;border-color:gray gray -moz-use-text-color;border-width:1pt 1pt medium;padding:3.6pt;width:312.95pt;">
+<p class="PreformattedText"><a name="c1z67"></a><a name="c1z66"></a><span lang="EN-US">#include &lt;unistd.h&gt;</span></p>
+<p class="PreformattedText" style="margin-bottom:14.15pt;"><a name="c1z69"></a><a name="c1z68"></a><span lang="EN-US">off_t lseek(int <a name="c1z610"></a>filedes,   off_t <a name="c1z611"></a>offset, int <a name="c1z612"></a>whence);</span></p>
+<p><a name="c1z613"></a><a name="c1z615"></a><a name="c1z614"></a></p>
+<p class="TableContents"><span lang="EN-US">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td width="417" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color gray gray;border-width:medium 1pt 1pt;padding:3.6pt;width:312.95pt;">
+<p align="right" class="TableContents" style="margin-bottom:14.15pt;text-align:right;"><a name="c1z616"></a><span lang="EN-US">Returns:   new file offset if OK, 1 on error </span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="c1z617"></a><span lang="EN-US">  &nbsp;&nbsp;&nbsp; (5) </span><a name="yszo"></a><span class="Teletype"><span lang="EN-US">read</span></span><span lang="EN-US"> Function </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="yszo0"></a><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;Data is read from an open file with the </span><a name="yszo1"></a><span class="Teletype"><span lang="EN-US">read</span></span><span lang="EN-US"> function. </span></p>
+<p class="MsoNormal" style="margin:0 4.3pt .0001pt;"><a name="yszo9"></a><a name="yszo8"></a><a name="yszo7"></a><a name="yszo6"></a><a name="yszo5"></a><a name="yszo4"></a><a name="yszo3"></a><a name="inta262"></a><a name="yszo2"></a><span lang="EN-US" style="font-size:2pt;">&nbsp;</span></p>
+<table cellspacing="0" cellpadding="0" border="0" class="MsoNormalTable" style="margin-left:3.6pt;border-collapse:collapse;">
+<tbody>
+<tr>
+<td width="491" valign="top" style="border-style:solid solid none;border-color:gray gray -moz-use-text-color;border-width:1pt 1pt medium;padding:3.6pt;width:368.6pt;">
+<p class="PreformattedText"><a name="yszo11"></a><a name="yszo10"></a><span lang="EN-US">#include &lt;unistd.h&gt;</span></p>
+<p class="PreformattedText" style="margin-bottom:14.15pt;"><a name="yszo13"></a><a name="yszo12"></a><span lang="EN-US">ssize_t read(int <a name="yszo14"></a>filedes,   void *<a name="yszo15"></a>buf, size_t <a name="yszo16"></a>nbytes);</span></p>
+<p><a name="yszo17"></a><a name="yszo19"></a><a name="yszo18"></a></p>
+<p class="TableContents"><span lang="EN-US">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td width="491" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color gray gray;border-width:medium 1pt 1pt;padding:3.6pt;width:368.6pt;">
+<p align="right" class="TableContents" style="margin-bottom:14.15pt;text-align:right;"><a name="yszo20"></a><span lang="EN-US">Returns:   number of bytes read, 0 if end of file, 1 on error </span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="iy570"></a><span lang="EN-US">  &nbsp;&nbsp;&nbsp; (6) </span><a name="f53g"></a><span class="Teletype"><span lang="EN-US">write</span></span><span lang="EN-US"> Function </span></p>
+<p class="MsoBodyText" style="margin-bottom:14.15pt;"><a name="f53g0"></a><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;Data is written to an open file with the </span><a name="f53g1"></a><span class="Teletype"><span lang="EN-US">write</span></span><span lang="EN-US"> function. </span></p>
+<p class="MsoNormal" style="margin:0 4.3pt .0001pt;"><a name="f53g9"></a><a name="f53g8"></a><a name="f53g7"></a><a name="f53g6"></a><a name="f53g5"></a><a name="f53g4"></a><a name="f53g3"></a><a name="inta380"></a><a name="f53g2"></a><span lang="EN-US" style="font-size:2pt;">&nbsp;</span></p>
+<table cellspacing="0" cellpadding="0" border="0" class="MsoNormalTable" style="margin-left:3.6pt;border-collapse:collapse;">
+<tbody>
+<tr>
+<td width="539" valign="top" style="border-style:solid solid none;border-color:gray gray -moz-use-text-color;border-width:1pt 1pt medium;padding:3.6pt;width:404.6pt;">
+<p class="TableContents"><a name="f53g14"></a><span lang="EN-US"><a href="http://blog.csdn.net/unreadable/ch03lev1sec8.html#PLID0">[View full width]</a> </span></p>
+<p class="PreformattedText"><a name="f53g15"></a><span lang="EN-US">#include   &lt;unistd.h&gt;</span></p>
+<p class="PreformattedText"><a name="f53g17"></a><a name="f53g16"></a><span lang="EN-US">ssize_t write(int <a name="f53g18"></a>filedes, const void *<a name="f53g19"></a>buf, size_t</span></p>
+<p class="PreformattedText" style="margin-bottom:14.15pt;"><span lang="EN-US"><a name="f53g21"></a><a name="f53g20"></a><span>&nbsp;</span><a name="f53g22"></a>nbytes);</span></p>
+<p><a name="f53g23"></a><a name="f53g25"></a><a name="f53g24"></a></p>
+<p class="TableContents"><span lang="EN-US">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td width="539" valign="top" style="border-style:none solid solid;border-color:-moz-use-text-color gray gray;border-width:medium 1pt 1pt;padding:3.6pt;width:404.6pt;">
+<p align="right" class="TableContents" style="margin-bottom:14.15pt;text-align:right;"><a name="f53g26"></a><span lang="EN-US">Returns:   number of bytes written if OK, 1 on error </span></p>
+</td>
+</tr>
+</tbody>
+</table>
 
-    <small class="meta">July 20, 2008 | <a href='/2008/07/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520cdma2000%2520channel%2520naming%2520conventions%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        
+<div class="pagination">
+    <ul>
+    
+        <li class="prev">
+        <a href="/page16">&larr; Previous</a>
+        
+        </li>
+    
+
+    
+        <li><a href="/">1</a></li>
+        
+
+        
+            <li><a href="/page2">2</a></li>
+            
+        
+            <li><a href="/page3">3</a></li>
+            
+        
+            <li><a href="/page4">4</a></li>
+            
+        
+            <li><a href="/page5">5</a></li>
+            
+        
+            <li><a href="/page6">6</a></li>
+            
+        
+            <li><a href="/page7">7</a></li>
+            
+        
+            <li><a href="/page8">8</a></li>
+            
+        
+            <li><a href="/page9">9</a></li>
+            
+        
+            <li><a href="/page10">10</a></li>
+            
+        
+            <li><a href="/page11">11</a></li>
+            
+        
+            <li><a href="/page12">12</a></li>
+            
+        
+            <li><a href="/page13">13</a></li>
+            
+        
+            <li><a href="/page14">14</a></li>
+            
+        
+            <li><a href="/page15">15</a></li>
+            
+        
+            <li><a href="/page16">16</a></li>
+            
+        
+            <li class="disabled"><a>17</a></li>
+            
+        
+            <li><a href="/page18">18</a></li>
+            
+        
+            <li><a href="/page19">19</a></li>
+            
+        
+            <li><a href="/page20">20</a></li>
+            
+        
+    
+
+    
+        <li class="next"><a href="/page18">Next &rarr;</a></li>
+    
+    </ul>
+</div>
+
+
+      </div>
+    </div>
+
   </div>
 
-</div>
-
-<div class='paging'>
-  
-    <a href='/page18' class='older'>Older Posts</a>
-  
-
-  
-    <a href='/page16' class='newer'>Newer Posts</a>
-  
-
-  
-  <div class='clear'></div>
-</div>
-
-        </div>
+  <div class="span3 right">
+	  <!--
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <wb:follow-button uid="2461544952" type="red_1" width="63" height="24" ></wb:follow-button>
       </div>
+  </div>
+  -->
 
-      <div id="bottom" class="span8 offset4">
-        <div class="well">
-          <a href="/about/">About</a> |
-          <a href="/archives/">Archives</a> |
-          <a href="/atom.xml">feed</a>
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Recent Posts</h3>
+        <ul>
+        
+          <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
+            How To Install Jekyll in Mac OSX Mavericks</a></li>
+        
+          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
+            C++ Code to Print Pascal Triangle</a></li>
+        
+          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
+            BACI Simple Install and Compile Guide</a></li>
+        
+          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
+            Dense Trajectory Notes</a></li>
+        
+          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
+            Parallelize mex file in Matlab</a></li>
+        
+          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
+            Notes of Advanced Machine Learning(I)</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
+            "undefined reference" error during installing OpenCV</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
+            Build Dense Trajectory Codes in Ubuntu</a></li>
+        
+          <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
+            Matlab Startup Script</a></li>
+        
+          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
+            Counting Unique k-mers -- My First Go Program</a></li>
+        
+        </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Tags</h3>
+        <div class="tag_box">
+        
+        
+  
+    
+        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
+    
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>7</span></a>
+    
+        <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
+    
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>4</span></a>
+    
+        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span>3</span></a>
+    
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>6</span></a>
+    
+        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
+    
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>14</span></a>
+    
+        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
+    
+        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
+    
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>3</span></a>
+    
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>86</span></a>
+    
+        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+    
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span>6</span></a>
+    
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>1</span></a>
+    
+        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span>3</span></a>
+    
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span>14</span></a>
+    
+        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span>6</span></a>
+    
+        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span>2</span></a>
+    
+        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span>2</span></a>
+    
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span>4</span></a>
+    
+        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span>2</span></a>
+    
+        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span>9</span></a>
+    
+        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>1</span></a>
+    
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
+    
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>5</span></a>
+    
+        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+    
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
+    
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+    
+        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
+    
+        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span>1</span></a>
+    
+        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span>1</span></a>
+    
+        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span>1</span></a>
+    
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
+    
+        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
+    
+        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span>1</span></a>
+    
+        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span>1</span></a>
+    
+        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span>1</span></a>
+    
+        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span>1</span></a>
+    
+        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span>1</span></a>
+    
+        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span>1</span></a>
+    
+        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span>1</span></a>
+    
+        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span>1</span></a>
+    
+        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span>1</span></a>
+    
+        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span>1</span></a>
+    
+        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span>3</span></a>
+    
+        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span>1</span></a>
+    
+        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span>1</span></a>
+    
+        <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
+    
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+    
+        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
+    
+        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span>1</span></a>
+    
+        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
+    
+        <a href="/tags.html#ML-ref" class="btn btn-mini">ML <span>1</span></a>
+    
+        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
+    
+        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span>1</span></a>
+    
+        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span>1</span></a>
+    
+        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
+    
+        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+  
+
+
+
         </div>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Links</h3>
+        <ul>
+        
+        
+    <li><a href=https://github.com/bo-yang title="My GitHub Channel">My GitHub Channel</a></li>
+
+    <li><a href=https://www.linkedin.com/pub/bo-yang/21/a3/893 title="My Linkedin Page">My Linkedin Page</a></li>
+
+    <li><a href=http://blog.csdn.net/bonny95 title="My Chinese Blog(obsolete)">My Chinese Blog(obsolete)</a></li>
+
+        </ul>
+        
       </div>
     </div>
   </div>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="/javascripts/bootstrap.min.js"></script>
+</div>
 
-  <!-- Google Analytics Code -->
+  </div>
+</div>
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
   <script type="text/javascript">
+    $(function() {
 
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-9947336-1']);
-    _gaq.push(['_trackPageview']);
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
 
-    (function() {
-      var ga = document.createElement('script');
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
-          'http://www') + '.google-analytics.com/ga.js';
-      ga.setAttribute('async', 'true');
-      document.documentElement.firstChild.appendChild(ga);
-    })();
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
 
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
   </script>
+  
 </body>
 </html>
 

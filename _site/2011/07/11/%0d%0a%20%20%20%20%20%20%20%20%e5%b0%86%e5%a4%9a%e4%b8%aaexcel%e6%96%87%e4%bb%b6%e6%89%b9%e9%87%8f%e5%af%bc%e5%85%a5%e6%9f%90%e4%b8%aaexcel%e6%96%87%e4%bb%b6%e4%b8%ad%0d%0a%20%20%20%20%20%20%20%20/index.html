@@ -1,0 +1,334 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>将多个Excel文件批量导入某个Excel文件中 | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>将多个Excel文件批量导入某个Excel文件中</h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span9 left">
+    <div class="main-container shadow">
+      <div class="mainbody thepost">
+        <p>这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。</p>
+<p>下面是搜索了半天之后搞出来的Macro，没有异常处理，而且使用了copy/paste，文件太多时效率肯定不高。其实完全可以参照<span style="font-family:Arial, Helvetica, sans-serif;"></span></p>
+<p><a href="http://www.exceltip.com/st/Copy_a_sheet_from_each_workbook_into_your_workbook_in_a_folder_using_VBA_in_Microsoft_Excel/560.html">Copy a sheet from each workbook into your workbook in a folder using VBA in Microsoft Excel</a>&nbsp;和 <a href="http://www.ozgrid.com/VBA/SpeedingUpVBACode.htm">Optimize Slow VBA Code</a> 中的方法来优化。</p></p>
+<pre>Sub LoadSheets()
+    Application.ScreenUpdating = False  ' stop screen flickering
+    
+    ' Create new sheets according to selected cells and copy the
+    ' contebts of other files into the new sheets
+    Dim YesNo As Variant, myFolder As String, MyLF As String
+        
+    MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
+    myFolder = &quot;D:Documents and SettingsbonnyMy Documentstools&quot;   'change this to the location of saved XML files
+    'Windows 7下C盘默认不可写，请修改DefFolder的值
+    
+    YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; myclf &amp; _
+        &quot;Do you want to continue?&quot;, _
+        vbYesNo, &quot;Caution&quot;)
+    Select Case YesNo
+    Case vbYes
+        myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates&quot;, Default:=myFolder)
+        'Create new worksheets
+        For Each cell In Selection.Cells
+            Call CreateNewWorksheet(cell.Value, myFolder)
+        Next
+    Case vbNo
+        Exit Sub
+    End Select
+    
+    Application.ScreenUpdating = True
+End Sub
+
+Function CreateNewWorksheet(SheetName As String, FolderName As String) As String
+
+    Dim oSheet As Worksheet, vRet As Variant
+    Dim fName As String
+    
+    'creating a new excel worksheet
+    Set oSheet = Worksheets.Add
+    With oSheet
+        .Name = SheetName
+        .Move after:=Sheets(Sheets.Count) '在当前所有worksheet后创建新的工作表
+        .Activate
+    End With
+    
+    'open Excel files and copy the contents to this sheet
+    Dim newWB As Workbook, curWB As Workbook
+    Dim startRange As Range
+    
+    Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
+    fName = FolderName + &quot;&quot; + SheetName + &quot;.xls&quot;
+    Set newWB = Workbooks.Open(fName)
+    newWB.Activate
+    newWB.Sheets(1).Activate ' 假定只有第一个worksheet需要copy
+    Set startRange = newWB.Sheets(1).UsedRange ' Only used range will be copied
+    newWB.Sheets(1).UsedRange.Copy
+    
+    'select the destination cell
+    curWB.Activate
+    Sheets(SheetName).Activate
+    Range(startRange.Address).Select
+    ActiveSheet.Paste
+    Application.CutCopyMode = False  'Clear Clipboard
+    newWB.Close
+    
+    Exit Function
+
+End Function
+
+</pre></p>
+
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+        
+        <div class="post-end">
+</div>
+
+
+        <div class="pagination">
+          <ul>
+          
+            <li class="prev"><a href="/2011/06/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520solaris%25e4%25b8%258busrlibsecure0%25400-so-1%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520" title="Solaris下/usr/lib/secure/0@0.so.1的错误">&larr; Previous</a></li>
+          
+            <li><a href="/archive.html">Archive</a></li>
+          
+            <li class="next"><a href="/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520" title="选中Excel单元格自动导入多个Excel worksheets">Next &rarr;</a></li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520';
+    var disqus_url = 'http://bo-yang.github.io//2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	  </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <h4>Published</h4>
+        <div class="date"><span>2011-07-11</span></div>
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+          <h4>Tags</h4>
+          <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#VBA-ref">VBA <span>4</span></a></li>
+    
+  
+
+
+
+          </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+		<div class="sidebar">
+			<!--
+			<script type="text/javascript" id="wumiiRelatedItems"></script>
+			-->
+		  <script type="text/javascript">
+	var linkwithin_site_id = 2140443;
+    var lwPermaLink = "http://bo-yang.github.io//2011/07/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25b0%2586%25e5%25a4%259a%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e6%2589%25b9%25e9%2587%258f%25e5%25af%25bc%25e5%2585%25a5%25e6%259f%2590%25e4%25b8%25aaexcel%25e6%2596%2587%25e4%25bb%25b6%25e4%25b8%25ad%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520";
+    var lwTitle = "将多个Excel文件批量导入某个Excel文件中";
+    var lwTags = "";
+    var lwCategories = [];
+    var lwSitePrefix = "http://bo-yang.github.io/";
+    var lwParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

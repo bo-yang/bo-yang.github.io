@@ -1,104 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
 <head>
-  <title>Bo Yang - Home </title>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <meta name="verify-v1" content="fI45uNHehVNiO9Dt0Fp7XnsV0Z/ozBTkPoS6RlYAe50=" />
-  <meta name="y_key" content="6c948e75a617b12d" />
-  <meta name='technorati-claim' content='8QN7CWNH8BSJ' />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" media="screen" href="/css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="/css/default.css" />
-  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
-  <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Bo Yang's blog" />
+  <title>Bo Yang | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
-<body class='blog'>
-  <div class="container">
-    <div class="row">
-      <div class="span4 sidebar affix">
-        <div class="well">
-          <h2 class='site-title'>
-            <a href="http://bo-yang.github.io">Bo Yang</a>
-          </h2>
+<body>
 
-		  <p><i>You got to make the back of the fence that nobody will see just as good looking as the front of the fence.</i></p>
-
-          <ul id="navigation" class="clearfix">
-            <li class='about'><a href='/about/'>About</a></li>
-            <li class='archives'><a href='/archives/'>Archives</a></li>
-            <li class="github"><a href="http://github.com/bo-yang" rel='me' class='url'>@github</a></li>
-          </ul>
-        </div>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
       </div>
-      <div class="span8 main offset4">
-        <div class="well">
-          <div id='index'>
-
-  <div class="post">
-    <h2><a href="/perl/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">用PERL处理二进制标量</a></h2>
-
-    <p>&nbsp;PERL Handling Binary Scalar</p>
-<div>
-<div><span></p>
-<div></div>
-<div><strong>1</strong>&nbsp;<strong>[Question]:</strong></div>
-<div></div>
-<div><span><br />
-</span>
-<p>I adopt select()...sysread()...syswrite() mechanism to handle socket messages, where messages are sysread() into $buffer (binary) before they are syswritten.</p>
-<p>Now I want to change two bytes of the message, which denote the length of the whole message. At first, I use following code:</p>
-<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $declen</span><span class="pun">=</span><span class="pln">hex</span><span class="pun">(</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$declen </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$declen</span><span class="pun">);</span> <span class="com"># change the length</span><br /></code></pre>
-<p>However, it doesn't work in this way. If the final value of $declen is 85, then the modified $buffer will be "0x35 0x35 0x00 0x02...". I insert digital number to $buffer but finally got ASCII!</p>
-<p>I also tried this way:</p>
-<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes,binary</span><span class="pln"><br />$msglen </span><span class="pun">+=</span> <span class="lit">0b11</span><span class="pun">;</span> <span class="com"># Or $msglen += 3;</span><br /><span class="kwd">my</span><span class="pln"> $msgbody</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the rest part of message, binary</span><span class="pln"><br />$buffer</span><span class="pun">=</span><span class="pln">join</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> $msglen</span><span class="pun">,</span><span class="pln"> $msgbody</span><span class="pun">);</span><br /></code></pre>
-<p>Sadly, this method also failed. The result is such as"0x33 0x 0x00 0x02..." I just wonder why two binary scalar can't be joined into a binary scalar?</p>
-<p>Can you help me? Thank you!</p>
-<p><span><strong>[Answer 1]:</strong></span>&nbsp;</p>
-<p>&nbsp;</p>
-<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $number </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$number </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><br /><span class="kwd">my</span><span class="pln"> $number_bin </span><span class="pun">=</span><span class="pln"> pack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$number</span><span class="pun">);</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$number_bin</span><span class="pun">);</span> <span class="com"># change the length</span></code></pre>
-<p>&nbsp;</p>
-</div>
-<p></span></div>
-<p><span><strong>[Answer 2]:</strong></span></p>
-<div>用vec。&nbsp;</p>
-<p>比如：&nbsp;
-<dl class="code">
-<dt><strong>Perl code</strong></dt>
-<dd>
-<pre><div><span>my</span> <span>$buffer</span> <span>=</span> <span><strong>"</strong></span><span><strong>/x00/x01</strong></span><span><strong>"</strong></span><span>;
-</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;
-</span><span>vec</span><span>(</span><span>$buffer</span><span>,</span> <span>0</span><span>,</span> <span>16</span><span>) </span><span>+=</span> <span>3</span><span>;
-</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;</span></div></pre>
-</dd>
-</dl>
-</div>
-<p></p>
-<div><strong>2&nbsp;</strong><strong>[Question]:</strong></div>
-<div><span><br />
-</span>
-<p>I am writing a Perl program that sends and receives messages from two sockets and acta as a switch. I have to modify the received messages received from one socket, prepend 3 bytes to the data, and finally send the modified messages to another socket. I adopt select()...sysread()...syswrite() mechanism to poll for messages between sockets. The received messages are stored in $buffer during modification.</p>
-<p>Now I can use following way to get the received messages:</p>
-<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $hexmsg </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"H*"</span><span class="pun">,</span><span class="pln"> $buffer</span><span class="pun">);</span><br /><span class="kwd">my</span><span class="pln"> @msg </span><span class="pun">=</span> <span class="pun">(</span><span class="pln"> $hexmsg </span><span class="pun">=~</span><span class="pln"> m</span><span class="pun">/.</span><span class="pln">.</span><span class="str">/g );<br /></span></code></pre>
-<p>then I can insert 3 bytes to @msg. However, I don't know how to pack the message in @msg into a scalar(such as $buffer) and send it to another socket by syswrite(). Can anybody help me? Thank you in advance!</p>
-<p>BTW, are messages in $buffer binary?</p>
-<p><span><strong>[Answer]:</strong></span></p>
-<p>&nbsp;</p>
-<p>Yes, messages in $buffer are binary (if I'm guessing what you mean by that correctly). If your only reason for unpacking it into @msg is to insert the bytes, don't. Use&nbsp;<a rel="nofollow" href="http://perldoc.perl.org/functions/substr.html">substr</a>&nbsp;instead, and just write out the changed $buffer. For instance:</p>
-<pre class="prettyprint"><code><span class="pln">substr</span><span class="pun">(</span><span class="pln"> $buffer</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="str">"/x01/x02/x03"</span> <span class="pun">);</span> <span class="com"># insert 3 bytes at beginning.</span><br /></code></pre>
-<p>If you are doing other things with @msg, you could continue to use that as well as doing the substr insert before writing it out, or you could use substr or pack or split or vec or a regex to parse out the pieces you need. You'd need to describe what you are doing to get more specific help.</p>
-<p>&nbsp;</p>
-</div>
-</div>
-
-
-    <small class="meta">March 12, 2009 | <a href='/perl/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+    </div>
   </div>
 
-  <div class="post">
-    <h2><a href="/perl/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2595%25b0%25e5%2580%25bc%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Perl数值转换</a></h2>
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>Bo Yang  <small>Beginner's mind.</small></h1>
+</div>
 
-    </p>
+<div class="row-fluid page-body">
+  <div class="span12">
+    
+
+<div class="row-fluid page-body">
+
+  <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2595%25b0%25e5%2580%25bc%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Perl数值转换</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-03-05</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        </p>
 <p>As always with Perl there is more than one way to do it. Below are a few examples of approaches to making common conversions between number representations. This is intended to be representational rather than exhaustive.</p>
 <p>Some of the examples below use the Bit::Vector module from CPAN. The reason you might choose Bit::Vector over the perl built in functions is that it works with numbers of ANY size, that it is optimized for speed on some operations, and for at least some programmers the notation might be familiar.</p>
 <dl>
@@ -527,14 +510,21 @@
 </dd>
 </dl>
 
-
-    <small class="meta">March 05, 2009 | <a href='/perl/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2595%25b0%25e5%2580%25bc%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/perl/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2589%2593%25e5%258d%25b0%25e6%2594%25b6%25e5%2588%25b0%25e7%259a%2584socket%25e6%25b6%2588%25e6%2581%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">PERL打印收到的Socket消息</a></h2>
-
-    <p>&nbsp;</p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2589%2593%25e5%258d%25b0%25e6%2594%25b6%25e5%2588%25b0%25e7%259a%2584socket%25e6%25b6%2588%25e6%2581%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">PERL打印收到的Socket消息</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-03-05</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;</p>
 <div>
 <h1>PERL打印收到的Socket消息</h1>
 <div>利用Perl的Select(),sysread()和syswrite()收到的消息将以二进制的形式存储到$buffer中，因此如果直接打印$buffer的内容将得到乱码。要将二进制内容转换为十六进制数串，则必须使用unpack()函数，即：</div>
@@ -591,14 +581,21 @@ sub DumpMsg {
 </div>
 <p>&nbsp;</p>
 
-
-    <small class="meta">March 05, 2009 | <a href='/perl/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2589%2593%25e5%258d%25b0%25e6%2594%25b6%25e5%2588%25b0%25e7%259a%2584socket%25e6%25b6%2588%25e6%2581%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/unix/linux/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520unix%2520commands%2520used%2520to%2520debug%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">UNIX Commands Used to Debug</a></h2>
-
-    <div>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520unix%2520commands%2520used%2520to%2520debug%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">UNIX Commands Used to Debug</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-03-03</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <div>
 <h1>UNIX Commands Used to Debug</h1>
 <div></p>
 <div>
@@ -842,14 +839,21 @@ sub DumpMsg {
 </div>
 </div>
 
-
-    <small class="meta">March 03, 2009 | <a href='/unix/linux/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520unix%2520commands%2520used%2520to%2520debug%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/personal/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apple%2520store%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Apple Store的错误</a></h2>
-
-    <p>今天在Apple4us上看到Apple将于今晚发布新的产品，并且Apple Store的网页正在升级，已经无法正常显示产品信息，于是就随便打开看了一看。想不到不看则以，一看还真让我深感意外: Apple竟然做起了张冠李戴、分裂我中华国土的勾当！</p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apple%2520store%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Apple Store的错误</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-03-03</strong> with tags <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>今天在Apple4us上看到Apple将于今晚发布新的产品，并且Apple Store的网页正在升级，已经无法正常显示产品信息，于是就随便打开看了一看。想不到不看则以，一看还真让我深感意外: Apple竟然做起了张冠李戴、分裂我中华国土的勾当！</p>
 <p>&nbsp;</p>
 <p>尽管本人对Apple景仰已久，但大是大非面前岂能是非不分？遂给Apple发邮件一封,内容如下：</p>
 <p><a name="英文开始"></a></p>
@@ -873,14 +877,21 @@ Best wishes!</div>
 <div><img src="http://docs.google.com/File?id=dd6nw3mt_239gjv5ggfw_b" alt="Apple的错误" width="800" height="481" /></div>
 <p>&nbsp;</p>
 
-
-    <small class="meta">March 03, 2009 | <a href='/personal/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apple%2520store%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/cloud%20computing/2009/02/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bd%2591%25e9%25a1%25b5%25e5%258f%2596%25e8%25af%258d%25e5%25b9%25b6%25e8%25b0%2583%25e7%2594%25a8google%2520translate%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">网页取词并调用Google Translate</a></h2>
-
-    <p>1. translate.html</p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/02/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bd%2591%25e9%25a1%25b5%25e5%258f%2596%25e8%25af%258d%25e5%25b9%25b6%25e8%25b0%2583%25e7%2594%25a8google%2520translate%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">网页取词并调用Google Translate</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-02-17</strong> with tags <a href="/tags.html#Cloud Computing-ref" rel="nofollow">Cloud Computing</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>1. translate.html</p>
 <p>&nbsp;</p>
 <p>
 <pre>&lt;html&gt; 
@@ -1019,14 +1030,21 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
 })();</pre>
 <p>&nbsp;</p>
 
-
-    <small class="meta">February 17, 2009 | <a href='/cloud%20computing/2009/02/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bd%2591%25e9%25a1%25b5%25e5%258f%2596%25e8%25af%258d%25e5%25b9%25b6%25e8%25b0%2583%25e7%2594%25a8google%2520translate%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/industry/2009/02/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%2520google%25e8%2580%2581%25e7%259f%25a3%25ef%25bc%258c%25e8%2583%25bd%25e4%25b8%258d%25e5%25ae%2595%25e5%2590%25a6%25ef%25bc%259f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Google老矣，能不宕否？</a></h2>
-
-    <p>&nbsp;</p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/02/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%2520google%25e8%2580%2581%25e7%259f%25a3%25ef%25bc%258c%25e8%2583%25bd%25e4%25b8%258d%25e5%25ae%2595%25e5%2590%25a6%25ef%25bc%259f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Google老矣，能不宕否？</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-02-10</strong> with tags <a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;</p>
 <div>
 <h1 style="text-align:center;"><span>Goolge老矣，能不宕否？</span></h1>
 <p class="MsoNormal">&nbsp;</p>
@@ -1052,14 +1070,21 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
 </div>
 <p>&nbsp;</p>
 
-
-    <small class="meta">February 10, 2009 | <a href='/industry/2009/02/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%2520google%25e8%2580%2581%25e7%259f%25a3%25ef%25bc%258c%25e8%2583%25bd%25e4%25b8%258d%25e5%25ae%2595%25e5%2590%25a6%25ef%25bc%259f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/personal/2009/02/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e4%25b9%258c%25e9%25be%2599%25e8%25ae%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">乌龙记</a></h2>
-
-    <br />
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/02/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e4%25b9%258c%25e9%25be%2599%25e8%25ae%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">乌龙记</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-02-07</strong> with tags <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <br />
 <h1 style="text-align:center;">&nbsp;乌龙记</h1>
 <div>
 <div>
@@ -1089,14 +1114,21 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
 </div>
 </div>
 
-
-    <small class="meta">February 07, 2009 | <a href='/personal/2009/02/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e4%25b9%258c%25e9%25be%2599%25e8%25ae%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/network/telecom/perl/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528iii%2529%2520-%2520introduction%2520to%2520berkeley%2520sockets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Perl Notes(III) -- Introduction To Berkeley Sockets</a></h2>
-
-    <p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528iii%2529%2520-%2520introduction%2520to%2520berkeley%2520sockets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Perl Notes(III) -- Introduction To Berkeley Sockets</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-01-13</strong> with tags <a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
 <span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;"><br />
 <h3 style="font-size:12pt;">3 Introduction To Berkeley Sockets<br /></h3>
 <h4 style="font-size:10pt;"><a name="3_1_Berkeley_Sockets__7180656138807535" id="3_1_Berkeley_Sockets__7180656138807535"></a>3.1 Basic Concepts</h4>
@@ -1448,14 +1480,21 @@ $dotted_ip_address = join '.', $a,$b,$c,$d;</pre>
 <p class="docText" style="margin:0;">In some references, you'll see a socket's address referred to as its "name." Don't let this confuse you. A socket's address and its name are one and the same.</p>
 <p class="docText" style="margin:0;">3.4 </p>
 
-
-    <small class="meta">January 13, 2009 | <a href='/network/telecom/perl/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528iii%2529%2520-%2520introduction%2520to%2520berkeley%2520sockets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
-  </div>
-
-  <div class="post">
-    <h2><a href="/perl/unix/linux/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/">Perl Notes(II)</a></h2>
-
-    <p>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Perl Notes(II)</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-01-13</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
      <span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;"><span class="Apple-style-span" style="font-size:19px;font-weight:bold;">Part II<span>    Network Programming With Perl</span></span><br />
 <h3 style="font-size:12pt;"><a name="1_Input_Output_Basics_" id="1_Input_Output_Basics_"></a>1 Input/Output Basics<br /></h3>
 <h4 style="font-size:10pt;"><a name="1_1_Filehandles_" id="1_1_Filehandles_"></a>1.1 Filehandles<br /></h4>
@@ -2109,57 +2148,411 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
 </tbody>
 </table>
 
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520how%2520do%2520i%2520add%2520a%2520directory%2520to%2520my%2520include%2520path%2520%2528%2540inc%2529%2520at%2520runtime%253f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">How do I add a directory to my include path (@INC) at runtime?</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-01-13</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+     <span class="Apple-style-span" style="color:rgb(17,17,17);font-family:Arial;font-size:16px;"><span class="Apple-style-span" style="font-size:20px;font-weight:bold;">How do I add a directory to my include path (@INC) at runtime?</span></span>
+<p style="font-size:100%;">Here are the suggested ways of modifying your include path, including environment variables, run-time switches, and in-code statements:</p>
+<ul>
+<li><a name="the-PERLLIB-environment-variable"></a><b>the PERLLIB environment variable</b>
+<pre class="verbatim" style="margin-left:10px;background-image:initial;background-repeat:initial;background-attachment:initial;-webkit-background-clip:initial;-webkit-background-origin:initial;background-color:rgb(238,238,221);width:90%;background-position:initial initial;border-color:rgb(204,204,204);border-style:solid;border-width:1px;padding:10px;">	$ export PERLLIB=/path/to/my/dir
+	$ perl program.pl</pre>
+</li>
+<li><a name="the-PERL5LIB-environment-variable"></a><b>the PERL5LIB environment variable</b>
+<pre class="verbatim" style="margin-left:10px;background-image:initial;background-repeat:initial;background-attachment:initial;-webkit-background-clip:initial;-webkit-background-origin:initial;background-color:rgb(238,238,221);width:90%;background-position:initial initial;border-color:rgb(204,204,204);border-style:solid;border-width:1px;padding:10px;">	$ export PERL5LIB=/path/to/my/dir
+	$ perl program.pl</pre>
+</li>
+<li><a name="the-perl--Idir-command-line-flag"></a><b>the perl -Idir command line flag</b>
+<pre class="verbatim" style="margin-left:10px;background-image:initial;background-repeat:initial;background-attachment:initial;-webkit-background-clip:initial;-webkit-background-origin:initial;background-color:rgb(238,238,221);width:90%;background-position:initial initial;border-color:rgb(204,204,204);border-style:solid;border-width:1px;padding:10px;">	$ perl -I/path/to/my/dir program.pl</pre>
+</li>
+<li><a name="the-use-lib-pragma%3a"></a><b>the use lib pragma:</b>
+<pre class="verbatim" style="margin-left:10px;background-image:initial;background-repeat:initial;background-attachment:initial;-webkit-background-clip:initial;-webkit-background-origin:initial;background-color:rgb(238,238,221);width:90%;background-position:initial initial;border-color:rgb(204,204,204);border-style:solid;border-width:1px;padding:10px;">	<a class="l_k" href="http://perldoc.perl.org/functions/use.html" style="color:rgb(139,0,139);font-weight:bold;">use</a> <span class="w" style="color:rgb(0,0,0);">lib</span> <span class="q" style="color:rgb(205,85,85);">"$ENV{HOME}/myown_perllib"</span><span class="sc" style="color:rgb(0,0,0);">;</span></pre>
+</li>
+</ul>
+<p style="font-size:100%;">The last is particularly useful because it knows about machine dependent architectures. The lib.pm pragmatic module was first included with the 5.002 release of Perl.</p>
 
-    <small class="meta">January 13, 2009 | <a href='/perl/unix/linux/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520/#disqus_thread'>View Comments</a></small>
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        
+<div class="pagination">
+    <ul>
+    
+        <li class="prev">
+        <a href="/page13">&larr; Previous</a>
+        
+        </li>
+    
+
+    
+        <li><a href="/">1</a></li>
+        
+
+        
+            <li><a href="/page2">2</a></li>
+            
+        
+            <li><a href="/page3">3</a></li>
+            
+        
+            <li><a href="/page4">4</a></li>
+            
+        
+            <li><a href="/page5">5</a></li>
+            
+        
+            <li><a href="/page6">6</a></li>
+            
+        
+            <li><a href="/page7">7</a></li>
+            
+        
+            <li><a href="/page8">8</a></li>
+            
+        
+            <li><a href="/page9">9</a></li>
+            
+        
+            <li><a href="/page10">10</a></li>
+            
+        
+            <li><a href="/page11">11</a></li>
+            
+        
+            <li><a href="/page12">12</a></li>
+            
+        
+            <li><a href="/page13">13</a></li>
+            
+        
+            <li class="disabled"><a>14</a></li>
+            
+        
+            <li><a href="/page15">15</a></li>
+            
+        
+            <li><a href="/page16">16</a></li>
+            
+        
+            <li><a href="/page17">17</a></li>
+            
+        
+            <li><a href="/page18">18</a></li>
+            
+        
+            <li><a href="/page19">19</a></li>
+            
+        
+            <li><a href="/page20">20</a></li>
+            
+        
+    
+
+    
+        <li class="next"><a href="/page15">Next &rarr;</a></li>
+    
+    </ul>
+</div>
+
+
+      </div>
+    </div>
+
   </div>
 
-</div>
-
-<div class='paging'>
-  
-    <a href='/page15' class='older'>Older Posts</a>
-  
-
-  
-    <a href='/page13' class='newer'>Newer Posts</a>
-  
-
-  
-  <div class='clear'></div>
-</div>
-
-        </div>
+  <div class="span3 right">
+	  <!--
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <wb:follow-button uid="2461544952" type="red_1" width="63" height="24" ></wb:follow-button>
       </div>
+  </div>
+  -->
 
-      <div id="bottom" class="span8 offset4">
-        <div class="well">
-          <a href="/about/">About</a> |
-          <a href="/archives/">Archives</a> |
-          <a href="/atom.xml">feed</a>
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Recent Posts</h3>
+        <ul>
+        
+          <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
+            How To Install Jekyll in Mac OSX Mavericks</a></li>
+        
+          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
+            C++ Code to Print Pascal Triangle</a></li>
+        
+          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
+            BACI Simple Install and Compile Guide</a></li>
+        
+          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
+            Dense Trajectory Notes</a></li>
+        
+          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
+            Parallelize mex file in Matlab</a></li>
+        
+          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
+            Notes of Advanced Machine Learning(I)</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
+            "undefined reference" error during installing OpenCV</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
+            Build Dense Trajectory Codes in Ubuntu</a></li>
+        
+          <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
+            Matlab Startup Script</a></li>
+        
+          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
+            Counting Unique k-mers -- My First Go Program</a></li>
+        
+        </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Tags</h3>
+        <div class="tag_box">
+        
+        
+  
+    
+        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
+    
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>7</span></a>
+    
+        <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
+    
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>4</span></a>
+    
+        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span>3</span></a>
+    
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>6</span></a>
+    
+        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
+    
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>14</span></a>
+    
+        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
+    
+        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
+    
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>3</span></a>
+    
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>86</span></a>
+    
+        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+    
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span>6</span></a>
+    
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>1</span></a>
+    
+        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span>3</span></a>
+    
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span>14</span></a>
+    
+        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span>6</span></a>
+    
+        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span>2</span></a>
+    
+        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span>2</span></a>
+    
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span>4</span></a>
+    
+        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span>2</span></a>
+    
+        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span>9</span></a>
+    
+        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>1</span></a>
+    
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
+    
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>5</span></a>
+    
+        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+    
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
+    
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+    
+        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
+    
+        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span>1</span></a>
+    
+        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span>1</span></a>
+    
+        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span>1</span></a>
+    
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
+    
+        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
+    
+        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span>1</span></a>
+    
+        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span>1</span></a>
+    
+        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span>1</span></a>
+    
+        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span>1</span></a>
+    
+        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span>1</span></a>
+    
+        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span>1</span></a>
+    
+        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span>1</span></a>
+    
+        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span>1</span></a>
+    
+        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span>1</span></a>
+    
+        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span>1</span></a>
+    
+        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span>3</span></a>
+    
+        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span>1</span></a>
+    
+        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span>1</span></a>
+    
+        <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
+    
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+    
+        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
+    
+        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span>1</span></a>
+    
+        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
+    
+        <a href="/tags.html#ML-ref" class="btn btn-mini">ML <span>1</span></a>
+    
+        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
+    
+        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span>1</span></a>
+    
+        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span>1</span></a>
+    
+        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
+    
+        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+  
+
+
+
         </div>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Links</h3>
+        <ul>
+        
+        
+    <li><a href=https://github.com/bo-yang title="My GitHub Channel">My GitHub Channel</a></li>
+
+    <li><a href=https://www.linkedin.com/pub/bo-yang/21/a3/893 title="My Linkedin Page">My Linkedin Page</a></li>
+
+    <li><a href=http://blog.csdn.net/bonny95 title="My Chinese Blog(obsolete)">My Chinese Blog(obsolete)</a></li>
+
+        </ul>
+        
       </div>
     </div>
   </div>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="/javascripts/bootstrap.min.js"></script>
+</div>
 
-  <!-- Google Analytics Code -->
+  </div>
+</div>
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
   <script type="text/javascript">
+    $(function() {
 
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-9947336-1']);
-    _gaq.push(['_trackPageview']);
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
 
-    (function() {
-      var ga = document.createElement('script');
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 
-          'http://www') + '.google-analytics.com/ga.js';
-      ga.setAttribute('async', 'true');
-      document.documentElement.firstChild.appendChild(ga);
-    })();
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
 
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
   </script>
+  
 </body>
 </html>
 

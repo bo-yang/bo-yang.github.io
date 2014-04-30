@@ -1,0 +1,12 @@
+<script type="text/javascript">
+	var linkwithin_site_id = 2140443;
+    var lwPermaLink = "{{ site.production_url }}{{ post.url }}";
+    var lwTitle = "{{ page.title }}";
+    var lwTags = "{% if tags_list.first[0] == null %}{% for tag in tags_list %}{{ tag }}{% if forloop.last == false %},{% endif %}{% endfor %}{% else %}{% for tag in tags_list %}{{ tag[0] }}{% if forloop.last == false %},{% endif %}{% endfor %}{% endif %}";
+    var lwCategories = [];
+    var lwSitePrefix = "http://bo-yang.github.io/";
+    var lwParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+{% assign tags_list = nil %}
