@@ -1,0 +1,320 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>TCL/Tk一句话笔记（一） | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>TCL/Tk一句话笔记（一）</h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span9 left">
+    <div class="main-container shadow">
+      <div class="mainbody thepost">
+        <p><div><span></p>
+<div>
+<h1><span style="font-weight:normal;font-size:12px;">1. A backslash as the last character in a line is converted into a space, and all the white space at the beginning of the next line is replaced by this substitution.</span></h1>
+<div>2. The difference between double quotes and curly braces is that quotes allow substitutions to occur in the group, while curly braces prevent substitutions.</div>
+<div>3. Tcl uses the&nbsp;proc&nbsp;command to define procedures.</div>
+<div>4. The&nbsp;expr&nbsp;command is used to parse and evaluate math expressions. You can make&nbsp;expr&nbsp;operate more efficiently by grouping the entire expression in curly braces.</div>
+<div>5. TCL assumes that variable names contain only letters, digits, and the underscore. The construct&nbsp;$foo.o&nbsp;represents a concatenation of the value of&nbsp;foo&nbsp;and the literal&nbsp;".o".</div>
+<div>6. If the variable reference is not delimited by punctuation or white space, then you can use curly braces to explicitly delimit the variable name (e.g.,&nbsp;${x}).</div>
+<div>7. You can delete a variable with the&nbsp;unset&nbsp;command:</div>
+<pre>unset ?-nocomplain? ?--? <span class="docEmphasis">varName varName2</span> ...<a name="idd1e8098"></a><a name="idd1e8103"></a><a name="idd1e8108"></a></pre>
+<pre>8. <span>The existence of a variable can be tested with the&nbsp;info exists&nbsp;command.</span></pre>
+<pre><span style="font-family:verdana;">9. You should always group expressions in curly braces and let&nbsp;expr&nbsp;do command and variable substitutions.</span></pre>
+<pre><span style="font-family:verdana;">10. In TCL, the&nbsp;#&nbsp;must occur at the beginning of a command.</span></pre>
+<pre><span style="font-family:verdana;">11. A surprising property of Tcl comments is that curly braces inside comments are still counted for the purposes of finding matching brackets.</span></pre>
+<pre><span style="font-family:verdana;">12. Command arguments are separated by white space, unless arguments are grouped with curly braces or double quotes as described below. If you forget the space, you will get syntax errors about unexpected characters after the closing brace or quote.</span></pre>
+<pre><span style="font-family:verdana;">13. The Tcl shells pass the command-line arguments to the script as the value of the&nbsp;argv&nbsp;variable. The number of command-line arguments is given by the&nbsp;argc&nbsp;variable. The name of the program, or script, is not part of&nbsp;argv&nbsp;nor is it counted by&nbsp;argc. Instead, it is put into the&nbsp;argv0&nbsp;variable.&nbsp;argv&nbsp;is a list, so you can use the&nbsp;lindex&nbsp;command to extract items from it:</span></pre>
+<p class="docText"><a name="idd1e11776"></a></p>
+<pre>set arg1 [lindex $argv 0]</pre>
+<pre>14. <span>Some command-line options are interpreted by&nbsp;<span class="docEmphasis">wish</span>, and they do not appear in the&nbsp;argv&nbsp;variable. The general form of the&nbsp;<span class="docEmphasis">wish</span>&nbsp;command line is:</span></pre>
+<pre>wish ?options? ?script? ?arg1 arg2?</pre>
+<p class="docText">If no script is specified, then&nbsp;<span class="docEmphasis">wish</span>&nbsp;just enters an interactive command loop.</p>
+<p class="docText">15. You can use the&nbsp;info script&nbsp;command to find out where the CGI script is, and from that load the supporting file. The&nbsp;file dirname&nbsp;and&nbsp;file join&nbsp;commands manipulate file names in a platform-independent way.</p>
+<p class="docText">set dir [file dirname [info script]]&nbsp;</p>
+<p class="docText">set datafile [file join $dir guestbook.data]</p>
+<p class="docText">16. You can ask&nbsp;string&nbsp;for valid operations by giving it a bad one:</p>
+<pre>string junk<br /><span class="docEmphasis">=&gt; bad option "junk": should be bytelength, compare, equal, first, index, is, last, length<br /><img src="http://docs.google.com/Doc?docid=dd6nw3mt_258p66mf8fx&amp;hl=en" border="0" alt="graphics/ccc.gif" width="14" height="9" align="left" />, map, match, range, repeat, replace, tolower, totitle, toupper, trim, trimleft, trimright,<br /><img src="http://docs.google.com/Doc?docid=dd6nw3mt_258p66mf8fx&amp;hl=en" border="0" alt="graphics/ccc.gif" width="14" height="9" align="left" /> wordend, or wordstart</span></pre>
+<pre>17. <span>The&nbsp;string map&nbsp;command translates a string based on a character map. The map is in the form of a input, output list. Wherever a string contains an input sequence, that is replaced with the corresponding output. For example:</span></pre>
+<pre>string map {f p d l} food<br /><span class="docEmphasis">=&gt; pool</span></pre>
+<p class="docText">The inputs and outputs can be more than one character and they do not have to be the same length:</p>
+<pre>string map {f p d ll oo u} food<br /><span class="docEmphasis">=&gt; pull</span></pre>
+<pre>18. <span>A position specifier is&nbsp;<span class="docEmphasis">i$</span>, which means take the value from argument&nbsp;<span class="docEmphasis">i</span>&nbsp;as opposed to the normally corresponding argument. The position counts from 1. If a position is specified for one format keyword, the position must be used for all of them. If you group the format specification with double quotes, you need to quote the&nbsp;$&nbsp;with a backslash:</span></pre>
+<pre>&nbsp;&nbsp; &nbsp;set lang 2<br />&nbsp;&nbsp; &nbsp;format "%${lang}/$s" one un uno<br /><span class="docEmphasis">&nbsp;&nbsp; &nbsp;=&gt; un</span></pre>
+<pre>19. <span>The&nbsp;binary&nbsp;command provides conversions between strings and packed binary data representations. The&nbsp;binary format&nbsp;command takes values and packs them according to a template. The resulting binary value is returned:</span></pre>
+<p class="docText"><a name="idd1e16724"></a></p>
+<pre>binary format <span class="docEmphasis">template value</span> ?<span class="docEmphasis">value</span> ...?</pre>
+<p class="docText">The&nbsp;binary scan&nbsp;command extracts values from a binary string according to a similar template. It assigns values to a set of Tcl variables:</p>
+<pre>&nbsp;&nbsp; &nbsp;binary scan <span class="docEmphasis">value template variable</span> ?<span class="docEmphasis">variable</span> ...?</pre>
+<pre>20. Tcl commands described are: list, lindex, llength, <br />lrange, lappend, linsert, lreplace, <br />lsearch, lset, lsort, concat, join, <br />and split.</pre>
+<pre>21. <span>Tcl commands related to list are: list, lindex, llength, lrange, lappend, linsert, lreplace, lsearch, lset, lsort, concat, join, and split.</span></pre>
+<pre><span style="font-family:verdana;">22. Procedure</span></pre>
+<pre>22.1 <span><span style="font-size:x-small;">Default parameter values</span></span></pre>
+<p><a name="idd1e21501"></a></p>
+<pre>&nbsp;&nbsp; &nbsp;proc P2 {a {b 7} {c -2} } {
+ &nbsp;&nbsp; &nbsp;expr $a / $b + $c
+&nbsp;&nbsp; &nbsp;}
+&nbsp;&nbsp; &nbsp;P2 6 3
+<span class="docEmphasis">&nbsp;&nbsp; &nbsp;=&gt; 0</span>
+</pre>
+<pre>22.2 <span>A procedure can take a variable number of arguments by 
+specifying the args keyword as the last parameter. When the procedure 
+is called, the args parameter is a list that contains all the remaining 
+values.</span></pre>
+<pre><span style="font-family:verdana;">23. The rename command changes the name of a command:&nbsp;</span></pre>
+<pre>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;rename foo foo.orig</pre>
+<pre><span style="font-family:Verdana;">The other thing you can do with </span><span style="font-family:Verdana;">rename</span><span style="font-family:Verdana;"> is completely remove a command by renaming it to the empty string:</span></pre>
+<pre>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;rename exec {}</pre>
+<pre>24. <span>Use the upvar command when you need to pass the name of a variable, as 
+opposed to its value, into a procedure.</span></pre>
+<pre><span style="font-family:verdana;">25. Call by Name Using&nbsp;<span style="font-family:'Courier New';">upvar</span></span></pre>
+<pre><span style="font-family:verdana;">Use the </span>upvar<span style="font-family:verdana;"> command when you need to pass the name of a variable, as opposed to its value, into a procedure. <span style="text-decoration:underline;">The </span></span><span style="text-decoration:underline;">upvar</span><span style="font-family:verdana;"><span style="text-decoration:underline;"> command associates a local variable with a variable in a scope up the Tcl call stack</span>. The syntax of the upvar command is:</span></pre>
+<p class="docText"><a name="idd1e22008"></a></p>
+<pre>&nbsp;&nbsp; &nbsp;upvar <span class="docEmphasis">?level? varName localvar</span>
+</pre>
+<p class="docText">The&nbsp;<span class="docEmphasis">level</span>&nbsp;argument is optional, and it defaults to 1, which means one level up the Tcl call stack. You can specify some other number of frames to go up, or you can specify an absolute frame number with a #<span class="docEmphasis">number</span>&nbsp;syntax. Level #0 is the global scope.</p>
+<p class="docText">26. You can use any string as an index for array, but avoid using a string that contains spaces.</p>
+<p class="docText">27. The array get and array set operations are used to convert between an array and a list. The list returned by array get has an even number of elements. The first element is an index, and the next is the corresponding array value. The list elements continue to alternate between index and value. The list argument to array set must have the same structure.</p>
+<p class="docText">28.&nbsp;</p>
+<div></div>
+<p class="docText"><a name="idd1e23061"></a><a name="idd1e23066"></a></p>
+</div>
+<p></span></div></p>
+
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+        
+        <div class="post-end">
+</div>
+
+
+        <div class="pagination">
+          <ul>
+          
+            <li class="prev"><a href="/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520" title="用PERL处理二进制标量">&larr; Previous</a></li>
+          
+            <li><a href="/archive.html">Archive</a></li>
+          
+            <li class="next"><a href="/2009/04/11/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%255b%25e8%25bd%25ac%255d%25e5%259c%25a8c%25e8%25af%25ad%25e8%25a8%2580%25e4%25b8%25ad%25e4%25bd%25bf%25e7%2594%25a8%25e6%25ad%25a3%25e5%2588%2599%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520" title="[转]在C语言中使用正则表达式">Next &rarr;</a></li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2009/04/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%25e4%25b8%2580%25e5%258f%25a5%25e8%25af%259d%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520';
+    var disqus_url = 'http://bo-yang.github.io//2009/04/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%25e4%25b8%2580%25e5%258f%25a5%25e8%25af%259d%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	  </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <h4>Published</h4>
+        <div class="date"><span>2009-04-05</span></div>
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+		<div class="sidebar">
+			<!--
+			<script type="text/javascript" id="wumiiRelatedItems"></script>
+			-->
+		  <script type="text/javascript">
+	var linkwithin_site_id = 2140443;
+    var lwPermaLink = "http://bo-yang.github.io//2009/04/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tcltk%25e4%25b8%2580%25e5%258f%25a5%25e8%25af%259d%25e7%25ac%2594%25e8%25ae%25b0%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520";
+    var lwTitle = "TCL/Tk一句话笔记（一）";
+    var lwTags = "";
+    var lwCategories = [];
+    var lwSitePrefix = "http://bo-yang.github.io/";
+    var lwParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

@@ -1,0 +1,876 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>Bo Yang | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>Bo Yang  <small>Beginner's mind.</small></h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span12">
+    
+
+<div class="row-fluid page-body">
+
+  <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/19/51">Backquotes in Ksh here document</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-12-19</strong> with tags <a href="/tags.html#ksh-ref" rel="nofollow">ksh</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>When the shell encounters a string between backquotes</p>
+<pre>     `cmd`</pre>
+<p>it executes cmd and replaces the backquoted string with the standard output of cmd, with any trailing newlines deleted. Quoting inside backquoted commands is somewhat complicated, mainy because the same token is used to start and to end a backquoted command. As a consequence, to nest backquoted commands, the backquotes of the inner one have to be escaped using backslashes, e.g.<br />
+<code><br />
+LABNAME=$(echo $labname | tr "[a-z]" "[A-Z]" | sed 's/-/_/g'<br />
+cat &lt;&lt;-IOTA &gt;$iota_cfg<br />
+path=\`checkpath\`<br />
+export ${LABNAME}_COOLXDIR=$COOLXDIR<br />
+IOTA</code></p>
+<p>Since the LABNAME is a variable defined out of the here document, it must be quoted by braces {}, or error will occur.</p>
+<p>--------------</p>
+<p>Reference:</p>
+<ol>
+<li> <a href="http://www.mpi-inf.mpg.de/~uwe/lehre/unixffb/quoting-guide.html#para:sh-backquotes">A Guide to Unix Shell Quoting</a></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/18/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520mergesplit%2520pdf%2520files%2520in%2520linux%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Merge/Split PDF files in Linux</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-12-18</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+First install pdftk (pdf toolkit). Pdftk runs from the command line which means you should unpack the software into a directory that you can access easily. I put the file into c: for&nbsp;<a href="http://www.ghacks.net/2007/10/02/merge-pdf-files/#" class="kLink" id="KonaLink0" style="border-style:initial;border-color:initial;outline-width:initial;outline-style:none;outline-color:initial;background-color:transparent!important;vertical-align:baseline;color:rgb(0,114,188);font-family:inherit!important;display:inline!important;top:0;right:0;bottom:0;left:0;position:static;font-size:inherit!important;border-width:0!important;margin:0;padding:0;"><span style="color:#0072bc;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0;margin:0;padding:0;"><span class="kLink" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;width:auto!important;float:none!important;display:inline!important;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0 0 1px!important;margin:0;padding:0 0 1px!important;">testing</span></span></a>&nbsp;purposes<br />
+ along with two pdfs called 123.pdf and 456.pdf.</p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+If you run pdftk without parameters you get a quick output that details the most important parameters. Lets take a look at the possible operations:</p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span id="more-2012" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;"></span><span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Merge<br />
+ pdf files:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ 123.pdf 456.pdf output 123456.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+This tells pdftk to merge the two pdf files 123.pdf and 456.pdf into a new pdf called 123456.pdf. If you want to merge more than two pdf files at once you simply add them between pdftk and output. You could also use wildcards to merge many or all pdfs with<br />
+ a certain name.</p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ *.pdf output 123456.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Split<br />
+ pages from one or more pdfs:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ A=123.pdf B=456.pdf cat A1-2 B4-5 output 1245.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Repair<br />
+ a pdf:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ 123.pdf output 123fixed.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Merge<br />
+ encrypted pdfs:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ A=123.pdf 456.pdf input_pw A=password cat output 123456.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+Pdftk offers several more possibilities which are worth a look if you want to do something that I did not describe on this website. A version for Linux and Windows is available.</p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Read<br />
+ More:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<a href="http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;text-decoration:none;color:rgb(0,0,255);border-width:0;margin:0;padding:0;">Pdftk<br />
+ Homepage</a></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+原文：<a href="http://www.ghacks.net/2007/10/02/merge-pdf-files/">http://www.ghacks.net/2007/10/02/merge-pdf-files/</a></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/16/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520tk%2520send%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Tk send</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-12-16</strong> with tags <a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+<code>send</code>&nbsp;is a Tk command&nbsp;used to execute a command in a different application. This send communication mechanism is limited to applications&nbsp;running on one display. Multiple screens on one workstation still count as the same display on X.</p>
+<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+In order to use&nbsp;<code>send</code>&nbsp;in your program, you should</p>
+<ol style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+<ol>
+<li>use command&nbsp;<tt>winfo interps</tt>&nbsp;to find out all the names of Tk applications reachable with send.</li>
+<li>to get the real name of a spplicaiton, using&nbsp;<tt>tk appname &lt;application&gt;.</tt></li>
+<li><tt>run tcl command remotely by send [tk appname &lt;application&gt;] &lt;command&gt;.</tt></li>
+</ol>
+</ol>
+<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+------------------<br />
+Reference:</p>
+<ol style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+<li>send manual page:&nbsp;<a href="http://www.tcl.tk/man/tcl8.4/TkCmd/send.htm">http://www.tcl.tk/man/tcl8.4/TkCmd/send.htm</a></li>
+<li><a href="http://www.amazon.com/exec/obidos/ISBN=0130385603/brentwelchA/">Practical Programming in Tcl and Tk(4th edition)</a></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/16/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520how%2520to%2520change%2520the%2520character%2520case%2520in%2520ksh%253f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">How to change the character case in ksh?</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-12-16</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>1. To change lower case characters to upper case, you can</p></p>
+<pre>echo abc | tr &quot;[a-z]&quot; &quot;[A-Z]&quot;</pre>
+<p>
+or&nbsp;</p></p>
+<pre>echo abc | tr '[:lower:]' '[:upper:]'</pre>
+<p>
+2. To change upper case characters to lower case, you can</p>
+<p><span style="font-family:monospace;"><span style="white-space:pre;"></span></span>
+<pre>echo ABC | tr &quot;[A-Z]&quot; &quot;[a-z]&quot;</pre>
+<p>
+<span style="white-space:pre;font-family:monospace;">or</span></p>
+<p><span style="font-family:monospace;"><span style="white-space:pre;"></span></span>
+<pre>echo ABC | tr '[:upper:]' '[:lower:]'</pre></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/02/rup-rpc-program-not-registered-in-rhel6-1">rup:: RPC: Program not registered in RHEL6.1</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-12-02</strong> with tags <a href="/tags.html#RHEL6.1-ref" rel="nofollow">RHEL6.1</a>, <a href="/tags.html#RPC-ref" rel="nofollow">RPC</a>, <a href="/tags.html#rup-ref" rel="nofollow">rup</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>I just installed Redhat Enterprise Linux 6.1 on one HP server. Following error met when rup it on other servers:</p>
+<p>[sourcecode language="text"]<br />
+$rup coolnjmcl033<br />
+rup:coolnjmcl033: RPC: Program not registered<br />
+[/sourcecode]</p>
+<p>SOLUTION:<br />
+1) check if all nfs related services are working:</p>
+<p>[sourcecode language="text"]<br />
+[root@coolnjmcl033init.d]# rpcinfo -p<br />
+program vers proto port service<br />
+100000 4 tcp 111 portmapper<br />
+100000 3 tcp 111 portmapper<br />
+100000 2 tcp 111 portmapper<br />
+100000 4 udp 111 portmapper<br />
+100000 3 udp 111 portmapper<br />
+100000 2 udp 111 portmapper<br />
+100011 1 udp 875 rquotad<br />
+100011 2 udp 875 rquotad<br />
+100011 1 tcp 875 rquotad<br />
+100011 2 tcp 875 rquotad<br />
+100003 2 tcp 2049 nfs<br />
+100003 3 tcp 2049 nfs<br />
+100003 4 tcp 2049 nfs<br />
+100227 2 tcp 2049 nfs_acl<br />
+100227 3 tcp 2049 nfs_acl<br />
+100003 2 udp 2049 nfs<br />
+100003 3 udp 2049 nfs<br />
+100003 4 udp 2049 nfs<br />
+100227 2 udp 2049 nfs_acl<br />
+100227 3 udp 2049 nfs_acl<br />
+100005 1 udp 51310 mountd<br />
+100005 1 tcp 60605 mountd<br />
+100005 2 udp 42799 mountd<br />
+100005 2 tcp 44201 mountd<br />
+100005 3 udp 49544 mountd<br />
+100005 3 tcp 49098 mountd<br />
+100024 1 udp 37035 status<br />
+100024 1 tcp 60898 status<br />
+100001 3 udp 1008 rstatd<br />
+100001 2 udp 1008 rstatd<br />
+100001 1 udp 1008 rstatd<br />
+[/sourcecode]</p>
+<p>If there is no running rstatdservice , start it byservice rstatd start.<br />
+Accordingto RHEL 6 RUP manual:</p>
+<p>[sourcecode language="text"]<br />
+rup: RPC: Program not registered<br />
+[/sourcecode]</p>
+<p>The rpc.rstatd(8) daemon has not been started on the remote host.</p>
+<p>2) check if package rusers-server-*and rusers-* are installed: rpm –qa|greprusers. If not, install it and then restart service rstatd.</p>
+<p>PS:<br />
+Other userful commands:<br />
+[sourcecode language="text"]<br />
+rup localhost<br />
+service rstatd status<br />
+[/sourcecode]</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/02/cfilt">C++filt</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-12-02</strong> with tags 
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>c++flit decodes(demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
+<p>You may use c++filt to demangle the symbols.<br />
+[sourcecode language="text"]<br />
+$ c++filt _ZNSt8ios_base4InitD1Ev<br />
+std::ios_base::Init::~Init()<br />
+[/sourcecode]</p>
+<p>You may try adding-lstdc++ to your link command to resolve the issue.</p>
+<p><a href="http://sourceware.org/binutils/docs-2.16/binutils/c_002b_002bfilt.html"><strong>c++filt manual</strong></a> </p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/11/28/whats-the-differences-between-virtualization-and-cloud-computing">What's the differences between  virtualization and cloud computing?</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-11-28</strong> with tags 
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>Many people will be confused by the relations and differences between virtualization and cloud computing. Following essays will clarify the nature of the two technologies.<br />
+1. Cloud is an operations model, not technology: <a href="http://news.cnet.com/8301-19413_3-10249486-240.html">http://news.cnet.com/8301-19413_3-10249486-240.html</a><br />
+2. Difference Between Virtualization and Cloud Computing: <a href="http://data-centers.in/virtualization-and-cloud-computing/">http://data-centers.in/virtualization-and-cloud-computing/</a><br />
+3. The Difference Between Virtualization and Cloud Computing: <a href="http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/">http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/</a></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/11/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%25a6%2582%25e4%25bd%2595%25e5%259c%25a8gmail%25e4%25b8%25ad%25e6%2590%259c%25e7%25b4%25a2%25e7%2589%25b9%25e5%25ae%259a%25e6%2597%25b6%25e9%2597%25b4%25e6%25ae%25b5%25e7%259a%2584%25e9%2582%25ae%25e4%25bb%25b6%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">如何在Gmail中搜索特定时间段的邮件</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-11-22</strong> with tags <a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>由于众所周知的原因，在天朝登录Gmail时越来越困难了，但是很多以前的邮件都还在，时不时还需要翻一翻，如何搜索特定时间段的邮件呢？</p>
+<p>答案就是在Gmail的搜索框中输入after:或者/和before:， 如 “after:2007/07/31 before:2007/12/31”就是搜索2007年7月31日之后12月31日之前的邮件。</p>
+<p></p>
+<p><img src="http://www.iamatechie.com/wp-content/uploads/2008/05/gmail-search-box-duration.jpg" alt="" /></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/10/24/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520steve%2520jobs%25e7%259a%2584%25e5%25ae%25b6%25e5%25ba%25ad%25e6%2595%2599%25e8%2582%25b2%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Steve Jobs的家庭教育</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-10-24</strong> with tags <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <div style="line-height:1.6;font-family:Arial;font-size:14px;background-color:transparent;word-wrap:break-word;min-height:340px;overflow-x:hidden;height:auto;margin:0;padding:0;">
+<p style="margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, 'Times New Roman', Times, serif;">
+<strong>从CBS对<a href="http://latimesblogs.latimes.com/technology/2011/10/steve-jobs-lightning-bolts-went-off-in-my-head-about-being-adopted.html" style="border-width:initial;border-color:initial;border-style:none;">Walter<br />
+ Isaacson的采访</a>来看，Steve Jobs小时候的家庭教育还是很成功的，虽然他的养父母都没有受过高等教育，但他们懂得如何教育一个（被收养的）小孩子，如何培养他正确的人生观和价&#20540;观。反观我们的童年，这些大多是缺失的。</strong></p>
+<p style="margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, 'Times New Roman', Times, serif;">
+<strong>1. 追求完美</strong></p>
+<p style="margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, 'Times New Roman', Times, serif;">
+<strong>ISAACSON BELIEVES THAT MUCH OF IT CAN BE TRACED TO THE EARLIEST YEARS OF HIS LIFE, AND TO THE TO THE FACT THAT JOBS BORN OUT OF WEDLOCK, GIVEN UP BY HIS BIRTH PARENTS, AND ADOPTED BY A WORKING CLASS COUPLE FROM MOUNTAIN VIEW, FROM MOUNTAIN VIEW, CALIFORNIA.&nbsp;</strong></p>
+<p style="margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, 'Times New Roman', Times, serif;">
+WALTER ISAACSON: Paul Jobs was a salt-of-the-earth guy who was a great mechanic. And he taught his son Steve how to make great things&nbsp; And he--once they were building a fence. And he said,&nbsp;<span style="color:#ff0000;"><strong>&quot;You got to make the back of the<br />
+ fence that nobody will see just as good looking as the front of the fence.&quot; Even though nobody will see it, you will know, and that will show that you're dedicated to making something perfect.&quot;&nbsp;</strong></span></p>
+<p style="margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, 'Times New Roman', Times, serif;">
+<strong>2. 培养自信</strong></p>
+<p style="margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, 'Times New Roman', Times, serif;">
+<strong>JOBS ALWAYS KNEW HE WAS ADOPTED, BUT IT STILL HAD A PROFOUND EFFECT ON HIM. HE TOLD ISAACSON THIS STORY FROM HIS EARLY CHILDHOOD DURING ONE OF THEIR MANY TAPED INTERVIEWS:</strong></p>
+<p style="margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, 'Times New Roman', Times, serif;">
+STEVE JOBS TAPES: I was, I remember right here on my lawn, telling Lisa McMoylar from across the street that I was adopted. And she said, “So does that mean your real parents didn't want you?” Ooooh, lightning bolts went off in my head. I remember running into<br />
+ the house, I think I was like crying, asking my parents. And they sat me down and they said, “<span style="color:#ff0000;"><strong>No, you don't understand. We specifically picked you out.</strong></span>”</p>
+<p style="margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, 'Times New Roman', Times, serif;">
+WALTER ISAACSON: He said, &quot;<strong><span style="color:#ff0000;">From then on, I realized that I was not — just abandoned. I was chosen. I was special.</span></strong>&quot; And I think that's the key to understanding Steve Jobs.</p>
+<p style="margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, 'Times New Roman', Times, serif;">
+Steve Jobs的英文版自传目前还没买到，我的iTunes帐号只能在中国大陆使用，期盼过些天能够有办法。由于Steve Jobs的语言十分生动灵活，Walter Isaacson 的文体严肃认真，估计直接阅读英文版还是会很有一些障碍的，但那应该是学习好的英语的一种不可多得的机会。</p>
+</div>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/10/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520what%2526%252339%253bs%252bthe%252bdifference%252bbetween%252bvirtualization%252band%252bcloud%252bcomputing%253f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">What's+the+difference+between+virtualization+and+cloud+computing?</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-10-13</strong> with tags <a href="/tags.html#Cloud Computing-ref" rel="nofollow">Cloud Computing</a>, <a href="/tags.html#Virtualization-ref" rel="nofollow">Virtualization</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>在很多资料或文献中很难找到虚拟化和云计算的区别，甚至连云计算是什么都颇有争议。在网上找到几片论述这一问题的文章，摘录于下。</p></p>
+<h1 style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-family:proxima-nova-extra-condensed, 'Helvetica Neue Condensed Bold', 'Arial Narrow', Helvetica, Arial, sans-serif;text-align:left;vertical-align:baseline;color:rgb(57,67,76);clear:both;line-height:1em!important;border-width:0;margin:5px 0;padding:0;">
+<span style="font-size:18px;">1. Cloud is an operations model, not technology:&nbsp;<a href="http://news.cnet.com/8301-19413_3-10249486-240.html">http://news.cnet.com/8301-19413_3-10249486-240.html</a></span></h1>
+<p><span style="font-size:18px;">2. Difference Between Virtualization and Cloud Computing:&nbsp;</span><a href="http://data-centers.in/virtualization-and-cloud-computing/" style="font-size:18px;">http://data-centers.in/virtualization-and-cloud-computing/</a></p>
+<p><span style="font-size:18px;">3.&nbsp;</span><strong>The Difference Between Virtualization and Cloud Computing:&nbsp;<a href="http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/">http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/</a></strong></p>
+<p></p>
+<p>================================================================================================</p></p>
+<h1 style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-family:proxima-nova-extra-condensed, 'Helvetica Neue Condensed Bold', 'Arial Narrow', Helvetica, Arial, sans-serif;text-align:left;vertical-align:baseline;color:rgb(57,67,76);clear:both;line-height:1em!important;border-width:0;margin:5px 0;padding:0;">
+<span style="font-size:18px;">1. Cloud is an operations model, not technology:&nbsp;<a href="http://news.cnet.com/8301-19413_3-10249486-240.html">http://news.cnet.com/8301-19413_3-10249486-240.html</a></span></h1>
+<div>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.4286em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.133em;color:rgb(118,134,150);border-width:0;">
+One of the most common questions I get from those exploring cloud computing for the first time is &quot;what is the difference between cloud computing and virtualization?&quot; It is an excellent question, as most IT departments are currently exploring the ways in which&nbsp;<a href="http://en.wikipedia.org/wiki/Virtualization" style="border-style:initial;border-color:initial;outline-width:initial;outline-style:none;outline-color:initial;font-size:undefined;font-family:inherit;vertical-align:baseline;color:rgb(41,100,191);text-decoration:none;border-width:0;margin:0;padding:0;">virtualization</a>&nbsp;enables<br />
+ automation and provisioning agility. Given the fact that cloud is often touted for providing similar benefits, it can be confusing to understand why the two terms aren't equivalent.</p>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
+My response to that question requires a bit of explanation, so let's step through the differences between the two concepts.</p>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
+<strong>Virtualization is a technology.</strong></p>
+<div class="cnet-image-div image-medium float-right" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:14px;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;clear:right;float:right;color:rgb(37,37,37);line-height:20px;width:270px;border-width:0;margin:20px 2px 20px 20px;padding:0;">
+<img class="cnet-image" src="http://i.i.com.com/cnwk.1d/i/bto/20090528/Virtualization_stack_270x258.jpg" alt="" width="270" height="258" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:undefined;font-style:inherit;font-family:inherit;vertical-align:baseline;border-width:0;margin:0;padding:0;" /><span class="image-credit" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:.8571em;font-style:inherit;font-family:inherit;vertical-align:baseline;line-height:1.166em;border-width:0;margin:0;padding:0;">(Credit:<br />
+ CNET/James Urquhart)</span></div>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
+When you run software in a virtual machine, the bits that represent the program's instructions run through a layer of software that &quot;pretends&quot; to be a dedicated server infrastructure, the hypervisor. The hypervisor is the heart and soul of server virtualization,<br />
+ and is the enabler of the consolidation and agility values that virtualization brings to the data center.</p>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
+It is because of the hypervisor that virtualization is the true disruptive technology that enables cloud computing on a massive scale. Hypervisors allow servers to be multi-tenant without rewriting applications to be multi-tenant. Hypervisors allow operating<br />
+ systems and applications to install to a consistent hardware profile, even though they end up running on a variety of actual physical system implementations. Hypervisors also allow servers to be manipulated by software APIs, which greatly simplifies the act<br />
+ of automating IT operations.</p>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
+<strong>Cloud computing is an operations model, not a technology.</strong></p>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
+When you run an application in a public or private cloud, there is no &quot;cloud layer&quot; that your software must pass through in order to leverage the physical infrastructure available to it. In the vast majority of cases, there is probably some virtualization involved,<br />
+ but the existence of hypervisors clearly does not make your data center resources into a cloud. Nor is the fact that&nbsp;<a href="http://aws.amazon.com/ec2/" style="border-style:initial;border-color:initial;outline-width:initial;outline-style:none;outline-color:initial;font-size:undefined;font-family:inherit;vertical-align:baseline;color:rgb(41,100,191);text-decoration:none;border-width:0;margin:0;padding:0;">Amazon<br />
+ EC2</a>&nbsp;uses Xen hypervisors the reason that they are a cloud.</p>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
+What makes a cloud a cloud is the fact that the physical resources involved are operated to deliver abstracted IT resources on-demand, at scale, and (almost always) in a multi-tenant environment. It is how you use the technologies involved. For the most part,<br />
+ cloud computing uses the same management tools, operating systems, middleware, databases, server platforms, network cabling, storage arrays, and so on, that we have come to know and love over the last several decades.</p>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
+Specific technologies, of course, gain significant importance in a cloud computing environment, such as policy-driven automation, metering systems, and self-service provisioning portals. However, all of these technologies--with the possible exception of the<br />
+ self-service portal--existed before cloud computing became a much hyped paradigm.</p>
+<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
+There is no doubt cloud borrows much from long established technologies. It is also true that cloud has borrowed from many long standing operations models, such as mainframe service bureaus. However, the combination of on-demand, at scale, in a multi-tenant<br />
+ infrastructure is relatively unique for the post client-server era, and is the reason why cloud computing is disruptive, rather than just another operations fad.</p>
+<p>
+</div>
+<div>----------------------------------------------------------------------------------</div>
+<div>
+</div>
+<div><span style="font-size:18px;">2. Difference Between Virtualization and Cloud Computing:&nbsp;<a href="http://data-centers.in/virtualization-and-cloud-computing/">http://data-centers.in/virtualization-and-cloud-computing/</a></span></div>
+<div><span style="color:rgb(44,44,41);font-family:Tahoma;font-size:14px;">Cloud Computing and Virtualization are completely two different technologies. Both of them are considered as future saving technologies and that is the only similarity between them.<br />
+ In the process of Cloud Computing easily scalable and mostly virtualized data resources are provided to the users over the internet. Using Cloud computing colocation provider or Data Centers providers offer managed IT services via a hosted software as a service<br />
+ model. In Cloud Computing a database can be physically located somewhere in secure remote location and data can be accessed through clients computer using the database server to analyze and recover the data. This eliminates the need of a costly in-house equipments<br />
+ and department. Cloud Computing make use of virtualized resources such as servers, computing devices and networks. Cloud Computing provider own the hardware and the providing host manage all the services to the clients according to their usage basis. On the<br />
+ other hand Virtualization is creating virtual versions of technologies like servers, operating system, network resources and storage devices. Virtualization basically enables a single user to access multiple physical devices. In virtualization, either its<br />
+ one operating system using multiple computers to evaluate database or a single computer controlling several machines. Here we will learn how Cloud Computing and virtualization are different from each other.</span></p>
+<p style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;margin-top:1px;margin-bottom:15px;padding-right:2px;padding-left:2px;font-size:1.2em;color:rgb(44,44,41);font-family:Tahoma;text-align:justify;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;border-width:0;margin:0;padding:0;">Cloud<br />
+ Computing</span></p>
+<p style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;margin-top:1px;margin-bottom:15px;padding-right:2px;padding-left:2px;font-size:1.2em;color:rgb(44,44,41);font-family:Tahoma;text-align:justify;border-width:0;">
+The easily availability of computers has opened new doors in the field of information technology. Instead of creating own Data Center all the Data Center services can be acquired from IT server providers with outstanding IT infrastructure which is strong, flexible<br />
+ and safe. The cost which either wise would have been invested in building a Data Center can be avoided with acquiring related services on a usage basis. Fees for the managed IT services is similar to the operating costs of a Data Center. Cloud Computing seems<br />
+ attractive option, since it cuts a lot costs and also remove operating costs. In a traditional IT department equipments and staff are occupied in the peak hours, however in off hours they sat idle. Most of the servers are not operable in off hours, even when<br />
+ they are operational its not necessary that they are giving their 100% of their potential. Also a Data Center services provider also needs to upgrade latest technologies in order to keep the data safe and secure. On the other side these services are provided<br />
+ by Cloud Computing provider.</p>
+<p style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;margin-top:1px;margin-bottom:15px;padding-right:2px;padding-left:2px;font-size:1.2em;color:rgb(44,44,41);font-family:Tahoma;text-align:justify;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;border-width:0;margin:0;padding:0;">Virtualization</span></p>
+<p style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;margin-top:1px;margin-bottom:15px;padding-right:2px;padding-left:2px;font-size:1.2em;color:rgb(44,44,41);font-family:Tahoma;text-align:justify;border-width:0;">
+There are many types of virtualization, but all of them focus on usage format and control that improves efficiency. What this efficiency means is a single task running over multiple computers through unoccupied computer or a single terminal running multiple<br />
+ tasks. One more advanced advantage of virtualization is hosting an application to many users, thus preventing several needed software’s from being installed again and again. Data is combined into a central computer from databases, hard drives and USB drives.<br />
+ This process increase security and accessibility by using replication. In an IT company physical resources can be divided into many virtual networks allowing the Central IT resources to be available to all the departments via local networks. Computer devices<br />
+ which are allocated to individual staff members or which are only dedicated to a specific software application are highly efficient and they are much more cheaper.</p>
+</div>
+<p>-----------------------------------------------------------------------------------------------------------</p>
+<p><span style="font-size:18px;">3.&nbsp;<strong>The Difference Between Virtualization and Cloud Computing:&nbsp;<a href="http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/">http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/</a></strong></span></p>
+<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
+Brittany Meeks, Dynamics GP Sales and Marketing Assistant</p>
+<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
+As a newbie sales and marketing assistant at&nbsp;<a href="http://www.customis.com/" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:0;">Custom<br />
+ Information Services</a>, I kept getting thrown technical terms that I was unable to grasp.&nbsp; That is until I did some research and discovered the easy way to understand and implement such terms or questions as, “<a href="http://www.customis.com/it-solutions/Blog/Difference-Virtualization-Cloud.aspx" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:0;">What’s<br />
+ the difference&nbsp;between virtualization and cloud computing?”</a>&nbsp; Originally, I couldn’t even tell you the meaning of virtualization or cloud computing, let alone what the differences were.&nbsp;&nbsp; Since we implement and support these technologies I had to&nbsp;understand<br />
+ the definitions quickly!</p>
+<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
+Virtualization is a computing technology that enables a single user to access multiple physical devices.&nbsp; Another way to look at it is a single computer controlling multiple machines, or one operating system utilizing multiple computers to analyze a database.&nbsp;<br />
+ Virtualization may also be used&nbsp;for running multiple applications on each server rather than just one; this in turn reduces the number of servers companies need to purchase and manage.&nbsp; It enables you to consolidate your servers and do more with less hardware.&nbsp;It<br />
+ also lets you support more users per piece of hardware, deliver applications, and run applications faster. &nbsp;Follow this link for more detail on virtualization&nbsp;<a href="http://www.customis.com/resources/library/VirtualizationWhitePaper.pdf" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:5px 20px 5px 0;">VirtualizationWhitePaper.pdf</a></p>
+<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
+Cloud computing offers scalable infrastructure and software off site, saving labor, hardware, and power costs.&nbsp; Financially, the cloud’s virtual resources are typically cheaper than dedicated physical resources connected to a personal computer or network.&nbsp;<br />
+ With cloud computing, the&nbsp;<a href="http://www.customis.com/business-application/" target="_blank" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:0;">software<br />
+ programs</a>&nbsp;you use aren’t run from your personal computer, but&nbsp; rather are&nbsp;stored on servers housed elsewhere and accessed via the Internet.&nbsp; If your computer crashes, the software is still available for others to use.&nbsp; Simply, the cloud is a collection<br />
+ of computers and servers that are publicly accessible via the Internet.&nbsp; Here is something else I found online which may be helpful in better understanding cloud services<a href="http://www.customis.com/resources/library/Microsoft_CloudServices.pdf" target="_blank" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:5px 20px 5px 0;">Microsoft<br />
+ Cloud Services.pdf</a></p>
+<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
+One way to look at it is that&nbsp;virtualization is basically one physical computer pretending to be many computing environments whereas cloud computing is many different computers pretending to be the one computing environment (hence user scaling).&nbsp; Virtualization<br />
+ provides flexibility that is a great match for cloud computing.&nbsp;&nbsp;Moreover, cloud computing can be defined based on the virtual machine containers created with virtualization.&nbsp; Virtualization is not always necessary in cloud computing; however, you can use<br />
+ it as the basis.&nbsp; Cloud computing is an approach for the delivery of services while virtualization is one possible service that could be delivered.&nbsp; Large corporations with little downtime tolerance and airtight security requirements may find that virtualization<br />
+ fits them best.&nbsp; Smaller businesses are more likely to profit more with cloud computing, allowing them to focus on their mission while leaving IT chores to those who can do more for less.</p>
+<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
+Plainly, virtualization provides more servers on the same hardware and cloud computing provides measured resources while paying for what you use.&nbsp; While it is not uncommon to hear people discuss them interchangeably, they are very different approaches to solving<br />
+ the problem of maximizing the use of available resources.&nbsp; They differ in many ways and that also leads to some important considerations when selecting between the two.&nbsp; Not only do we offer&nbsp;<a href="http://www.customis.com/business-application/business-accounting/microsoft-dynamics-gp.aspx" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:0;">Dynamics<br />
+ GP,</a>&nbsp;but we also offer services for cloud and virtualization for your business applications.&nbsp;&nbsp; Our new website set for a September go live will have more information on this subject.</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        
+<div class="pagination">
+    <ul>
+    
+        <li class="prev">
+        <a href="/page3">&larr; Previous</a>
+        
+        </li>
+    
+
+    
+        <li><a href="/">1</a></li>
+        
+
+        
+            <li><a href="/page2">2</a></li>
+            
+        
+            <li><a href="/page3">3</a></li>
+            
+        
+            <li class="disabled"><a>4</a></li>
+            
+        
+            <li><a href="/page5">5</a></li>
+            
+        
+            <li><a href="/page6">6</a></li>
+            
+        
+            <li><a href="/page7">7</a></li>
+            
+        
+            <li><a href="/page8">8</a></li>
+            
+        
+            <li><a href="/page9">9</a></li>
+            
+        
+            <li><a href="/page10">10</a></li>
+            
+        
+            <li><a href="/page11">11</a></li>
+            
+        
+            <li><a href="/page12">12</a></li>
+            
+        
+            <li><a href="/page13">13</a></li>
+            
+        
+            <li><a href="/page14">14</a></li>
+            
+        
+            <li><a href="/page15">15</a></li>
+            
+        
+            <li><a href="/page16">16</a></li>
+            
+        
+            <li><a href="/page17">17</a></li>
+            
+        
+            <li><a href="/page18">18</a></li>
+            
+        
+            <li><a href="/page19">19</a></li>
+            
+        
+            <li><a href="/page20">20</a></li>
+            
+        
+    
+
+    
+        <li class="next"><a href="/page5">Next &rarr;</a></li>
+    
+    </ul>
+</div>
+
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+	  <!--
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <wb:follow-button uid="2461544952" type="red_1" width="63" height="24" ></wb:follow-button>
+      </div>
+  </div>
+  -->
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Recent Posts</h3>
+        <ul>
+        
+          <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
+            How To Install Jekyll in Mac OSX Mavericks</a></li>
+        
+          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
+            C++ Code to Print Pascal Triangle</a></li>
+        
+          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
+            BACI Simple Install and Compile Guide</a></li>
+        
+          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
+            Dense Trajectory Notes</a></li>
+        
+          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
+            Parallelize mex file in Matlab</a></li>
+        
+          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
+            Notes of Advanced Machine Learning(I)</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
+            "undefined reference" error during installing OpenCV</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
+            Build Dense Trajectory Codes in Ubuntu</a></li>
+        
+          <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
+            Matlab Startup Script</a></li>
+        
+          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
+            Counting Unique k-mers -- My First Go Program</a></li>
+        
+        </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Tags</h3>
+        <div class="tag_box">
+        
+        
+  
+    
+        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
+    
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>7</span></a>
+    
+        <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
+    
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>4</span></a>
+    
+        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span>3</span></a>
+    
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>6</span></a>
+    
+        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
+    
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>14</span></a>
+    
+        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
+    
+        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
+    
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>3</span></a>
+    
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>86</span></a>
+    
+        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+    
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span>6</span></a>
+    
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>1</span></a>
+    
+        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span>3</span></a>
+    
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span>14</span></a>
+    
+        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span>6</span></a>
+    
+        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span>2</span></a>
+    
+        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span>2</span></a>
+    
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span>4</span></a>
+    
+        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span>2</span></a>
+    
+        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span>9</span></a>
+    
+        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>1</span></a>
+    
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
+    
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>5</span></a>
+    
+        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+    
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
+    
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+    
+        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
+    
+        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span>1</span></a>
+    
+        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span>1</span></a>
+    
+        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span>1</span></a>
+    
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
+    
+        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
+    
+        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span>1</span></a>
+    
+        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span>1</span></a>
+    
+        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span>1</span></a>
+    
+        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span>1</span></a>
+    
+        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span>1</span></a>
+    
+        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span>1</span></a>
+    
+        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span>1</span></a>
+    
+        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span>1</span></a>
+    
+        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span>1</span></a>
+    
+        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span>1</span></a>
+    
+        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span>3</span></a>
+    
+        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span>1</span></a>
+    
+        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span>1</span></a>
+    
+        <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
+    
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+    
+        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
+    
+        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span>1</span></a>
+    
+        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
+    
+        <a href="/tags.html#ML-ref" class="btn btn-mini">ML <span>1</span></a>
+    
+        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
+    
+        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span>1</span></a>
+    
+        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span>1</span></a>
+    
+        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
+    
+        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+  
+
+
+
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Links</h3>
+        <ul>
+        
+        
+    <li><a href=https://github.com/bo-yang title="My GitHub Channel">My GitHub Channel</a></li>
+
+    <li><a href=https://www.linkedin.com/pub/bo-yang/21/a3/893 title="My Linkedin Page">My Linkedin Page</a></li>
+
+    <li><a href=http://blog.csdn.net/bonny95 title="My Chinese Blog(obsolete)">My Chinese Blog(obsolete)</a></li>
+
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  </div>
+</div>
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

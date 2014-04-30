@@ -1,0 +1,618 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>Perl Notes(III) -- Introduction To Berkeley Sockets | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>Perl Notes(III) -- Introduction To Berkeley Sockets</h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span9 left">
+    <div class="main-container shadow">
+      <div class="mainbody thepost">
+        <p>
+<span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;"><br />
+<h3 style="font-size:12pt;">3 Introduction To Berkeley Sockets<br /></h3>
+<h4 style="font-size:10pt;"><a name="3_1_Berkeley_Sockets__7180656138807535" id="3_1_Berkeley_Sockets__7180656138807535"></a>3.1 Basic Concepts</h4>
+<h5 style="font-size:8pt;"></h5>
+<h5 style="font-size:8pt;"><a name="3_1_1_Binary_versus_Text_Orien" id="3_1_1_Binary_versus_Text_Orien"></a>3.1.1 Binary versus Text-Oriented Protocols<br /></h5>
+<p></span>
+<p class="docText" style="margin:0;">Before they can exchange information across the network, hosts have a fundamental choice to make. They can exchange data either in binary form or as human-readable text. The choice has far-reaching ramifications.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">To understand this, consider exchanging the number 1984. To exchange it as text, one host sends the other the string <tt>1984</tt>, which, in the common ASCII character set, corresponds to the four hexadecimal bytes <tt>0x31</tt> <tt>0x39</tt> <tt>0x38</tt> <tt>0x34</tt>. These four bytes will be transferred in order across the network, and (provided the other host also speaks ASCII) will appear at the other end as "1984".</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">However, 1984 can also be treated as a number, in which case it can fit into the two-byte integer represented in hexadecimal as <tt>0x7C0</tt>. If this number is already stored in the local host as a number, it seems sensible to transfer it across the network in its native two-byte form rather than convert it into its four-byte text representation, transfer it, and convert it back into a two-byte number at the other end. Not only does this save some computation, but it uses only half as much network capacity.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Unfortunately, there's a hitch. Different computer architectures have different ways of storing integers and floating point numbers. Some machines use two-byte integers, others four-byte integers, and still others use eight-byte integers. This is called <span class="Apple-style-span" style="font-weight:bold;">word size</span>. Furthermore, computer architectures have two different conventions for storing integers in memory. In some systems, called <span class="Apple-style-span" style="font-weight:bold;">big-endian</span> architectures, the most significant part of the integer is stored in the first byte of a two-byte integer. On such systems, reading from low to high, 1984 is represented in memory as the two bytes:</p>
+<pre>0x07    0xC0
+low  -&gt; high
+</pre>
+<p class="docText" style="margin:0;">On <span class="Apple-style-span" style="font-weight:bold;">little-endian</span> architectures, this convention is reversed, and 1984 is stored in the opposite orientation:</p>
+<pre>0xC0    0x07
+low  -&gt; high
+</pre>
+<p class="docText" style="margin:0;">These architectures are a matter of convention, and neither has a significant advantage over the other. The problem comes when transferring such data across the network, because this byte pair has to be transferred serially as two bytes. Data in memory is sent across the network from low to high, so for big-endian machines the number 1984 will be transferred as <tt>0x07 0xC0</tt>, while for little-endian machines the numbers will be sent in the reverse order. As long as the machine at the other end has the same native word size and byte order, these bytes will be correctly interpreted as 1984 when they arrive. However, if the recipient uses a different byte order, then the two bytes will be interpreted in the wrong order, yielding hexadecimal <tt>0xC007</tt>, or decimal 49,159. Even worse, if the recipient interprets these bytes as the top half of a four-byte integer, it will end up as <tt>0xC0070000</tt>, or 3,221,684,224. Someone's anniversary party is going to be very late.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Because of the potential for such binary chaos, text-based protocols are the norm on the Internet. All the common protocols convert numeric information into text prior to transferring them, even though this can result in more data being transferred across the net. Some protocols even convert data that doesn't have a sensible text representation, such as audio files, into a form that uses the ASCII character set, because this is generally easier to work with. By the same token, a great many protocols are line-oriented, meaning that they accept commands and transmit data in the form of discrete lines, each terminated by a commonly agreed-upon newline sequence.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">A few protocols, however, are binary. Examples include Sun's Remote Procedure Call (<span class="Apple-style-span" style="font-weight:bold;">RPC</span>) system, and the Napster peer-to-peer file exchange protocol. Such protocols have to be exceptionally careful to represent binary data in a common format.<span class="Apple-style-span" style="text-decoration:underline;"> For integer numbers, there is a commonly recognized network format. In network format, a "short" integer is represented in two big-endian bytes, while a "long" integer is represented with four big-endian bytes.</span> Perl's <tt>pack()</tt> and <tt>unpack ()</tt> functions provide the ability to convert numbers into network format and back again.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Floating point numbers and more complicated things like data structures have no commonly accepted network representation. When exchanging binary data, each protocol has to work out its own way of representing such data in a platform-neutral fashion.</p>
+<h5 style="font-size:8pt;"><a name="3_1_2_Berkeley_Sockets_" id="3_1_2_Berkeley_Sockets_"></a>3.1.2 Berkeley Sockets<br /></h5>
+<p class="docText" style="margin:0;">Berkeley sockets are part of an application programming interface (API) that specifies the data structures and function calls that interact with the operating system's network subsystem. Berkeley sockets are part of an API, not a specific protocol, which defines how the programmer interacts with an idealized network.</p>
+<h4 style="font-size:10pt;"><a name="3_2_The_Anatomy_of_a_Socket__8158409828320146" id="3_2_The_Anatomy_of_a_Socket__8158409828320146"></a>3.2 The Anatomy of a Socket<br /></h4>
+<p class="docText" style="margin:0;">
+<p class="docText" style="margin:0;">A socket is an endpoint for communications, a portal to the outside world that we can use to send outgoing messages to other processes, and to receive incoming traffic from processes interested in sending messages to us.</p>
+<p class="docText" style="margin:0;">To create a socket, we need to provide the system with a minimum of three pieces of information.</p>
+<p style="margin:0;">
+<h5 style="font-size:8pt;"><a name="3_2_1_The_Socket_s_Domain__19930865615606308" id="3_2_1_The_Socket_s_Domain__19930865615606308"></a>3.2.1 The Socket's Domain<br /></h5>
+<p class="docText" style="margin:0;">The <span class="docEmphasis">domain</span> defines the family of networking protocols and addressing schemes that the socket will support. The domain is selected from a small number of integer constants defined by the operating system and exported by Perl's Socket module. There are only two common domains</p>
+<p style="margin:0;">
+<p style="margin:0;">
+<p>
+<div style="text-align:center;margin-top:0;margin-bottom:0;">Table 3.1. Common Socket Domains</div>
+<table cellspacing="0" cellpadding="1" width="100%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Constant</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Description</span></th>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>AF_INET</tt></td>
+<td class="docTableCell" valign="top">The Internet protocols</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>AF_UNIX</tt></td>
+<td class="docTableCell" valign="top">Networking within a single host</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">In addition to these domains, there are many others including <tt>AF_APPLETALK</tt>, <tt>AF_IPX</tt>, and <tt>AF_X25</tt>, each corresponding to a particular addressing scheme. <tt>AF_INET6</tt>, corresponding to the long addresses of TCP/IP version 6, will become important in the future, but is not yet supported by Perl. The <tt>AF_</tt> prefix stands for "address family." In addition, there is a series of "protocol family" constants starting with the <tt>PF_</tt> prefix.</p>
+<h5 style="font-size:8pt;"><a name="3_2_2_The_Socket_s_Type__09139745496213436" id="3_2_2_The_Socket_s_Type__09139745496213436"></a>3.2.2 The Socket's Type<br /></h5>
+<p style="margin:0;">
+<p style="margin:0;">The socket type identifies the basic properties of socket communications.</p>
+<p style="margin:0;">
+<p style="margin:0;">
+<p>
+<div style="text-align:center;margin-top:0;margin-bottom:0;">Table 3.2. Constants Exported by Socket</div>
+<table cellspacing="0" cellpadding="1" width="100%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Constant</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Description</span></th>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>SOCK_STREAM</tt></td>
+<td class="docTableCell" valign="top">A continuous stream of data</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>SOCK_DGRAM</tt></td>
+<td class="docTableCell" valign="top">Individual packets of data</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>SOCK_RAW</tt></td>
+<td class="docTableCell" valign="top">Access to internal protocols and interfaces</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Perl fully supports the <tt>SOCK_STREAM</tt> and <tt>SOCK_DGRAM</tt> socket types. <tt>SOCK_RAW</tt> is supported through an add-on module named Net::Raw.</p>
+<h5 style="font-size:8pt;"><a name="3_2_3_The_Socket_s_Protocol__21901176124811172" id="3_2_3_The_Socket_s_Protocol__21901176124811172"></a>3.2.3 The Socket's Protocol<br /></h5>
+<p class="docText" style="margin:0;">Like the domain and socket type, the protocol is a small integer. However, the protocol numbers are not available as constants, but instead must be looked up at run time using the Perl <span class="docEmphasis">getprotobyname()</span> function.</p>
+<p class="docText" style="margin:0;"></p>
+<div style="text-align:center;margin-top:0;margin-bottom:0;">Table 3.3. Some Socket Protocols</div>
+<table cellspacing="0" cellpadding="1" width="100%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Protocol</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Description</span></th>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>tcp</tt></td>
+<td class="docTableCell" valign="top">Transmission Control Protocol for stream sockets</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>udp</tt></td>
+<td class="docTableCell" valign="top">User Datagram Protocol for datagram sockets</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>icmp</tt></td>
+<td class="docTableCell" valign="top">Internet Control Message Protocol</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>raw</tt></td>
+<td class="docTableCell" valign="top">Creates IP packets manually</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The TCP and UDP protocols are supported directly by the Perl sockets API. You can get access to the ICMP and raw protocols via the Net::ICMP and Net::Raw third-party modules.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">
+<p class="docText" style="margin:0;">The allowed combinations of socket domain, type, and protocol are few. <tt>SOCK_STREAM</tt> goes with TCP, and <tt>SOCK_DGRAM</tt> goes with UDP. Also notice that the <tt>AF_UNIX</tt> address family doesn't use a named protocol, but a pseudoprotocol named <tt>PF_UNSPEC</tt> (for "unspecified").</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">
+<p style="margin:0;">
+<table cellspacing="0" cellpadding="1" width="100%" border="1" style="font-size:1em;line-height:inherit;">
+<caption></caption>
+<p style="margin:0;">Table 3.4. Allowed Combinations of Socket Type and Protocol in the INET and UNIX Domains</p>
+<tbody>
+<tr style="text-align:left;">
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Domain</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Type</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Protocol</span></th>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>AF_INET</tt></td>
+<td class="docTableCell" valign="top"><tt>SOCK_STREAM</tt></td>
+<td class="docTableCell" valign="top">tcp</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>AF_INET</tt></td>
+<td class="docTableCell" valign="top"><tt>SOCK_DGRAM</tt></td>
+<td class="docTableCell" valign="top">udp</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>AF_UNIX</tt></td>
+<td class="docTableCell" valign="top"><tt>SOCK_STREAM</tt></td>
+<td class="docTableCell" valign="top"><tt>PF_UNSPEC</tt></td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top"><tt>AF_UNIX</tt></td>
+<td class="docTableCell" valign="top"><tt>SOCK_DGRAM</tt></td>
+<td class="docTableCell" valign="top"><tt>PF_UNSPEC</tt></td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;"></p>
+<h5 style="font-size:8pt;"><a name="3_2_4_Datagram_Sockets_" id="3_2_4_Datagram_Sockets_"></a>3.2.4 Datagram Sockets<br /></h5>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="font-weight:bold;">Datagram-type sockets provide for the transmission of connectionless, unreliable, unsequenced messages.</span> The UDP is the chief datagram-style protocol used by the Internet protocol family.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">
+<p class="docText" style="margin:0;">As the diagram in <a class="docLink">Figure 3.2</a> shows, datagram services resemble the postal system. Like a letter or a telegram, each datagram in the system carries its destination address, its return address, and a certain amount of data. The Internet protocols will make the best effort to get the datagram delivered to its destination.</p>
+<p style="margin:0;"></p>
+<p style="margin:0;">Figure 3.2. Datagram sockets provide connectionless, unreliable, unsequenced transmission of message</p>
+<h5 class="docFigureTitle" style="font-size:8pt;"><a name="ch03fig02"></a></h5>
+<p class="docText" style="margin:0;">
+<div id="kkjg" style="text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;"><img src="http://docs.google.com/File?id=dd6nw3mt_216fwpbb2gn_b" style="width:500px;height:318px;" /></div>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">There is no long-term relationship between the sending socket and the recipient socket: A client can send a datagram off to one server, then immediately turn around and send a datagram to another server using the same socket. But the connectionless nature of UDP comes at a price. Like certain countries' postal systems, it is very possible for a datagram to get "lost in the mail." A client cannot know whether a server has received its message until it receives an acknowledgment in reply. Even then, it can't know for sure that a message was lost, because the server might have received the original message and the acknowledgment got lost!</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Datagrams are neither synchronized nor flow controlled. If you send a set of datagrams out in a particular order, they might not arrive in that order. Because of the vagaries of the Internet, the first datagram may go by one route, and the second one may take a different path. If the second route is faster than the first one, the two datagrams may arrive in the opposite order from which they were sent. It is also possible for a datagram to get duplicated in transit, resulting in the same message being received twice.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Because of the connectionless nature of datagrams, there is no flow control between the sender and the recipient. If the sender transmits datagrams faster than the recipient can process them, the recipient has no way to signal the sender to slow down, and will eventually start to discard packets.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="text-decoration:underline;">Although a datagram's delivery is not reliable, its contents are. </span>Modern implementations of UDP provide each datagram with a checksum that ensures that its data portion is not corrupted in transit.</p>
+<p style="margin:0;">
+<p style="margin:0;">
+<p style="margin:0;">
+<p style="margin:0;">
+<p style="margin:0;">
+<h5 style="font-size:8pt;"><a name="3_2_5_Stream_Sockets_" id="3_2_5_Stream_Sockets_"></a>3.2.5 Stream Sockets<br /></h5>
+<p class="docText" style="margin:0;">The other major paradigm is stream sockets, implemented in the Internet domain as the TCP protocol. <span class="Apple-style-span" style="font-weight:bold;">Stream sockets provide sequenced, reliable bidirectional communications via byte-oriented streams. </span>As depicted in <a class="docLink">Figure 3.3</a>, stream sockets resemble a telephone conversation. Clients connect to servers using their address, the two exchange data for a period of time, and then one of the pair breaks off the connection.</p>
+<p class="docText" style="margin:0;"></p>
+<p style="margin:0;">Figure 3.3. Stream sockets provide sequenced, reliable, bidirectional communications</p>
+<h5 class="docFigureTitle" style="font-size:8pt;"><a name="ch03fig03"></a></h5>
+<p class="docText" style="margin:0;">
+<div id="doch" style="text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;"><img src="http://docs.google.com/File?id=dd6nw3mt_217c9kt3zft_b" style="width:500px;height:51px;" /></div>
+<p style="margin:0;">
+<p class="docText" style="margin:0;">Reading and writing to stream sockets is a lot like reading and writing to a file. There are no arbitrary size limits or record boundaries, although you can impose a record-oriented structure on the stream if you like. Because stream sockets are sequenced and reliable, you can write a series of bytes into a socket secure in the knowledge that they will emerge at the other end in the correct order, provided that they emerge at all ("reliable" does not mean immune to network errors).</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="text-decoration:underline;">TCP also implements flow control. </span>Unlike UDP, where the danger of filling the data-receiving buffer is very real, TCP automatically signals the sending host to suspend transmission temporarily when the reading host is falling behind, and to resume sending data when the reading host is again ready. This flow control happens behind the scenes and is ordinarily invisible.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Although it looks and acts like a continuous byte stream, the TCP protocol is actually implemented on top of a datagram-style service, in this case the low-level IP protocol. <span class="Apple-style-span" style="text-decoration:underline;">IP packets are just as unreliable as UDP datagrams, </span>so behind the scenes TCP is responsible for keeping track of packet sequence numbers, acknowledging received packets, and retransmitting lost packets.</p>
+<h5 style="font-size:8pt;"><a name="3_2_6_Datagram_versus_Stream_S" id="3_2_6_Datagram_versus_Stream_S"></a>3.2.6 Datagram versus Stream Sockets<br /></h5>
+<p class="docText" style="margin:0;">With all its reliability problems, you might wonder why anyone uses UDP. The answer is that most client/server programs on the Internet use TCP stream sockets instead. In most cases, TCP is the right solution for you, too.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">There are some circumstances, however, in which UDP might be a better choice. For example, time servers use UDP datagrams to transmit the time of day to clients who use the information for clock synchronization. If a datagram disappears in transit, it's neither necessary nor desirable to retransmit it because by the time it arrives it will no longer be relevant.</p>
+<p class="docText" style="margin:0;">UDP is also preferred when the interaction between one host and the other is very short. The length of time to set up and take down a TCP connection is about eightfold greater than the exchange of a single byte of data via UDP (for details, see [Stevens 1996]). If relatively small amounts of data are being exchanged, the TCP setup time will dominate performance. Even after a TCP connection is established, each transmitted byte consumes more bandwidth than UDP because of the additional overhead for ensuring reliability.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Another common scenario occurs when a host must send the same data to many places; for example, it wants to transmit a video stream to multiple viewers. The overhead to set up and manage a large number of TCP connections can quickly exhaust operating system resources, because a different socket must be used for each connection. In contrast, sending a series of UDP datagrams is much more sparing of resources. The same socket can be reused to send datagrams to many hosts.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="text-decoration:underline;">Whereas TCP is always a one-to-one connection, UDP also allows one-to-many and many-to-many transmissions.</span> At one end of the spectrum, you can address a UDP datagram to the "broadcast address," broadcasting a message to all listening hosts on the local area network. At the other end of the spectrum, you can target a message to a predefined group of hosts using the "multicast" facility of modern IP implementations. These advanced features are covered in <a class="docLink">Chapters 20</a> and <a class="docLink">21</a>.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The Internet's DNS is a common example of a UDP-based service. It is responsible for translating hostnames into IP addresses, and vice versa, using a loose-knit network of DNS servers. If a client does not get a response from a DNS server, it just retransmits its request. The overhead of an occasional lost datagram outweighs the overhead of setting up a new TCP connection for each request. Other common examples of UDP services include Sun's Network File System (NFS) and the Trivial File Transfer Protocol (TFTP). The latter is used by diskless workstations during boot in order to load their operating system over the network. UDP was originally chosen for this purpose because its implementation is relatively small. Therefore, UDP fit more easily into the limited ROM space available to workstations at the time the protocol was designed.</p>
+<h4 style="font-size:10pt;"><a name="3_3_Socket_Addressing_" id="3_3_Socket_Addressing_"></a>3.3 Socket Addressing<br /></h4>
+<p class="docText" style="margin:0;">For the UNIX domain, which can be used only between two processes on the same host machine, addresses are simply paths on the host's filesystem, such as <tt>/usr/tmp/log</tt>. For the Internet domain, each socket address has three parts: the IP address, the port, and the protocol.</p>
+<h5 style="font-size:8pt;"><a name="3_3_1_IP_Addresses_" id="3_3_1_IP_Addresses_"></a>3.3.1 IP Addresses<br /></h5>
+<p class="docText" style="margin:0;">
+<p class="docText" style="margin:0;">Many of Perl's networking calls require you to work with IP addresses in the form of packed binary strings. IP addresses can be converted manually to binary format and back again using <tt>pack()</tt> and <tt>unpack()</tt> with a template of "C4" (four unsigned characters). For example, here's how to convert 18.157.0.125 into its packed form and then reverse the process:</p>
+<pre>($a,$b,$c,$d)      = split //./, '18.157.0.125';
+$packed_ip_address = pack 'C4',$a,$b,$c,$d;
+($a,$b,$c,$d)      = unpack 'C4',$packed_ip_address;
+$dotted_ip_address = join '.', $a,$b,$c,$d;</pre>
+<p class="docText" style="margin:0;">Most hosts have two addresses, the "<span class="Apple-style-span" style="font-weight:bold;">loopback" address</span> 127.0.0.1 (often known by its symbolic name "localhost") and its <span class="Apple-style-span" style="font-weight:bold;">public Internet address</span>. The loopback address is associated with a device that loops transmissions back onto itself, allowing a client on the host to make an outgoing connection to a server running on the same host. Although this sounds a bit pointless, it is a powerful technique for application development, because it means that you can develop and test software on the local machine without access to the network.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The public Internet address is associated with the host's network interface card, such as an Ethernet card. The address is either assigned to the host by the network administrator or, in systems with dynamic host addressing, by a Boot Protocol (BOOTP) or Dynamic Host Configuration Protocol (DHCP) server. If a host has multiple network interfaces installed, each one can  have a distinct IP address. It's also possible for a single interface to be configured to use several addresses. </p>
+<h5 style="font-size:8pt;"><a name="3_3_2_Reserved_IP_Addresses_Su" id="3_3_2_Reserved_IP_Addresses_Su"></a>3.3.2 Reserved IP Addresses, Subnets, and Netmasks<br /></h5>
+<p class="docText" style="margin:0;">In order for a packet of information to travel from one location to another across the Internet, it must hop across a series of physical networks. For example, a packet leaving your desktop computer must travel across your LAN (local area network) to a modem or router, then across your Internet service provider's (ISP) regional network, then across a backbone to another ISP's regional network, and finally to its destination machine.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Network routers keep track of how the networks interconnect, and are responsible for determining the most efficient route to get a packet from point A to point B. However, if IP addresses were allocated ad hoc, this task would not be feasible because each router would have to maintain a map showing the locations of all IP addresses. Instead, IP addresses are allocated in contiguous chunks for use in organizational and regional networks.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">For example, my employer, the Cold Spring Harbor Laboratory (CSHL), owns the block of IP addresses that range from 143.48.0.0 through 143.48.255.255 (this is a so-called class B address). When a backbone router sees a packet addressed to an IP address in this range, it needs only to determine how to get the packet into CSHL's network. It is then the responsibility of CSHL's routers to get the packet to its destination. In practice, CSHL and other large organizations split their allocated address ranges into several subnets and use routers to interconnect the parts.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">A computer that is sending out an IP packet must determine whether the destination machine is directly reachable (e.g., over the Ethernet) or whether the packet must be directed to a router that interconnects the local network to more distant locations. The basic decision is whether the packet is part of the local network or part of a distant network.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">To make this decision possible, <span class="Apple-style-span" style="text-decoration:underline;">IP addresses are arbitrarily split into a </span><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="text-decoration:underline;">host part</span></span><span class="Apple-style-span" style="text-decoration:underline;"> and a </span><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="text-decoration:underline;">network part</span></span>. For example, in CSHL's network, the split occurs after the second byte: the network part is 143.48. and the host part is the rest. So 143.48.0.0 is the first address in CSHL's network, and 143.48.255.255 is the last.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="text-decoration:underline;">To describe where the network/host split occurs for routing purposes, networks use a netmask, which is a bitmask with 1s in the positions of the network part of the IP address.</span> Like the IP address itself, the netmask is usually written in dotted-quad form. Continuing with our example, CSHL has a netmask of 255.255.0.0, which, when written in binary, is 11111111,11111111,00000000,00000000.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Historically, IP networks were divided into three classes on the basis of their netmasks (<a class="docLink">Table 3.5)</a>. Class A networks have a netmask of 255.0.0.0 and approximately 16 million hosts. Class B networks have a netmask of 255.255.0.0 and some 65,000 hosts, and class C networks use the netmask 255.255.255.0 and support 254 hosts (as we will see, the first and last host numbers in a network range are unavailable for use as a normal host address).</p>
+<p class="docText" style="margin:0;"></p>
+<p><a name="ch03table05"></a>
+<p style="margin:0;"></p>
+<table cellspacing="0" cellpadding="1" width="100%" border="1" style="font-size:1em;line-height:inherit;">
+<caption></caption>
+<p style="margin:0;">Table 3.5. Address Classes and Their Netmasks</p>
+<tbody>
+<tr style="text-align:left;">
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Class</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Netmask</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Example Address</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Network Park</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Host Part</span></th>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top">A</td>
+<td class="docTableCell" valign="top">255.0.0.0</td>
+<td class="docTableCell" valign="top">120.155.32.5</td>
+<td class="docTableCell" valign="top">120.</td>
+<td class="docTableCell" valign="top">155.32.5</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top">B</td>
+<td class="docTableCell" valign="top">255.255.0.0</td>
+<td class="docTableCell" valign="top">128.157.32.5</td>
+<td class="docTableCell" valign="top">128.157.</td>
+<td class="docTableCell" valign="top">32.5</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top">C</td>
+<td class="docTableCell" valign="top">255.255.255.0</td>
+<td class="docTableCell" valign="top">192.66.12.56</td>
+<td class="docTableCell" valign="top">192.66.12.</td>
+<td class="docTableCell" valign="top">56</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">As the Internet has become more crowded, however, networks have had to be split up in more flexible ways. It's common now to see netmasks that don't end at byte boundaries. For example, the netmask 255.255.255.128 (binary 11111111,11111111,11111111,10000000) splits the last byte in half, creating a set of 126-host networks. The modern Internet routes packets based on this more flexible scheme, called <span class="Apple-style-span" style="font-weight:bold;">Classless Inter-Domain Routing (CIDR)</span>. C<span class="Apple-style-span" style="text-decoration:underline;">IDR uses a concise convention to describe networks in which the network address is followed by a slash and an integer containing the number of 1s in the mask</span>. For example, CSHL's network is described by the CIDR address 143.48.0.0/16. CIDR is described in detail in RFCs 1517 through 1520, and in the FAQs listed in <a class="docLink">Appendix D</a>.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Figuring out the network and broadcast addresses can be confusing when you work with netmasks that do not end at byte boundaries. The Net::Netmask module, available on CPAN, provides facilities for calculating these values in an intuitive way. You'll also find a short module that I wrote, Net::NetmaskLite, in Appendix A. You might want to peruse this code in order to learn the relationships among the network address, broadcast address, and netmask.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">The first and last addresses in a subnet have special significance and cannot be used as ordinary host addresses. <span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);"><span class="Apple-style-span" style="font-weight:normal;"><span class="Apple-style-span" style="text-decoration:underline;">The first address, sometimes known as the all-zeroes address, is reserved for use in routing tables to denote the network as a whole (</span></span><span class="Apple-style-span" style="text-decoration:underline;">network address</span><span class="Apple-style-span" style="font-weight:normal;"><span class="Apple-style-span" style="text-decoration:underline;">).</span></span> </span></span><span class="Apple-style-span" style="color:rgb(255,0,0);"><span class="Apple-style-span" style="text-decoration:underline;">The last address in the range, known as the all-ones address, is reserved for use as the </span><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="text-decoration:underline;">broadcast address</span></span><span class="Apple-style-span" style="text-decoration:underline;">. IP packets sent to this address will be received by all hosts on the subnet.</span></span> For example, for the network 192.18.4.x (a class C address or 192.18.4.0/24 in CIDR format), the network address is 192.18.4.0 and the broadcast address is 192.18.4.255. </p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">In addition, several IP address ranges have been set aside for special purposes (<a class="docLink">Table 3.6</a>). The class A network 10.x.x.x, the 16 class B networks 172.16.x.x through 172.31.x.x, and the 255 class C addresses 192.168.0.x through 192.168.255.x are reserved for use as internal networks. An organization may use any of these networks internally, but must not connect the network directly to the Internet. The 192.168.x.x networks are used frequently in testing, or placed behind firewall systems that translate all the internal network addresses into a single public IP address. The network addresses 224.x.x.x through 239.x.x.x are reserved for multicasting applications, and everything above 240.x.x.x is reserved for future expansion.</p>
+<p class="docText" style="margin:0;"></p>
+<p><a name="ch03table06"></a>
+<p style="margin:0;"></p>
+<table cellspacing="0" cellpadding="1" width="100%" border="1" style="font-size:1em;line-height:inherit;">
+<caption></caption>
+<p style="margin:0;">Table 3.6. Reserved IP Addresses</p>
+<tbody>
+<tr style="text-align:left;">
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Address</span></th>
+<th class="docTableHeader" valign="top"><span class="docEmphasis">Description</span></th>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top">127.0.0.x</td>
+<td class="docTableCell" valign="top">Loopback interface</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top">10.x.x.x</td>
+<td class="docTableCell" valign="top">Private class A address</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top">172.16.x.x–172.32.x.x</td>
+<td class="docTableCell" valign="top">Private class B addresses</td>
+</tr>
+<tr style="text-align:left;">
+<td class="docTableCell" valign="top">192.168.0.x–172.168.255.x</td>
+<td class="docTableCell" valign="top">Private class C addresses</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Finally, IP address 127.0.0.x is reserved for use as the loopback network. Anything sent to an address in this range is received by the local host.</p>
+<p style="margin:0;">
+<h5 style="font-size:8pt;"><a name="3_3_3_Network_Ports_" id="3_3_3_Network_Ports_"></a>3.3.3 Network Ports<br /></h5>
+<p class="docText" style="margin:0;">Once a message reaches its destination IP address, there's still the matter of finding the correct program to deliver it to. It's common for a host to be running multiple network servers, and it would be impractical, not to say confusing, to deliver the same message to them all. That's where the port number comes in. <span class="Apple-style-span" style="text-decoration:underline;">The port number part of the socket address is an unsigned 16-bit number ranging from 1 to 65535</span>. In addition to its IP address, each active socket on a host is identified by a unique port number; this allows messages to be delivered unambiguously to the correct program. When a program creates a socket, it may ask the operating system to associate a port with the socket. If the port is not being used, the operating system will grant this request, and will refuse other programs access to the port until the port is no longer in use. If the program doesn't specifically request a port, one will be assigned to it from the pool of unused port numbers.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="Apple-style-span" style="text-decoration:underline;">There are actually two sets of port numbers, one for use by TCP sockets, and the other for use by UDP-based programs. It is perfectly all right for two programs to be using the same port number provided that one is using it for TCP and the other for UDP.</span></p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Not all port numbers are created equal. <span class="Apple-style-span" style="color:rgb(0,0,255);"><span class="Apple-style-span" style="text-decoration:underline;">The ports in the range 0 through 1023 are reserved for the use of "</span><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="text-decoration:underline;">well-known</span></span><span class="Apple-style-span" style="text-decoration:underline;">" services, which are assigned and maintained by ICANN, the Internet Corporation for Assigned Names and Numbers.</span></span> For example, TCP port 80 is reserved for use for the HTTP used by Web servers, TCP port 25 is used for the SMTP used by e-mail transport agents, and UDP port 53 is used for the domain name service (DNS). Because these ports are well known, you can be pretty certain that a Web server running on a remote machine will be listening on port 80. On UNIX systems, only the root user (i.e., the superuser) is allowed to create a socket using a reserved port. This is partly to prevent unprivileged users on the system inadvertently running code that will interfere with the operations of the host's network services.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">Most services are either TCP- or UDP-based, but some can communicate with both protocols. In the interest of future compatibility, ICANN usually reserves both the UDP and TCP ports for each service. However, there are many exceptions to this rule. For example, TCP port 514 is used on UNIX systems for remote shell (login) services, while UDP port 514 is used for the system logging daemon.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">In some versions of UNIX, the high-numbered ports in the range 49152 through 65535 are reserved by the operating system for use as "ephemeral" ports to be assigned automatically to outgoing TCP/IP connections when a port number hasn't been explicitly requested. The remaining ports, those in the range 1024 through 49151, are free for use in your own applications, provided that some other service has not already claimed them. It is a good idea to check the ports in use on your machine by using one of the network tools introduced later in this chapter (Network Analysis Tools) before claiming one.</p>
+<h5 style="font-size:8pt;"><a name="3_3_4_The_sockaddr_in_Structur" id="3_3_4_The_sockaddr_in_Structur"></a>3.3.4 The <tt><span class="Apple-style-span" style="font-family:Verdana;">sockaddr_in</span></tt> Structure<br /></h5>
+<p class="docText" style="margin:0;">A socket address is the combination of the host address and the port, packed together in a binary structure called a <span class="docEmphasis"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="font-family:Georgia;">sockaddr_in</span></span>.</span> This corresponds to a C structure of the same name that is used internally to call the system networking routines. (By analogy, UNIX domain sockets use a packed structure called a <span class="docEmphasis">sockaddr_un.</span>) Functions provided by the standard Perl Socket module allow you to create and manipulate <span class="docEmphasis">sockaddr_in</span> structures easily:</p>
+<p class="docText" style="margin:0;"></p>
+<p style="margin:0;">
+<table cellspacing="0" width="90%" border="1" style="font-size:1em;line-height:inherit;">
+<tbody>
+<tr style="text-align:left;">
+<td>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$packed_address = inet_aton($dotted_quad)</span></span></span></p>
+<p class="docText" style="margin:0;">Given an IP address in dotted-quad form, this function packs it into binary form suitable for use by <tt>sockaddr_in()</tt>. The function will also operate on symbolic hostnames. If the hostname cannot be looked up, it returns <tt>undef</tt>.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$dotted_quad = inet_ntoa($packed_address)</span></span></span></p>
+<p class="docText" style="margin:0;">This function takes a packed IP address and converts it into human-readable dotted-quad form. It does <span class="docEmphasis"><tt>not</tt> </span>attempt to translate IP addresses into hostnames. You can achieve this effect by using <tt>gethostbyaddr()</tt>, discussed later.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$socket_addr = sockaddr_in($port,$address)</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">($port,$address) = sockaddr_in($socket_addr)</span></span></span></p>
+<p class="docText" style="margin:0;">When called in a scalar context, <tt>sockaddr_in()</tt> takes a port number and a binary IP address and packs them together into a socket address, suitable for use by <tt>socket()</tt>. When called in a list context, <tt>sockaddr_in()</tt> does the opposite, translating a socket address into the port and IP address. The IP address must still be passed through <tt>inet_ntoa()</tt> to obtain a human-readable string.</p>
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">$socket_addr = pack_sockaddr_in($port,$address)</span></span></span></p>
+<p class="docText" style="margin:0;"><span class="docEmphStrong"><span class="Apple-style-span" style="font-weight:bold;"><span class="Apple-style-span" style="color:rgb(0,0,255);">($port,$address) = unpack_sockaddr_in($socket_addr)</span></span></span></p>
+<p class="docText" style="margin:0;">If you don't like the confusing behavior of <tt>sockaddr_in()</tt>, you can use these two functions to pack and unpack socket addresses in a context-insensitive manner.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="margin:0;">
+<p class="docText" style="margin:0;"></p>
+<p class="docText" style="margin:0;">In some references, you'll see a socket's address referred to as its "name." Don't let this confuse you. A socket's address and its name are one and the same.</p>
+<p class="docText" style="margin:0;">3.4 </p>
+
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+        
+        <div class="post-end">
+</div>
+
+
+        <div class="pagination">
+          <ul>
+          
+            <li class="prev"><a href="/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520" title="Perl Notes(II)">&larr; Previous</a></li>
+          
+            <li><a href="/archive.html">Archive</a></li>
+          
+            <li class="next"><a href="/2009/02/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e4%25b9%258c%25e9%25be%2599%25e8%25ae%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520" title="乌龙记">Next &rarr;</a></li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528iii%2529%2520-%2520introduction%2520to%2520berkeley%2520sockets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520';
+    var disqus_url = 'http://bo-yang.github.io//2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528iii%2529%2520-%2520introduction%2520to%2520berkeley%2520sockets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	  </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <h4>Published</h4>
+        <div class="date"><span>2009-01-13</span></div>
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+          <h4>Tags</h4>
+          <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#Network/Telecom-ref">Network/Telecom <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#Perl-ref">Perl <span>14</span></a></li>
+    
+  
+
+
+
+          </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+		<div class="sidebar">
+			<!--
+			<script type="text/javascript" id="wumiiRelatedItems"></script>
+			-->
+		  <script type="text/javascript">
+	var linkwithin_site_id = 2140443;
+    var lwPermaLink = "http://bo-yang.github.io//2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528iii%2529%2520-%2520introduction%2520to%2520berkeley%2520sockets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520";
+    var lwTitle = "Perl Notes(III) -- Introduction To Berkeley Sockets";
+    var lwTags = "";
+    var lwCategories = [];
+    var lwSitePrefix = "http://bo-yang.github.io/";
+    var lwParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

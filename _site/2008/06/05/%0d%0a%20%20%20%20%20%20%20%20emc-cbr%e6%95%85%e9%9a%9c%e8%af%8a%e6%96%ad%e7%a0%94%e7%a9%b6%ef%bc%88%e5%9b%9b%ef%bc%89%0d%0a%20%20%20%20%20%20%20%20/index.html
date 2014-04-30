@@ -1,0 +1,318 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>EMC-CBR故障诊断研究（四） | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>EMC-CBR故障诊断研究（四）</h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span9 left">
+    <div class="main-container shadow">
+      <div class="mainbody thepost">
+        <p><font size="3"><span><span style="font-size:12pt;line-height:173%;font-family:宋体;">1、系统组成</span></span><span></span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;"><br />&nbsp;&nbsp; 本系统是由</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">组成的混合系统。系统结构如下图</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;">所示。系统的核心是推理机，推理机根据用户输入的故障描述，既可以将故障描述转化为新的案例，从而进行对案例库进行操作；又可以将故障描述转化为事实，对规则库进行操作。但</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的地位并不是等同的，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起主导作用，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">对</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起监督作用，二者的推理结果由综合机制进行综合。本系统采用友好的人机界面，普通用户输入故障描述后，系统经推理后给出诊断建议，并对给出的建议进行解释。另外，为了便于对系统知识（案例库、知识库和事实库）进行管理，系统可以由知识工程师进行修改。</span></font></p>
+<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/系统结构.JPG" alt="" /></font></p>
+<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">2、案例表示与存储</font></p>
+<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">参见博文&ldquo;EMC-CBR故障诊断研究（一、二）&rdquo;</font></p>
+<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">3、案例检索</font></p>
+<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">参见博文&ldquo;EMC-CBR故障诊断研究（三）&rdquo;</font></p>
+<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">4、<span style="font-size:12pt;line-height:173%;font-family:宋体;">案例重用</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span></font> </p>
+<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">案例重用的主要任务是对检索到的案例的结论进行修正。基本思想就是将案例库中与目标案例最相似的案例的结论与次相似的案例的结论进行对比，如果二者仅仅是谓词函数的参数不同，可以认定无需对最佳匹配案例进行修改；如果二者不仅参数不同而且有谓词上的出入，则需启用基于规则的推理，最终利用</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的综合机制利用</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的结论对最佳匹配案例的结论进行修正。</span></font></p>
+<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3">5、 </font></p>
+<p><font size="3"><span style="font-size:12pt;line-height:173%;font-family:宋体;">案例的保存</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span></font> </p>
+<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">&nbsp;&nbsp;&nbsp; 在案例保存时要进行模式归纳（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>Schema Induction</span><span style="font-size:12pt;font-family:宋体;">）。模式归纳的含义就是指：如果类比导致了一个解，则执行两类似体的泛化过程，以便形成一个抽象的案例模式。简而言之，就是寻找两类似体的共性，然后加以抽象和泛化。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p><font size="3"><span style="font-size:12pt;font-family:宋体;">案例保存的过程可以看作一个归纳学习的过程，很多归纳学习的方法都可以应用于案例保存，如产生预测试方法（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>INDUCE1.2</span><span style="font-size:12pt;font-family:宋体;">）。</span></font></p>
+<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3">6、案例的维护</font></p>
+<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal">
+<p style="text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">心理学家在研究记忆机理时，提出了著名的遗忘曲线理论，即长期不用的信息将会被逐渐遗忘。在基于案例推理中，案例库的维护很重要，必须将长期不用的案例删除，因为这种案例很可能是噪声案例，例如误诊的病例、误判的案件等。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>Aha</span><span style="font-size:12pt;font-family:宋体;">建议对案例库中的每个案例建立一个匹配记录，就可以删除那些噪声或无用的案例，以维护案例库的有效性。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>Aha</span><span style="font-size:12pt;font-family:宋体;">提出案例求精算法</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>IB3</span><span style="font-size:12pt;font-family:宋体;">，表述如下</span><sup><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>[51]</span></sup><span style="font-size:12pt;font-family:宋体;">：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p style="text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">输入：案例库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">和测试案例集</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>T</span></font></p>
+<p style="text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">输出：精化案例库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S&rsquo;</span></font></p>
+<p style="text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">过程：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（1）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从测试案例集</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>T</span><span style="font-size:12pt;font-family:宋体;">中任选一个测试案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（2）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">设法从案例库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中找到一个案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">，它与</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">有最佳匹配，其相似度超过某个阈值；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（3）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">如果找不到这样的</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">，则转到（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>8</span><span style="font-size:12pt;font-family:宋体;">）；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（4）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">若确认</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">属于同一类，则转（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>9</span><span style="font-size:12pt;font-family:宋体;">）；否则把</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">加上它所属的类</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>c</span><span style="font-size:12pt;font-family:宋体;">的标志后存入库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（5）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中找出所有这样的案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">，它们和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">的相似程度至多不大于</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">的相似程度，所有这些</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">的匹配记录要扣分；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（6）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中删除记录分数小于某个规定值的所有案例；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（7）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">如果测试集的案例已经用完，则算法结束，否则转（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>1</span><span style="font-size:12pt;font-family:宋体;">）；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（8）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中任选一个案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">，转到（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>4</span><span style="font-size:12pt;font-family:宋体;">）；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（9）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中找出所有这样的案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">，它们和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">的相似程度至少不亚于</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">的相似程度；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（10）</span></span><span style="font-size:12pt;font-family:宋体;">转到（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>7</span><span style="font-size:12pt;font-family:宋体;">）。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
+<p><font size="3"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  7、 </font></p>
+<p><font size="3"><span style="font-size:12pt;line-height:173%;font-family:宋体;">基于规则的推理</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span></font></p>
+<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">基于规则推理（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">）子系统是一个简化的专家系统。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">子系统由事实库和规则库组成，规则库中存放由专家经验中提取出来的专家规则，以产生式表示；事实库是由推理机通过人机界面从用户的输入中提取出来的事实，以命题逻辑表示。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">例如，和上面讨论的</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>case6</span><span style="font-size:12pt;font-family:宋体;">相关的规则有&ldquo;</span><span style="font-size:12pt;font-family:楷体_GB2312;">使用导电橡胶、衬垫之类的屏蔽材料时，不但要保证接触面上的良好的导电性（接触面去除所有漆），而且还要保证一定的压缩量。&rdquo;</span><span style="font-size:12pt;font-family:宋体;">，可以用产生式规则表述如下：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";color:rgb(0,176,80);'></span></font></p>
+<p align="left" style="margin-left:21pt;text-align:left;line-height:22pt;" class="MsoNormal"><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>Shielding(product, conductive_tape) </span><span style="font-size:12pt;font-family:宋体;">&or;</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> Shielding(product, condutive_gasket) =&gt; Wipe_off(interface, lacquer) </span><span style="font-size:12pt;font-family:宋体;">&and;</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> (Compress(conductive_tape) </span><span style="font-size:12pt;font-family:宋体;">&or;</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> Compress(conductive_ gasket))</span></font></p>
+<p><font size="3"><span style="font-size:12pt;font-family:宋体;">&nbsp;&nbsp; </span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的推理采用不确定性推理。不确定推理包括前提条件的不确定性、结论的不确定性以及推理过程的不确定性。根据电磁兼容知识的特点，必须综合利用这三种不确定性才能比较确切的模拟电磁兼容专家的推理过程。不确定推理的通用表示方法为</span><sup><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>[20]</span></sup><span style="font-size:12pt;font-family:宋体;">：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IF</span></strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> [(p<sub>1</sub>, f<sub>1</sub>, t<sub>1</sub>) <strong>AND</strong> (p<sub>2</sub>, f<sub>2</sub>, t<sub>2</sub>) <strong>AND</strong> &hellip; <strong>AND</strong> (p<sub>m</sub>, f<sub>m</sub>, t<sub>m</sub>)]</span></font></p>
+<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THEN</span></strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> [((q<sub>1</sub>, g<sub>1</sub>, s<sub>1</sub>), (q<sub>2</sub>, g<sub>2</sub>, s<sub>2</sub>)&hellip;)] <strong>WITH CF</strong>(R)</span></font></p>
+<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">其中，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>p<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">表示模糊前提条件，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>q<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">表示模糊结论及动作，</span><strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CF</span></strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>(R)</span><span style="font-size:12pt;font-family:宋体;">为可信度，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>f<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">是表达前件的可能性分布，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">是前件的确信程度，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>g<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">是表达结论的可能性分布，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s<sub>1</sub></span><span style="font-size:12pt;font-family:宋体;">是结论的确信程度。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">&nbsp;&nbsp;&nbsp; 对于前件，可以采用表达方案：</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:12pt;"><!--[if !vml]--></span></span><span style="font-family:宋体;"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/p.JPG" alt="" />,<span style="font-style:italic;">p</span></span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--></span></span><span style="font-size:12pt;font-family:宋体;">为模糊命题，<span style="font-style:italic;">x</span></span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:3pt;"><!--[endif]--></span></span><span style="font-size:12pt;font-family:宋体;">为对象名，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>A</span><span style="font-size:12pt;font-family:宋体;">是</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:3pt;"><!--[if !vml]--></span></span><span style="font-size:12pt;font-family:宋体;"><span style="font-style:italic;">x</span>的属性名，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>D</span><span style="font-size:12pt;font-family:宋体;">是确定性状态表达，</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--></span></span><span style="font-size:12pt;font-family:宋体;">是</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:12pt;"><!--[if !vml]--></span></span><span style="font-size:12pt;font-family:宋体;"><span style="font-style:italic;">p</span>的相应的确定性命题，</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:3pt;"><!--[if !vml]--><img height="16" width="9" src="/DOCUME~1/ADMINI~1/LOCALS~1/Temp/msohtmlclip1/01/clip_image021.gif" alt="" /><!--[endif]--></span></span><span style="font-size:12pt;font-family:宋体;">是命题的不确定性度量。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">例如，某模糊命题为：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:楷体_GB2312;">如果为感应耦合</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>(</span><span style="font-size:12pt;font-family:楷体_GB2312;">可信度</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>0.9)</span><span style="font-size:12pt;font-family:楷体_GB2312;">，且电路频率很高</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>(</span><span style="font-size:12pt;font-family:楷体_GB2312;">模糊数</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>0.8)</span><span style="font-size:12pt;font-family:楷体_GB2312;">，则耦合为容性耦合</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>(</span><span style="font-size:12pt;font-family:楷体_GB2312;">可信度</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>0.7)</span><span style="font-size:12pt;font-family:楷体_GB2312;">。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">则该命题可以表述为：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IF</span></strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> [(p<sub>1</sub>,0.9) <strong>AND</strong> (p<sub>2</sub>,0.8)] <strong>THEN</strong>[(q<sub>1</sub>, 0.7)] <strong>WITH CF</strong>(R)</span></font></p>
+<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">其中，<img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/p1.JPG" alt="" /></span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--><!--[endif]--></span></span><span style="font-family:宋体;">，<img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/p2.JPG" alt="" /></span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--><!--[endif]--></span></span><span style="font-family:宋体;">，</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'></span></font></p>
+<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3"><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--></span></span><span style="font-family:宋体;"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/q1.JPG" alt="" />，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>R</span><span style="font-size:12pt;font-family:宋体;">为根据不确定推理理论计算出的整个命题的可信度。</span></font></p>
+<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3">&nbsp;&nbsp;&nbsp;&nbsp; 8、 </font></p>
+<p><font size="3"><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;line-height:173%;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;line-height:173%;font-family:宋体;">的综合机制</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span> <span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size:12pt;font-family:宋体;"><br /></span></font></p>
+<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">&nbsp;&nbsp; 当目标案例和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">案例库中的源案例的相似度低于阈值时，启用</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">。如果利用</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">能够推导出结果，则将</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的结论作为最终诊断结果，将</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">的结论作为建议一同提交给用户；如果由于规则的不完整</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">无法推导出结论，则将</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">的结论作为诊断结果提交给用户，但此时必须注明该结论的可信度（可信度可以用目标案例和源案例的相似度表示）。</span></font></p>
+<p><font size="3"><span style="font-size:12pt;font-family:宋体;"></span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
+<p>&nbsp;</p>
+
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+        
+        <div class="post-end">
+</div>
+
+
+        <div class="pagination">
+          <ul>
+          
+            <li class="prev"><a href="/2008/05/27/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%25bb%25e8%25be%2591%25e8%25a1%25a8%25e8%25be%25be%25e5%25bc%258f%25e8%25af%258d%25e6%25b3%2595%25e5%2588%2586%25e6%259e%2590%25e5%2599%25a8%25e5%2588%2586%25e6%259e%2590%25e7%25bb%2593%25e6%259e%259c%25e7%259a%2584%25e6%2598%25be%25e7%25a4%25ba%250d%250a%2520%2520%2520%252" title="逻辑表达式词法分析器分析结果的显示">&larr; Previous</a></li>
+          
+            <li><a href="/archive.html">Archive</a></li>
+          
+            <li class="next"><a href="/2008/06/06/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25a1%25ac%25e7%259b%2598%25e5%25ae%2589%25e8%25a3%2585fedora%25209%25e6%2597%25b6%25e6%25ad%25bb%25e6%259c%25ba%25ef%25bc%259f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520" title="硬盘安装Fedora 9时死机？">Next &rarr;</a></li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2008/06/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520emc-cbr%25e6%2595%2585%25e9%259a%259c%25e8%25af%258a%25e6%2596%25ad%25e7%25a0%2594%25e7%25a9%25b6%25ef%25bc%2588%25e5%259b%259b%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520';
+    var disqus_url = 'http://bo-yang.github.io//2008/06/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520emc-cbr%25e6%2595%2585%25e9%259a%259c%25e8%25af%258a%25e6%2596%25ad%25e7%25a0%2594%25e7%25a9%25b6%25ef%25bc%2588%25e5%259b%259b%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	  </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <h4>Published</h4>
+        <div class="date"><span>2008-06-05</span></div>
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+          <h4>Tags</h4>
+          <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#AI-ref">AI <span>6</span></a></li>
+     
+    	<li><a href="/tags.html#C-ref">C <span>16</span></a></li>
+     
+    	<li><a href="/tags.html#电磁兼容-ref">电磁兼容 <span>4</span></a></li>
+    
+  
+
+
+
+          </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+		<div class="sidebar">
+			<!--
+			<script type="text/javascript" id="wumiiRelatedItems"></script>
+			-->
+		  <script type="text/javascript">
+	var linkwithin_site_id = 2140443;
+    var lwPermaLink = "http://bo-yang.github.io//2008/06/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520emc-cbr%25e6%2595%2585%25e9%259a%259c%25e8%25af%258a%25e6%2596%25ad%25e7%25a0%2594%25e7%25a9%25b6%25ef%25bc%2588%25e5%259b%259b%25ef%25bc%2589%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520";
+    var lwTitle = "EMC-CBR故障诊断研究（四）";
+    var lwTags = "";
+    var lwCategories = [];
+    var lwSitePrefix = "http://bo-yang.github.io/";
+    var lwParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

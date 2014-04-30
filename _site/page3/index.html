@@ -1,0 +1,1687 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>Bo Yang | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>Bo Yang  <small>Beginner's mind.</small></h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span12">
+    
+
+<div class="row-fluid page-body">
+
+  <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/06/04/today-some-guy">Error "ldd:  execution failed due to signal 9"</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-06-04</strong> with tags <a href="/tags.html#ldd-ref" rel="nofollow">ldd</a>, <a href="/tags.html#signal-ref" rel="nofollow">signal</a>, <a href="/tags.html#swap-ref" rel="nofollow">swap</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>Today, one of my folks met a very weird problem and finally he asked me for help. The issue was, when running command "ldd CDNap" on a Solaris 9 server(AP11), following error would show up:</p>
+<p><code>AP11: ldd CDNap<br />
+ldd: CDNap: execution failed due to signal 9</code></p>
+<p>However, when running this command on another Solaris 9 server(ap15), it worked well.</p>
+<p>According to <a href="https://forums.oracle.com/forums/thread.jspa?threadID=1919581">Weird exec failure</a>, "<strong>My bet is that the program has a rather large BSS segment, and there isn't enough swap to reserve the space. (ldd(1) works by setting up some environment variables, then running the program itself, which is why it would fail)</strong>". To verify this, you can run</p>
+<pre>/usr/ccs/bin/size /path/to/program</pre>
+<p>To check the free space of swap, you can</p>
+<pre>swap -s</pre>
+<p>After comparing the swap space and memory of the two Solaris servers, I noticed that the server(AP11) bearing this issue has smaller memory(1GB) and swap space(only 75008k available).</p>
+<pre>AP11: swap -l
+swapfile             dev  swaplo blocks   free
+/dev/dsk/c0t2d0s1   136,1      16 4198304 4198304
+AP11: swap -s
+total: 513384k bytes allocated + 2296288k reserved = 2809672k used, 75008k available
+AP11: uname -a
+SunOS coolap22n 5.9 Generic_122300-61 sun4u sparc SUNW,UltraAX-i2
+AP11: prtconf|grep Memory
+Memory size: 1024 Megabytes</pre>
+<p>Server(ap15) without ldd issue has 2GB memory and larger swap(4966160k available).</p>
+<pre>ap15:root &gt; swap -s
+total: 372136k bytes allocated + 522864k reserved = 895000k used, 4966160k available
+ap15:root &gt; df -k swap
+Filesystem            kbytes    used   avail capacity  Mounted on
+swap                 1793064960 1589658648 203406312    89%    /tmp
+ap15:root &gt; swap -l
+swapfile             dev  swaplo blocks   free
+/dev/dsk/c0t2d0s1   136,1      16 8392544 8392544
+ap15:root &gt; uname -a
+SunOS coolap10n 5.9 Generic_122300-61 sun4u sparc SUNW,UltraAX-i2</pre>
+<p>It seems it's time for such old Solaris servers to retire.</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/05/04/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520string%2520evolver%252c%2520my%2520first%2520genetic%2520algorithm%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">String Evolver, My First Genetic Algorithm</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-05-04</strong> with tags <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <a href="/tags.html#Evolutionary Computation-ref" rel="nofollow">Evolutionary Computation</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>When reading <em>Evolutionary Computation for Modeling and Optimization[1]</em>, I found following problem in section 1.2.3:</p>
+<p><strong><em>A string evolver is an evolutionary algorithm that tries to match a reference string from a population of random strings. The underlying character set of the string evolver is the alphabet from which the strings are drawn.</em></strong></p>
+<p>The solution given in the context is:</p>
+<ol>
+<li>Start with a reference string and a population of random strings.</li>
+<li>The fitness of a string is the number of positions in which it has the same character as the reference string.</li>
+<li>To evolve the population, split it into small random groups called&nbsp;tournaments.</li>
+<li>Copy the most fit string(break ties by picking at random among the most fit strings) over the least fit string in each tournament.</li>
+<li>Then change one randomly chosen character in each copy(mutation).</li>
+<li>Repeat until an exact match with the reference string is obtained.</li>
+</ol>
+<p>When trying this solution, I noticed that it won't converge even after a long time. Therefore, I modified the crossover and mutation strategy.<strong>A subset of population(strings) will be selected based on fitness in a tournament, and the bottom-ranked<br />
+ 50% of each tournament will be deleted. New population is formed by crossing the remaining high 20 individuals in a tournament, while the high-ranked parents are kept unchanged[2]. Finally, a random selected string in a tournament will be mutated.</strong></p>
+<p>
+My codes are:</p></p>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define POP 20 
+#define TNMT 4	    // Total number of tournaments
+#define MAXSTR 80
+char strPop[POP][MAXSTR]; // population of strings
+char* REF=&quot;Hello,world!&quot;; // Reference string
+char* mostFit[TNMT]; 	  // the most fit string of each tournament
+char* leastFit[TNMT]; 	// the least fit string of each 
+
+tournament
+
+char GenRandChar()
+{
+	return (char)(32+rand()%96);
+}
+
+char * GenRandStr(char* str, unsigned int len)
+{
+	int i;
+	for(i=0;i&lt;len-1;++i)
+	{
+		str[i]=GenRandChar();
+	}
+	str[i]='';
+	return str;
+}
+
+// Copy the most fit string(break ties by picking at 
+// random among the most fit strings) over the least 
+// fit string in each tournament.
+unsigned int CrossoverM2L(char* strMostFit, char* strLeastFit, unsigned int len)
+{
+	int i,p;
+	char tmp;
+
+	// Generate random position. Make sure the string
+	// won't be broken at the first or last character.
+	p=rand()%(len-2)+1;
+	for(i=0;i&lt;p;++i)
+	{
+		tmp=strMostFit[i];
+		strMostFit[i]=strLeastFit[i];
+		strLeastFit[i]=tmp;
+	}
+	return p;
+}
+
+// Change one randomly chosen character in each copy.
+unsigned int Mutate(char* str,unsigned int len)
+{
+	int p;
+
+	p=rand()%len;
+	str[p]=GenRandChar();
+	return p;
+}
+
+// Count the number of identical chars between ref and str.
+unsigned int GetFitness(char* str,unsigned int len)
+{
+	int i;
+	int cnt=0;
+	for(i=0;i&lt;len;++i)
+	{
+		if(REF[i]==str[i])
+			cnt++;
+	}
+	
+	return cnt;
+}
+
+// Find out the most and least fit strings in a tournament.
+// 	tourn -- the number of tourn, starting from 0.
+void GetFitOfTnmt(char* mostFit[],char* leastFit[],unsigned int tourn)
+{
+	int i,fit;
+	char* str;
+	int most_fit,least_fit;
+
+	// Make sure the most and least fit strings are different
+	mostFit[tourn]=strPop[tourn*POP/TNMT];
+	most_fit=GetFitness(mostFit[tourn],strlen(REF));
+	leastFit[tourn]=strPop[tourn*POP/TNMT+1];
+	least_fit=GetFitness(leastFit[tourn],strlen(REF));
+	for(i=1;i&lt;POP/TNMT;++i)
+	{
+		str=strPop[tourn*POP/TNMT+i];
+		fit=GetFitness(str,strlen(REF));
+		if(most_fitfit)
+		{
+			least_fit=fit;
+			leastFit[tourn]=str;
+		}
+	}
+}
+
+// Get the most fit string of the population
+char* GetMostFit(char* mostFit[])
+{
+	int i,fit;
+	char* strFit=mostFit[0];
+	int most_fit=GetFitness(strFit,strlen(REF));
+	for(i=1;i&lt;TNMT;++i)
+	{
+		fit=GetFitness(mostFit[i],strlen(REF));
+		if(most_fit&lt;fit)
+		{
+			most_fit=fit;
+			strFit=mostFit[i];
+		}
+	}
+	
+	return strFit;
+}
+
+// Sort the strings in a tournament by fitness.
+void SortTournByFit(unsigned int tourn)
+{
+	int tmpInt;
+	unsigned int fit[POP/TNMT];
+	int i,j;
+	int len=strlen(REF);
+	char tmpStr[MAXSTR];
+
+	// Get the fitness of each string in this tournament
+	for(i=0;i&lt;POP/TNMT;i++)
+	{
+		fit[i]=GetFitness(strPop[tourn*POP/TNMT+i],len);
+	}
+
+	// Sort strings by fitness
+	for(i=0;i&lt;POP/TNMT;i++)
+	{
+		for(j=i+1;j&lt;POP/TNMT;j++)
+		{
+			if(fit[i]&lt;fit[j])
+			{
+				tmpInt=fit[i];
+				fit[i]=fit[j];
+				fit[j]=tmpInt;
+
+				strcpy(tmpStr,strPop[tourn*POP/TNMT+i]);
+				strcpy(strPop[tourn*POP/TNMT+i],strPop[tourn*POP/TNMT+j]);
+				strcpy(strPop[tourn*POP/TNMT+j],tmpStr);
+			}
+		} // end of for j
+	} // end of for i
+}
+
+// Crossover the top half strings.
+// Remove the second half strings after sorting, keep the top half, 
+// and generate children by crossing over top half strings.
+void CrossoverByFit(unsigned int tourn)
+{
+	int i,j,p,len;
+	char* strTmp;
+
+	SortTournByFit(tourn);
+
+	// Generate random position. Make sure the string
+	// won't be broken at the first or last character.
+	len=strlen(REF);
+	p=rand()%(len-2)+1;
+	
+	for(i=0;i&lt;(int)POP/TNMT/2;i+=2)
+	{
+		for(j=0;j
+p;--j)
+		{
+			strPop[(tourn+1)*POP/TNMT-1-i][j]=strPop[tourn*POP/TNMT+i+1][j];
+			strPop[(tourn+1)*POP/TNMT-2-i][j]=strPop[tourn*POP/TNMT+i][j];
+		}
+	}
+}
+
+
+// Print population by tournaments.
+void DumpPop()
+{
+	int i,j;
+	char* curStr;
+	for(i=0;i&lt;TNMT;i++)
+	{
+		printf(&quot;Tournament %d:n&quot;,i);
+		for(j=0;j&lt;POP/TNMT;j++)
+		{
+			curStr=strPop[i*POP/TNMT+j];
+			printf(&quot;t%stFitness: %dn&quot;,curStr,GetFitness(curStr,strlen(curStr)));
+		}
+		printf(&quot;n&quot;);
+	}
+}
+
+//
+// MAIN START HERE
+//
+int main()
+{
+	int LEN=strlen(REF);
+
+	int i,j,p;
+	long cnt=0;
+	char * strFit=NULL;
+	
+	// Initionlization
+	for(i=0;i&lt;POP;++i)
+	{
+		GenRandStr(strPop[i],LEN);
+	}
+	
+	printf(&quot;---------------- Original Population ---------------n&quot;);
+	DumpPop();
+	
+	for(i=0;i&lt;TNMT;++i)
+		GetFitOfTnmt(mostFit,leastFit,i);
+		
+	strFit=GetMostFit(mostFit);
+	while(GetFitness(strFit,LEN) != LEN)
+	//while(GetFitness(strFit,LEN)&lt;5)
+	{
+		printf(&quot;n---------------- Generation %d ----------------n&quot;,cnt);
+		DumpPop();
+
+		printf(&quot;%stReferencen&quot;,REF);
+		printf(&quot;%stGen: %dtFitness: %dn&quot;,strFit,cnt++,GetFitness(strFit,LEN));
+		for(i=0;i&lt;TNMT;++i)
+		{
+			// Crossover
+			//CrossoverM2L(mostFit[i],leastFit[i],LEN);
+			CrossoverByFit(i);
+			
+			// Mutation
+			p=rand()%(POP/TNMT);
+			Mutate(strPop[i*POP/TNMT+p],LEN);
+
+			// Re-calculate the fitness
+			GetFitOfTnmt(mostFit,leastFit,i);
+		}
+		strFit=GetMostFit(mostFit);
+	}
+
+	strFit=GetMostFit(mostFit);
+	printf(&quot;n---------------- Generation %d ----------------n&quot;,cnt);
+	DumpPop();
+	printf(&quot;%stReferencen&quot;,REF);
+	printf(&quot;%stGen: %dtFitness: %dn&quot;,strFit,cnt++,GetFitness(strFit,LEN));
+
+	return 0;
+}</pre>
+<p>
+<span style="font-family:monospace;"><span style="white-space:pre;">And the output is:</span></span></p>
+<pre>---------------- Generation 0 ----------------
+Tournament 0:
+	F~AKK[b;tV]	Fitness: 0
+	\agA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	6s[rEA8|45/	Fitness: 0
+	W.e[:bYXlCz	Fitness: 0
+
+Tournament 1:
+	6n?y9o??VN#	Fitness: 0
+	8mmZ~f:Dfn&lt;	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	8%p%)3-j;(	Fitness: 0
+	92S2}&amp;jU&quot;f	Fitness: 0
+
+Tournament 2:
+	38IrA~lrHq|	Fitness: 0
+	RF51Vo7V9]v	Fitness: 0
+	Z(tUX&lt;w|!{m	Fitness: 1
+	qNoPy'a;OS]	Fitness: 0
+	1`]em-+SM~~	Fitness: 0
+
+Tournament 3:
+	o^f(T&amp;zQC3Q	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	%H/&gt;N)Kt_Pm	Fitness: 0
+	i&gt;Z+F0@6/'L	Fitness: 0
+
+Hello,world!	Reference
+Z(tUX&lt;w|!{m	Gen: 0	Fitness: 1
+
+---------------- Generation 1 ----------------
+Tournament 0:
+	F~AKK[b;tVx	Fitness: 0
+	\agA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	\agA_q&gt;5]	Fitness: 0
+	F~AKK[b;tCr	Fitness: 0
+
+Tournament 1:
+	6n?y9o??VN#	Fitness: 0
+	kmmZ~f:Dfn&lt;	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	8mm%9o??VN#	Fitness: 0
+	6n?2~f:Dfn&lt;	Fitness: 0
+
+Tournament 2:
+	Z(tUX&lt;w|!{m	Fitness: 1
+	RF51Vo7V9]v	Fitness: 0
+	38IrA~lrHq|	Fitness: 0
+	RFoUX&lt;w|r{m	Fitness: 2
+	Z(]1Vo7V9]v	Fitness: 0
+
+Tournament 3:
+	o^f(T&amp;zQC3Q	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	($/(T&amp;zQC3Q	Fitness: 0
+	@^Z[j@ Asi	Fitness: 0
+
+Hello,world!	Reference
+RFoUX&lt;w|r{m	Gen: 1	Fitness: 2
+
+---------------- Generation 2 ----------------
+Tournament 0:
+	F~AKK[b;tVx	Fitness: 0
+	\agA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	\agA_q&gt;v]	Fitness: 0
+	F~AeK[b;tVr	Fitness: 0
+
+Tournament 1:
+	Pn?y9o??VN#	Fitness: 0
+	kmmZ~f:Dfn&lt;	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	kmmZ~f??VN#	Fitness: 0
+	6n?y9o:Dfn&lt;	Fitness: 0
+
+Tournament 2:
+	RFoDX&lt;w|r{m	Fitness: 2
+	Z(tUX&lt;w|!{m	Fitness: 1
+	38IrA~lrHq|	Fitness: 0
+	Z(t1X&lt;w|r{m	Fitness: 2
+	RFo1X&lt;w|!{m	Fitness: 1
+
+Tournament 3:
+	o^f(T&amp;zQC3Q|	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	($f(T&amp;zQC3Q	Fitness: 0
+	o^g[j@ Asi	Fitness: 0
+
+Hello,world!	Reference
+RFoDX&lt;w|r{m	Gen: 2	Fitness: 2
+
+---------------- Generation 3 ----------------
+Tournament 0:
+	F~AKK[b;tVx	Fitness: 0
+	\agA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	\KK[b;tVx	Fitness: 0
+	F~Aag~_q&gt;vr	Fitness: 0
+
+Tournament 1:
+	Pn?y9o??VN#	Fitness: 0
+	kmmZ~f:Dfn&lt;@	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	km?y9o??VN#	Fitness: 0
+	PnmZ~f:Dfn&lt;	Fitness: 0
+
+Tournament 2:
+	RFoDX&lt;w|r{m	Fitness: 2
+	Z(t1X&lt;w|r{m	Fitness: 2
+	Z(tUX~w|!{m	Fitness: 1
+	Z(oDX&lt;w|r{m	Fitness: 2
+	RFI1X&lt;w|r{m	Fitness: 2
+
+Tournament 3:
+	o^f(T&amp;zQC3Q|	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	($g[W@ QC3Q|	Fitness: 0
+	o^f(T&amp;zAsi	Fitness: 0
+
+Hello,world!	Reference
+RFoDX&lt;w|r{m	Gen: 3	Fitness: 2
+
+---------------- Generation 4 ----------------
+Tournament 0:
+	F~AKK[b;tVx	Fitness: 0
+	\JgA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	\KK[b;tVx	Fitness: 0
+	F~AagA_q&gt;vr	Fitness: 0
+
+Tournament 1:
+	Pn?y9o??VN#	Fitness: 0
+	kmmZ~f:Dfn&lt;@	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	kmmZ~o??VN#	Fitness: 0
+	Pnsy9f:Dfn&lt;@	Fitness: 0
+
+Tournament 2:
+	RFoDX&lt;w|r{m	Fitness: 2
+	Z(t1X&lt;w|r{m	Fitness: 2
+	Z(oDXFw|r{m	Fitness: 2
+	Z(t1X&lt;w|r{m	Fitness: 2
+	RFoDX&lt;w|r{m	Fitness: 2
+
+Tournament 3:
+	o^f(T'zQC3Q|	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	($g[j@ AsQ|	Fitness: 0
+	o^f(T&amp;zQC3i	Fitness: 0
+
+Hello,world!	Reference
+RFoDX&lt;w|r{m	Gen: 4	Fitness: 2
+
+      ......
+      ......
+
+---------------- Generation 2342 ----------------
+Tournament 0:
+	Hpllk,world!	Fitness: 10
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+
+Tournament 1:
+	Hello,worlF!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+
+Tournament 2:
+	Hello,worldh	Fitness: 11
+	Hello,worldJ	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,worVdJ	Fitness: 10
+
+Tournament 3:
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:2o,w4rld!	Fitness: 9
+
+Hello,world!	Reference
+Hpllo,world!	Gen: 2342	Fitness: 11
+
+---------------- Generation 2343 ----------------
+Tournament 0:
+	Hp|lo,world!	Fitness: 10
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+
+Tournament 1:
+	Hello,worlF!	Fitness: 11
+	Hello,wo&amp;lf!	Fitness: 10
+	Hello,worlf!	Fitness: 11
+	Hello,worlF!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+
+Tournament 2:
+	Hello,worldh	Fitness: 11
+	Hello,worldJ	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,wor&amp;dh	Fitness: 10
+	Hello,worldJ	Fitness: 11
+
+Tournament 3:
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:lozw4rld!	Fitness: 9
+
+Hello,world!	Reference
+Hpllo,world!	Gen: 2343	Fitness: 11
+
+---------------- Generation 2344 ----------------
+Tournament 0:
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+
+Tournament 1:
+	Hello,worlF!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+	Hello,world!	Fitness: 12
+	Hello,worlF!	Fitness: 11
+	Hello,wo&amp;lf!	Fitness: 10
+
+Tournament 2:
+	Hello,world 	Fitness: 11
+	Hello,worldJ	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,worldJ	Fitness: 11
+
+Tournament 3:
+	He:lo,w44ld!	Fitness: 9
+	He:lo,w0rld!	Fitness: 10
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:lo,w4rld!	Fitness: 10
+
+Hello,world!	Reference
+Hello,world!	Gen: 2344	Fitness: 12
+</pre>
+<p></p>
+<p>-----------------------------------------------------------------</p>
+<p><em>References:</em></p>
+<p>[1]: Daniel Ashlock, <em>Evolutionary Computation for Modeling and Optimization</em>, Springer, 2005.</p>
+<p>[2]: FORREST, S., WEIMER, W., NGUYEN, T., AND GOUES, C. L., <em>A Genetic Programming Approach to Automated Software Repair</em>, In GECCO (July 2009).</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/05/02/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%258d%2587%25e7%25ba%25a7ubuntu%252012-04%25e6%2589%2580%25e9%2581%2587%25e5%2588%25b0%25e7%259a%2584%25e4%25b8%2580%25e4%25ba%259b%25e9%2597%25ae%25e9%25a2%2598%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">升级Ubuntu 12.04所遇到的一些问题</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-05-02</strong> with tags <a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>升级Ubuntu 11.10到12.04后，开机报错“<em>no partition found</em>”,进入Grub后，输入&quot;ls&quot;命令，也报错“no partition found”。可见Grub已经崩溃了。</p>
+<p>于是我下载了<a href="http://unetbootin.sourceforge.net/">UNetbootin</a>，然后利用它在Win 7下制作Ubuntu自启动U盘。制作好之后，结果发现不会自动引导启动，需要在开机之后出现Thinkpad欢迎界面时按F12，然后选择U盘启动。然后选择U盘启动Ubuntu，进入Ubuntu后按照&nbsp;<a href="http://www.webupd8.org/2009/12/how-to-recover-grub2-linux.html">How to<br />
+ Fix Grub 2</a>&nbsp;中的方法安装Grub 2到硬盘。</p></p>
+<div style="color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;margin:0;padding:0;">
+<span style="margin:0;padding:0;">To fix GRUB 2, you need an Ubuntu live CD from which you need to boot.</span>&nbsp;Once you boot to the LIVE<br />
+ CD, open a terminal an and type these commands:</div>
+<p><br style="color:rgb(85,85,85);font-size:14px;line-height:20px;margin:0;padding:0;" /></p>
+<div style="color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;margin:0;padding:0;">
+<span style="font-weight:bold;margin:0;padding:0;">a) Firstly, you need to find out on which partition your Linux system is installed:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow-x:auto;overflow-y:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;padding:28px 10px 10px;"><code style="margin:0;padding:0;">sudo fdisk -l</code></pre>
+<p>(in my case, it's &quot;sda1&quot;)<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="font-weight:bold;margin:0;padding:0;">b) Now, we must mount this partition:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow-x:auto;overflow-y:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;padding:28px 10px 10px;"><code style="margin:0;padding:0;">sudo mount /dev/<span style="font-weight:bold;margin:0;padding:0;">sda1</span> /mnt</code></pre>
+<p>Where &quot;sda1&quot; is the partition where you installed Ubuntu (or any other Linux distro). It could be &quot;sda5&quot;, &quot;sda6&quot;, etc. for you.<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="font-weight:bold;margin:0;padding:0;">c) Install grub to the partition you've mounted:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow-x:auto;overflow-y:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;padding:28px 10px 10px;"><code style="margin:0;padding:0;">sudo grub-install --root-directory=/mnt/ /dev/sda</code></pre>
+<p><br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="background-color:rgb(255,255,177);border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(223,223,223);border-right-width:1px;border-right-style:solid;border-right-color:rgb(223,223,223);color:rgb(51,51,51);margin:0;padding:0 2px;">Important:</span>&nbsp;Please<br />
+ notice that it's &quot;/dev/sda&quot;, not &quot;/dev/sda1&quot;. &quot;sda&quot; is the hard disk on which your Linux distribution is installed!<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="font-weight:bold;margin:0;padding:0;">d) Restart your computer. As previous Grub 2 entries are removed, run the following<br />
+ command to restore them:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow-x:auto;overflow-y:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;padding:28px 10px 10px;"><code style="margin:0;padding:0;">sudo update-grub</code></pre>
+</div>
+<p>我以前是用USB Stick安装的Ubuntu，在安装过程中有一选项是选择引导程序的安装位置，默认是/dev/sdb，也就是U盘。因为当时我没注意，所以Grub 2被安装到了U盘，尽管事后重新安装到了硬盘上，但貌&#20284;升级后还是不太正常。</p>
+<p>重启电脑进入Grub 2之后，输入命令（Grub 2中已经不再支持kernel命令，需要用<strong><em>linux</em></strong>指定kernel）：</p></p>
+<pre>linux (hd0,X)/vmlinuz-3.2......
+initrd (hd0,X)/initrd.img-3.2......
+boot</pre>
+<p>悲哀的是系统启动到一半仍然无法进入GUI或者shell。多次检查测试后确认 / 所在的分区已经崩溃，Ubuntu根本无法识别。</p>
+<p>虽然不想，但此时我已别无选择，只能重新安装Ubuntu 12.04了。可惜我电脑里那些尚未备份的文件和电影啊……</p>
+<p></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/04/21/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520briss%2520-%2520crop%2520the%2520margins%2520of%2520your%2520pdf%2520files%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Briss -- Crop the Margins of Your PDF Files</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-04-21</strong> with tags <a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p><span style="font-size:18px;">今天用iPad阅读一个PDF文档时，发现每页留白太多，字体特别小，在iBooks中每翻一页都要手动去缩放，实在是麻烦。于是搜索去掉PDF留白的方法。</span></p>
+<p><span style="font-size:18px;">先是寄希望于Linux系统自带的pdfcrop，结果尝试了各种选项后，发现PDF的size没有变，还是原来的8.5x8.9 inch。</span></p>
+<p><span style="font-size:18px;">后来搜索Ghostscript的用法，把papersize或者resolution强制改成希望的数&#20540;，仍然没有变化。郁闷！</span></p>
+<p><span style="font-size:18px;">再后来发现了网上的一个PDFcrop版本，也是用Perl写的，只是更加友好一点，尝试之后仍不奏效。自己上手用hardcode改为自己想要的结果，失败。不过在该tool中最大的发现就是<em> 1inch=28.3464567bp(dpi)</em>.</span></p>
+<p><span style="font-size:18px;">总结一晚上失败的经验就是：<strong>该PDF文档是扫描的图片转PDF&#26684;式，而不是文字直接转的，因此pdfcrop等工具无法发现并处理留白！</strong></span></p>
+<p><span style="font-size:18px;">最后在网上搜索PDF Margin Crop，无意中发现了<a href="http://sourceforge.net/projects/briss/">Briss</a>，抱着试试看的心态下载使用了一下，发现竟然能够识别图片转PDF的文字区域，拖动左上或右下脚上的蓝色正方形区域还可一手动选择保留的区域， Terrific！</span></p>
+<p><span style="font-size:18px;">使用方法就是下载<a href="http://sourceforge.net/projects/briss/">Briss</a>，解压缩，然后执行</span></p></p>
+<pre>java -jar briss-0.0.13.jar
+or
+java -jar briss-0.0.13.jar cropthis.pdf
+
+(The second line comes in handy if you want shortlinks for pdf editing) 
+</pre>
+<p>
+<span style="font-size:18px;">更详细的使用说明参见&nbsp;<a href="http://www.freewaregenius.com/2011/01/18/briss-crop-your-pdf-documents-using-a-visual-interface/" title="Briss: crop your PDF documents using a visual interface" rel="bookmark" style="font-family:'Myriad Pro', Calibri;line-height:22px;vertical-align:baseline;outline-style:none;outline-width:initial;outline-color:initial;background-color:transparent;border-width:initial;border-color:initial;color:rgb(34,34,34);border-style:none;margin:0;padding:0;">Briss:<br />
+ crop your PDF documents using a visual interface</a><span style="color:rgb(68,68,68);font-family:'Myriad Pro', Calibri;line-height:22px;">。</span></span></p>
+<p></p>
+<p></p>
+<p></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/03/06/using-expect-here-document-in-shell-scripts-4">Using Expect Here Document in Shell Scripts</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-03-06</strong> with tags 
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>Sometimes simple interactions are needed for Shell scripts. In this scenario, a here document written in Expect will work well. In following example, the output of Expect here document is assigned to KSH variable rcs_stat.<br />
+<P></p>
+<pre class="python">#!/bin/ksh
+
+autoload formatAPnum
+
+# Set the lab name, COOLLAB
+. $COOLXDIR/.netlabs
+# Get the RCS cell list
+set -A RCSs
+typeset -i nx=0
+cat $COOLXDIR/.coolcell2dcs | while read cell
+do
+	if [[ &quot;$cell&quot; = c* ]]
+	then
+		rcs=${cell%%$COOLLAB*}
+		RCSs[$nx]=${rcs#c}
+		nx=$nx+1
+	fi
+done
+
+# Check RCS status
+typeset -i loopCount=0
+rcs_cnt=${#RCSs[*]}
+B_server=$(formatAPnum $BserverAP)
+while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
+do
+	loopCount=${loopCount}+1
+
+	nx=0
+	while [ $nx -lt $rcs_cnt ]
+	do
+		rcs_stat=&quot;OOS&quot;
+		rcs_stat=$(
+expect - &lt;&lt;!
+log_user 0
+set timeout 20
+spawn $COOL_RSH ap$B_server TICLI
+send &quot;op:cell ${RCSs[$nx]}\r&quot;
+expect {
+	timeout {puts &quot;OOS\n&quot;}
+	&quot;*DL(S) DOWN&quot; {puts &quot;OOS\n&quot;}
+	&quot;*DL(S) UP&quot; {puts &quot;UP\n&quot;}
+}
+!
+		)
+
+		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
+		then
+			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
+			unset RCSs[$nx]
+		fi
+
+		nx=${nx}+1
+	done
+
+	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
+done
+
+coolprint - &quot;All RCSs are up.&quot;
+exit 0
+</pre>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/03/06/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520shell%25e4%25b8%25ad%25e4%25bd%25bf%25e7%2594%25a8expect%2520here%2520document%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Shell中使用Expect Here Document</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-03-06</strong> with tags <a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>在使用Shell写程序时，有时不得不面对交互的问题——可惜shell往往无法自动完成交互。如果交互的内容很多，自然是直接应用Expect脚本比较方便；如果交互的内容很少，而且考虑到Shell的易用性，在Shell脚本中创建一个Expect 的Here Document更加方便灵活。</p>
+<p>如下例所示，Expect&nbsp;Here Document可以直接运行并将运行结果赋给KSH变量rcs_stat。</p>
+<p>
+<pre>#!/bin/ksh
+
+autoload formatAPnum
+
+# Set the lab name, COOLLAB
+. $COOLXDIR/.netlabs
+# Get the RCS cell list
+set -A RCSs
+typeset -i nx=0
+cat $COOLXDIR/.coolcell2dcs | while read cell
+do
+	if [[ &quot;$cell&quot; = c* ]]
+	then
+		rcs=${cell%%$COOLLAB*}
+		RCSs[$nx]=${rcs#c}
+		nx=$nx+1
+	fi
+done
+
+# Check RCS status
+typeset -i loopCount=0
+rcs_cnt=${#RCSs[*]}
+B_server=$(formatAPnum $BserverAP)
+while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
+do
+	loopCount=${loopCount}+1
+
+	nx=0
+	while [ $nx -lt $rcs_cnt ]
+	do
+		rcs_stat=&quot;OOS&quot;
+		rcs_stat=$(
+expect - &lt;&lt;!
+log_user 0
+set timeout 20
+spawn $COOL_RSH ap$B_server TICLI
+send &quot;op:cell ${RCSs[$nx]}r&quot;
+expect {
+	timeout {puts &quot;OOSn&quot;}
+	&quot;*DL(S) DOWN&quot; {puts &quot;OOSn&quot;}
+	&quot;*DL(S) UP&quot; {puts &quot;UPn&quot;}
+}
+!
+		)
+
+		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
+		then
+			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
+			unset RCSs[$nx]
+		fi
+
+		nx=${nx}+1
+	done
+
+	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
+done
+
+coolprint - &quot;All RCSs are up.&quot;
+exit 0
+</pre></p>
+<p></p>
+<p></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/02/02/file-descriptors-per-process">File Descriptors per Process</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-02-02</strong> with tags <a href="/tags.html#file descriptor-ref" rel="nofollow">file descriptor</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:</p>
+<ol>
+<li><code>ulimit -a # all limitations</code></li>
+<li><code>ulimit -Sn # soft limit</code></li>
+<li><code>ulimit -Hn # hard limit</code></li>
+</ol>
+<p>If the file descriptor limit is exceeded for a process, you may see the error <code>Too Many Open Files</code>.</p>
+<p>And if you want to change the limit per process temporarily, you can:</p>
+<ol>
+<li><code>ulimit -n &lt;desired_#&gt; # both</code></li>
+<li><code>ulimit -Sn &lt;desired_#&gt; # soft limit</code></li>
+<li><code>ulimit -Hn &lt;desired_#&gt; # hard limit</code></li>
+</ol>
+<p>To check the open files of a process, you can use command <code>pfiles &lt;PID&gt;</code>.</p>
+<p>To check the run time limit of each process in Solaris, you can <code>plimit &lt;PID&gt;</code>(it seems this command is not supported in Linux). If you have the root permission and you want to change the limit of an process without killing or restarting the process, you can <code>plimit -n &lt;desired_#&gt;</code>.</p>
+<p>It was said that it may be dangerous to set the soft limit higher than 256 or hard limit greater than 1024 due to limitations with the stdio library.If programs require more file descriptors, they should use setrlimit directly.</p>
+<p>-------------<br />
+References:</p>
+<ol>
+<li><a href="http://www.brandonhutchinson.com/File_descriptors.html">File descriptors</a></li>
+<li><a href="http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/">Linux Increase The Maximum Number Of Open Files / File Descriptors (FD)</a></li>
+<li><a href="http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/">Linux / UNIX: List Open Files for Process</a></li>
+<li><a href="http://www.princeton.edu/~unix/Solaris/troubleshoot/filedesc.html">Princeton University Enterprise Servers and Storage, File Descriptors</a></li>
+<li><a href="http://compute.cnr.berkeley.edu/cgi-bin/man-cgi?plimit+1">plimit</a></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520onlive-%25e5%259c%25a8ipad%25e4%25b8%258a%25e4%25bd%25bf%25e7%2594%25a8ms%2520word%252c%2520excel%252c%2520powerpoint%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">OnLive——在iPad上使用MS Word, Excel, PowerPoint</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-01-13</strong> with tags <a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>昨晚睡前看到Walter Mossburg的最新文章<a href="http://allthingsd.com/20120111/working-in-word-excel-powerpoint-on-an-ipad/">Working in Word, Excel, PowerPoint on an iPad</a>：尽管iPad上已经有office软件，可以在上面编辑或创建文档，但这些软件对MS Office的兼容性并不好，而且还是收费的。<a href="http://desktop.onlive.com/">OnLive<br />
+ Desktop</a>即将推出一个免费的应用，该应用可以利用云端的MS Word, Excel, PowerPoint创建并编辑文档，文档保存在云端，可以在iPad和PC上（今后会有Android版）编辑。免费版每人2G云端存储空间，付费版$10每月每人50G空间。&nbsp;除常用的Office软件，还支持常用的Windows小程序，如计算器，画图板，记事本等。</p>
+<p>OnLive对于网络要求较高，低于1M的网络很可能无法连接到服务器。另外，文档输入时的虚拟键盘不是iPad的虚拟键盘而是Windows的键盘，编辑长文档时会很麻烦。</p>
+<p style="text-align:center;"><img src="http://online.wsj.com/public/resources/images/PJ-BE740_PTECHJ_G_20120111170747.jpg" alt="" /></p>
+<p>看过视频之后，我认为这个软件就是一个高级版的VNC应用，创新之处就在于云端的Windows服务器集群，能维护Windows环境以及自动为用户分配Windows服务器。一年多以前，在《<a href="http://blog.csdn.net/bonny95/article/details/5857256">Splashtop Remote——让你在iPad上也能用Windows下的应用</a>》一文中，我曾预言</p>
+<p><span style="background-color:rgb(204,204,204);">&quot;<span style="color:rgb(51,51,51);font-family:Arial;font-size:14px;line-height:26px;text-align:left;">试想如果将来有公司（比如这个DeviceVM）推出一项服务（可以免费，也可收费），为用户提供现成的Windows应用，而用户所需要做的就是在iPad或gPad上安装Splashtop Remote，打开这个应用就可以自动连接到DeviceVM的Windows<br />
+ PC/Server，利用现成的Windows程序了——省去了自己购买并维护PC的很多麻烦，节省了购买大量Windows软件的开支，何乐而不为呢？而且这也正契合了时下的云计算潮流。</span>&quot;</span></p>
+<p>果然英雄所见略同，已经有人开始提供这样的服务了。不过OnLive能否流行开来，还有待用户和市场的检验。使用体验是否可以被用户接受？如何解决网速（无论有线或无线）慢的情况？ 微软会不会推出iPad版的Office软件？即使该服务的终极目标不仅仅限于Windows或者Office软件，其他只能能在PC运行的程序会不会有替代解决方案在iPad或者Android平板上？以及现存的很多类VNC的软件……凡此种种，都构成了该服务的不确定因素。</p>
+<p>无论如何，这都是一个很好的尝试。</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/01/09/updating-fedora-to-fedora16-and-installing-ubuntu-11-04">Updating Fedora to Fedora16 and Installing Ubuntu 11.04</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-01-09</strong> with tags 
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>2.5years ago I installed Fedora11 on my Thinkpad R61,and then updated it to Fedora 12 and then Fedora 14. A bunch of software were installed, and as a result, the system went slower and slower... 固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。<br />
+基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。<br />
+Ubuntu很快就下完。首先在Fedora下创建启动U盘，参照 How to create and use Live USB：<br />
+Check the size of your USB stick<br />
+Many USB sticks indicate the size on the packaging or the outside of the stick.</p>
+<p>If you don't know the size of the stick, or want to check it for data, you should be able to auto-mount the USB stick by inserting it into a USB port. You can check the contents and size using the graphical file manager. In Linux, you can also use the command line:</p>
+<p>$ df -h<br />
+Filesystem Size Used Avail Use% Mounted on<br />
+/dev/mapper/VolGroup00-LogVol00<br />
+143G 14G 122G 10% /<br />
+/dev/sda1 99M 12M 82M 13% /boot<br />
+tmpfs 1009M 0 1009M 0% /dev/shm<br />
+/dev/sdb1 3.9G 4.0K 3.9G 1% /media/usbdisk<br />
+USB drives are usually mounted in /media. In this case, the device is /dev/sdb1, has a 3.9GB capacity and is almost empty.</p>
+<p>Take note of "/dev/sdb1" or equivalent; you will be specifying the device name if you use the command line method.</p>
+<p>How to Partition</p>
+<p>CAUTION<br />
+This will erase all data on the USB drive! Please read the instructions below carefully.<br />
+If the drive has not been partitioned properly (or if you are unsure), use fdisk to repartition it.</p>
+<p>It is also possible to do a non-destructive installation of a LiveUSB image, if you have sufficient empty space. See How to install non-destructively below.</p>
+<p>The fdisk command must be run as root. Include only the drive name in the command, not the partition number. Be sure to select the correct disk, or you may erase important data! Check the output of "df -h" if you are unsure. For example, if your partition will be /dev/sdb1, do:</p>
+<p>$ /sbin/fdisk /dev/sdb<br />
+If you don't have fdisk installed, run</p>
+<p>yum install util-linux-ng<br />
+as root.<br />
+The following session output from fdisk shows the responses to give to the prompts. The line starting Last cylinder ... refers to the size of the flash drive, so may be different than in the example.</p>
+<p>Command (m for help): d<br />
+Selected partition 1</p>
+<p>Command (m for help): n<br />
+Command action<br />
+e extended<br />
+p primary partition (1-4)<br />
+p<br />
+Partition number (1-4): 1<br />
+First cylinder (1-960, default 1): ↵<br />
+Using default value 1<br />
+Last cylinder or +size or +sizeM or +sizeK (1-960, default 960): ↵<br />
+Using default value 960</p>
+<p>Command (m for help): t<br />
+Selected partition 1<br />
+Hex code (type L to list codes): 6<br />
+Changed system type of partition 1 to 6 (FAT16)</p>
+<p>Command (m for help): a<br />
+Partition number (1-4): 1</p>
+<p>Command (m for help): w<br />
+The partition table has been altered!</p>
+<p>Calling ioctl() to re-read partition table.</p>
+<p>WARNING: If you have created or modified any DOS 6.x<br />
+partitions, please see the fdisk manual page for additional<br />
+information.<br />
+Syncing disks.<br />
+How to Format</p>
+<p>CAUTION<br />
+This will erase all data on the USB drive! Please read the instructions below carefully.<br />
+If your USB media has sufficient free space on a vfat file system already, you do not need to perform this step.</p>
+<p>To finish, the partition must be formatted with an actual file system using mkdosfs as the root user. Unmount the device before using mkdosfs. In the below example, /dev/USBPARTITIONNAME might be, for example, /dev/sdb1. Be sure to select the correct partition; formatting destroys all data on it!</p>
+<p>$ umount /dev/USBPARTITIONNAME<br />
+$ /sbin/mkdosfs -F 32 -n usbdisk /dev/USBPARTITIONNAME<br />
+If you don't have mkdosfs installed, run "yum install dosfstools" as root.</p>
+<p>通过命令<br />
+su -c "yum install liveusb-creator"<br />
+安装了Fedora的liveusb-creator，但是发现Fedora的这个程序无法制作Ubuntu的启动盘。无奈之下，试着把Ubuntu的iso文件复制到U盘里：<br />
+sudo dd if=F12-Live-i686.iso of=/dev/sdX bs=8M</p>
+<p>之后重启电脑，开机之后按c进入grub引导程序。尝试以往的通过kernel指定vmlinuz时失败，才发现Grub2中已经没有了kernel命令，尝试legacy_kernel和xnu_kernel，结果均遭失败。于是我尝试直接指定 initrd (hd1,4)/casper/initrd.gz，然后exit，没成想Ubuntu的安装界面竟然出现了！<br />
+安装Ubuntu的过程中竟然就已经支持了WIFI，着实令我欣慰，看来Ubuntu这么多年在用户友好性上改进不少。<br />
+安装完成后重启，结果Grub无法正常工作，进入grub rescue模式。用iPad百度之后，发现好文Ubuntu启动问题以及Grub Rescue修复方法，逐步去试，果然灵验。转载该文如下：<br />
+Ubuntu启动问题以及Grub Rescue修复方法</p>
+<p>问题：<br />
+之前系统是Windows7 64bit（C盘） + D，E盘（都是NTFS） + Ubuntu。<br />
+今天，在Windows7中删除了E盘，准备向其中安装RedHat 6。 重启Windows7之后发现Ubuntu的grub菜单不能启动。屏幕显示Invalid FileSystem。 （如果没有记错的话，呵呵）<br />
+分析<br />
+由于在Windows下面更改了分区状态，删掉了Ubuntu之前的一个分区，造成Ubuntu的分区由sda5变为sda4了，这样找不到grub了，开机显示<br />
+grub rescue&gt;<br />
+解决<br />
+1. 先使用ls命令，找到Ubuntu的安装在哪个分区：<br />
+grub rescue&gt;ls<br />
+会罗列所有的磁盘分区信息，比方说：<br />
+(hd0,1),(hd0,5),(hd0,3),(hd0,2)<br />
+2. 然后依次调用如下命令： X表示各个分区号码<br />
+grub rescue&gt;ls (hd0,X)/boot/grub<br />
+如果都找不到的话，需要查一下是否因为Linux版本差异，造成grub的路径不对，例如直接ls(hd0,X)/grub等等。<br />
+3. 假设找到（hd0,5）时，显示了文件夹中的文件，则表示Linux安装在这个分区。<br />
+4. 调用如下命令：<br />
+grub rescue&gt;set root=(hd0,5)<br />
+grub rescue&gt;set prefix=(hd0,5)/boot/grub<br />
+grub rescue&gt;insmod /boot/grub/normal.mod<br />
+5. 然后调用如下命令，就可以显示出丢失的grub菜单了。<br />
+grub rescue&gt;normal<br />
+6. 不过不要高兴，如果这时重启，问题依旧存在，我们需要进入Linux中，对grub进行修复。<br />
+进入Linux之后，在命令行执行：<br />
+sudo update-grub<br />
+sudo grub-install /dev/sda<br />
+（sda是你的硬盘号码，千万不要指定分区号码，例如sda1，sda5等都不对）<br />
+7. 重启测试是否已经恢复了grub的启动菜单？ 恭喜你恢复成功！</p>
+<p>Grub恢复成功后，开始安装常用软件。Ubuntu新的界面不像以前想象中那么难用，而且他们终于部分放弃了以前屎黄色的界面风格，最难得的是在我那破本本上速度还是很快滴！期待Ubuntu12.04早日发布，到时直接升级之。</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/31/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%258d%2587%25e7%25ba%25a7fedora%252016%2520%25e4%25b8%258e%25e5%25ae%2589%25e8%25a3%2585ubuntu%252011-04%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">升级Fedora 16 与安装Ubuntu 11.04</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-12-31</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>两年半前安装了Fedora11，之后升级到Fedora 12， Fedora 14，期间安装了大量的软件，系统越来越慢……固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。</p>
+<p>基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。</p>
+<p>Ubuntu很快就下完。首先在Fedora下创建启动U盘，参照&nbsp;<span style="font-family:sans-serif;"><span style="font-size:13px;"><a href="http://fedoraproject.org/wiki/How_to_create_and_use_Live_USB">How to create and use Live USB</a>：</span></span></p></p>
+<ol>
+<li><span style="font-family:sans-serif;font-size:13px;"></span><br />
+<h3 style="font-size:16px;border-bottom-width:initial;border-bottom-style:none;border-bottom-color:initial;font-family:sans-serif;margin:0 0 .3em;padding:.5em 0 .17em;">
+<span class="mw-headline" id="Check_the_size_of_your_USB_stick" style="margin:0;padding:0;">Check the size of your USB stick</span></h3>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+Many USB sticks indicate the size on the packaging or the outside of the stick.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If you don't know the size of the stick, or want to check it for data, you should be able to auto-mount the USB stick by inserting it into a USB port. You can check the contents and size using the graphical file manager. In Linux, you can also use the command<br />
+ line:</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+<pre>$ df -h
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/VolGroup00-LogVol00
+143G   14G  122G  10% /
+/dev/sda1              99M   12M   82M  13% /boot
+tmpfs                1009M     0 1009M   0% /dev/shm
+/dev/sdb1             3.9G  4.0K  3.9G   1% /media/usbdisk</pre></p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+USB drives are usually mounted in /media. In this case, the device is /dev/sdb1, has a 3.9GB capacity and is almost empty.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+Take note of &quot;/dev/sdb1&quot; or equivalent; you will be specifying the device name if you use the command line method.</p>
+<p>
+</li>
+<li>
+<h2 style="font-size:18px;font-weight:normal;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(170,170,170);font-family:sans-serif;margin:0 0 .6em;padding:.5em 0 .17em;">
+<span class="mw-headline" id="How_to_Partition" style="margin:0;padding:0;">How to Partition</span></h2>
+<div class="messagebox" style="font-family:sans-serif;line-height:18px;background-color:rgb(249,246,183);min-height:35px;border-color:rgb(196,194,149);border-style:solid;border-width:1px;margin:1ex 0;padding:5px 5px 5px 45px;">
+<div style="float:left;margin:0 0 0 -40px;padding:0;">
+<a href="http://fedoraproject.org/wiki/File:Warning_(medium_size).png" class="image" style="color:rgb(114,159,207);text-decoration:none;margin:0;padding:0;"><img alt="Warning (medium size).png" src="http://fedoraproject.org/w/uploads/thumb/f/fd/Warning_%28medium_size%29.png/35px-Warning_%28medium_size%29.png" width="35" height="35" style="border-width:initial;border-color:initial;border-style:none;margin:0;padding:0;" /></a></div>
+<div style="margin:0;padding:0;">
+<span style="margin:0;padding:0;">CAUTION&nbsp;</span><br style="clear:none!important;margin:0;padding:0;" /><br />
+This will erase all data on the USB drive! Please read the instructions below&nbsp;<span style="margin:0;padding:0;">carefully</span>.</div>
+</div>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If the drive has not been partitioned properly (or if you are unsure), use&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">fdisk</code>&nbsp;to<br />
+ repartition it.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+It is also possible to do a non-destructive installation of a LiveUSB image, if you have sufficient empty space. See&nbsp;<a href="https://fedoraproject.org/wiki/How_to_create_and_use_Live_USB#How_to_install_non-destructively" class="external text" style="color:rgb(51,102,187);text-decoration:none;background-color:initial;margin:0;padding:0 16px 0 0;">How<br />
+ to install non-destructively</a>&nbsp;below.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+The&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">fdisk</code>&nbsp;command must be run as root. Include<br />
+ only the drive name in the command, not the partition number.&nbsp;<span style="margin:0;padding:0;"><span style="margin:0;padding:0;">Be<br />
+ sure to select the correct disk, or you may erase important data!</span></span>&nbsp;Check the output of &quot;df -h&quot; if you are unsure. For example, if your partition will be /dev/sdb1, do:</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+<pre>$ /sbin/fdisk /dev/sdb</pre></p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If you don't have fdisk installed, run&nbsp;</p>
+<pre>yum install util-linux-ng</pre>
+<p>&nbsp;as root.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+The following session output from&nbsp;<span style="font-size:16px;"><code style="background-color:rgb(249,249,249);margin:0;padding:0;">fdisk</code>&nbsp;</span>shows<br />
+ the responses to give to the prompts. The line starting&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">Last<br />
+ cylinder ...</code>&nbsp;refers to the size of the flash drive, so may be different than in the example.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+<pre>Command (m for help): d
+Selected partition 1
+
+Command (m for help): n
+Command action
+e   extended
+p   primary partition (1-4)
+p
+Partition number (1-4): 1
+First cylinder (1-960, default 1): ↵
+Using default value 1
+Last cylinder or +size or +sizeM or +sizeK (1-960, default 960): ↵
+Using default value 960
+
+Command (m for help): t
+Selected partition 1
+Hex code (type L to list codes): 6
+Changed system type of partition 1 to 6 (FAT16)
+
+Command (m for help): a
+Partition number (1-4): 1
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: If you have created or modified any DOS 6.x
+partitions, please see the fdisk manual page for additional
+information.
+Syncing disks.</pre></p>
+<h2 style="font-size:18px;font-weight:normal;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(170,170,170);font-family:sans-serif;margin:0 0 .6em;padding:.5em 0 .17em;">
+<span class="mw-headline" id="How_to_Format" style="margin:0;padding:0;">How to Format</span></h2>
+<div class="messagebox" style="font-family:sans-serif;line-height:18px;background-color:rgb(249,246,183);min-height:35px;border-color:rgb(196,194,149);border-style:solid;border-width:1px;margin:1ex 0;padding:5px 5px 5px 45px;">
+<div style="float:left;margin:0 0 0 -40px;padding:0;">
+<a href="http://fedoraproject.org/wiki/File:Warning_(medium_size).png" class="image" style="color:rgb(114,159,207);text-decoration:none;margin:0;padding:0;"><img alt="Warning (medium size).png" src="http://fedoraproject.org/w/uploads/thumb/f/fd/Warning_%28medium_size%29.png/35px-Warning_%28medium_size%29.png" width="35" height="35" style="border-width:initial;border-color:initial;border-style:none;margin:0;padding:0;" /></a></div>
+<div style="margin:0;padding:0;">
+<span style="margin:0;padding:0;">CAUTION&nbsp;</span><br style="clear:none!important;margin:0;padding:0;" /><br />
+This will erase all data on the USB drive! Please read the instructions below&nbsp;<span style="margin:0;padding:0;">carefully</span>.</div>
+</div>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If your USB media has sufficient free space on a&nbsp;<span style="margin:0;padding:0;">vfat</span>&nbsp;file system already, you do not need to<br />
+ perform this step.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+To finish, the partition must be formatted with an actual file system using&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">mkdosfs</code>&nbsp;as<br />
+ the root user. Unmount the device before using&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">mkdosfs</code>.<br />
+ In the below example, /dev/USBPARTITIONNAME might be, for example, /dev/sdb1.&nbsp;<span style="margin:0;padding:0;"><span style="margin:0;padding:0;">Be<br />
+ sure to select the correct partition; formatting destroys all data on it!</span></span></p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+<span style="margin:0;padding:0;"><span style="margin:0;padding:0;"></span></span></p>
+<pre>$ umount /dev/USBPARTITIONNAME
+$ /sbin/mkdosfs -F 32 -n usbdisk /dev/USBPARTITIONNAME</pre></p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If you don't have mkdosfs installed, run &quot;yum install dosfstools&quot; as root.</p>
+<p>
+</li>
+<li><span style="font-family:sans-serif;font-size:13px;">通过命令</span>
+<pre>su -c &quot;yum install liveusb-creator&quot;</pre>
+<p>安装了Fedora的liveusb-creator，但是发现Fedora的这个程序无法制作Ubuntu的启动盘<img alt="快哭了" src="http://static.blog.csdn.net/xheditor/xheditor_emot/default/fastcry.gif" />。<span style="font-family:sans-serif;font-size:13px;">无奈之下，试着把Ubuntu的iso文件复制到U盘里：</span>
+<pre>sudo dd if=F12-Live-i686.iso of=/dev/sdX bs=8M</pre>
+<p>
+</li>
+<li><span style="font-family:sans-serif;font-size:13px;">之后重启电脑，开机之后按c进入grub引导程序。尝试以往的通过kernel指定vmlinuz时失败，才发现Grub2中已经没有了kernel命令，尝试legacy_kernel和xnu_kernel，结果均遭失败。于是我尝试直接指定&nbsp;<span style="font-family:Consolas, 'Courier New', Courier, mono, serif;line-height:18px;text-align:left;background-color:rgb(248,248,248);">initrd&nbsp;(hd1,4)/casper/initrd.gz，然后exit，没成想Ubuntu的安装界面竟然出现了！</span></span></li>
+<li><span style="font-family:sans-serif;font-size:13px;">安装Ubuntu的过程中竟然就已经支持了WIFI，着实令我欣慰，看来Ubuntu这么多年在用户友好性上改进不少。</span></li>
+<li><span style="font-family:sans-serif;font-size:13px;">安装完成后重启，结果Grub无法正常工作，进入grub rescue模式。用iPad百度之后，发现好文<a href="http://www.cnblogs.com/samcn/archive/2011/03/30/1999615.html">Ubuntu启动问题以及Grub Rescue修复方法</a>，逐步去试，果然灵验。转载该文如下：</span></li>
+</ol>
+<p><span style="font-family:sans-serif;font-size:13px;"></span></p>
+<div class="postTitle" style="font-family:verdana;word-wrap:break-word;font-size:14px;font-weight:bold;line-height:21px;border-color:red;border-style:solid;border-width:0;padding:10px 10px 10px 5px;">
+<h3><a id="ctl02_TitleUrl" class="postTitle2" href="http://www.cnblogs.com/samcn/archive/2011/03/30/1999615.html" style="border-bottom-style:dotted;border-bottom-width:0;border-bottom-color:rgb(239,239,239);padding-bottom:10px;color:rgb(120,175,211);text-decoration:none;">Ubuntu启动问题以及Grub<br />
+ Rescue修复方法</a></h3>
+</div>
+<div id="cnblogs_post_body" style="font-family:verdana;word-wrap:break-word;font-size:14px;line-height:21px;">
+<ul>
+<li>问题：</li>
+</ul>
+<p style="margin:5px auto;">
+之前系统是Windows7 64bit（C盘） &#043; D，E盘（都是NTFS）&nbsp;&#043; Ubuntu。</p>
+<p style="margin:5px auto;">
+今天，在Windows7中删除了E盘，准备向其中安装RedHat 6。 重启Windows7之后发现Ubuntu的grub菜单不能启动。屏幕显示Invalid FileSystem。 （如果没有记错的话，呵呵）</p>
+<ul>
+<li>分析</li>
+</ul>
+<p style="margin:5px auto;">
+由于在Windows下面更改了分区状态，删掉了Ubuntu之前的一个分区，造成Ubuntu的分区由sda5变为sda4了，这样找不到grub了，开机显示</p>
+<p style="margin:5px auto;">
+grub rescue&gt;</p>
+<ul>
+<li>解决</li>
+</ul>
+<p style="margin:5px auto;">
+1.&nbsp; 先使用ls命令，找到Ubuntu的安装在哪个分区：&nbsp; &nbsp; &nbsp;</p>
+<p style="margin:5px auto;">
+<pre>grub rescue&gt;ls</pre></p>
+<p style="margin:5px auto;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会罗列所有的磁盘分区信息，比方说：</p>
+<p style="margin:5px auto;">
+&nbsp;&nbsp;&nbsp;&nbsp; (hd0,1),(hd0,5),(hd0,3),(hd0,2)</p>
+<p style="margin:5px auto;">
+2.&nbsp;然后依次调用如下命令： X表示各个分区号码&nbsp; &nbsp; &nbsp;</p>
+<p style="margin:5px auto;">
+<pre>grub rescue&gt;ls (hd0,X)/boot/grub</pre></p>
+<p style="margin:5px auto;">
+&nbsp; &nbsp; &nbsp;如果都找不到的话，需要查一下是否因为Linux版本差异，造成grub的路径不对，例如直接ls(hd0,X)/grub等等。</p>
+<p style="margin:5px auto;">
+3. 假设找到（hd0,5）时，显示了文件夹中的文件，则表示Linux安装在这个分区。</p>
+<p style="margin:5px auto;">
+4. 调用如下命令：</p>
+<pre>grub rescue&gt;set root=(hd0,5)
+grub rescue&gt;set prefix=(hd0,5)/boot/grub
+grub rescue&gt;insmod /boot/grub/normal.mod</pre></p>
+<p style="margin:5px auto;">
+5. 然后调用如下命令，就可以显示出丢失的grub菜单了。</p>
+<pre>grub rescue&gt;normal</pre></p>
+<p style="margin:5px auto;">
+6. 不过不要高兴，如果这时重启，问题依旧存在，我们需要进入Linux中，对grub进行修复。</p>
+<p style="margin:5px auto;">
+&nbsp;&nbsp;&nbsp; 进入Linux之后，在命令行执行：&nbsp; &nbsp;&nbsp;</p>
+<p style="margin:5px auto;">
+<pre>sudo update-grub
+sudo grub-install /dev/sda</pre></p>
+<p style="margin:5px auto;">
+（sda是你的硬盘号码，千万不要指定分区号码，例如sda1，sda5等都不对）</p>
+<p style="margin:5px auto;">
+7. 重启测试是否已经恢复了grub的启动菜单？ 恭喜你恢复成功！</p>
+</div>
+<p><span style="font-family:sans-serif;font-size:13px;">Grub恢复成功后，开始安装常用软件。Ubuntu新的界面不像以前想象中那么难用，而且他们终于部分放弃了以前屎黄色的界面风&#26684;，最难得的是在我那破本本上速度还是很快滴！期待Ubuntu12.04早日发布，到时直接升级之。</span></p>
+<p><span style="font-family:sans-serif;font-size:13px;"><br />
+</span></p>
+<p><span style="font-family:sans-serif;font-size:13px;"></span></p>
+<p>【Update 2012-04-29】</p>
+<p><span style="font-size:32px;"><strong>恢复Grub2</strong></span></p>
+<p>升级Ubuntu 11.10到12.04后，开机报错“no partition found”,进入Grub后，输入&quot;ls&quot;命令，也报错“no partition found”。</p>
+<p>于是我下载了<a href="http://unetbootin.sourceforge.net/">UNetbootin</a>，然后利用它在Win 7下制作Ubuntu自启动U盘。制作好之后，结果发现不会自动引导启动，需要在开机之后出现Thinkpad欢迎界面时按F12，然后选择U盘启动。然后选择U盘启动Ubuntu，进入Ubuntu后按照&nbsp;<a href="http://www.webupd8.org/2009/12/how-to-recover-grub2-linux.html">How to<br />
+ Fix Grub 2</a> 中的方法安装Grub 2到硬盘。</p></p>
+<div style="margin:0;padding:0;color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;">
+<span style="margin:0;padding:0;">To fix GRUB 2, you need an Ubuntu live CD from which you need to boot.</span>&nbsp;Once you boot to the LIVE CD, open a terminal an and type these commands:</div>
+<p><br style="margin:0;padding:0;color:rgb(85,85,85);font-size:14px;line-height:20px;" /></p>
+<div style="margin:0;padding:0;color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;">
+<span style="margin:0;padding:0;font-weight:bold;">a) Firstly, you need to find out on which partition your Linux system is installed:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo fdisk -l</code></pre>
+<p>(in my case, it's &quot;sda1&quot;)<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="margin:0;padding:0;font-weight:bold;">b) Now, we must mount this partition:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo mount /dev/<span style="margin:0;padding:0;font-weight:bold;">sda1</span> /mnt</code></pre>
+<p>Where &quot;sda1&quot; is the partition where you installed Ubuntu (or any other Linux distro). It could be &quot;sda5&quot;, &quot;sda6&quot;, etc. for you.<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="margin:0;padding:0;font-weight:bold;">c) Install grub to the partition you've mounted:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo grub-install --root-directory=/mnt/ /dev/sda</code></pre>
+<p><br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="margin:0;padding:0 2px;background-color:rgb(255,255,177);border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(223,223,223);border-right-width:1px;border-right-style:solid;border-right-color:rgb(223,223,223);color:rgb(51,51,51);">Important:</span>&nbsp;Please<br />
+ notice that it's &quot;/dev/sda&quot;, not &quot;/dev/sda1&quot;. &quot;sda&quot; is the hard disk on which your Linux distribution is installed!<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="margin:0;padding:0;font-weight:bold;">d) Restart your computer. As previous Grub 2 entries are removed, run the following command to restore them:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo update-grub</code></pre>
+</div>
+<p>
+重启电脑进入Grub 2之后，输入命令</p>
+<p>
+<pre>linux (hd0,X)/vmlinuz-3.2......
+initrd (hd0,X)/initrd.img-3.2......
+boot</pre>
+<p>
+Grub 2中已经不再支持kernel命令，需要用linux指定kernel。</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        
+<div class="pagination">
+    <ul>
+    
+        <li class="prev">
+        <a href="/page2">&larr; Previous</a>
+        
+        </li>
+    
+
+    
+        <li><a href="/">1</a></li>
+        
+
+        
+            <li><a href="/page2">2</a></li>
+            
+        
+            <li class="disabled"><a>3</a></li>
+            
+        
+            <li><a href="/page4">4</a></li>
+            
+        
+            <li><a href="/page5">5</a></li>
+            
+        
+            <li><a href="/page6">6</a></li>
+            
+        
+            <li><a href="/page7">7</a></li>
+            
+        
+            <li><a href="/page8">8</a></li>
+            
+        
+            <li><a href="/page9">9</a></li>
+            
+        
+            <li><a href="/page10">10</a></li>
+            
+        
+            <li><a href="/page11">11</a></li>
+            
+        
+            <li><a href="/page12">12</a></li>
+            
+        
+            <li><a href="/page13">13</a></li>
+            
+        
+            <li><a href="/page14">14</a></li>
+            
+        
+            <li><a href="/page15">15</a></li>
+            
+        
+            <li><a href="/page16">16</a></li>
+            
+        
+            <li><a href="/page17">17</a></li>
+            
+        
+            <li><a href="/page18">18</a></li>
+            
+        
+            <li><a href="/page19">19</a></li>
+            
+        
+            <li><a href="/page20">20</a></li>
+            
+        
+    
+
+    
+        <li class="next"><a href="/page4">Next &rarr;</a></li>
+    
+    </ul>
+</div>
+
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+	  <!--
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <wb:follow-button uid="2461544952" type="red_1" width="63" height="24" ></wb:follow-button>
+      </div>
+  </div>
+  -->
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Recent Posts</h3>
+        <ul>
+        
+          <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
+            How To Install Jekyll in Mac OSX Mavericks</a></li>
+        
+          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
+            C++ Code to Print Pascal Triangle</a></li>
+        
+          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
+            BACI Simple Install and Compile Guide</a></li>
+        
+          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
+            Dense Trajectory Notes</a></li>
+        
+          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
+            Parallelize mex file in Matlab</a></li>
+        
+          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
+            Notes of Advanced Machine Learning(I)</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
+            "undefined reference" error during installing OpenCV</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
+            Build Dense Trajectory Codes in Ubuntu</a></li>
+        
+          <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
+            Matlab Startup Script</a></li>
+        
+          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
+            Counting Unique k-mers -- My First Go Program</a></li>
+        
+        </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Tags</h3>
+        <div class="tag_box">
+        
+        
+  
+    
+        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
+    
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>7</span></a>
+    
+        <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
+    
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>4</span></a>
+    
+        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span>3</span></a>
+    
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>6</span></a>
+    
+        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
+    
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>14</span></a>
+    
+        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
+    
+        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
+    
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>3</span></a>
+    
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>86</span></a>
+    
+        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+    
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span>6</span></a>
+    
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>1</span></a>
+    
+        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span>3</span></a>
+    
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span>14</span></a>
+    
+        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span>6</span></a>
+    
+        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span>2</span></a>
+    
+        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span>2</span></a>
+    
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span>4</span></a>
+    
+        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span>2</span></a>
+    
+        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span>9</span></a>
+    
+        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>1</span></a>
+    
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
+    
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>5</span></a>
+    
+        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+    
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
+    
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+    
+        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
+    
+        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span>1</span></a>
+    
+        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span>1</span></a>
+    
+        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span>1</span></a>
+    
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
+    
+        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
+    
+        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span>1</span></a>
+    
+        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span>1</span></a>
+    
+        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span>1</span></a>
+    
+        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span>1</span></a>
+    
+        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span>1</span></a>
+    
+        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span>1</span></a>
+    
+        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span>1</span></a>
+    
+        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span>1</span></a>
+    
+        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span>1</span></a>
+    
+        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span>1</span></a>
+    
+        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span>3</span></a>
+    
+        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span>1</span></a>
+    
+        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span>1</span></a>
+    
+        <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
+    
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+    
+        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
+    
+        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span>1</span></a>
+    
+        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
+    
+        <a href="/tags.html#ML-ref" class="btn btn-mini">ML <span>1</span></a>
+    
+        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
+    
+        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span>1</span></a>
+    
+        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span>1</span></a>
+    
+        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
+    
+        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+  
+
+
+
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Links</h3>
+        <ul>
+        
+        
+    <li><a href=https://github.com/bo-yang title="My GitHub Channel">My GitHub Channel</a></li>
+
+    <li><a href=https://www.linkedin.com/pub/bo-yang/21/a3/893 title="My Linkedin Page">My Linkedin Page</a></li>
+
+    <li><a href=http://blog.csdn.net/bonny95 title="My Chinese Blog(obsolete)">My Chinese Blog(obsolete)</a></li>
+
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  </div>
+</div>
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

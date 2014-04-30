@@ -1,0 +1,1829 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <title>Bo Yang | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>Bo Yang  <small>Beginner's mind.</small></h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span12">
+    
+
+<div class="row-fluid page-body">
+
+  <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2013/04/05/linear-space-sequence-alignment">Linear Space Sequence Alignment</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2013-04-05</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>For explanation to linear space sequence alignment, please refer to <a href="http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf">http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf</a>.</p>
+<p>The algorithm and equation I used was from the textbook <em>Algorithm Design</em> by Jon Kleinberg and Éva Tardos(2005):</p>
+<p><a href="http://bonny95.files.wordpress.com/2013/04/align-equation.png"><img class="alignnone size-full wp-image-531" alt="align-equation" src="http://bonny95.files.wordpress.com/2013/04/align-equation.png" width="529" height="134" /></a> <a href="http://bonny95.files.wordpress.com/2013/04/align-alg.png"><img class="alignnone size-full wp-image-530" alt="align-alg" src="http://bonny95.files.wordpress.com/2013/04/align-alg.png" width="529" height="236" /></a> <a href="http://bonny95.files.wordpress.com/2013/04/space-efficient-equation.png"><img class="alignnone size-full wp-image-529" alt="space-efficient-equation" src="http://bonny95.files.wordpress.com/2013/04/space-efficient-equation.png" width="529" height="66" /></a> <a href="http://bonny95.files.wordpress.com/2013/04/space-efficient-akg.png"><img class="alignnone size-full wp-image-528" alt="space-efficient-akg" src="http://bonny95.files.wordpress.com/2013/04/space-efficient-akg.png" width="529" height="277" /></a> <a href="http://bonny95.files.wordpress.com/2013/04/divide-conquer.png"><img class="alignnone size-full wp-image-527" alt="divide-conquer" src="http://bonny95.files.wordpress.com/2013/04/divide-conquer.png" width="529" height="283" /></a></p>
+<p>The algorithm of Backward-Space-Efficient-Alignment() is the reverse of Space-Efficient-Alignment().</p>
+<p><a href="http://bonny95.files.wordpress.com/2013/04/time_cost_plot.png"><img class="alignnone size-full wp-image-532" alt="time_cost_plot" src="http://bonny95.files.wordpress.com/2013/04/time_cost_plot.png" width="529" height="398" /></a></p>
+<p>Time cost of sequences from 10bp-510bp.</p>
+<p><a href="http://bonny95.files.wordpress.com/2013/04/memory_cost_plot.png"><img class="alignnone size-full wp-image-533" alt="memory_cost_plot" src="http://bonny95.files.wordpress.com/2013/04/memory_cost_plot.png" width="529" height="395" /></a></p>
+<p>Memory cost of sequences from 10bp-510bp.</p>
+<pre class="cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+#include &lt;time.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;unistd.h&gt;
+
+using namespace std;
+
+const int MATCH_COST=0;
+const int MISMATCH_COST=2;
+const int GAP_COST=1;
+
+int memcnt=0; // counting memory allocated
+
+struct BTNode
+{
+	int x; // x axis
+	int y; // y axis
+	char type; // 'm'-match,'s'-mismatch,'g'-gap
+	char nt; // valid neucleotide: x-sequence x, y-sequence y, b-both 
+};
+
+BTNode* P;
+int pidx=0; // index of P
+
+struct Region // region in a sequence
+{
+	int start; 
+	int end;
+};
+
+//
+// Generate random sequence
+// 
+char* GenRandSeq(char* seq, int n)
+{
+	string nt="ATCG";
+	for(int i=0;i&lt;n;++i)
+	{
+		int idx=rand()%4;
+		seq[i]=nt[idx];
+	}
+
+	return seq;
+}
+
+int min(int a,int b,int c)
+{
+	return (a&lt;b?a:b)&lt;c?(a&lt;b?a:b):c;
+}
+
+void Merge(BTNode* input, long p, long r)
+{
+	long mid = floor((p + r) / 2);
+	long i1 = 0;
+	long i2 = p;
+	long i3 = mid + 1;
+
+	// Temp array
+	BTNode* temp=new BTNode[r-p+1];
+	memcnt+=sizeof(BTNode)*(r-p+1);
+
+	// Merge in sorted form the 2 arrays
+	while ( i2 &lt;= mid &amp;&amp; i3 &lt;= r )
+		if ( input[i2].x &lt; input[i3].x )
+			temp[i1++] = input[i2++];
+		else
+			temp[i1++] = input[i3++];
+
+	// Merge the remaining elements in left array
+	while ( i2 &lt;= mid )
+		temp[i1++] = input[i2++];
+
+	// Merge the remaining elements in right array
+	while ( i3 &lt;= r )
+		temp[i1++] = input[i3++];
+
+	// Move from temp array to master array
+	for ( int i = p; i &lt;= r; i++ )
+		input[i] = temp[i-p];
+
+	delete [] temp;
+}
+
+// Merge sort the BTNode array by the first index(element x)
+//
+// inputs:
+//	p - the start index of array input
+//	r - the end index of array input
+void Merge_sort(BTNode* input, long p, long r)
+{
+	if ( p &lt; r )
+	{
+		long mid = floor((p + r) / 2);
+		Merge_sort(input, p, mid);
+		Merge_sort(input, mid + 1, r);
+		Merge(input, p, r);
+	}
+}
+
+//
+// Insert new node into P
+//
+void InsertNodetoP(int x, int y)
+{
+	bool isok=true;
+	for(int i=0;i&lt;pidx;++i)
+	{
+		if(x==P[i].x &amp;&amp; y==P[i].y)
+			isok=false;
+	}
+	if(isok)
+	{
+		P[pidx].x=x;
+		P[pidx].y=y;
+		pidx++;
+	}
+}
+
+//
+// Align seqences
+//
+// Recurrence:
+// 	OPT(i,j)=min{   
+// 			alpha(i,j)+OPT(i-1,j-1), 
+// 			delta+OPT(i-1,j), 
+// 			delta+OPT(i,j-1)
+// 		}
+// 	where mismatch cost alpha=2, match cost alpha=0, and gap cost delta=1.
+//
+// Parameters:
+//	X,Y - sequences
+//	m - length of sequence X
+//	n - length of sequence Y
+//
+int Alignment(char* X, Region&amp; rx, char* Y, Region&amp; ry)
+{
+	int m=rx.end-rx.start+1;
+	int n=ry.end-ry.start+1;
+
+	int** S=new int*[m+1]; // temp array to store scores of alignment
+	for(int i=0;i&lt;m+1;++i)
+		S[i]=new int[n+1];
+	memcnt+=sizeof(int)*(m+1)*(n+1);
+
+	for(int i=0;i&lt;=m;++i)
+		S[i][0]=i*GAP_COST;
+	for(int j=0;j&lt;=n;++j)
+		S[0][j]=j*GAP_COST;
+
+	for(int j=1;j&lt;=n;++j)
+	{
+		for(int i=1;i&lt;=m;++i)
+		{
+			int alpha;
+			if(X[i-1]==Y[j-1])
+				alpha=MATCH_COST;
+			else
+				alpha=MISMATCH_COST;
+
+			S[i][j]=min(alpha+S[i-1][j-1],GAP_COST+S[i-1][j],GAP_COST+S[i][j-1]);
+		}
+	} // end of for
+
+	// Trace back 
+	int ix=m;
+	int iy=n;
+	int bt_len=m+n;// length of array to record tracing back
+	int cnt=bt_len-1; 	
+	BTNode* bt=new BTNode[bt_len]; // record backtrace path
+	memcnt+=sizeof(BTNode)*bt_len;
+	while(ix&gt;=1 &amp;&amp; iy&gt;=1)
+	{
+		bt[cnt].x=ix-1;
+		bt[cnt].y=iy-1;
+		InsertNodetoP(rx.start+ix-1,ry.start+iy-1);
+
+		if(S[ix][iy]==S[ix-1][iy-1]+MATCH_COST &amp;&amp; X[ix-1]==Y[iy-1]) // match
+		{
+			bt[cnt].type='m';
+			bt[cnt].nt='b';
+			ix--;
+			iy--;
+		} else if(S[ix][iy]==S[ix-1][iy-1]+MISMATCH_COST) { // mismatch
+			bt[cnt].type='s';
+			bt[cnt].nt='b';
+			ix--;
+			iy--;
+		} else if(S[ix][iy]==S[ix-1][iy]+GAP_COST) { // gap
+			bt[cnt].type='g';
+			bt[cnt].nt='x';
+			ix--;
+		} else if(S[ix][iy]==S[ix][iy-1]+GAP_COST) { // gap
+			bt[cnt].type='g';
+			bt[cnt].nt='y';
+			iy--;
+		} 	
+		cnt--;
+	}
+	while(iy&gt;0)
+	{
+		bt[cnt].x=ix-1;
+		bt[cnt].y=iy-1;
+		InsertNodetoP(rx.start+ix-1,ry.start+iy-1);
+
+		if(S[ix][iy]==S[ix][iy-1]+GAP_COST) { // gap
+			bt[cnt].type='g';
+			bt[cnt].nt='y';
+			iy--;
+		}
+		cnt--;
+	}
+	while(ix&gt;0)
+	{
+		bt[cnt].x=ix-1;
+		bt[cnt].y=iy-1;
+		InsertNodetoP(rx.start+ix-1,ry.start+iy-1);
+
+		if(S[ix][iy]==S[ix-1][iy]+GAP_COST) { // gap
+			bt[cnt].type='g';
+			bt[cnt].nt='x';
+			ix--;
+		}
+		cnt--;
+	}
+
+/*	// Print the alignment
+  	cnt++;
+	// TEST ONLY
+	for(int i=cnt;i&lt;bt_len;++i)
+	{
+		cout&lt;&lt;"("&lt;&lt;bt[i].x&lt;&lt;","&lt;&lt;bt[i].y&lt;&lt;") ";
+	}
+	cout&lt;&lt;endl;
+
+	// Print sequence X
+	for(int i=cnt;i&lt;bt_len;++i)
+	{
+		if(bt[i].nt=='x'||bt[i].nt=='b')
+		{
+			if(bt[i].x&lt;0)
+				cout&lt;&lt;'-';
+			else
+				cout&lt;&lt;X[bt[i].x];
+		} else {
+			cout&lt;&lt;'-';
+		}
+	}
+	cout&lt;&lt;endl;
+	// print middle line
+	for(int i=cnt;i&lt;bt_len;++i)
+	{
+		if(bt[i].type=='m')
+			cout&lt;&lt;'|';
+		else
+			cout&lt;&lt;' ';
+	}
+	cout&lt;&lt;endl;
+	// print sequence Y
+	for(int i=cnt;i&lt;bt_len;++i)
+	{
+		if(bt[i].nt=='y'||bt[i].nt=='b')
+		{
+			if(bt[i].y&lt;0)
+				cout&lt;&lt;'-';
+			else
+				cout&lt;&lt;Y[bt[i].y];
+		} else {
+			cout&lt;&lt;'-';
+		}
+	}
+	cout&lt;&lt;endl; */
+
+	delete [] bt;
+
+	int score=S[m][n];
+
+	for(int i=0;i&lt;m+1;++i)
+		delete [] S[i];
+	delete [] S;
+
+	return score;
+}
+
+// 
+// Space efficient alignment, which caculate the length of the 
+// shortest path from (0,0) to (i,j) and only can returns the optimal value.
+//
+int SpaceEfficientAlignment(int** S, char* X, int m, char* Y, int n)
+{
+	for(int i=0;i&lt;=m;++i)
+	{
+		S[i][0]=i*GAP_COST;
+	}
+
+	for(int j=1;j&lt;=n;++j)
+	{
+		S[0][1]=j*GAP_COST;
+		for(int i=1;i&lt;=m;++i)
+		{
+			int alpha;
+			if(X[i-1]==Y[j-1])
+				alpha=MATCH_COST;
+			else
+				alpha=MISMATCH_COST;
+
+			S[i][1]=min(alpha+S[i-1][0],GAP_COST+S[i-1][1],GAP_COST+S[i][0]);
+		}
+
+		// move column 1 of S to column 0 to make room for next iteration
+		for(int i=0;i&lt;=m;++i)
+			S[i][0]=S[i][1];
+	}
+
+	return S[m][1];
+}
+
+// 
+// Backward space efficient alignment, which caculate the length of the 
+// shortest path from (i,j) to (m,n) and only can returns the optimal value.
+//
+int BackwardSpaceEfficientAlignment(int** S, char* X, int m, char* Y, int n)
+{
+	for(int i=m;i&gt;=0;--i)
+	{
+		S[i][1]=(m-i)*GAP_COST;
+	}
+
+	for(int j=n-1;j&gt;=0;--j)
+	{
+		S[m][0]=(n-j)*GAP_COST;
+		for(int i=m-1;i&gt;=0;--i)
+		{
+			int alpha;
+			//if(X[m-i-1]==Y[j])
+			if(X[i]==Y[j])
+				alpha=MATCH_COST;
+			else
+				alpha=MISMATCH_COST;
+
+			S[i][0]=min(alpha+S[i+1][1],GAP_COST+S[i+1][0],GAP_COST+S[i][1]);
+		}
+
+		// move column 0 of S to column 1 to make room for next iteration
+		for(int i=0;i&lt;=m;++i)
+			S[i][1]=S[i][0];
+	}
+
+	return S[0][0];
+}
+
+// 
+// Find out the q that minimize the score f(q,n/2)+g(q,n/2)
+//
+// Inputs:
+// 	sf - score vector of forward space efficient alignment
+// 	sb - score vector of backward space efficient alignment
+// 	m - length of the score vector
+//
+int FindMinScore(int** sf,int** sb,int m)
+{
+	int min=sf[1][1]+sb[1][0];
+	int ret=1;
+	for(int q=2;q&lt;=m;++q)
+	{
+		if(min&gt;sf[q][1]+sb[q][0])
+		{
+			min=sf[q][1]+sb[q][0];
+			ret=q-1; // ret should be the position in the sequence, so minus 1
+		}
+	}
+
+	return ret;
+}
+
+//
+// Sequence alignemnt using divide and conquer
+//
+void DivideConquerAlignment(char* X, Region&amp; rx, char* Y, Region&amp; ry)
+{
+	int m=rx.end-rx.start+1;
+	int n=ry.end-ry.start+1;
+
+	if(m&lt;=2 || n&lt;=2)
+	{
+		Alignment(&amp;X[rx.start],rx,&amp;Y[ry.start],ry);
+//		cout&lt;&lt;"Call Alignment"&lt;&lt;endl; // TEST ONLY
+		return;
+	}
+
+	int** score_forward=new int*[m+1]; // (m+1)x2 matrix to store scores of alignment
+	int** score_backward=new int*[m+1]; // (m+1)x2 matrix to store scores of alignment
+	for(int i=0;i&lt;m+1;++i)
+	{
+		score_forward[i]=new int[2];
+		score_backward[i]=new int[2];
+	}
+	memcnt+=sizeof(int)*2*(m+1)*2;
+
+	// Get the middle points in path
+	Region tempry;
+	tempry.start=ry.start;
+	tempry.end=(ry.start+ry.end)/2;
+	SpaceEfficientAlignment(score_forward,&amp;X[rx.start],m,&amp;Y[tempry.start],tempry.end-tempry.start+1);
+	tempry.start=(ry.start+ry.end)/2+1;
+	tempry.end=ry.end;
+	BackwardSpaceEfficientAlignment(score_backward,&amp;X[rx.start],m,&amp;Y[tempry.start],tempry.end-tempry.start+1);
+
+	int q=FindMinScore(score_forward,score_backward,m)+rx.start;
+//	cout&lt;&lt;"q="&lt;&lt;q&lt;&lt;", n/2="&lt;&lt;(ry.start+ry.end)/2&lt;&lt;endl; // TEST ONLY
+	InsertNodetoP(q,(ry.start+ry.end)/2);
+
+	// Divide and Conquer
+	Region temprx;
+	temprx.start=rx.start;
+	temprx.end=q;
+	tempry.start=ry.start;
+	tempry.end=(ry.start+ry.end)/2;
+	if(temprx.start&lt;=temprx.end &amp;&amp; tempry.start&lt;=tempry.end)
+		DivideConquerAlignment(X,temprx,Y,tempry);
+	temprx.start=q+1;
+	temprx.end=rx.end;
+	tempry.start=(ry.start+ry.end)/2+1;
+	tempry.end=ry.end;
+	if(temprx.start&lt;=temprx.end &amp;&amp; tempry.start&lt;=tempry.end)
+		DivideConquerAlignment(X,temprx,Y,tempry);
+
+	for(int i=0;i&lt;m+1;++i)
+	{
+		delete [] score_forward[i];
+		delete [] score_backward[i];
+	}
+	delete [] score_forward;
+	delete [] score_backward;
+}
+
+// 
+// Backtrace and print the alignment
+//
+void Backtrace(char* X,char* Y)
+{
+	Merge_sort(P,0,pidx-1); // Sort nodes in path according to element x
+	// Adjust all nodes in path by element y
+	int prev_x=-1,prev_y=-1;
+	BTNode temp;
+	for(int i=0;i&lt;pidx;++i)
+	{
+		if(prev_y&gt;P[i].y)
+		{
+			temp=P[i-1];
+			P[i-1]=P[i];
+			P[i]=temp;
+		}
+		prev_y=P[i].y;
+	}
+
+//	for(int i=0;i&lt;pidx;++i)
+//		cout&lt;&lt;"("&lt;&lt;P[i].x&lt;&lt;","&lt;&lt;P[i].y&lt;&lt;")"&lt;&lt;" "; //TEST ONLY
+//	cout&lt;&lt;endl; // TEST ONLY
+
+	// Print sequence X
+	prev_x=-1;
+	for(int i=0;i&lt;pidx;++i)
+	{
+		if(P[i].x&lt;0 || P[i].x==prev_x)
+			cout&lt;&lt;'-';
+		else
+			cout&lt;&lt;X[P[i].x];
+		prev_x=P[i].x;
+	}
+	cout&lt;&lt;endl;
+
+	// Print middle line
+	prev_x=-1;
+	prev_y=-1;
+	for(int i=0;i&lt;pidx;++i)
+	{
+		if(X[P[i].x]==Y[P[i].y] &amp;&amp; prev_x!=P[i].x &amp;&amp; prev_y!=P[i].y)
+			cout&lt;&lt;'|';
+		else
+			cout&lt;&lt;' ';
+		prev_x=P[i].x;
+		prev_y=P[i].y;
+	}
+	cout&lt;&lt;endl;
+
+	// Print sequence Y
+	prev_y=-1;
+	for(int i=0;i&lt;pidx;++i)
+	{
+		if(P[i].y&lt;0 || P[i].y==prev_y)
+			cout&lt;&lt;'-';
+		else
+			cout&lt;&lt;Y[P[i].y];
+		prev_y=P[i].y;
+	}
+	cout&lt;&lt;endl;
+
+}
+
+//
+// MAIN START HERE
+//
+int main(int argc, char** argv)
+{
+	// initialize random seed
+	srand(time(NULL));
+
+	char* output=NULL;	// output file
+	int seqlen=0;		// sequence length
+	int c;
+
+	while ((c = getopt (argc, argv, "n:o:")) != -1)
+	{
+		switch (c)
+           	{
+		case 'n':
+             		seqlen = atoi(optarg); 
+             		break;
+		case 'o':
+             		output = optarg; 
+             		break;
+           	case '?':
+             		if (optopt == 'n')
+              			fprintf (stderr, "Option -%c requires an argument.\n\n", optopt);
+             		else if (isprint (optopt))
+               			fprintf (stderr, "Unknown option `-%c'.\n\n", optopt);
+             		else
+               			fprintf (stderr,
+                        		"Unknown option character `\x%x'.\n\n",
+                        		optopt);
+             		return 1;
+           	default:
+             		abort ();
+           	}
+	}
+
+	int m=seqlen;
+	int n=seqlen-rand()%(seqlen/5);
+
+	char* ref=new char[m];
+	char* seq=new char[n];
+	memcnt+=sizeof(char)*(m+n);
+
+	// generate random sequences
+	ref=GenRandSeq(ref,m);
+	seq=GenRandSeq(seq,n);
+
+	P=new BTNode[m+n];
+	memcnt+=sizeof(BTNode)*(m+n);
+
+	cout&lt;&lt;"seq 1:"&lt;&lt;ref&lt;&lt;endl; // TEST ONLY
+	cout&lt;&lt;"seq 2:"&lt;&lt;seq&lt;&lt;endl; // TEST ONLY
+
+	Region rx, ry;
+	rx.start=0;
+	rx.end=m-1;
+	ry.start=0;
+	ry.end=n-1;
+//	Alignment(ref,rx,seq,ry); // TEST ONLY
+
+	DivideConquerAlignment(ref,rx,seq,ry);
+
+	Backtrace(ref,seq);
+
+	delete [] ref;
+	delete [] seq;
+	delete [] P;
+
+	// Record the space costs
+	fstream fs;
+	fs.open("memory_cost", fstream::out|fstream::app);
+	fs&lt;&lt;m&lt;&lt;"bp: "&lt;&lt;memcnt&lt;&lt;endl;
+	fs.close();
+
+	return 0;
+}</pre>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication">Implementation of Strassen's Algorithm for Matrix Multiplication</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2013-03-20</strong> with tags <a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>, <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>Strassen's algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen's algorithm on <a href="http://en.wikipedia.org/wiki/Strassen_algorithm">Wikipedia</a>.</p>
+<p>However, the implementation of Strassen's algorithm cannot be used directly, because it  just sets the base case of the divide-and-conquer to be 1x1 matrix, which would consume huge time cost for iteration. If set the base case to 2x2 matrix, which means 2x2 matrix and 1x1 matrix will be multiplied by naive algorithm, then the Strassen's algorithm will be more efficient for matrices larger than 512x512.</p>
+<p>[caption id="attachment_521" align="alignnone" width="529"]<a href="http://bonny95.files.wordpress.com/2013/03/local_double_41.png"><img class="size-full wp-image-521" alt="When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512." src="http://bonny95.files.wordpress.com/2013/03/local_double_41.png" width="529" height="395" /></a> When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512.[/caption]</p>
+<p>[caption id="attachment_520" align="alignnone" width="529"]<a href="http://bonny95.files.wordpress.com/2013/03/local_int_36.png"><img class=" wp-image-520  " alt="When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128. " src="http://bonny95.files.wordpress.com/2013/03/local_int_36.png" width="529" height="396" /></a> When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128.[/caption]</p>
+<pre><code>
+/*------------------------------------------------------------------------------*/
+// matrix_mult.cc -- Implementation of matrix multiplication with
+// Strassen's algorithm.
+//
+// Compile this file with gcc command:
+// g++ -Wall -o matrix_mult matrix_mult.cc 
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;cmath&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+// This function allocates the matrix
+inline double** allocate_matrix(int n)
+{
+double** mat=new double*[n];
+for(int i=0;i&lt;n;++i)
+{
+mat[i]=new double[n];
+memset(mat[i],0,sizeof(double)*n);
+}
+
+return (mat); // returns the pointer to the vector.
+}
+
+/*------------------------------------------------------------------------------*/
+// This function unallocates the matrix (frees memory)
+inline void free_matrix(double **M, int n)
+{
+for (int i = 0; i &lt; n; i++)
+{
+delete [] M[i];
+}
+
+delete [] M; // frees the pointer /
+M = NULL;
+}
+
+/*------------------------------------------------------------------------------*/
+// function to sum two matrices
+inline void sum(double **a, double **b, double **result, int tam) {
+
+int i, j;
+
+for (i = 0; i &lt; tam; i++) {
+for (j = 0; j &lt; tam; j++) {
+result[i][j] = a[i][j] + b[i][j];
+}
+}
+}
+
+/*------------------------------------------------------------------------------*/
+// function to subtract two matrices
+inline void subtract(double **a, double **b, double **result, int tam) {
+
+int i, j;
+
+for (i = 0; i &lt; tam; i++) {
+for (j = 0; j &lt; tam; j++) {
+result[i][j] = a[i][j] - b[i][j];
+}
+}
+}
+
+/*------------------------------------------------------------------------------*/
+// naive method
+void naive(double** A, double** B,double** C, int n)
+{
+for (int i=0;i&lt;n;i++)
+for (int j=0;j&lt;n;j++)
+for(int k=0;k&lt;n;k++)
+C[i][j] += A[i][k]*B[k][j];
+}
+
+/*------------------------------------------------------------------------------*/
+// Strassen's method
+void strassen(double **a, double **b, double **c, int tam)
+{
+// Key observation: call naive method for matrices smaller than 2 x 2
+if(tam &lt;= 4)
+{
+naive(a,b,c,tam);
+return;
+}
+
+// other cases are treated here:
+int newTam = tam/2;
+double **a11, **a12, **a21, **a22;
+double **b11, **b12, **b21, **b22;
+double **c11, **c12, **c21, **c22;
+double **p1, **p2, **p3, **p4, **p5, **p6, **p7;
+
+// memory allocation:
+a11 = allocate_matrix(newTam);
+a12 = allocate_matrix(newTam);
+a21 = allocate_matrix(newTam);
+a22 = allocate_matrix(newTam);
+
+b11 = allocate_matrix(newTam);
+b12 = allocate_matrix(newTam);
+b21 = allocate_matrix(newTam);
+b22 = allocate_matrix(newTam);
+
+c11 = allocate_matrix(newTam);
+c12 = allocate_matrix(newTam);
+c21 = allocate_matrix(newTam);
+c22 = allocate_matrix(newTam);
+
+p1 = allocate_matrix(newTam);
+p2 = allocate_matrix(newTam);
+p3 = allocate_matrix(newTam);
+p4 = allocate_matrix(newTam);
+p5 = allocate_matrix(newTam);
+p6 = allocate_matrix(newTam);
+p7 = allocate_matrix(newTam);
+
+double **aResult = allocate_matrix(newTam);
+double **bResult = allocate_matrix(newTam);
+
+//dividing the matrices in 4 sub-matrices:
+for (int i = 0; i &lt; newTam; i++) {
+for (int j = 0; j &lt; newTam; j++) {
+a11[i][j] = a[i][j];
+a12[i][j] = a[i][j + newTam];
+a21[i][j] = a[i + newTam][j];
+a22[i][j] = a[i + newTam][j + newTam];
+
+b11[i][j] = b[i][j];
+b12[i][j] = b[i][j + newTam];
+b21[i][j] = b[i + newTam][j];
+b22[i][j] = b[i + newTam][j + newTam];
+}
+}
+
+// Calculating p1 to p7:
+
+sum(a11, a22, aResult, newTam); // a11 + a22
+sum(b11, b22, bResult, newTam); // b11 + b22
+strassen(aResult, bResult, p1, newTam); // p1 = (a11+a22) * (b11+b22)
+
+sum(a21, a22, aResult, newTam); // a21 + a22
+strassen(aResult, b11, p2, newTam); // p2 = (a21+a22) * (b11)
+
+subtract(b12, b22, bResult, newTam); // b12 - b22
+strassen(a11, bResult, p3, newTam); // p3 = (a11) * (b12 - b22)
+
+subtract(b21, b11, bResult, newTam); // b21 - b11
+strassen(a22, bResult, p4, newTam); // p4 = (a22) * (b21 - b11)
+
+sum(a11, a12, aResult, newTam); // a11 + a12
+strassen(aResult, b22, p5, newTam); // p5 = (a11+a12) * (b22)
+
+subtract(a21, a11, aResult, newTam); // a21 - a11
+sum(b11, b12, bResult, newTam); // b11 + b12
+strassen(aResult, bResult, p6, newTam); // p6 = (a21-a11) * (b11+b12)
+
+subtract(a12, a22, aResult, newTam); // a12 - a22
+sum(b21, b22, bResult, newTam); // b21 + b22
+strassen(aResult, bResult, p7, newTam); // p7 = (a12-a22) * (b21+b22)
+
+// calculating c21, c21, c11 e c22:
+
+sum(p3, p5, c12, newTam); // c12 = p3 + p5
+sum(p2, p4, c21, newTam); // c21 = p2 + p4
+
+sum(p1, p4, aResult, newTam); // p1 + p4
+sum(aResult, p7, bResult, newTam); // p1 + p4 + p7
+subtract(bResult, p5, c11, newTam); // c11 = p1 + p4 - p5 + p7
+
+sum(p1, p3, aResult, newTam); // p1 + p3
+sum(aResult, p6, bResult, newTam); // p1 + p3 + p6
+subtract(bResult, p2, c22, newTam); // c22 = p1 + p3 - p2 + p6
+
+// Grouping the results obtained in a single matrix:
+for (int i = 0; i &lt; newTam ; i++) {
+for (int j = 0 ; j &lt; newTam ; j++) {
+c[i][j] = c11[i][j];
+c[i][j + newTam] = c12[i][j];
+c[i + newTam][j] = c21[i][j];
+c[i + newTam][j + newTam] = c22[i][j];
+}
+}
+
+// deallocating memory (free):
+free_matrix(a11, newTam);
+free_matrix(a12, newTam);
+free_matrix(a21, newTam);
+free_matrix(a22, newTam);
+
+free_matrix(b11, newTam);
+free_matrix(b12, newTam);
+free_matrix(b21, newTam);
+free_matrix(b22, newTam);
+
+free_matrix(c11, newTam);
+free_matrix(c12, newTam);
+free_matrix(c21, newTam);
+free_matrix(c22, newTam);
+
+free_matrix(p1, newTam);
+free_matrix(p2, newTam);
+free_matrix(p3, newTam);
+free_matrix(p4, newTam);
+free_matrix(p5, newTam);
+free_matrix(p6, newTam);
+free_matrix(p7, newTam);
+free_matrix(aResult, newTam);
+free_matrix(bResult, newTam);
+
+} // end of Strassen function
+
+/*------------------------------------------------------------------------------*/
+// Generate random matrices
+void gen_matrix(double** M,int n)
+{
+for(int i=0;i&lt;n;++i)
+{
+for(int j=0;j&lt;n;++j)
+{
+M[i][j]=rand()%100;
+//M[i][j]=1;
+}
+}
+}
+
+/*------------------------------------------------------------------------------*/
+// print matrix M using specied fstream
+void print_matrix(fstream&amp; fs, double** M, int n)
+{
+for(int i=0;i&lt;n;++i)
+{
+for(int j=0;j&lt;n;++j)
+{
+fs&lt;&lt;M[i][j]&lt;&lt;" ";
+}
+fs&lt;&lt;endl;
+}
+fs&lt;&lt;endl;
+}
+
+/*------------------------------------------------------------------------------*/
+// record the generated matrix and the final product
+void mat_mult_log(double** A, double** B,double** C,int n,char* file)
+{
+fstream fs;
+fs.open(file,fstream::out);
+
+fs&lt;&lt;"Random Matrix A:"&lt;&lt;endl;
+print_matrix(fs,A,n);
+fs&lt;&lt;"Random Matrix B:"&lt;&lt;endl;
+print_matrix(fs,B,n);
+fs&lt;&lt;"C=A * B"&lt;&lt;endl;
+print_matrix(fs,C,n);
+
+fs.close();
+}
+
+/*------------------------------------------------------------------------------*/
+
+int main(int argc, char** argv)
+{
+srand(time(NULL));
+
+int mdim=2; // matrix dimension
+char* output=NULL;
+bool is_strassen=false;
+int c;
+
+while ((c = getopt (argc, argv, "sn:o:")) != -1)
+{
+switch (c)
+{
+case 's':
+is_strassen=true;
+break;
+case 'n':
+mdim = pow((int)2,atoi(optarg)); // 2^n dimensions
+break;
+case 'o':
+output = optarg; // 2^n dimensions
+break;
+case '?':
+if (optopt == 'n')
+fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+else if (isprint (optopt))
+fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+else
+fprintf (stderr,
+"Unknown option character `\x%x'.\n",
+optopt);
+return 1;
+default:
+abort ();
+}
+}
+
+// create new matrices
+double** A=allocate_matrix(mdim);
+double** B=allocate_matrix(mdim);
+double** C=allocate_matrix(mdim);
+gen_matrix(A,mdim);
+gen_matrix(B,mdim);
+
+// matrices multiplication
+if(is_strassen)
+strassen(A,B,C,mdim);
+else
+naive(A,B,C,mdim);
+
+if(output!=NULL)
+mat_mult_log(A,B,C,mdim,output);
+
+free_matrix(A,mdim);
+free_matrix(B,mdim);
+free_matrix(C,mdim);
+
+return 0;
+}</code></pre>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2013/01/29/basic-linux-multi-process-multi-thread-programming">Basic Linux Multi-Process & Multi-Thread Programming</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2013-01-29</strong> with tags <a href="/tags.html#Multi-Process-ref" rel="nofollow">Multi-Process</a>, <a href="/tags.html#Multi-Threading-ref" rel="nofollow">Multi-Threading</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+	Today I have to make my algorithm running in parallel in order to make it faster. At first I used following way to implement multi-process:</p>
+<pre class="cpp">	unsigned int proc_num = 5;
+	pid_t* pids=new pid_t[proc_num];
+	double incr=(double)N/(double)proc_num;
+	
+	/* Start children. */
+	for (unsigned int i = 0; i &lt; proc_num; ++i) {
+		if ((pids[i] = fork()) &lt; 0) {
+	    		perror(&quot;fork&quot;);
+	    		abort();
+	 	} else if (pids[i] == 0) {
+	    		// DoWorkInChild();
+
+	    		exit(0);
+	  	}
+	}
+	
+	/* Wait for children to exit. */
+	int status;
+	pid_t pid;
+	while (proc_num &gt; 0) {
+	  	pid = wait(&amp;status);
+		if(status != 0)
+	  		printf(&quot;Child Process with PID %ld aborted with status 0x%x.\n&quot;, (long)pid, status);
+	  	--proc_num;  // TODO(pts): Remove pid from the pids array.
+	}
+</pre>
+<p>
+Above way worked well, however, there's no way to change the &quot;shared&quot; variables in child processes. Because each child process has an independent copy of all variables.</p>
+<p>
+	In order to change the same array in parallel, I implemented multi threads.</p></p>
+<pre class="cpp">struct thread_info {    /* Used as argument to thread_start() */
+	pthread_t thread_id;        /* ID returned by pthread_create() */
+	int	start;       /* Application-defined thread # */
+	int     end;      /* From command-line argument */
+	int*	gpdarr;	/* Array to store GPD number */
+	long int G;	/* genome length */
+	unsigned int L;	/* read length */
+	double l1;	// GPD parameter lambda1
+	double l2;	// GPD parameter lambda2
+	double M;	// maximum of GPD density
+};
+
+void printPt(pthread_t pt) {
+  unsigned char *ptc = (unsigned char*)(void*)(&amp;pt);
+  printf(&quot;0x&quot;);
+  for (size_t i=0; i&lt;sizeof(pt); i++) {
+    printf(&quot;%02x&quot;, (unsigned)(ptc[i]));
+  }
+}
+
+void* gen_gpd_num(void* arg)
+{
+	struct thread_info *tinfo = (struct thread_info *) arg;
+	// do something here
+
+	pthread_exit(0);
+}
+
+int main()
+{
+        unsigned int tnum = 20;
+	double incr=(double)N/(double)tnum;
+	
+	thread_info* tinfo=new thread_info[tnum];
+
+	int err;
+	void* res;
+	
+	/* Start children. */
+	for(unsigned int idx=0;idx&lt;tnum;++idx) 
+	{
+		tinfo[idx].start=incr*idx;
+		tinfo[idx].end=incr*(idx+1);
+		tinfo[idx].gpdarr=gpdnum;
+		tinfo[idx].G=G;
+		tinfo[idx].L=l;
+		tinfo[idx].l1=l1;
+		tinfo[idx].l2=l2;
+		tinfo[idx].M=M;
+
+		err = pthread_create(&amp;tinfo[idx].thread_id, NULL, &amp;gen_gpd_num, &amp;tinfo[idx]);
+
+		if(err!=0)
+			printf(&quot;can't create thread :[%s]&quot;, strerror(err));
+		else
+			pthread_join(tinfo[idx].thread_id, &amp;res);
+	}
+        delete [] tinfo;
+}</pre>
+<p>
+The potential problem of using multi-threading in Linux is -- it is hard to figure out if there really are many threads are running&nbsp;simultaneously.&nbsp;</p>
+<p>
+	When compiling multi-threading program using GCC, pthread library must be specified:</p></p>
+<pre class="cpp">g++ -o foo -Wall foo.cc -L/usr/lib -lpthread</pre>
+<p>
+References:</p></p>
+<ol>
+<li>
+		<a href="http://www.thegeekstuff.com/2012/04/create-threads-in-linux/" style="font-size:14px;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;letter-spacing:-1px;line-height:1.364em;">How to Create Threads in Linux (With a C Example Program)</a></p>
+<h1 class="entry-title" style="padding:0;margin:0;font-weight:normal;color:rgb(169,0,0);line-height:1.364em;letter-spacing:-1px;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
+		</h1>
+</li>
+<li>
+		http://www.kernel.org/doc/man-pages/online/pages/man3/pthread_create.3.html</p>
+</li>
+</ol></p>
+<p>
+	</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/12/06/simple-matlaboctave-commands-to-process-data">Simple Matlab/Octave Commands to Process Data</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-12-06</strong> with tags <a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>To load data in following format stored in a text file "read_pos' into Matlab/Octave, use commands<br />
+<code><br />
+    f=fopen('read_pos','r'); % open file<br />
+    a=textscan(f,'%s%d');  % read file<br />
+    y=a{2}; % a is a cell: a{1} stores read id, a{2} stores numbers.<br />
+</code><br />
+<br />
+Then data of the second column are stored in variable y.<br />
+<code><br />
+r12353.1 	2407054.5<br />
+r12361.1 	5328858.5<br />
+r12363.1 	2360272<br />
+r12368.1 	4726440.5<br />
+r12372.1 	2224001<br />
+r12373.1 	5165613.5<br />
+r12381.1 	501776<br />
+r12385.1 	3475398<br />
+r12394.1 	3376364<br />
+r12401.1 	2142875.5<br />
+r12411.1 	2191090.5<br />
+r12419.1 	1240590<br />
+r12420.1 	4903572<br />
+r12422.1 	767011.5<br />
+r12426.1 	3575915.5<br />
+r12429.1 	554956<br />
+r12433.1 	4786335<br />
+r12435.1 	3373955.5<br />
+r12442.1 	5363611.5<br />
+r12452.1 	1903660.5<br />
+r12454.1 	2784165<br />
+r12466.1 	5137479<br />
+r12470.1 	592191<br />
+</code><br />
+<br />
+If there are only numbers stored in file "read_pos", following commands should be used:<br />
+<code><br />
+    f=fopen('read_pos','r'); % open file<br />
+    a=textscan(f,'%s%d');  % read file<br />
+    y=cell2mat{a}; % convert cell a to vector<br />
+    size(y) % check the size<br />
+</code></p>
+<p>
+To plot the distribution of all the numbers, you can:<br />
+<code><br />
+    x=zeros(size(y));<br />
+    plot(y,x,'bo');<br />
+</code><br />
+<br />
+If another data set z is also loaded and you want to plot y and z in the same graph, you can:<br />
+<code><br />
+    figure<br />
+    x=zeros(size(y));<br />
+    plot(y,x,'bo');<br />
+    hold on<br />
+    x=ones(size(z));<br />
+    plot(z,x,'r+');<br />
+</code></p>
+<p>
+To annotate and scale the graph, use commands;<br />
+<code><br />
+    xlabel('AMD Data k-mer Occurrances');<br />
+    title('GPD Classification of AMD k-mers')<br />
+    legend('Bin 1','Bin 2')<br />
+    axis([-5 5 0 10000]) % scale axes<br />
+</code></p>
+<p>A matlab function to plot multiple datasets:<br />
+<code><br />
+function result=plot_distr(varargin)</p>
+<p>nVarargs=length(varargin);</p>
+<p>marker={'bo' 'r+' 'k*' 'gs' 'y^' 'md' 'cp' 'bx' 'r.' 'k&gt;' 'gh' 'y&lt;&#039;};<br />
+figure<br />
+for k=1:nVarargs<br />
+	f=fopen(varargin{k},&#039;r&#039;);<br />
+	a=textscan(f,&#039;%d&#039;);<br />
+	y=cell2mat(a);<br />
+	x=zeros(size(y))+k;<br />
+	plot(y,x,marker{k});<br />
+	hold on<br />
+end<br />
+ylim([0-5*nVarargs 6*nVarargs]); % scale y-axis<br />
+</code></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/11/17/tips-about-regular-expression">Tips about Regular Expression</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-11-17</strong> with tags <a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <ol>
+<li>In Vim, greedy matching is used by default. In order to use non-greedy matching, you can use \{-}, or \{-n,m}, such as: :/Q.\{-0,200}[IL].\{-0,2000}FF.</li>
+<li>In Perl, default matching is also greedy. To use non-greedy matching, please change <code>*</code> , <code>+</code> , <code>?</code> , and<code>{}</code> into <code>*?</code> , <code>+?</code> , <code>??</code> , and <code>{}?</code> , respectively.</li>
+<li>To count the number of matching in Vim, you can use command ":%s/&lt;pattern&gt;//g". After get the number of matches, then execute ":u" to undo the changes.</li>
+<li>In Perl, to count the number of matching, you can use command: 
+<pre><code>my $number =()= $string =~ /\./gi;</code></pre>
+</li>
+</ol>
+<p>References:</p>
+<ol>
+<li>http://vimregex.com/</li>
+<li>http://stackoverflow.com/questions/1849329/is-there-a-perl-shortcut-to-count-the-number-of-matches-in-a-string</li>
+<li>http://docstore.mik.ua/orelly/perl/cookbook/ch06_16.htm</li>
+</ol>
+<p> </p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library">Calculate the CDF of Poisson Distribution with Boost C++ Library</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-11-05</strong> with tags <a href="/tags.html#boost-ref" rel="nofollow">boost</a>, <a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>, <a href="/tags.html#CDF-ref" rel="nofollow">CDF</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>The Cumulative Distribution Function(CDF) of Poisson distribution can be easily calculated by R function ppois() or octave/Matlab function poisspdf(). However, it is not a easy thing to deal with statistics with C++ from scratch.</p>
+<p>Today I found a very powerful C++ mathematical library(actually not limited to math), boost. Unfortunately, it is hard to figure out the API of boost library from the code if you are not familiar with generalization programming(just like me). Besides, there is no useful "hello world" examples on the Internet to show the boost library handling statistics(examples on webpage <a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a> is a bit complicated and the header files are not included).</p>
+<p>Therefore, I made up following example to show how to get the cdf of Poisson distribution with boost C++ library:<br />
+<code><br />
+#include &lt;boost/math/distributions/poisson.hpp&gt;<br />
+#include &lt;iostream&gt;</code></p>
+<p>using namespace std;<br />
+using namespace boost::math;</p>
+<p>int main()<br />
+{<br />
+poisson_distribution&lt;&gt; p(2.9);<br />
+cout&lt;&lt;"cdf: ppois(1,2.9)="&lt;&lt;cdf(p,1)&lt;&lt;endl;</p>
+<p>return 0;<br />
+}</p>
+<p><em>References:</em></p>
+<ol>
+<li><a href="http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html">http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html</a></li>
+<li><a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a></li>
+<li><a href="http://www.datasimfinancial.com/forum/viewtopic.php?t=111">http://www.datasimfinancial.com/forum/viewtopic.php?t=111</a></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/11/04/an-implementation-of-merge-sort-in-c">An Implementation of Merge Sort in C</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-11-04</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#Merge sort-ref" rel="nofollow">Merge sort</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. </p>
+<p>The merge sort below was found in Internet. Sorry that I forgot to record the hyperlink of the webpage. Only a few changes were made by me. </p>
+<p> </p>
+<p><code>void Merge(int* input, long p, long r)<br />
+{<br />
+	long mid = floor((p + r) / 2);<br />
+	long i1 = 0;<br />
+	long i2 = p;<br />
+	long i3 = mid + 1;</p>
+<p>	// Temp array<br />
+	int* temp=new int[r-p+1];</p>
+<p>	// Merge in sorted form the 2 arrays<br />
+	while ( i2 &lt;= mid &amp;&amp; i3 &lt;= r )<br />
+		if ( input[i2] &lt; input[i3] )<br />
+			temp[i1++] = input[i2++];<br />
+		else<br />
+			temp[i1++] = input[i3++];</p>
+<p>	// Merge the remaining elements in left array<br />
+	while ( i2 &lt;= mid )<br />
+		temp[i1++] = input[i2++];</p>
+<p>	// Merge the remaining elements in right array<br />
+	while ( i3 &lt;= r )<br />
+		temp[i1++] = input[i3++];</p>
+<p>	// Move from temp array to master array<br />
+	for ( int i = p; i &lt;= r; i++ )<br />
+		input[i] = temp[i-p];</p>
+<p>	delete [] temp;<br />
+}</p>
+<p>// inputs:<br />
+//	p - the start index of array input<br />
+//	r - the end index of array input<br />
+void Merge_sort(int* input, long p, long r)<br />
+{<br />
+	if ( p &lt; r )<br />
+	{<br />
+		long mid = floor((p + r) / 2);<br />
+		Merge_sort(input, p, mid);<br />
+		Merge_sort(input, mid + 1, r);<br />
+		Merge(input, p, r);<br />
+	}<br />
+}<br />
+</code></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/08/24/connect-mac-os-x-with-linux-server">Connect Mac OS X with Linux Server</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-08-24</strong> with tags <a href="/tags.html#Mac OS-ref" rel="nofollow">Mac OS</a>, <a href="/tags.html#VNC-ref" rel="nofollow">VNC</a>, <a href="/tags.html#X11-ref" rel="nofollow">X11</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>There are many ways to connect Mac OS X with Linux by command line. However, connecting them with GUI is not so easy. I tried two ways, but none of them work perfectly and each of them has both advantages and disadvantages.</p>
+<p>The first way I tried was VNC. <a href="http://sourceforge.net/projects/cotvnc/">Chicken of the VNC</a> was said to be the best VNC client under Mac OS X, unfortunately, I haven't make it work, even follow the tips of webpage <a id="using_vnc_on_mac_os_x" name="using_vnc_on_mac_os_x"></a><a href="http://www.cs.vassar.edu/sysnews/vnc/osx">Using VNC on Mac OS X</a>. I used realvnc. The first step is to configure ssh. I followed the tips on webpage <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>.  In the Linux server, after installing openssh, edit the file <code>/etc/ssh/ssh_config</code> and make sure</p>
+<pre>ForwardAgent yes
+ForwardX11 yes
+ForwardX11Trusted yes</pre>
+<p>Then edit <code>/etc/ssh/sshd_config</code> and make sure</p>
+<pre>X11Forwarding yes</pre>
+<p>.</p>
+<p>In the terminal of Mac OS X, enter command "<code>ssh -L 5901:localhost:5900 &lt;login&gt;@&lt;LinuxServer&gt;</code>". 5901 is the port number to be used by RealVNC, and 5900 is the port number of the VNC in Linux. For details about this command, refer to <a href="http://manas.tungare.name/blog/ssh-port-forwarding-on-mac-os-x/">SSH Port Forwarding on Mac OS X</a>. Then start RealVNC, enter "<code>localhost:5901</code>" and your VNC password.</p>
+<p>RealVNC works reliably, but the quality of GUI is not good and sometimes responds slowly.</p>
+<p>The other method is also based on ssh, therefore the ssh should also be configured in the Linux side. The only difference is X11 should be installed in Mac OS X. The above<br />
+ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&gt;". After login to Linux in terminal, run command "<code>gnome-session</code>"(this requires Gnome be installed in Linux server). In this way, remote Linux programs runs as local Mac applications. For more info, please refer to <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>. The disadvantage of using this way is, X11 is not reliable in Mac OS X and it may crash at any time.</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/08/08/how-to-make-nic-bcm57780-work-in-scientific-linux">How to make NIC BCM57780 work in Scientific Linux?</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-08-08</strong> with tags <a href="/tags.html#Linux-ref" rel="nofollow">Linux</a>, <a href="/tags.html#NIC-ref" rel="nofollow">NIC</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>I decided to install Scientific Linux on the computer in my lab. Partly because this distribution is called "Scientific", partly because it is compiled from Red Hat Enterprise Linux, the most prestigious Linux distribution in the world.</p>
+<p>At first, I downloaded the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso">Everything DVDs</a> and burned it into my USB stick via <a href="http://unetbootin.sourceforge.net/">UNetbootin</a>. Unfortunately, it couldn't boot. Then I tried the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveCD.iso">Live CD</a>. It did worked and I installed the SL in a few minutes. However, the network could not be connected and the NIC could not be activated. I checked the NIC type by "<code>lspci | grep net</code>", and I found it was <strong>Broadcom Corporation NetLink BCM57780</strong>.</p>
+<p>Many people complain this network card. Some guys tried to download the<a href="http://www.broadcom.com/support/ethernet_nic/netlink_k57.php"> source code </a>of the driver from Broadcom and compiled it by themselves. I didn't want to do that, so I searched "tg3 rpm" and finally got the rpm package for SL <a href="ftp://ftp.ntua.gr/pub/linux/scientificlinux/6.2/x86_64/updates/fastbugs/kmod-tg3-3.122-1.el6_2.x86_64.rpm">kmod-tg3-3.122-1.el6_2.x86_64.rpm</a>. I installed it and restarted the network even the computer, the NIC still didn't work.</p>
+<p>Then I resorted to compiling the source code of tg3. Unfortunately, I realized that gcc was not installed -- the LiveCD didn't contain the GCC package. When I tried to manually install GCC from rpm, a series of shared library dependencies blocked me. So I have to downloaded the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveDVD.iso">LiveDVD of SL</a>, burned it again and installed the SL again. This time, the GCC was included.</p>
+<p>Before building the tg3 driver, I installed the downloaded tg3 rpm package and searched again for the driver. Finally I found webpage <strong><a href="http://www.aoddy.com/2007/10/15/how-to-updating-driver-for-gigabit-network-card-broadcom-tg3netxtream-on-fedora-core-4-2/">How to updating driver for gigabit network card [Broadcom TG3:netXtream] on fedora core 4.</a> </strong>and responses to <a href="http://fonality.com/trixbox/forums/trixbox-forums/help/eth0-no-device-found-nic-broadcom-tg3-drivers-kernel-dkms">eth0 no device found, NIC Broadcom tg3 drivers, kernel, DKMS</a>. Combing the two webpages, I got to know how to make BCM57780 work in SL:</p>
+<ol>
+<li>Download and install <a href="ftp://ftp.ntua.gr/pub/linux/scientificlinux/6.2/x86_64/updates/fastbugs/kmod-tg3-3.122-1.el6_2.x86_64.rpm">kmod-tg3-3.122-1.el6_2.x86_64.rpm</a>.</li>
+<li>Go to <code>/lib/modules/&lt;kernel#&gt;/kernel/net </code> and check if tg3.ko there. If not, try executing "locate tg3".</li>
+<li>Run command "<code>insmod  /path/to/tg3.ko</code>".</li>
+<li>Run command "<code>service network restart</code>".</li>
+<li>Update /etc/.rc.local and append commands in 3 &amp; 4 to the end. Or you must manually run commands 3&amp;4 after reboot.</li>
+</ol>
+<p>Besides, if the above still not work, you may consider appending "<code>biosdevname=0</code>" to the kernel line of the grub config file <code>/etc/grub.conf</code>.</p>
+<p><em><strong>[Update 08/09/2012]:</strong></em></p>
+<p>I am sorry that I didn't really tried if the way above modifying /etc/rc.local really work after reboot. And today I did try, but the answer was no. I struggled for another hour and finally found out the tricky tip: <span style="color:#ff0000;"><strong>module tg3.ko must be removed and re-installed before restarting your network, or the Broadcom NIC still wouldn't work!</strong></span></p>
+<p>So you should append following code to your /etc/rc.local:</p>
+<p><strong><code>rmmod tg3.ko<br />
+insmod /path/to/tg3.ko<br />
+service network restart</code></strong></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/06/14/sock_raw-issue-with-setuidchroot-ed-login-on-linux-serversstill-unresolved">SOCK_RAW Issue with setuid&chroot-ed login on Linux Servers(Still Unresolved)</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2012-06-14</strong> with tags 
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>Problem:</p>
+<blockquote><p>when using function socket(AF_INET,<strong>SOCK_RAW</strong>,IPPROTO_TCP...) with setuid&amp;chroot-ed fake root on Linux servers, it would always fail. However, the real root can work well. Usually the fake root can do most things that root login required.
+</p></blockquote>
+<p>After investigation, got following hints:</p>
+<ul>
+<li>According to man page of <a href="http://linux.die.net/man/7/raw">SOCK_RAW(7)</a>, &quot;Only processes with an effective user ID of 0 or the CAP_NET_RAW capability are allowed to open raw sockets&quot;.</li>
+<li>According to <a href="http://www.kernel.org/doc/man-pages/online/pages/man7/capabilities.7.html">capabilities(7) - Linux man page</a>, &quot;For the purpose of performing permission checks, traditional UNIX implementations distinguish two categories of processes: privileged processes (whose effective user ID is 0, referred to as superuser or root), and unprivileged processes (whose effective UID is nonzero). Privileged processes bypass all kernel permission checks, while unprivileged processes are subject to full permission checking based on the process's credentials (usually: effective UID, effective GID, and supplementary group list)&quot;.</li>
+</ul>
+<blockquote><p>Starting with kernel 2.2, Linux divides the privileges traditionally associated with superuser into distinct units, known as capabilities, which can be independently enabled and disabled. Capabilities are a per-thread attribute.
+</p></blockquote>
+<blockquote><p>CAP_NET_RAW
+</p></blockquote>
+<blockquote><blockquote> Use RAW and PACKET sockets.</p>
+</blockquote>
+</blockquote>
+<ul>
+<li>In raw socket access as normal user on linux 2.4, setuid is suggested, but it didn’t work.</li>
+</ul>
+<p>Since we can't provide root login to all users, we must either find a way to let raw sockets work with setuid&amp;chroot-ed login, or substitute raw sockets with other options.</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        
+<div class="pagination">
+    <ul>
+    
+        <li class="prev">
+        <a href="/">&larr; Previous</a>
+        
+        </li>
+    
+
+    
+        <li><a href="/">1</a></li>
+        
+
+        
+            <li class="disabled"><a>2</a></li>
+            
+        
+            <li><a href="/page3">3</a></li>
+            
+        
+            <li><a href="/page4">4</a></li>
+            
+        
+            <li><a href="/page5">5</a></li>
+            
+        
+            <li><a href="/page6">6</a></li>
+            
+        
+            <li><a href="/page7">7</a></li>
+            
+        
+            <li><a href="/page8">8</a></li>
+            
+        
+            <li><a href="/page9">9</a></li>
+            
+        
+            <li><a href="/page10">10</a></li>
+            
+        
+            <li><a href="/page11">11</a></li>
+            
+        
+            <li><a href="/page12">12</a></li>
+            
+        
+            <li><a href="/page13">13</a></li>
+            
+        
+            <li><a href="/page14">14</a></li>
+            
+        
+            <li><a href="/page15">15</a></li>
+            
+        
+            <li><a href="/page16">16</a></li>
+            
+        
+            <li><a href="/page17">17</a></li>
+            
+        
+            <li><a href="/page18">18</a></li>
+            
+        
+            <li><a href="/page19">19</a></li>
+            
+        
+            <li><a href="/page20">20</a></li>
+            
+        
+    
+
+    
+        <li class="next"><a href="/page3">Next &rarr;</a></li>
+    
+    </ul>
+</div>
+
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+	  <!--
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <wb:follow-button uid="2461544952" type="red_1" width="63" height="24" ></wb:follow-button>
+      </div>
+  </div>
+  -->
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Recent Posts</h3>
+        <ul>
+        
+          <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
+            How To Install Jekyll in Mac OSX Mavericks</a></li>
+        
+          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
+            C++ Code to Print Pascal Triangle</a></li>
+        
+          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
+            BACI Simple Install and Compile Guide</a></li>
+        
+          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
+            Dense Trajectory Notes</a></li>
+        
+          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
+            Parallelize mex file in Matlab</a></li>
+        
+          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
+            Notes of Advanced Machine Learning(I)</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
+            "undefined reference" error during installing OpenCV</a></li>
+        
+          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
+            Build Dense Trajectory Codes in Ubuntu</a></li>
+        
+          <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
+            Matlab Startup Script</a></li>
+        
+          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
+            Counting Unique k-mers -- My First Go Program</a></li>
+        
+        </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Tags</h3>
+        <div class="tag_box">
+        
+        
+  
+    
+        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
+    
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>7</span></a>
+    
+        <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
+    
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>4</span></a>
+    
+        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span>3</span></a>
+    
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>6</span></a>
+    
+        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
+    
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>14</span></a>
+    
+        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
+    
+        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
+    
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>3</span></a>
+    
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>86</span></a>
+    
+        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+    
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span>6</span></a>
+    
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>1</span></a>
+    
+        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span>3</span></a>
+    
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span>14</span></a>
+    
+        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span>6</span></a>
+    
+        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span>2</span></a>
+    
+        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span>2</span></a>
+    
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span>4</span></a>
+    
+        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span>2</span></a>
+    
+        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span>9</span></a>
+    
+        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>1</span></a>
+    
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
+    
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>5</span></a>
+    
+        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+    
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
+    
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+    
+        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
+    
+        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span>1</span></a>
+    
+        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span>1</span></a>
+    
+        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span>1</span></a>
+    
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
+    
+        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
+    
+        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span>1</span></a>
+    
+        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span>1</span></a>
+    
+        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span>1</span></a>
+    
+        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span>1</span></a>
+    
+        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span>1</span></a>
+    
+        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span>1</span></a>
+    
+        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span>1</span></a>
+    
+        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span>1</span></a>
+    
+        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span>1</span></a>
+    
+        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span>1</span></a>
+    
+        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span>3</span></a>
+    
+        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span>1</span></a>
+    
+        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span>1</span></a>
+    
+        <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
+    
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+    
+        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
+    
+        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span>1</span></a>
+    
+        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
+    
+        <a href="/tags.html#ML-ref" class="btn btn-mini">ML <span>1</span></a>
+    
+        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
+    
+        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span>1</span></a>
+    
+        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span>1</span></a>
+    
+        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
+    
+        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+  
+
+
+
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+        <h3>Links</h3>
+        <ul>
+        
+        
+    <li><a href=https://github.com/bo-yang title="My GitHub Channel">My GitHub Channel</a></li>
+
+    <li><a href=https://www.linkedin.com/pub/bo-yang/21/a3/893 title="My Linkedin Page">My Linkedin Page</a></li>
+
+    <li><a href=http://blog.csdn.net/bonny95 title="My Chinese Blog(obsolete)">My Chinese Blog(obsolete)</a></li>
+
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  </div>
+</div>
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+
