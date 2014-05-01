@@ -16,6 +16,7 @@ author: Bo Yang
 This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(<http://crcv.ucf.edu/data/UCF101.php>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. 
 
 You can find my Matlab code from [my GitHub Channel](https://github.com/bo-yang):
+
 - [DTF + Fisher Vector code](https://github.com/bo-yang/dtf_fisher)
 - [STIP + Fisher Vector code](https://github.com/bo-yang/stip_fisher)
 
