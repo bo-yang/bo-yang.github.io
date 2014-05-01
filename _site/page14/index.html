@@ -1,6 +1,9 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -72,6 +75,73 @@
 <div class="row-fluid page-body">
 
   <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">用PERL处理二进制标量</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-03-12</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;PERL Handling Binary Scalar</p>
+<div>
+<div><span></p>
+<div></div>
+<div><strong>1</strong>&nbsp;<strong>[Question]:</strong></div>
+<div></div>
+<div><span><br />
+</span>
+<p>I adopt select()...sysread()...syswrite() mechanism to handle socket messages, where messages are sysread() into $buffer (binary) before they are syswritten.</p>
+<p>Now I want to change two bytes of the message, which denote the length of the whole message. At first, I use following code:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $declen</span><span class="pun">=</span><span class="pln">hex</span><span class="pun">(</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$declen </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$declen</span><span class="pun">);</span> <span class="com"># change the length</span><br /></code></pre>
+<p>However, it doesn't work in this way. If the final value of $declen is 85, then the modified $buffer will be "0x35 0x35 0x00 0x02...". I insert digital number to $buffer but finally got ASCII!</p>
+<p>I also tried this way:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes,binary</span><span class="pln"><br />$msglen </span><span class="pun">+=</span> <span class="lit">0b11</span><span class="pun">;</span> <span class="com"># Or $msglen += 3;</span><br /><span class="kwd">my</span><span class="pln"> $msgbody</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the rest part of message, binary</span><span class="pln"><br />$buffer</span><span class="pun">=</span><span class="pln">join</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> $msglen</span><span class="pun">,</span><span class="pln"> $msgbody</span><span class="pun">);</span><br /></code></pre>
+<p>Sadly, this method also failed. The result is such as"0x33 0x 0x00 0x02..." I just wonder why two binary scalar can't be joined into a binary scalar?</p>
+<p>Can you help me? Thank you!</p>
+<p><span><strong>[Answer 1]:</strong></span>&nbsp;</p>
+<p>&nbsp;</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $number </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$number </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><br /><span class="kwd">my</span><span class="pln"> $number_bin </span><span class="pun">=</span><span class="pln"> pack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$number</span><span class="pun">);</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$number_bin</span><span class="pun">);</span> <span class="com"># change the length</span></code></pre>
+<p>&nbsp;</p>
+</div>
+<p></span></div>
+<p><span><strong>[Answer 2]:</strong></span></p>
+<div>用vec。&nbsp;</p>
+<p>比如：&nbsp;
+<dl class="code">
+<dt><strong>Perl code</strong></dt>
+<dd>
+<pre><div><span>my</span> <span>$buffer</span> <span>=</span> <span><strong>"</strong></span><span><strong>/x00/x01</strong></span><span><strong>"</strong></span><span>;
+</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;
+</span><span>vec</span><span>(</span><span>$buffer</span><span>,</span> <span>0</span><span>,</span> <span>16</span><span>) </span><span>+=</span> <span>3</span><span>;
+</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;</span></div></pre>
+</dd>
+</dl>
+</div>
+<p></p>
+<div><strong>2&nbsp;</strong><strong>[Question]:</strong></div>
+<div><span><br />
+</span>
+<p>I am writing a Perl program that sends and receives messages from two sockets and acta as a switch. I have to modify the received messages received from one socket, prepend 3 bytes to the data, and finally send the modified messages to another socket. I adopt select()...sysread()...syswrite() mechanism to poll for messages between sockets. The received messages are stored in $buffer during modification.</p>
+<p>Now I can use following way to get the received messages:</p>
+<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $hexmsg </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"H*"</span><span class="pun">,</span><span class="pln"> $buffer</span><span class="pun">);</span><br /><span class="kwd">my</span><span class="pln"> @msg </span><span class="pun">=</span> <span class="pun">(</span><span class="pln"> $hexmsg </span><span class="pun">=~</span><span class="pln"> m</span><span class="pun">/.</span><span class="pln">.</span><span class="str">/g );<br /></span></code></pre>
+<p>then I can insert 3 bytes to @msg. However, I don't know how to pack the message in @msg into a scalar(such as $buffer) and send it to another socket by syswrite(). Can anybody help me? Thank you in advance!</p>
+<p>BTW, are messages in $buffer binary?</p>
+<p><span><strong>[Answer]:</strong></span></p>
+<p>&nbsp;</p>
+<p>Yes, messages in $buffer are binary (if I'm guessing what you mean by that correctly). If your only reason for unpacking it into @msg is to insert the bytes, don't. Use&nbsp;<a rel="nofollow" href="http://perldoc.perl.org/functions/substr.html">substr</a>&nbsp;instead, and just write out the changed $buffer. For instance:</p>
+<pre class="prettyprint"><code><span class="pln">substr</span><span class="pun">(</span><span class="pln"> $buffer</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="str">"/x01/x02/x03"</span> <span class="pun">);</span> <span class="com"># insert 3 bytes at beginning.</span><br /></code></pre>
+<p>If you are doing other things with @msg, you could continue to use that as well as doing the substr insert before writing it out, or you could use substr or pack or split or vec or a regex to parse out the pieces you need. You'd need to describe what you are doing to get more specific help.</p>
+<p>&nbsp;</p>
+</div>
+</div>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -2154,41 +2224,6 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520how%2520do%2520i%2520add%2520a%2520directory%2520to%2520my%2520include%2520path%2520%2528%2540inc%2529%2520at%2520runtime%253f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">How do I add a directory to my include path (@INC) at runtime?</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2009-01-13</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-     <span class="Apple-style-span" style="color:rgb(17,17,17);font-family:Arial;font-size:16px;"><span class="Apple-style-span" style="font-size:20px;font-weight:bold;">How do I add a directory to my include path (@INC) at runtime?</span></span>
-<p style="font-size:100%;">Here are the suggested ways of modifying your include path, including environment variables, run-time switches, and in-code statements:</p>
-<ul>
-<li><a name="the-PERLLIB-environment-variable"></a><b>the PERLLIB environment variable</b>
-<pre class="verbatim" style="margin-left:10px;background-image:initial;background-repeat:initial;background-attachment:initial;-webkit-background-clip:initial;-webkit-background-origin:initial;background-color:rgb(238,238,221);width:90%;background-position:initial initial;border-color:rgb(204,204,204);border-style:solid;border-width:1px;padding:10px;">	$ export PERLLIB=/path/to/my/dir
-	$ perl program.pl</pre>
-</li>
-<li><a name="the-PERL5LIB-environment-variable"></a><b>the PERL5LIB environment variable</b>
-<pre class="verbatim" style="margin-left:10px;background-image:initial;background-repeat:initial;background-attachment:initial;-webkit-background-clip:initial;-webkit-background-origin:initial;background-color:rgb(238,238,221);width:90%;background-position:initial initial;border-color:rgb(204,204,204);border-style:solid;border-width:1px;padding:10px;">	$ export PERL5LIB=/path/to/my/dir
-	$ perl program.pl</pre>
-</li>
-<li><a name="the-perl--Idir-command-line-flag"></a><b>the perl -Idir command line flag</b>
-<pre class="verbatim" style="margin-left:10px;background-image:initial;background-repeat:initial;background-attachment:initial;-webkit-background-clip:initial;-webkit-background-origin:initial;background-color:rgb(238,238,221);width:90%;background-position:initial initial;border-color:rgb(204,204,204);border-style:solid;border-width:1px;padding:10px;">	$ perl -I/path/to/my/dir program.pl</pre>
-</li>
-<li><a name="the-use-lib-pragma%3a"></a><b>the use lib pragma:</b>
-<pre class="verbatim" style="margin-left:10px;background-image:initial;background-repeat:initial;background-attachment:initial;-webkit-background-clip:initial;-webkit-background-origin:initial;background-color:rgb(238,238,221);width:90%;background-position:initial initial;border-color:rgb(204,204,204);border-style:solid;border-width:1px;padding:10px;">	<a class="l_k" href="http://perldoc.perl.org/functions/use.html" style="color:rgb(139,0,139);font-weight:bold;">use</a> <span class="w" style="color:rgb(0,0,0);">lib</span> <span class="q" style="color:rgb(205,85,85);">"$ENV{HOME}/myown_perllib"</span><span class="sc" style="color:rgb(0,0,0);">;</span></pre>
-</li>
-</ul>
-<p style="font-size:100%;">The last is particularly useful because it knows about machine dependent architectures. The lib.pm pragmatic module was first included with the 5.002 release of Perl.</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -2293,6 +2328,9 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
+            Fisher Vector for Action Recognition</a></li>
+        
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
         
@@ -2319,9 +2357,6 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
         
           <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
             Matlab Startup Script</a></li>
-        
-          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
-            Counting Unique k-mers -- My First Go Program</a></li>
         
         </ul>
         
@@ -2435,7 +2470,7 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
     
         <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -2454,6 +2489,10 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
         <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span>1</span></a>
+    
+        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
   
 

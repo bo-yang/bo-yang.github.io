@@ -1,6 +1,9 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -72,6 +75,196 @@
 <div class="row-fluid page-body">
 
   <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/10/22/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520shell%25e4%25b8%25ad%25e7%259b%25b4%25e6%258e%25a5%25e8%25b0%2583%25e7%2594%25a8perl%25e5%2591%25bd%25e4%25bb%25a4%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Shell中直接调用perl命令</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-10-22</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>The &nbsp;<em>-e</em> option is handy for quick Perl operations<br />
+from the command line. Want to change all instances of "oldstring" in<br />
+Wiffle.bat to "newstrong"? Try</p>
+<p>&nbsp;</p>
+<p>
+<pre>perl -i.old -p -e "s/ oldstring/ newstrong/g" wiffle.bat</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>This says: "Take each line of &nbsp;Wiffle.bat (-p); store the original in Wiffle.old (-i); substitute all instances of &nbsp;oldstring with newstrong (-e); write the result (-p) to the<br />
+original file (-i)."</p>
+<p>&nbsp;</p>
+<p>Other PERL command line options are:</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;<strong>Perl 5 Command-Line Switches</strong></p>
+<p>&nbsp;</p>
+<table style="width:80%;" border="1">
+<tbody>
+<tr valign="top">
+<td width="109">
+<em>Option</em></td>
+<td width="150"><em>Arguments</em> </td>
+<td width="168"><em>Purpose</em></td>
+<td width="163"><em>Notes</em> </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-0</tt></td>
+<td width="150">octal character code</td>
+<td width="168">Specify record separator </td>
+<td width="163">Default is newline (<tt>/n</tt>) </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-a</tt></td>
+<td width="150">none</td>
+<td width="168">Automatically spli recordst </td>
+<td width="163">Used with <tt>-n</tt> or or <tt>-p</tt> </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-c</tt></td>
+<td width="150">none</td>
+<td width="168">Check syntax only</td>
+<td width="163">Do not execute</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-d</tt></td>
+<td width="150">none</td>
+<td width="168">Run script using Perl debugger </td>
+<td width="163">If Perl debugging option was included when Perl was installed
+</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-D</tt></td>
+<td width="150">flags</td>
+<td width="168">Specify debugging behavior </td>
+<td width="163">See table 2</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-e</tt></td>
+<td width="150">command</td>
+<td width="168">Pass a command to Perl from the command line </td>
+<td width="163">Useful for quick operations</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-F</tt></td>
+<td width="150">regular expression</td>
+<td width="168">If <tt>-a</tt> used </td>
+<td width="163">Expression to split by default is white space </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-i</tt></td>
+<td width="150">extension</td>
+<td width="168">Replace original file with results </td>
+<td width="163">Useful for modifying contents of files</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-I</tt></td>
+<td width="150">directory</td>
+<td width="168">Specify location of <tt>include</tt> files </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-l</tt></td>
+<td width="150">octal character code</td>
+<td width="168">Drop newlines when used </td>
+<td width="163">With <tt>-n</tt> and <tt>-p</tt> and use designated character as<br />
+line- termination character </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-n</tt></td>
+<td width="150">none</td>
+<td width="168">Process the script using each specified file as an argument </td>
+<td width="163">Used for performing the same set of actions on a set of files
+</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-p</tt></td>
+<td width="150">none</td>
+<td width="168">Same as <tt>-n</tt> but each line is printed </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-P</tt></td>
+<td width="150">none</td>
+<td width="168">Run the script through the C preprocessor before Perl compiles it
+</td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-s</tt></td>
+<td width="150">none</td>
+<td width="168">Enable passing of arbitrary switches to Perl </td>
+<td width="163">Use <tt>-s -what -ever </tt>to have the Perl variables <tt>$what<br />
+</tt>and <tt>$ever </tt>defined within your script </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-S</tt></td>
+<td width="150">none</td>
+<td width="168">Tell Perl to look along the path for the script </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-T</tt></td>
+<td width="150">none</td>
+<td width="168">Use taint checking; don't evaluate expressions supplied on the<br />
+command line </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-u</tt></td>
+<td width="150">none</td>
+<td width="168">Make Perl dump core after compiling your script; intended to allow<br />
+for generation of Perl executables </td>
+<td width="163">Very messy; wait for the Perl compiler</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-U</tt></td>
+<td width="150">none</td>
+<td width="168">Unsafe mode; overrides Perl's natural caution </td>
+<td width="163">Don't use this!</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-v</tt></td>
+<td width="150">none</td>
+<td width="168">Print Perl version number </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-w</tt></td>
+<td width="150">none</td>
+<td width="168">Print warnings about script syntax </td>
+<td width="163">Extremely useful, especially during development &nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -871,50 +1064,6 @@ int main()
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/08/19/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520linux%25e4%25b8%258b%25e5%25ae%2589%25e8%25a3%2585amule%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Linux下安装aMule</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2009-08-19</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>今晚打算在Fedora 10下安装aMule，以便电驴下载。本打算yum安装，结果发现无法yum安装，于是只好下载了aMule的源代码（无Linux下的二进制安装文件）。解压之后，./configure，却出现了&quot;wxWindows&quot;的错误。</p>
-<p>&nbsp;</p>
-<p>在网上搜了半天之后，发现除了系统已经装好的wxGTK之外，还要安装wxGTK-devel，于是我便yum install wxGTK-devel,成功。</p>
-<p>&nbsp;</p>
-<p>重新在aMule的目录下./configure，这次却又报了更奇怪的错误：</p>
-<p>&nbsp;</p>
-<pre style="margin-top:0;display:inline;">&quot;checking for crypto++ version &gt;= 5.1... configure: error:<br />
-Could not find cryptopp header file &quot;cryptlib.h&quot;.<br />
-Please check if the path &quot;/usr&quot; is valid.&quot;</pre>
-<p>&nbsp;</p>
-<p>在网上找到一个解决办法：</p>
-<p>&nbsp;</p>
-<p>Download the latest crypto package from &quot;<a href="http://www.cryptopp.com/#download" target="_blank">http://www.cryptopp.com/#download</a><br />
-&quot;<br />
-in this case package &quot;Crypto++ 5.5.2&quot;. Now open your console terminal<br />
-and do the following commands to install the crypto package.</p>
-<p>A) mkdir crypto<br />
-B) mv cryptopp552.zip ./crypto<br />
-C) cd crypto<br />
-D) unzip cryptopp552.zip<br />
-E) make<br />
-F) cp libcryptopp.a /usr/lib/<br />
-G) mkdir /usr/include/cryptopp<br />
-H) cp *.h /usr/include/cryptopp/<br />
-I) ldconfig</p>
-<p>&nbsp;</p>
-<p>完成之后继续./configure，成功。（有一个关于uPnP的warning可以忽略。）然后make,成功，只是时间比较长。然后make install，成功！</p>
-<p>&nbsp;</p>
-<p>aMule终于可以用了！</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1019,6 +1168,9 @@ I) ldconfig</p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
+            Fisher Vector for Action Recognition</a></li>
+        
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
         
@@ -1045,9 +1197,6 @@ I) ldconfig</p>
         
           <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
             Matlab Startup Script</a></li>
-        
-          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
-            Counting Unique k-mers -- My First Go Program</a></li>
         
         </ul>
         
@@ -1161,7 +1310,7 @@ I) ldconfig</p>
     
         <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -1180,6 +1329,10 @@ I) ldconfig</p>
         <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span>1</span></a>
+    
+        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
   
 

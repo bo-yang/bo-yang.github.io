@@ -1,6 +1,9 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -72,6 +75,411 @@
 <div class="row-fluid page-body">
 
   <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/07/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e9%2580%2589%25e4%25b8%25adexcel%25e5%258d%2595%25e5%2585%2583%25e6%25a0%25bc%25e8%2587%25aa%25e5%258a%25a8%25e5%25af%25bc%25e5%2585%25a5%25e5%25a4%259a%25e4%25b8%25aaexcel%2520worksheets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">选中Excel单元格自动导入多个Excel worksheets</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-07-13</strong> with tags <a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>前日完成<a href="http://blog.csdn.net/bonny95/article/details/6597776">将多个Excel文件批量导入某个Excel文件中</a>老婆规定的任务后，老婆又提出了新的要求：</p></p>
+<ol>
+<li>可以update每个worksheet</li>
+<li>对导入的worksheets进行排序</li>
+<li>自动匹配代导入文件的文件名</li>
+<li>将导入的worksheets中的特定多个单元&#26684;（cells）的内容自动填充到某一表&#26684;的特定区域</li>
+</ol>
+<p><strong><span style="color:#ff0000;">本文中用到的Excel文件及VBA宏可以在<a href="http://download.csdn.net/detail/bonny95/3438424">此处</a>下载。</span></strong></p>
+<p></p>
+<table border="1" width="200" cellspacing="1" cellpadding="1" style="text-align:center;">
+<caption><span style="font-size:16px;">表1 &nbsp;选中的单元&#26684;</span><br />
+</caption>
+<tbody>
+<tr>
+<td style="text-align:center;">1</td>
+<td style="text-align:center;">工作表 1</td>
+</tr>
+<tr>
+<td style="text-align:center;">2</td>
+<td style="text-align:center;">工作表 2</td>
+</tr>
+<tr>
+<td style="text-align:center;">3</td>
+<td style="text-align:center;">工作表 3</td>
+</tr>
+<tr>
+<td style="text-align:center;">4</td>
+<td style="text-align:center;">工作表 4</td>
+</tr>
+<tr>
+<td style="text-align:center;">5</td>
+<td style="text-align:center;">工作表 5</td>
+</tr>
+<tr>
+<td style="text-align:center;">6</td>
+<td style="text-align:center;">工作表 6</td>
+</tr>
+<tr>
+<td style="text-align:center;">7</td>
+<td style="text-align:center;">工作表 7</td>
+</tr>
+<tr>
+<td style="text-align:center;">8</td>
+<td style="text-align:center;">工作表 8</td>
+</tr>
+<tr>
+<td style="text-align:center;">9</td>
+<td style="text-align:center;">工作表 9</td>
+</tr>
+<tr>
+<td style="text-align:center;">10</td>
+<td style="text-align:center;">工作表 10</td>
+</tr>
+</tbody>
+</table></p>
+<p>对应的各个worksheet的名字(Name)是：<em>01&nbsp;工作表 1，&nbsp;02&nbsp;工作表 2，03&nbsp;工作表 3，……，10&nbsp;工作表 10.</em></p>
+<p><em><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521133c6e4.gif" alt="" /><br />
+</em></p>
+<p>待导入的Excel文件的名字为“<em>02 某某银行XX项目_工作表 1_20110701.xls</em>”。</p>
+<p></p>
+<p><span style="color:#ff0000;"><em>Update 2011-07-13 21:50</em></span></p>
+<p>应老婆的要求，更新了程序，遇到并解决的问题有：</p></p>
+<ol>
+<li>Office 2003和2007不兼容——有些method在office2003中正常工作但在office2007中却不再支持，如判定某文件是否存在的函数，解决方法参见<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">FindFileName函数。</span></li>
+<li>如果某个表中的一些单元&#26684;被筛选，则会遇到“不能复制合并的单元&#26684;”(Can't copy merged cell)的问题，解决方法就是在copy前强制关闭autofilter: &nbsp;&nbsp;<span style="font-family:monospace;white-space:pre-wrap;background-color:rgb(240,240,240);">newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter</span></li>
+<li><span style="font-family:monospace;"><span style="white-space:pre-wrap;">关闭打开的Excel文件或者copy单元&#26684;时会有各种各样的对话框弹出来，解决办法就是加上下面语句：</span></span></li>
+</ol>
+<p><span style="font-family:monospace;"><span style="white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);"></span></span></span></p>
+<pre style="word-wrap:break-word;white-space:pre-wrap;"><span style="font-family:monospace;white-space:pre-wrap;"></span></pre>
+<pre style="word-wrap:break-word;white-space:pre-wrap;">Application.DisplayAlerts = True</pre>
+<pre style="word-wrap:break-word;white-space:pre-wrap;">newWB.Close SaveChanges:=False  ' close without change
+Application.DisplayAlerts = True</pre></p>
+<p><em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em></p>
+<p>傻瓜型用户的需求就是无穷无尽啊……我老婆发现在选择不连续的区域时，只有第一个区域会被处理，其他的没有变化。顶着挨骂的压力Google之后才知道，原来Slection.Areas可以包含所有不连续的选择，然后通过遍历，处理所有的选择……程序改动如下。</p></p>
+<pre>       ' Create new worksheets
+        ' Discontinuous selection is supported by Selection.Areas
+        For Each Rng In Selection.Areas
+            Set SelRange = Rng.Cells
+            Set ColNo = Rng.Columns(1)
+            Set ColDepart = Rng.Columns(2)
+            idx = 1
+            For Each cell In ColDepart.Cells
+                no_str = ColNo.Cells(idx).Value
+                If Len(no_str) = 1 Then
+                    no_str = &quot;0&quot; + no_str
+                End If
+                Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
+                idx = idx + 1
+            Next
+        Next</pre>
+<p></p></p>
+<p>实现以上所有需求的代码如下（<em><span style="color:#ff0000;">Update 2011-07-14 15:37</span></em>）：</p></p>
+<pre>&lt;span style="font-family: 'Times New Roman';font-size:16px; "&gt;&lt;/span&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap; "&gt;                                         
+Option Explicit
+Dim curWS As Worksheet
+
+
+Sub LoadWorksheets()
+'
+' LoadWorksheets Macro
+' Macro recorded 7/13/2011 by Bo Yang
+'
+' Keyboard Shortcut: Ctrl+Shift+L
+'
+' *How to use this macro?*
+' *Select columns &quot;??(NO)&quot; and &quot;??(Deparment)&quot; and then run this macro.*
+'
+&nbsp; &nbsp; Application.ScreenUpdating = False &nbsp;' stop screen flickering
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' Create new sheets according to selected cells and copy the
+&nbsp; &nbsp; ' contebts of other files into the new sheets
+&nbsp; &nbsp; Dim YesNo As Variant, myFolder As String, MyLF As String
+&nbsp; &nbsp; Dim SelRange As Range, ColNo As Range, ColDepart As Range, cell As Range, Rng As Range
+&nbsp; &nbsp; Dim SheetName As String, SheetToBeCopy As String
+&nbsp; &nbsp; Dim ColCnt As Integer
+&nbsp; &nbsp; Dim no_str As String, idx As Integer
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; myFolder = &quot;D:&quot; &nbsp; '*****Change this value as you need*****
+&nbsp; &nbsp; SheetToBeCopy = &quot;信息资产风险评估&quot; &nbsp;' *****Change this value as you need*****
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; MyLF = Chr(10) &amp; Chr(13) &nbsp; &nbsp;' a line feed command
+&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet ' Save current worksheet
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' check that if user select valid columns
+&nbsp; &nbsp; ColCnt = Selection.Columns.Count
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If ColCnt &lt;&gt; 2 Then
+&nbsp; &nbsp; &nbsp; &nbsp; MsgBox (&quot;Please select 2 columns!!!&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;The first column must be digital numbers,&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &quot;And the Second column must be department names&quot; _
+&nbsp; &nbsp; &nbsp; &nbsp; )
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; YesNo = MsgBox(&quot;This Macro is going to create new worksheets according to your selected cells.&quot; &amp; MyLF &amp; _
+&nbsp; &nbsp; &nbsp; &nbsp; &quot;Do you want to continue?&quot;, _
+&nbsp; &nbsp; &nbsp; &nbsp; vbYesNo, &quot;Caution&quot;)
+&nbsp; &nbsp; Select Case YesNo
+&nbsp; &nbsp; Case vbYes
+&nbsp; &nbsp; &nbsp; &nbsp; myFolder = InputBox(&quot;Please enter the folder where all your Excel files locates:&quot;, Default:=myFolder)
+&nbsp; &nbsp; &nbsp; &nbsp; SheetToBeCopy = InputBox(&quot;Please enter the worksheet you want to copy:&quot;, Default:=SheetToBeCopy)
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Create new worksheets
+&nbsp; &nbsp; &nbsp; &nbsp; ' Discontinuous selection is supported by Selection.Areas
+&nbsp; &nbsp; &nbsp; &nbsp; For Each Rng In Selection.Areas
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set SelRange = Rng.Cells
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColNo = Rng.Columns(1)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Set ColDepart = Rng.Columns(2)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For Each cell In ColDepart.Cells
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = ColNo.Cells(idx).Value
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Len(no_str) = 1 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; no_str = &quot;0&quot; + no_str
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Call CreateNewWorksheet(no_str, cell.Value, myFolder, SheetToBeCopy) ' call is needed here
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; idx = idx + 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next
+&nbsp; &nbsp; &nbsp; &nbsp; Next
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Sort worksheets
+&nbsp; &nbsp; &nbsp; &nbsp; Call SortWorksheets
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Case vbNo
+&nbsp; &nbsp; &nbsp; &nbsp; Application.ScreenUpdating = True
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Sub
+&nbsp; &nbsp; End Select
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; Application.ScreenUpdating = True
+End Sub
+
+
+Function CreateNewWorksheet(no As String, Depart As String, FolderName As String, SheetToBeCopy As String) As String
+&nbsp; &nbsp; Dim oSheet As Worksheet, vRet As Variant
+&nbsp; &nbsp; Dim SheetName As String, FileName As String
+&nbsp; &nbsp; Dim Entry As Integer, i As Integer
+
+
+&nbsp; &nbsp; ' Determine where to insert new worksheet
+&nbsp; &nbsp; Entry = 0
+&nbsp; &nbsp; For i = Sheets.Count To 1 Step -1
+&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
+&nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; Next i
+Determ_Entry:
+&nbsp; &nbsp; If Entry = 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; Entry = Sheets.Count
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; 'Example of one worksheet name:
+&nbsp; &nbsp; ' &nbsp; 07 oa祙?DDISMS?ㄩ????_D???钻2???_D?'?轶???_20110705.xls
+&nbsp; &nbsp; SheetName = no + &quot; &quot; + Depart
+&nbsp; &nbsp; If Not SheetExists(SheetName) Then
+&nbsp; &nbsp; &nbsp; &nbsp; 'worksheet XXX doesn't exist in current workbook
+&nbsp; &nbsp; &nbsp; &nbsp; 'creating a new excel worksheet
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; Set oSheet = Worksheets.Add
+&nbsp; &nbsp; &nbsp; &nbsp; With oSheet
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Name = SheetName
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Move After:=Sheets(Entry)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .Activate
+&nbsp; &nbsp; &nbsp; &nbsp; End With
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; FileName = FindFileName(no, Depart, FolderName)
+&nbsp; &nbsp; If FileName &lt;&gt; &quot;&quot; Then
+&nbsp; &nbsp; &nbsp; &nbsp; Call CopyWorksheet(SheetName, FileName, SheetToBeCopy)
+&nbsp; &nbsp; End If
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Exit Function
+
+
+End Function
+
+
+Function SheetExists(SheetName As String) As Boolean
+' returns TRUE if the sheet exists in the active workbook
+&nbsp; &nbsp; SheetExists = False
+&nbsp; &nbsp; On Error GoTo NoSuchSheet
+&nbsp; &nbsp; If Len(Sheets(SheetName).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; SheetExists = True
+&nbsp; &nbsp; &nbsp; &nbsp; Exit Function
+&nbsp; &nbsp; End If
+NoSuchSheet:
+End Function
+
+
+Function CopyWorksheet(SheetName As String, FileName As String, SheetToBeCopy As String) As String
+&nbsp; &nbsp; 'open Excel files and copy the contents to this sheet
+&nbsp; &nbsp; Dim newWB As Workbook, curWB As Workbook
+&nbsp; &nbsp; Dim startRange As Range
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If Dir(FileName) &lt;&gt; &quot;&quot; Then
+&nbsp; &nbsp; &nbsp; &nbsp; ' file exists
+&nbsp; &nbsp; &nbsp; &nbsp; ' Clear all cells of current worksheet
+&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).UsedRange.Clear
+&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = False ' disable alerts
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; ' Open workbooks to be copied
+&nbsp; &nbsp; &nbsp; &nbsp; Set curWB = ThisWorkbook ' For WorkBook and Range objects, set is necessary during assignment
+&nbsp; &nbsp; &nbsp; &nbsp; Set newWB = Workbooks.Open(FileName)
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).AutoFilterMode = False ' disable auto filter
+&nbsp; &nbsp; &nbsp; &nbsp; Set startRange = newWB.Sheets(SheetToBeCopy).UsedRange ' Only used range will be copied
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Sheets(SheetToBeCopy).UsedRange.Copy
+&nbsp; &nbsp; &nbsp; &nbsp; ' paste to target worksheet
+&nbsp; &nbsp; &nbsp; &nbsp; curWB.Activate
+&nbsp; &nbsp; &nbsp; &nbsp; Sheets(SheetName).Range(startRange.Address).PasteSpecial
+&nbsp; &nbsp; &nbsp; &nbsp; Application.CutCopyMode = False &nbsp;'Clear Clipboard
+&nbsp; &nbsp; &nbsp; &nbsp; newWB.Close SaveChanges:=False &nbsp;' close without change
+&nbsp; &nbsp; &nbsp; &nbsp; Application.DisplayAlerts = True
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; End If
+
+
+End Function
+
+
+Function FindFileName(no As String, Depart As String, FolderName As String) As String
+&nbsp; &nbsp; Dim Coll_Docs As New Collection
+&nbsp; &nbsp; Dim Search_path, Search_Filter, Search_Fullname As String
+&nbsp; &nbsp; Dim DocName As String
+&nbsp; &nbsp; Dim i As Long
+
+
+&nbsp; &nbsp; Search_path = FolderName &nbsp; ' where ?
+&nbsp; &nbsp; Search_Filter = no + &quot;*&quot; + Depart + &quot;*&quot; + &quot;.xls&quot; ' what ?
+&nbsp; &nbsp; Set Coll_Docs = Nothing
+
+
+&nbsp; &nbsp; DocName = Dir(Search_path &amp; &quot;&quot; &amp; Search_Filter)
+
+
+&nbsp; &nbsp; Do Until DocName = &quot;&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;' build the collection
+&nbsp; &nbsp; &nbsp; &nbsp; Coll_Docs.Add Item:=DocName
+&nbsp; &nbsp; &nbsp; &nbsp; DocName = Dir
+&nbsp; &nbsp; Loop
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; If Coll_Docs.Count = 1 Then
+&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = Search_path &amp; &quot;&quot; &amp; Coll_Docs(1)
+&nbsp; &nbsp; Else
+&nbsp; &nbsp; &nbsp; &nbsp; FindFileName = &quot;&quot;
+&nbsp; &nbsp; End If
+
+
+End Function
+
+
+Function SortWorksheetsByName() As String
+&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
+&nbsp; &nbsp; Dim sCount As Integer, i As Integer, j As Integer
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Application.ScreenUpdating = False
+&nbsp; &nbsp; sCount = Worksheets.Count
+&nbsp; &nbsp; If sCount = 1 Then Exit Function
+&nbsp; &nbsp; For i = 1 To sCount - 1
+&nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To sCount
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Worksheets(j).Name &lt; Worksheets(i).Name Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; Next j
+&nbsp; &nbsp; Next i
+&nbsp; &nbsp;&nbsp;
+End Function
+
+
+Function SortWorksheets() As String
+&nbsp; &nbsp; ' sort worksheets in a workbook in ascending order
+&nbsp; &nbsp; Dim cnt As Integer, i As Integer, j As Integer
+&nbsp; &nbsp; Dim Entry As Integer
+&nbsp; &nbsp; Dim curWS As Worksheet
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; Set curWS = ThisWorkbook.ActiveSheet
+&nbsp; &nbsp; 'Application.ScreenUpdating = False
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; cnt = Worksheets.Count
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; ' Determine where to start sorting
+&nbsp; &nbsp; Entry = 0
+&nbsp; &nbsp; For i = 1 To cnt
+&nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; 0 Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Entry = i
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GoTo Determ_Entry
+&nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; Next i
+Determ_Entry:
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; For i = Entry To cnt - 1
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For j = i + 1 To cnt
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If Val(Worksheets(i).Name) &gt; Val(Worksheets(j).Name) Then
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Worksheets(j).Move Before:=Worksheets(i)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End If
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Next j
+&nbsp; &nbsp; Next i
+&nbsp; &nbsp;&nbsp;
+&nbsp; &nbsp; curWS.Activate
+&nbsp; &nbsp; 'Application.ScreenUpdating = True
+End Function
+</pre>
+<pre></pre>
+<p>如要自动导入每个worksheet的特定单元&#26684;（L2:L6）到表2中的D，E，F，G，H列，可以使用下面的UpdateCells宏。</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/07/0_1310521124rpsk.gif" alt="" /></p></p></p>
+<pre>Option Explicit
+
+Sub UpdateCells()
+'
+' UpdateCells Macro
+' Macro recorded 7/13/2011 by Bo Yang
+'
+' Keyboard Shortcut: Ctrl+Shift+C
+'
+' Risk:Cell
+' 5: L2 , 4: L3 , 3: L4 , 2: L5 , 1: L6
+Dim Risk5 As Range
+Dim num As String, depart As Range, idx As Integer
+Dim SheetName As String
+Dim SelRange As Range
+Dim curWS As Worksheet
+
+Application.ScreenUpdating = False
+
+Set curWS = ActiveSheet
+Set SelRange = Selection
+
+idx = 1
+For Each depart In SelRange.Columns(2).Cells
+    num = SelRange.Columns(1).Cells(idx).value
+    If Len(num) = 1 Then
+        num = &quot;0&quot; + num
+    End If
+    SheetName = num + &quot; &quot; + depart.value
+    
+    Set Risk5 = SelRange.Columns(3).Cells(idx)
+    
+    ThisWorkbook.Sheets(SheetName).Range(&quot;L2:L6&quot;).Copy
+    Risk5.Select
+    Risk5.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=True
+    Application.CutCopyMode = False 'Clear Clipboard
+    
+    idx = idx + 1
+Next
+
+Application.ScreenUpdating = True
+End Sub
+</pre>
+<p></p>
+<pre></pre>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -520,123 +928,6 @@ c=$(echo "$a+$b" | bc -l)</pre>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/04/20/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520groff%25e5%2588%259d%25e4%25bd%2593%25e9%25aa%258c%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">groff初体验</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2011-04-20</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&ldquo;所见即所得（WYSIWYG，What you see is what you get）&rdquo;编辑器可以使简单的工作更简单，却无法完成某些复杂的工作。</p>
-<p>&nbsp;</p>
-<p>nroff/troff是UNIX下经典的typesetting工具，groff是GNU的*roff实现，并对troff的功能进行了增强。与LaTeX相比，体积较小，且大多为*nix自带，使用较为方便。虽说TeX为Donald Knuth所创，排版效果非常好，但体积相当庞大（安装完差不多3.5GB），而且通篇的/xx语法确实把我雷倒了&mdash;&mdash;还是先由groff入手吧。</p>
-<p>&nbsp;</p>
-<p>已经搜集到的*roff相关的资料：</p>
-<ul>
-<li><span><a class="l" href="http://www.angelfire.com/linux/mlaha/pdffiles/grofftut.pdfg" target="_blank">An Introduction to the GNU&nbsp;<em>Groff</em>&nbsp;Text Processing System</a></span></li>
-<li><span><a class="l" href="http://www.angelfire.com/linux/mlaha/pdffiles/grofftut.pdfg" target="_blank"></a></span><a href="http://www.ibm.com/developerworks/aix/tutorials/au-groff/index.html">Produce device-independent documentation with Groff</a></li>
-<li><a href="http://www.gnu.org/software/groff/manual/groff.pdf">Groff Manual</a></li>
-<li><a href="http://www.ibm.com/developerworks/aix/tutorials/au-groff/index.html"></a><a href="http://troff.org/">http://troff.org/</a></li>
-<li><a href="http://oreilly.com/openbook/utp/UnixTextProcessing.pdf">http://oreilly.com/openbook/utp/UnixTextProcessing.pdf</a></li>
-<li><a href="http://floppsie.comp.glam.ac.uk/Glamorgan/gaius/web/groff_www.html">groff_www</a></li>
-<li><a href="http://floppsie.comp.glam.ac.uk/Glamorgan/gaius/web/groff.xhtml">GROFF &amp; [X]HTML</a></li>
-</ul>
-<p>groff最吸引我的地方在于能够轻松的编辑数学公式、绘图、制表、排版并且转化为ps/pdf文件或者网页。为了体验这些功能，将下面的代码为输入纯文本文件html_test,</p>
-<p>
-<pre>.URL http://netpbm.sourceforge.net/doc "Netpbm manual"
-.URL pic.html "Eric Raymond's pic guide"
-.LK TestLink
-.LP
-.EQ
-G(z) ~=~ e sup { ln ~ G(z) }
-    ~=~ exp left ( sum from k&gt;=1 { S sub k z sup k } over k right )
-    ~=~ prod from k&gt;=1 e sup { S sub k z sup k /k }
-.EN
-.LP
-.TS
-tab(:);
-c s s
-c | c | c
-l | l | n.
-Major New York Bridges
-=
-Bridge:Designer:Length
-_
-Brooklyn:J. A. Roebling:1595
-Manhattan:G. Lindenthal: 1470
-Williamsburg:L. L. Buck:1600
-_
-Queensborough:Palmer &amp;:1182
-/^:  Hornbostel:/^
-_
-Triborough:O. H. Ammann:1380
-/^:/^:383
-_
-Bronx Whitestone:O. H. Ammann:2300
-Throgs Neck:O. H. Ammann:1800
-_
-George Washington:O. H. Ammann:3500
-_
-.TE
-.LP
-.PS
-lineht = lineht / 2
-box "/fIletter.tr/fP"
-arrow
-circle "tbl"
-arrow
-Eqn: circle "eqn"
-arrow
-Troff: circle "troff"
-arc cw
-line down
-arc cw
-left
-arrow
-circle "grops"
-arrow
-box "/fIletter.ps/fP"
-up
-line &lt;- from Troff.n
-arc
-line
-box "/fItmac.m/fP"
-.PE
-</pre>
-<p>&nbsp;</p>
-<p>然后输入下列命令：</p>
-<p>
-<pre>pic html_test | eqn | tbl | groff -ms -Thtml &gt; html_test.html</pre>
-<p>&nbsp;</p>
-<p>或者</p>
-<p>
-<pre>groff -p -e -t -ms -Thtml html_test &gt; html_test.html</pre>
-<p>&nbsp;</p>
-<p>在处理pic时，宏-ms必不可少。</p>
-<p>&nbsp;</p>
-<p>如果不出错的话，链接将会在网页中正常显示，公式、表格以及图表会被转换为图片。</p>
-<p>&nbsp;</p>
-<p><img src="http://bonny95.files.wordpress.com/2011/04/0_1303308743p06n.gif" alt="" width="402" height="201" /></p>
-<p>&nbsp;</p>
-<p><img src="http://bonny95.files.wordpress.com/2011/04/0_13033087485aw7.gif" alt="" /></p>
-<p>&nbsp;</p>
-<p><img src="http://bonny95.files.wordpress.com/2011/04/0_13033087538dbq.gif" alt="" /></p>
-<p>&nbsp;</p>
-<p>groff的groff_www扩展会调用pnmcut，netpbm的工具包中的一个工具。netpbm可以在<a href="http://netpbm.sourceforge.net/">http://netpbm.sourceforge.net/</a>下载并安装。安装成功后，需要把netpbm的路径加入到PATH中，最好是在$HOME/.bashrc中加入。</p>
-<p>&nbsp;</p>
-<hr />
-<p>Update 2011-04-21:</p>
-<p>&nbsp;</p>
-<p>今天试着用groff写了一个文件，并把它转化为html格式，那是相当的痛苦&mdash;&mdash;对于一个习惯了所见即所得的初学者，groff的学习曲线确实相当的陡峭。</p>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -741,6 +1032,9 @@ box "/fItmac.m/fP"
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
+            Fisher Vector for Action Recognition</a></li>
+        
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
         
@@ -767,9 +1061,6 @@ box "/fItmac.m/fP"
         
           <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
             Matlab Startup Script</a></li>
-        
-          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
-            Counting Unique k-mers -- My First Go Program</a></li>
         
         </ul>
         
@@ -883,7 +1174,7 @@ box "/fItmac.m/fP"
     
         <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -902,6 +1193,10 @@ box "/fItmac.m/fP"
         <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span>1</span></a>
+    
+        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
   
 

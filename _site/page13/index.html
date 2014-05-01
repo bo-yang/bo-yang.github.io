@@ -1,6 +1,9 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -72,6 +75,50 @@
 <div class="row-fluid page-body">
 
   <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/08/19/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520linux%25e4%25b8%258b%25e5%25ae%2589%25e8%25a3%2585amule%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Linux下安装aMule</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-08-19</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>今晚打算在Fedora 10下安装aMule，以便电驴下载。本打算yum安装，结果发现无法yum安装，于是只好下载了aMule的源代码（无Linux下的二进制安装文件）。解压之后，./configure，却出现了&quot;wxWindows&quot;的错误。</p>
+<p>&nbsp;</p>
+<p>在网上搜了半天之后，发现除了系统已经装好的wxGTK之外，还要安装wxGTK-devel，于是我便yum install wxGTK-devel,成功。</p>
+<p>&nbsp;</p>
+<p>重新在aMule的目录下./configure，这次却又报了更奇怪的错误：</p>
+<p>&nbsp;</p>
+<pre style="margin-top:0;display:inline;">&quot;checking for crypto++ version &gt;= 5.1... configure: error:<br />
+Could not find cryptopp header file &quot;cryptlib.h&quot;.<br />
+Please check if the path &quot;/usr&quot; is valid.&quot;</pre>
+<p>&nbsp;</p>
+<p>在网上找到一个解决办法：</p>
+<p>&nbsp;</p>
+<p>Download the latest crypto package from &quot;<a href="http://www.cryptopp.com/#download" target="_blank">http://www.cryptopp.com/#download</a><br />
+&quot;<br />
+in this case package &quot;Crypto++ 5.5.2&quot;. Now open your console terminal<br />
+and do the following commands to install the crypto package.</p>
+<p>A) mkdir crypto<br />
+B) mv cryptopp552.zip ./crypto<br />
+C) cd crypto<br />
+D) unzip cryptopp552.zip<br />
+E) make<br />
+F) cp libcryptopp.a /usr/lib/<br />
+G) mkdir /usr/include/cryptopp<br />
+H) cp *.h /usr/include/cryptopp/<br />
+I) ldconfig</p>
+<p>&nbsp;</p>
+<p>完成之后继续./configure，成功。（有一个关于uPnP的warning可以忽略。）然后make,成功，只是时间比较长。然后make install，成功！</p>
+<p>&nbsp;</p>
+<p>aMule终于可以用了！</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -525,73 +572,6 @@ opposed to its value, into a procedure.</span></pre>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">用PERL处理二进制标量</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2009-03-12</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;PERL Handling Binary Scalar</p>
-<div>
-<div><span></p>
-<div></div>
-<div><strong>1</strong>&nbsp;<strong>[Question]:</strong></div>
-<div></div>
-<div><span><br />
-</span>
-<p>I adopt select()...sysread()...syswrite() mechanism to handle socket messages, where messages are sysread() into $buffer (binary) before they are syswritten.</p>
-<p>Now I want to change two bytes of the message, which denote the length of the whole message. At first, I use following code:</p>
-<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $declen</span><span class="pun">=</span><span class="pln">hex</span><span class="pun">(</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$declen </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$declen</span><span class="pun">);</span> <span class="com"># change the length</span><br /></code></pre>
-<p>However, it doesn't work in this way. If the final value of $declen is 85, then the modified $buffer will be "0x35 0x35 0x00 0x02...". I insert digital number to $buffer but finally got ASCII!</p>
-<p>I also tried this way:</p>
-<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes,binary</span><span class="pln"><br />$msglen </span><span class="pun">+=</span> <span class="lit">0b11</span><span class="pun">;</span> <span class="com"># Or $msglen += 3;</span><br /><span class="kwd">my</span><span class="pln"> $msgbody</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the rest part of message, binary</span><span class="pln"><br />$buffer</span><span class="pun">=</span><span class="pln">join</span><span class="pun">(</span><span class="str">""</span><span class="pun">,</span><span class="pln"> $msglen</span><span class="pun">,</span><span class="pln"> $msgbody</span><span class="pun">);</span><br /></code></pre>
-<p>Sadly, this method also failed. The result is such as"0x33 0x 0x00 0x02..." I just wonder why two binary scalar can't be joined into a binary scalar?</p>
-<p>Can you help me? Thank you!</p>
-<p><span><strong>[Answer 1]:</strong></span>&nbsp;</p>
-<p>&nbsp;</p>
-<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $msglen</span><span class="pun">=</span><span class="pln">substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">);</span> <span class="com"># Get the first two bytes</span><br /><span class="kwd">my</span><span class="pln"> $number </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$msglen</span><span class="pun">);</span><span class="pln"><br />$number </span><span class="pun">+=</span> <span class="lit">3</span><span class="pun">;</span><br /><span class="kwd">my</span><span class="pln"> $number_bin </span><span class="pun">=</span><span class="pln"> pack</span><span class="pun">(</span><span class="str">"S"</span><span class="pun">,</span><span class="pln">$number</span><span class="pun">);</span><span class="pln"><br />substr</span><span class="pun">(</span><span class="pln">$buffer</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="pln">$number_bin</span><span class="pun">);</span> <span class="com"># change the length</span></code></pre>
-<p>&nbsp;</p>
-</div>
-<p></span></div>
-<p><span><strong>[Answer 2]:</strong></span></p>
-<div>用vec。&nbsp;</p>
-<p>比如：&nbsp;
-<dl class="code">
-<dt><strong>Perl code</strong></dt>
-<dd>
-<pre><div><span>my</span> <span>$buffer</span> <span>=</span> <span><strong>"</strong></span><span><strong>/x00/x01</strong></span><span><strong>"</strong></span><span>;
-</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;
-</span><span>vec</span><span>(</span><span>$buffer</span><span>,</span> <span>0</span><span>,</span> <span>16</span><span>) </span><span>+=</span> <span>3</span><span>;
-</span><span>print</span> <span>unpack</span><span>(</span><span><strong>"</strong></span><span><strong>H*</strong></span><span><strong>"</strong></span><span>,</span> <span>$buffer</span><span>)</span><span>,</span> <span><strong>"</strong></span><span><strong>/n</strong></span><span><strong>"</strong></span><span>;</span></div></pre>
-</dd>
-</dl>
-</div>
-<p></p>
-<div><strong>2&nbsp;</strong><strong>[Question]:</strong></div>
-<div><span><br />
-</span>
-<p>I am writing a Perl program that sends and receives messages from two sockets and acta as a switch. I have to modify the received messages received from one socket, prepend 3 bytes to the data, and finally send the modified messages to another socket. I adopt select()...sysread()...syswrite() mechanism to poll for messages between sockets. The received messages are stored in $buffer during modification.</p>
-<p>Now I can use following way to get the received messages:</p>
-<pre class="prettyprint"><code><span class="kwd">my</span><span class="pln"> $hexmsg </span><span class="pun">=</span><span class="pln"> unpack</span><span class="pun">(</span><span class="str">"H*"</span><span class="pun">,</span><span class="pln"> $buffer</span><span class="pun">);</span><br /><span class="kwd">my</span><span class="pln"> @msg </span><span class="pun">=</span> <span class="pun">(</span><span class="pln"> $hexmsg </span><span class="pun">=~</span><span class="pln"> m</span><span class="pun">/.</span><span class="pln">.</span><span class="str">/g );<br /></span></code></pre>
-<p>then I can insert 3 bytes to @msg. However, I don't know how to pack the message in @msg into a scalar(such as $buffer) and send it to another socket by syswrite(). Can anybody help me? Thank you in advance!</p>
-<p>BTW, are messages in $buffer binary?</p>
-<p><span><strong>[Answer]:</strong></span></p>
-<p>&nbsp;</p>
-<p>Yes, messages in $buffer are binary (if I'm guessing what you mean by that correctly). If your only reason for unpacking it into @msg is to insert the bytes, don't. Use&nbsp;<a rel="nofollow" href="http://perldoc.perl.org/functions/substr.html">substr</a>&nbsp;instead, and just write out the changed $buffer. For instance:</p>
-<pre class="prettyprint"><code><span class="pln">substr</span><span class="pun">(</span><span class="pln"> $buffer</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="lit">0</span><span class="pun">,</span> <span class="str">"/x01/x02/x03"</span> <span class="pun">);</span> <span class="com"># insert 3 bytes at beginning.</span><br /></code></pre>
-<p>If you are doing other things with @msg, you could continue to use that as well as doing the substr insert before writing it out, or you could use substr or pack or split or vec or a regex to parse out the pieces you need. You'd need to describe what you are doing to get more specific help.</p>
-<p>&nbsp;</p>
-</div>
-</div>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -696,6 +676,9 @@ opposed to its value, into a procedure.</span></pre>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
+            Fisher Vector for Action Recognition</a></li>
+        
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
         
@@ -722,9 +705,6 @@ opposed to its value, into a procedure.</span></pre>
         
           <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
             Matlab Startup Script</a></li>
-        
-          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
-            Counting Unique k-mers -- My First Go Program</a></li>
         
         </ul>
         
@@ -838,7 +818,7 @@ opposed to its value, into a procedure.</span></pre>
     
         <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -857,6 +837,10 @@ opposed to its value, into a procedure.</span></pre>
         <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span>1</span></a>
+    
+        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
   
 

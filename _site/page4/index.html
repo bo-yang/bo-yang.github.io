@@ -1,6 +1,9 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -72,6 +75,242 @@
 <div class="row-fluid page-body">
 
   <div class="span9 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/31/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e5%258d%2587%25e7%25ba%25a7fedora%252016%2520%25e4%25b8%258e%25e5%25ae%2589%25e8%25a3%2585ubuntu%252011-04%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">升级Fedora 16 与安装Ubuntu 11.04</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2011-12-31</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>两年半前安装了Fedora11，之后升级到Fedora 12， Fedora 14，期间安装了大量的软件，系统越来越慢……固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。</p>
+<p>基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。</p>
+<p>Ubuntu很快就下完。首先在Fedora下创建启动U盘，参照&nbsp;<span style="font-family:sans-serif;"><span style="font-size:13px;"><a href="http://fedoraproject.org/wiki/How_to_create_and_use_Live_USB">How to create and use Live USB</a>：</span></span></p></p>
+<ol>
+<li><span style="font-family:sans-serif;font-size:13px;"></span><br />
+<h3 style="font-size:16px;border-bottom-width:initial;border-bottom-style:none;border-bottom-color:initial;font-family:sans-serif;margin:0 0 .3em;padding:.5em 0 .17em;">
+<span class="mw-headline" id="Check_the_size_of_your_USB_stick" style="margin:0;padding:0;">Check the size of your USB stick</span></h3>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+Many USB sticks indicate the size on the packaging or the outside of the stick.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If you don't know the size of the stick, or want to check it for data, you should be able to auto-mount the USB stick by inserting it into a USB port. You can check the contents and size using the graphical file manager. In Linux, you can also use the command<br />
+ line:</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+<pre>$ df -h
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/VolGroup00-LogVol00
+143G   14G  122G  10% /
+/dev/sda1              99M   12M   82M  13% /boot
+tmpfs                1009M     0 1009M   0% /dev/shm
+/dev/sdb1             3.9G  4.0K  3.9G   1% /media/usbdisk</pre></p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+USB drives are usually mounted in /media. In this case, the device is /dev/sdb1, has a 3.9GB capacity and is almost empty.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+Take note of &quot;/dev/sdb1&quot; or equivalent; you will be specifying the device name if you use the command line method.</p>
+<p>
+</li>
+<li>
+<h2 style="font-size:18px;font-weight:normal;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(170,170,170);font-family:sans-serif;margin:0 0 .6em;padding:.5em 0 .17em;">
+<span class="mw-headline" id="How_to_Partition" style="margin:0;padding:0;">How to Partition</span></h2>
+<div class="messagebox" style="font-family:sans-serif;line-height:18px;background-color:rgb(249,246,183);min-height:35px;border-color:rgb(196,194,149);border-style:solid;border-width:1px;margin:1ex 0;padding:5px 5px 5px 45px;">
+<div style="float:left;margin:0 0 0 -40px;padding:0;">
+<a href="http://fedoraproject.org/wiki/File:Warning_(medium_size).png" class="image" style="color:rgb(114,159,207);text-decoration:none;margin:0;padding:0;"><img alt="Warning (medium size).png" src="http://fedoraproject.org/w/uploads/thumb/f/fd/Warning_%28medium_size%29.png/35px-Warning_%28medium_size%29.png" width="35" height="35" style="border-width:initial;border-color:initial;border-style:none;margin:0;padding:0;" /></a></div>
+<div style="margin:0;padding:0;">
+<span style="margin:0;padding:0;">CAUTION&nbsp;</span><br style="clear:none!important;margin:0;padding:0;" /><br />
+This will erase all data on the USB drive! Please read the instructions below&nbsp;<span style="margin:0;padding:0;">carefully</span>.</div>
+</div>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If the drive has not been partitioned properly (or if you are unsure), use&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">fdisk</code>&nbsp;to<br />
+ repartition it.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+It is also possible to do a non-destructive installation of a LiveUSB image, if you have sufficient empty space. See&nbsp;<a href="https://fedoraproject.org/wiki/How_to_create_and_use_Live_USB#How_to_install_non-destructively" class="external text" style="color:rgb(51,102,187);text-decoration:none;background-color:initial;margin:0;padding:0 16px 0 0;">How<br />
+ to install non-destructively</a>&nbsp;below.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+The&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">fdisk</code>&nbsp;command must be run as root. Include<br />
+ only the drive name in the command, not the partition number.&nbsp;<span style="margin:0;padding:0;"><span style="margin:0;padding:0;">Be<br />
+ sure to select the correct disk, or you may erase important data!</span></span>&nbsp;Check the output of &quot;df -h&quot; if you are unsure. For example, if your partition will be /dev/sdb1, do:</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+<pre>$ /sbin/fdisk /dev/sdb</pre></p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If you don't have fdisk installed, run&nbsp;</p>
+<pre>yum install util-linux-ng</pre>
+<p>&nbsp;as root.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+The following session output from&nbsp;<span style="font-size:16px;"><code style="background-color:rgb(249,249,249);margin:0;padding:0;">fdisk</code>&nbsp;</span>shows<br />
+ the responses to give to the prompts. The line starting&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">Last<br />
+ cylinder ...</code>&nbsp;refers to the size of the flash drive, so may be different than in the example.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+<pre>Command (m for help): d
+Selected partition 1
+
+Command (m for help): n
+Command action
+e   extended
+p   primary partition (1-4)
+p
+Partition number (1-4): 1
+First cylinder (1-960, default 1): ↵
+Using default value 1
+Last cylinder or +size or +sizeM or +sizeK (1-960, default 960): ↵
+Using default value 960
+
+Command (m for help): t
+Selected partition 1
+Hex code (type L to list codes): 6
+Changed system type of partition 1 to 6 (FAT16)
+
+Command (m for help): a
+Partition number (1-4): 1
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: If you have created or modified any DOS 6.x
+partitions, please see the fdisk manual page for additional
+information.
+Syncing disks.</pre></p>
+<h2 style="font-size:18px;font-weight:normal;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(170,170,170);font-family:sans-serif;margin:0 0 .6em;padding:.5em 0 .17em;">
+<span class="mw-headline" id="How_to_Format" style="margin:0;padding:0;">How to Format</span></h2>
+<div class="messagebox" style="font-family:sans-serif;line-height:18px;background-color:rgb(249,246,183);min-height:35px;border-color:rgb(196,194,149);border-style:solid;border-width:1px;margin:1ex 0;padding:5px 5px 5px 45px;">
+<div style="float:left;margin:0 0 0 -40px;padding:0;">
+<a href="http://fedoraproject.org/wiki/File:Warning_(medium_size).png" class="image" style="color:rgb(114,159,207);text-decoration:none;margin:0;padding:0;"><img alt="Warning (medium size).png" src="http://fedoraproject.org/w/uploads/thumb/f/fd/Warning_%28medium_size%29.png/35px-Warning_%28medium_size%29.png" width="35" height="35" style="border-width:initial;border-color:initial;border-style:none;margin:0;padding:0;" /></a></div>
+<div style="margin:0;padding:0;">
+<span style="margin:0;padding:0;">CAUTION&nbsp;</span><br style="clear:none!important;margin:0;padding:0;" /><br />
+This will erase all data on the USB drive! Please read the instructions below&nbsp;<span style="margin:0;padding:0;">carefully</span>.</div>
+</div>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If your USB media has sufficient free space on a&nbsp;<span style="margin:0;padding:0;">vfat</span>&nbsp;file system already, you do not need to<br />
+ perform this step.</p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+To finish, the partition must be formatted with an actual file system using&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">mkdosfs</code>&nbsp;as<br />
+ the root user. Unmount the device before using&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">mkdosfs</code>.<br />
+ In the below example, /dev/USBPARTITIONNAME might be, for example, /dev/sdb1.&nbsp;<span style="margin:0;padding:0;"><span style="margin:0;padding:0;">Be<br />
+ sure to select the correct partition; formatting destroys all data on it!</span></span></p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+<span style="margin:0;padding:0;"><span style="margin:0;padding:0;"></span></span></p>
+<pre>$ umount /dev/USBPARTITIONNAME
+$ /sbin/mkdosfs -F 32 -n usbdisk /dev/USBPARTITIONNAME</pre></p>
+<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
+If you don't have mkdosfs installed, run &quot;yum install dosfstools&quot; as root.</p>
+<p>
+</li>
+<li><span style="font-family:sans-serif;font-size:13px;">通过命令</span>
+<pre>su -c &quot;yum install liveusb-creator&quot;</pre>
+<p>安装了Fedora的liveusb-creator，但是发现Fedora的这个程序无法制作Ubuntu的启动盘<img alt="快哭了" src="http://static.blog.csdn.net/xheditor/xheditor_emot/default/fastcry.gif" />。<span style="font-family:sans-serif;font-size:13px;">无奈之下，试着把Ubuntu的iso文件复制到U盘里：</span>
+<pre>sudo dd if=F12-Live-i686.iso of=/dev/sdX bs=8M</pre>
+<p>
+</li>
+<li><span style="font-family:sans-serif;font-size:13px;">之后重启电脑，开机之后按c进入grub引导程序。尝试以往的通过kernel指定vmlinuz时失败，才发现Grub2中已经没有了kernel命令，尝试legacy_kernel和xnu_kernel，结果均遭失败。于是我尝试直接指定&nbsp;<span style="font-family:Consolas, 'Courier New', Courier, mono, serif;line-height:18px;text-align:left;background-color:rgb(248,248,248);">initrd&nbsp;(hd1,4)/casper/initrd.gz，然后exit，没成想Ubuntu的安装界面竟然出现了！</span></span></li>
+<li><span style="font-family:sans-serif;font-size:13px;">安装Ubuntu的过程中竟然就已经支持了WIFI，着实令我欣慰，看来Ubuntu这么多年在用户友好性上改进不少。</span></li>
+<li><span style="font-family:sans-serif;font-size:13px;">安装完成后重启，结果Grub无法正常工作，进入grub rescue模式。用iPad百度之后，发现好文<a href="http://www.cnblogs.com/samcn/archive/2011/03/30/1999615.html">Ubuntu启动问题以及Grub Rescue修复方法</a>，逐步去试，果然灵验。转载该文如下：</span></li>
+</ol>
+<p><span style="font-family:sans-serif;font-size:13px;"></span></p>
+<div class="postTitle" style="font-family:verdana;word-wrap:break-word;font-size:14px;font-weight:bold;line-height:21px;border-color:red;border-style:solid;border-width:0;padding:10px 10px 10px 5px;">
+<h3><a id="ctl02_TitleUrl" class="postTitle2" href="http://www.cnblogs.com/samcn/archive/2011/03/30/1999615.html" style="border-bottom-style:dotted;border-bottom-width:0;border-bottom-color:rgb(239,239,239);padding-bottom:10px;color:rgb(120,175,211);text-decoration:none;">Ubuntu启动问题以及Grub<br />
+ Rescue修复方法</a></h3>
+</div>
+<div id="cnblogs_post_body" style="font-family:verdana;word-wrap:break-word;font-size:14px;line-height:21px;">
+<ul>
+<li>问题：</li>
+</ul>
+<p style="margin:5px auto;">
+之前系统是Windows7 64bit（C盘） &#043; D，E盘（都是NTFS）&nbsp;&#043; Ubuntu。</p>
+<p style="margin:5px auto;">
+今天，在Windows7中删除了E盘，准备向其中安装RedHat 6。 重启Windows7之后发现Ubuntu的grub菜单不能启动。屏幕显示Invalid FileSystem。 （如果没有记错的话，呵呵）</p>
+<ul>
+<li>分析</li>
+</ul>
+<p style="margin:5px auto;">
+由于在Windows下面更改了分区状态，删掉了Ubuntu之前的一个分区，造成Ubuntu的分区由sda5变为sda4了，这样找不到grub了，开机显示</p>
+<p style="margin:5px auto;">
+grub rescue&gt;</p>
+<ul>
+<li>解决</li>
+</ul>
+<p style="margin:5px auto;">
+1.&nbsp; 先使用ls命令，找到Ubuntu的安装在哪个分区：&nbsp; &nbsp; &nbsp;</p>
+<p style="margin:5px auto;">
+<pre>grub rescue&gt;ls</pre></p>
+<p style="margin:5px auto;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会罗列所有的磁盘分区信息，比方说：</p>
+<p style="margin:5px auto;">
+&nbsp;&nbsp;&nbsp;&nbsp; (hd0,1),(hd0,5),(hd0,3),(hd0,2)</p>
+<p style="margin:5px auto;">
+2.&nbsp;然后依次调用如下命令： X表示各个分区号码&nbsp; &nbsp; &nbsp;</p>
+<p style="margin:5px auto;">
+<pre>grub rescue&gt;ls (hd0,X)/boot/grub</pre></p>
+<p style="margin:5px auto;">
+&nbsp; &nbsp; &nbsp;如果都找不到的话，需要查一下是否因为Linux版本差异，造成grub的路径不对，例如直接ls(hd0,X)/grub等等。</p>
+<p style="margin:5px auto;">
+3. 假设找到（hd0,5）时，显示了文件夹中的文件，则表示Linux安装在这个分区。</p>
+<p style="margin:5px auto;">
+4. 调用如下命令：</p>
+<pre>grub rescue&gt;set root=(hd0,5)
+grub rescue&gt;set prefix=(hd0,5)/boot/grub
+grub rescue&gt;insmod /boot/grub/normal.mod</pre></p>
+<p style="margin:5px auto;">
+5. 然后调用如下命令，就可以显示出丢失的grub菜单了。</p>
+<pre>grub rescue&gt;normal</pre></p>
+<p style="margin:5px auto;">
+6. 不过不要高兴，如果这时重启，问题依旧存在，我们需要进入Linux中，对grub进行修复。</p>
+<p style="margin:5px auto;">
+&nbsp;&nbsp;&nbsp; 进入Linux之后，在命令行执行：&nbsp; &nbsp;&nbsp;</p>
+<p style="margin:5px auto;">
+<pre>sudo update-grub
+sudo grub-install /dev/sda</pre></p>
+<p style="margin:5px auto;">
+（sda是你的硬盘号码，千万不要指定分区号码，例如sda1，sda5等都不对）</p>
+<p style="margin:5px auto;">
+7. 重启测试是否已经恢复了grub的启动菜单？ 恭喜你恢复成功！</p>
+</div>
+<p><span style="font-family:sans-serif;font-size:13px;">Grub恢复成功后，开始安装常用软件。Ubuntu新的界面不像以前想象中那么难用，而且他们终于部分放弃了以前屎黄色的界面风&#26684;，最难得的是在我那破本本上速度还是很快滴！期待Ubuntu12.04早日发布，到时直接升级之。</span></p>
+<p><span style="font-family:sans-serif;font-size:13px;"><br />
+</span></p>
+<p><span style="font-family:sans-serif;font-size:13px;"></span></p>
+<p>【Update 2012-04-29】</p>
+<p><span style="font-size:32px;"><strong>恢复Grub2</strong></span></p>
+<p>升级Ubuntu 11.10到12.04后，开机报错“no partition found”,进入Grub后，输入&quot;ls&quot;命令，也报错“no partition found”。</p>
+<p>于是我下载了<a href="http://unetbootin.sourceforge.net/">UNetbootin</a>，然后利用它在Win 7下制作Ubuntu自启动U盘。制作好之后，结果发现不会自动引导启动，需要在开机之后出现Thinkpad欢迎界面时按F12，然后选择U盘启动。然后选择U盘启动Ubuntu，进入Ubuntu后按照&nbsp;<a href="http://www.webupd8.org/2009/12/how-to-recover-grub2-linux.html">How to<br />
+ Fix Grub 2</a> 中的方法安装Grub 2到硬盘。</p></p>
+<div style="margin:0;padding:0;color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;">
+<span style="margin:0;padding:0;">To fix GRUB 2, you need an Ubuntu live CD from which you need to boot.</span>&nbsp;Once you boot to the LIVE CD, open a terminal an and type these commands:</div>
+<p><br style="margin:0;padding:0;color:rgb(85,85,85);font-size:14px;line-height:20px;" /></p>
+<div style="margin:0;padding:0;color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;">
+<span style="margin:0;padding:0;font-weight:bold;">a) Firstly, you need to find out on which partition your Linux system is installed:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo fdisk -l</code></pre>
+<p>(in my case, it's &quot;sda1&quot;)<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="margin:0;padding:0;font-weight:bold;">b) Now, we must mount this partition:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo mount /dev/<span style="margin:0;padding:0;font-weight:bold;">sda1</span> /mnt</code></pre>
+<p>Where &quot;sda1&quot; is the partition where you installed Ubuntu (or any other Linux distro). It could be &quot;sda5&quot;, &quot;sda6&quot;, etc. for you.<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="margin:0;padding:0;font-weight:bold;">c) Install grub to the partition you've mounted:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo grub-install --root-directory=/mnt/ /dev/sda</code></pre>
+<p><br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="margin:0;padding:0 2px;background-color:rgb(255,255,177);border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(223,223,223);border-right-width:1px;border-right-style:solid;border-right-color:rgb(223,223,223);color:rgb(51,51,51);">Important:</span>&nbsp;Please<br />
+ notice that it's &quot;/dev/sda&quot;, not &quot;/dev/sda1&quot;. &quot;sda&quot; is the hard disk on which your Linux distribution is installed!<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="margin:0;padding:0;font-weight:bold;">d) Restart your computer. As previous Grub 2 entries are removed, run the following command to restore them:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo update-grub</code></pre>
+</div>
+<p>
+重启电脑进入Grub 2之后，输入命令</p>
+<p>
+<pre>linux (hd0,X)/vmlinuz-3.2......
+initrd (hd0,X)/initrd.img-3.2......
+boot</pre>
+<p>
+Grub 2中已经不再支持kernel命令，需要用linux指定kernel。</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -393,120 +632,6 @@ Steve Jobs的英文版自传目前还没买到，我的iTunes帐号只能在中�
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/10/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520what%2526%252339%253bs%252bthe%252bdifference%252bbetween%252bvirtualization%252band%252bcloud%252bcomputing%253f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">What's+the+difference+between+virtualization+and+cloud+computing?</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2011-10-13</strong> with tags <a href="/tags.html#Cloud Computing-ref" rel="nofollow">Cloud Computing</a>, <a href="/tags.html#Virtualization-ref" rel="nofollow">Virtualization</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>在很多资料或文献中很难找到虚拟化和云计算的区别，甚至连云计算是什么都颇有争议。在网上找到几片论述这一问题的文章，摘录于下。</p></p>
-<h1 style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-family:proxima-nova-extra-condensed, 'Helvetica Neue Condensed Bold', 'Arial Narrow', Helvetica, Arial, sans-serif;text-align:left;vertical-align:baseline;color:rgb(57,67,76);clear:both;line-height:1em!important;border-width:0;margin:5px 0;padding:0;">
-<span style="font-size:18px;">1. Cloud is an operations model, not technology:&nbsp;<a href="http://news.cnet.com/8301-19413_3-10249486-240.html">http://news.cnet.com/8301-19413_3-10249486-240.html</a></span></h1>
-<p><span style="font-size:18px;">2. Difference Between Virtualization and Cloud Computing:&nbsp;</span><a href="http://data-centers.in/virtualization-and-cloud-computing/" style="font-size:18px;">http://data-centers.in/virtualization-and-cloud-computing/</a></p>
-<p><span style="font-size:18px;">3.&nbsp;</span><strong>The Difference Between Virtualization and Cloud Computing:&nbsp;<a href="http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/">http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/</a></strong></p>
-<p></p>
-<p>================================================================================================</p></p>
-<h1 style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-family:proxima-nova-extra-condensed, 'Helvetica Neue Condensed Bold', 'Arial Narrow', Helvetica, Arial, sans-serif;text-align:left;vertical-align:baseline;color:rgb(57,67,76);clear:both;line-height:1em!important;border-width:0;margin:5px 0;padding:0;">
-<span style="font-size:18px;">1. Cloud is an operations model, not technology:&nbsp;<a href="http://news.cnet.com/8301-19413_3-10249486-240.html">http://news.cnet.com/8301-19413_3-10249486-240.html</a></span></h1>
-<div>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.4286em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.133em;color:rgb(118,134,150);border-width:0;">
-One of the most common questions I get from those exploring cloud computing for the first time is &quot;what is the difference between cloud computing and virtualization?&quot; It is an excellent question, as most IT departments are currently exploring the ways in which&nbsp;<a href="http://en.wikipedia.org/wiki/Virtualization" style="border-style:initial;border-color:initial;outline-width:initial;outline-style:none;outline-color:initial;font-size:undefined;font-family:inherit;vertical-align:baseline;color:rgb(41,100,191);text-decoration:none;border-width:0;margin:0;padding:0;">virtualization</a>&nbsp;enables<br />
- automation and provisioning agility. Given the fact that cloud is often touted for providing similar benefits, it can be confusing to understand why the two terms aren't equivalent.</p>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
-My response to that question requires a bit of explanation, so let's step through the differences between the two concepts.</p>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
-<strong>Virtualization is a technology.</strong></p>
-<div class="cnet-image-div image-medium float-right" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:14px;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;clear:right;float:right;color:rgb(37,37,37);line-height:20px;width:270px;border-width:0;margin:20px 2px 20px 20px;padding:0;">
-<img class="cnet-image" src="http://i.i.com.com/cnwk.1d/i/bto/20090528/Virtualization_stack_270x258.jpg" alt="" width="270" height="258" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:undefined;font-style:inherit;font-family:inherit;vertical-align:baseline;border-width:0;margin:0;padding:0;" /><span class="image-credit" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:.8571em;font-style:inherit;font-family:inherit;vertical-align:baseline;line-height:1.166em;border-width:0;margin:0;padding:0;">(Credit:<br />
- CNET/James Urquhart)</span></div>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
-When you run software in a virtual machine, the bits that represent the program's instructions run through a layer of software that &quot;pretends&quot; to be a dedicated server infrastructure, the hypervisor. The hypervisor is the heart and soul of server virtualization,<br />
- and is the enabler of the consolidation and agility values that virtualization brings to the data center.</p>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
-It is because of the hypervisor that virtualization is the true disruptive technology that enables cloud computing on a massive scale. Hypervisors allow servers to be multi-tenant without rewriting applications to be multi-tenant. Hypervisors allow operating<br />
- systems and applications to install to a consistent hardware profile, even though they end up running on a variety of actual physical system implementations. Hypervisors also allow servers to be manipulated by software APIs, which greatly simplifies the act<br />
- of automating IT operations.</p>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
-<strong>Cloud computing is an operations model, not a technology.</strong></p>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
-When you run an application in a public or private cloud, there is no &quot;cloud layer&quot; that your software must pass through in order to leverage the physical infrastructure available to it. In the vast majority of cases, there is probably some virtualization involved,<br />
- but the existence of hypervisors clearly does not make your data center resources into a cloud. Nor is the fact that&nbsp;<a href="http://aws.amazon.com/ec2/" style="border-style:initial;border-color:initial;outline-width:initial;outline-style:none;outline-color:initial;font-size:undefined;font-family:inherit;vertical-align:baseline;color:rgb(41,100,191);text-decoration:none;border-width:0;margin:0;padding:0;">Amazon<br />
- EC2</a>&nbsp;uses Xen hypervisors the reason that they are a cloud.</p>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
-What makes a cloud a cloud is the fact that the physical resources involved are operated to deliver abstracted IT resources on-demand, at scale, and (almost always) in a multi-tenant environment. It is how you use the technologies involved. For the most part,<br />
- cloud computing uses the same management tools, operating systems, middleware, databases, server platforms, network cabling, storage arrays, and so on, that we have come to know and love over the last several decades.</p>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
-Specific technologies, of course, gain significant importance in a cloud computing environment, such as policy-driven automation, metering systems, and self-service provisioning portals. However, all of these technologies--with the possible exception of the<br />
- self-service portal--existed before cloud computing became a much hyped paradigm.</p>
-<p style="margin-top:10px;margin-bottom:0;padding-top:0;padding-bottom:0;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:1.0714em;font-family:museo-slab, georgia, times, serif;text-align:left;vertical-align:baseline;line-height:1.433em!important;color:rgb(37,37,37);border-width:0;">
-There is no doubt cloud borrows much from long established technologies. It is also true that cloud has borrowed from many long standing operations models, such as mainframe service bureaus. However, the combination of on-demand, at scale, in a multi-tenant<br />
- infrastructure is relatively unique for the post client-server era, and is the reason why cloud computing is disruptive, rather than just another operations fad.</p>
-<p>
-</div>
-<div>----------------------------------------------------------------------------------</div>
-<div>
-</div>
-<div><span style="font-size:18px;">2. Difference Between Virtualization and Cloud Computing:&nbsp;<a href="http://data-centers.in/virtualization-and-cloud-computing/">http://data-centers.in/virtualization-and-cloud-computing/</a></span></div>
-<div><span style="color:rgb(44,44,41);font-family:Tahoma;font-size:14px;">Cloud Computing and Virtualization are completely two different technologies. Both of them are considered as future saving technologies and that is the only similarity between them.<br />
- In the process of Cloud Computing easily scalable and mostly virtualized data resources are provided to the users over the internet. Using Cloud computing colocation provider or Data Centers providers offer managed IT services via a hosted software as a service<br />
- model. In Cloud Computing a database can be physically located somewhere in secure remote location and data can be accessed through clients computer using the database server to analyze and recover the data. This eliminates the need of a costly in-house equipments<br />
- and department. Cloud Computing make use of virtualized resources such as servers, computing devices and networks. Cloud Computing provider own the hardware and the providing host manage all the services to the clients according to their usage basis. On the<br />
- other hand Virtualization is creating virtual versions of technologies like servers, operating system, network resources and storage devices. Virtualization basically enables a single user to access multiple physical devices. In virtualization, either its<br />
- one operating system using multiple computers to evaluate database or a single computer controlling several machines. Here we will learn how Cloud Computing and virtualization are different from each other.</span></p>
-<p style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;margin-top:1px;margin-bottom:15px;padding-right:2px;padding-left:2px;font-size:1.2em;color:rgb(44,44,41);font-family:Tahoma;text-align:justify;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;border-width:0;margin:0;padding:0;">Cloud<br />
- Computing</span></p>
-<p style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;margin-top:1px;margin-bottom:15px;padding-right:2px;padding-left:2px;font-size:1.2em;color:rgb(44,44,41);font-family:Tahoma;text-align:justify;border-width:0;">
-The easily availability of computers has opened new doors in the field of information technology. Instead of creating own Data Center all the Data Center services can be acquired from IT server providers with outstanding IT infrastructure which is strong, flexible<br />
- and safe. The cost which either wise would have been invested in building a Data Center can be avoided with acquiring related services on a usage basis. Fees for the managed IT services is similar to the operating costs of a Data Center. Cloud Computing seems<br />
- attractive option, since it cuts a lot costs and also remove operating costs. In a traditional IT department equipments and staff are occupied in the peak hours, however in off hours they sat idle. Most of the servers are not operable in off hours, even when<br />
- they are operational its not necessary that they are giving their 100% of their potential. Also a Data Center services provider also needs to upgrade latest technologies in order to keep the data safe and secure. On the other side these services are provided<br />
- by Cloud Computing provider.</p>
-<p style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;margin-top:1px;margin-bottom:15px;padding-right:2px;padding-left:2px;font-size:1.2em;color:rgb(44,44,41);font-family:Tahoma;text-align:justify;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;border-width:0;margin:0;padding:0;">Virtualization</span></p>
-<p style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;margin-top:1px;margin-bottom:15px;padding-right:2px;padding-left:2px;font-size:1.2em;color:rgb(44,44,41);font-family:Tahoma;text-align:justify;border-width:0;">
-There are many types of virtualization, but all of them focus on usage format and control that improves efficiency. What this efficiency means is a single task running over multiple computers through unoccupied computer or a single terminal running multiple<br />
- tasks. One more advanced advantage of virtualization is hosting an application to many users, thus preventing several needed software’s from being installed again and again. Data is combined into a central computer from databases, hard drives and USB drives.<br />
- This process increase security and accessibility by using replication. In an IT company physical resources can be divided into many virtual networks allowing the Central IT resources to be available to all the departments via local networks. Computer devices<br />
- which are allocated to individual staff members or which are only dedicated to a specific software application are highly efficient and they are much more cheaper.</p>
-</div>
-<p>-----------------------------------------------------------------------------------------------------------</p>
-<p><span style="font-size:18px;">3.&nbsp;<strong>The Difference Between Virtualization and Cloud Computing:&nbsp;<a href="http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/">http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/</a></strong></span></p>
-<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
-Brittany Meeks, Dynamics GP Sales and Marketing Assistant</p>
-<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
-As a newbie sales and marketing assistant at&nbsp;<a href="http://www.customis.com/" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:0;">Custom<br />
- Information Services</a>, I kept getting thrown technical terms that I was unable to grasp.&nbsp; That is until I did some research and discovered the easy way to understand and implement such terms or questions as, “<a href="http://www.customis.com/it-solutions/Blog/Difference-Virtualization-Cloud.aspx" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:0;">What’s<br />
- the difference&nbsp;between virtualization and cloud computing?”</a>&nbsp; Originally, I couldn’t even tell you the meaning of virtualization or cloud computing, let alone what the differences were.&nbsp;&nbsp; Since we implement and support these technologies I had to&nbsp;understand<br />
- the definitions quickly!</p>
-<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
-Virtualization is a computing technology that enables a single user to access multiple physical devices.&nbsp; Another way to look at it is a single computer controlling multiple machines, or one operating system utilizing multiple computers to analyze a database.&nbsp;<br />
- Virtualization may also be used&nbsp;for running multiple applications on each server rather than just one; this in turn reduces the number of servers companies need to purchase and manage.&nbsp; It enables you to consolidate your servers and do more with less hardware.&nbsp;It<br />
- also lets you support more users per piece of hardware, deliver applications, and run applications faster. &nbsp;Follow this link for more detail on virtualization&nbsp;<a href="http://www.customis.com/resources/library/VirtualizationWhitePaper.pdf" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:5px 20px 5px 0;">VirtualizationWhitePaper.pdf</a></p>
-<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
-Cloud computing offers scalable infrastructure and software off site, saving labor, hardware, and power costs.&nbsp; Financially, the cloud’s virtual resources are typically cheaper than dedicated physical resources connected to a personal computer or network.&nbsp;<br />
- With cloud computing, the&nbsp;<a href="http://www.customis.com/business-application/" target="_blank" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:0;">software<br />
- programs</a>&nbsp;you use aren’t run from your personal computer, but&nbsp; rather are&nbsp;stored on servers housed elsewhere and accessed via the Internet.&nbsp; If your computer crashes, the software is still available for others to use.&nbsp; Simply, the cloud is a collection<br />
- of computers and servers that are publicly accessible via the Internet.&nbsp; Here is something else I found online which may be helpful in better understanding cloud services<a href="http://www.customis.com/resources/library/Microsoft_CloudServices.pdf" target="_blank" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:5px 20px 5px 0;">Microsoft<br />
- Cloud Services.pdf</a></p>
-<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
-One way to look at it is that&nbsp;virtualization is basically one physical computer pretending to be many computing environments whereas cloud computing is many different computers pretending to be the one computing environment (hence user scaling).&nbsp; Virtualization<br />
- provides flexibility that is a great match for cloud computing.&nbsp;&nbsp;Moreover, cloud computing can be defined based on the virtual machine containers created with virtualization.&nbsp; Virtualization is not always necessary in cloud computing; however, you can use<br />
- it as the basis.&nbsp; Cloud computing is an approach for the delivery of services while virtualization is one possible service that could be delivered.&nbsp; Large corporations with little downtime tolerance and airtight security requirements may find that virtualization<br />
- fits them best.&nbsp; Smaller businesses are more likely to profit more with cloud computing, allowing them to focus on their mission while leaving IT chores to those who can do more for less.</p>
-<p style="margin-top:0;margin-bottom:0;padding-right:20px;padding-bottom:4px;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-size:15px;vertical-align:baseline;color:rgb(51,51,51);font-family:Arial, Helvetica, sans-serif;border-width:0;">
-Plainly, virtualization provides more servers on the same hardware and cloud computing provides measured resources while paying for what you use.&nbsp; While it is not uncommon to hear people discuss them interchangeably, they are very different approaches to solving<br />
- the problem of maximizing the use of available resources.&nbsp; They differ in many ways and that also leads to some important considerations when selecting between the two.&nbsp; Not only do we offer&nbsp;<a href="http://www.customis.com/business-application/business-accounting/microsoft-dynamics-gp.aspx" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;vertical-align:baseline;background-color:transparent;color:rgb(51,115,159);border-width:0;margin:0;padding:0;">Dynamics<br />
- GP,</a>&nbsp;but we also offer services for cloud and virtualization for your business applications.&nbsp;&nbsp; Our new website set for a September go live will have more information on this subject.</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -611,6 +736,9 @@ Plainly, virtualization provides more servers on the same hardware and cloud com
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
+            Fisher Vector for Action Recognition</a></li>
+        
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
         
@@ -637,9 +765,6 @@ Plainly, virtualization provides more servers on the same hardware and cloud com
         
           <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
             Matlab Startup Script</a></li>
-        
-          <li><span>2013-05-16</span> &raquo; <a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">
-            Counting Unique k-mers -- My First Go Program</a></li>
         
         </ul>
         
@@ -753,7 +878,7 @@ Plainly, virtualization provides more servers on the same hardware and cloud com
     
         <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>2</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -772,6 +897,10 @@ Plainly, virtualization provides more servers on the same hardware and cloud com
         <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
+    
+        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span>1</span></a>
+    
+        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
   
 

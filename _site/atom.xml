@@ -4,13 +4,131 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.io//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.io/"/>
- <updated>2014-04-30T17:55:07-04:00</updated>
+ <updated>2014-04-30T22:46:54-04:00</updated>
  <id>http://bo-yang.github.io/</id>
  <author>
    <name>boyang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Fisher Vector for Action Recognition</title>
+   <link href="http://bo-yang.github.io//2014/04/30/fisher-vector-in-action-recognition"/>
+   <updated>2014-04-30T00:00:00-04:00</updated>
+   <id>http://bo-yang.github.io//2014/04/30/fisher-vector-in-action-recognition</id>
+   <content type="html">&lt;p&gt;This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(&lt;a href=&quot;http://crcv.ucf.edu/data/UCF101.php&quot;&gt;http://crcv.ucf.edu/data/UCF101.php&lt;/a&gt;). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. &lt;/p&gt;
+
+&lt;p&gt;You can find my Matlab code from &lt;a href=&quot;https://github.com/bo-yang&quot;&gt;my GitHub Channel&lt;/a&gt;:
+- &lt;a href=&quot;https://github.com/bo-yang/dtf_fisher&quot;&gt;DTF + Fisher Vector code&lt;/a&gt;
+- &lt;a href=&quot;https://github.com/bo-yang/stip_fisher&quot;&gt;STIP + Fisher Vector code&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;dense-trajectory-features&quot;&gt;Dense Trajectory Features&lt;/h3&gt;
+
+&lt;p&gt;For some details of DTF, please refer to &lt;a href=&quot;http://bo-yang.github.io/2014/01/10/dense-trajectory-notes/&quot;&gt;my previous post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;pipeline&quot;&gt;Pipeline&lt;/h3&gt;
+
+&lt;p&gt;The pipeline of integrating DTF/STIP features and Fisher vectors is shown in Figure 2. The first step is subsampling a fixed number of STIP/DTF features(in my implementation, 1000) from each
+video clip in training list, which will be used to do PCA and train
+Gaussian Mixture Models(GMMs).&lt;/p&gt;
+
+&lt;p&gt;After getting the PCA coefficients and GMM parameters, treat UCF 101 video clips
+action by action. For each action, first load all train videos in this
+action(positive videos), and then randomly load the same number of video
+clips not in this action(negative videos). All of the loaded videos are
+multiplied with the saved PCA coefficients in order to reduce dimensions
+and rotate matrices. Fisher vectors are computed for each loaded video
+clip. Finally a binary SVM model is trained with both the positive and negative
+Fisher vectors.&lt;/p&gt;
+
+&lt;p&gt;When dealing with the test videos, similar process is adopted. The only
+difference is that the Fisher vectors are used for SVM classification,
+which is based on the SVM model trained with training videos.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/fisher_pipeline.png&quot; alt=&quot;Figure 2. Pipeline of UCF101 action recognition using Fisher
+vector.&quot; /&gt;.&lt;/p&gt;
+
+&lt;p&gt;To well utilize the STIP or DTF features, features(HOG, HOF, MBH, etc.) are treated
+separately and they are only combined(simple concatenation) after computing Fisher
+vectors before linear SVM classification.&lt;/p&gt;
+
+&lt;h3 id=&quot;pre-processing&quot;&gt;Pre-processing&lt;/h3&gt;
+
+&lt;h4 id=&quot;stip-features&quot;&gt;STIP Features&lt;/h4&gt;
+
+&lt;p&gt;The offcial STIP features are stored in class, which means that all the STIP
+info of all video clips in each class are mixed together in a file. To
+extract STIP features for each video, I wrote a script(mk_stip_data)
+to separate STIP features for each video clip. And all the following
+operations are based on each video clip.&lt;/p&gt;
+
+&lt;h4 id=&quot;dtf-features&quot;&gt;DTF Features&lt;/h4&gt;
+
+&lt;p&gt;Since the DTF features are “dense”(which means a lot of data), it took me 4~5 days to exact the (improved) DTF features of UCF 101 clips with the dedault parameters on a modern Linux desktop(I used 10 threads for extraction in paralle). The installation of DTF tools was also a very tricky task.&lt;/p&gt;
+
+&lt;p&gt;To save space, all the DTF features were compressed. For UCF101, it would cost about 500GB after zip compression. And the required space would doubled if not compressing. If you don’t want to save the DTF features, you can call the DTF tools in Matlab and discard the extracted features.&lt;/p&gt;
+
+&lt;h3 id=&quot;fisher-vector&quot;&gt;Fisher Vector&lt;/h3&gt;
+
+&lt;p&gt;The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.  &lt;/p&gt;
+
+&lt;p&gt;Following is the algorithm of computing Fisher vectors from features:
+&lt;img src=&quot;/assets/images/fisher_vector_algorithm.png&quot; alt=&quot;Figure 1. Algorithm of computing Fisher vectors.&quot; /&gt;.&lt;/p&gt;
+
+&lt;p&gt;During the subsampling of STIP features, I randomly chose 1000 HOG or
+HOF features from each training video clip. For some videos, if the
+total number of features were less than 1000, I would use all of their
+features. All the subsampled features are square rooted after L1
+normalization.&lt;/p&gt;
+
+&lt;p&gt;After that, the dimensions of the subsampled features were reduced to
+half of their original dimensions by doing PCA. At this step, the
+coefficients of PCA were recorded, which would be used in later. The
+GMMs were trained with the half-sized features, and the parameters of
+GMMs(i.e. weight, mean and covariance) were stored for the following
+process. In my program, the GMM code implemented by Oxford Visual
+Geometry
+Group(VGG, http://www.robots.ox.ac.uk/~vgg/software/enceval_toolkit/)
+is used, which eventually call VLFeat(http://www.vlfeat.org/). In my
+code, 256 Gaussians were used.&lt;/p&gt;
+
+&lt;h3 id=&quot;svm-classification&quot;&gt;SVM Classification&lt;/h3&gt;
+
+&lt;p&gt;Binary SVM classification(&lt;a href=&quot;http://www.csie.ntu.edu.tw/~cjlin/libsvm/&quot;&gt;LIBSVM&lt;/a&gt;) is used in my implementation.
+For each action, positive video clips are labeled as 1 while negative
+videos are as labeled -1 during training and test. In my code, SVM cost
+is set to 100. The option of SVM training is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;-t 0 -s 0 -q -c 100 -b 1.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;results&quot;&gt;Results&lt;/h3&gt;
+
+&lt;p&gt;The action recognition accuracy of all the 101 actions was 77.95% when
+using above pipeline. And the confusion matrix is shown in Figure 3.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/confusionmat_101.png&quot; alt=&quot;Figure 3. Confusion matrix of all the 101 actions with STIP features.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was about 85%, about 8% higher than using BOV representation. And the best result I got with the ISA network on UCF 101 was only 58% last year.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;It is obvious that Fisher vector can lead to better results than Bag-of-visual words in action recognition. Compared to other low-level visual features, DTF features have more advantages in action recognition. However, in the long run I still believe deep learning methods - when deep neural networks could be trained with millions of vidios[5], they would learn more info from scratch and achieve state-of-the-art accuracy.&lt;/p&gt;
+
+&lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Gabriela Csurka, Florent Perronnin, &lt;em&gt;Fisher Vectors: Beyond Bag-of-Visual-Words Image Representations&lt;/em&gt; , Communications in Computer and Information Science Volume 229, 2011, pp 28-42.&lt;/li&gt;
+  &lt;li&gt;Chih-Chung Chang and Chih-Jen Lin. &lt;em&gt;Libsvm: A library for support vector machines&lt;/em&gt;. ACM Trans. Intell. Syst. Technol., 2(3):27:1–27:27, May 2011.&lt;/li&gt;
+  &lt;li&gt;Heng Wang and Cordelia Schmid. &lt;em&gt;Action Recognition with Improved Trajectories&lt;/em&gt;. In ICCV 2013 - IEEE International Conference on Computer Vision, Sydney, Australia, December 2013. IEEE.&lt;/li&gt;
+  &lt;li&gt;Jorge Sanchez, Florent Perronnin, Thomas Mensink, and Jakob Verbeek. &lt;em&gt;Image Classification with the Fisher Vector: Theory and Practice&lt;/em&gt;. International Journal of Computer Vision, 105(3):222–245, December 2013.&lt;/li&gt;
+  &lt;li&gt;Andrej Karpathy, George Toderici, Sanketh Shetty, Thomas Leung, Rahul Sukthankar, and Li Fei-Fei. &lt;em&gt;Large-scale video classification with convolutional neural networks&lt;/em&gt;. In CVPR, 2014.&lt;/li&gt;
+&lt;/ol&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>How To Install Jekyll in Mac OSX Mavericks</title>
@@ -278,10 +396,12 @@ The output looks like:&lt;/p&gt;&lt;/p&gt;
 &lt;li&gt;
 &lt;h3&gt;Dense Sampling&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;Sampling step size W=5 pixels&lt;/li&gt;
+&lt;li&gt;Sampling step size \( W=5 \) pixels&lt;/li&gt;
 &lt;li&gt;# spatial scales ≤ 8&lt;/li&gt;
-&lt;li&gt;Spatial scale increase: \( 1/\sqrt{2} \)&lt;/li&gt;
-&lt;li&gt;Removing points in homogeneous areas: \[ \arg\max \] &lt;span style=&quot;font-style:inherit;font-weight:inherit;line-height:1.625;&quot;&gt;where are eigenvalues of point i in image I (the auto-correlation matrix).&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;Spatial scale increase: \( 1 / \sqrt{2} \)&lt;/li&gt;
+&lt;li&gt;Removing points in homogeneous areas: 
+$$ T=0.001 \times \max_{i \in l}\min(\lambda_{i}^{1},\lambda_{i}^{2}) $$,
+where \( (\lambda_{i}^{1},\lambda_{i}^{2}) \) are eigenvalues of point \(i\) in image \(I\) (the auto-correlation matrix).&lt;/span&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -307,7 +427,7 @@ The output looks like:&lt;/p&gt;&lt;/p&gt;
 &lt;h3&gt;Format of DTF features&lt;/h3&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;The format of the computed features&lt;/h3&gt;
+&lt;h4&gt;The format of the computed features&lt;/h4&gt;
 &lt;p dir=&quot;ltr&quot;&gt;The features are computed one by one, and each one in a single line, with the following format:&lt;/p&gt;
 &lt;p dir=&quot;ltr&quot;&gt;frameNum mean_x mean_y var_x var_y length scale x_pos y_pos t_pos Trajectory HOG HOF MBHx MBHy&lt;/p&gt;
 &lt;p dir=&quot;ltr&quot;&gt;The first 10 elements are information about the trajectory:&lt;/p&gt;
@@ -333,7 +453,7 @@ The output looks like:&lt;/p&gt;&lt;/p&gt;
 &lt;/ul&gt;
 &lt;ol start=&quot;2&quot;&gt;
 &lt;li&gt;
-&lt;h2&gt;Improved Dense Trajectories&lt;/h2&gt;
+&lt;h3&gt;Improved Dense Trajectories&lt;/h3&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;ul&gt;
@@ -343,7 +463,7 @@ The output looks like:&lt;/p&gt;&lt;/p&gt;
 &lt;li&gt;Removing inconsistent matches due to humans: use a human detector to remove matches from human regions (computation expensive)&lt;/li&gt;
 &lt;li&gt;Estimate a homography with RANSAC with these matches&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;References:&lt;/h2&gt;
+&lt;h3&gt;References:&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;div&gt;H Wang, C Schmid, Action recognition with improved trajectories, ICCV 2013&lt;/div&gt;
