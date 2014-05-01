@@ -1,0 +1,457 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<head>
+  <title>Korn Shell Notes(II) | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>Korn Shell Notes(II)</h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span9 left">
+    <div class="main-container shadow">
+      <div class="mainbody thepost">
+        <br />
+<h1 style="text-align:center;"><a id="_korn_Shell_Mannual_7321622101" name="_korn_Shell_Mannual_7321622101"></a> Korn Shell Notes<br /></h1>
+<div>
+<h2><a id="1_Useful_Cmds_5672844878149838_07467550420309199" name="1_Useful_Cmds_5672844878149838_07467550420309199"></a><i>1 Useful Cmds</i></h2>
+<p><b>wc</b> - display a count of lines, words and characters in a file.<br />
+&nbsp;&nbsp; &nbsp;It can be used to count the numbers together with other commands, such as ls, who and so on.</p>
+<p><b>cut</b> - cut out selected fields of each line of a file.<br />
+&nbsp;&nbsp;&nbsp; The name of each unique user that is logged on is displayed using this command:<br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ who | cut —f1 —d' ' | sort —u</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;anatole</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;root</p>
+<p></span><b>print</b> is a Korn shell&nbsp;specialized&nbsp;command which is similar to <span style="font-family:Courier New;">echo</span>.</p>
+<p><b>nl</b> - line numbering filter.</div>
+<div>
+<h2><a id="2_Conditional_Execution_938277" name="2_Conditional_Execution_938277"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;"><i>2 Process Execution</i><br /></span></span></h2>
+<h3><a id="2_1_Conditional_Execution_5079_8305832861221516" name="2_1_Conditional_Execution_5079_8305832861221516"></a>2.1 <span style="font-family:Courier New;"><span style="font-family:Verdana;">Conditional Execution</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">You can implement a simple if command by using the &amp;&amp; and || operators together like this:<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">command1 &amp;&amp; command2 || command3</span><br />
+If command1 returns true, then command2 is executed, which causes<br />
+command3 to not be executed. If command1 does not return true, then<br />
+command2 is not executed, which causes command3 to be executed.<br />
+</span></span></div>
+<div>
+<h3><a id="3_Grouping_Commands_3102224048" name="3_Grouping_Commands_3102224048"></a>2.2 Grouping Commands</h3>
+<p>Commands enclosed in {} are executed in current shell. If</div>
+<div><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo "This is file temp:" ; cat temp | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 falls mainly on the plain</span></div>
+<div>
+<div style="padding:1em 0;text-align:center;" id="ozct">
+<div style="text-align:left;">then by using {}s, the output will be:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ { echo "This is file temp:"; cat temp ; } | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;3 falls mainly on the plain</span><br />There must be whitespace after the opening {, and commands within the {}'s must be terminated with a semi-colon.</p>
+<p>Commands<br />
+enclosed in () are executed in a subshell. Subshells are generated<br />
+whenever you enclose commands in ()'s, perform command substitution,<br />
+for background processes, and for coprocesses.A subshell is a separate<br />
+copy of the parent shell, so variables, functions, and aliases from the<br />
+parent shell are available to the subshell. However, subshells cannot<br />
+change the value of parent shell variables, functions, or aliases.</div>
+<p><img src="http://docs.google.com/File?id=dd6nw3mt_104f3ccnmc3_b" style="width:501px;height:609px;" /></div>
+</div>
+<h3><a id="4_Redirecting_Standard_Output_" name="4_Redirecting_Standard_Output_"></a><span style="font-family:Courier New;"></span><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<h2><a id="3_Input_Output_Redirection_262_7061543286301161" name="3_Input_Output_Redirection_262_7061543286301161"></a><i>3 Input/Output Redirection</i></h2>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<h3><a id="3_1_Redirecting_Standard_Outpu_8229576773319682" name="3_1_Redirecting_Standard_Outpu_8229576773319682"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">3.1 Redirecting Standard Output</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">By using the &gt; symbol, the standard output of a command can be redirected to a file, instead of your terminal.</p>
+<p>You can also use the &gt; command to create an empty file:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ &gt; tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ ls —s tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;0 tmp</span><br />This is equivalent to <span style="font-family:Courier New;">touch tmp</span>.</p>
+<p>Standard output can be appended to a file by using the <b>&gt;&gt;</b> redirect operator.</p>
+<p>Standard output is closed with the <b><span style="font-family:Courier New;">&gt;&amp;-</span></b> redirect operator:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ echo "This is going nowhere" &gt;&amp;-</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$</span><br /></span></span><br />
+<h3><a id="5_The_noclobber_Option_4119643" name="5_The_noclobber_Option_4119643"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">3.2 The<span style="font-family:Courier New;"> noclobber</span> Option</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">To<br />
+prevent redirecting output to an existing file, set the noclobber<br />
+option. By default, this feature is usually disabled, but can be<br />
+enabled with the <b>set -o noclobber</b> command:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">$ ls &gt; file.out</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">$ set —o noclobber</span></p>
+<p>The &gt;| operator is used to force overwriting of a file, even if the noclobber option is enabled.<br /></span></span><br />
+<h3><a id="6_Redirecting_Standard_Input_2" name="6_Redirecting_Standard_Input_2"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">3.3 Redirecting Standard Input</span></span></h3>
+<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
+<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">Standard input to a command is redirected from a file using the &lt; operator.</p>
+<div id="l-l6" style="padding:1em 0;text-align:center;"><img style="width:656px;height:461px;" src="http://docs.google.com/File?id=dd6nw3mt_142zhz6kvd8_b" />
+<div style="text-align:left;">
+<h3><a id="7_Redirecting_Standard_Error_6" name="7_Redirecting_Standard_Error_6"></a>3.4 Redirecting Standard Error</h3>
+<p>As<br />
+with standard output, standard error is by default directed to your<br />
+terminal, but it can be redirected using the standard error file<br />
+descriptor (2) and the &gt; operator, e.g. <b>2&gt;</b>
+<div id="kvf6" style="padding:1em 0;text-align:center;"><img style="width:453px;height:180px;" src="http://docs.google.com/File?id=dd6nw3mt_143dnb47w36_b" />
+<div style="text-align:left;">
+<h3><a id="8_More_With_File_Descriptors_7" name="8_More_With_File_Descriptors_7"></a>3.5 More With File Descriptors</h3>
+<p>The <b>&gt;&amp;n </b>operator<br />
+causes output to be redirected to file descriptor n. This is used when<br />
+you want to direct output to a specific file descriptor.In the next<br />
+command, the standard error and output are sent to ls.out by specifying<br />
+multiple redirections on the same command line. First, <b>&gt;&amp;2</b><br />
+causes standard output to be redirected to standard error. Then,<br />
+2&gt;ls.out causes standard error (which is now standard output and<br />
+standard error) to be sent to ls.out:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ ls tmp t.out 2&gt;ls.out 1&gt;&amp;2</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ cat ls.out</span><br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; tmp not found</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; t.out</span><br style="font-family:Courier New;" /><br />If<br />
+the output of the last command was redirected to a file using the &gt;<br />
+operator, then only the standard output would be redirected. The<br />
+standard error would still be displayed on your terminal.<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ {echo "This is going to stdout"} &gt;&amp;1;/</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;echo "This is going to stderr" &gt;&amp;2;} &gt;out</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is going to stderr</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ cat out</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is going to stdout.</span></p>
+<p>The<b> <span style="font-family:Courier New;">n&gt;&amp;m</span> </b>operator<br />
+causes the output from file descriptors n and m to be merged. This<br />
+operator could be used in the previous command to direct both the<br />
+standard output and standard error to the same file.</div>
+</div>
+<p>If you wanted the standard output and standard error appended to the output file, the <span style="font-family:Courier New;">&gt;&gt;</span> operator could be used.<br />
+<h3><a id="9_Here_Document_78766796044282" name="9_Here_Document_78766796044282"></a>3.6 Here Document</h3>
+<p>&nbsp;<br />
+Here documents is a term used for redirecting multiple lines of<br />
+standard input to a command. In looser terms, they allow batch input to<br />
+be given to programs and are frequently used to execute interactive<br />
+commands from within Korn shell scripts. The format for a here document<br />
+is:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>command &lt;&lt; word</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i><span style="font-family:Courier New;">command &lt;&lt;-word</span></i><br />where lines that follow are used as standard input to command until word is read. </p>
+<p>The<br />
+other variation, command &lt;&lt;- word, deletes leading tab characters<br />
+from the here document. It is often used over the first variation to<br />
+produce more readable code when used within larger scripts. A good use<br />
+for here documents is to automate ftp file transfers. This snippet of<br />
+code could be used within a larger script to automatically ftp code to<br />
+or from another server.<br />
+<h3><a id="10_Discarding_Standard_Output_" name="10_Discarding_Standard_Output_"></a>3.7 Discarding Standard Output</h3>
+<p>&nbsp; The <span style="font-family:Courier New;">/dev/null</span> file is like the system trash bin. Anything redirected to it is discarded by the system.
+<div id="d4na" style="padding:1em 0;text-align:center;"><img style="width:456px;height:653px;" src="http://docs.google.com/File?id=dd6nw3mt_144g6jg94h3_b" />
+<div style="text-align:left;">
+<h2><a id="4_File_Name_Substitution_36576_08147998549624513" name="4_File_Name_Substitution_36576_08147998549624513"></a><i>4 File Name Substitution</i></h2>
+<h3><a id="4_1_The_Character_8811087270296203" name="4_1_The_Character_8811087270296203"></a>4.1 The * Character</h3>
+<p>The<br />
+* matches any zero or more characters in current directory, except<br />
+those begin with the "." character. These must be explicitly matched.<br />
+<h3><a id="4_2_The_Character_9445044472675496" name="4_2_The_Character_9445044472675496"></a>4.2 The ? Character</h3>
+<p>The ? character matches exactly one character.<br />
+<h3><a id="4_3_The_Character_8276669466373929" name="4_3_The_Character_8276669466373929"></a>4.3 The [] Character</h3>
+<p>The [] characters match a single, multiple, or range of characters. <br />This command lists file names beginning with d or m, and ending with any number 1 through 5:
+<div id="b.as" style="padding:1em 0;text-align:center;"><img style="width:574px;height:69px;" src="http://docs.google.com/File?id=dd6nw3mt_145445m29dg_b" /></div>
+<p>In<br />
+the range argument, the first character must be alphabetically less<br />
+than the last character. This means that [c-a] is an invalid range.<br />
+This also means that pattern [0-z] matches any alphabetic or<br />
+alphanumeric character, [A-z] matches any alphabetic character (upper<br />
+and lower case), [0Z] matches any alphanumeric or upper case<br />
+alphabetic character, and [09] matches any alphanumeric character.</p>
+<p>Multiple ranges can also be given. The pattern <span style="font-family:Courier New;">[a-jlmr3-7]</span> would match files names beginning with the letters a through j, l, m, r, and 3 through 7.<br />
+<h3><a id="4_4_The_Character_8385233166155047" name="4_4_The_Character_8385233166155047"></a>4.4 The ! Character</h3>
+<p>The ! character can be used with [ ] to reverse the match. In other words,<span style="font-family:Courier New;"> [!a]</span> matches any character, except <span style="font-family:Courier New;">a</span>.<br />If we want to list all of the file names except those started with d, we could do this:
+<div id="e0s4" style="padding:1em 0;text-align:center;"><img style="width:593px;height:98px;" src="http://docs.google.com/File?id=dd6nw3mt_146g3wh6vf8_b" /></div>
+<p>or it can be done more easily using <b><span style="font-family:Courier New;">[!d]</span></b>:
+<div id="oa2y" style="padding:1em 0;text-align:center;"><img style="width:590px;height:72px;" src="http://docs.google.com/File?id=dd6nw3mt_147ggsj9rdd_b" /></div>
+<p>Multiple and range arguments can also be negated. The pattern <b><span style="font-family:Courier New;">[!lro]*</span></b> would match strings not beginning with l, r, or o, <b>*[!25]</b> would match strings not ending with 2 through 5, and <b><span style="font-family:Courier New;">*.[!Z]</span></b> would match strings not ending in .Z.
+<div id="l82v" style="padding:1em 0;text-align:center;"><img style="width:419px;height:356px;" src="http://docs.google.com/File?id=dd6nw3mt_148f76gd7dg_b" />
+<div style="text-align:left;">
+<h3><a id="4_5_Complex_Patterns_6749485921749048" name="4_5_Complex_Patterns_6749485921749048"></a>4.5 Complex Patterns</h3>
+<p>Korn Shell also provides entire patterns matching.
+<div id="qkd5" style="padding:1em 0;text-align:center;"><img style="width:533px;height:353px;" src="http://docs.google.com/File?id=dd6nw3mt_150dzwchbcf_b" /></div>
+<h4><a id="4_5_1_pattern__7121078334798239" name="4_5_1_pattern__7121078334798239"></a>4.5.1 *(<i>pattern</i>)</h4>
+<p>This format matches any zero or more occurrences of pattern.</div>
+</div>
+<p>This pattern matches anti, antic, antigen, and antique: <b>$ match anti*(c|gen|que)</b><br />
+<h4><a id="4_5_2_pattern__3180494268564732" name="4_5_2_pattern__3180494268564732"></a>4.5.2 ?<span style="font-family:Courier New;"></span>(<i>pattern</i>)</h4>
+<p>This format matches any zero or one occurrences of pattern. Here are some more patterns using this format:
+<div id="ty67" style="padding:1em 0;text-align:left;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<img style="width:328px;height:164px;" src="http://docs.google.com/File?id=dd6nw3mt_1549w8352fj_b" /></div>
+<h4><a id="4_5_3_pattern__1431321966993203" name="4_5_3_pattern__1431321966993203"></a>4.5.3 +(<i>pattern</i>)</h4>
+<p>This format matches one or more occurrences of pattern.<br />
+<h4><a id="4_5_4_pattern__14535345873275873" name="4_5_4_pattern__14535345873275873"></a>4.5.4 @(<i>pattern</i>)</h4>
+<p>This format matches exactly one occurrence of pattern. Let's look for words beginning with <b>Ala</b> or <b>Cla</b>: &nbsp;&nbsp; &nbsp;<b><span style="font-family:Courier New;">$ match @([AC]la)*</span></b><br />
+<h4><a id="4_5_5_pattern__6355112508705647" name="4_5_5_pattern__6355112508705647"></a>4.5.5 !(pattern)</h4>
+<p>This format matches anything except pattern. To match any string that does not end in .c, .Z, or .o:<br /><b><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; !(*.c|*.Z|*.o)</span></b><br />or any string that does not contain digits:<br /><b>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;!(*[0-9]*)</b>
+<div id="i2wj" style="padding:1em 0;text-align:center;"><img style="width:329px;height:256px;" src="http://docs.google.com/File?id=dd6nw3mt_155hnrm7xht_b" /></div>
+<p>
+<h3><a id="4_6_Disabling_File_Name_Substi_16185795665760638" name="4_6_Disabling_File_Name_Substi_16185795665760638"></a>4.6 Disabling File Name Substitution</h3>
+<p>File name substitution can be disabled by setting the noglob option using the set command:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">&nbsp;</span><span style="font-family:Courier New;">$ set —o noglob</span><br />or<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">$ set —f</span></p>
+<p>The <span style="font-family:Courier New;">-o noglob</span> and <span style="font-family:Courier New;">-f options</span><br />
+for the set command are the same. Once file name substitution is<br />
+disabled, pattern-matching characters like *, ?, and ] lose their<br />
+special meaning:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ ls a*</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;a* not found</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ ls b?</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;b? not found</span><br /><b>Within [...] patterns, a / character is used to remove the meaning of the special pattern-matching characters.</b> This means that the [/*/?]* pattern would match file names beginning with * or ?.<br />
+<h2><a id="5_Command_Substitution_8604427133040446" name="5_Command_Substitution_8604427133040446"></a><i>5 Command Substitution</i></h2>
+<p>Command<br />
+substitution is a feature that allows output to be expanded from a<br />
+command. It can be used to assign the output of a command to a<br />
+variable, or to imbed the output of a command within another command.<br />
+The format for command substitution is:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <b>&nbsp;</b><b><span style="font-family:Courier New;">$(<i>command</i>)</span></b><br />where <i>command</i> is executed and the output is substituted for the entire <i>$(command)</i> construct.<br />For example, to print the current date in a friendly format:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo The date is $(date)</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;The date is Fri Jul 27 10:41:21 PST 1996</span><br />
+<h3><a id="5_1_Bourne_Shell_Compatibility" name="5_1_Bourne_Shell_Compatibility"></a>5.1 Bourne Shell Compatibility</h3>
+<p>For compatibility with the Bourne shell, the following format for command substitution can also be used:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<b><span style="font-family:Courier New;">`</span><i>command</i><span style="font-family:Courier New;"> `</span></b><br />Using `. . .` command substitution, we could get the names of the files in the current directory like this:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo `ls` are in this directory</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;NEWS asp bin pc are this directory</span><br />
+<h3><a id="5_2_Directing_File_Input" name="5_2_Directing_File_Input"></a>5.2 Directing File Input</h3>
+<p>There is also a special form of the <b>$(...)</b> command that is used to substitute the contents of a file. The format for file input substitution is:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<b><span style="font-family:Courier New;">$(&lt;file)</span></b><br />This is equivalent to<b><span style="font-family:Courier New;"> $(cat file)</span></b> or `<b>cat file</b>`, except that it is faster, because an extra process does not have to be created to execute the <span style="font-family:Courier New;">cat</span> command.</p>
+<h3><a id="5_3_Arithmetic_Operations" name="5_3_Arithmetic_Operations"></a>5.3 Arithmetic Operations</h3>
+<p>Another form of the $(...) command is used to substitute the output of<br />
+arithmetic expressions. The value of an arithmetic expression is<br />
+returned when enclosed in double parentheses and preceded with a dollar<br />
+sign.<br />
+<b><span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>$((arithmetic-expression))</span></b><br />
+Here are a few examples.<br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>$ echo $((3+5))</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>8</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>$ echo $((8192*16384%23))</span><br style="font-family:Courier New;" /><br />
+<span style="font-family:Courier New;"><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span>9</span></p>
+<h3><a id="5_4_Tilde_Substitution" name="5_4_Tilde_Substitution"></a>5.4 Tilde Substitution</h3>
+<p>Tilde substitution is used to substitute the pathname of a user's home<br />
+directory for ~user. Words in the command line that start with the<br />
+tilde character cause the Korn shell to check the rest of the word up<br />
+to a slash. If the tilde character is found alone or is only followed<br />
+by a slash, it is replaced with the value of the <b>HOME</b> variable.</p>
+<div id="xcw:" style="padding:1em 0;text-align:center;"><img style="width:538px;height:198px;" src="http://docs.google.com/File?id=dd6nw3mt_156dqcvxngk_b" /></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p></span></span><span style="background-color:rgb(255,255,0);"></span></p>
+
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+        
+        <div class="post-end">
+</div>
+
+
+        <div class="pagination">
+          <ul>
+          
+            <li class="prev"><a href="/2008/11/20/kshell-note-1" title="Korn Shell(K Shell) Notes (I)">&larr; Previous</a></li>
+          
+            <li><a href="/archive.html">Archive</a></li>
+          
+            <li class="next"><a href="/2008/11/26/kshell-note-3" title="korn Shell Notes(III)">Next &rarr;</a></li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2008/11/24/kshell-note-2';
+    var disqus_url = 'http://bo-yang.github.io//2008/11/24/kshell-note-2';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	  </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <h4>Published</h4>
+        <div class="date"><span>2008-11-24</span></div>
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+          <h4>Tags</h4>
+          <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#Unix/Linux-ref">Unix/Linux <span>88</span></a></li>
+     
+    	<li><a href="/tags.html#Shell-ref">Shell <span>12</span></a></li>
+    
+  
+
+
+
+          </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+		<div class="sidebar">
+			<!--
+			<script type="text/javascript" id="wumiiRelatedItems"></script>
+			-->
+		  <script type="text/javascript">
+	var linkwithin_site_id = 2140443;
+    var lwPermaLink = "http://bo-yang.github.io//2008/11/24/kshell-note-2";
+    var lwTitle = "Korn Shell Notes(II)";
+    var lwTags = "";
+    var lwCategories = [];
+    var lwSitePrefix = "http://bo-yang.github.io/";
+    var lwParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

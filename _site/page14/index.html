@@ -78,7 +78,7 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2009/03/12/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%2594%25a8perl%25e5%25a4%2584%25e7%2590%2586%25e4%25ba%258c%25e8%25bf%259b%25e5%2588%25b6%25e6%25a0%2587%25e9%2587%258f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">用PERL处理二进制标量</a></h2>
+        <h2><a href="/2009/03/12/perl-binary-scalar">用PERL处理二进制标量</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-03-12</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
         </p>
@@ -145,7 +145,78 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2595%25b0%25e5%2580%25bc%25e8%25bd%25ac%25e6%258d%25a2%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Perl数值转换</a></h2>
+        <h2><a href="/2009/03/05/print-socket-msg">PERL打印收到的Socket消息</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-03-05</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;</p>
+<div>
+<h1>PERL打印收到的Socket消息</h1>
+<div>利用Perl的Select(),sysread()和syswrite()收到的消息将以二进制的形式存储到$buffer中，因此如果直接打印$buffer的内容将得到乱码。要将二进制内容转换为十六进制数串，则必须使用unpack()函数，即：</div>
+<div>my $hexstr=unpack("H*",$buffer);</div>
+<div>而此时如果打印$hexstr将得到一系列的十六进制数串（数串的长度是接收到的字节数的两倍），仍然难以阅读。因此，有必要将十六进制数串每两个数字进行拆分并加前缀&ldquo;0x&rdquo;以便阅读。此时需要借助正则表达式进行模式匹配，方法为:</div>
+<div>my @msg=($hexstr =~ m/../g);</div>
+<div>其中.用以匹配一个字符。</div>
+<div></div>
+<div>示例代码如下：</div>
+<div>
+<pre>##################################################################
+#               DumpMsg
+#
+# Dump received message in hex mode.
+#
+# Format: DumpMsg($type, $msglen, $msg);
+#
+# input:        $type= 'MSC' | 'BSC'
+#               $msglen= msg length
+#               $msg= received msg
+#
+# output:       Print received msg to stderr and log in hex type
+##################################################################
+sub DumpMsg {
+    my $type=$_[0];
+    my $msglen=$_[1];
+    CoolMisc::coolprint("Received message from $type: $msglen bytes/n" );
+    LogPrint("Received message from $type: $msglen bytes/n");
+    # change the received message from bin to hex string.
+    # my @msg=split(/../,unpack("H*", $_[2]),$msglen);
+    my $tmp = unpack("H*", $_[2]);
+    my @msg = ( $tmp =~ m/../g );
+    # print the message to stdout and log file.
+    for(my $i=0;$i&lt;$msglen;$i++) {
+        print "0x$msg[$i] ";
+        syswrite($ROUTELOG,"0x$msg[$i] ");
+        if ($i%8 ==7) {
+            print "/n";
+            syswrite($ROUTELOG,"/n");
+        }
+    }
+    print "/n";
+    syswrite($ROUTELOG,"/n");
+}
+</pre>
+<p>&nbsp;</p></div>
+<div></div>
+<div></div>
+<div>参考文献：</div>
+<div>1. Perl Doc-Data::Numbers&nbsp;<a href="http://perl.active-venture.com/pod/perlfaq4-datanumber.html">http://perl.active-venture.com/pod/perlfaq4-datanumber.html</a></div>
+<div>2. Perl函数pack/unpack:<a href="http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html">http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html</a>&nbsp;</div>
+<div>3.&nbsp;<span><strong><a href="http://stackoverflow.com/questions/372370/how-can-i-split-a-string-into-chunks-of-two-characters-each-in-perl">How can I split a string into chunks of two characters each in Perl?</a></strong></span></div>
+<div><strong><br /></strong></div>
+</div>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/03/05/perl-data-type-cast">Perl数值转换</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-03-05</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
         </p>
@@ -588,78 +659,7 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2009/03/05/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%25e6%2589%2593%25e5%258d%25b0%25e6%2594%25b6%25e5%2588%25b0%25e7%259a%2584socket%25e6%25b6%2588%25e6%2581%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">PERL打印收到的Socket消息</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2009-03-05</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
-<div>
-<h1>PERL打印收到的Socket消息</h1>
-<div>利用Perl的Select(),sysread()和syswrite()收到的消息将以二进制的形式存储到$buffer中，因此如果直接打印$buffer的内容将得到乱码。要将二进制内容转换为十六进制数串，则必须使用unpack()函数，即：</div>
-<div>my $hexstr=unpack("H*",$buffer);</div>
-<div>而此时如果打印$hexstr将得到一系列的十六进制数串（数串的长度是接收到的字节数的两倍），仍然难以阅读。因此，有必要将十六进制数串每两个数字进行拆分并加前缀&ldquo;0x&rdquo;以便阅读。此时需要借助正则表达式进行模式匹配，方法为:</div>
-<div>my @msg=($hexstr =~ m/../g);</div>
-<div>其中.用以匹配一个字符。</div>
-<div></div>
-<div>示例代码如下：</div>
-<div>
-<pre>##################################################################
-#               DumpMsg
-#
-# Dump received message in hex mode.
-#
-# Format: DumpMsg($type, $msglen, $msg);
-#
-# input:        $type= 'MSC' | 'BSC'
-#               $msglen= msg length
-#               $msg= received msg
-#
-# output:       Print received msg to stderr and log in hex type
-##################################################################
-sub DumpMsg {
-    my $type=$_[0];
-    my $msglen=$_[1];
-    CoolMisc::coolprint("Received message from $type: $msglen bytes/n" );
-    LogPrint("Received message from $type: $msglen bytes/n");
-    # change the received message from bin to hex string.
-    # my @msg=split(/../,unpack("H*", $_[2]),$msglen);
-    my $tmp = unpack("H*", $_[2]);
-    my @msg = ( $tmp =~ m/../g );
-    # print the message to stdout and log file.
-    for(my $i=0;$i&lt;$msglen;$i++) {
-        print "0x$msg[$i] ";
-        syswrite($ROUTELOG,"0x$msg[$i] ");
-        if ($i%8 ==7) {
-            print "/n";
-            syswrite($ROUTELOG,"/n");
-        }
-    }
-    print "/n";
-    syswrite($ROUTELOG,"/n");
-}
-</pre>
-<p>&nbsp;</p></div>
-<div></div>
-<div></div>
-<div>参考文献：</div>
-<div>1. Perl Doc-Data::Numbers&nbsp;<a href="http://perl.active-venture.com/pod/perlfaq4-datanumber.html">http://perl.active-venture.com/pod/perlfaq4-datanumber.html</a></div>
-<div>2. Perl函数pack/unpack:<a href="http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html">http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html</a>&nbsp;</div>
-<div>3.&nbsp;<span><strong><a href="http://stackoverflow.com/questions/372370/how-can-i-split-a-string-into-chunks-of-two-characters-each-in-perl">How can I split a string into chunks of two characters each in Perl?</a></strong></span></div>
-<div><strong><br /></strong></div>
-</div>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520unix%2520commands%2520used%2520to%2520debug%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">UNIX Commands Used to Debug</a></h2>
+        <h2><a href="/2009/03/03/unix-commands-for-debug">UNIX Commands Used to Debug</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-03-03</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
         </p>
@@ -917,7 +917,7 @@ sub DumpMsg {
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2009/03/03/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520apple%2520store%25e7%259a%2584%25e9%2594%2599%25e8%25af%25af%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Apple Store的错误</a></h2>
+        <h2><a href="/2009/03/03/an-error-made-by-apple-store">Apple Store的错误</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-03-03</strong> with tags <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
         </p>
@@ -955,7 +955,7 @@ Best wishes!</div>
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2009/02/17/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e7%25bd%2591%25e9%25a1%25b5%25e5%258f%2596%25e8%25af%258d%25e5%25b9%25b6%25e8%25b0%2583%25e7%2594%25a8google%2520translate%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">网页取词并调用Google Translate</a></h2>
+        <h2><a href="/2009/02/17/call-google-translate">网页取词并调用Google Translate</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-02-17</strong> with tags <a href="/tags.html#Cloud Computing-ref" rel="nofollow">Cloud Computing</a>
         </p>
@@ -1108,7 +1108,7 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2009/02/10/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%2520google%25e8%2580%2581%25e7%259f%25a3%25ef%25bc%258c%25e8%2583%25bd%25e4%25b8%258d%25e5%25ae%2595%25e5%2590%25a6%25ef%25bc%259f%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Google老矣，能不宕否？</a></h2>
+        <h2><a href="/2009/02/10/google-out-of-service">Google老矣，能不宕否？</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-02-10</strong> with tags <a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>
         </p>
@@ -1148,9 +1148,9 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2009/02/07/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520%25e4%25b9%258c%25e9%25be%2599%25e8%25ae%25b0%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">乌龙记</a></h2>
+        <h2><a href="/2009/02/07/wulongji">乌龙记</a></h2>
         <p>
-          Posted by <strong>boyang</strong> at <strong>2009-02-07</strong> with tags <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
+          Posted by <strong>boyang</strong> at <strong>2009-02-07</strong> with tags <a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
         </p>
         
         <div class="post_at_index thepost">
@@ -1192,7 +1192,7 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528iii%2529%2520-%2520introduction%2520to%2520berkeley%2520sockets%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Perl Notes(III) -- Introduction To Berkeley Sockets</a></h2>
+        <h2><a href="/2009/01/13/perl-note-3">Perl Notes(III) -- Introduction To Berkeley Sockets</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-01-13</strong> with tags <a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
         </p>
@@ -1558,7 +1558,7 @@ $dotted_ip_address = join '.', $a,$b,$c,$d;</pre>
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2009/01/13/%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520perl%2520notes%2528ii%2529%250d%250a%2520%2520%2520%2520%2520%2520%2520%2520">Perl Notes(II)</a></h2>
+        <h2><a href="/2009/01/13/perl-note-2">Perl Notes(II)</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-01-13</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
         </p>
@@ -2378,33 +2378,43 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>4</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+    
+        <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
+    
+        <a href="/tags.html#EMI-ref" class="btn btn-mini">EMI <span>1</span></a>
     
         <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span>3</span></a>
     
-        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>6</span></a>
+        <a href="/tags.html#CBR-ref" class="btn btn-mini">CBR <span>1</span></a>
+    
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>5</span></a>
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
-    
-        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>14</span></a>
     
         <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
     
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>3</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>86</span></a>
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
+    
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
     
         <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
     
+        <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
+    
         <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span>6</span></a>
     
-        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>1</span></a>
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>12</span></a>
     
         <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span>3</span></a>
     
         <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span>14</span></a>
+    
+        <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span>12</span></a>
     
         <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span>6</span></a>
     
@@ -2414,15 +2424,19 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
     
         <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span>4</span></a>
     
+        <a href="/tags.html#ESXi-ref" class="btn btn-mini">ESXi <span>1</span></a>
+    
+        <a href="/tags.html#Virtual Machine-ref" class="btn btn-mini">Virtual Machine <span>2</span></a>
+    
         <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span>2</span></a>
     
         <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span>9</span></a>
     
-        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>1</span></a>
+        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>3</span></a>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>5</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
     
         <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
     
@@ -2436,11 +2450,19 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
     
         <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span>1</span></a>
     
+        <a href="/tags.html#Ubuntu-ref" class="btn btn-mini">Ubuntu <span>1</span></a>
+    
         <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span>1</span></a>
+    
+        <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
+    
+        <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
         <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
+    
+        <a href="/tags.html#Genetic Algorihtm-ref" class="btn btn-mini">Genetic Algorihtm <span>1</span></a>
     
         <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span>1</span></a>
     
@@ -2468,7 +2490,7 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
     
         <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span>1</span></a>
     
-        <a href="/tags.html#Go; Bioinformatics;-ref" class="btn btn-mini">Go; Bioinformatics; <span>1</span></a>
+        <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
         <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
     
@@ -2478,7 +2500,7 @@ STDOUT-&gt;fdopen($saveout,"&gt;");                 # reopen on saved
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#ML-ref" class="btn btn-mini">ML <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     

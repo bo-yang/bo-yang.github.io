@@ -76,7 +76,8 @@
 <p>Unfortunately, comparing to C++, Perl program usually costs more memory and longer time. This is not a big issue when the FASTA files are not large(smaller than 400MB). However, when handling larger FASTA files, my Perl program would require more than 8GB memory, which exceeds the limits of my computer. Therefore, I decided to rewrite the program by Go, a system language that supports concurrent features and can has C/C++-comparable speed.</p>
 <p>The syntax of Go is very different from C/C++, which takes me a whole day familiarize. Some operations that can be implemented easily in Perl can only be done in complicated way, such as calling system command, reading file line-by-line, writing file and sorting map by value. Since this small tool doesn't involve network and concurrency, I cannot compare the difficulty of writing Go program to implement such work. </p>
 <p>Although the experience of the first Go program is not happy, I still think it is necessary to continue learning Go language, because Go program really runs very fast and saves memory(comparing to Perl script). And you don't need to worry about the tricky part of C++. </p>
-<pre>
+
+```
 // kmerfreq - count unique k-mers from a fasta file.
 
 package main
@@ -205,7 +206,8 @@ func main() {
 		fo.WriteString(k + &quot;\t&quot; + strconv.Itoa(v) + &quot;\n&quot;)
 	}
 }
-</pre>
+
+```
 <p>&nbsp;</p>
 
       </div>
@@ -296,7 +298,9 @@ func main() {
 
   
      
-    	<li><a href="/tags.html#Go; Bioinformatics;-ref">Go; Bioinformatics; <span>1</span></a></li>
+    	<li><a href="/tags.html#Go-ref">Go <span>3</span></a></li>
+     
+    	<li><a href="/tags.html#Bioinformatics-ref">Bioinformatics <span>1</span></a></li>
     
   
 

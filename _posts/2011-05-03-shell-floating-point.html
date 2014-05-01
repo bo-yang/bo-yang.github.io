@@ -1,0 +1,41 @@
+---
+layout: post
+title: Shell浮点数运算
+categories:
+- Perl
+- Unix/Linux
+tags:
+- Perl
+- Unix/Linux
+- Shell
+status: publish
+type: post
+published: true
+meta:
+  views: '557'
+  original_post_id: '26'
+  _wp_old_slug: '26'
+author: 
+---
+
+<p>Shell本身不支持浮点数运算，(())之类的数学运算符只能进行整数运算。要想在shell中运算浮点数，只能借助于bc, Awk或者Perl。 如</p>
+<p>
+<pre>a=0.1
+b=0.2
+c=$(echo "$a+$b" | bc -l)</pre>
+<p>&nbsp;</p>
+<p>或者</p>
+<p>
+<pre>perl -e "print STDOUT $a + $b;"</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>需要注意的是，如果数学表达式中有负数，则必须确保运算符(+ - * /)与其前后的表达式之间至少有一空格。如：</p>
+<p>
+<pre>[bonn@bonn Downloads]$ echo $a $b
+-0.1 -0.2
+[bonn@bonn Downloads]$ echo "$a - $b" | bc -l
+.1
+[bonn@bonn Downloads]$ perl -e "print STDOUT $a - $b;"
+0.1
+</pre>
+<p>&nbsp;</p>

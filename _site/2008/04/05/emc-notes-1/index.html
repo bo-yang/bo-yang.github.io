@@ -1,0 +1,706 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<head>
+  <title>《电磁设备防干扰原理与技术》读书笔记(一) | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>《电磁设备防干扰原理与技术》读书笔记(一)</h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span9 left">
+    <div class="main-container shadow">
+      <div class="mainbody thepost">
+        <p>
+    &nbsp;</p>
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-size:16pt;font-family:黑体;">《电磁设备防干扰原理与技术》读书笔记<span lang="EN-US"></span></span></p>
+<p align="right" style="text-align:right;" class="MsoNormal"><span style="font-family:宋体;">&mdash;&mdash;周旭编著，《电磁设备防干扰原理与技术》，国防工业出版社，</span><span lang="EN-US">2005</span></p>
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal"><span lang="EN-US">1</span><span style="font-family:宋体;">、电偶极子、磁偶极子和实际干扰源的简化</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">实际的辐射干扰源大致分为两类：类似于对称阵子天线的非闭合载流导线辐射源和类似于变压器绕组的闭合载流导线辐射源。电偶极子和磁偶极子是上述两类源的最基本的形式。实际的辐射源在空间某点产生的场，均可由若干个基本源的场叠加而成；实际天线可近似为许多偶极子的组合，天线所产生的电磁波也就是这些偶极子所产生的电磁波的合成。因此研究电磁辐射，最简单的是电偶极子和磁偶极子的辐射。通过对电偶极子和磁偶极子所产生的场进行分析，就可得出实际辐射源的远近场及波阻抗和远近场的场特性。</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span lang="EN-US">1.1 </span><span style="font-family:宋体;">电偶极子和磁偶极子的概念</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">电偶极子是指一段载有高频电流的短导线，短是指其长度</span><span style="font-family:宋体;">&Delta;<span lang="EN-US">l</span></span><span style="font-family:宋体;">远小于其辐射的电磁波的工作波长，这时导线上各点电流的振幅和相位可视为相同。虽然实际的线天线上各处电流的大小和相位不相同，但其上的电流分布可以看成是由许多首尾相连的一系列电偶极子的电流组成，而各电偶极子上的电流可分别看作常数，因此电偶极子也称为电基本振子、电流元或时变电偶极子。</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">磁偶极子也被称为磁基本振子，是一个半径为</span><span lang="EN-US">a(a&lt;&lt;</span><span style="font-family:宋体;">&lambda;</span><span lang="EN-US">)</span><span style="font-family:宋体;">的细导线小圆环，载有高频电流。当此细导线小圆环的周长远小于波长时，可以认为流过圆环电流的振幅和相位处处相等。磁偶极子的电场强度矢量和磁场强度矢量互相垂直，这一点和电偶极子的电磁场相同。</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span lang="EN-US">1.2 </span><span style="font-family:宋体;">两类源在远近场的特性比较</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span lang="EN-US">1.2.1 </span><span style="font-family:宋体;">传播特性</span></p>
+<p align="center" style="text-align:center;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">表</span><span lang="EN-US">1.1 </span><span style="font-family:宋体;">两类源的场于传播特性</span></p>
+<table cellspacing="0" cellpadding="0" border="1" style="border:medium none;border-collapse:collapse;" class="MsoNormalTable">
+<tbody>
+<tr>
+<td width="114" style="border:1pt solid black;padding:0 5.4pt;width:85.2pt;" rowspan="2">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">场源类型</span></p>
+</td>
+<td width="227" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:170.4pt;" colspan="2">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">近</span> <span style="font-family:宋体;">场</span></p>
+</td>
+<td width="227" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:170.5pt;" colspan="2">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">远</span> <span style="font-family:宋体;">场</span></p>
+</td>
+</tr>
+<tr>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">场特性</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">传播特性</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.25pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">场特性</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.25pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">传播特性</span></p>
+</td>
+</tr>
+<tr>
+<td width="114" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:85.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">电偶极子</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">非平面波</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">以</span><span lang="EN-US">1/r<sup>3</sup></span><span style="font-family:宋体;">衰减</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.25pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">平面波</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.25pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">以</span><span lang="EN-US">1/r</span><span style="font-family:宋体;">衰减</span></p>
+</td>
+</tr>
+<tr>
+<td width="114" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:85.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">磁偶极子</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">非平面波</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">以</span><span lang="EN-US">1/r<sup>2</sup></span><span style="font-family:宋体;">衰减</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.25pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">平面波</span></p>
+</td>
+<td width="114" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:85.25pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">以</span><span lang="EN-US">1/r</span><span style="font-family:宋体;">衰减</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">近场区的电场和磁场方向处在以场源为中心的大曲率半径球面上。理想的电偶极子和磁偶极子是不存在的。杆状天线及电子设备内部的一些高电压小电流元器件等场源，都可视为等效的电偶极子场源，其近区场的电磁场以容性高阻抗电场为主。环状天线和电子设备中的一些低压大电流元器件及电感线圈等场源可视作等效的磁偶极子场源，其周围电磁场呈现低感性低阻抗磁场的特征。</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">在远场区电磁场为横电磁波，只有与传播方向垂直的两个场分量，在传播方向上没有场分量。</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span lang="EN-US">1.2.2 </span><span style="font-family:宋体;">波阻抗</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">波阻抗是电磁波中电场分量与磁场分量之比，即</span></p>
+<p align="center" style="text-align:center;text-indent:21pt;" class="MsoNormal"><span lang="EN-US"><span style="position:relative;top:18pt;"><!--[if !vml]--><img height="59" width="49" src="/DOCUME~1/ADMINI~1/LOCALS~1/Temp/msohtmlclip1/01/clip_image002.gif" alt="" /><!--[endif]--></span></span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">场源不同、远近场不同，则波阻抗也有所不同。</span></p>
+<p align="center" style="text-align:center;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">表</span><span lang="EN-US">1.2 </span><span style="font-family:宋体;">两类源的波阻抗</span></p>
+<table cellspacing="0" cellpadding="0" border="1" style="border:medium none;border-collapse:collapse;" class="MsoNormalTable">
+<tbody>
+<tr style="height:23.55pt;">
+<td width="189" style="border:1pt solid black;padding:0 5.4pt;width:142pt;height:23.55pt;" rowspan="2">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">场源类型</span></p>
+</td>
+<td width="379" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:284.1pt;height:23.55pt;" colspan="2">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">波阻抗</span><span lang="EN-US">/</span><span style="font-family:宋体;">&Omega;</span></p>
+</td>
+</tr>
+<tr style="height:21pt;">
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;height:21pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">近</span> <span style="font-family:宋体;">场</span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;height:21pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">远</span> <span style="font-family:宋体;">场</span></p>
+</td>
+</tr>
+<tr style="height:46.8pt;">
+<td width="189" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:142pt;height:46.8pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">电偶极子</span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;height:46.8pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US"><span style="position:relative;top:15pt;"><!--[if !vml]--><img height="45" width="87" src="/DOCUME~1/ADMINI~1/LOCALS~1/Temp/msohtmlclip1/01/clip_image004.gif" alt="" /><!--[endif]--></span></span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;height:46.8pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US">120</span><span style="font-family:宋体;">&pi;</span></p>
+</td>
+</tr>
+<tr style="height:46.8pt;">
+<td width="189" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:142pt;height:46.8pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">磁偶极子</span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;height:46.8pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US"><span style="position:relative;top:6pt;"><!--[if !vml]--><img height="24" width="88" src="/DOCUME~1/ADMINI~1/LOCALS~1/Temp/msohtmlclip1/01/clip_image006.gif" alt="" /><!--[endif]--></span></span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;height:46.8pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US">120</span><span style="font-family:宋体;">&pi;</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p style="text-indent:21pt;" class="MsoNormal"><span lang="EN-US">1.2.3 </span><span style="font-family:宋体;">能量密度</span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">能量密度包括电场能量密度和磁场分量能量密度，通过对由同一场源所产生的电场、磁场分量的能量密度进行比较，可以确定场源在不同区域内何种分量占主要成分，以便确定具体的屏蔽分类。</span></p>
+<p align="center" style="text-align:center;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">表</span><span lang="EN-US">1.3 </span><span style="font-family:宋体;">两类源的能量密度</span></p>
+<table cellspacing="0" cellpadding="0" border="1" style="border:medium none;border-collapse:collapse;" class="MsoNormalTable">
+<tbody>
+<tr>
+<td width="189" style="border:1pt solid black;padding:0 5.4pt;width:142pt;" rowspan="2">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">场源类型</span></p>
+</td>
+<td width="379" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:284.1pt;" colspan="2">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">能量密度比较</span></p>
+</td>
+</tr>
+<tr>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">近场</span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">远场</span></p>
+</td>
+</tr>
+<tr>
+<td width="189" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:142pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">电偶极子</span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US"><span style="position:relative;top:5pt;"><!--[if !vml]--><img height="23" width="72" src="/DOCUME~1/ADMINI~1/LOCALS~1/Temp/msohtmlclip1/01/clip_image008.gif" alt="" /><!--[endif]--></span></span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US"><span style="position:relative;top:5pt;"><!--[if !vml]--><img height="23" width="64" src="/DOCUME~1/ADMINI~1/LOCALS~1/Temp/msohtmlclip1/01/clip_image010.gif" alt="" /><!--[endif]--></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="189" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:142pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">磁偶极子</span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US"><span style="position:relative;top:5pt;"><!--[if !vml]--><img height="23" width="72" src="/DOCUME~1/ADMINI~1/LOCALS~1/Temp/msohtmlclip1/01/clip_image012.gif" alt="" /><!--[endif]--></span></span></p>
+</td>
+<td width="189" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:142.05pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US"><span style="position:relative;top:5pt;"><!--[if !vml]--><img height="23" width="64" src="/DOCUME~1/ADMINI~1/LOCALS~1/Temp/msohtmlclip1/01/clip_image010.gif" alt="" /><!--[endif]--></span></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">2</span><span style="font-family:宋体;">、传输线基础</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">传输线是一种能在两点之间高效率地传输功率与信号的器材。场源产生的能量沿着传输线所引导的方向以横电磁波模式传播，即只在传输过程中电场和磁场相互垂直，且都垂直于传输线导向的传播方向。传输线只能在一定的频率范围内使用，超出范围将会使传输损耗大大增加。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">传输线通常分为三类：双线传输线、双线平行板传输线和同轴线。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">传输线和普通电路网络的差别：普通电路网络的几何尺寸远小于工作波长，因此网络中的电路元件可以认为是分立的，并以集总参数来描述，电流通过集总参数电路元件时，不用考虑电流在空间的变化；传输线的长度通常可与传输信号的波长相比拟，它的分布参数已直接影响到信号的传输，必须用分布于整个长度的电路参数来描述其自身的特性。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">如果传输线终端的负载阻抗与传输线特性阻抗不相等，那么床竖线终端的不连续性会引起电压和电流的反射。这时入射波（从源端传出）和反射波（从负载传出）在线上将同时存在，形成有别于行波的另一种波&mdash;&mdash;驻波。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">负载端的反射系数定义为反射波与入射波之比，它与负载阻抗及传输线特性阻抗有关。</span></p>
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">3</span><span style="font-family:宋体;">、波导</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">到微波波段（</span><span lang="EN-US">300MHz</span><span style="font-family:宋体;">～</span><span lang="EN-US">300GHz</span><span style="font-family:宋体;">），普通传输线传输信号的泄漏急剧上升，只好采用波导作为微波能量的导波载体。波导实质上是一根空心金属管，其横截面一般为矩形或圆形。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">波导传输的重要特点：</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">（</span><span lang="EN-US">1</span><span style="font-family:宋体;">）每种既定的波导都有最低可传输频率，低于此频率的电磁波就不能再在波导中传输，该频率称为截止频率，它只与报道的横截面尺寸及波导内介质的特性有关。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">（</span><span lang="EN-US">2</span><span style="font-family:宋体;">）由于波导内没有同轴电缆那样的导体，所以沿传播方向总存在一个场分量。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">（</span><span lang="EN-US">3</span><span style="font-family:宋体;">）波导波长始终大于同频率的电磁波的自由空间波长。</span></p>
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">4</span><span style="font-family:宋体;">、电磁干扰源的分类</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span lang="EN-US">4.1 </span><span style="font-family:宋体;">按存在区域分类&mdash;&mdash;外部电磁干扰和内部电磁干扰</span></p>
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:宋体;">所谓外部电磁干扰，是指电子设备或系统以外的因素对线路、设备或系统的干扰，这些干扰是通过外壳、天线及各种输入馈线等途径输入设备内部的，其中有些是自然干扰，有些是人为干扰。具体而言，外部干扰包括：</span></p>
+<p align="left" style="margin-left:57pt;text-align:left;text-indent:-36pt;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US"><span>（1）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;">外部的高电压、电源通过绝缘漏电而干扰电子设备或系统。</span></p>
+<p align="left" style="margin-left:57pt;text-align:left;text-indent:-36pt;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US"><span>（2）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;">外部大功率设备在空间产生很强的磁场，通过互感耦合干扰电子设备或系统。</span></p>
+<p align="left" style="margin-left:57pt;text-align:left;text-indent:-36pt;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US"><span>（3）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;">空间电磁波对电子线路或系统产生的干扰。</span></p>
+<p align="left" style="margin-left:57pt;text-align:left;text-indent:-36pt;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US"><span>（4）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;">工作环境温度不稳定，引起电子设备或系统内部元器件参数改变造成的干扰。</span></p>
+<p align="left" style="margin-left:57pt;text-align:left;text-indent:-36pt;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US"><span>（5）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;">由工业电网供电的设备和由电网电压通过电源变压器所产生的干扰。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">所谓内部电磁干扰，是指设备内部电路单元之间、元器件之间及导线之间的电磁干扰。具体而言，内部干扰包括：</span></p>
+<p align="left" style="margin-left:21pt;text-align:left;text-indent:0;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US"><span>（1）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;">工作电源通过线路的分布电容和绝缘电阻产生漏电造成的干扰（与工作频率有关）。</span></p>
+<p align="left" style="margin-left:21pt;text-align:left;text-indent:0;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US"><span>（2）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;">信号通过地线、电源和传输导线的阻抗相互耦合，或导线之间的互感造成的干扰。</span></p>
+<p align="left" style="margin-left:21pt;text-align:left;text-indent:0;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US"><span>（3）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;">设备或系统内部某些元件发热，影响元件本身或其它元件的稳定性造成的干扰。</span></p>
+<p align="left" style="margin-left:21pt;text-align:left;text-indent:0;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US"><span>（4）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;">大功率和高电压部件产生的磁场、电场通过耦合影响其他部件造成的干扰。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">在电子设备内部，这些电磁干扰都是通过寄生耦合形成的。寄生耦合有电容耦合、电感耦合。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span lang="EN-US">4.2 </span><span style="font-family:宋体;">按频率范围分类</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">（</span><span lang="EN-US">1</span><span style="font-family:宋体;">）工频干扰源：</span><span lang="EN-US">50Hz</span><span style="font-family:宋体;">及其谐波，波长为</span><span lang="EN-US">6000km</span><span style="font-family:宋体;">，包括输配电以及电力牵引系统。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">（</span><span lang="EN-US">2</span><span style="font-family:宋体;">）甚低频干扰源：</span><span lang="EN-US">30KHz</span><span style="font-family:宋体;">以下，波长大于</span><span lang="EN-US">10km</span><span style="font-family:宋体;">。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">（</span><span lang="EN-US">3</span><span style="font-family:宋体;">）载频干扰源：</span><span lang="EN-US">10KHz</span><span style="font-family:宋体;">～</span><span lang="EN-US">300KHz</span><span style="font-family:宋体;">，波长大于</span><span lang="EN-US">1km</span><span style="font-family:宋体;">，包括高压直流输电谐波干扰、交流输电谐波干扰及交流电气铁道的谐波干扰。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">（</span><span lang="EN-US">4</span><span style="font-family:宋体;">）射频及视频干扰源：</span><span lang="EN-US">300KHz</span><span style="font-family:宋体;">～</span><span lang="EN-US">300MHz</span><span style="font-family:宋体;">，波长在</span><span lang="EN-US">1m</span><span style="font-family:宋体;">～</span><span lang="EN-US">1000km</span><span style="font-family:宋体;">之间，包括工业、科学和医用射频设备、输电线电晕放电、高压设备和电力牵引系统的火花放电以及内燃机、电动机、家用电器和照明电器等。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">（</span><span lang="EN-US">5</span><span style="font-family:宋体;">）微波干扰：</span><span lang="EN-US">300MHz</span><span style="font-family:宋体;">～</span><span lang="EN-US">300GHz</span><span style="font-family:宋体;">，波长在</span><span lang="EN-US">1mm</span><span style="font-family:宋体;">～</span><span lang="EN-US">1m</span><span style="font-family:宋体;">之间，包括特高频、超高频、极高频干扰。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">（</span><span lang="EN-US">6</span><span style="font-family:宋体;">）雷电及核电磁脉冲：频谱在</span><span lang="EN-US">0</span><span style="font-family:宋体;">～</span><span lang="EN-US">1GHz</span><span style="font-family:宋体;">之间。</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span lang="EN-US">4.3 </span><span style="font-family:宋体;">按产生原因分类</span></p>
+<p align="center" style="text-align:center;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">表</span><span lang="EN-US">3.1 </span><span style="font-family:宋体;">按照产生电磁干扰的原因来分类</span></p>
+<table cellspacing="0" cellpadding="0" border="1" style="border:medium none;border-collapse:collapse;" class="MsoNormalTable">
+<tbody>
+<tr>
+<td width="111" style="border:1pt solid black;padding:0 5.4pt;width:83.4pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">大类别</span></p>
+</td>
+<td width="132" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">产生原因</span></p>
+</td>
+<td width="321" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">小类别及说明</span></p>
+</td>
+</tr>
+<tr>
+<td width="111" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:83.4pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">放电噪声</span></p>
+</td>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">放电产生噪声</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">火花放电&mdash;&mdash;在电路绝缘破坏的过渡状态下放电；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">连续放电&mdash;&mdash;电晕放电（部分绝缘破坏）；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">辉光放电&mdash;&mdash;弧光放电（全电路绝缘破坏）；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">静电噪声&mdash;&mdash;带静电的火花放电噪声；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">雷击&mdash;&mdash;雷云和大地之间的放电。</span></p>
+</td>
+</tr>
+<tr>
+<td width="111" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:83.4pt;" rowspan="5">
+<p class="MsoNormal"><span style="font-family:宋体;">接触噪声</span></p>
+</td>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">电流通过接触部分，由接触电阻变化而引起电压变化</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">静接触噪声&mdash;&mdash;接点接触压力变化，使接触电阻变化而引起的干扰；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">滑动噪声&mdash;&mdash;滑动过程中接触电阻变化而产生的噪声；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">振动噪声&mdash;&mdash;机械振动使接触电阻发生变化而产生的噪声；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">皮膜破坏噪声&mdash;&mdash;接点表面破坏使电阻变化而产生的噪声。</span></p>
+</td>
+</tr>
+<tr>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">金属的接触面接触不良</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">接点振动&mdash;&mdash;断开的接点，当接触时由接点跳动而产生的噪声；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">不完全接触噪声&mdash;&mdash;不完全接触，由接触断续而产生的噪声。</span></p>
+</td>
+</tr>
+<tr>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">极化电荷波动</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">电极噪声&mdash;&mdash;医疗电子设备的电极，由于涂料极化可引起电压变化而产生的噪声。</span></p>
+</td>
+</tr>
+<tr>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">金属氧化物整流作用</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">检波输出信号&mdash;&mdash;由金属和氧化物引起的被调制波的检波作用。</span></p>
+</td>
+</tr>
+<tr>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">热电势</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">直流噪声&mdash;&mdash;由不同金属接点的温差而引起的电势。</span></p>
+</td>
+</tr>
+<tr>
+<td width="111" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:83.4pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">过度现象（</span><span lang="EN-US">transient</span><span style="font-family:宋体;">）干扰</span></p>
+</td>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">过渡现象所产生的电压和电流引起的干扰</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">电子开关&mdash;&mdash;硅整流器等产生的噪声；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">高速数字回路&mdash;&mdash;设备内的电源开关，集成电路的尖峰电流；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">通电瞬间的冲击电流&mdash;&mdash;白炽灯泡，电动机；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">电力线路过渡的异常电压&mdash;&mdash;线路开闭和故障时的异常电压；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">雷电感应&mdash;&mdash;雷云使电线产生电荷，并使放电的自由电荷在电线中形成行波。</span></p>
+</td>
+</tr>
+<tr>
+<td width="111" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:83.4pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">无用信号的干扰</span></p>
+</td>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">对电路而言，是毫无用处的信号</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">市用电源&mdash;&mdash;电源哼声，感应障碍所引起的波形失真；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">无线电频率干扰&mdash;&mdash;高频设备，发射机，振荡器等；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">脉冲信号干扰&mdash;&mdash;数字回路，偏转回路等；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">无用辐射&mdash;&mdash;发射机的高频调制，接收机的局部震荡等。</span></p>
+</td>
+</tr>
+<tr>
+<td width="111" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:83.4pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">反射干扰</span></p>
+</td>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">由信号本身反射而引起的干扰</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">延迟信号干扰&mdash;&mdash;由空间或传输线反射波引起的干扰；</span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">不匹配噪声&mdash;&mdash;由于传输线的阻抗不匹配而引起的噪声。</span></p>
+</td>
+</tr>
+<tr>
+<td width="111" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:83.4pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">等离子</span></p>
+</td>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">放电等离子区内的离子、电子固有振动</span></p>
+</td>
+<td width="321" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:241pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">由核爆炸噪声，太阳噪声等产生</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span lang="EN-US">4.4 </span><span style="font-family:宋体;">按传输状态分类</span></p>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">表</span><span lang="EN-US">4.2 </span><span style="font-family:宋体;">按传输的状态来分类</span></p>
+<table cellspacing="0" cellpadding="0" border="1" style="border:medium none;border-collapse:collapse;" class="MsoTableGrid">
+<tbody>
+<tr>
+<td width="73" style="border:1pt solid black;padding:0 5.4pt;width:55.05pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">传输路径</span></p>
+</td>
+<td width="76" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:2cm;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">大类别</span></p>
+</td>
+<td width="132" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">说明</span></p>
+</td>
+<td width="287" style="border-style:solid solid solid none;border-color:black black black -moz-use-text-color;border-width:1pt 1pt 1pt medium;padding:0 5.4pt;width:215.15pt;" colspan="2">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">小类别</span></p>
+</td>
+</tr>
+<tr>
+<td width="73" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:55.05pt;" rowspan="3">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">空间</span></p>
+</td>
+<td width="76" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:2cm;">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">辐射干扰</span></p>
+</td>
+<td width="132" valign="top" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;">
+<p align="left" style="text-align:left;" class="MsoNormal"><span style="font-family:宋体;">同波长相比，距离大的场合</span></p>
+</td>
+<td width="287" valign="top" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:215.15pt;" colspan="2">
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+</td>
+</tr>
+<tr>
+<td width="76" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:2cm;" rowspan="2">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">感应干扰</span></p>
+</td>
+<td width="132" valign="top" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;" rowspan="2">
+<p align="left" style="text-align:left;" class="MsoNormal"><span style="font-family:宋体;">由近距离电磁场引起，如平行布线、多芯电缆串音等</span></p>
+</td>
+<td width="287" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:215.15pt;" colspan="2">
+<p class="MsoNormal"><span style="font-family:宋体;">静电感应&mdash;&mdash;高阻抗场的静电耦合</span></p>
+</td>
+</tr>
+<tr>
+<td width="287" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:215.15pt;" colspan="2">
+<p class="MsoNormal"><span style="font-family:宋体;">电磁感应&mdash;&mdash;低阻抗场的电磁耦合</span></p>
+</td>
+</tr>
+<tr>
+<td width="73" style="border-style:none solid solid;border-color:-moz-use-text-color black black;border-width:medium 1pt 1pt;padding:0 5.4pt;width:55.05pt;" rowspan="6">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">导线</span></p>
+</td>
+<td width="76" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:2cm;" rowspan="6">
+<p align="center" style="text-align:center;" class="MsoNormal"><span style="font-family:宋体;">传导干扰</span></p>
+</td>
+<td width="132" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:99.2pt;" rowspan="6">
+<p class="MsoNormal"><span style="font-family:宋体;">在传播中侵入导线的干扰</span></p>
+</td>
+<td width="57" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:42.55pt;" rowspan="2">
+<p class="MsoNormal"><span style="font-family:宋体;">按状态分类</span></p>
+</td>
+<td width="230" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:172.6pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">差动干扰&mdash;&mdash;往复两导线间的干扰</span></p>
+</td>
+</tr>
+<tr>
+<td width="230" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:172.6pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">同相干扰&mdash;&mdash;导线和大地之间所产生的干扰</span></p>
+</td>
+</tr>
+<tr>
+<td width="57" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:42.55pt;" rowspan="4">
+<p class="MsoNormal"><span style="font-family:宋体;">按传输线路不同分类</span></p>
+</td>
+<td width="230" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:172.6pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">电源噪声&mdash;&mdash;由电源回路侵入的噪声</span></p>
+</td>
+</tr>
+<tr>
+<td width="230" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:172.6pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">信号输入线&mdash;&mdash;从信号输入线直接侵入</span></p>
+</td>
+</tr>
+<tr>
+<td width="230" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:172.6pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">控制线等&mdash;&mdash;从信号输出线间接侵入</span></p>
+</td>
+</tr>
+<tr>
+<td width="230" style="border-style:none solid solid none;border-color:-moz-use-text-color black black -moz-use-text-color;border-width:medium 1pt 1pt medium;padding:0 5.4pt;width:172.6pt;">
+<p class="MsoNormal"><span style="font-family:宋体;">地线即接地回路&mdash;&mdash;接地点相互之间的电位差</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+        
+        <div class="post-end">
+</div>
+
+
+        <div class="pagination">
+          <ul>
+          
+            <li class="prev"><a href="/2008/03/14/fault-diagnosis-notes-1" title="故障智能诊断读书笔记（一）">&larr; Previous</a></li>
+          
+            <li><a href="/archive.html">Archive</a></li>
+          
+            <li class="next"><a href="/2008/04/25/emi-cbr-notes-1" title="EMC-CBR故障诊断研究（一）">Next &rarr;</a></li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2008/04/05/emc-notes-1';
+    var disqus_url = 'http://bo-yang.github.io//2008/04/05/emc-notes-1';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	  </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <h4>Published</h4>
+        <div class="date"><span>2008-04-05</span></div>
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+          <h4>Tags</h4>
+          <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#EMI-ref">EMI <span>1</span></a></li>
+     
+    	<li><a href="/tags.html#EMC-ref">EMC <span>5</span></a></li>
+    
+  
+
+
+
+          </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+		<div class="sidebar">
+			<!--
+			<script type="text/javascript" id="wumiiRelatedItems"></script>
+			-->
+		  <script type="text/javascript">
+	var linkwithin_site_id = 2140443;
+    var lwPermaLink = "http://bo-yang.github.io//2008/04/05/emc-notes-1";
+    var lwTitle = "《电磁设备防干扰原理与技术》读书笔记(一)";
+    var lwTags = "";
+    var lwCategories = [];
+    var lwSitePrefix = "http://bo-yang.github.io/";
+    var lwParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

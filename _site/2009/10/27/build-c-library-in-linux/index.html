@@ -1,0 +1,285 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<head>
+  <title>【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？ | Bo's Blog</title>
+  
+  <meta name="author" content="boyang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+
+  <meta name="wumiiVerification" content="b53186bf-1c2c-42e8-babc-8628eb14dd59" />
+  <!-- using baidu cdn instead
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  -->
+  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Google Prettify -->
+  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <!-- using baidu cdn instead
+  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+  -->
+
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">bo-yang</a>
+        <ul class="nav">
+          <li><a href="/archive.html">Archive</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/messages.html">Messages</a></li>
+        </ul>
+        <ul class="pull-right">
+          <li>
+            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+              <input type="hidden" name="ie" value="UTF-8" />
+              <input type="hidden" name="oe" value="UTF-8" />
+              <input type="hidden" name="hl" value="zh-CN" />
+              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+            </form>
+          </li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><a href="/atom.xml">RSS</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-container">
+    <div class="content">
+      
+<div class="page-header">
+  <h1>【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？</h1>
+</div>
+
+<div class="row-fluid page-body">
+  <div class="span9 left">
+    <div class="main-container shadow">
+      <div class="mainbody thepost">
+        <p>本文根据<a href="http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487">http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487</a>的回复总结而成。</p>
+<p>&nbsp;</p>
+<p>1. 共享库</p>
+<p>&nbsp;</p>
+<p>通常做成共享库的话，在编绎时加上-shared参数，并把链接生成的文件名命名libxxx.so，可以放在/usr/lib下&nbsp;</p>
+<p>其他程序引用这个库时，在链接的时候加上-lxxx就可以了。</p>
+<p>&nbsp;</p>
+<p>编辑好代码以后,编译时采用类似下面的命令可生成"共享库"(假如源文件是myfun.c):&nbsp;<br />gcc -shared -fPIC -Wmyfun.c -0 libmy.so&nbsp;<br />解释: -shared 生成共享库;&nbsp;<br />&nbsp; &nbsp; &nbsp; -fIPC 表示&ldquo;位置无关代码&rdquo;（Position Independent Code),可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; -W 表示输出警告信息,可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; 库文件的命名要按照libxxxx.so的格式;&nbsp;</p>
+<p>要引用这个库时:&nbsp;<br />&nbsp; &nbsp; &nbsp; gcc xxx.c -0 xxx.out -lmy&nbsp;<br />&nbsp; &nbsp; -l 表示设定要连接的库(libmy.so,输my便可)&nbsp;</p>
+<p>&nbsp;</p>
+<p>2.&nbsp;静态库&nbsp;</p>
+<p>文件名：lib.c&nbsp;<br />先编译成目标文件 gcc -o mylib.o -c lib.c&nbsp;<br />然后创建静态库,将mylib.o放到libmylib.a中 ar rcs libmylib.a mylib.o&nbsp;<br />最后copy到库目录下/usr/lib&nbsp; cp libmylib.a /usr/lib/libmylib.a&nbsp;</p>
+<p>在编写的时候直接调用其中的函数就是了，只不过在编译的时候要加入-l选项后面跟上库名&nbsp;<br />如 gcc -o test test.c -lmylib&nbsp; //mylib是前面创建的库的名称&nbsp;</p>
+<p>3. 动态库 </p>
+<p>创建就是 gcc -fPIC -share -o mylib.so lib.c&nbsp;<br />调用也分两种方法&nbsp;<br />一种方法是 gcc -o test test.c ./libmylib.so (注意这里跟的是动态库的路径 )<br />第二种方法是使用动态库的函数 你man dlopen看下那几个函数看下就知道了就不多说了</p>
+
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+        
+        <div class="post-end">
+</div>
+
+
+        <div class="pagination">
+          <ul>
+          
+            <li class="prev"><a href="/2009/10/22/call-perl-in-shell" title="Shell中直接调用perl命令">&larr; Previous</a></li>
+          
+            <li><a href="/archive.html">Archive</a></li>
+          
+            <li class="next"><a href="/2009/10/30/install-chrome-in-fedora" title="Fedora升级/安装Chromium(Chrome)总结">Next &rarr;</a></li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container shadow">
+      <div class="mainbody">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2009/10/27/build-c-library-in-linux';
+    var disqus_url = 'http://bo-yang.github.io//2009/10/27/build-c-library-in-linux';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+	  </div>
+    </div>
+
+  </div>
+
+  <div class="span3 right">
+    <div class="side-container shadow">
+      <div class="sidebar">
+        <h4>Published</h4>
+        <div class="date"><span>2009-10-27</span></div>
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+      <div class="sidebar">
+        
+          <h4>Tags</h4>
+          <ul class="tag_box">
+          
+          
+
+
+  
+     
+    	<li><a href="/tags.html#C-ref">C <span>16</span></a></li>
+     
+    	<li><a href="/tags.html#Unix/Linux-ref">Unix/Linux <span>88</span></a></li>
+    
+  
+
+
+
+          </ul>
+        
+      </div>
+    </div>
+
+    <div class="side-container shadow">
+		<div class="sidebar">
+			<!--
+			<script type="text/javascript" id="wumiiRelatedItems"></script>
+			-->
+		  <script type="text/javascript">
+	var linkwithin_site_id = 2140443;
+    var lwPermaLink = "http://bo-yang.github.io//2009/10/27/build-c-library-in-linux";
+    var lwTitle = "【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？";
+    var lwTags = "";
+    var lwCategories = [];
+    var lwSitePrefix = "http://bo-yang.github.io/";
+    var lwParams = "&num=5&mode=3&pf=JAVASCRIPT";
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> boyang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+        </script>
+      </footer>
+  </div>
+
+  <!-- Comment out Sina Weibo
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  -->
+  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 200);
+        if (count > 200) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow">' + 'Read More ...</a>');
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>
+

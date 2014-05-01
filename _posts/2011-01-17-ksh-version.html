@@ -1,0 +1,25 @@
+---
+layout: post
+title: 如何查看Ksh Version
+categories:
+- Unix/Linux
+tags:
+- Unix/Linux
+- Shell
+status: publish
+type: post
+published: true
+meta:
+  views: '62'
+  original_post_id: '103'
+  _wp_old_slug: '103'
+author: 
+---
+
+<ol>
+<li>echo $KSH_VERSION. 若没有输出，<span>echo ${.sh.version}，Ksh93有效</span></li>
+<li><span><span>/bin/ksh --version 应该只在Linux下有效</span></span></li>
+<li><span><span><span>strings /bin/ksh | grep -i version，直接到二进制文件里查找</span></span></span></li>
+<li>set -o vi ；ESC；Ctrl+V，详见<a href="http://unix.ittoolbox.com/groups/technical-functional/shellscript-l/command-to-find-the-version-of-ksh-1490264">http://unix.ittoolbox.com/groups/technical-functional/shellscript-l/command-to-find-the-version-of-ksh-1490264</a>。</li>
+</ol>
+<p>对于KSH88，估计只有3、4有效。</p>
