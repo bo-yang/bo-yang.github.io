@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Fisher Vector for Action Recognition
+title: Action Recognition with Fisher Vectors
 categories: 
 - Computer Vision
 tags:
@@ -26,7 +26,7 @@ For some details of DTF, please refer to [my previous post](http://bo-yang.githu
 
 ### Pipeline
 
-The pipeline of integrating DTF/STIP features and Fisher vectors is shown in Figure 2. The first step is subsampling a fixed number of STIP/DTF features(in my implementation, 1000) from each
+The pipeline of integrating DTF/STIP features and Fisher vectors is shown in Figure 1. The first step is subsampling a fixed number of STIP/DTF features(in my implementation, 1000) from each
 video clip in training list, which will be used to do PCA and train
 Gaussian Mixture Models(GMMs).
 
@@ -43,7 +43,7 @@ When dealing with the test videos, similar process is adopted. The only
 difference is that the Fisher vectors are used for SVM classification,
 which is based on the SVM model trained with training videos.
 
-![Figure 2. Pipeline of UCF101 action recognition using Fisher
+![Figure 1. Pipeline of UCF101 action recognition using Fisher
 vector.]({{ site.url }}/assets/images/fisher_pipeline.png).
 
 To well utilize the STIP or DTF features, features(HOG, HOF, MBH, etc.) are treated
@@ -73,8 +73,8 @@ To save space, all the DTF features were compressed. For UCF101, it would cost a
 
 The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.  
 
-Following is the algorithm of computing Fisher vectors from features:
-![Figure 1. Algorithm of computing Fisher vectors.]({{ site.url }}/assets/images/fisher_vector_algorithm.png).
+Following is the algorithm of computing Fisher vectors from features(actually I implemented this algorithm in Matlab, and if you are interested, please refer [here](https://github.com/bo-yang/stip_fisher/blob/master/fisher_encode.m)):
+![Figure 2. Algorithm of computing Fisher vectors.]({{ site.url }}/assets/images/fisher_vector_algorithm.png).
 
 During the subsampling of STIP features, I randomly chose 1000 HOG or
 HOF features from each training video clip. For some videos, if the
@@ -111,7 +111,7 @@ using above pipeline. And the confusion matrix is shown in Figure 3.
 
 ![Figure 3. Confusion matrix of all the 101 actions with STIP features.]({{ site.url }}/assets/images/confusionmat_101.png)
 
-The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was about 85%, about 8% higher than using BOV representation. And the best result I got with the ISA network on UCF 101 was only 58% last year.
+The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was around 85%, about 8% higher than using BOV representation(internal test). And the best result I got with the ISA network on UCF 101 was only 58% last year.
 
 
 ### Conclusion

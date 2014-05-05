@@ -4,7 +4,7 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-05-01T13:01:30-04:00</updated>
+ <updated>2014-05-05T16:40:51-04:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>boyang</name>
@@ -13,7 +13,7 @@
 
  
  <entry>
-   <title>Fisher Vector for Action Recognition</title>
+   <title>Action Recognition with Fisher Vectors</title>
    <link href="http://bo-yang.github.com//2014/04/30/fisher-vector-in-action-recognition"/>
    <updated>2014-04-30T00:00:00-04:00</updated>
    <id>http://bo-yang.github.com//2014/04/30/fisher-vector-in-action-recognition</id>
@@ -32,7 +32,7 @@
 
 &lt;h3 id=&quot;pipeline&quot;&gt;Pipeline&lt;/h3&gt;
 
-&lt;p&gt;The pipeline of integrating DTF/STIP features and Fisher vectors is shown in Figure 2. The first step is subsampling a fixed number of STIP/DTF features(in my implementation, 1000) from each
+&lt;p&gt;The pipeline of integrating DTF/STIP features and Fisher vectors is shown in Figure 1. The first step is subsampling a fixed number of STIP/DTF features(in my implementation, 1000) from each
 video clip in training list, which will be used to do PCA and train
 Gaussian Mixture Models(GMMs).&lt;/p&gt;
 
@@ -49,7 +49,7 @@ Fisher vectors.&lt;/p&gt;
 difference is that the Fisher vectors are used for SVM classification,
 which is based on the SVM model trained with training videos.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/fisher_pipeline.png&quot; alt=&quot;Figure 2. Pipeline of UCF101 action recognition using Fisher
+&lt;p&gt;&lt;img src=&quot;/assets/images/fisher_pipeline.png&quot; alt=&quot;Figure 1. Pipeline of UCF101 action recognition using Fisher
 vector.&quot; /&gt;.&lt;/p&gt;
 
 &lt;p&gt;To well utilize the STIP or DTF features, features(HOG, HOF, MBH, etc.) are treated
@@ -76,8 +76,8 @@ operations are based on each video clip.&lt;/p&gt;
 
 &lt;p&gt;The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.  &lt;/p&gt;
 
-&lt;p&gt;Following is the algorithm of computing Fisher vectors from features:
-&lt;img src=&quot;/assets/images/fisher_vector_algorithm.png&quot; alt=&quot;Figure 1. Algorithm of computing Fisher vectors.&quot; /&gt;.&lt;/p&gt;
+&lt;p&gt;Following is the algorithm of computing Fisher vectors from features(actually I implemented this algorithm in Matlab, and if you are interested, please refer &lt;a href=&quot;https://github.com/bo-yang/stip_fisher/blob/master/fisher_encode.m&quot;&gt;here&lt;/a&gt;):
+&lt;img src=&quot;/assets/images/fisher_vector_algorithm.png&quot; alt=&quot;Figure 2. Algorithm of computing Fisher vectors.&quot; /&gt;.&lt;/p&gt;
 
 &lt;p&gt;During the subsampling of STIP features, I randomly chose 1000 HOG or
 HOF features from each training video clip. For some videos, if the
@@ -114,7 +114,7 @@ using above pipeline. And the confusion matrix is shown in Figure 3.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/confusionmat_101.png&quot; alt=&quot;Figure 3. Confusion matrix of all the 101 actions with STIP features.&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was about 85%, about 8% higher than using BOV representation. And the best result I got with the ISA network on UCF 101 was only 58% last year.&lt;/p&gt;
+&lt;p&gt;The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was around 85%, about 8% higher than using BOV representation(internal test). And the best result I got with the ISA network on UCF 101 was only 58% last year.&lt;/p&gt;
 
 &lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
 
