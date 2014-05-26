@@ -77,6 +77,36 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2009/10/27/build-c-library-in-linux">【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-10-27</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>本文根据<a href="http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487">http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487</a>的回复总结而成。</p>
+<p>&nbsp;</p>
+<p>1. 共享库</p>
+<p>&nbsp;</p>
+<p>通常做成共享库的话，在编绎时加上-shared参数，并把链接生成的文件名命名libxxx.so，可以放在/usr/lib下&nbsp;</p>
+<p>其他程序引用这个库时，在链接的时候加上-lxxx就可以了。</p>
+<p>&nbsp;</p>
+<p>编辑好代码以后,编译时采用类似下面的命令可生成"共享库"(假如源文件是myfun.c):&nbsp;<br />gcc -shared -fPIC -Wmyfun.c -0 libmy.so&nbsp;<br />解释: -shared 生成共享库;&nbsp;<br />&nbsp; &nbsp; &nbsp; -fIPC 表示&ldquo;位置无关代码&rdquo;（Position Independent Code),可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; -W 表示输出警告信息,可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; 库文件的命名要按照libxxxx.so的格式;&nbsp;</p>
+<p>要引用这个库时:&nbsp;<br />&nbsp; &nbsp; &nbsp; gcc xxx.c -0 xxx.out -lmy&nbsp;<br />&nbsp; &nbsp; -l 表示设定要连接的库(libmy.so,输my便可)&nbsp;</p>
+<p>&nbsp;</p>
+<p>2.&nbsp;静态库&nbsp;</p>
+<p>文件名：lib.c&nbsp;<br />先编译成目标文件 gcc -o mylib.o -c lib.c&nbsp;<br />然后创建静态库,将mylib.o放到libmylib.a中 ar rcs libmylib.a mylib.o&nbsp;<br />最后copy到库目录下/usr/lib&nbsp; cp libmylib.a /usr/lib/libmylib.a&nbsp;</p>
+<p>在编写的时候直接调用其中的函数就是了，只不过在编译的时候要加入-l选项后面跟上库名&nbsp;<br />如 gcc -o test test.c -lmylib&nbsp; //mylib是前面创建的库的名称&nbsp;</p>
+<p>3. 动态库 </p>
+<p>创建就是 gcc -fPIC -share -o mylib.so lib.c&nbsp;<br />调用也分两种方法&nbsp;<br />一种方法是 gcc -o test test.c ./libmylib.so (注意这里跟的是动态库的路径 )<br />第二种方法是使用动态库的函数 你man dlopen看下那几个函数看下就知道了就不多说了</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2009/10/22/call-perl-in-shell">Shell中直接调用perl命令</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-10-22</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
@@ -791,278 +821,6 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）</div>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/08/24/big-num-operations">大数运算</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2009-08-24</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C-ref" rel="nofollow">C</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>下面这段程序包含了大数的加、减、乘运算的代码，除法运算尚在研究中。</p>
-<p>&nbsp;</p>
-<p>
-<pre>/*
- * =====================================================================================
- *
- *       Filename:  LargeNumOp.c
- *
- *    Description:  The regular version of Large Number Multiplication.
- *
- *        Version:  1.0
- *        Created:  08/23/2009 07:02:48 PM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Bonn Yang 
- *        Company:  
- *
- * =====================================================================================
- */
-#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-/* 
- * Large number multiplication. 
- *	a*b=c
- * The product stores in c.
- */ 
-void multiply(char* a,char* b,char* c)
-{
-    int i,j,ca,cb,* s;
-    ca=strlen(a);
-    cb=strlen(b);
-    s=(int*)malloc(sizeof(int)*(ca+cb));
-    for (i=0;i&lt;ca+cb;i++)
-        s[i]=0;
-    for (i=0;i&lt;ca;i++)
-        for (j=0;j&lt;cb;j++)
-            s[i+j+1]+=(a[i]-'0')*(b[j]-'0');
-    for (i=ca+cb-1;i&gt;=0;i--)
-        if (s[i]&gt;=10)
-        {
-            s[i-1]+=s[i]/10;
-            s[i]%=10;
-        }
-    i=0;
-    while (s[i]==0)
-        i++;
-    for (j=0;i&lt;ca+cb;i++,j++)
-        c[j]=s[i]+'0';
-    c[j]='/0';
-    free(s);
-}
-/* Large number addition 
- * 		a+b=c
- */
-void add(char* a, char* b, char* c)
-{
-	int i,j,ca,cb,rlen,* s;
-    ca=strlen(a);
-    cb=strlen(b);
-	rlen=((ca&gt;cb)?ca:cb)+1;		/* len of result */
-    s=(int*)malloc(sizeof(int)*rlen);
-    for (i=0;i&lt;rlen;i++)
-        s[i]=0;
-	if(ca&gt;cb)
-	{
-    	for(i=0;i&lt;ca-cb;i++)
-			s[i+1]=a[i]-'0';
-		for(i=ca-cb;i&lt;ca;i++)
-			s[i+1]=(a[i]-'0')+(b[i-ca+cb]-'0');
-	} 
-	else 
-	{
-		for(i=0;i&lt;cb-ca;i++)
-			s[i+1]=b[i]-'0';
-		for(i=cb-ca;i&lt;cb;i++)
-			s[i+1]=(a[i-cb+ca]-'0')+(b[i]-'0');
-	} 
-	
-    for (i=rlen-1;i&gt;=0;i--)
-        if (s[i]&gt;=10)
-        {
-            s[i-1]+=s[i]/10;
-            s[i]%=10;
-        }
-    i=0;
-    while (s[i]==0)
-        i++;
-	for (j=0;i&lt;rlen;i++,j++)
-        c[j]=s[i]+'0';
-    c[j]='/0';
-    free(s);
-}
-/* Large number substraction 
- * 		a-b=c
- */
-void sub(char* a,char* b,char* c)
-{
-	int i,j,ca,cb,rlen,* s;
-    ca=strlen(a);
-    cb=strlen(b);
-	rlen=((ca&gt;cb)?ca:cb)+1;		/* len of result, the first byte is negative or positive sign */
-    s=(int*)malloc(sizeof(int)*rlen);
-    for (i=0;i&lt;rlen;i++)
-        s[i]=0;
-	if(ca&gt;cb)
-	{
-		s[0]='+';
-    	for(i=ca-1;i&gt;=ca-cb;i--)
-		{
-			if(a[i]&gt;b[i-ca+cb])
-			{
-				s[i+1]=(a[i]-'0')-(b[i-ca+cb]-'0');
-			}
-			else if(a[i]&lt;b[i-ca+cb])
-			{
-				s[i+1]=(a[i]-'0'+10)-(b[i-ca+cb]-'0');
-				a[i-1]-=1;
-			}
-			else
-				s[i+1]=0;
-		}
-		for(i=ca-cb-1;i&gt;=1;i--)
-		{
-			if(a[i]&gt;0)
-			{
-				s[i+1]=(a[i]-'0');
-			}
-			else if(a[i]&lt;0)
-			{
-				s[i+1]=a[i]-'0'+10;
-				a[i-1]-=1;
-			}
-			else
-				s[i+1]=0;
-		}
-		s[1]=a[i]-'0';
-	} 
-	else if(ca&lt;cb)
-	{
-		s[0]='-';
-		for(i=cb-1;i&gt;cb-ca-1;i--)
-		{
-			if(b[i]&gt;a[i-cb+ca])
-			{
-				s[i+1]=(b[i]-'0')-(a[i-cb+ca]-'0');
-			}
-			else if(b[i]&lt;a[i-ca+cb])
-			{
-				s[i+1]=(b[i]-'0'+10)-(a[i-cb+ca]-'0');
-				b[i-1]-=1;
-			}
-			else
-				s[i+1]=0;
-		}
-		for(i=cb-ca-1;i&gt;=1;i--)
-		{
-			if(b[i]&gt;0)
-			{
-				s[i+1]=(b[i]-'0');
-			}
-			else if(b[i]&lt;0)
-			{
-				s[i+1]=b[i]-'0'+10;
-				b[i-1]-=1;
-			}
-			else
-				s[i+1]=0;
-		}
-		s[1]=b[i]-'0';
-	} 
-	else	/* ca==cb */
-	{
-		if(strcmp(a,b)&gt;0)		/* a&gt;b */
-		{
-			s[0]='+';
-			for(i=ca-1;i&gt;=1;i--)
-			{
-				if(a[i]&gt;b[i])
-				{
-					s[i+1]=(a[i]-'0')-(b[i]-'0');
-				}
-				else if(a[i]&lt;b[i])
-				{
-					s[i+1]=(a[i]-'0'+10)-(b[i]-'0');
-					a[i-1]-=1;
-				}
-				else
-					s[i+1]=0;
-			}
-			s[1]=(a[i]-'0')-(b[i]-'0');
-		}
-		else if(strcmp(a,b)&lt;0)	/* a&lt;b */
-		{
-			s[0]='-';
-			for(i=ca-1;i&gt;=1;--i)
-			{
-				if(b[i]&gt;a[i])
-				{
-					s[i+1]=(b[i]-'0')-(a[i]-'0');
-				}
-				else if(b[i]&lt;a[i])
-				{
-					s[i+1]=(b[i]-'0'+10)-(a[i]-'0');
-					b[i-1]-=1;
-				}
-				else
-					s[i+1]=0;
-			}
-			s[1]=(b[i]-'0')-(a[i]-'0');
-		}
-		else					/* a==b */
-		{
-			c[0]='+';
-			c[1]='0';
-			c[2]='/0';
-			free(s);
-		}
-	}
-	c[0]=s[0];
-    i=1;j=1;
-    while ((s[i]==0) &amp;&amp; (i&lt;rlen))
-        i++;
-	if(i!=rlen)	/* result is not zero */
-	{
-		for (j=1;i&lt;rlen;i++,j++)
-		{
-			if(s[i]&lt;0)
-				c[j]='0'-s[i];
-			else
-        		c[j]=s[i]+'0';
-		}
-	} else {	/* result is zero */
-		c[j++]='0';
-	}
-    c[j]='/0';
-    free(s);
-}
-int main()
-{
-	char a[1024]={'/0'};
-	char b[1024]={'/0'};
-	char c[1024]={'/0'};
-	printf(&quot;Enter two numbers:/n&quot;);
-	gets(a);
-	gets(b);
-	multiply(a,b,c);
-	printf(&quot;%s * %s = %s/n&quot;,a,b,c);
-	add(a,b,c);
-	printf(&quot;%s + %s = %s/n&quot;,a,b,c);
-	sub(a,b,c);
-	printf(&quot;%s - %s = %s/n&quot;,a,b,c);
-	
-	return 0;
-}
-</pre></p>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1175,6 +933,9 @@ int main()
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
+            Binary Tree Traversal</a></li>
+        
           <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
             Action Recognition with Fisher Vectors</a></li>
         
@@ -1202,9 +963,6 @@ int main()
           <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
             Build Dense Trajectory Codes in Ubuntu</a></li>
         
-          <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
-            Matlab Startup Script</a></li>
-        
         </ul>
         
       </div>
@@ -1221,7 +979,7 @@ int main()
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>7</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>8</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1305,7 +1063,7 @@ int main()
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>2</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     

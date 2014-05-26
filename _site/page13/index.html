@@ -77,6 +77,278 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2009/08/24/big-num-operations">大数运算</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2009-08-24</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C-ref" rel="nofollow">C</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>下面这段程序包含了大数的加、减、乘运算的代码，除法运算尚在研究中。</p>
+<p>&nbsp;</p>
+<p>
+<pre>/*
+ * =====================================================================================
+ *
+ *       Filename:  LargeNumOp.c
+ *
+ *    Description:  The regular version of Large Number Multiplication.
+ *
+ *        Version:  1.0
+ *        Created:  08/23/2009 07:02:48 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Bonn Yang 
+ *        Company:  
+ *
+ * =====================================================================================
+ */
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+/* 
+ * Large number multiplication. 
+ *	a*b=c
+ * The product stores in c.
+ */ 
+void multiply(char* a,char* b,char* c)
+{
+    int i,j,ca,cb,* s;
+    ca=strlen(a);
+    cb=strlen(b);
+    s=(int*)malloc(sizeof(int)*(ca+cb));
+    for (i=0;i&lt;ca+cb;i++)
+        s[i]=0;
+    for (i=0;i&lt;ca;i++)
+        for (j=0;j&lt;cb;j++)
+            s[i+j+1]+=(a[i]-'0')*(b[j]-'0');
+    for (i=ca+cb-1;i&gt;=0;i--)
+        if (s[i]&gt;=10)
+        {
+            s[i-1]+=s[i]/10;
+            s[i]%=10;
+        }
+    i=0;
+    while (s[i]==0)
+        i++;
+    for (j=0;i&lt;ca+cb;i++,j++)
+        c[j]=s[i]+'0';
+    c[j]='/0';
+    free(s);
+}
+/* Large number addition 
+ * 		a+b=c
+ */
+void add(char* a, char* b, char* c)
+{
+	int i,j,ca,cb,rlen,* s;
+    ca=strlen(a);
+    cb=strlen(b);
+	rlen=((ca&gt;cb)?ca:cb)+1;		/* len of result */
+    s=(int*)malloc(sizeof(int)*rlen);
+    for (i=0;i&lt;rlen;i++)
+        s[i]=0;
+	if(ca&gt;cb)
+	{
+    	for(i=0;i&lt;ca-cb;i++)
+			s[i+1]=a[i]-'0';
+		for(i=ca-cb;i&lt;ca;i++)
+			s[i+1]=(a[i]-'0')+(b[i-ca+cb]-'0');
+	} 
+	else 
+	{
+		for(i=0;i&lt;cb-ca;i++)
+			s[i+1]=b[i]-'0';
+		for(i=cb-ca;i&lt;cb;i++)
+			s[i+1]=(a[i-cb+ca]-'0')+(b[i]-'0');
+	} 
+	
+    for (i=rlen-1;i&gt;=0;i--)
+        if (s[i]&gt;=10)
+        {
+            s[i-1]+=s[i]/10;
+            s[i]%=10;
+        }
+    i=0;
+    while (s[i]==0)
+        i++;
+	for (j=0;i&lt;rlen;i++,j++)
+        c[j]=s[i]+'0';
+    c[j]='/0';
+    free(s);
+}
+/* Large number substraction 
+ * 		a-b=c
+ */
+void sub(char* a,char* b,char* c)
+{
+	int i,j,ca,cb,rlen,* s;
+    ca=strlen(a);
+    cb=strlen(b);
+	rlen=((ca&gt;cb)?ca:cb)+1;		/* len of result, the first byte is negative or positive sign */
+    s=(int*)malloc(sizeof(int)*rlen);
+    for (i=0;i&lt;rlen;i++)
+        s[i]=0;
+	if(ca&gt;cb)
+	{
+		s[0]='+';
+    	for(i=ca-1;i&gt;=ca-cb;i--)
+		{
+			if(a[i]&gt;b[i-ca+cb])
+			{
+				s[i+1]=(a[i]-'0')-(b[i-ca+cb]-'0');
+			}
+			else if(a[i]&lt;b[i-ca+cb])
+			{
+				s[i+1]=(a[i]-'0'+10)-(b[i-ca+cb]-'0');
+				a[i-1]-=1;
+			}
+			else
+				s[i+1]=0;
+		}
+		for(i=ca-cb-1;i&gt;=1;i--)
+		{
+			if(a[i]&gt;0)
+			{
+				s[i+1]=(a[i]-'0');
+			}
+			else if(a[i]&lt;0)
+			{
+				s[i+1]=a[i]-'0'+10;
+				a[i-1]-=1;
+			}
+			else
+				s[i+1]=0;
+		}
+		s[1]=a[i]-'0';
+	} 
+	else if(ca&lt;cb)
+	{
+		s[0]='-';
+		for(i=cb-1;i&gt;cb-ca-1;i--)
+		{
+			if(b[i]&gt;a[i-cb+ca])
+			{
+				s[i+1]=(b[i]-'0')-(a[i-cb+ca]-'0');
+			}
+			else if(b[i]&lt;a[i-ca+cb])
+			{
+				s[i+1]=(b[i]-'0'+10)-(a[i-cb+ca]-'0');
+				b[i-1]-=1;
+			}
+			else
+				s[i+1]=0;
+		}
+		for(i=cb-ca-1;i&gt;=1;i--)
+		{
+			if(b[i]&gt;0)
+			{
+				s[i+1]=(b[i]-'0');
+			}
+			else if(b[i]&lt;0)
+			{
+				s[i+1]=b[i]-'0'+10;
+				b[i-1]-=1;
+			}
+			else
+				s[i+1]=0;
+		}
+		s[1]=b[i]-'0';
+	} 
+	else	/* ca==cb */
+	{
+		if(strcmp(a,b)&gt;0)		/* a&gt;b */
+		{
+			s[0]='+';
+			for(i=ca-1;i&gt;=1;i--)
+			{
+				if(a[i]&gt;b[i])
+				{
+					s[i+1]=(a[i]-'0')-(b[i]-'0');
+				}
+				else if(a[i]&lt;b[i])
+				{
+					s[i+1]=(a[i]-'0'+10)-(b[i]-'0');
+					a[i-1]-=1;
+				}
+				else
+					s[i+1]=0;
+			}
+			s[1]=(a[i]-'0')-(b[i]-'0');
+		}
+		else if(strcmp(a,b)&lt;0)	/* a&lt;b */
+		{
+			s[0]='-';
+			for(i=ca-1;i&gt;=1;--i)
+			{
+				if(b[i]&gt;a[i])
+				{
+					s[i+1]=(b[i]-'0')-(a[i]-'0');
+				}
+				else if(b[i]&lt;a[i])
+				{
+					s[i+1]=(b[i]-'0'+10)-(a[i]-'0');
+					b[i-1]-=1;
+				}
+				else
+					s[i+1]=0;
+			}
+			s[1]=(b[i]-'0')-(a[i]-'0');
+		}
+		else					/* a==b */
+		{
+			c[0]='+';
+			c[1]='0';
+			c[2]='/0';
+			free(s);
+		}
+	}
+	c[0]=s[0];
+    i=1;j=1;
+    while ((s[i]==0) &amp;&amp; (i&lt;rlen))
+        i++;
+	if(i!=rlen)	/* result is not zero */
+	{
+		for (j=1;i&lt;rlen;i++,j++)
+		{
+			if(s[i]&lt;0)
+				c[j]='0'-s[i];
+			else
+        		c[j]=s[i]+'0';
+		}
+	} else {	/* result is zero */
+		c[j++]='0';
+	}
+    c[j]='/0';
+    free(s);
+}
+int main()
+{
+	char a[1024]={'/0'};
+	char b[1024]={'/0'};
+	char c[1024]={'/0'};
+	printf(&quot;Enter two numbers:/n&quot;);
+	gets(a);
+	gets(b);
+	multiply(a,b,c);
+	printf(&quot;%s * %s = %s/n&quot;,a,b,c);
+	add(a,b,c);
+	printf(&quot;%s + %s = %s/n&quot;,a,b,c);
+	sub(a,b,c);
+	printf(&quot;%s - %s = %s/n&quot;,a,b,c);
+	
+	return 0;
+}
+</pre></p>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2009/08/19/install-amule-in-linux">Linux下安装aMule</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2009-08-19</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
@@ -485,92 +757,6 @@ int main(int argc, char** argv)
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/04/05/tcl-tk-one-line-1">TCL/Tk一句话笔记（一）</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2009-04-05</strong> with tags 
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p><div><span></p>
-<div>
-<h1><span style="font-weight:normal;font-size:12px;">1. A backslash as the last character in a line is converted into a space, and all the white space at the beginning of the next line is replaced by this substitution.</span></h1>
-<div>2. The difference between double quotes and curly braces is that quotes allow substitutions to occur in the group, while curly braces prevent substitutions.</div>
-<div>3. Tcl uses the&nbsp;proc&nbsp;command to define procedures.</div>
-<div>4. The&nbsp;expr&nbsp;command is used to parse and evaluate math expressions. You can make&nbsp;expr&nbsp;operate more efficiently by grouping the entire expression in curly braces.</div>
-<div>5. TCL assumes that variable names contain only letters, digits, and the underscore. The construct&nbsp;$foo.o&nbsp;represents a concatenation of the value of&nbsp;foo&nbsp;and the literal&nbsp;".o".</div>
-<div>6. If the variable reference is not delimited by punctuation or white space, then you can use curly braces to explicitly delimit the variable name (e.g.,&nbsp;${x}).</div>
-<div>7. You can delete a variable with the&nbsp;unset&nbsp;command:</div>
-<pre>unset ?-nocomplain? ?--? <span class="docEmphasis">varName varName2</span> ...<a name="idd1e8098"></a><a name="idd1e8103"></a><a name="idd1e8108"></a></pre>
-<pre>8. <span>The existence of a variable can be tested with the&nbsp;info exists&nbsp;command.</span></pre>
-<pre><span style="font-family:verdana;">9. You should always group expressions in curly braces and let&nbsp;expr&nbsp;do command and variable substitutions.</span></pre>
-<pre><span style="font-family:verdana;">10. In TCL, the&nbsp;#&nbsp;must occur at the beginning of a command.</span></pre>
-<pre><span style="font-family:verdana;">11. A surprising property of Tcl comments is that curly braces inside comments are still counted for the purposes of finding matching brackets.</span></pre>
-<pre><span style="font-family:verdana;">12. Command arguments are separated by white space, unless arguments are grouped with curly braces or double quotes as described below. If you forget the space, you will get syntax errors about unexpected characters after the closing brace or quote.</span></pre>
-<pre><span style="font-family:verdana;">13. The Tcl shells pass the command-line arguments to the script as the value of the&nbsp;argv&nbsp;variable. The number of command-line arguments is given by the&nbsp;argc&nbsp;variable. The name of the program, or script, is not part of&nbsp;argv&nbsp;nor is it counted by&nbsp;argc. Instead, it is put into the&nbsp;argv0&nbsp;variable.&nbsp;argv&nbsp;is a list, so you can use the&nbsp;lindex&nbsp;command to extract items from it:</span></pre>
-<p class="docText"><a name="idd1e11776"></a></p>
-<pre>set arg1 [lindex $argv 0]</pre>
-<pre>14. <span>Some command-line options are interpreted by&nbsp;<span class="docEmphasis">wish</span>, and they do not appear in the&nbsp;argv&nbsp;variable. The general form of the&nbsp;<span class="docEmphasis">wish</span>&nbsp;command line is:</span></pre>
-<pre>wish ?options? ?script? ?arg1 arg2?</pre>
-<p class="docText">If no script is specified, then&nbsp;<span class="docEmphasis">wish</span>&nbsp;just enters an interactive command loop.</p>
-<p class="docText">15. You can use the&nbsp;info script&nbsp;command to find out where the CGI script is, and from that load the supporting file. The&nbsp;file dirname&nbsp;and&nbsp;file join&nbsp;commands manipulate file names in a platform-independent way.</p>
-<p class="docText">set dir [file dirname [info script]]&nbsp;</p>
-<p class="docText">set datafile [file join $dir guestbook.data]</p>
-<p class="docText">16. You can ask&nbsp;string&nbsp;for valid operations by giving it a bad one:</p>
-<pre>string junk<br /><span class="docEmphasis">=&gt; bad option "junk": should be bytelength, compare, equal, first, index, is, last, length<br /><img src="http://docs.google.com/Doc?docid=dd6nw3mt_258p66mf8fx&amp;hl=en" border="0" alt="graphics/ccc.gif" width="14" height="9" align="left" />, map, match, range, repeat, replace, tolower, totitle, toupper, trim, trimleft, trimright,<br /><img src="http://docs.google.com/Doc?docid=dd6nw3mt_258p66mf8fx&amp;hl=en" border="0" alt="graphics/ccc.gif" width="14" height="9" align="left" /> wordend, or wordstart</span></pre>
-<pre>17. <span>The&nbsp;string map&nbsp;command translates a string based on a character map. The map is in the form of a input, output list. Wherever a string contains an input sequence, that is replaced with the corresponding output. For example:</span></pre>
-<pre>string map {f p d l} food<br /><span class="docEmphasis">=&gt; pool</span></pre>
-<p class="docText">The inputs and outputs can be more than one character and they do not have to be the same length:</p>
-<pre>string map {f p d ll oo u} food<br /><span class="docEmphasis">=&gt; pull</span></pre>
-<pre>18. <span>A position specifier is&nbsp;<span class="docEmphasis">i$</span>, which means take the value from argument&nbsp;<span class="docEmphasis">i</span>&nbsp;as opposed to the normally corresponding argument. The position counts from 1. If a position is specified for one format keyword, the position must be used for all of them. If you group the format specification with double quotes, you need to quote the&nbsp;$&nbsp;with a backslash:</span></pre>
-<pre>&nbsp;&nbsp; &nbsp;set lang 2<br />&nbsp;&nbsp; &nbsp;format "%${lang}/$s" one un uno<br /><span class="docEmphasis">&nbsp;&nbsp; &nbsp;=&gt; un</span></pre>
-<pre>19. <span>The&nbsp;binary&nbsp;command provides conversions between strings and packed binary data representations. The&nbsp;binary format&nbsp;command takes values and packs them according to a template. The resulting binary value is returned:</span></pre>
-<p class="docText"><a name="idd1e16724"></a></p>
-<pre>binary format <span class="docEmphasis">template value</span> ?<span class="docEmphasis">value</span> ...?</pre>
-<p class="docText">The&nbsp;binary scan&nbsp;command extracts values from a binary string according to a similar template. It assigns values to a set of Tcl variables:</p>
-<pre>&nbsp;&nbsp; &nbsp;binary scan <span class="docEmphasis">value template variable</span> ?<span class="docEmphasis">variable</span> ...?</pre>
-<pre>20. Tcl commands described are: list, lindex, llength, <br />lrange, lappend, linsert, lreplace, <br />lsearch, lset, lsort, concat, join, <br />and split.</pre>
-<pre>21. <span>Tcl commands related to list are: list, lindex, llength, lrange, lappend, linsert, lreplace, lsearch, lset, lsort, concat, join, and split.</span></pre>
-<pre><span style="font-family:verdana;">22. Procedure</span></pre>
-<pre>22.1 <span><span style="font-size:x-small;">Default parameter values</span></span></pre>
-<p><a name="idd1e21501"></a></p>
-<pre>&nbsp;&nbsp; &nbsp;proc P2 {a {b 7} {c -2} } {
- &nbsp;&nbsp; &nbsp;expr $a / $b + $c
-&nbsp;&nbsp; &nbsp;}
-&nbsp;&nbsp; &nbsp;P2 6 3
-<span class="docEmphasis">&nbsp;&nbsp; &nbsp;=&gt; 0</span>
-</pre>
-<pre>22.2 <span>A procedure can take a variable number of arguments by 
-specifying the args keyword as the last parameter. When the procedure 
-is called, the args parameter is a list that contains all the remaining 
-values.</span></pre>
-<pre><span style="font-family:verdana;">23. The rename command changes the name of a command:&nbsp;</span></pre>
-<pre>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;rename foo foo.orig</pre>
-<pre><span style="font-family:Verdana;">The other thing you can do with </span><span style="font-family:Verdana;">rename</span><span style="font-family:Verdana;"> is completely remove a command by renaming it to the empty string:</span></pre>
-<pre>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;rename exec {}</pre>
-<pre>24. <span>Use the upvar command when you need to pass the name of a variable, as 
-opposed to its value, into a procedure.</span></pre>
-<pre><span style="font-family:verdana;">25. Call by Name Using&nbsp;<span style="font-family:'Courier New';">upvar</span></span></pre>
-<pre><span style="font-family:verdana;">Use the </span>upvar<span style="font-family:verdana;"> command when you need to pass the name of a variable, as opposed to its value, into a procedure. <span style="text-decoration:underline;">The </span></span><span style="text-decoration:underline;">upvar</span><span style="font-family:verdana;"><span style="text-decoration:underline;"> command associates a local variable with a variable in a scope up the Tcl call stack</span>. The syntax of the upvar command is:</span></pre>
-<p class="docText"><a name="idd1e22008"></a></p>
-<pre>&nbsp;&nbsp; &nbsp;upvar <span class="docEmphasis">?level? varName localvar</span>
-</pre>
-<p class="docText">The&nbsp;<span class="docEmphasis">level</span>&nbsp;argument is optional, and it defaults to 1, which means one level up the Tcl call stack. You can specify some other number of frames to go up, or you can specify an absolute frame number with a #<span class="docEmphasis">number</span>&nbsp;syntax. Level #0 is the global scope.</p>
-<p class="docText">26. You can use any string as an index for array, but avoid using a string that contains spaces.</p>
-<p class="docText">27. The array get and array set operations are used to convert between an array and a list. The list returned by array get has an even number of elements. The first element is an index, and the next is the corresponding array value. The list elements continue to alternate between index and value. The list argument to array set must have the same structure.</p>
-<p class="docText">28.&nbsp;</p>
-<div></div>
-<p class="docText"><a name="idd1e23061"></a><a name="idd1e23066"></a></p>
-</div>
-<p></span></div></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -683,6 +869,9 @@ opposed to its value, into a procedure.</span></pre>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
+            Binary Tree Traversal</a></li>
+        
           <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
             Action Recognition with Fisher Vectors</a></li>
         
@@ -710,9 +899,6 @@ opposed to its value, into a procedure.</span></pre>
           <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
             Build Dense Trajectory Codes in Ubuntu</a></li>
         
-          <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
-            Matlab Startup Script</a></li>
-        
         </ul>
         
       </div>
@@ -729,7 +915,7 @@ opposed to its value, into a procedure.</span></pre>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>7</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>8</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -813,7 +999,7 @@ opposed to its value, into a procedure.</span></pre>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>2</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     

@@ -77,6 +77,31 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2010/09/03/delete-realplayer">Linux下如何删除已安装的realplayer</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2010-09-03</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>由于realplayer在Linux下只能通过realplay*.bin来安装，装好后不能通过yum或rpm卸载。现在的realplayer已然成为名副其实的垃圾软件，Linux下尤其如此。</p>
+<p>&nbsp;</p>
+<p>卸载它的办法就是通过locate realplay命令找到所有realplay相关的文件，然后统统删除之！</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:small;"><span style="white-space:pre-wrap;">
+<pre>realplayer=$(locate realplay)
+echo $realplayer
+rm -rf $realplayer
+</pre>
+<p> </span></span></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2010/09/02/splashtop-remote">Splashtop Remote——让你在iPad上也能用Windows下的应用</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2010-09-02</strong> with tags <a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>
@@ -572,33 +597,6 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/06/11/cpu-speed-and-memory-size-in-solaris">Find CPU Speed and Memory Size on Solaris</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2010-06-11</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p><h2>Find CPU Speed and Memory Size on Solaris</h2>
-<div class="entry">
-<p>As I&rsquo;m writing my thesis I&rsquo;m running tests on an old SMP Solaris machine. Obviously, I need to provide the specs of this machine in the paper so that the readers can see my results in context (ie why everything is taking forever. On linux I would just use&nbsp;<kbd>lshw</kbd>&nbsp;which is your ultimate hardware information goldmine. If you don&rsquo;t have it on your system, go install it now. You will thank me later.</p>
-<p>The ancient Solaris machine I was working with did not have it, so I was forced to find other ways of finding information such as CPU speed and memory size.</p>
-<p>First you can try&nbsp;<kbd>prtdiag</kbd>&nbsp;&ndash; it will tell you detailed information about all your CPU&rsquo;s and memory banks. Unfortunately it is in a weird directory that is not in your $path so you will need to run it with the absolute path:</p>
-<p><code>/usr/platform/sun4u/sbin/prtdiag -v</code></p>
-<p>If you just want information on the CPU&rsquo;s you can also try:</p>
-<p><code>psrinfo -v</code></p>
-<p>Finally, to just get your total memory size do:</p>
-<p><code>prtconf | grep Memory</code></p>
-<p>There might be better ways to do this, but these worked for me. Craig will probably be able to add to this list or correct me.&nbsp;<img class="wp-smiley" src="http://www.terminally-incoherent.com/blog/wp-includes/images/smilies/icon_smile.gif" alt=":)" /></p>
-</div>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -711,6 +709,9 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
+            Binary Tree Traversal</a></li>
+        
           <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
             Action Recognition with Fisher Vectors</a></li>
         
@@ -738,9 +739,6 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
           <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
             Build Dense Trajectory Codes in Ubuntu</a></li>
         
-          <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
-            Matlab Startup Script</a></li>
-        
         </ul>
         
       </div>
@@ -757,7 +755,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>7</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>8</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -841,7 +839,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>2</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     

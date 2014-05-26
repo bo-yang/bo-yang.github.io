@@ -4,7 +4,7 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-05-05T16:40:51-04:00</updated>
+ <updated>2014-05-26T13:09:55-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>boyang</name>
@@ -13,9 +13,277 @@
 
  
  <entry>
+   <title>Binary Tree Traversal</title>
+   <link href="http://bo-yang.github.com//2014/05/26/binary-tree-traversal"/>
+   <updated>2014-05-26T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/05/26/binary-tree-traversal</id>
+   <content type="html">&lt;p&gt;There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and Breadth First Search(BFS). Depth First Search visits the tree by proceeding deeper and deeper until it reaches the leaf nodes, including pre-order, in-order, and post-order tree traversal. DFS uses a data structure called Stack.&lt;/p&gt;
+
+&lt;p&gt;Breadth First Search is the most natural solution for level-order traversal, since it visits the nodes level by level. BFS requires the use of a data structure called Queue, which is a First In First Out (FIFO) structure.&lt;/p&gt;
+
+&lt;p&gt;For the complete C++ source code used in this article, please refer to: https://github.com/bo-yang/misc/blob/master/BTtraverse.cc.&lt;/p&gt;
+
+&lt;h3 id=&quot;data-structure&quot;&gt;Data Structure&lt;/h3&gt;
+
+&lt;p&gt;The data structure used for binary tree is very simple, which is adopted from &lt;a href=&quot;https://oj.leetcode.com/problems/binary-tree-inorder-traversal/&quot;&gt;LeetCode OJ&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+	TreeNode() : val(0), left(NULL), right(NULL) {}
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The constructing function TreeNode() is added to purely because it is easier to dynamically allocate TreeNode array by &lt;code&gt;new TreeNode[size]&lt;/code&gt;. C++98 doesn’t support specifying default arguments for objects allocated by &lt;code&gt;new&lt;/code&gt;. However, the TreeNode array can simplify the process of building binary trees. &lt;/p&gt;
+
+&lt;h3 id=&quot;build-binary-tree&quot;&gt;Build Binary Tree&lt;/h3&gt;
+
+&lt;p&gt;In my implementation, binary trees are built from a vector of strings. For example, given sequence {1,2,3,#,#,4,#,#,5}, the following binary tree can be built:&lt;/p&gt;
+
+&lt;pre&gt;
+	  1
+	 / \
+	2   3
+	   /
+	  4
+	   \
+	    5
+&lt;/pre&gt;
+
+&lt;p&gt;The tree is built layer by layer, where the first element in sequence is viewed as the root node. Here the “#” is used as terminator. &lt;/p&gt;
+
+&lt;p&gt;For each node other than the last layer, there are two children in the next layer, either a number(or string) or a “#”(invalid node). When parsing nodes in current layer, count the number of elements in next layer. The exception is for “#”s - they have no child nodes. In this way, we can parse the dependency of nodes layer by layer. &lt;/p&gt;
+
+&lt;p&gt;Following is the C++ code for building binary trees:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;TreeNode* BuildTree(vector&amp;lt;string&amp;gt;&amp;amp; t) {
+	tree=new TreeNode[t.size()];
+
+	// Build binary tree from vector of strings, where # denotes an invalid node.
+	//
+	// The main idea is to parse vector of strings(nodes) layer by layer. 
+	// The first item in the vector should be the root node, and the number of
+	// first layer is one. When parsing the first layer, count the nodes of the
+	// second layer, and so on.
+	int idx=0;
+	int nodes_cur_layer=1;
+	vector&amp;lt;string&amp;gt;::iterator it=t.begin(); 
+	while(idx&amp;lt;t.size()) {
+		int nodes_next_layer=0; // all nodes, including #s
+		int vi=0;	// index of valid nodes in current layer
+		for(int i=0;i&amp;lt;nodes_cur_layer;++i) {
+			if(*(it+i)==&quot;#&quot;) { // Skip #s
+				continue;
+			}
+
+			int left=nodes_cur_layer+2*vi;
+			int right=nodes_cur_layer+2*vi+1;
+			if(idx+left&amp;lt;t.size() &amp;amp;&amp;amp; *(it+left)!=&quot;#&quot; ) {
+				tree[idx+i].left=&amp;amp;tree[idx+left];
+			} else {
+				tree[idx+i].left=NULL;
+			}
+			if(idx+right&amp;lt;t.size() &amp;amp;&amp;amp; *(it+right)!=&quot;#&quot;) {
+				tree[idx+i].right=&amp;amp;tree[idx+right];
+			} else {
+				tree[idx+i].right=NULL;
+			}
+
+			nodes_next_layer+=2;
+			tree[idx+i].val=atoi((it+i)-&amp;gt;c_str());
+			vi++;
+		}
+
+		idx+=nodes_cur_layer;
+		it+=nodes_cur_layer;
+		nodes_cur_layer=nodes_next_layer;
+		layers++;
+	}
+
+	return &amp;amp;tree[0];	// root of the tree
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;preorder-traversal&quot;&gt;Preorder Traversal&lt;/h3&gt;
+
+&lt;p&gt;To traverse a binary tree in Preorder, following operations are carried-out 
+1. Visit the root, 
+2. Traverse the left subtree, and 
+3. Traverse the right subtree. &lt;/p&gt;
+
+&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,#,5}, the preorder traversal is:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+1,2,3,4,5
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation of preorder traversal(&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal#Implementations&quot;&gt;Pseudo Code&lt;/a&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vector&amp;lt;int&amp;gt; PreorderTraversal(TreeNode *root) {
+	vector&amp;lt;int&amp;gt; trace;
+	stack&amp;lt;TreeNode*&amp;gt; st;
+	while(root!=NULL) {
+		trace.push_back(root-&amp;gt;val); // Visit the root
+		if(root-&amp;gt;left!=NULL) {	// Traverse the left subtree
+			TreeNode* tmp=root;
+			root=root-&amp;gt;left;
+			if(tmp-&amp;gt;right!=NULL)
+				st.push(tmp-&amp;gt;right);	// store the root of the right subtree
+		} else if(root-&amp;gt;right!=NULL) {
+			root=root-&amp;gt;right;
+		} else {
+			if(st.empty()) {
+				root=NULL;
+			} else {
+				root=st.top();
+				st.pop();
+			}
+		}
+	} // end of while
+	return trace;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;inorder-traversal&quot;&gt;Inorder Traversal&lt;/h3&gt;
+
+&lt;p&gt;To traverse a binary tree in Inorder, following operations are carried-out:
+1. Traverse the leftmost subtree starting at the left external node,
+2. Visit the root, and 
+3. Traverse the right subtree starting at the left external node.&lt;/p&gt;
+
+&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,#,5}, the inorder traversal is:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+2,1,4,5,3
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation of inorder traversal(&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal#Implementations&quot;&gt;Pseudo Code&lt;/a&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vector&amp;lt;int&amp;gt; InorderTraversal(TreeNode *root) {
+	vector&amp;lt;int&amp;gt; trace;
+	stack&amp;lt;TreeNode&amp;gt; st;
+    while(root!=NULL) {
+		// Find the left-most node
+		if(root-&amp;gt;left!=NULL) {
+			TreeNode tmp=*root;
+			root=root-&amp;gt;left;
+			tmp.left=NULL;
+			st.push(tmp);	// store the root of the right subtree
+		} else if(root-&amp;gt;right!=NULL) {
+			// Handle the right subtree
+			trace.push_back(root-&amp;gt;val); // Visit leftmost node
+			root=root-&amp;gt;right;
+		} else {
+			trace.push_back(root-&amp;gt;val); // Visit leaf/root node
+			if(st.empty()) {
+				root=NULL;
+			} else {
+				root=&amp;amp;(st.top());
+				st.pop();
+			}
+		}
+	}
+	return trace;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;postorder-traversal&quot;&gt;Postorder Traversal&lt;/h3&gt;
+
+&lt;p&gt;To traverse a binary tree in Postorder, following operations are carried-out: 
+1. Traverse all the left external nodes starting with the leftmost subtree which is then followed by bubble-up all the internal nodes, 
+2. Traverse the right subtree starting at the left external node which is then followed by bubble-up all the internal nodes, and 
+3. Visit the root.&lt;/p&gt;
+
+&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,#,5}, the postorder traversal is:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+2,5,4,3,1
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation of postorder traversal(&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal#Implementations&quot;&gt;Pseudo Code&lt;/a&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vector&amp;lt;int&amp;gt; PostorderTraversal(TreeNode *root) {
+	vector&amp;lt;int&amp;gt; trace;
+	stack&amp;lt;TreeNode&amp;gt; st;
+    while(root!=NULL) {
+		// Find the left-most node
+		if(root-&amp;gt;left!=NULL) {
+			TreeNode tmp=*root;
+			root=root-&amp;gt;left;
+			tmp.left=NULL;
+			st.push(tmp);	// store the root of the right subtree
+		} else if(root-&amp;gt;right!=NULL) {
+			TreeNode tmp=*root;
+			root=root-&amp;gt;right;
+			tmp.left=NULL;
+			tmp.right=NULL;
+			st.push(tmp);	// store the root
+		} else {
+			trace.push_back(root-&amp;gt;val);	// Print root at last
+			if(st.empty()) {
+				root=NULL;
+			} else {
+				root=&amp;amp;(st.top());
+				st.pop();
+			}
+		}
+	}
+	return trace;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;breadth-first-traversalbft&quot;&gt;Breadth First Traversal(BFT)&lt;/h3&gt;
+
+&lt;p&gt;Breadth first traversal is used for printing the binary tree in my code. The key of for BFT is to use a queue(s) to store nodes in current and/or next layers. The simplest way to use two queues: one to store nodes of current layer and the other for next layer. &lt;/p&gt;
+
+&lt;p&gt;However, a single queue also can work well. For the first layer, there is only one node - the root. When accessing this node, count the number of nodes in the second layer and push them into queue. When accessing the second layer, pop items in FIFO sequence and remove them from queue, and push the nodes in third layer into queue, and so on. Two inteher variables can be used to count the numbers of nodes in current layer and the next layer, respectively.&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ impementation of traversing binary tree in level order:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void PrintTree(TreeNode *root) {
+	queue&amp;lt;TreeNode*&amp;gt; q;
+	TreeNode* tmp=root;
+	q.push(tmp);
+	int nodes_cur_layer=1; // # of nodes in current layer
+	int nodes_next_layer=0;	// # of nodes in next layer
+	while(nodes_cur_layer&amp;gt;0) {
+		for(int i=0;i&amp;lt;nodes_cur_layer;++i) {
+			tmp=q.front();
+			q.pop();
+
+			cout&amp;lt;&amp;lt;tmp-&amp;gt;val&amp;lt;&amp;lt;&quot; &quot;;
+
+			if(tmp-&amp;gt;left!=NULL) {
+				q.push(tmp-&amp;gt;left);
+				nodes_next_layer++;
+			}
+			if(tmp-&amp;gt;right!=NULL) {
+				q.push(tmp-&amp;gt;right);
+				nodes_next_layer++;
+			}
+		}
+		cout&amp;lt;&amp;lt;endl;
+		nodes_cur_layer=nodes_next_layer;
+		nodes_next_layer=0;
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;https://oj.leetcode.com/problems/binary-tree-inorder-traversal/&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html&quot;&gt;Binary tree traversal: Preorder, Inorder, and Postorder&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal&quot;&gt;Tree Traversal&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Action Recognition with Fisher Vectors</title>
    <link href="http://bo-yang.github.com//2014/04/30/fisher-vector-in-action-recognition"/>
-   <updated>2014-04-30T00:00:00-04:00</updated>
+   <updated>2014-04-30T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2014/04/30/fisher-vector-in-action-recognition</id>
    <content type="html">&lt;p&gt;This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(&lt;a href=&quot;http://crcv.ucf.edu/data/UCF101.php&quot;&gt;http://crcv.ucf.edu/data/UCF101.php&lt;/a&gt;). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. &lt;/p&gt;
 
@@ -136,7 +404,7 @@ using above pipeline. And the confusion matrix is shown in Figure 3.&lt;/p&gt;
  <entry>
    <title>How To Install Jekyll in Mac OSX Mavericks</title>
    <link href="http://bo-yang.github.com//2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks"/>
-   <updated>2014-03-29T00:00:00-04:00</updated>
+   <updated>2014-03-29T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks</id>
    <content type="html">&lt;ol&gt;
 &lt;li&gt;
@@ -213,7 +481,7 @@ sudo -E gem install jekyll &lt;/pre&gt;
  <entry>
    <title>C++ Code to Print Pascal Triangle</title>
    <link href="http://bo-yang.github.com//2014/03/26/c-code-to-print-pascal-triangle"/>
-   <updated>2014-03-26T00:00:00-04:00</updated>
+   <updated>2014-03-26T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2014/03/26/c-code-to-print-pascal-triangle</id>
    <content type="html">&lt;p&gt;
 	Printing Pascal Triangle seems like an easy problem, however, it is not that easy to print a good-looking Pascal Triangle.&amp;nbsp;&lt;/p&gt;
@@ -292,7 +560,7 @@ The output looks like:&lt;/p&gt;&lt;/p&gt;
  <entry>
    <title>BACI Simple Install and Compile Guide</title>
    <link href="http://bo-yang.github.com//2014/01/22/baci-simple-install-and-compile-guide"/>
-   <updated>2014-01-22T00:00:00-05:00</updated>
+   <updated>2014-01-22T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2014/01/22/baci-simple-install-and-compile-guide</id>
    <content type="html">&lt;p&gt;This is a guideline for a course of this semester, for which I am serving as a teaching assistant. I publish it here in hope that it can also help someone else who want to use BACI.&lt;/p&gt;
 &lt;h2&gt;Install BACI&lt;/h2&gt;
@@ -387,7 +655,7 @@ The output looks like:&lt;/p&gt;&lt;/p&gt;
  <entry>
    <title>Dense Trajectory Notes</title>
    <link href="http://bo-yang.github.com//2014/01/10/dense-trajectory-notes"/>
-   <updated>2014-01-10T00:00:00-05:00</updated>
+   <updated>2014-01-10T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2014/01/10/dense-trajectory-notes</id>
    <content type="html">&lt;p&gt;&lt;span style=&quot;font-size:12px;font-weight:bold;line-height:1em;&quot;&gt;Notes of Dense Trajectories&lt;/span&gt;&lt;img class=&quot;aligncenter&quot; style=&quot;font-size:12px;font-weight:bold;line-height:1em;&quot; alt=&quot;&quot; src=&quot;https://lh6.googleusercontent.com/AysSQ7M6yvc5hbkBHzsEHc1c7L4ZJcIXmdSfzh9g4iBDsL_q9lZD_8fhH8TEPMwAJ12Kp_s4z1FWmX3rndc6DTFAwARyWkx-mJiixB4X7nQRV5XcB391xltefQ&quot; width=&quot;568px;&quot; height=&quot;178px;&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -481,7 +749,7 @@ where \( (\lambda_{i}^{1},\lambda_{i}^{2}) \) are eigenvalues of point \(i\) in 
  <entry>
    <title>Parallelize mex file in Matlab</title>
    <link href="http://bo-yang.github.com//2013/10/20/parallel-mex-file-in-matlab"/>
-   <updated>2013-10-20T00:00:00-04:00</updated>
+   <updated>2013-10-20T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2013/10/20/parallel-mex-file-in-matlab</id>
    <content type="html">&lt;p&gt;By default mex file cannot be executed in parallel in Matlab, which will be a major bottleneck for Matlab program. Fortunately, there is a way to execute loop operations in parallel -- &lt;a href=&quot;http://www.mathworks.com/help/distcomp/parfor.html&quot;&gt;parfor&lt;/a&gt;. Matlab provides a good tutorial on parfor: &lt;a href=&quot;http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html&quot;&gt;Getting Started with parfor&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;One tricky problem with parfor is dealing with reduction assignments, which means the value of some variables are updated by each iteration, such as assignment to an array/matrix indexed by loop index.  My suggestion is to separate the loop into two parts: one part deal with non-reduction assignment with &lt;code&gt;parfor&lt;/code&gt;, and the other part do the reduction assignment with traditional &lt;code&gt;for&lt;/code&gt; loop.&lt;/p&gt;
@@ -509,7 +777,7 @@ end&lt;/code&gt;&lt;/p&gt;
  <entry>
    <title>Notes of Advanced Machine Learning(I)</title>
    <link href="http://bo-yang.github.com//2013/10/11/notes-of-advanced-machine-learningi"/>
-   <updated>2013-10-11T00:00:00-04:00</updated>
+   <updated>2013-10-11T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2013/10/11/notes-of-advanced-machine-learningi</id>
    <content type="html">&lt;ol&gt;
 &lt;li&gt;Two different ways represent a distribution over several random variables: (1) product of conditional probabilities: \(p(x_1,x_2,x_3,x_4)=p(x_4)p(x_3|x_4)p(x_2|x_3,x_4)p(x_1|x_2,x_3,x_4)\) and (2) global energy function: \(p(x_1,x_2,x_3,x_4)=\frac{1}{Z}e^{-E(x_1,x_2,x_3,x_4)}\), where \(Z\) is the partition function.&lt;/li&gt;
@@ -599,7 +867,7 @@ end&lt;/code&gt;&lt;/p&gt;
  <entry>
    <title>"undefined reference" error during installing OpenCV</title>
    <link href="http://bo-yang.github.com//2013/10/10/undefined-reference-error-during-installing-opencv"/>
-   <updated>2013-10-10T00:00:00-04:00</updated>
+   <updated>2013-10-10T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2013/10/10/undefined-reference-error-during-installing-opencv</id>
    <content type="html">&lt;p&gt;Many people(including me) met the infamous &quot;undefined reference&quot; error during installing OpenCV, such as&lt;/p&gt;
 &lt;pre&gt;../../lib/libopencv_highgui.so.2.4.1: undefined reference to `avpriv_vorbis_parse_extradata’
@@ -623,7 +891,7 @@ make: *** [all] Error 2&lt;/pre&gt;
  <entry>
    <title>Build Dense Trajectory Codes in Ubuntu</title>
    <link href="http://bo-yang.github.com//2013/10/10/build-dense-trajectory-codes-in-ubuntu"/>
-   <updated>2013-10-10T00:00:00-04:00</updated>
+   <updated>2013-10-10T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2013/10/10/build-dense-trajectory-codes-in-ubuntu</id>
    <content type="html">&lt;p&gt;Even when the OpenCV and ffmpeg have been successfully installed, you still may meet the error of &quot;&lt;strong&gt;undefined reference to main&lt;/strong&gt;&quot; when building the &lt;a href=&quot;http://lear.inrialpes.fr/people/wang/dense_trajectories&quot;&gt;Dense Trajectory code&lt;/a&gt;. Since the author didn&#39;t provide a solution, I share my workaround here -- just use command g++ directly:&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp&lt;/code&gt;&lt;/p&gt;
@@ -634,7 +902,7 @@ make: *** [all] Error 2&lt;/pre&gt;
  <entry>
    <title>Matlab Startup Script</title>
    <link href="http://bo-yang.github.com//2013/06/12/matlab-startup-script"/>
-   <updated>2013-06-12T00:00:00-04:00</updated>
+   <updated>2013-06-12T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2013/06/12/matlab-startup-script</id>
    <content type="html">&lt;p&gt;You can create a script named &lt;code&gt;startup.m&lt;/code&gt; under &lt;em&gt;userpath&lt;/em&gt;(in Windows and Mac OSX, default path is &lt;tt&gt;&lt;code&gt;Documents/MATLAB&lt;/code&gt;&lt;/tt&gt;). You can add whatever Matlab commands you want into &lt;code&gt;startup.m&lt;/code&gt;. For example, to add &lt;code&gt;/usr/local/bin&lt;/code&gt; into PATH, you can add command&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;setenv(&#39;PATH&#39;, [getenv(&#39;PATH&#39;) &#39;:/usr/local/bin&#39;]);&lt;/code&gt;&lt;/p&gt;
@@ -646,7 +914,7 @@ make: *** [all] Error 2&lt;/pre&gt;
  <entry>
    <title>Counting Unique k-mers -- My First Go Program</title>
    <link href="http://bo-yang.github.com//2013/05/16/counting-unique-k-mers-my-first-go-program"/>
-   <updated>2013-05-16T00:00:00-04:00</updated>
+   <updated>2013-05-16T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2013/05/16/counting-unique-k-mers-my-first-go-program</id>
    <content type="html">&lt;p&gt;Previously, I wrote a Perl program to count the number of unique k-mers. It is very convenient to implement it in Perl, because Perl supports hash-of-hashes(which could dynamically count distinct k-mers) and sorting hashes by value(which can easily list the occurrences of unique k-mers in descending order).&lt;/p&gt;
 &lt;p&gt;Unfortunately, comparing to C++, Perl program usually costs more memory and longer time. This is not a big issue when the FASTA files are not large(smaller than 400MB). However, when handling larger FASTA files, my Perl program would require more than 8GB memory, which exceeds the limits of my computer. Therefore, I decided to rewrite the program by Go, a system language that supports concurrent features and can has C/C++-comparable speed.&lt;/p&gt;
@@ -791,7 +1059,7 @@ func main() {
  <entry>
    <title>Linear Space Sequence Alignment</title>
    <link href="http://bo-yang.github.com//2013/04/05/linear-space-sequence-alignment"/>
-   <updated>2013-04-05T00:00:00-04:00</updated>
+   <updated>2013-04-05T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2013/04/05/linear-space-sequence-alignment</id>
    <content type="html">&lt;p&gt;For explanation to linear space sequence alignment, please refer to &lt;a href=&quot;http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf&quot;&gt;http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The algorithm and equation I used was from the textbook &lt;em&gt;Algorithm Design&lt;/em&gt; by Jon Kleinberg and Éva Tardos(2005):&lt;/p&gt;
@@ -1388,7 +1656,7 @@ int main(int argc, char** argv)
  <entry>
    <title>Implementation of Strassen's Algorithm for Matrix Multiplication</title>
    <link href="http://bo-yang.github.com//2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication"/>
-   <updated>2013-03-20T00:00:00-04:00</updated>
+   <updated>2013-03-20T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication</id>
    <content type="html">&lt;p&gt;Strassen&#39;s algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen&#39;s algorithm on &lt;a href=&quot;http://en.wikipedia.org/wiki/Strassen_algorithm&quot;&gt;Wikipedia&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;However, the implementation of Strassen&#39;s algorithm cannot be used directly, because it  just sets the base case of the divide-and-conquer to be 1x1 matrix, which would consume huge time cost for iteration. If set the base case to 2x2 matrix, which means 2x2 matrix and 1x1 matrix will be multiplied by naive algorithm, then the Strassen&#39;s algorithm will be more efficient for matrices larger than 512x512.&lt;/p&gt;
@@ -1726,7 +1994,7 @@ return 0;
  <entry>
    <title>Basic Linux Multi-Process & Multi-Thread Programming</title>
    <link href="http://bo-yang.github.com//2013/01/29/basic-linux-multi-process-multi-thread-programming"/>
-   <updated>2013-01-29T00:00:00-05:00</updated>
+   <updated>2013-01-29T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2013/01/29/basic-linux-multi-process-multi-thread-programming</id>
    <content type="html">&lt;p&gt;
 	Today I have to make my algorithm running in parallel in order to make it faster. At first I used following way to implement multi-process:&lt;/p&gt;
@@ -1844,7 +2112,7 @@ References:&lt;/p&gt;&lt;/p&gt;
  <entry>
    <title>Simple Matlab/Octave Commands to Process Data</title>
    <link href="http://bo-yang.github.com//2012/12/06/simple-matlaboctave-commands-to-process-data"/>
-   <updated>2012-12-06T00:00:00-05:00</updated>
+   <updated>2012-12-06T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2012/12/06/simple-matlaboctave-commands-to-process-data</id>
    <content type="html">&lt;p&gt;To load data in following format stored in a text file &quot;read_pos&#39; into Matlab/Octave, use commands&lt;br /&gt;
 &lt;code&gt;&lt;br /&gt;
@@ -1933,7 +2201,7 @@ ylim([0-5*nVarargs 6*nVarargs]); % scale y-axis&lt;br /&gt;
  <entry>
    <title>Tips about Regular Expression</title>
    <link href="http://bo-yang.github.com//2012/11/17/tips-about-regular-expression"/>
-   <updated>2012-11-17T00:00:00-05:00</updated>
+   <updated>2012-11-17T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2012/11/17/tips-about-regular-expression</id>
    <content type="html">&lt;ol&gt;
 &lt;li&gt;In Vim, greedy matching is used by default. In order to use non-greedy matching, you can use \{-}, or \{-n,m}, such as: :/Q.\{-0,200}[IL].\{-0,2000}FF.&lt;/li&gt;
@@ -1956,7 +2224,7 @@ ylim([0-5*nVarargs 6*nVarargs]); % scale y-axis&lt;br /&gt;
  <entry>
    <title>Calculate the CDF of Poisson Distribution with Boost C++ Library</title>
    <link href="http://bo-yang.github.com//2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library"/>
-   <updated>2012-11-05T00:00:00-05:00</updated>
+   <updated>2012-11-05T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library</id>
    <content type="html">&lt;p&gt;The Cumulative Distribution Function(CDF) of Poisson distribution can be easily calculated by R function ppois() or octave/Matlab function poisspdf(). However, it is not a easy thing to deal with statistics with C++ from scratch.&lt;/p&gt;
 &lt;p&gt;Today I found a very powerful C++ mathematical library(actually not limited to math), boost. Unfortunately, it is hard to figure out the API of boost library from the code if you are not familiar with generalization programming(just like me). Besides, there is no useful &quot;hello world&quot; examples on the Internet to show the boost library handling statistics(examples on webpage &lt;a href=&quot;https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/&quot;&gt;C++ Statistical Distributions in Boost&lt;/a&gt; is a bit complicated and the header files are not included).&lt;/p&gt;
@@ -1984,7 +2252,7 @@ cout&amp;lt;&amp;lt;&quot;cdf: ppois(1,2.9)=&quot;&amp;lt;&amp;lt;cdf(p,1)&amp;l
  <entry>
    <title>An Implementation of Merge Sort in C</title>
    <link href="http://bo-yang.github.com//2012/11/04/an-implementation-of-merge-sort-in-c"/>
-   <updated>2012-11-04T00:00:00-04:00</updated>
+   <updated>2012-11-04T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2012/11/04/an-implementation-of-merge-sort-in-c</id>
    <content type="html">&lt;p&gt;Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. &lt;/p&gt;
 &lt;p&gt;The merge sort below was found in Internet. Sorry that I forgot to record the hyperlink of the webpage. Only a few changes were made by me. &lt;/p&gt;
@@ -2034,7 +2302,7 @@ void Merge_sort(int* input, long p, long r)&lt;br /&gt;
  <entry>
    <title>Connect Mac OS X with Linux Server</title>
    <link href="http://bo-yang.github.com//2012/08/24/connect-mac-os-x-with-linux-server"/>
-   <updated>2012-08-24T00:00:00-04:00</updated>
+   <updated>2012-08-24T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2012/08/24/connect-mac-os-x-with-linux-server</id>
    <content type="html">&lt;p&gt;There are many ways to connect Mac OS X with Linux by command line. However, connecting them with GUI is not so easy. I tried two ways, but none of them work perfectly and each of them has both advantages and disadvantages.&lt;/p&gt;
 &lt;p&gt;The first way I tried was VNC. &lt;a href=&quot;http://sourceforge.net/projects/cotvnc/&quot;&gt;Chicken of the VNC&lt;/a&gt; was said to be the best VNC client under Mac OS X, unfortunately, I haven&#39;t make it work, even follow the tips of webpage &lt;a id=&quot;using_vnc_on_mac_os_x&quot; name=&quot;using_vnc_on_mac_os_x&quot;&gt;&lt;/a&gt;&lt;a href=&quot;http://www.cs.vassar.edu/sysnews/vnc/osx&quot;&gt;Using VNC on Mac OS X&lt;/a&gt;. I used realvnc. The first step is to configure ssh. I followed the tips on webpage &lt;a href=&quot;http://narnia.cs.ttu.edu/drupal/node/132&quot;&gt;Connecting to Remote Linux Desktop via SSH with X11 Forwarding&lt;/a&gt;.  In the Linux server, after installing openssh, edit the file &lt;code&gt;/etc/ssh/ssh_config&lt;/code&gt; and make sure&lt;/p&gt;
@@ -2054,7 +2322,7 @@ ssh command can also be used. Or just use &quot;ssh -X &amp;lt;login&amp;gt;@&am
  <entry>
    <title>How to make NIC BCM57780 work in Scientific Linux?</title>
    <link href="http://bo-yang.github.com//2012/08/08/how-to-make-nic-bcm57780-work-in-scientific-linux"/>
-   <updated>2012-08-08T00:00:00-04:00</updated>
+   <updated>2012-08-08T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2012/08/08/how-to-make-nic-bcm57780-work-in-scientific-linux</id>
    <content type="html">&lt;p&gt;I decided to install Scientific Linux on the computer in my lab. Partly because this distribution is called &quot;Scientific&quot;, partly because it is compiled from Red Hat Enterprise Linux, the most prestigious Linux distribution in the world.&lt;/p&gt;
 &lt;p&gt;At first, I downloaded the &lt;a href=&quot;http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso&quot;&gt;Everything DVDs&lt;/a&gt; and burned it into my USB stick via &lt;a href=&quot;http://unetbootin.sourceforge.net/&quot;&gt;UNetbootin&lt;/a&gt;. Unfortunately, it couldn&#39;t boot. Then I tried the &lt;a href=&quot;http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveCD.iso&quot;&gt;Live CD&lt;/a&gt;. It did worked and I installed the SL in a few minutes. However, the network could not be connected and the NIC could not be activated. I checked the NIC type by &quot;&lt;code&gt;lspci | grep net&lt;/code&gt;&quot;, and I found it was &lt;strong&gt;Broadcom Corporation NetLink BCM57780&lt;/strong&gt;.&lt;/p&gt;
@@ -2081,7 +2349,7 @@ service network restart&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
  <entry>
    <title>SOCK_RAW Issue with setuid&chroot-ed login on Linux Servers(Still Unresolved)</title>
    <link href="http://bo-yang.github.com//2012/06/14/sock_raw-issue-with-setuidchroot-ed-login-on-linux-serversstill-unresolved"/>
-   <updated>2012-06-14T00:00:00-04:00</updated>
+   <updated>2012-06-14T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2012/06/14/sock_raw-issue-with-setuidchroot-ed-login-on-linux-serversstill-unresolved</id>
    <content type="html">&lt;p&gt;Problem:&lt;/p&gt;
 &lt;blockquote&gt;&lt;p&gt;when using function socket(AF_INET,&lt;strong&gt;SOCK_RAW&lt;/strong&gt;,IPPROTO_TCP...) with setuid&amp;amp;chroot-ed fake root on Linux servers, it would always fail. However, the real root can work well. Usually the fake root can do most things that root login required.
@@ -2108,7 +2376,7 @@ service network restart&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
  <entry>
    <title>Error "ldd:  execution failed due to signal 9"</title>
    <link href="http://bo-yang.github.com//2012/06/04/ldd-error"/>
-   <updated>2012-06-04T00:00:00-04:00</updated>
+   <updated>2012-06-04T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2012/06/04/ldd-error</id>
    <content type="html">&lt;p&gt;Today, one of my folks met a very weird problem and finally he asked me for help. The issue was, when running command &quot;ldd CDNap&quot; on a Solaris 9 server(AP11), following error would show up:&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;AP11: ldd CDNap&lt;br /&gt;
@@ -2146,7 +2414,7 @@ SunOS coolap10n 5.9 Generic_122300-61 sun4u sparc SUNW,UltraAX-i2&lt;/pre&gt;
  <entry>
    <title>String Evolver, My First Genetic Algorithm</title>
    <link href="http://bo-yang.github.com//2012/05/04/string-evolver"/>
-   <updated>2012-05-04T00:00:00-04:00</updated>
+   <updated>2012-05-04T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2012/05/04/string-evolver</id>
    <content type="html">&lt;p&gt;When reading &lt;em&gt;Evolutionary Computation for Modeling and Optimization[1]&lt;/em&gt;, I found following problem in section 1.2.3:&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;A string evolver is an evolutionary algorithm that tries to match a reference string from a population of random strings. The underlying character set of the string evolver is the alphabet from which the strings are drawn.&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -2687,7 +2955,7 @@ Hello,world!	Gen: 2344	Fitness: 12
  <entry>
    <title>升级Ubuntu 12.04所遇到的一些问题</title>
    <link href="http://bo-yang.github.com//2012/05/02/ubuntu-1204-update"/>
-   <updated>2012-05-02T00:00:00-04:00</updated>
+   <updated>2012-05-02T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2012/05/02/ubuntu-1204-update</id>
    <content type="html">&lt;p&gt;升级Ubuntu 11.10到12.04后，开机报错“&lt;em&gt;no partition found&lt;/em&gt;”,进入Grub后，输入&amp;quot;ls&amp;quot;命令，也报错“no partition found”。可见Grub已经崩溃了。&lt;/p&gt;
 &lt;p&gt;于是我下载了&lt;a href=&quot;http://unetbootin.sourceforge.net/&quot;&gt;UNetbootin&lt;/a&gt;，然后利用它在Win 7下制作Ubuntu自启动U盘。制作好之后，结果发现不会自动引导启动，需要在开机之后出现Thinkpad欢迎界面时按F12，然后选择U盘启动。然后选择U盘启动Ubuntu，进入Ubuntu后按照&amp;nbsp;&lt;a href=&quot;http://www.webupd8.org/2009/12/how-to-recover-grub2-linux.html&quot;&gt;How to&lt;br /&gt;
@@ -2730,7 +2998,7 @@ boot&lt;/pre&gt;
  <entry>
    <title>Briss -- Crop the Margins of Your PDF Files</title>
    <link href="http://bo-yang.github.com//2012/04/21/briss-intro"/>
-   <updated>2012-04-21T00:00:00-04:00</updated>
+   <updated>2012-04-21T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2012/04/21/briss-intro</id>
    <content type="html">&lt;p&gt;&lt;span style=&quot;font-size:18px;&quot;&gt;今天用iPad阅读一个PDF文档时，发现每页留白太多，字体特别小，在iBooks中每翻一页都要手动去缩放，实在是麻烦。于是搜索去掉PDF留白的方法。&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span style=&quot;font-size:18px;&quot;&gt;先是寄希望于Linux系统自带的pdfcrop，结果尝试了各种选项后，发现PDF的size没有变，还是原来的8.5x8.9 inch。&lt;/span&gt;&lt;/p&gt;
@@ -2757,7 +3025,7 @@ java -jar briss-0.0.13.jar cropthis.pdf
  <entry>
    <title>Using Expect Here Document in Shell Scripts</title>
    <link href="http://bo-yang.github.com//2012/03/06/using-expect-here-document-in-shell-scripts-4"/>
-   <updated>2012-03-06T00:00:00-05:00</updated>
+   <updated>2012-03-06T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2012/03/06/using-expect-here-document-in-shell-scripts-4</id>
    <content type="html">&lt;p&gt;Sometimes simple interactions are needed for Shell scripts. In this scenario, a here document written in Expect will work well. In following example, the output of Expect here document is assigned to KSH variable rcs_stat.&lt;br /&gt;
 &lt;P&gt;&lt;/p&gt;
@@ -2828,7 +3096,7 @@ exit 0
  <entry>
    <title>Shell中使用Expect Here Document</title>
    <link href="http://bo-yang.github.com//2012/03/06/expect-here-doc-in-shell"/>
-   <updated>2012-03-06T00:00:00-05:00</updated>
+   <updated>2012-03-06T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2012/03/06/expect-here-doc-in-shell</id>
    <content type="html">&lt;p&gt;在使用Shell写程序时，有时不得不面对交互的问题——可惜shell往往无法自动完成交互。如果交互的内容很多，自然是直接应用Expect脚本比较方便；如果交互的内容很少，而且考虑到Shell的易用性，在Shell脚本中创建一个Expect 的Here Document更加方便灵活。&lt;/p&gt;
 &lt;p&gt;如下例所示，Expect&amp;nbsp;Here Document可以直接运行并将运行结果赋给KSH变量rcs_stat。&lt;/p&gt;
@@ -2901,7 +3169,7 @@ exit 0
  <entry>
    <title>File Descriptors per Process</title>
    <link href="http://bo-yang.github.com//2012/02/02/file-descriptors-per-process"/>
-   <updated>2012-02-02T00:00:00-05:00</updated>
+   <updated>2012-02-02T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2012/02/02/file-descriptors-per-process</id>
    <content type="html">&lt;p&gt;A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:&lt;/p&gt;
 &lt;ol&gt;
@@ -2934,7 +3202,7 @@ References:&lt;/p&gt;
  <entry>
    <title>OnLive——在iPad上使用MS Word, Excel, PowerPoint</title>
    <link href="http://bo-yang.github.com//2012/01/13/onlive"/>
-   <updated>2012-01-13T00:00:00-05:00</updated>
+   <updated>2012-01-13T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2012/01/13/onlive</id>
    <content type="html">&lt;p&gt;昨晚睡前看到Walter Mossburg的最新文章&lt;a href=&quot;http://allthingsd.com/20120111/working-in-word-excel-powerpoint-on-an-ipad/&quot;&gt;Working in Word, Excel, PowerPoint on an iPad&lt;/a&gt;：尽管iPad上已经有office软件，可以在上面编辑或创建文档，但这些软件对MS Office的兼容性并不好，而且还是收费的。&lt;a href=&quot;http://desktop.onlive.com/&quot;&gt;OnLive&lt;br /&gt;
  Desktop&lt;/a&gt;即将推出一个免费的应用，该应用可以利用云端的MS Word, Excel, PowerPoint创建并编辑文档，文档保存在云端，可以在iPad和PC上（今后会有Android版）编辑。免费版每人2G云端存储空间，付费版$10每月每人50G空间。&amp;nbsp;除常用的Office软件，还支持常用的Windows小程序，如计算器，画图板，记事本等。&lt;/p&gt;
@@ -2951,7 +3219,7 @@ References:&lt;/p&gt;
  <entry>
    <title>Updating Fedora to Fedora16 and Installing Ubuntu 11.04</title>
    <link href="http://bo-yang.github.com//2012/01/09/updating-fedora-to-fedora16-and-installing-ubuntu-11-04"/>
-   <updated>2012-01-09T00:00:00-05:00</updated>
+   <updated>2012-01-09T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2012/01/09/updating-fedora-to-fedora16-and-installing-ubuntu-11-04</id>
    <content type="html">&lt;p&gt;2.5years ago I installed Fedora11 on my Thinkpad R61,and then updated it to Fedora 12 and then Fedora 14. A bunch of software were installed, and as a result, the system went slower and slower... 固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。&lt;br /&gt;
 基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。&lt;br /&gt;
@@ -3054,7 +3322,7 @@ sudo grub-install /dev/sda&lt;br /&gt;
  <entry>
    <title>升级Fedora 16 与安装Ubuntu 11.04</title>
    <link href="http://bo-yang.github.com//2011/12/31/install-ubuntu-11-04"/>
-   <updated>2011-12-31T00:00:00-05:00</updated>
+   <updated>2011-12-31T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/12/31/install-ubuntu-11-04</id>
    <content type="html">&lt;p&gt;两年半前安装了Fedora11，之后升级到Fedora 12， Fedora 14，期间安装了大量的软件，系统越来越慢……固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。&lt;/p&gt;
 &lt;p&gt;基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。&lt;/p&gt;
@@ -3283,7 +3551,7 @@ Grub 2中已经不再支持kernel命令，需要用linux指定kernel。&lt;/p&gt
  <entry>
    <title>Backquotes in Ksh here document</title>
    <link href="http://bo-yang.github.com//2011/12/19/backquote"/>
-   <updated>2011-12-19T00:00:00-05:00</updated>
+   <updated>2011-12-19T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/12/19/backquote</id>
    <content type="html">&lt;p&gt;When the shell encounters a string between backquotes&lt;/p&gt;
 &lt;pre&gt;     `cmd`&lt;/pre&gt;
@@ -3306,7 +3574,7 @@ IOTA&lt;/code&gt;&lt;/p&gt;
  <entry>
    <title>Merge/Split PDF files in Linux</title>
    <link href="http://bo-yang.github.com//2011/12/18/merge-split-pdf-files"/>
-   <updated>2011-12-18T00:00:00-05:00</updated>
+   <updated>2011-12-18T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/12/18/merge-split-pdf-files</id>
    <content type="html">&lt;p style=&quot;border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:&#39;Lucida Grande&#39;, Verdana, &#39;Lucida Sans Regular&#39;, &#39;Lucida Sans Unicode&#39;, Arial, sans-serif;line-height:21px;border-width:0;&quot;&gt;
 First install pdftk (pdf toolkit). Pdftk runs from the command line which means you should unpack the software into a directory that you can access easily. I put the file into c: for&amp;nbsp;&lt;a href=&quot;http://www.ghacks.net/2007/10/02/merge-pdf-files/#&quot; class=&quot;kLink&quot; id=&quot;KonaLink0&quot; style=&quot;border-style:initial;border-color:initial;outline-width:initial;outline-style:none;outline-color:initial;background-color:transparent!important;vertical-align:baseline;color:rgb(0,114,188);font-family:inherit!important;display:inline!important;top:0;right:0;bottom:0;left:0;position:static;font-size:inherit!important;border-width:0!important;margin:0;padding:0;&quot;&gt;&lt;span style=&quot;color:#0072bc;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0;margin:0;padding:0;&quot;&gt;&lt;span class=&quot;kLink&quot; style=&quot;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;width:auto!important;float:none!important;display:inline!important;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0 0 1px!important;margin:0;padding:0 0 1px!important;&quot;&gt;testing&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&amp;nbsp;purposes&lt;br /&gt;
@@ -3359,7 +3627,7 @@ Pdftk offers several more possibilities which are worth a look if you want to do
  <entry>
    <title>Tk send</title>
    <link href="http://bo-yang.github.com//2011/12/16/tcl-send"/>
-   <updated>2011-12-16T00:00:00-05:00</updated>
+   <updated>2011-12-16T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/12/16/tcl-send</id>
    <content type="html">&lt;p style=&quot;font-family:Georgia, &#39;Times New Roman&#39;, &#39;Bitstream Charter&#39;, Times, serif;font-size:13px;line-height:19px;&quot;&gt;
 &lt;code&gt;send&lt;/code&gt;&amp;nbsp;is a Tk command&amp;nbsp;used to execute a command in a different application. This send communication mechanism is limited to applications&amp;nbsp;running on one display. Multiple screens on one workstation still count as the same display on X.&lt;/p&gt;
@@ -3385,7 +3653,7 @@ Reference:&lt;/p&gt;
  <entry>
    <title>How to change the character case in ksh?</title>
    <link href="http://bo-yang.github.com//2011/12/16/change-character-case"/>
-   <updated>2011-12-16T00:00:00-05:00</updated>
+   <updated>2011-12-16T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/12/16/change-character-case</id>
    <content type="html">&lt;p&gt;1. To change lower case characters to upper case, you can&lt;/p&gt;&lt;/p&gt;
 &lt;pre&gt;echo abc | tr &amp;quot;[a-z]&amp;quot; &amp;quot;[A-Z]&amp;quot;&lt;/pre&gt;
@@ -3406,7 +3674,7 @@ or&amp;nbsp;&lt;/p&gt;&lt;/p&gt;
  <entry>
    <title>rup:: RPC: Program not registered in RHEL6.1</title>
    <link href="http://bo-yang.github.com//2011/12/02/rup-rpc-program-not-registered-in-rhel6-1"/>
-   <updated>2011-12-02T00:00:00-05:00</updated>
+   <updated>2011-12-02T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/12/02/rup-rpc-program-not-registered-in-rhel6-1</id>
    <content type="html">&lt;p&gt;I just installed Redhat Enterprise Linux 6.1 on one HP server. Following error met when rup it on other servers:&lt;/p&gt;
 &lt;p&gt;[sourcecode language=&quot;text&quot;]&lt;br /&gt;
@@ -3469,7 +3737,7 @@ service rstatd status&lt;br /&gt;
  <entry>
    <title>C++filt</title>
    <link href="http://bo-yang.github.com//2011/12/02/cfilt"/>
-   <updated>2011-12-02T00:00:00-05:00</updated>
+   <updated>2011-12-02T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/12/02/cfilt</id>
    <content type="html">&lt;p&gt;c++flit decodes(demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.&lt;/p&gt;
 &lt;p&gt;You may use c++filt to demangle the symbols.&lt;br /&gt;
@@ -3485,7 +3753,7 @@ std::ios_base::Init::~Init()&lt;br /&gt;
  <entry>
    <title>What's the differences between  virtualization and cloud computing?</title>
    <link href="http://bo-yang.github.com//2011/11/28/whats-the-differences-between-virtualization-and-cloud-computing"/>
-   <updated>2011-11-28T00:00:00-05:00</updated>
+   <updated>2011-11-28T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/11/28/whats-the-differences-between-virtualization-and-cloud-computing</id>
    <content type="html">&lt;p&gt;Many people will be confused by the relations and differences between virtualization and cloud computing. Following essays will clarify the nature of the two technologies.&lt;br /&gt;
 1. Cloud is an operations model, not technology: &lt;a href=&quot;http://news.cnet.com/8301-19413_3-10249486-240.html&quot;&gt;http://news.cnet.com/8301-19413_3-10249486-240.html&lt;/a&gt;&lt;br /&gt;
@@ -3497,7 +3765,7 @@ std::ios_base::Init::~Init()&lt;br /&gt;
  <entry>
    <title>如何在Gmail中搜索特定时间段的邮件</title>
    <link href="http://bo-yang.github.com//2011/11/22/gmail-tips"/>
-   <updated>2011-11-22T00:00:00-05:00</updated>
+   <updated>2011-11-22T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/11/22/gmail-tips</id>
    <content type="html">&lt;p&gt;由于众所周知的原因，在天朝登录Gmail时越来越困难了，但是很多以前的邮件都还在，时不时还需要翻一翻，如何搜索特定时间段的邮件呢？&lt;/p&gt;
 &lt;p&gt;答案就是在Gmail的搜索框中输入after:或者/和before:， 如 “after:2007/07/31 before:2007/12/31”就是搜索2007年7月31日之后12月31日之前的邮件。&lt;/p&gt;
@@ -3509,7 +3777,7 @@ std::ios_base::Init::~Init()&lt;br /&gt;
  <entry>
    <title>Steve Jobs的家庭教育</title>
    <link href="http://bo-yang.github.com//2011/10/24/education-of-steve-jobs"/>
-   <updated>2011-10-24T00:00:00-04:00</updated>
+   <updated>2011-10-24T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/10/24/education-of-steve-jobs</id>
    <content type="html">&lt;div style=&quot;line-height:1.6;font-family:Arial;font-size:14px;background-color:transparent;word-wrap:break-word;min-height:340px;overflow-x:hidden;height:auto;margin:0;padding:0;&quot;&gt;
 &lt;p style=&quot;margin-top:10px;margin-bottom:10px;line-height:20px;padding-top:0;padding-bottom:0;padding-left:30px;text-align:left;font-family:Georgia, &#39;Times New Roman&#39;, Times, serif;&quot;&gt;
@@ -3540,7 +3808,7 @@ Steve Jobs的英文版自传目前还没买到，我的iTunes帐号只能在中�
  <entry>
    <title>What's+the+difference+between+virtualization+and+cloud+computing?</title>
    <link href="http://bo-yang.github.com//2011/10/13/diff-between-virtualization-and-cloud-computing"/>
-   <updated>2011-10-13T00:00:00-04:00</updated>
+   <updated>2011-10-13T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/10/13/diff-between-virtualization-and-cloud-computing</id>
    <content type="html">&lt;p&gt;在很多资料或文献中很难找到虚拟化和云计算的区别，甚至连云计算是什么都颇有争议。在网上找到几片论述这一问题的文章，摘录于下。&lt;/p&gt;&lt;/p&gt;
 &lt;h1 style=&quot;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;font-family:proxima-nova-extra-condensed, &#39;Helvetica Neue Condensed Bold&#39;, &#39;Arial Narrow&#39;, Helvetica, Arial, sans-serif;text-align:left;vertical-align:baseline;color:rgb(57,67,76);clear:both;line-height:1em!important;border-width:0;margin:5px 0;padding:0;&quot;&gt;
@@ -3647,7 +3915,7 @@ Plainly, virtualization provides more servers on the same hardware and cloud com
  <entry>
    <title>帮主远行，智慧永生</title>
    <link href="http://bo-yang.github.com//2011/10/09/in-memory-of-steve-jobs"/>
-   <updated>2011-10-09T00:00:00-04:00</updated>
+   <updated>2011-10-09T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/10/09/in-memory-of-steve-jobs</id>
    <content type="html">&lt;div style=&quot;direction:ltr;font-family:arial;font-size:11pt;line-height:1.2;margin:0;padding:.5in 1in;&quot;&gt;
 &lt;h1 id=&quot;zw-132e39cf371ufqXd3916c&quot; style=&quot;text-align:left;&quot;&gt;&lt;span style=&quot;font-size:17px;line-height:20px;&quot;&gt;1.&amp;nbsp;硅谷海盗&lt;/span&gt;&lt;/h1&gt;
@@ -3690,7 +3958,7 @@ Plainly, virtualization provides more servers on the same hardware and cloud com
  <entry>
    <title>Struct sctp_event_subscribe Differs Between RHEL5 & RHEL6</title>
    <link href="http://bo-yang.github.com//2011/09/28/structure-sctp_event_subscribe-differs-between-rhel5-rhel6"/>
-   <updated>2011-09-28T00:00:00-04:00</updated>
+   <updated>2011-09-28T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/09/28/structure-sctp_event_subscribe-differs-between-rhel5-rhel6</id>
    <content type="html">&lt;p&gt;Recently meet an SCTP issue: one product application running on MontaVista(kernel version 2.6.21) can&#39;t run on RedHat Enterprise Linux 5.5. After hours investion between millions lines  of  log file and source code, I finally noticed following error showed up:&lt;br /&gt;
 [sourcecode language=&quot;text&quot;]&lt;br /&gt;
@@ -3746,7 +4014,7 @@ Then I began to check the definition of struct sctp_event_subscribe in both RH
  <entry>
    <title>Dot(.) after the file permission flags in Redhat</title>
    <link href="http://bo-yang.github.com//2011/09/21/dot-flag-in-rhel"/>
-   <updated>2011-09-21T00:00:00-04:00</updated>
+   <updated>2011-09-21T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/09/21/dot-flag-in-rhel</id>
    <content type="html">&lt;p&gt;Phenomenon:&lt;/p&gt;
 &lt;p&gt;
@@ -3775,7 +4043,7 @@ According to&amp;nbsp;&lt;a href=&quot;http://www.redhat.com/archives/rhelv6-lis
  <entry>
    <title>rup:<servername>: RPC: Program not registered in RHEL6.1</title>
    <link href="http://bo-yang.github.com//2011/09/20/rpc-error-in-rhel6"/>
-   <updated>2011-09-20T00:00:00-04:00</updated>
+   <updated>2011-09-20T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/09/20/rpc-error-in-rhel6</id>
    <content type="html">&lt;p&gt;I just installed Redhat Enterprise Linux 6.1 on one HP server. Following error met when rup it on other servers:&lt;/p&gt;
 &lt;p&gt;
@@ -3957,7 +4225,7 @@ This process provides user quota information for remote users.&amp;nbsp;&lt;code
  <entry>
    <title>c++filt</title>
    <link href="http://bo-yang.github.com//2011/09/14/cpp-filt"/>
-   <updated>2011-09-14T00:00:00-04:00</updated>
+   <updated>2011-09-14T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/09/14/cpp-filt</id>
    <content type="html">&lt;p&gt;
 &lt;span style=&quot;font-family:&#39;Times New Roman&#39;;font-size:16px;&quot;&gt;&lt;/span&gt;&lt;/p&gt;
@@ -4082,7 +4350,7 @@ This process provides user quota information for remote users.&amp;nbsp;&lt;code
  <entry>
    <title>RHEL5和RHEL6中的sctp_event_subscribe定义大不同</title>
    <link href="http://bo-yang.github.com//2011/08/24/sctp_event_subscribe-in-RHEL"/>
-   <updated>2011-08-24T00:00:00-04:00</updated>
+   <updated>2011-08-24T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/08/24/sctp_event_subscribe-in-RHEL</id>
    <content type="html">&lt;/p&gt;
 &lt;p&gt;近来碰到一个关于SCTP的问题：某个产品跑在Monta Vista上，其内核版本号为2.6.21；可每次该产品泡在我们的Red Hat Enterprise Linux 5.5上时，都会报错错误信息如下：
@@ -4131,7 +4399,7 @@ This process provides user quota information for remote users.&amp;nbsp;&lt;code
  <entry>
    <title>Displacement Activity</title>
    <link href="http://bo-yang.github.com//2011/08/02/displacement-activity"/>
-   <updated>2011-08-02T00:00:00-04:00</updated>
+   <updated>2011-08-02T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/08/02/displacement-activity</id>
    <content type="html">&lt;p&gt;
 &lt;span style=&quot;font-family:&#39;Times New Roman&#39;;font-size:16px;&quot;&gt;&lt;/span&gt;&lt;/p&gt;
@@ -4186,7 +4454,7 @@ This process provides user quota information for remote users.&amp;nbsp;&lt;code
  <entry>
    <title>Immaneul Kant's Philosophy of Morality</title>
    <link href="http://bo-yang.github.com//2011/07/26/immaneul-kants-philosophy-of-morality"/>
-   <updated>2011-07-26T00:00:00-04:00</updated>
+   <updated>2011-07-26T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/07/26/immaneul-kants-philosophy-of-morality</id>
    <content type="html">&lt;p&gt;Following are part of my notes of the famous Harvard open course &lt;strong&gt;&lt;em&gt;Justice&lt;/em&gt;&lt;/strong&gt;. Kant&#39;s theory is too hard to be understood in a shot time. I think the best way is to record his main idea and try to digest in the future.&lt;/p&gt;
 &lt;p&gt;===============================================================================================&lt;/p&gt;
@@ -4267,7 +4535,7 @@ Actual contracts are not self-sufficient moral instruments of any actual contrac
  <entry>
    <title>选中Excel单元格自动导入多个Excel worksheets</title>
    <link href="http://bo-yang.github.com//2011/07/13/merge-excel-sheets-2"/>
-   <updated>2011-07-13T00:00:00-04:00</updated>
+   <updated>2011-07-13T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/07/13/merge-excel-sheets-2</id>
    <content type="html">&lt;p&gt;前日完成&lt;a href=&quot;http://blog.csdn.net/bonny95/article/details/6597776&quot;&gt;将多个Excel文件批量导入某个Excel文件中&lt;/a&gt;老婆规定的任务后，老婆又提出了新的要求：&lt;/p&gt;&lt;/p&gt;
 &lt;ol&gt;
@@ -4665,7 +4933,7 @@ End Sub
  <entry>
    <title>Importing Multi-Excel Files/Worksheets Into An Excel Workbook</title>
    <link href="http://bo-yang.github.com//2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook"/>
-   <updated>2011-07-13T00:00:00-04:00</updated>
+   <updated>2011-07-13T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/07/13/importing-multi-excel-filesworksheets-into-an-excel-workbook</id>
    <content type="html">&lt;p&gt;Two days ago, my wife asked me to write an Excel VBA script to automatically import multi-Excel worksheets stored in different workbooks into an already opened Excel workbook.  Her requirements were:&lt;/p&gt;
 &lt;ol&gt;
@@ -4946,7 +5214,7 @@ End Sub&lt;br /&gt;
  <entry>
    <title>将多个Excel文件批量导入某个Excel文件中</title>
    <link href="http://bo-yang.github.com//2011/07/11/merge-multi-excel-sheets"/>
-   <updated>2011-07-11T00:00:00-04:00</updated>
+   <updated>2011-07-11T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/07/11/merge-multi-excel-sheets</id>
    <content type="html">&lt;p&gt;这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。&lt;/p&gt;
 &lt;p&gt;下面是搜索了半天之后搞出来的Macro，没有异常处理，而且使用了copy/paste，文件太多时效率肯定不高。其实完全可以参照&lt;span style=&quot;font-family:Arial, Helvetica, sans-serif;&quot;&gt;&lt;/span&gt;&lt;/p&gt;
@@ -5023,7 +5291,7 @@ End Function
  <entry>
    <title>Solaris下/usr/lib/secure/0@0.so.1的错误</title>
    <link href="http://bo-yang.github.com//2011/06/22/solaris-shared-lib-error"/>
-   <updated>2011-06-22T00:00:00-04:00</updated>
+   <updated>2011-06-22T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/06/22/solaris-shared-lib-error</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;这两天一直被下面的错误所困扰：&lt;/p&gt;
@@ -5066,7 +5334,7 @@ ld.so.1: uptime: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or d
  <entry>
    <title>ksh中包含变量的命令调用</title>
    <link href="http://bo-yang.github.com//2011/06/03/ksh-IPCSCMD-variable"/>
-   <updated>2011-06-03T00:00:00-04:00</updated>
+   <updated>2011-06-03T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/06/03/ksh-IPCSCMD-variable</id>
    <content type="html">&lt;p&gt;当一个含有变量a的命令存储在某个变量b中时, 利用$($b)时有可能会报错。如下面的代码，有时可以成功执行，有时会发生&amp;ldquo;ipcs|grep xxx can not be found&quot;的错误。&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;
@@ -5109,7 +5377,7 @@ done
  <entry>
    <title>chroot, setuid() & set gid</title>
    <link href="http://bo-yang.github.com//2011/06/02/chroot-setuid-setgid"/>
-   <updated>2011-06-02T00:00:00-04:00</updated>
+   <updated>2011-06-02T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/06/02/chroot-setuid-setgid</id>
    <content type="html">&lt;p&gt;这篇文章搜集整理了网上chroot, setuid() &amp;amp; set gid相关的文章。&lt;/p&gt;
 &lt;ol&gt;
@@ -5124,7 +5392,7 @@ done
  <entry>
    <title>如何判断一个(压缩)文件的类型，以及zcat/gzcat</title>
    <link href="http://bo-yang.github.com//2011/05/20/zcat-gzcat"/>
-   <updated>2011-05-20T00:00:00-04:00</updated>
+   <updated>2011-05-20T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/05/20/zcat-gzcat</id>
    <content type="html">&lt;p&gt;恰似&amp;ldquo;一师是个好学校&amp;rdquo;，dd是个好工具&amp;mdash;&amp;mdash;只消用它逐字copy出某个文件第一个block的内容，就可以判断出该文件的类型！！！&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -5168,7 +5436,7 @@ ${ZCAT} ${TMPDIR}/ngn_platform.cpio.Z | /bin/cpio -idmvu  -H odc ${SAT_CPIO_FLAG
  <entry>
    <title>yum的proxy设置</title>
    <link href="http://bo-yang.github.com//2011/05/16/yum-proxy"/>
-   <updated>2011-05-16T00:00:00-04:00</updated>
+   <updated>2011-05-16T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/05/16/yum-proxy</id>
    <content type="html">&lt;p&gt;方法一：&lt;/p&gt;
 &lt;p&gt;
@@ -5205,7 +5473,7 @@ setenv FTP_PROXY http://host.com:port/&lt;/pre&gt;
  <entry>
    <title>Perl的library设置</title>
    <link href="http://bo-yang.github.com//2011/05/16/perl-library"/>
-   <updated>2011-05-16T00:00:00-04:00</updated>
+   <updated>2011-05-16T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/05/16/perl-library</id>
    <content type="html">&lt;p&gt;参考链接：&lt;/p&gt;
 &lt;ol&gt;
@@ -5236,7 +5504,7 @@ setenv FTP_PROXY http://host.com:port/&lt;/pre&gt;
  <entry>
    <title>How to list processes attached to a shared memory segment in linux?</title>
    <link href="http://bo-yang.github.com//2011/05/13/process-attached-to-shared-memory"/>
-   <updated>2011-05-13T00:00:00-04:00</updated>
+   <updated>2011-05-13T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/05/13/process-attached-to-shared-memory</id>
    <content type="html">&lt;p&gt;本文整理自网络，参考网页(references):&lt;/p&gt;
 &lt;ol&gt;
@@ -5301,7 +5569,7 @@ key        shmid      owner      perms      bytes      nattch     status
  <entry>
    <title>Shell浮点数运算</title>
    <link href="http://bo-yang.github.com//2011/05/03/shell-floating-point"/>
-   <updated>2011-05-03T00:00:00-04:00</updated>
+   <updated>2011-05-03T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/05/03/shell-floating-point</id>
    <content type="html">&lt;p&gt;Shell本身不支持浮点数运算，(())之类的数学运算符只能进行整数运算。要想在shell中运算浮点数，只能借助于bc, Awk或者Perl。 如&lt;/p&gt;
 &lt;p&gt;
@@ -5330,7 +5598,7 @@ c=$(echo &quot;$a+$b&quot; | bc -l)&lt;/pre&gt;
  <entry>
    <title>groff初体验</title>
    <link href="http://bo-yang.github.com//2011/04/20/groff"/>
-   <updated>2011-04-20T00:00:00-04:00</updated>
+   <updated>2011-04-20T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/04/20/groff</id>
    <content type="html">&lt;p&gt;&amp;ldquo;所见即所得（WYSIWYG，What you see is what you get）&amp;rdquo;编辑器可以使简单的工作更简单，却无法完成某些复杂的工作。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -5440,7 +5708,7 @@ box &quot;/fItmac.m/fP&quot;
  <entry>
    <title>QEMU常用命令</title>
    <link href="http://bo-yang.github.com//2011/04/05/qemu-commands"/>
-   <updated>2011-04-05T00:00:00-04:00</updated>
+   <updated>2011-04-05T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/04/05/qemu-commands</id>
    <content type="html">&lt;p&gt;Following are excerpted from &lt;em&gt;Build appliances with QEMU and OpenBSD&lt;/em&gt;, &lt;em&gt;BSD Magazine,&lt;/em&gt; 2011.04.&lt;/p&gt;
 &lt;ul&gt;
@@ -5467,7 +5735,7 @@ set tty com0&lt;/pre&gt;
  <entry>
    <title>Excel文件转换为XML以及Linux文件编码格式转换</title>
    <link href="http://bo-yang.github.com//2011/03/21/transfer-excel-to-xml"/>
-   <updated>2011-03-21T00:00:00-04:00</updated>
+   <updated>2011-03-21T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/03/21/transfer-excel-to-xml</id>
    <content type="html">&lt;p&gt;今天需要将多个Excel文档转换为XML&amp;#26684;式，本打算用MS Office自带的另存为XML文件的功能，结果转换成MS Office2003 XML之后的文件就是一坨屎！Office 2007自带的XML文档转换的功能也TMD超级繁琐，根据帮助手册自己建了.xsd文件导入到Excel之后也无法导出XML数据，白白浪费了时间。&lt;/p&gt;
 &lt;p&gt;后来Google到了&lt;a href=&quot;http://www.meadinkent.co.uk/xl_xml1.htm&quot;&gt;这篇文章&lt;/a&gt;。文中提供了现成的VBA源代码，稍微修改一下即可拿来使用（中文注释为本人所加）：&lt;/p&gt;
@@ -5638,7 +5906,7 @@ End Function
  <entry>
    <title>在/etc/hosts中定义Linux的hostname</title>
    <link href="http://bo-yang.github.com//2011/03/10/hostname-in-etc-hosts"/>
-   <updated>2011-03-10T00:00:00-05:00</updated>
+   <updated>2011-03-10T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/03/10/hostname-in-etc-hosts</id>
    <content type="html">&lt;p&gt;今天碰到这样一个问题：一个程序在刚刚装好的Linux server上获取IP地址时永远都是0x7f000001。一开始没有注意，后来仔细一想，0x7f000001不正好就是127.0.0.1嘛！有同事查了一下/etc/hosts，发现在该文件中有这样一行：&lt;/p&gt;
 &lt;p&gt;
@@ -5703,7 +5971,7 @@ rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
  <entry>
    <title>Plan9 Files -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(IV)</title>
    <link href="http://bo-yang.github.com//2011/03/07/plan9-intro-note-4"/>
-   <updated>2011-03-07T00:00:00-05:00</updated>
+   <updated>2011-03-07T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/03/07/plan9-intro-note-4</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;
@@ -5775,7 +6043,7 @@ main(int argc, char* argv[])
  <entry>
    <title>regexp -line逐行匹配</title>
    <link href="http://bo-yang.github.com//2011/03/02/regexp-per-line"/>
-   <updated>2011-03-02T00:00:00-05:00</updated>
+   <updated>2011-03-02T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/03/02/regexp-per-line</id>
    <content type="html">&lt;p&gt;以前没注意到Tcl/Tk的正则表达式命令regexp还有一个逐行匹配的选项-line（其实是三个-line, &lt;span&gt;-lineanchor和&lt;/span&gt;&lt;span&gt;-linestop，第一个是后两者的综合&lt;/span&gt;），因此碰到需要在多行内容中匹配某一行的中的某字符（串）是总是不得不用AWK,PERL等其他工具，现在有了-line，直接regexp -line &amp;lt;pattern&amp;gt; &amp;lt;var&amp;gt;就搞定了！&lt;/p&gt;
 </content>
@@ -5784,7 +6052,7 @@ main(int argc, char* argv[])
  <entry>
    <title>Plan9 Environment Variables -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(III)</title>
    <link href="http://bo-yang.github.com//2011/02/27/plan9-intro-note-3"/>
-   <updated>2011-02-27T00:00:00-05:00</updated>
+   <updated>2011-02-27T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/02/27/plan9-intro-note-3</id>
    <content type="html">&lt;p&gt;&lt;span style=&quot;font-family:&#39;Trebuchet MS&#39;, sans-serif;&quot;&gt;The&lt;br /&gt;
 interface for using environment variables in Plan 9 is a file&lt;br /&gt;
@@ -5863,7 +6131,7 @@ This is what we did to capture screen images .&lt;/span&gt;&lt;/span&gt;&lt;/p&g
  <entry>
    <title>Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(II)</title>
    <link href="http://bo-yang.github.com//2011/02/26/plan9-intro-note-2"/>
-   <updated>2011-02-26T00:00:00-05:00</updated>
+   <updated>2011-02-26T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/02/26/plan9-intro-note-2</id>
    <content type="html">&lt;p&gt;	&amp;lt;!--&lt;br /&gt;
 		@page { margin: 0.79in }&lt;br /&gt;
@@ -5970,7 +6238,7 @@ are contained or required by our object and executable files.&lt;/p&gt;
  <entry>
    <title>Plan9自动获取IP地址</title>
    <link href="http://bo-yang.github.com//2011/02/24/ip-addr-in-plan9"/>
-   <updated>2011-02-24T00:00:00-05:00</updated>
+   <updated>2011-02-24T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/02/24/ip-addr-in-plan9</id>
    <content type="html">&lt;p&gt;Plan 9的Manual和Wiki上面关于网络配置的介绍，都是以server为原型，前提条件是这些server都会有固定的IP地址，集成DHCP、DNS乃至自己的子网。可我的Plan 9是在VirtualBox4.0的虚拟机上装的，Host是Fedora 14，通过家用无线路由器上网，IP地址动态获取，不可能有固定IP和固定的DNS、Gateway等等。因此&lt;a href=&quot;http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html&quot;&gt;http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html&lt;/a&gt;和&lt;a href=&quot;http://plan9.escet.urjc.es/magic/man2html/8/ipconfig&quot;&gt;http://plan9.escet.urjc.es/magic/man2html/8/ipconfig&lt;/a&gt;的方法根本无效。&lt;/p&gt;
 &lt;p&gt;VirtualBox4.0安装Plan9时，由于没有选择正确的网卡，Plan9使用了默认的Am79C970A网卡，而Plan 9自身并没有该网卡的驱动。要使用plan9自带的网卡驱动而无须自己编译内核的方法就是在plan9.ini中更改默认网卡的类型，可以参考&amp;nbsp;&lt;a href=&quot;http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini&quot;&gt;http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini&lt;/a&gt;。plan9.ini存储在9fat中，默认不挂载到fossil，因此需要在Rio的窗口中输入命令&amp;ldquo;&lt;span style=&quot;font-family:mceinline;&quot;&gt;9fat:&lt;/span&gt;&amp;rdquo;挂载9fat，然后&lt;span style=&quot;font-family:mceinline;&quot;&gt;cd /n/9fat/&lt;/span&gt;，编辑plan9.ini，加入一行&amp;ldquo;&lt;span style=&quot;font-family:mceinline;&quot;&gt;ether0=type=igbe&lt;/span&gt;&amp;rdquo;。同时VirtualBox的网卡也要选择NAT --&amp;gt; Intel Pro1000系列。重启Plan9之后，可以通过ip/ipconfig检查网卡是否能正常工作&amp;mdash;&amp;mdash;如果不报错，证明网卡正常。&lt;/p&gt;
@@ -6008,7 +6276,7 @@ are contained or required by our object and executable files.&lt;/p&gt;
  <entry>
    <title>Plan 9安装Go</title>
    <link href="http://bo-yang.github.com//2011/02/21/install-go-inplan9"/>
-   <updated>2011-02-21T00:00:00-05:00</updated>
+   <updated>2011-02-21T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/02/21/install-go-inplan9</id>
    <content type="html">&lt;p&gt;I、安装python和mercurial(hg)&lt;/p&gt;
 &lt;p&gt;首先是在term中输入9fs sources, 然后cd到/n/sources/contrib下，参照Plan 9的&lt;a href=&quot;http://plan9.bell-labs.com/wiki/plan9/contrib_index/index.html&quot;&gt;contrib index&lt;/a&gt;，找到&quot;From fgb&#39;s contrib&quot;的python用户名。&lt;/p&gt;
@@ -6042,7 +6310,7 @@ are contained or required by our object and executable files.&lt;/p&gt;
  <entry>
    <title>Plan 9中使用Abaco</title>
    <link href="http://bo-yang.github.com//2011/02/21/abaco-in-plan9"/>
-   <updated>2011-02-21T00:00:00-05:00</updated>
+   <updated>2011-02-21T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/02/21/abaco-in-plan9</id>
    <content type="html">&lt;p&gt;Abaco是Plan 9的一个非常原始的浏览器，要想使用它，必须首先按照下列步骤：&lt;/p&gt;
 &lt;ol&gt;
@@ -6061,7 +6329,7 @@ are contained or required by our object and executable files.&lt;/p&gt;
  <entry>
    <title>xterm中删除键无法使用</title>
    <link href="http://bo-yang.github.com//2011/02/18/xterm-delete-key"/>
-   <updated>2011-02-18T00:00:00-05:00</updated>
+   <updated>2011-02-18T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/02/18/xterm-delete-key</id>
    <content type="html">&lt;p&gt;一个困扰了我很久得问题：xterm中&amp;lt;backspace&amp;gt;或&amp;lt;delete&amp;gt;键无法删除敲错的字符，只能使用Ctrl+H或者VI删除模式，很不方便。操作系统是Red Hat Enterprise Linux 5.5。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -6647,7 +6915,7 @@ fi
  <entry>
    <title>9vx tutorial: running a cpu server from kfs (RFC)</title>
    <link href="http://bo-yang.github.com//2011/02/16/pvx-tutorial"/>
-   <updated>2011-02-16T00:00:00-05:00</updated>
+   <updated>2011-02-16T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/02/16/pvx-tutorial</id>
    <content type="html">&lt;p&gt;原文：&lt;a href=&quot;http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd&quot;&gt;&amp;nbsp;http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -6742,7 +7010,7 @@ Would you like to ream it (y/n)? y
  <entry>
    <title>Tools for Manipulating Object Files</title>
    <link href="http://bo-yang.github.com//2011/01/19/tools-for-manipulate-object-files"/>
-   <updated>2011-01-19T00:00:00-05:00</updated>
+   <updated>2011-01-19T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/01/19/tools-for-manipulate-object-files</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;There are a number of tools available on Unix systems to help you understand and manipulate object files.&amp;nbsp;In particular, the GNU binutils package is especially helpful and runs on every Unix platform.&lt;/p&gt;
@@ -6771,7 +7039,7 @@ Would you like to ream it (y/n)? y
  <entry>
    <title>Commenting out a range of lines in VIM</title>
    <link href="http://bo-yang.github.com//2011/01/18/multi-line-operations-in-vim"/>
-   <updated>2011-01-18T00:00:00-05:00</updated>
+   <updated>2011-01-18T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/01/18/multi-line-operations-in-vim</id>
    <content type="html">&lt;p&gt;Reference:&amp;nbsp;&lt;a href=&quot;http://vim.wikia.com/wiki/Commenting_out_a_range_of_lines&quot;&gt;http://vim.wikia.com/wiki/Commenting_out_a_range_of_lines&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -6786,7 +7054,7 @@ Would you like to ream it (y/n)? y
  <entry>
    <title>如何查看Ksh Version</title>
    <link href="http://bo-yang.github.com//2011/01/17/ksh-version"/>
-   <updated>2011-01-17T00:00:00-05:00</updated>
+   <updated>2011-01-17T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/01/17/ksh-version</id>
    <content type="html">&lt;ol&gt;
 &lt;li&gt;echo $KSH_VERSION. 若没有输出，&lt;span&gt;echo ${.sh.version}，Ksh93有效&lt;/span&gt;&lt;/li&gt;
@@ -6801,7 +7069,7 @@ Would you like to ream it (y/n)? y
  <entry>
    <title>利用在线词典批量查询英语单词</title>
    <link href="http://bo-yang.github.com//2011/01/02/translate-words-in-batch"/>
-   <updated>2011-01-02T00:00:00-05:00</updated>
+   <updated>2011-01-02T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2011/01/02/translate-words-in-batch</id>
    <content type="html">&lt;p&gt;进来遇到很多英语生词，工具书上给的解释错误百出，而很多在线词典不但可以给出某个单词的解释，而且有大量的示例，因此猜想利用在线词典批量查询这些单词。怎么实现呢？&lt;/p&gt;
 &lt;p&gt;首要问题是如何自动获取某个单词的解释。搜索之后，发现可以用curl实现，如&lt;/p&gt;
@@ -7826,7 +8094,7 @@ close(EXP);&lt;/pre&gt;
  <entry>
    <title>Linux Shared Memory的查看与设置</title>
    <link href="http://bo-yang.github.com//2010/12/31/linux-shared-memory"/>
-   <updated>2010-12-31T00:00:00-05:00</updated>
+   <updated>2010-12-31T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/12/31/linux-shared-memory</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;h1 class=&quot;entry-title&quot;&gt;1.&amp;nbsp;&lt;a href=&quot;http://www.cyberciti.biz/faq/linux-check-memory-usage/&quot;&gt;Linux Check Memory Usage&lt;/a&gt;&lt;/h1&gt;
@@ -8125,7 +8393,7 @@ sysctl -w kern.sysv.shmall=131072
  <entry>
    <title>Ksh的几点小技巧</title>
    <link href="http://bo-yang.github.com//2010/12/02/kshell-tips"/>
-   <updated>2010-12-02T00:00:00-05:00</updated>
+   <updated>2010-12-02T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/12/02/kshell-tips</id>
    <content type="html">&lt;ol&gt;
 &lt;li&gt;在一个函数(function)中，如果不希望局部变量影响到全局变量或环境变量，可以用typeset来定义。&lt;/li&gt;
@@ -8166,7 +8434,7 @@ shift OPTIND-1&lt;/pre&gt;
  <entry>
    <title>Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(I)</title>
    <link href="http://bo-yang.github.com//2010/11/28/plan9-intro-note-1"/>
-   <updated>2010-11-28T00:00:00-05:00</updated>
+   <updated>2010-11-28T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/11/28/plan9-intro-note-1</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;h3 id=&quot;zw-1290949398860sDJ1ah&quot;&gt;&lt;span id=&quot;zw-1290949398861ePu1_6&quot;&gt;1. Loaded Programs&lt;/span&gt;&lt;/h3&gt;
@@ -8328,7 +8596,7 @@ void main()
  <entry>
    <title>Plan 9安装初体验</title>
    <link href="http://bo-yang.github.com//2010/11/22/install-plan9"/>
-   <updated>2010-11-22T00:00:00-05:00</updated>
+   <updated>2010-11-22T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/11/22/install-plan9</id>
    <content type="html">&lt;p&gt;不知道什么是Plan 9? 请参见&lt;a href=&quot;http://plan9.bell-labs.com/plan9/about.html&quot;&gt;http://plan9.bell-labs.com/plan9/about.html&lt;/a&gt;&amp;nbsp;和&amp;nbsp;&lt;a href=&quot;http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs&quot;&gt;http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -8347,7 +8615,7 @@ void main()
  <entry>
    <title>Your browser will not accept this data because of its Content-Encoding</title>
    <link href="http://bo-yang.github.com//2010/11/22/Your-browser-will-not-accept-this-data-because-of-its-Content-Encoding"/>
-   <updated>2010-11-22T00:00:00-05:00</updated>
+   <updated>2010-11-22T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/11/22/Your-browser-will-not-accept-this-data-because-of-its-Content-Encoding</id>
    <content type="html">&lt;p&gt;今天打算在某个网站下载一个.bz2的文件时，遇到这样一个问题：&lt;/p&gt;
 &lt;p&gt;&lt;span&gt;Your browser will not accept this data, /mirror.9grid.fr/plan9-1290391203/plan9.iso.bz2, because of its Content-Encoding.&lt;/span&gt;&lt;span&gt;&lt;br /&gt;&lt;/span&gt;&lt;span&gt;Its Content-Type is application/octet-stream, and Content-Encoding is bzip2.&lt;/span&gt;&lt;span&gt;&lt;br /&gt;&lt;/span&gt;&lt;span&gt;Your browser accepts Content-Type: */*, image/png, text/plain, text/html, application/xhtml+xml, application/xml.&lt;/span&gt;&lt;span&gt;&lt;br /&gt;&lt;/span&gt;&lt;span&gt;Your browser accepts Content-Encoding: sdch, deflate, gzip.&lt;/span&gt;&lt;/p&gt;
@@ -8372,7 +8640,7 @@ void main()
  <entry>
    <title>Debugging Perl</title>
    <link href="http://bo-yang.github.com//2010/11/16/debugging-perl"/>
-   <updated>2010-11-16T00:00:00-05:00</updated>
+   <updated>2010-11-16T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/11/16/debugging-perl</id>
    <content type="html">&lt;p&gt;&lt;strong&gt;&amp;nbsp;How to Debug Perl Library and Scripts?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -8655,7 +8923,7 @@ Perl&lt;/strong&gt;&lt;/em&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;fon
  <entry>
    <title>升级Fedora 12到最新的Fedora 14</title>
    <link href="http://bo-yang.github.com//2010/11/05/update-fedora12-to-fedora14"/>
-   <updated>2010-11-05T00:00:00-04:00</updated>
+   <updated>2010-11-05T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/11/05/update-fedora12-to-fedora14</id>
    <content type="html">&lt;p&gt;Fedora 14于11月2号正式发布了，而我的Fedora 12已经用了1年多了，尽管仍然十分稳定，但还是想着赶赶潮流。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -8683,7 +8951,7 @@ Perl&lt;/strong&gt;&lt;/em&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;fon
  <entry>
    <title>国外网友对我天河-1A成为世界最快计算机的评论</title>
    <link href="http://bo-yang.github.com//2010/10/29/tianhe-1a"/>
-   <updated>2010-10-29T00:00:00-04:00</updated>
+   <updated>2010-10-29T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/10/29/tianhe-1a</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;
@@ -8730,7 +8998,7 @@ Perl&lt;/strong&gt;&lt;/em&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;fon
  <entry>
    <title>Chrome 8 进程的疑惑</title>
    <link href="http://bo-yang.github.com//2010/10/15/chrome8-processes"/>
-   <updated>2010-10-15T00:00:00-04:00</updated>
+   <updated>2010-10-15T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/10/15/chrome8-processes</id>
    <content type="html">&lt;p&gt;最近一直习惯用Chrome打开多个网页，时间一长，就发现硬盘一直在高速旋转。一开始以为是公司的监控软件的原因，就忍了。知道今天早上，电脑持续很长时间的没反应之后，弹出对话框说某个plug-in一直在运行&amp;hellip;&amp;hellip;当时只有Chrome浏览器在工作，这个plugin只可能是Chrome的&amp;hellip;&amp;hellip; 关掉chrome后，硬盘还是高速旋转，打开任务管理器，发现还是有很多chrome进程在运行，很明显这些是跑飞了的chrome进程了。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -8763,7 +9031,7 @@ Perl&lt;/strong&gt;&lt;/em&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;fon
  <entry>
    <title>手机引发的思维定势</title>
    <link href="http://bo-yang.github.com//2010/09/28/sick-in-phone"/>
-   <updated>2010-09-28T00:00:00-04:00</updated>
+   <updated>2010-09-28T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/09/28/sick-in-phone</id>
    <content type="html">&lt;div&gt;
 &lt;p id=&quot;zw-12b55e53d82WN4si15bea0&quot;&gt;早晨你一睁眼，发现早已天光大亮，不禁疑惑为什么手机的闹钟没有响。爬起来打开手机一看，满屏八糟&lt;span id=&quot;zw-12b56bc5cc4JOP35J15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bc5c44td-05U15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bc5bc56RLN-15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bc5b1c2zjOFn15bea0&quot;&gt;​&lt;/span&gt;的英文字母&amp;mdash;&amp;mdash;Oh, my god&lt;span id=&quot;zw-12b56bca6ebdi8_mo15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bca5dbFHNez15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bca49bDmE0mg15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bca3cbUr433S15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bca22b5msouI15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bca12bDtMNIv15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bc9fccz4uS7i15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bc9f1b86HFJf15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bc923bsvbK7515bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bc913beknohb15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bc8e2bQsDmYr15bea0&quot;&gt;​&lt;/span&gt;&lt;span id=&quot;zw-12b56bc8d3c_T9wHh15bea0&quot;&gt;​&lt;/span&gt;，你的手机怎么了?!凭着自己几年程序员的经验，匆匆瞥一眼最后一行的提示，按下&amp;lt;Home&amp;gt;键，满屏的英文字母变成了一个巨大的惊叹号，然后就无论你怎么操作都不再有反应了&amp;hellip;&amp;hellip;病毒？系统崩溃？还是硬件错误？&lt;/p&gt;
@@ -8784,7 +9052,7 @@ Perl&lt;/strong&gt;&lt;/em&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;fon
  <entry>
    <title>Ksh中的$*和$@</title>
    <link href="http://bo-yang.github.com//2010/09/21/special-var-in-ksh"/>
-   <updated>2010-09-21T00:00:00-04:00</updated>
+   <updated>2010-09-21T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/09/21/special-var-in-ksh</id>
    <content type="html">&lt;p&gt;The meaning of $* and $@ is identical when not quoted or when used as a&lt;br /&gt;
 parameter assignment value or as a file name.&lt;/p&gt;
@@ -8797,7 +9065,7 @@ parameter assignment value or as a file name.&lt;/p&gt;
  <entry>
    <title>How to Clone VMs in ESXi</title>
    <link href="http://bo-yang.github.com//2010/09/14/clone-vm-in-ESXi"/>
-   <updated>2010-09-14T00:00:00-04:00</updated>
+   <updated>2010-09-14T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/09/14/clone-vm-in-ESXi</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot;&gt;&lt;span lang=&quot;EN-US&quot;&gt;1. Create a new VM (clone2) without a disk equipped.&lt;/span&gt;&lt;/p&gt;
@@ -8825,7 +9093,7 @@ existing virtual disk&amp;rdquo; -&amp;gt; find the &amp;ldquo;disk1.vmdk&amp;rd
  <entry>
    <title>Linux下如何删除已安装的realplayer</title>
    <link href="http://bo-yang.github.com//2010/09/03/delete-realplayer"/>
-   <updated>2010-09-03T00:00:00-04:00</updated>
+   <updated>2010-09-03T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/09/03/delete-realplayer</id>
    <content type="html">&lt;p&gt;由于realplayer在Linux下只能通过realplay*.bin来安装，装好后不能通过yum或rpm卸载。现在的realplayer已然成为名副其实的垃圾软件，Linux下尤其如此。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -8843,7 +9111,7 @@ rm -rf $realplayer
  <entry>
    <title>Splashtop Remote——让你在iPad上也能用Windows下的应用</title>
    <link href="http://bo-yang.github.com//2010/09/02/splashtop-remote"/>
-   <updated>2010-09-02T00:00:00-04:00</updated>
+   <updated>2010-09-02T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/09/02/splashtop-remote</id>
    <content type="html">&lt;p&gt;今天看到这样一篇博文：&lt;a href=&quot;http://blog.sina.com.cn/s/blog_679720260100ky5a.html?tj=1&quot;&gt;在iPad上也能用Windows下的应用？我能！&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -8871,7 +9139,7 @@ rm -rf $realplayer
  <entry>
    <title>Tcl/Expect中利用exec调用管道"|"和awk的注意事项</title>
    <link href="http://bo-yang.github.com//2010/08/03/use-pipe-in-expect"/>
-   <updated>2010-08-03T00:00:00-04:00</updated>
+   <updated>2010-08-03T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/08/03/use-pipe-in-expect</id>
    <content type="html">&lt;p&gt;Tcl/Expect中利用exec调用稍微复杂的shell命令时，经常会遇到一些小问题，常见的就是pipeline(|)和awk。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -8903,7 +9171,7 @@ rm -rf $realplayer
  <entry>
    <title>expect_out(buffer)中包含send的数据</title>
    <link href="http://bo-yang.github.com//2010/07/22/expect-send-data-in-expect_out"/>
-   <updated>2010-07-22T00:00:00-04:00</updated>
+   <updated>2010-07-22T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/07/22/expect-send-data-in-expect_out</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;
@@ -9003,7 +9271,7 @@ expect {
  <entry>
    <title>Here Document</title>
    <link href="http://bo-yang.github.com//2010/07/20/here-document"/>
-   <updated>2010-07-20T00:00:00-04:00</updated>
+   <updated>2010-07-20T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/07/20/here-document</id>
    <content type="html">&lt;/p&gt;
 &lt;p id=&quot;zw-129ed8c28af2dvqtt15bea0&quot; class=&quot;MsoNormal&quot;&gt;
@@ -9027,7 +9295,7 @@ expect {
  <entry>
    <title>浅析Apple iPhone4天线问题的危机公关</title>
    <link href="http://bo-yang.github.com//2010/07/18/iphone4-antena-gate"/>
-   <updated>2010-07-18T00:00:00-04:00</updated>
+   <updated>2010-07-18T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/07/18/iphone4-antena-gate</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;
@@ -9073,7 +9341,7 @@ expect {
  <entry>
    <title>awk正则表达式中调用ksh变量</title>
    <link href="http://bo-yang.github.com//2010/07/17/use-shell-var-in-awk"/>
-   <updated>2010-07-17T00:00:00-04:00</updated>
+   <updated>2010-07-17T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/07/17/use-shell-var-in-awk</id>
    <content type="html">&lt;/p&gt;
 &lt;p&gt;如果ksh中定义了变量pcname,而在嵌入ksh中的awk程序中又要使用这个环境变量，并且用它在正则表达式中，该如何用它呢？&lt;/p&gt;
@@ -9138,7 +9406,7 @@ AA BB CC&lt;/pre&gt;
  <entry>
    <title>Korn Shell中IFS的妙用</title>
    <link href="http://bo-yang.github.com//2010/07/17/ifs-in-kshell"/>
-   <updated>2010-07-17T00:00:00-04:00</updated>
+   <updated>2010-07-17T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/07/17/ifs-in-kshell</id>
    <content type="html">&lt;p&gt;IFS是internal field separator的缩写，shell的特殊环境变量。ksh根据IFS存储的值，可以是空格、tab、换行符或者其他自定义符号，来解析输入和输出的变量值。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -9211,7 +9479,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1&lt;/pre&gt;
  <entry>
    <title>Apache & Subversion配置</title>
    <link href="http://bo-yang.github.com//2010/06/24/apache-subversion-config"/>
-   <updated>2010-06-24T00:00:00-04:00</updated>
+   <updated>2010-06-24T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/06/24/apache-subversion-config</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;h2&gt;I.&amp;nbsp;&lt;span style=&quot;color:#000000;&quot;&gt;&lt;a href=&quot;http://xuebingnanmm.javaeye.com/blog/629810&quot;&gt;CentOS Apache配置详解&lt;/a&gt;&lt;/span&gt;&lt;/h2&gt;
@@ -9256,7 +9524,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1&lt;/pre&gt;
  <entry>
    <title>利用Excel VBA处理文档</title>
    <link href="http://bo-yang.github.com//2010/06/13/batch-process-with-excel-vba"/>
-   <updated>2010-06-13T00:00:00-04:00</updated>
+   <updated>2010-06-13T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/06/13/batch-process-with-excel-vba</id>
    <content type="html">&lt;p&gt;遇到如下格式的一篇WORD文档，格式混乱，不适合打印：&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -9277,7 +9545,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1&lt;/pre&gt;
  <entry>
    <title>Find CPU Speed and Memory Size on Solaris</title>
    <link href="http://bo-yang.github.com//2010/06/11/cpu-speed-and-memory-size-in-solaris"/>
-   <updated>2010-06-11T00:00:00-04:00</updated>
+   <updated>2010-06-11T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/06/11/cpu-speed-and-memory-size-in-solaris</id>
    <content type="html">&lt;p&gt;&lt;h2&gt;Find CPU Speed and Memory Size on Solaris&lt;/h2&gt;
 &lt;div class=&quot;entry&quot;&gt;
@@ -9297,7 +9565,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1&lt;/pre&gt;
  <entry>
    <title>Fixing The Error: DB_RUNRECOVERY: Fatal error, run database recovery</title>
    <link href="http://bo-yang.github.com//2010/05/22/how-to-fix-DB_RUNRECOVERY"/>
-   <updated>2010-05-22T00:00:00-04:00</updated>
+   <updated>2010-05-22T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/05/22/how-to-fix-DB_RUNRECOVERY</id>
    <content type="html">&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;If you get a message similar to this:&lt;/strong&gt;&lt;/p&gt;
@@ -9312,7 +9580,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1&lt;/pre&gt;
  <entry>
    <title>绕过“Enter password for default keyring to unlock”的方法</title>
    <link href="http://bo-yang.github.com//2010/04/21/Enter-password-for-default-keyring-to-unlock"/>
-   <updated>2010-04-21T00:00:00-04:00</updated>
+   <updated>2010-04-21T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2010/04/21/Enter-password-for-default-keyring-to-unlock</id>
    <content type="html">&lt;p&gt;当你在Gnome下使用无线网络时，很有可能会遇到如下窗口：&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -9330,7 +9598,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1&lt;/pre&gt;
  <entry>
    <title>Sprint HTC Hero(Hero 200)获取ROOT权限</title>
    <link href="http://bo-yang.github.com//2010/03/05/root-hero-200"/>
-   <updated>2010-03-05T00:00:00-05:00</updated>
+   <updated>2010-03-05T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/03/05/root-hero-200</id>
    <content type="html">&lt;p&gt;I. 开始之前你需要完成的：&lt;/p&gt;
 &lt;div class=&quot;comment_count&quot;&gt;你需要确认你能通过ADB来访问你的HERO。如果不行的话就先看看如何安装HERO的驱动（这个方法转自&lt;span style=&quot;text-decoration:underline;&quot;&gt;&lt;strong&gt;draculading&lt;/strong&gt;&lt;/span&gt;的帖子&lt;a href=&quot;http://www.hiapk.com/bbs/thread-13053-1-1.html&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;t_tag&quot;&gt;HTC&lt;/span&gt;&amp;nbsp;HERO 取得&lt;span class=&quot;t_tag&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;t_tag&quot;&gt;权限&lt;/span&gt;完全傻瓜&lt;span class=&quot;t_tag&quot;&gt;教程&lt;/span&gt;，适合&lt;span class=&quot;t_tag&quot;&gt;新人&lt;/span&gt;。。。&lt;/a&gt;其中安装驱动部分。）&lt;/div&gt;
@@ -9403,7 +9671,7 @@ chmod 4775 su（回车）&lt;/pre&gt;
  <entry>
    <title>cpio解压参数</title>
    <link href="http://bo-yang.github.com//2010/03/03/cpio-params"/>
-   <updated>2010-03-03T00:00:00-05:00</updated>
+   <updated>2010-03-03T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/03/03/cpio-params</id>
    <content type="html">&lt;p&gt;解压cpio文件&amp;nbsp;&lt;br /&gt;cpio -idmv &amp;lt; filename.cpio&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;同样可以解压img文件：&lt;br /&gt;cpio -idmv &amp;lt; filename.img&lt;/p&gt;
@@ -9416,7 +9684,7 @@ chmod 4775 su（回车）&lt;/pre&gt;
  <entry>
    <title>删除Linux版Adobe Reader的方法</title>
    <link href="http://bo-yang.github.com//2010/03/02/delete-adobe-from-linux"/>
-   <updated>2010-03-02T00:00:00-05:00</updated>
+   <updated>2010-03-02T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/03/02/delete-adobe-from-linux</id>
    <content type="html">&lt;p&gt;Linux版的Adobe Reader的启动速度太慢了，每次打开pdf文档的时候都不得不通过右键来选择使用Fedora自带的阅读器，有点麻烦，因此打算把它删除。我的Adobe Reader是通过AdobeReader.bin来安装的，尝试了yum remove acroread和rpm -e acroread都无效，很是郁闷。连Add/Remove Software都找不到该package，因此也不能通过这种方法删除了。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -9429,7 +9697,7 @@ chmod 4775 su（回车）&lt;/pre&gt;
  <entry>
    <title>List of Solaris commands for process management</title>
    <link href="http://bo-yang.github.com//2010/01/12/fedora-commands-for-process-management"/>
-   <updated>2010-01-12T00:00:00-05:00</updated>
+   <updated>2010-01-12T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2010/01/12/fedora-commands-for-process-management</id>
    <content type="html">&lt;p&gt;原文地址：&lt;a href=&quot;http://it.toolbox.com/wiki/index.php/List_of_Solaris_commands_for_process_management&quot;&gt;http://it.toolbox.com/wiki/index.php/List_of_Solaris_commands_for_process_management&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -9984,7 +10252,7 @@ _exit(0)
  <entry>
    <title>Fedora 12升级Chromium遇到的问题及解决方法</title>
    <link href="http://bo-yang.github.com//2009/12/23/update-chrome-in-fedora12"/>
-   <updated>2009-12-23T00:00:00-05:00</updated>
+   <updated>2009-12-23T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/12/23/update-chrome-in-fedora12</id>
    <content type="html">&lt;p&gt;自打装好Fedora 12之后就发现chromium不能用rpm安装了，安装时总是缺这少那，很是费劲，于是按照网上的方法，在/etc/yum.repos.d/下创建一个chromium.repo，内容如下：&lt;/p&gt;
 &lt;p&gt;
@@ -10089,7 +10357,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
  <entry>
    <title>Fedora 12安装Android SDK</title>
    <link href="http://bo-yang.github.com//2009/11/29/install-android-sdk-in-fedora"/>
-   <updated>2009-11-29T00:00:00-05:00</updated>
+   <updated>2009-11-29T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/11/29/install-android-sdk-in-fedora</id>
    <content type="html">&lt;p&gt;
     &amp;nbsp;&lt;/p&gt;
@@ -10157,7 +10425,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
  <entry>
    <title>Fedora升级/安装Chromium(Chrome)总结</title>
    <link href="http://bo-yang.github.com//2009/10/30/install-chrome-in-fedora"/>
-   <updated>2009-10-30T00:00:00-04:00</updated>
+   <updated>2009-10-30T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/10/30/install-chrome-in-fedora</id>
    <content type="html">&lt;p&gt;&amp;nbsp;尽管Linux版Chrome浏览器还没有正式发布，Fedora早已官方支持Google的Chromium了。Fedora社区会定期build最新的稳定版Chromium，可以在&lt;a href=&quot;http://spot.fedorapeople.org/chromium/&quot;&gt;http://spot.fedorapeople.org/chromium/&lt;/a&gt;下载到。当然也可以下载Google 每天build的二进制版Chromium，不过就是这些都不一定稳定：&lt;a href=&quot;http://build.chromium.org/buildbot/snapshots/&quot;&gt;http://build.chromium.org/buildbot/snapshots/&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -10178,7 +10446,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
  <entry>
    <title>【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？</title>
    <link href="http://bo-yang.github.com//2009/10/27/build-c-library-in-linux"/>
-   <updated>2009-10-27T00:00:00-04:00</updated>
+   <updated>2009-10-27T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/10/27/build-c-library-in-linux</id>
    <content type="html">&lt;p&gt;本文根据&lt;a href=&quot;http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487&quot;&gt;http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487&lt;/a&gt;的回复总结而成。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -10201,7 +10469,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
  <entry>
    <title>Shell中直接调用perl命令</title>
    <link href="http://bo-yang.github.com//2009/10/22/call-perl-in-shell"/>
-   <updated>2009-10-22T00:00:00-04:00</updated>
+   <updated>2009-10-22T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/10/22/call-perl-in-shell</id>
    <content type="html">&lt;p&gt;The &amp;nbsp;&lt;em&gt;-e&lt;/em&gt; option is handy for quick Perl operations&lt;br /&gt;
 from the command line. Want to change all instances of &quot;oldstring&quot; in&lt;br /&gt;
@@ -10384,7 +10652,7 @@ for generation of Perl executables &lt;/td&gt;
  <entry>
    <title>Tcl中调用Awk命令</title>
    <link href="http://bo-yang.github.com//2009/10/17/tcl-call-awk-command"/>
-   <updated>2009-10-17T00:00:00-04:00</updated>
+   <updated>2009-10-17T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/10/17/tcl-call-awk-command</id>
    <content type="html">&lt;p&gt;由于&#39; &#39;不是Tcl所能识别的操作符，因此在Tcl中使用Awk命令时不能用exec awk &#39;/pattern/ {do_something}&#39; file这种命令，即使在&#39;&#39;前面加上/也不行。&#39; &amp;rsquo; 可以被Bource Shell和其它shell识别，但是由于exec awk命令是在Tcl中解释的。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -10406,7 +10674,7 @@ for generation of Perl executables &lt;/td&gt;
  <entry>
    <title>cronjob & crontab</title>
    <link href="http://bo-yang.github.com//2009/09/24/cronjob-crontab"/>
-   <updated>2009-09-24T00:00:00-04:00</updated>
+   <updated>2009-09-24T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/09/24/cronjob-crontab</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;h3&gt;&lt;span style=&quot;font-weight:normal;&quot;&gt;今天要设置一个cron job，查了一些资料，发现了很好的一篇文章，见下文，原文参见：&lt;a href=&quot;http://www.aota.net/Script_Installation_Tips/cronhelp.php4&quot;&gt;http://www.aota.net/Script_Installation_Tips/cronhelp.php4&lt;/a&gt;。&lt;/span&gt;&lt;/h3&gt;
@@ -10562,7 +10830,7 @@ The&amp;nbsp;&lt;em&gt;crontab -r&lt;/em&gt;&amp;nbsp;will deactivate the&amp;nb
  <entry>
    <title>Fedora安装Expect</title>
    <link href="http://bo-yang.github.com//2009/09/19/install-expect-in-fedora"/>
-   <updated>2009-09-19T00:00:00-04:00</updated>
+   <updated>2009-09-19T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/09/19/install-expect-in-fedora</id>
    <content type="html">&lt;p&gt;费了很大力气才下到Expect的源代码，然后参考了Expect的INSTALL说明文件，还需要Tcl/Tk的源代码支持，于是又下载了Tcl/Tk的源代码，把它们都给放到/usr/local/src下面。先编译安装tcl和tk，完了之后进入expect的文件夹下面，./configure，结果报错，说找不到tclInt.h。于是在tcl的源文件的文件夹下面搜索tclInt.h，发现该文件确实存在，在generic下面。又参考了一下Expect的INSTALL说明文件，才知道可以加--withtclincluse=选项，于是重新configure：&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -10587,7 +10855,7 @@ make: *** [exp_main_exp.o] Error 1&lt;/p&gt;
  <entry>
    <title>solaris下查看进程的cpu占用率</title>
    <link href="http://bo-yang.github.com//2009/09/15/solaris-cpu-usage"/>
-   <updated>2009-09-15T00:00:00-04:00</updated>
+   <updated>2009-09-15T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/09/15/solaris-cpu-usage</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;h3&gt;solaris下查看某进程的资源占用率及其它&lt;/h3&gt;
@@ -10618,7 +10886,7 @@ make: *** [exp_main_exp.o] Error 1&lt;/p&gt;
  <entry>
    <title>Fedora11声卡不能外放</title>
    <link href="http://bo-yang.github.com//2009/09/03/fedora11-sound-card"/>
-   <updated>2009-09-03T00:00:00-04:00</updated>
+   <updated>2009-09-03T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/09/03/fedora11-sound-card</id>
    <content type="html">&lt;/p&gt;
 &lt;p&gt;这些天一直苦恼于在Thinkpad R61上新装的Fedora声音无法外放，上网搜索了各种各样的方法，结果全都未果。&lt;/p&gt;
@@ -10671,7 +10939,7 @@ make: *** [exp_main_exp.o] Error 1&lt;/p&gt;
  <entry>
    <title>Linux内核编译</title>
    <link href="http://bo-yang.github.com//2009/09/02/build-linux-kernel"/>
-   <updated>2009-09-02T00:00:00-04:00</updated>
+   <updated>2009-09-02T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/09/02/build-linux-kernel</id>
    <content type="html">&lt;br /&gt;
 &lt;table style=&quot;width:100%;&quot; border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
@@ -10810,7 +11078,7 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）&lt;/div&g
  <entry>
    <title>TCL判断条件</title>
    <link href="http://bo-yang.github.com//2009/08/28/tcl-condition"/>
-   <updated>2009-08-28T00:00:00-04:00</updated>
+   <updated>2009-08-28T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/08/28/tcl-condition</id>
    <content type="html">&lt;p&gt;编写TCL代码时遇要写一个if判断条件，很简单的一个语句，结果却费了很大力气才搞定。要判断的是，如果执行info exists成功而且某全局数组C的某个成员大于0，正确的语句为：&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -10834,7 +11102,7 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）&lt;/div&g
  <entry>
    <title>UNIX下大小为1byte的文件——都是换行符(EOL)惹得祸</title>
    <link href="http://bo-yang.github.com//2009/08/26/1byte-file-in-unix"/>
-   <updated>2009-08-26T00:00:00-04:00</updated>
+   <updated>2009-08-26T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/08/26/1byte-file-in-unix</id>
    <content type="html">&lt;p&gt;某同事用tcl和ksh写了一个程序，利用进行某项操作，如有错误就将错误信息写入某个文件中，写入方法是 2&amp;gt;$stderr，然后判断该文件的大小，如果大于0，则认为有错误发生，报错。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -10854,7 +11122,7 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）&lt;/div&g
  <entry>
    <title>大数运算</title>
    <link href="http://bo-yang.github.com//2009/08/24/big-num-operations"/>
-   <updated>2009-08-24T00:00:00-04:00</updated>
+   <updated>2009-08-24T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/08/24/big-num-operations</id>
    <content type="html">&lt;p&gt;下面这段程序包含了大数的加、减、乘运算的代码，除法运算尚在研究中。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -11119,7 +11387,7 @@ int main()
  <entry>
    <title>Linux下安装aMule</title>
    <link href="http://bo-yang.github.com//2009/08/19/install-amule-in-linux"/>
-   <updated>2009-08-19T00:00:00-04:00</updated>
+   <updated>2009-08-19T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/08/19/install-amule-in-linux</id>
    <content type="html">&lt;p&gt;今晚打算在Fedora 10下安装aMule，以便电驴下载。本打算yum安装，结果发现无法yum安装，于是只好下载了aMule的源代码（无Linux下的二进制安装文件）。解压之后，./configure，却出现了&amp;quot;wxWindows&amp;quot;的错误。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -11156,7 +11424,7 @@ I) ldconfig&lt;/p&gt;
  <entry>
    <title>Fedora 10 MP3 Support</title>
    <link href="http://bo-yang.github.com//2009/08/09/fedora-10-mp3-support"/>
-   <updated>2009-08-09T00:00:00-04:00</updated>
+   <updated>2009-08-09T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/08/09/fedora-10-mp3-support</id>
    <content type="html">&lt;p&gt;&lt;a title=&quot;Fedora 10 MP3 Support&quot;&gt;&lt;br /&gt;
 &lt;/a&gt;&lt;/p&gt;
@@ -11204,7 +11472,7 @@ I) ldconfig&lt;/p&gt;
  <entry>
    <title>车·行·记</title>
    <link href="http://bo-yang.github.com//2009/07/27/trip-in-us"/>
-   <updated>2009-07-27T00:00:00-04:00</updated>
+   <updated>2009-07-27T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/07/27/trip-in-us</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;
@@ -11243,7 +11511,7 @@ I) ldconfig&lt;/p&gt;
  <entry>
    <title>谷歌中国的“色情门“</title>
    <link href="http://bo-yang.github.com//2009/06/19/google-china-in-porn-gate"/>
-   <updated>2009-06-19T00:00:00-04:00</updated>
+   <updated>2009-06-19T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/06/19/google-china-in-porn-gate</id>
    <content type="html">&lt;p&gt;这一次央视的屠刀又批向了谷歌中国。对于央视乃至Z*F最近一连串的所谓过滤或屏蔽对儿童不良信息的举措我实在是觉得有矫枉过正之嫌。尽管我一直认为谷歌中国和美国的Google不在同一个数量级，但还是对他们的&amp;rdquo;搜索自动补全&amp;ldquo;进行了一些比较：&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -11268,7 +11536,7 @@ I) ldconfig&lt;/p&gt;
  <entry>
    <title>在UNIX/Linux下查看某个进程的详细参数</title>
    <link href="http://bo-yang.github.com//2009/05/27/check-process-parameters-in-unix"/>
-   <updated>2009-05-27T00:00:00-04:00</updated>
+   <updated>2009-05-27T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/05/27/check-process-parameters-in-unix</id>
    <content type="html">&lt;p&gt;如果要在UNIX/Linux下查看某个进程的详细参数， 可以用命令：&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -11283,7 +11551,7 @@ I) ldconfig&lt;/p&gt;
  <entry>
    <title>在美国体验猪流感</title>
    <link href="http://bo-yang.github.com//2009/05/15/swine-flew-in-us"/>
-   <updated>2009-05-15T00:00:00-04:00</updated>
+   <updated>2009-05-15T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/05/15/swine-flew-in-us</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;&lt;span style=&quot;font-size:x-small;&quot;&gt;&lt;br /&gt;
@@ -11304,7 +11572,7 @@ I) ldconfig&lt;/p&gt;
  <entry>
    <title>近期遇到的几个Solaris 10 的问题</title>
    <link href="http://bo-yang.github.com//2009/04/30/several-solaris-10-problems"/>
-   <updated>2009-04-30T00:00:00-04:00</updated>
+   <updated>2009-04-30T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/04/30/several-solaris-10-problems</id>
    <content type="html">&lt;p&gt;公司正在逐渐把server升级为Solaris 10， 对于新平台我非常陌生（当然了，对于以前的Solaris 9也不怎么懂），遇到了几个值得记录下来的问题。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -11327,7 +11595,7 @@ I) ldconfig&lt;/p&gt;
  <entry>
    <title>破解“读心术”网页</title>
    <link href="http://bo-yang.github.com//2009/04/12/crack-thought-reading-webpage"/>
-   <updated>2009-04-12T00:00:00-04:00</updated>
+   <updated>2009-04-12T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/04/12/crack-thought-reading-webpage</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;
@@ -11372,7 +11640,7 @@ function showAnswer() {
  <entry>
    <title>[转]在C语言中使用正则表达式</title>
    <link href="http://bo-yang.github.com//2009/04/11/regular-expression"/>
-   <updated>2009-04-11T00:00:00-04:00</updated>
+   <updated>2009-04-11T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/04/11/regular-expression</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;&lt;span&gt;&lt;/p&gt;
@@ -11466,7 +11734,7 @@ int main(int argc, char** argv)
  <entry>
    <title>TCL/Tk一句话笔记（一）</title>
    <link href="http://bo-yang.github.com//2009/04/05/tcl-tk-one-line-1"/>
-   <updated>2009-04-05T00:00:00-04:00</updated>
+   <updated>2009-04-05T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/04/05/tcl-tk-one-line-1</id>
    <content type="html">&lt;p&gt;&lt;div&gt;&lt;span&gt;&lt;/p&gt;
 &lt;div&gt;
@@ -11545,7 +11813,7 @@ opposed to its value, into a procedure.&lt;/span&gt;&lt;/pre&gt;
  <entry>
    <title>用PERL处理二进制标量</title>
    <link href="http://bo-yang.github.com//2009/03/12/perl-binary-scalar"/>
-   <updated>2009-03-12T00:00:00-04:00</updated>
+   <updated>2009-03-12T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2009/03/12/perl-binary-scalar</id>
    <content type="html">&lt;p&gt;&amp;nbsp;PERL Handling Binary Scalar&lt;/p&gt;
 &lt;div&gt;
@@ -11605,7 +11873,7 @@ opposed to its value, into a procedure.&lt;/span&gt;&lt;/pre&gt;
  <entry>
    <title>PERL打印收到的Socket消息</title>
    <link href="http://bo-yang.github.com//2009/03/05/print-socket-msg"/>
-   <updated>2009-03-05T00:00:00-05:00</updated>
+   <updated>2009-03-05T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/03/05/print-socket-msg</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;
@@ -11669,7 +11937,7 @@ sub DumpMsg {
  <entry>
    <title>Perl数值转换</title>
    <link href="http://bo-yang.github.com//2009/03/05/perl-data-type-cast"/>
-   <updated>2009-03-05T00:00:00-05:00</updated>
+   <updated>2009-03-05T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/03/05/perl-data-type-cast</id>
    <content type="html">&lt;/p&gt;
 &lt;p&gt;As always with Perl there is more than one way to do it. Below are a few examples of approaches to making common conversions between number representations. This is intended to be representational rather than exhaustive.&lt;/p&gt;
@@ -12105,7 +12373,7 @@ sub DumpMsg {
  <entry>
    <title>UNIX Commands Used to Debug</title>
    <link href="http://bo-yang.github.com//2009/03/03/unix-commands-for-debug"/>
-   <updated>2009-03-03T00:00:00-05:00</updated>
+   <updated>2009-03-03T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/03/03/unix-commands-for-debug</id>
    <content type="html">&lt;div&gt;
 &lt;h1&gt;UNIX Commands Used to Debug&lt;/h1&gt;
@@ -12356,7 +12624,7 @@ sub DumpMsg {
  <entry>
    <title>Apple Store的错误</title>
    <link href="http://bo-yang.github.com//2009/03/03/an-error-made-by-apple-store"/>
-   <updated>2009-03-03T00:00:00-05:00</updated>
+   <updated>2009-03-03T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/03/03/an-error-made-by-apple-store</id>
    <content type="html">&lt;p&gt;今天在Apple4us上看到Apple将于今晚发布新的产品，并且Apple Store的网页正在升级，已经无法正常显示产品信息，于是就随便打开看了一看。想不到不看则以，一看还真让我深感意外: Apple竟然做起了张冠李戴、分裂我中华国土的勾当！&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -12387,7 +12655,7 @@ Best wishes!&lt;/div&gt;
  <entry>
    <title>网页取词并调用Google Translate</title>
    <link href="http://bo-yang.github.com//2009/02/17/call-google-translate"/>
-   <updated>2009-02-17T00:00:00-05:00</updated>
+   <updated>2009-02-17T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/02/17/call-google-translate</id>
    <content type="html">&lt;p&gt;1. translate.html&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
@@ -12533,7 +12801,7 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src=&quot;http://graphics8.ny
  <entry>
    <title>Google老矣，能不宕否？</title>
    <link href="http://bo-yang.github.com//2009/02/10/google-out-of-service"/>
-   <updated>2009-02-10T00:00:00-05:00</updated>
+   <updated>2009-02-10T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/02/10/google-out-of-service</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&lt;/p&gt;
 &lt;div&gt;
@@ -12566,7 +12834,7 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src=&quot;http://graphics8.ny
  <entry>
    <title>乌龙记</title>
    <link href="http://bo-yang.github.com//2009/02/07/wulongji"/>
-   <updated>2009-02-07T00:00:00-05:00</updated>
+   <updated>2009-02-07T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/02/07/wulongji</id>
    <content type="html">&lt;br /&gt;
 &lt;h1 style=&quot;text-align:center;&quot;&gt;&amp;nbsp;乌龙记&lt;/h1&gt;
@@ -12603,7 +12871,7 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src=&quot;http://graphics8.ny
  <entry>
    <title>Perl Notes(III) -- Introduction To Berkeley Sockets</title>
    <link href="http://bo-yang.github.com//2009/01/13/perl-note-3"/>
-   <updated>2009-01-13T00:00:00-05:00</updated>
+   <updated>2009-01-13T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/01/13/perl-note-3</id>
    <content type="html">&lt;p&gt;
 &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:Verdana;font-size:13px;&quot;&gt;&lt;br /&gt;
@@ -12962,7 +13230,7 @@ $dotted_ip_address = join &#39;.&#39;, $a,$b,$c,$d;&lt;/pre&gt;
  <entry>
    <title>Perl Notes(II)</title>
    <link href="http://bo-yang.github.com//2009/01/13/perl-note-2"/>
-   <updated>2009-01-13T00:00:00-05:00</updated>
+   <updated>2009-01-13T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/01/13/perl-note-2</id>
    <content type="html">&lt;p&gt;
      &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:Verdana;font-size:13px;&quot;&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-size:19px;font-weight:bold;&quot;&gt;Part II&lt;span&gt;    Network Programming With Perl&lt;/span&gt;&lt;/span&gt;&lt;br /&gt;
@@ -13623,7 +13891,7 @@ STDOUT-&amp;gt;fdopen($saveout,&quot;&amp;gt;&quot;);                 # reopen o
  <entry>
    <title>How do I add a directory to my include path (@INC) at runtime?</title>
    <link href="http://bo-yang.github.com//2009/01/13/add-a-directory-to-my-include-path-at-runtime"/>
-   <updated>2009-01-13T00:00:00-05:00</updated>
+   <updated>2009-01-13T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/01/13/add-a-directory-to-my-include-path-at-runtime</id>
    <content type="html">&lt;p&gt;
      &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(17,17,17);font-family:Arial;font-size:16px;&quot;&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-size:20px;font-weight:bold;&quot;&gt;How do I add a directory to my include path (@INC) at runtime?&lt;/span&gt;&lt;/span&gt;
@@ -13651,7 +13919,7 @@ STDOUT-&amp;gt;fdopen($saveout,&quot;&amp;gt;&quot;);                 # reopen o
  <entry>
    <title>Shell向Perl脚本中传递变量的方法</title>
    <link href="http://bo-yang.github.com//2009/01/12/perl-parameters"/>
-   <updated>2009-01-12T00:00:00-05:00</updated>
+   <updated>2009-01-12T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/01/12/perl-parameters</id>
    <content type="html">&lt;p&gt;&lt;span style=&quot;border-collapse:collapse;color:#000000;font-family:song;font-size:13px;&quot;&gt;&lt;/p&gt;
 &lt;div&gt;&lt;span style=&quot;font-family:Arial;&quot;&gt;方法一：&lt;/span&gt;&lt;/div&gt;
@@ -13665,7 +13933,7 @@ STDOUT-&amp;gt;fdopen($saveout,&quot;&amp;gt;&quot;);                 # reopen o
  <entry>
    <title>Perl中的特殊变量</title>
    <link href="http://bo-yang.github.com//2009/01/06/special-variable-in-perl"/>
-   <updated>2009-01-06T00:00:00-05:00</updated>
+   <updated>2009-01-06T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2009/01/06/special-variable-in-perl</id>
    <content type="html">&lt;p&gt;
 &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-size:16px;&quot;&gt;
@@ -13694,7 +13962,7 @@ STDOUT-&amp;gt;fdopen($saveout,&quot;&amp;gt;&quot;);                 # reopen o
  <entry>
    <title>Perl Notes(I)</title>
    <link href="http://bo-yang.github.com//2008/12/29/perl-note-1"/>
-   <updated>2008-12-29T00:00:00-05:00</updated>
+   <updated>2008-12-29T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/12/29/perl-note-1</id>
    <content type="html">&lt;p&gt;&lt;span style=&quot;font-family:Verdana;font-size:13px;&quot;&gt;&lt;/p&gt;
 &lt;h2 style=&quot;font-size:14pt;&quot;&gt;Part I&amp;nbsp;&amp;nbsp; &amp;nbsp;Programming Perl&lt;/h2&gt;
@@ -14203,7 +14471,7 @@ undef() # is a function returning the undefined value, so false.&lt;/pre&gt;
  <entry>
    <title>由服务器名字(Host name)获得IP地址</title>
    <link href="http://bo-yang.github.com//2008/12/24/get-ip-addr-from-host-name"/>
-   <updated>2008-12-24T00:00:00-05:00</updated>
+   <updated>2008-12-24T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/12/24/get-ip-addr-from-host-name</id>
    <content type="html">&lt;p&gt;
     一下代码可以根据host name获得IP地址：
@@ -14276,7 +14544,7 @@ undef() # is a function returning the undefined value, so false.&lt;/pre&gt;
  <entry>
    <title>return (((ulong*)(x))[-1])</title>
    <link href="http://bo-yang.github.com//2008/12/04/return-ulong-pointer"/>
-   <updated>2008-12-04T00:00:00-05:00</updated>
+   <updated>2008-12-04T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/12/04/return-ulong-pointer</id>
    <content type="html">&lt;p&gt;
 &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:������;&quot;&gt;看到一个函数，定义如下： &lt;/span&gt;
@@ -14311,7 +14579,7 @@ undef() # is a function returning the undefined value, so false.&lt;/pre&gt;
  <entry>
    <title>NULL Pointer Bugs</title>
    <link href="http://bo-yang.github.com//2008/12/03/null-pointer"/>
-   <updated>2008-12-03T00:00:00-05:00</updated>
+   <updated>2008-12-03T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/12/03/null-pointer</id>
    <content type="html">&lt;div style=&quot;min-height:1100px;font-family:Verdana;font-size:10pt;line-height:1;background-color:rgb(255,255,255);width:648px!important;border-color:rgb(204,204,204) rgb(187,187,187) rgb(187,187,187) rgb(204,204,204);border-style:solid;border-width:1px 2px 2px 1px;margin:15px auto 25px;padding:40px 50px;&quot;&gt;
 &lt;h1 style=&quot;text-align:center;font-size:18pt;&quot;&gt;NULL Pointer Bugs&lt;br /&gt;&lt;/h1&gt;
@@ -14345,7 +14613,7 @@ undef() # is a function returning the undefined value, so false.&lt;/pre&gt;
  <entry>
    <title>Korn Shell Notes(V)</title>
    <link href="http://bo-yang.github.com//2008/12/01/kshell-note-5"/>
-   <updated>2008-12-01T00:00:00-05:00</updated>
+   <updated>2008-12-01T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/12/01/kshell-note-5</id>
    <content type="html">&lt;p&gt;
      &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:Verdana;font-size:13px;&quot;&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-size:19px;font-style:italic;font-weight:bold;&quot;&gt;19. Input/Output Commands&lt;/span&gt;&lt;br /&gt;
@@ -14516,7 +14784,7 @@ undef() # is a function returning the undefined value, so false.&lt;/pre&gt;
  <entry>
    <title>Korn Shell Notes(IV)</title>
    <link href="http://bo-yang.github.com//2008/11/30/kshell-note-4"/>
-   <updated>2008-11-30T00:00:00-05:00</updated>
+   <updated>2008-11-30T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/11/30/kshell-note-4</id>
    <content type="html">&lt;div id=&quot;yn69&quot; style=&quot;padding:1em 0;text-align:left;&quot;&gt;
 &lt;h2&gt;&lt;i&gt;&lt;span style=&quot;font-family:&#39;Courier New&#39;;&quot;&gt;&lt;span style=&quot;font-family:Verdana;&quot;&gt;16 The Environment&lt;/span&gt;&lt;/span&gt;&lt;/i&gt;&lt;br /&gt;
@@ -15012,7 +15280,7 @@ n, instead of the words from the word list. It is equivalent to:&lt;br /&gt;
  <entry>
    <title>korn Shell Notes(III)</title>
    <link href="http://bo-yang.github.com//2008/11/26/kshell-note-3"/>
-   <updated>2008-11-26T00:00:00-05:00</updated>
+   <updated>2008-11-26T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/11/26/kshell-note-3</id>
    <content type="html">&lt;p&gt;
      &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:Verdana;font-size:13px;&quot;&gt;&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-size:19px;font-style:italic;font-weight:bold;&quot;&gt;6 Variables&lt;/span&gt;
@@ -15283,7 +15551,7 @@ n, instead of the words from the word list. It is equivalent to:&lt;br /&gt;
  <entry>
    <title>Korn Shell Notes(II)</title>
    <link href="http://bo-yang.github.com//2008/11/24/kshell-note-2"/>
-   <updated>2008-11-24T00:00:00-05:00</updated>
+   <updated>2008-11-24T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/11/24/kshell-note-2</id>
    <content type="html">&lt;br /&gt;
 &lt;h1 style=&quot;text-align:center;&quot;&gt;&lt;a id=&quot;_korn_Shell_Mannual_7321622101&quot; name=&quot;_korn_Shell_Mannual_7321622101&quot;&gt;&lt;/a&gt; Korn Shell Notes&lt;br /&gt;&lt;/h1&gt;
@@ -15478,7 +15746,7 @@ by a slash, it is replaced with the value of the &lt;b&gt;HOME&lt;/b&gt; variabl
  <entry>
    <title>Korn Shell(K Shell) Notes (I)</title>
    <link href="http://bo-yang.github.com//2008/11/20/kshell-note-1"/>
-   <updated>2008-11-20T00:00:00-05:00</updated>
+   <updated>2008-11-20T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/11/20/kshell-note-1</id>
    <content type="html">&lt;br /&gt;
 &lt;h1 style=&quot;text-align:center;&quot;&gt;&lt;a id=&quot;_korn_Shell_Mannual_&quot; name=&quot;_korn_Shell_Mannual_&quot;&gt;&lt;/a&gt; Korn Shell Notes&lt;/h1&gt;
@@ -15531,7 +15799,7 @@ change the value of parent shell variables, functions, or aliases.&lt;/div&gt;
  <entry>
    <title>行行出状元——表扬683路公交车售票员wen师傅</title>
    <link href="http://bo-yang.github.com//2008/11/09/praise-683"/>
-   <updated>2008-11-09T00:00:00-05:00</updated>
+   <updated>2008-11-09T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/11/09/praise-683</id>
    <content type="html">&lt;p&gt;
     今天坐683路公交车，又遇到了一个月前遇到的那位售票员（&lt;a href=&quot;http://blog.csdn.net/bonny95/archive/2008/10/12/3062688.aspx&quot;&gt;http://blog.csdn.net/bonny95/archive/2008/10/12/3062688.aspx&lt;/a&gt;）。她依然是那样热情的帮助乘客，依然如数家珍的报站名，依然用音乐抚慰着乘客拥挤的心灵。&lt;/p&gt;
@@ -15545,7 +15813,7 @@ change the value of parent shell variables, functions, or aliases.&lt;/div&gt;
  <entry>
    <title>Tcl/Tk Notes (3)</title>
    <link href="http://bo-yang.github.com//2008/11/02/tcl-tk-note-3"/>
-   <updated>2008-11-02T00:00:00-04:00</updated>
+   <updated>2008-11-02T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/11/02/tcl-tk-note-3</id>
    <content type="html">&lt;br /&gt;
 &lt;h2&gt;Part III&amp;nbsp;Tcl&amp;nbsp;Data&amp;nbsp;Structures&lt;br /&gt;
@@ -15709,7 +15977,7 @@ these events occurs. It is invoked as:&lt;br /&gt;
  <entry>
    <title>Tcl/Tk Notes (1)</title>
    <link href="http://bo-yang.github.com//2008/10/27/tcl-tk-note-1"/>
-   <updated>2008-10-27T00:00:00-04:00</updated>
+   <updated>2008-10-27T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/10/27/tcl-tk-note-1</id>
    <content type="html">&lt;div&gt;
 &lt;div style=&quot;text-align:center;&quot;&gt;
@@ -15868,7 +16136,7 @@ terminates comments.&lt;br /&gt;
  <entry>
    <title>UNIX Workshop Notes</title>
    <link href="http://bo-yang.github.com//2008/10/21/unix-workshop-note"/>
-   <updated>2008-10-21T00:00:00-04:00</updated>
+   <updated>2008-10-21T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/10/21/unix-workshop-note</id>
    <content type="html">&lt;p&gt;&amp;lt;style&amp;gt;&lt;br /&gt;
 st1/:*{behavior:url(#ieooui) }&lt;br /&gt;
@@ -16206,7 +16474,7 @@ utilities&lt;/p&gt;
  <entry>
    <title>Perl笔记（一）</title>
    <link href="http://bo-yang.github.com//2008/10/06/perl-note-1"/>
-   <updated>2008-10-06T00:00:00-04:00</updated>
+   <updated>2008-10-06T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/10/06/perl-note-1</id>
    <content type="html">&lt;p&gt;
     1 Perl中所有数字内部格式一致，只有双精度浮点数（Perl内部没有整数值）。&lt;br /&gt;2 Perl中允许用下划线来分隔比较长的整数，如612980400283768和612_980_400_283_768是相同的值。&lt;br /&gt;3 Perl中的非十进制整数：八进制以0开头，十六机制以0x开头，二进制以0b开头。&lt;br /&gt;4 Perl中的数字操作符除加减乘除之外，还有模数运算符(%)和指数操作符(**)。对于%，两个操作数首先变成对应的整数值，如10.5%3.2首先变成10%3后再计算。在模数运算中，如果有一个操作数为负数，其结果和Perl的具体实现有关。另外，通常不能进行一个负数的非整数次方的运算（这将产生一个复数），除非有了Math::Complex模块。&lt;br /&gt;5 单引号字符串&lt;br /&gt;&amp;nbsp;&amp;nbsp; &amp;nbsp;单引号不是字符串的一部分，但Perl可以用它辨别字符串的开始和结束。除了单引号或者反斜线（包括换行字符，如果字符串在下一行继续）之外的任何字符都表示它自身。要得到一个反斜线，可以把两个反斜线放在一起；要得到单引号，需要在单引号之前加上反斜线。单引号字符串中的/n不会被当作换行符来处理，其仅仅是两个字符/和n。只有在反斜线后面接的是/或者是单引号&#39;才会被当作特殊字符来处理。&lt;br /&gt;6 双引号字符串&lt;br /&gt;&amp;nbsp;&amp;nbsp; &amp;nbsp;双引号字符串中/n为换行符。双引号中的转义字符：&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ 符号&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 含义&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /n&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 换行&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /r&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 回车&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /t&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 制表符&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /f&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ formfeed&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /b&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 退格&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /a&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 响铃&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /e&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ escape(ASCII中的escape字符)&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /007&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 任何八进制值（这里是007=bell）&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /x7f&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 任何十六进制值（这里是007＝bell）&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /cC&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 一个控制符（这里是Ctrl+c）&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ //&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 反斜线&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /&quot;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 双引号&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /l&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 下个字符小写&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /L&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 接下来的字符均小写直到/E&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /u&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 下个字符大写&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /U&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 接下来的字符均大写知道/E&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /Q&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 在non-word字符之前加上/,直到/E&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;br /&gt;｜ /E&amp;nbsp;&amp;nbsp; &amp;nbsp;｜ 结束/L, /E和/Q&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;｜&lt;br /&gt;&amp;nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－&lt;/p&gt;
@@ -16225,7 +16493,7 @@ utilities&lt;/p&gt;
  <entry>
    <title>Solaris环境变量</title>
    <link href="http://bo-yang.github.com//2008/09/27/solaris-environment-variable"/>
-   <updated>2008-09-27T00:00:00-04:00</updated>
+   <updated>2008-09-27T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/09/27/solaris-environment-variable</id>
    <content type="html">&lt;p&gt;
     ～/.profile 是在用户的主目录下的一个文件，每次用户登陆都会执行这里边的ENV环境变量设置。&lt;br /&gt;
@@ -16242,7 +16510,7 @@ utilities&lt;/p&gt;
  <entry>
    <title>[转]C++ 运算符优先级列表</title>
    <link href="http://bo-yang.github.com//2008/09/26/cpp-operator-priority"/>
-   <updated>2008-09-26T00:00:00-04:00</updated>
+   <updated>2008-09-26T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/09/26/cpp-operator-priority</id>
    <content type="html">&lt;p&gt;
 &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:Verdana;font-size:14px;&quot;&gt;&lt;br /&gt;
@@ -16379,7 +16647,7 @@ utilities&lt;/p&gt;
  <entry>
    <title>《Beiginning Linux programming || Linux 程序设计》读书笔记(四)</title>
    <link href="http://bo-yang.github.com//2008/09/23/beginning-linux-programming-4"/>
-   <updated>2008-09-23T00:00:00-04:00</updated>
+   <updated>2008-09-23T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/09/23/beginning-linux-programming-4</id>
    <content type="html">&lt;div&gt;(21) Trap&lt;/div&gt;
 &lt;p&gt;&amp;nbsp;&amp;nbsp; &amp;nbsp;The trap command is used to specify the&lt;br /&gt;
@@ -16458,7 +16726,7 @@ The following table summarizes the options:
  <entry>
    <title>《Beiginning Linux programming || Linux 程序设计》读书笔记(三)</title>
    <link href="http://bo-yang.github.com//2008/09/18/beginning-linux-programming-3"/>
-   <updated>2008-09-18T00:00:00-04:00</updated>
+   <updated>2008-09-18T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/09/18/beginning-linux-programming-3</id>
    <content type="html">&lt;p&gt;
 &lt;span class=&quot;Apple-style-span&quot; style=&quot;color:rgb(0,0,0);font-family:Verdana;font-size:13px;&quot;&gt;
@@ -16505,7 +16773,7 @@ The following table summarizes the options:
  <entry>
    <title>Fedora 9中Firefox启动后进入www.s.com的解决方法</title>
    <link href="http://bo-yang.github.com//2008/09/15/firefox-problem"/>
-   <updated>2008-09-15T00:00:00-04:00</updated>
+   <updated>2008-09-15T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/09/15/firefox-problem</id>
    <content type="html">&lt;p&gt;
     几个月来，自从手动装上Firefox3.0之后，在Fedora桌面上点击图标启动Firefox一直进入www.s.com（本来我的主页设置为iGoogle），而且图标也不再显示为Firefox的图标。很是让人郁闷。（注：据说该问题只是在图形界面下点击图标才会出现，若在命令行下面直接用命令启动Firefox不会有这个问题。）&lt;/p&gt;
@@ -16521,7 +16789,7 @@ The following table summarizes the options:
  <entry>
    <title>《Beginning Linux Programming》读书笔记（二）</title>
    <link href="http://bo-yang.github.com//2008/09/14/beginning-linux-programming-2"/>
-   <updated>2008-09-14T00:00:00-04:00</updated>
+   <updated>2008-09-14T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/09/14/beginning-linux-programming-2</id>
    <content type="html">&lt;p&gt;
     &amp;nbsp;&lt;font size=&quot;4&quot;&gt;&lt;b&gt;3 基本的Shell命令&lt;/b&gt;&lt;/font&gt;&lt;br /&gt;3.1 Redirecting Output&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; 管道重定向：&amp;gt;&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; 对文件追加：&amp;gt;&amp;gt;&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;For&lt;br /&gt;
@@ -16642,7 +16910,7 @@ by enclosing them in braces {} to make a statement block.&lt;/p&gt;
  <entry>
    <title>《Linux程序设计》读书笔记（一）</title>
    <link href="http://bo-yang.github.com//2008/09/11/linux-program-design-1"/>
-   <updated>2008-09-11T00:00:00-04:00</updated>
+   <updated>2008-09-11T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/09/11/linux-program-design-1</id>
    <content type="html">&lt;p&gt;
     &amp;nbsp;
@@ -16693,7 +16961,7 @@ work as you expect.&lt;/p&gt;
  <entry>
    <title>类成员函数指针浅析</title>
    <link href="http://bo-yang.github.com//2008/09/08/function-pointer-in-class"/>
-   <updated>2008-09-08T00:00:00-04:00</updated>
+   <updated>2008-09-08T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/09/08/function-pointer-in-class</id>
    <content type="html">&lt;p&gt;
     今天看某软件的源代码时，发现有这样一行
@@ -16943,7 +17211,7 @@ less &amp;lt;&amp;gt;,greater &amp;lt;&amp;gt;,bind2nd &amp;lt;&amp;gt;等&amp;n
  <entry>
    <title>函数对象</title>
    <link href="http://bo-yang.github.com//2008/09/08/function-object"/>
-   <updated>2008-09-08T00:00:00-04:00</updated>
+   <updated>2008-09-08T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/09/08/function-object</id>
    <content type="html">&lt;p&gt;
     看到有个概念叫“函数对象”，搜了一下关于它的解释： &lt;/p&gt;
@@ -17086,7 +17354,7 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
  <entry>
    <title>C语言函数中定义大数组耗尽堆栈的问题</title>
    <link href="http://bo-yang.github.com//2008/08/26/big-array-in-c"/>
-   <updated>2008-08-26T00:00:00-04:00</updated>
+   <updated>2008-08-26T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/08/26/big-array-in-c</id>
    <content type="html">&lt;p&gt;
     今晚上一同学请我帮忙看一个C程序，GCC编译时一直抱错，说是段错误。&lt;br /&gt;程序本身写的比较差，但编译能通过，只是有几十个警告。&lt;br /&gt;两个小时过去了，在Eclipse+GCC下没有找到问题（这个环境还不熟悉），换到了VC下面，逐步调试，才发现问题出在被main调用的一个叫做readmctal()的函数的前面几行中。该函数如下：
@@ -17176,7 +17444,7 @@ calloc和malloc基本一样，不同的是有两点，一是calloc分配的空�
  <entry>
    <title>《UNIX教程》读书笔记(一)</title>
    <link href="http://bo-yang.github.com//2008/08/21/unix-textbook"/>
-   <updated>2008-08-21T00:00:00-04:00</updated>
+   <updated>2008-08-21T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/08/21/unix-textbook</id>
    <content type="html">&lt;p&gt;
     《UNIX教程》读书笔记&lt;/p&gt;
@@ -17221,7 +17489,7 @@ n表示文件更改时间距现在n天以前。Find命令还有-atime和-ctime�
  <entry>
    <title>Fedora 9安装星际译王(stardict)</title>
    <link href="http://bo-yang.github.com//2008/07/31/fedora-startdict"/>
-   <updated>2008-07-31T00:00:00-04:00</updated>
+   <updated>2008-07-31T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/07/31/fedora-startdict</id>
    <content type="html">&lt;p&gt;
     Fedora 9安装星际译王(stardict)&lt;/p&gt;
@@ -17242,7 +17510,7 @@ error: Failed dependencies:&lt;br /&gt;
  <entry>
    <title>CDMA2000 Channel Naming Conventions</title>
    <link href="http://bo-yang.github.com//2008/07/20/cdma2000-naming"/>
-   <updated>2008-07-20T00:00:00-04:00</updated>
+   <updated>2008-07-20T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/07/20/cdma2000-naming</id>
    <content type="html">&lt;div id=&quot;j5f.&quot; style=&quot;text-align:left;&quot;&gt;&lt;font size=&quot;5&quot; face=&quot;Arial&quot;&gt;&lt;b&gt;CDMA2000 Channel Naming Conventions&lt;/b&gt;&lt;/font&gt;&lt;font face=&quot;Arial&quot;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;/font&gt;&lt;/div&gt;
@@ -17263,7 +17531,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>《Advanced Programming in the UNIX Environment》读书笔记（2）</title>
    <link href="http://bo-yang.github.com//2008/07/13/advanced-programming-in-unix-2"/>
-   <updated>2008-07-13T00:00:00-04:00</updated>
+   <updated>2008-07-13T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/07/13/advanced-programming-in-unix-2</id>
    <content type="html">&lt;div class=&quot;Section1&quot;&gt;
 &lt;p class=&quot;MsoBodyText&quot; style=&quot;margin-bottom:14.15pt;&quot;&gt;&lt;span lang=&quot;EN-US&quot;&gt;8&lt;/span&gt;&lt;span&gt;、&lt;span lang=&quot;EN-US&quot;&gt;UNIX Standards&lt;a name=&quot;mw921&quot;&gt;&lt;/a&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
@@ -17449,7 +17717,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>《Advanced Programming in the UNIX Environment》读书笔记（1）</title>
    <link href="http://bo-yang.github.com//2008/07/10/advanced-programming-in-unix"/>
-   <updated>2008-07-10T00:00:00-04:00</updated>
+   <updated>2008-07-10T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/07/10/advanced-programming-in-unix</id>
    <content type="html">&lt;div id=&quot;mnm0&quot;&gt;
 &lt;p id=&quot;i6v1&quot; style=&quot;font-family:Verdana;&quot;&gt;&lt;font size=&quot;2&quot;&gt;&lt;span id=&quot;kf-u0&quot;&gt;1、系统口令文件通常为/etc/passwd。口令文件中的登录项由7个以冒号分隔的字段组成：登录名、加密口令、数字用户ID、数字组&amp;nbsp;ID、注释字段、起始目录以及shell程序。&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
@@ -17473,7 +17741,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>开源授权协议</title>
    <link href="http://bo-yang.github.com//2008/06/27/open-source-license"/>
-   <updated>2008-06-27T00:00:00-04:00</updated>
+   <updated>2008-06-27T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/06/27/open-source-license</id>
    <content type="html">&lt;p style=&quot;margin-bottom:0;&quot;&gt;&lt;font face=&quot;Times New Roman, serif&quot;&gt;［说明］：本文摘自《程序员》2008年06月刊许洪波教授的《开源授权协议（License）初探》一文，版权归原作者所有。&lt;/font&gt;&lt;/p&gt;
 &lt;p style=&quot;margin-bottom:0;&quot;&gt;&lt;font face=&quot;Times New Roman, serif&quot;&gt;&lt;br /&gt;
@@ -17505,7 +17773,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>硬盘安装Fedora 9时死机？</title>
    <link href="http://bo-yang.github.com//2008/06/06/fedora9-hard-disk"/>
-   <updated>2008-06-06T00:00:00-04:00</updated>
+   <updated>2008-06-06T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/06/06/fedora9-hard-disk</id>
    <content type="html">&lt;p&gt;
     前天晚上在Fedora9下装完ATI显卡的驱动以后，升级系统，昨天早晨起来一看，我的本本过热休眠了（发现Fedora下经常出现这种情况，而Windows下很少出现，可见Linux的电源管理确实还有问题），当时没有管它。&lt;/p&gt;
@@ -17521,7 +17789,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>EMC-CBR故障诊断研究（四）</title>
    <link href="http://bo-yang.github.com//2008/06/05/emc-cbr-4"/>
-   <updated>2008-06-05T00:00:00-04:00</updated>
+   <updated>2008-06-05T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/06/05/emc-cbr-4</id>
    <content type="html">&lt;p&gt;&lt;font size=&quot;3&quot;&gt;&lt;span&gt;&lt;span style=&quot;font-size:12pt;line-height:173%;font-family:宋体;&quot;&gt;1、系统组成&lt;/span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;line-height:173%;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;&lt;br /&gt;&amp;nbsp;&amp;nbsp; 本系统是由&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;CBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;和&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;RBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;组成的混合系统。系统结构如下图&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;所示。系统的核心是推理机，推理机根据用户输入的故障描述，既可以将故障描述转化为新的案例，从而进行对案例库进行操作；又可以将故障描述转化为事实，对规则库进行操作。但&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;CBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;和&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;RBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;的地位并不是等同的，&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;CBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;起主导作用，&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;RBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;对&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:12pt;font-family:&quot;Times New Roman&quot;, &quot;serif&quot;;&#39;&gt;CBR&lt;/span&gt;&lt;span style=&quot;font-size:12pt;font-family:宋体;&quot;&gt;起监督作用，二者的推理结果由综合机制进行综合。本系统采用友好的人机界面，普通用户输入故障描述后，系统经推理后给出诊断建议，并对给出的建议进行解释。另外，为了便于对系统知识（案例库、知识库和事实库）进行管理，系统可以由知识工程师进行修改。&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
 &lt;p align=&quot;left&quot; style=&quot;text-align:left;text-indent:22.7pt;line-height:22pt;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font size=&quot;3&quot;&gt;&lt;img src=&quot;http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/系统结构.JPG&quot; alt=&quot;&quot; /&gt;&lt;/font&gt;&lt;/p&gt;
@@ -17578,7 +17846,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>逻辑表达式词法分析器分析结果的显示</title>
    <link href="http://bo-yang.github.com//2008/05/27/logic-parser-result"/>
-   <updated>2008-05-27T00:00:00-04:00</updated>
+   <updated>2008-05-27T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/05/27/logic-parser-result</id>
    <content type="html">&lt;p&gt;
 &lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 上篇博客文章《&lt;a href=&quot;void(0);/*1211894183336*/&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;简易逻辑表达式词法分析器&lt;/span&gt;&lt;/a&gt;》讲到设计了一个逻辑表达式词法分析器，这次以那个词法分析器作为后端，利用VC搭建前端界面，展示一下分析效果。&lt;/p&gt;
@@ -17595,7 +17863,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>利用VC设计简易逻辑表达式词法分析器</title>
    <link href="http://bo-yang.github.com//2008/05/24/vc-logic-parser"/>
-   <updated>2008-05-24T00:00:00-04:00</updated>
+   <updated>2008-05-24T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/05/24/vc-logic-parser</id>
    <content type="html">&lt;p class=&quot;MsoNormal&quot; style=&quot;text-align:center;&quot; align=&quot;center&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;简易逻辑表达式词法分析器&lt;/span&gt;&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot; style=&quot;text-align:center;&quot; align=&quot;center&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;&lt;/span&gt;&lt;/p&gt;
@@ -17647,7 +17915,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>线性坐标系到对数坐标系的变换——EMC测试曲线的绘制</title>
    <link href="http://bo-yang.github.com//2008/05/23/draw-emc-test-curve"/>
-   <updated>2008-05-23T00:00:00-04:00</updated>
+   <updated>2008-05-23T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/05/23/draw-emc-test-curve</id>
    <content type="html">&lt;p&gt;        &lt;span style=&quot;font-size:10.5pt;font-family:宋体;&quot;&gt;&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp; 绘制测试曲线的核心函数为&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:10.5pt;font-family:&quot;Calibri&quot;, &quot;sans-serif&quot;;&#39;&gt;CEMCView::DrawFrameCurve()&lt;/span&gt;&lt;span style=&quot;font-size:10.5pt;font-family:宋体;&quot;&gt;函数。该函数可以根据测试的频段和该频段的测试数据在对数坐标系的对应位置绘制测试曲线。&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:10.5pt;font-family:&quot;Calibri&quot;, &quot;sans-serif&quot;;&#39;&gt;DrawFrameCurve()&lt;/span&gt;&lt;span style=&quot;font-size:10.5pt;font-family:宋体;&quot;&gt;函数绘制曲线的流程图如图&lt;/span&gt;&lt;span lang=&quot;EN-US&quot; style=&#39;font-size:10.5pt;font-family:&quot;Calibri&quot;, &quot;sans-serif&quot;;&#39;&gt;1&lt;/span&gt;&lt;span style=&quot;font-size:10.5pt;font-family:宋体;&quot;&gt;所示：&lt;/p&gt;
 &lt;p&gt;&lt;/span&gt;&lt;/p&gt;
@@ -17693,7 +17961,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>案例检索——EMC-CBR故障诊断研究（三）</title>
    <link href="http://bo-yang.github.com//2008/05/22/emc-cbr-3"/>
-   <updated>2008-05-22T00:00:00-04:00</updated>
+   <updated>2008-05-22T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/05/22/emc-cbr-3</id>
    <content type="html">&lt;p style=&quot;text-indent:18pt;&quot; class=&quot;MsoListParagraph&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;text-indent:18pt;&quot; class=&quot;MsoListParagraph&quot;&gt;&lt;font size=&quot;3&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;案例检索的核心任务就是计算新案例和案例库中的案例的相似度，而相似度要由案例的故障特征和系统结构确定。&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
@@ -17719,7 +17987,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>半旗.默哀.国歌</title>
    <link href="http://bo-yang.github.com//2008/05/19/wenchuan-earthquake"/>
-   <updated>2008-05-19T00:00:00-04:00</updated>
+   <updated>2008-05-19T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/05/19/wenchuan-earthquake</id>
    <content type="html">&lt;p&gt;	    document.domain=&quot;qq.com&quot;;&lt;br /&gt;
 	    //parent.qZEditor.callback();&lt;br /&gt;
@@ -17742,7 +18010,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>硬盘安装Fedora 9成功</title>
    <link href="http://bo-yang.github.com//2008/05/14/fedora9-install-hard-disk"/>
-   <updated>2008-05-14T00:00:00-04:00</updated>
+   <updated>2008-05-14T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/05/14/fedora9-install-hard-disk</id>
    <content type="html">&lt;p&gt;
     &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 昨天晚上半夜（5月13日晚23：56分）我登陆到fedora项目的主页一看，My God，Fedora 9已经可以下载了！我立马开始下载。由于速度只有几百K/S，只好先睡觉。&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 今天早上6：30就起来了，第一件事就是准备将Fedora 9刻录到光盘，然后准备安装。几天前就已经将光盘买好了，Nero也装好了，就等着刻呢。非常恶心的是，我一连试了三张白盘，一次也没刻录成功！气得我七窍生烟！还不到两年，破本本的刻录光驱就不能刻录了！Shit！&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 8点多感到实验室，半路上就决定了要从硬盘安装Fedora 9。上网查资料，N多，感觉还蛮简单的。照做。下载Grub for Linux，设置好，设置menu.lst。问题来了，将Fedora的iso映像放到哪里呢？还有就是我的Windows分区是NTFS格式的，留出来的空闲分区才15G，太小了，怎么改变分区大小呢？&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 有人说DVD版的Fedora要解压缩，有人说不用，但都要放到Fat或fat32分区里。上网，下载了Partition Manager，结果安装时说不能用于Windows Server 2003下面。Shit@！只好重新搜到了一个可以用于Server 2003下调整分区的软件。调好之后，重启进入grub安装。结果进不去Fedora安装界面！&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 找遍了所有原因，才发现自己在menu.lst中的initrd写成了intrid！唉！改正后终于进入了安装界面。这时却又找不到Fedora映像了。哦，原来我直接将iso给解压缩了。shit！不得不重新将Fedora的iso映像拷到fat32分区，重新装，一切OK！&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 大二的时候就装过Red Hat Linux9，当时装了玩了几次，感觉很不好用，就给删了。大四毕业又玩了一段时间Fedora core3，感觉好多了。后来在实验室电脑上装了Fedora 7，感觉很好。前几天用Wubi在笔记本上装Ubuntu8.04，结果不成功，很是郁闷。在实验室台式机上却成功了。进到Ubuntu后完了几次，感觉很不爽&amp;mdash;&amp;mdash;界面不怎么好看，桌面版自带的软件少得可怜，要通过网络安装，可我们平时很难上外网（拜教育网所赐）。总的说来，还是比较喜欢Red Hat 的产品，毕竟人家定位在企业级应用。而且听说Linus用的Linux版本就是Fedora哦。&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 最近一年来逐渐对Linux情有独钟，也越来越不喜欢用Windows了。毕竟这是两种不同的模式，两种不同的文化。现在对知识产权的意识越来越强烈了，以前一直用盗版，现在不想用了，但又没钱买正版Windows下的软件，因此还是转到Linux的好。&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 向开源进军！&lt;/p&gt;
@@ -17754,7 +18022,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>EMC测试曲线选择缩放功能的实现</title>
    <link href="http://bo-yang.github.com//2008/05/10/emc-curve-zoom"/>
-   <updated>2008-05-10T00:00:00-04:00</updated>
+   <updated>2008-05-10T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/05/10/emc-curve-zoom</id>
    <content type="html">&lt;p align=&quot;center&quot; class=&quot;MsoNormal&quot; style=&quot;text-align:center;&quot;&gt;&lt;span lang=&quot;EN-US&quot;&gt;EMC&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;测试曲线选择缩放功能的实现&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; class=&quot;MsoNormal&quot; style=&quot;text-align:center;&quot;&gt;&lt;span lang=&quot;EN-US&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;
@@ -17793,7 +18061,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>【原创】案例推理(CBR)中案例的存储与检索——EMC-CBR故障诊断研究（二）</title>
    <link href="http://bo-yang.github.com//2008/05/05/emc-cbr-2html"/>
-   <updated>2008-05-05T00:00:00-04:00</updated>
+   <updated>2008-05-05T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/05/05/emc-cbr-2html</id>
    <content type="html">&lt;p&gt;
 &lt;font size=&quot;3&quot;&gt;&lt;span style=&quot;font-family:Times New Roman;&quot;&gt;&amp;nbsp;&amp;nbsp; 最近一直在研究案例推理，看到好多论文都在大谈&lt;/span&gt;CBR理论，很是崇拜。不过一直有一个问题没有搞懂，就是案例（case）到底是怎么存储的呢？&lt;/p&gt;
@@ -18062,7 +18330,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>关于EMI多线程分段测试方法的说明</title>
    <link href="http://bo-yang.github.com//2008/05/03/emi-test-multi-threads"/>
-   <updated>2008-05-03T00:00:00-04:00</updated>
+   <updated>2008-05-03T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/05/03/emi-test-multi-threads</id>
    <content type="html">&lt;p&gt;
     2008年5月15日修正版&lt;/p&gt;
@@ -18144,7 +18412,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>利用自定义消息处理函数的WPARAM或LPARAM参数传递指针</title>
    <link href="http://bo-yang.github.com//2008/04/29/mfc-param"/>
-   <updated>2008-04-29T00:00:00-04:00</updated>
+   <updated>2008-04-29T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/04/29/mfc-param</id>
    <content type="html">&lt;p&gt;
     有自定义消息：&lt;/p&gt;
@@ -18168,7 +18436,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>EMC-CBR故障诊断研究（一）</title>
    <link href="http://bo-yang.github.com//2008/04/25/emi-cbr-notes-1"/>
-   <updated>2008-04-25T00:00:00-04:00</updated>
+   <updated>2008-04-25T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/04/25/emi-cbr-notes-1</id>
    <content type="html">&lt;p class=&quot;MsoNormal&quot; style=&quot;color:rgb(0,0,0);&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 该系列文章致力于建立一个基于CBR（Case-Based Reasoning）的电磁兼容故障诊断系统模型。这篇文章将首先阐述用语义网络对故障进行表示。&lt;/p&gt;
 &lt;p class=&quot;MsoNormal&quot;&gt;&lt;strong&gt;&lt;span lang=&quot;EN-US&quot; style=&quot;color:red;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
@@ -18195,7 +18463,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>《电磁设备防干扰原理与技术》读书笔记(一)</title>
    <link href="http://bo-yang.github.com//2008/04/05/emc-notes-1"/>
-   <updated>2008-04-05T00:00:00-04:00</updated>
+   <updated>2008-04-05T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/04/05/emc-notes-1</id>
    <content type="html">&lt;p&gt;
     &amp;nbsp;&lt;/p&gt;
@@ -18639,7 +18907,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>故障智能诊断读书笔记（一）</title>
    <link href="http://bo-yang.github.com//2008/03/14/fault-diagnosis-notes-1"/>
-   <updated>2008-03-14T00:00:00-04:00</updated>
+   <updated>2008-03-14T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/03/14/fault-diagnosis-notes-1</id>
    <content type="html">&lt;p style=&quot;margin:0;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font size=&quot;3&quot;&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;font face=&quot;Calibri&quot;&gt;1&lt;/font&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;、故障智能诊断系统的发展趋势&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
 &lt;p style=&quot;margin:0;&quot; class=&quot;MsoNormal&quot;&gt;&lt;font size=&quot;3&quot;&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;（&lt;/span&gt;&lt;span lang=&quot;EN-US&quot;&gt;&lt;font face=&quot;Calibri&quot;&gt;1&lt;/font&gt;&lt;/span&gt;&lt;span style=&quot;font-family:宋体;&quot;&gt;）多种知识表示方法的结合；&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
@@ -18677,7 +18945,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>场耦合到导线/电缆的预估</title>
    <link href="http://bo-yang.github.com//2008/03/10/field-coupling-prediction"/>
-   <updated>2008-03-10T00:00:00-04:00</updated>
+   <updated>2008-03-10T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2008/03/10/field-coupling-prediction</id>
    <content type="html">&lt;p&gt;这几天事情比较多，知道今天才完成&amp;nbsp;&amp;ldquo;场耦合到导线/电缆的预估&amp;rdquo;该部分的程序。&lt;/p&gt;
 &lt;p&gt;该程序依然是根据《电磁兼容原理与应用》一书中的QBASIC程序改编而成。程序运行截图如下：&lt;/p&gt;
@@ -18691,7 +18959,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>导线辐射预估</title>
    <link href="http://bo-yang.github.com//2008/03/07/wire-emi-prediction"/>
-   <updated>2008-03-07T00:00:00-05:00</updated>
+   <updated>2008-03-07T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/03/07/wire-emi-prediction</id>
    <content type="html">&lt;p&gt;今天完成了导线辐射预估的编程。导线辐射预估分为三部分：电流元预估、电流环路预估、谐振传输线预估。&lt;/p&gt;
 &lt;p&gt;因为涉及到很多电磁兼容专业公式，因此有需要代码的朋友可以和我联系。&lt;/p&gt;
@@ -18707,7 +18975,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>关于测试工程提示信息功能的说明</title>
    <link href="http://bo-yang.github.com//2008/03/03/mfc-test-project-info"/>
-   <updated>2008-03-03T00:00:00-05:00</updated>
+   <updated>2008-03-03T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/03/03/mfc-test-project-info</id>
    <content type="html">&lt;p align=&quot;center&quot;&gt;关于测试工程提示信息功能的说明&lt;/p&gt;
 &lt;p&gt;该功能的实现完全依赖于CPPToolTip类，该类可以在 &lt;a href=&quot;http://www.codeproject.com/&quot;&gt;http://www.codeproject.com/&lt;/a&gt;&lt;br /&gt;
@@ -19614,7 +19882,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>加载真彩色工具栏</title>
    <link href="http://bo-yang.github.com//2008/03/02/mfc-real-color-toolbar"/>
-   <updated>2008-03-02T00:00:00-05:00</updated>
+   <updated>2008-03-02T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/03/02/mfc-real-color-toolbar</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 首先利用&lt;strong&gt;Visual Toolbar工具&lt;/strong&gt;将自.bmp图片制作成工具条。&lt;strong&gt;Visual Toolbar工具&lt;/strong&gt;可以利用Google去搜，尽管这款软件需要注册，但笔者不提倡下载注册机破解注册或者直接下载破解版。&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;然后在VC的资源中添加工具栏，导入已经制作好的工具条（此时为bmp格式），然后利用CtrueColorToolBar 类加载图片到工具条。CtrueColorToolBar 类的下载地址为：&lt;a href=&quot;http://www.codeproject.com/docking/TrueColorToolBar.asp&quot;&gt;http://www.codeproject.com/docking/TrueColorToolBar.asp&lt;/a&gt;&lt;/p&gt;
@@ -19634,7 +19902,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>关于ROHDE&SCHWARZ公司电流探头EZ-17系数修正的说明</title>
    <link href="http://bo-yang.github.com//2008/02/29/interpolation-ez-17"/>
-   <updated>2008-02-29T00:00:00-05:00</updated>
+   <updated>2008-02-29T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/02/29/interpolation-ez-17</id>
    <content type="html">&lt;p align=&quot;center&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;关于EZ-17探头系数修正的说明&lt;/p&gt;
 &lt;p&gt;///// 电流探头EZ17测试结果修正&amp;nbsp;/////&lt;br /&gt;// 根据ROHDE&amp;amp;SCHWARZ公司的手册，EZ17的测试结果需要&lt;br /&gt;// 进行修正，加上转移电阻K。由手册给出的曲线(第二页)&lt;br /&gt;// 和测试数据(第12页，表4-1),可知在对数坐标中，500KHz&lt;br /&gt;// 以下可看作一条直线；500KHz～10MHz为一非线性变化段；&lt;br /&gt;// 10MHz～200MHz为另一非线性变化段。据此，对测试数据进行&lt;br /&gt;// 校正。以下所有拟合函数均为对数坐标系下的拟合函数。&lt;br /&gt;//&lt;br /&gt;// 20Hz～500KHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p1=-19.1838*x-8.1953&lt;br /&gt;// 500KHz～10MHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p4=18.2253*x^4-31.3557*x^3+16.5565*x^2-6.6261*x-6.8&lt;br /&gt;// 10MHz～20MHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p0=-10&lt;br /&gt;//&amp;nbsp;20MHz～100MHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p2=0.1157*x^2-0.0959*x-10.0711&lt;br /&gt;// 100MHz～200MHz拟合函数为：&lt;br /&gt;//&amp;nbsp;&amp;nbsp;p3=175.6*x^3-1044.5*x^2+2067.7*x-1371.9&lt;br /&gt;//&amp;nbsp;以上各式中，x为频率的对数，p为频率所对应的修正因子。&lt;br /&gt;//&lt;/p&gt;
@@ -19648,7 +19916,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>利用VC绘制对数坐标系</title>
    <link href="http://bo-yang.github.com//2008/02/21/draw-log-coordination"/>
-   <updated>2008-02-21T00:00:00-05:00</updated>
+   <updated>2008-02-21T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/02/21/draw-log-coordination</id>
    <content type="html">&lt;p&gt;&lt;span style=&quot;font-weight:bold;&quot;&gt;&lt;br /&gt;
 &lt;/span&gt;&lt;/p&gt;
@@ -19773,7 +20041,7 @@ both. The following naming conventions apply to all cdma2000 standards.&lt;/p&gt
  <entry>
    <title>关于属性页和属性单的应用总结</title>
    <link href="http://bo-yang.github.com//2008/02/16/mfc-propertypage"/>
-   <updated>2008-02-16T00:00:00-05:00</updated>
+   <updated>2008-02-16T00:00:00-08:00</updated>
    <id>http://bo-yang.github.com//2008/02/16/mfc-propertypage</id>
    <content type="html">&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;关于属性页和属性单的应用总结&lt;/p&gt;
 &lt;p&gt;1、属性页(CPropertyPage)中获取&lt;br /&gt;&amp;nbsp;(1) 程序主框架指针：CMainFrame* pMainFrame=(CMainFrame*)AfxGetMainWnd();&lt;br /&gt;&amp;nbsp;(2) 程序子框架指针：CChildFrame* pframe=(CChildFrame*)((CMainFrame*)AfxGetMainWnd())-&amp;gt;GetActiveFrame();&lt;br /&gt;&amp;nbsp;(3) 程序活动文档指针：CEMCDoc* m_pDoc=(CEMCDoc*)pframe-&amp;gt;GetActiveDocument();&amp;nbsp;//获取活动的文档&lt;br /&gt;&amp;nbsp;(4) 属性单(CPropertySheet)指针：CMyPropertySheet* pSheet=(CMyPropertySheet*)this-&amp;gt;GetParent();&amp;nbsp;// 获取CMyPropertySheet指针&lt;br /&gt;&amp;nbsp;(5) 程序活动视图指针：CEMCView* pView=(CEMCView*)pframe-&amp;gt;GetActiveView();&amp;nbsp;// 获取活动视图&lt;/p&gt;

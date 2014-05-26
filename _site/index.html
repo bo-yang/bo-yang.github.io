@@ -77,6 +77,281 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2014/05/26/binary-tree-traversal">Binary Tree Traversal</a></h2>
+        <p>
+          Posted by <strong>boyang</strong> at <strong>2014-05-26</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and Breadth First Search(BFS). Depth First Search visits the tree by proceeding deeper and deeper until it reaches the leaf nodes, including pre-order, in-order, and post-order tree traversal. DFS uses a data structure called Stack.</p>
+
+<p>Breadth First Search is the most natural solution for level-order traversal, since it visits the nodes level by level. BFS requires the use of a data structure called Queue, which is a First In First Out (FIFO) structure.</p>
+
+<p>For the complete C++ source code used in this article, please refer to: https://github.com/bo-yang/misc/blob/master/BTtraverse.cc.</p>
+
+<h3 id="data-structure">Data Structure</h3>
+
+<p>The data structure used for binary tree is very simple, which is adopted from <a href="https://oj.leetcode.com/problems/binary-tree-inorder-traversal/">LeetCode OJ</a>:</p>
+
+<pre><code>struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+	TreeNode() : val(0), left(NULL), right(NULL) {}
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+</code></pre>
+
+<p>The constructing function TreeNode() is added to purely because it is easier to dynamically allocate TreeNode array by <code>new TreeNode[size]</code>. C++98 doesn’t support specifying default arguments for objects allocated by <code>new</code>. However, the TreeNode array can simplify the process of building binary trees. </p>
+
+<h3 id="build-binary-tree">Build Binary Tree</h3>
+
+<p>In my implementation, binary trees are built from a vector of strings. For example, given sequence {1,2,3,#,#,4,#,#,5}, the following binary tree can be built:</p>
+
+<pre>
+	  1
+	 / \
+	2   3
+	   /
+	  4
+	   \
+	    5
+</pre>
+
+<p>The tree is built layer by layer, where the first element in sequence is viewed as the root node. Here the “#” is used as terminator. </p>
+
+<p>For each node other than the last layer, there are two children in the next layer, either a number(or string) or a “#”(invalid node). When parsing nodes in current layer, count the number of elements in next layer. The exception is for “#”s - they have no child nodes. In this way, we can parse the dependency of nodes layer by layer. </p>
+
+<p>Following is the C++ code for building binary trees:</p>
+
+<pre><code>TreeNode* BuildTree(vector&lt;string&gt;&amp; t) {
+	tree=new TreeNode[t.size()];
+
+	// Build binary tree from vector of strings, where # denotes an invalid node.
+	//
+	// The main idea is to parse vector of strings(nodes) layer by layer. 
+	// The first item in the vector should be the root node, and the number of
+	// first layer is one. When parsing the first layer, count the nodes of the
+	// second layer, and so on.
+	int idx=0;
+	int nodes_cur_layer=1;
+	vector&lt;string&gt;::iterator it=t.begin(); 
+	while(idx&lt;t.size()) {
+		int nodes_next_layer=0; // all nodes, including #s
+		int vi=0;	// index of valid nodes in current layer
+		for(int i=0;i&lt;nodes_cur_layer;++i) {
+			if(*(it+i)=="#") { // Skip #s
+				continue;
+			}
+
+			int left=nodes_cur_layer+2*vi;
+			int right=nodes_cur_layer+2*vi+1;
+			if(idx+left&lt;t.size() &amp;&amp; *(it+left)!="#" ) {
+				tree[idx+i].left=&amp;tree[idx+left];
+			} else {
+				tree[idx+i].left=NULL;
+			}
+			if(idx+right&lt;t.size() &amp;&amp; *(it+right)!="#") {
+				tree[idx+i].right=&amp;tree[idx+right];
+			} else {
+				tree[idx+i].right=NULL;
+			}
+
+			nodes_next_layer+=2;
+			tree[idx+i].val=atoi((it+i)-&gt;c_str());
+			vi++;
+		}
+
+		idx+=nodes_cur_layer;
+		it+=nodes_cur_layer;
+		nodes_cur_layer=nodes_next_layer;
+		layers++;
+	}
+
+	return &amp;tree[0];	// root of the tree
+}
+</code></pre>
+
+<h3 id="preorder-traversal">Preorder Traversal</h3>
+
+<p>To traverse a binary tree in Preorder, following operations are carried-out 
+1. Visit the root, 
+2. Traverse the left subtree, and 
+3. Traverse the right subtree. </p>
+
+<p>For the example binary tree {1,2,3,#,#,4,#,#,5}, the preorder traversal is:</p>
+
+<p><code>
+1,2,3,4,5
+</code></p>
+
+<p>Following is my C++ implementation of preorder traversal(<a href="http://en.wikipedia.org/wiki/Tree_traversal#Implementations">Pseudo Code</a>):</p>
+
+<pre><code>vector&lt;int&gt; PreorderTraversal(TreeNode *root) {
+	vector&lt;int&gt; trace;
+	stack&lt;TreeNode*&gt; st;
+	while(root!=NULL) {
+		trace.push_back(root-&gt;val); // Visit the root
+		if(root-&gt;left!=NULL) {	// Traverse the left subtree
+			TreeNode* tmp=root;
+			root=root-&gt;left;
+			if(tmp-&gt;right!=NULL)
+				st.push(tmp-&gt;right);	// store the root of the right subtree
+		} else if(root-&gt;right!=NULL) {
+			root=root-&gt;right;
+		} else {
+			if(st.empty()) {
+				root=NULL;
+			} else {
+				root=st.top();
+				st.pop();
+			}
+		}
+	} // end of while
+	return trace;
+}
+</code></pre>
+
+<h3 id="inorder-traversal">Inorder Traversal</h3>
+
+<p>To traverse a binary tree in Inorder, following operations are carried-out:
+1. Traverse the leftmost subtree starting at the left external node,
+2. Visit the root, and 
+3. Traverse the right subtree starting at the left external node.</p>
+
+<p>For the example binary tree {1,2,3,#,#,4,#,#,5}, the inorder traversal is:</p>
+
+<p><code>
+2,1,4,5,3
+</code></p>
+
+<p>Following is my C++ implementation of inorder traversal(<a href="http://en.wikipedia.org/wiki/Tree_traversal#Implementations">Pseudo Code</a>):</p>
+
+<pre><code>vector&lt;int&gt; InorderTraversal(TreeNode *root) {
+	vector&lt;int&gt; trace;
+	stack&lt;TreeNode&gt; st;
+    while(root!=NULL) {
+		// Find the left-most node
+		if(root-&gt;left!=NULL) {
+			TreeNode tmp=*root;
+			root=root-&gt;left;
+			tmp.left=NULL;
+			st.push(tmp);	// store the root of the right subtree
+		} else if(root-&gt;right!=NULL) {
+			// Handle the right subtree
+			trace.push_back(root-&gt;val); // Visit leftmost node
+			root=root-&gt;right;
+		} else {
+			trace.push_back(root-&gt;val); // Visit leaf/root node
+			if(st.empty()) {
+				root=NULL;
+			} else {
+				root=&amp;(st.top());
+				st.pop();
+			}
+		}
+	}
+	return trace;
+}
+</code></pre>
+
+<h3 id="postorder-traversal">Postorder Traversal</h3>
+
+<p>To traverse a binary tree in Postorder, following operations are carried-out: 
+1. Traverse all the left external nodes starting with the leftmost subtree which is then followed by bubble-up all the internal nodes, 
+2. Traverse the right subtree starting at the left external node which is then followed by bubble-up all the internal nodes, and 
+3. Visit the root.</p>
+
+<p>For the example binary tree {1,2,3,#,#,4,#,#,5}, the postorder traversal is:</p>
+
+<p><code>
+2,5,4,3,1
+</code></p>
+
+<p>Following is my C++ implementation of postorder traversal(<a href="http://en.wikipedia.org/wiki/Tree_traversal#Implementations">Pseudo Code</a>):</p>
+
+<pre><code>vector&lt;int&gt; PostorderTraversal(TreeNode *root) {
+	vector&lt;int&gt; trace;
+	stack&lt;TreeNode&gt; st;
+    while(root!=NULL) {
+		// Find the left-most node
+		if(root-&gt;left!=NULL) {
+			TreeNode tmp=*root;
+			root=root-&gt;left;
+			tmp.left=NULL;
+			st.push(tmp);	// store the root of the right subtree
+		} else if(root-&gt;right!=NULL) {
+			TreeNode tmp=*root;
+			root=root-&gt;right;
+			tmp.left=NULL;
+			tmp.right=NULL;
+			st.push(tmp);	// store the root
+		} else {
+			trace.push_back(root-&gt;val);	// Print root at last
+			if(st.empty()) {
+				root=NULL;
+			} else {
+				root=&amp;(st.top());
+				st.pop();
+			}
+		}
+	}
+	return trace;
+}
+</code></pre>
+
+<h3 id="breadth-first-traversalbft">Breadth First Traversal(BFT)</h3>
+
+<p>Breadth first traversal is used for printing the binary tree in my code. The key of for BFT is to use a queue(s) to store nodes in current and/or next layers. The simplest way to use two queues: one to store nodes of current layer and the other for next layer. </p>
+
+<p>However, a single queue also can work well. For the first layer, there is only one node - the root. When accessing this node, count the number of nodes in the second layer and push them into queue. When accessing the second layer, pop items in FIFO sequence and remove them from queue, and push the nodes in third layer into queue, and so on. Two inteher variables can be used to count the numbers of nodes in current layer and the next layer, respectively.</p>
+
+<p>Following is my C++ impementation of traversing binary tree in level order:</p>
+
+<pre><code>void PrintTree(TreeNode *root) {
+	queue&lt;TreeNode*&gt; q;
+	TreeNode* tmp=root;
+	q.push(tmp);
+	int nodes_cur_layer=1; // # of nodes in current layer
+	int nodes_next_layer=0;	// # of nodes in next layer
+	while(nodes_cur_layer&gt;0) {
+		for(int i=0;i&lt;nodes_cur_layer;++i) {
+			tmp=q.front();
+			q.pop();
+
+			cout&lt;&lt;tmp-&gt;val&lt;&lt;" ";
+
+			if(tmp-&gt;left!=NULL) {
+				q.push(tmp-&gt;left);
+				nodes_next_layer++;
+			}
+			if(tmp-&gt;right!=NULL) {
+				q.push(tmp-&gt;right);
+				nodes_next_layer++;
+			}
+		}
+		cout&lt;&lt;endl;
+		nodes_cur_layer=nodes_next_layer;
+		nodes_next_layer=0;
+	}
+}
+</code></pre>
+
+<h3 id="references">References</h3>
+<ol>
+  <li>https://oj.leetcode.com/problems/binary-tree-inorder-traversal/</li>
+  <li><a href="http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html">Binary tree traversal: Preorder, Inorder, and Postorder</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/Tree_traversal">Tree Traversal</a></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></h2>
         <p>
           Posted by <strong>boyang</strong> at <strong>2014-04-30</strong> with tags <a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>, <a href="/tags.html#Fisher Vector-ref" rel="nofollow">Fisher Vector</a>, <a href="/tags.html#SVM-ref" rel="nofollow">SVM</a>
@@ -757,25 +1032,6 @@ make: *** [all] Error 2</pre>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2013/06/12/matlab-startup-script">Matlab Startup Script</a></h2>
-        <p>
-          Posted by <strong>boyang</strong> at <strong>2013-06-12</strong> with tags <a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>You can create a script named <code>startup.m</code> under <em>userpath</em>(in Windows and Mac OSX, default path is <tt><code>Documents/MATLAB</code></tt>). You can add whatever Matlab commands you want into <code>startup.m</code>. For example, to add <code>/usr/local/bin</code> into PATH, you can add command</p>
-<p><code>setenv('PATH', [getenv('PATH') ':/usr/local/bin']);</code></p>
-<p>into <code>startup.m</code>.</p>
-<p>BTW, every time Matlab starts, configure file <code>$MATLABROOT/toolbox/local/matlabrc.m</code> will be executed.</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -885,6 +1141,9 @@ make: *** [all] Error 2</pre>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
+            Binary Tree Traversal</a></li>
+        
           <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
             Action Recognition with Fisher Vectors</a></li>
         
@@ -912,9 +1171,6 @@ make: *** [all] Error 2</pre>
           <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
             Build Dense Trajectory Codes in Ubuntu</a></li>
         
-          <li><span>2013-06-12</span> &raquo; <a href="/2013/06/12/matlab-startup-script">
-            Matlab Startup Script</a></li>
-        
         </ul>
         
       </div>
@@ -931,7 +1187,7 @@ make: *** [all] Error 2</pre>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>7</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>8</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1015,7 +1271,7 @@ make: *** [all] Error 2</pre>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>1</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>2</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
