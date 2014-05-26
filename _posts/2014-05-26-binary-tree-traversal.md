@@ -17,7 +17,7 @@ There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and
 
 Breadth First Search is the most natural solution for level-order traversal, since it visits the nodes level by level. BFS requires the use of a data structure called Queue, which is a First In First Out (FIFO) structure.
 
-For the complete C++ source code used in this article, please refer to: https://github.com/bo-yang/misc/blob/master/BTtraverse.cc.
+For the complete C++ source code used in this article, please refer to: [https://github.com/bo-yang/misc/blob/master/BTtraverse.cc](https://github.com/bo-yang/misc/blob/master/BTtraverse.cc).
 
 ### Data Structure
 
