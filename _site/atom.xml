@@ -4,7 +4,7 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-05-27T08:15:37-07:00</updated>
+ <updated>2014-05-30T17:56:43-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
@@ -21,22 +21,45 @@
 
 &lt;p&gt;Breadth First Search is the most natural solution for level-order traversal, since it visits the nodes level by level. BFS requires the use of a data structure called Queue, which is a First In First Out (FIFO) structure.&lt;/p&gt;
 
-&lt;p&gt;For the complete C++ source code used in this article, please refer to: &lt;a href=&quot;https://github.com/bo-yang/misc/blob/master/BTtraverse.cc&quot;&gt;https://github.com/bo-yang/misc/blob/master/BTtraverse.cc&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For the complete C++ source code used in this article, please refer to: &lt;a href=&quot;https://github.com/bo-yang/BinaryTree&quot;&gt;https://github.com/bo-yang/BinaryTree&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&quot;data-structure&quot;&gt;Data Structure&lt;/h3&gt;
 
-&lt;p&gt;The data structure used for binary tree is very simple, which is adopted from &lt;a href=&quot;https://oj.leetcode.com/problems/binary-tree-inorder-traversal/&quot;&gt;LeetCode OJ&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;The data structure used for the tree node is very simple, which is adopted from &lt;a href=&quot;https://oj.leetcode.com/problems/binary-tree-inorder-traversal/&quot;&gt;LeetCode OJ&lt;/a&gt;:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;struct TreeNode {
     int val;
     TreeNode *left;
     TreeNode *right;
-	TreeNode() : val(0), left(NULL), right(NULL) {}
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The constructing function TreeNode() is added to purely because it is easier to dynamically allocate TreeNode array by &lt;code&gt;new TreeNode[size]&lt;/code&gt;. C++98 doesn’t support specifying default arguments for objects allocated by &lt;code&gt;new&lt;/code&gt;. However, the TreeNode array can simplify the process of building binary trees. &lt;/p&gt;
+&lt;strike&gt;The constructing function TreeNode() is added to purely because it is easier to dynamically allocate TreeNode array by `new TreeNode[size]`. C++98 doesn&#39;t support specifying default arguments for objects allocated by `new`. However, the TreeNode array can simplify the process of building binary trees.&lt;/strike&gt;
+
+&lt;p&gt;The data structure for the binary tree is:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class BinaryTree {
+public:
+	BinaryTree() { root=NULL;layers=0; }
+	BinaryTree(vector&amp;lt;string&amp;gt;&amp;amp; t) { BuildTree(t); }
+	~BinaryTree();
+	TreeNode* GetRoot() { return root; }
+	vector&amp;lt;int&amp;gt; PreorderTraversal(TreeNode *root);
+	vector&amp;lt;int&amp;gt; InorderTraversal(TreeNode *root);
+	vector&amp;lt;int&amp;gt; PostorderTraversal(TreeNode *root);
+	vector&amp;lt;vector&amp;lt;int&amp;gt; &amp;gt; ZigzagLevelOrder(TreeNode *root);
+	void PrintTraversal(vector&amp;lt;int&amp;gt;&amp;amp; vec, string type);
+	void PrintTraversal(vector&amp;lt;vector&amp;lt;int&amp;gt; &amp;gt;&amp;amp; vec, string type);
+	TreeNode* BuildTree(vector&amp;lt;string&amp;gt;&amp;amp; t);
+	void PrintTree(TreeNode *root);
+	bool IsSameTree(TreeNode *p, TreeNode *q);
+
+private:
+	TreeNode* root;
+	int layers;	// number of layers
+};
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&quot;build-binary-tree&quot;&gt;Build Binary Tree&lt;/h3&gt;
 
@@ -48,8 +71,8 @@
 	2   3
 	   /
 	  4
-	   \
-	    5
+	 / \
+	5   6
 &lt;/pre&gt;
 
 &lt;p&gt;The tree is built layer by layer, where the first element in sequence is viewed as the root node. Here the “#” is used as terminator. &lt;/p&gt;
@@ -59,10 +82,15 @@
 &lt;p&gt;Following is the C++ code for building binary trees:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;TreeNode* BuildTree(vector&amp;lt;string&amp;gt;&amp;amp; t) {
-	tree=new TreeNode[t.size()];
+	if(t.empty())
+		return NULL;
+
+	root=new TreeNode(-1);
+	TreeNode* tree=root;
+	queue&amp;lt;TreeNode*&amp;gt; q; // store nodes of next layer
+	q.push(tree);
 
 	// Build binary tree from vector of strings, where # denotes an invalid node.
-	//
 	// The main idea is to parse vector of strings(nodes) layer by layer. 
 	// The first item in the vector should be the root node, and the number of
 	// first layer is one. When parsing the first layer, count the nodes of the
@@ -70,30 +98,41 @@
 	int idx=0;
 	int nodes_cur_layer=1;
 	vector&amp;lt;string&amp;gt;::iterator it=t.begin(); 
-	while(idx&amp;lt;t.size()) {
+	while(idx&amp;lt;t.size()){
 		int nodes_next_layer=0; // all nodes, including #s
-		int vi=0;	// index of valid nodes in current layer
+		int vi=0;	// index of valid nodes in next layer
 		for(int i=0;i&amp;lt;nodes_cur_layer;++i) {
-			if(*(it+i)==&quot;#&quot;) { // Skip #s
+			if(idx+i&amp;lt;t.size() &amp;amp;&amp;amp; *(it+i)==&quot;#&quot;) { // Skip #s
 				continue;
 			}
 
-			int left=nodes_cur_layer+2*vi;
-			int right=nodes_cur_layer+2*vi+1;
-			if(idx+left&amp;lt;t.size() &amp;amp;&amp;amp; *(it+left)!=&quot;#&quot; ) {
-				tree[idx+i].left=&amp;amp;tree[idx+left];
-			} else {
-				tree[idx+i].left=NULL;
+			tree=q.front();
+			q.pop();
+
+			int left=nodes_cur_layer+nodes_next_layer;
+			int right=nodes_cur_layer+nodes_next_layer+1;
+			if(idx+left&amp;lt;t.size()) { // in case of out-of-boundary access
+				if(*(it+left)!=&quot;#&quot; ) {
+					tree-&amp;gt;left=new TreeNode(-1);
+					q.push(tree-&amp;gt;left);
+					vi++;
+				} else {
+					tree-&amp;gt;left=NULL;
+				}
+				nodes_next_layer++;
 			}
-			if(idx+right&amp;lt;t.size() &amp;amp;&amp;amp; *(it+right)!=&quot;#&quot;) {
-				tree[idx+i].right=&amp;amp;tree[idx+right];
-			} else {
-				tree[idx+i].right=NULL;
+			if(idx+right&amp;lt;t.size()) { // in case of out-of-boundary access
+				if(*(it+right)!=&quot;#&quot;) {
+					tree-&amp;gt;right=new TreeNode(-1);
+					q.push(tree-&amp;gt;right);
+					vi++;
+				} else {
+					tree-&amp;gt;right=NULL;
+				}
+				nodes_next_layer++;
 			}
 
-			nodes_next_layer+=2;
-			tree[idx+i].val=atoi((it+i)-&amp;gt;c_str());
-			vi++;
+			tree-&amp;gt;val=atoi((it+i)-&amp;gt;c_str());
 		}
 
 		idx+=nodes_cur_layer;
@@ -102,7 +141,40 @@
 		layers++;
 	}
 
-	return &amp;amp;tree[0];	// root of the tree
+	return root;	// root of the tree
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In order to delete the memroy dynamically allocated in function BuildTree(), in the desctructor, every node in the tree should be traversed and deleted. For simplicity, layer-by-layer traversal is used.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;~BinaryTree() {
+	if(root!=NULL) {
+		// delete allocated nodes iteratively
+		queue&amp;lt;TreeNode*&amp;gt; q;
+		TreeNode* tmp=root;
+		q.push(tmp);
+		int nodes_cur_layer=1; // # of nodes in current layer
+		int nodes_next_layer=0;	// # of nodes in next layer
+		while(nodes_cur_layer&amp;gt;0) {
+			for(int i=0;i&amp;lt;nodes_cur_layer;++i) {
+				tmp=q.front();
+				q.pop();
+
+				if(tmp-&amp;gt;left!=NULL) {
+					q.push(tmp-&amp;gt;left);
+					nodes_next_layer++;
+				}
+				if(tmp-&amp;gt;right!=NULL) {
+					q.push(tmp-&amp;gt;right);
+					nodes_next_layer++;
+				}
+
+				delete tmp;
+			}
+			nodes_cur_layer=nodes_next_layer;
+			nodes_next_layer=0;
+		}
+	}
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -113,10 +185,10 @@
 2. Traverse the left subtree, and 
 3. Traverse the right subtree. &lt;/p&gt;
 
-&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,#,5}, the preorder traversal is:&lt;/p&gt;
+&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,5,6}, the preorder traversal is:&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;
-1,2,3,4,5
+1,2,3,4,5,6
 &lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Following is my C++ implementation of preorder traversal(&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal#Implementations&quot;&gt;Pseudo Code&lt;/a&gt;):&lt;/p&gt;
@@ -153,10 +225,10 @@
 2. Visit the root, and 
 3. Traverse the right subtree starting at the left external node.&lt;/p&gt;
 
-&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,#,5}, the inorder traversal is:&lt;/p&gt;
+&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,5,6}, the inorder traversal is:&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;
-2,1,4,5,3
+2,1,5,4,6,3
 &lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Following is my C++ implementation of inorder traversal(&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal#Implementations&quot;&gt;Pseudo Code&lt;/a&gt;):&lt;/p&gt;
@@ -196,10 +268,10 @@
 2. Traverse the right subtree starting at the left external node which is then followed by bubble-up all the internal nodes, and 
 3. Visit the root.&lt;/p&gt;
 
-&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,#,5}, the postorder traversal is:&lt;/p&gt;
+&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,5,6}, the postorder traversal is:&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;
-2,5,4,3,1
+2,5,6,4,3,1
 &lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Following is my C++ implementation of postorder traversal(&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal#Implementations&quot;&gt;Pseudo Code&lt;/a&gt;):&lt;/p&gt;
@@ -270,6 +342,136 @@
 	}
 }
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;zigzag-traversal&quot;&gt;Zigzag Traversal&lt;/h3&gt;
+
+&lt;p&gt;Zigzag level order traversal is a Breadth First Traversal(BFT). The procedure  of this traversal is (i) from left to right, (ii) then right to left for the next level, (iii) and alternate between). &lt;/p&gt;
+
+&lt;p&gt;For the example binary tree {1,2,3,#,#,4,#,5,6}, the postorder traversal is:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+[[1],[3,2],[4],[6,5]]
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Although zigzag traversal is kind of BFT, it is not easy to use one or two queues to implement it, because you need to traverse every layer from left to right, and print nodes from right to left for some layers. Since I don’t want to use three queues(one to store the nodes of current layer, the other two store the left-to-right traversal of next layer, but one of them should be used for left-to-right traveral in next iteration and the other used for right-to-left printing), I implemented the zigzag traversal with two lists: one list to store the left-to-right traversal of current layer, and the other list for storing left-to-right traversal of next layer. During printing, the same list can be controlled to output nodes either from left to right or right to left without loosing any information(unlike queue, quque is not iterable).&lt;/p&gt;
+
+&lt;p&gt;Following is my code for zigzag traversal. Note that the output is a vector of vectors.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vector&amp;lt;vector&amp;lt;int&amp;gt; &amp;gt; ZigzagLevelOrder(TreeNode *root) {
+    vector&amp;lt;vector&amp;lt;int&amp;gt; &amp;gt; trace;
+	list&amp;lt;TreeNode*&amp;gt; lst_cur;
+	int next_layer_nodes=0;
+	int cur_layer_nodes;
+	bool l2r=true;
+	if(root!=NULL) {
+		cur_layer_nodes=1;
+		lst_cur.push_back(root);
+	}else{
+		return trace;
+	}
+
+	// Use two lists for left to right traversal and vice versa: 
+	// one list used for storing nodes of current layer, and the 
+	// other used for storing nodes layer below.
+	//
+	// The binary tree will always be traversed from left to right 
+	// for each layer, however, for every other layer, the nodes will
+	// be printed from right to left.
+	while(cur_layer_nodes&amp;gt;0) {
+		vector&amp;lt;int&amp;gt; subtr;
+		list&amp;lt;TreeNode*&amp;gt; lst_next;
+		list&amp;lt;TreeNode*&amp;gt;::iterator lr=lst_cur.begin();
+		list&amp;lt;TreeNode*&amp;gt;::iterator rl=lst_cur.end();
+		for(int i=0;i&amp;lt;cur_layer_nodes;++i) {
+			TreeNode* tn = *(lr);
+			if(l2r) {
+				subtr.push_back((*(lr))-&amp;gt;val);
+			} else {
+				rl--; // lst_cur.end() points to undefined memory
+				subtr.push_back((*(rl))-&amp;gt;val);
+			}
+			
+			if(tn-&amp;gt;left!=NULL) {
+				next_layer_nodes++;
+				lst_next.push_back(tn-&amp;gt;left);
+			}
+
+			if(tn-&amp;gt;right!=NULL) {
+				next_layer_nodes++;
+				lst_next.push_back(tn-&amp;gt;right);
+			}
+
+			lr++;
+		} // end for
+		trace.push_back(subtr);
+		cur_layer_nodes=next_layer_nodes;
+		next_layer_nodes=0;
+		lst_cur=lst_next;
+		l2r=!l2r;
+	} // end while
+
+	return trace;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;binary-tree-comparison&quot;&gt;Binary Tree Comparison&lt;/h3&gt;
+
+&lt;p&gt;As for the comparison of two binary trees, only equality is considered. Two binary trees are considered equal if they are structurally identical and the nodes have the same value. To implement this, two trees should be traversed at the same time using same traverse method. If for every pair of nodes, the values are equal, and both of them have left child and right child, then the two nodes are considered equal.&lt;/p&gt;
+
+&lt;p&gt;For simplicity, Breadth First Traversal is used in my implementation:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bool IsSameTree(TreeNode *p, TreeNode *q) {
+	bool same_tree=true;
+    queue&amp;lt;TreeNode*&amp;gt; qp;
+	queue&amp;lt;TreeNode*&amp;gt; qq;
+	int cur_layer_nodes;
+	int next_layer_nodes=0;
+	if(p!=NULL &amp;amp;&amp;amp; q!=NULL) {
+		cur_layer_nodes=1;
+		qp.push(p);
+		qq.push(q);
+	} else if(p==NULL &amp;amp;&amp;amp; q==NULL) {
+		return true;
+	} else {
+		return false;
+	}
+
+	// Traverse trees layer by layer
+	while(cur_layer_nodes&amp;gt;0) {
+		next_layer_nodes=0;
+		for(int i=0;i&amp;lt;cur_layer_nodes;++i) {
+			TreeNode* tp=qp.front();
+			qp.pop();
+			TreeNode* tq=qq.front();
+			qq.pop();
+
+			if((tp-&amp;gt;val!=tq-&amp;gt;val) || (tp-&amp;gt;left==NULL) &amp;amp;&amp;amp; (tq-&amp;gt;left!=NULL) || (tp-&amp;gt;left!=NULL) &amp;amp;&amp;amp; (tq-&amp;gt;left==NULL) || (tp-&amp;gt;right==NULL) &amp;amp;&amp;amp; (tq-&amp;gt;right!=NULL) || (tp-&amp;gt;right!=NULL) &amp;amp;&amp;amp; (tq-&amp;gt;right==NULL)) {
+				same_tree=false;
+				break;
+			}
+
+			if(tp-&amp;gt;left!=NULL) {
+				qp.push(tp-&amp;gt;left);
+				qq.push(tq-&amp;gt;left);
+				next_layer_nodes++;
+			}
+
+			if(tp-&amp;gt;right!=NULL) {
+				qp.push(tp-&amp;gt;right);
+				qq.push(tq-&amp;gt;right);
+				next_layer_nodes++;
+			}
+		} // end for
+		cur_layer_nodes=next_layer_nodes;
+		if(!same_tree)
+			break;
+	} // end while
+
+	return same_tree;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;[Updated 05/30/2014]&lt;/em&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
 &lt;ol&gt;
