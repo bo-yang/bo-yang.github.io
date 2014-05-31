@@ -77,19 +77,30 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
-        <h2><a href="/2014/05/26/binary-tree-traversal">Binary Tree Traversal</a></h2>
+        <h2><a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></h2>
         <p>
           Posted by <strong>Bo Yang</strong> at <strong>2014-05-26</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
         </p>
         
         <div class="post_at_index thepost">
-        <p>There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and Breadth First Search(BFS). Depth First Search visits the tree by proceeding deeper and deeper until it reaches the leaf nodes, including pre-order, in-order, and post-order tree traversal. DFS uses a data structure called Stack.</p>
+        <p>There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and Breadth First Search(BFS). Depth First Search visits the tree by proceeding deeper and deeper until it reaches the leaf nodes, including pre-order, in-order, post-order tree traversal. DFS uses a data structure called Stack.</p>
 
 <p>Breadth First Search is the most natural solution for level-order traversal, since it visits the nodes level by level. BFS requires the use of a data structure called Queue, which is a First In First Out (FIFO) structure.</p>
 
 <p>For the complete C++ source code used in this article, please refer to: <a href="https://github.com/bo-yang/BinaryTree">https://github.com/bo-yang/BinaryTree</a>.</p>
 
-<h3 id="data-structure">Data Structure</h3>
+<ol>
+  <li><a href="#data_structure">Data Structure</a></li>
+  <li><a href="#build_tree">Build Binary Tree</a></li>
+  <li><a href="#preorder">Preorder Traversal</a></li>
+  <li><a href="#inorder">Inorder Traversal</a></li>
+  <li><a href="#postorder">Postorder Traversal</a></li>
+  <li><a href="#bft">Breadth First Traversal</a></li>
+  <li><a href="#zigzag">Zigzag Traversal</a></li>
+  <li><a href="#comparison">Binary Tree Comparison</a></li>
+</ol>
+
+<h3 id="a-namedatastructuredata-structurea"><a name="data_structure">Data Structure</a></h3>
 
 <p>The data structure used for the tree node is very simple, which is adopted from <a href="https://oj.leetcode.com/problems/binary-tree-inorder-traversal/">LeetCode OJ</a>:</p>
 
@@ -127,7 +138,7 @@ private:
 };
 </code></pre>
 
-<h3 id="build-binary-tree">Build Binary Tree</h3>
+<h3 id="a-namebuildtreebuild-binary-treea"><a name="build_tree">Build Binary Tree</a></h3>
 
 <p>In my implementation, binary trees are built from a vector of strings. For example, given sequence {1,2,3,#,#,4,#,#,5}, the following binary tree can be built:</p>
 
@@ -244,7 +255,7 @@ private:
 }
 </code></pre>
 
-<h3 id="preorder-traversal">Preorder Traversal</h3>
+<h3 id="a-namepreorderpreorder-traversala"><a name="preorder">Preorder Traversal</a></h3>
 
 <p>To traverse a binary tree in Preorder, following operations are carried-out 
 1. Visit the root, 
@@ -284,7 +295,7 @@ private:
 }
 </code></pre>
 
-<h3 id="inorder-traversal">Inorder Traversal</h3>
+<h3 id="a-nameinorderinorder-traversala"><a name="inorder">Inorder Traversal</a></h3>
 
 <p>To traverse a binary tree in Inorder, following operations are carried-out:
 1. Traverse the leftmost subtree starting at the left external node,
@@ -327,7 +338,7 @@ private:
 }
 </code></pre>
 
-<h3 id="postorder-traversal">Postorder Traversal</h3>
+<h3 id="a-namepostorderpostorder-traversala"><a name="postorder">Postorder Traversal</a></h3>
 
 <p>To traverse a binary tree in Postorder, following operations are carried-out: 
 1. Traverse all the left external nodes starting with the leftmost subtree which is then followed by bubble-up all the internal nodes, 
@@ -372,7 +383,7 @@ private:
 }
 </code></pre>
 
-<h3 id="breadth-first-traversalbft">Breadth First Traversal(BFT)</h3>
+<h3 id="a-namebftbreadth-first-traversalbfta"><a name="bft">Breadth First Traversal(BFT)</a></h3>
 
 <p>Breadth first traversal is used for printing the binary tree in my code. The key of for BFT is to use a queue(s) to store nodes in current and/or next layers. The simplest way to use two queues: one to store nodes of current layer and the other for next layer. </p>
 
@@ -409,7 +420,7 @@ private:
 }
 </code></pre>
 
-<h3 id="zigzag-traversal">Zigzag Traversal</h3>
+<h3 id="a-namezigzagzigzag-traversala"><a name="zigzag">Zigzag Traversal</a></h3>
 
 <p>Zigzag level order traversal is a Breadth First Traversal(BFT). The procedure  of this traversal is (i) from left to right, (ii) then right to left for the next level, (iii) and alternate between). </p>
 
@@ -480,7 +491,7 @@ private:
 }
 </code></pre>
 
-<h3 id="binary-tree-comparison">Binary Tree Comparison</h3>
+<h3 id="a-namecomparisonbinary-tree-comparisona"><a name="comparison">Binary Tree Comparison</a></h3>
 
 <p>As for the comparison of two binary trees, only equality is considered. Two binary trees are considered equal if they are structurally identical and the nodes have the same value. To implement this, two trees should be traversed at the same time using same traverse method. If for every pair of nodes, the values are equal, and both of them have left child and right child, then the two nodes are considered equal.</p>
 
@@ -1344,7 +1355,7 @@ make: *** [all] Error 2</pre>
         <ul>
         
           <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
-            Binary Tree Traversal</a></li>
+            Binary Tree Operations</a></li>
         
           <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
             Action Recognition with Fisher Vectors</a></li>

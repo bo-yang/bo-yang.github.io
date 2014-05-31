@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Binary Tree Traversal
+title: Binary Tree Operations
 categories: 
 - Algorithm
 - C/C++
@@ -13,13 +13,23 @@ published: true
 author: Bo Yang
 ---
 
-There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and Breadth First Search(BFS). Depth First Search visits the tree by proceeding deeper and deeper until it reaches the leaf nodes, including pre-order, in-order, and post-order tree traversal. DFS uses a data structure called Stack.
+There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and Breadth First Search(BFS). Depth First Search visits the tree by proceeding deeper and deeper until it reaches the leaf nodes, including pre-order, in-order, post-order tree traversal. DFS uses a data structure called Stack.
 
 Breadth First Search is the most natural solution for level-order traversal, since it visits the nodes level by level. BFS requires the use of a data structure called Queue, which is a First In First Out (FIFO) structure.
 
 For the complete C++ source code used in this article, please refer to: [https://github.com/bo-yang/BinaryTree](https://github.com/bo-yang/BinaryTree).
 
-### Data Structure
+1. [Data Structure](#data_structure)
+2. [Build Binary Tree](#build_tree)
+3. [Preorder Traversal](#preorder)
+4. [Inorder Traversal](#inorder)
+5. [Postorder Traversal](#postorder)
+6. [Breadth First Traversal](#bft)
+7. [Zigzag Traversal](#zigzag)
+8. [Binary Tree Comparison](#comparison)
+
+
+### <a name="data_structure">Data Structure</a>
 
 The data structure used for the tree node is very simple, which is adopted from [LeetCode OJ](https://oj.leetcode.com/problems/binary-tree-inorder-traversal/):
 
@@ -56,7 +66,7 @@ The data structure for the binary tree is:
 	};
 
 
-### Build Binary Tree
+### <a name="build_tree">Build Binary Tree</a>
 
 In my implementation, binary trees are built from a vector of strings. For example, given sequence {1,2,3,#,#,4,#,#,5}, the following binary tree can be built:
 
@@ -172,7 +182,7 @@ In order to delete the memroy dynamically allocated in function BuildTree(), in 
 	}
 
 
-### Preorder Traversal
+### <a name="preorder">Preorder Traversal</a>
 
 To traverse a binary tree in Preorder, following operations are carried-out 
 1. Visit the root, 
@@ -211,7 +221,7 @@ Following is my C++ implementation of preorder traversal([Pseudo Code](http://en
 		return trace;
 	}
 
-### Inorder Traversal
+### <a name="inorder">Inorder Traversal</a>
 
 To traverse a binary tree in Inorder, following operations are carried-out:
 1. Traverse the leftmost subtree starting at the left external node,
@@ -253,7 +263,7 @@ Following is my C++ implementation of inorder traversal([Pseudo Code](http://en.
 		return trace;
 	}
 
-### Postorder Traversal
+### <a name="postorder">Postorder Traversal</a>
 
 To traverse a binary tree in Postorder, following operations are carried-out: 
 1. Traverse all the left external nodes starting with the leftmost subtree which is then followed by bubble-up all the internal nodes, 
@@ -297,7 +307,7 @@ Following is my C++ implementation of postorder traversal([Pseudo Code](http://e
 		return trace;
 	}
 
-### Breadth First Traversal(BFT)
+### <a name="bft">Breadth First Traversal(BFT)</a>
 
 Breadth first traversal is used for printing the binary tree in my code. The key of for BFT is to use a queue(s) to store nodes in current and/or next layers. The simplest way to use two queues: one to store nodes of current layer and the other for next layer. 
 
@@ -333,7 +343,7 @@ Following is my C++ impementation of traversing binary tree in level order:
 		}
 	}
 
-### Zigzag Traversal
+### <a name="zigzag">Zigzag Traversal</a>
 
 Zigzag level order traversal is a Breadth First Traversal(BFT). The procedure  of this traversal is (i) from left to right, (ii) then right to left for the next level, (iii) and alternate between). 
 
@@ -404,7 +414,7 @@ Following is my code for zigzag traversal. Note that the output is a vector of v
     }
 
 
-### Binary Tree Comparison
+### <a name="comparison">Binary Tree Comparison</a>
 
 As for the comparison of two binary trees, only equality is considered. Two binary trees are considered equal if they are structurally identical and the nodes have the same value. To implement this, two trees should be traversed at the same time using same traverse method. If for every pair of nodes, the values are equal, and both of them have left child and right child, then the two nodes are considered equal.
 
