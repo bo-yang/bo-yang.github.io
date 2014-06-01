@@ -4,7 +4,7 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-05-30T18:23:53-07:00</updated>
+ <updated>2014-06-01T10:21:10-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
@@ -1107,7 +1107,8 @@ make: *** [all] Error 2&lt;/pre&gt;
    <updated>2013-10-10T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2013/10/10/build-dense-trajectory-codes-in-ubuntu</id>
    <content type="html">&lt;p&gt;Even when the OpenCV and ffmpeg have been successfully installed, you still may meet the error of &quot;&lt;strong&gt;undefined reference to main&lt;/strong&gt;&quot; when building the &lt;a href=&quot;http://lear.inrialpes.fr/people/wang/dense_trajectories&quot;&gt;Dense Trajectory code&lt;/a&gt;. Since the author didn&#39;t provide a solution, I share my workaround here -- just use command g++ directly:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;pre&gt;g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp&lt;/pre&gt;&lt;/p&gt;
 &lt;p&gt;The program &lt;em&gt;Video&lt;/em&gt; can be built in similar way, just substitute all &lt;em&gt;DenseTrack&lt;/em&gt; into Video.&lt;/p&gt;
 </content>
  </entry>

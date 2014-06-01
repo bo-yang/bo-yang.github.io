@@ -72,7 +72,8 @@
     <div class="main-container shadow">
       <div class="mainbody thepost">
         <p>Even when the OpenCV and ffmpeg have been successfully installed, you still may meet the error of "<strong>undefined reference to main</strong>" when building the <a href="http://lear.inrialpes.fr/people/wang/dense_trajectories">Dense Trajectory code</a>. Since the author didn't provide a solution, I share my workaround here -- just use command g++ directly:</p>
-<p><code>g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp</code></p>
+
+<p><pre>g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp</pre></p>
 <p>The program <em>Video</em> can be built in similar way, just substitute all <em>DenseTrack</em> into Video.</p>
 
       </div>
