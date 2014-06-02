@@ -28,14 +28,14 @@ author:
 
 ![space-efficient-alg]({{ site.url }}/assets/images/2013-04-05-linear-space-sequence-alignment/space_efficient_alg.png)  
 
-![divide-conquer](devide_and_conquer.png)
+![divide-conquer]({{ site.url }}/assets/images/2013-04-05-linear-space-sequence-alignment/devide_and_conquer.png)
 
 <p>The algorithm of Backward-Space-Efficient-Alignment() is the reverse of Space-Efficient-Alignment().</p>
 
-![time_cost_plot](time_cost_plot.png) 
+![time_cost_plot]({{ site.url }}/assets/images/2013-04-05-linear-space-sequence-alignment/time_cost_plot.png) 
 
 <p>Time cost of sequences from 10bp-510bp.</p>
-![memory_cost_plot](memory_cost_plot.png)
+![memory_cost_plot]({{ site.url }}/assets/images/2013-04-05-linear-space-sequence-alignment/memory_cost_plot.png)
 
 <p>Memory cost of sequences from 10bp-510bp.</p>
 <pre class="cpp">#include &lt;iostream&gt;
