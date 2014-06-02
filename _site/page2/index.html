@@ -256,11 +256,24 @@ func main() {
         <div class="post_at_index thepost">
         <p>For explanation to linear space sequence alignment, please refer to <a href="http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf">http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf</a>.</p>
 <p>The algorithm and equation I used was from the textbook <em>Algorithm Design</em> by Jon Kleinberg and Éva Tardos(2005):</p>
-<p><a href="http://bonny95.files.wordpress.com/2013/04/align-equation.png"><img class="alignnone size-full wp-image-531" alt="align-equation" src="http://bonny95.files.wordpress.com/2013/04/align-equation.png" width="529" height="134" /></a> <a href="http://bonny95.files.wordpress.com/2013/04/align-alg.png"><img class="alignnone size-full wp-image-530" alt="align-alg" src="http://bonny95.files.wordpress.com/2013/04/align-alg.png" width="529" height="236" /></a> <a href="http://bonny95.files.wordpress.com/2013/04/space-efficient-equation.png"><img class="alignnone size-full wp-image-529" alt="space-efficient-equation" src="http://bonny95.files.wordpress.com/2013/04/space-efficient-equation.png" width="529" height="66" /></a> <a href="http://bonny95.files.wordpress.com/2013/04/space-efficient-akg.png"><img class="alignnone size-full wp-image-528" alt="space-efficient-akg" src="http://bonny95.files.wordpress.com/2013/04/space-efficient-akg.png" width="529" height="277" /></a> <a href="http://bonny95.files.wordpress.com/2013/04/divide-conquer.png"><img class="alignnone size-full wp-image-527" alt="divide-conquer" src="http://bonny95.files.wordpress.com/2013/04/divide-conquer.png" width="529" height="283" /></a></p>
+
+<p><img src="/assets/images/2013-04-05-linear-space-sequence-alignment/align_equation.png" alt="align-equation" />  </p>
+
+<p><img src="/assets/images/2013-04-05-linear-space-sequence-alignment/align_alg.png" alt="align-alg" /></p>
+
+<p><img src="/assets/images/2013-04-05-linear-space-sequence-alignment/space_efficient_equation.png" alt="space-efficient-equation" /></p>
+
+<p><img src="/assets/images/2013-04-05-linear-space-sequence-alignment/space_efficient_alg.png" alt="space-efficient-alg" />  </p>
+
+<p><img src="devide_and_conquer.png" alt="divide-conquer" /></p>
+
 <p>The algorithm of Backward-Space-Efficient-Alignment() is the reverse of Space-Efficient-Alignment().</p>
-<p><a href="http://bonny95.files.wordpress.com/2013/04/time_cost_plot.png"><img class="alignnone size-full wp-image-532" alt="time_cost_plot" src="http://bonny95.files.wordpress.com/2013/04/time_cost_plot.png" width="529" height="398" /></a></p>
+
+<p><img src="time_cost_plot.png" alt="time_cost_plot" /> </p>
+
 <p>Time cost of sequences from 10bp-510bp.</p>
-<p><a href="http://bonny95.files.wordpress.com/2013/04/memory_cost_plot.png"><img class="alignnone size-full wp-image-533" alt="memory_cost_plot" src="http://bonny95.files.wordpress.com/2013/04/memory_cost_plot.png" width="529" height="395" /></a></p>
+<p><img src="memory_cost_plot.png" alt="memory_cost_plot" /></p>
+
 <p>Memory cost of sequences from 10bp-510bp.</p>
 <pre class="cpp">#include &lt;iostream&gt;
 #include &lt;fstream&gt;

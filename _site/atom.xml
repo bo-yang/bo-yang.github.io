@@ -4,7 +4,7 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-06-01T10:21:10-07:00</updated>
+ <updated>2014-06-01T20:44:02-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
@@ -1277,11 +1277,24 @@ func main() {
    <id>http://bo-yang.github.com//2013/04/05/linear-space-sequence-alignment</id>
    <content type="html">&lt;p&gt;For explanation to linear space sequence alignment, please refer to &lt;a href=&quot;http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf&quot;&gt;http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The algorithm and equation I used was from the textbook &lt;em&gt;Algorithm Design&lt;/em&gt; by Jon Kleinberg and Éva Tardos(2005):&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/align-equation.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-531&quot; alt=&quot;align-equation&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/align-equation.png&quot; width=&quot;529&quot; height=&quot;134&quot; /&gt;&lt;/a&gt; &lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/align-alg.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-530&quot; alt=&quot;align-alg&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/align-alg.png&quot; width=&quot;529&quot; height=&quot;236&quot; /&gt;&lt;/a&gt; &lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/space-efficient-equation.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-529&quot; alt=&quot;space-efficient-equation&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/space-efficient-equation.png&quot; width=&quot;529&quot; height=&quot;66&quot; /&gt;&lt;/a&gt; &lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/space-efficient-akg.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-528&quot; alt=&quot;space-efficient-akg&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/space-efficient-akg.png&quot; width=&quot;529&quot; height=&quot;277&quot; /&gt;&lt;/a&gt; &lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/divide-conquer.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-527&quot; alt=&quot;divide-conquer&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/divide-conquer.png&quot; width=&quot;529&quot; height=&quot;283&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2013-04-05-linear-space-sequence-alignment/align_equation.png&quot; alt=&quot;align-equation&quot; /&gt;  &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2013-04-05-linear-space-sequence-alignment/align_alg.png&quot; alt=&quot;align-alg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2013-04-05-linear-space-sequence-alignment/space_efficient_equation.png&quot; alt=&quot;space-efficient-equation&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2013-04-05-linear-space-sequence-alignment/space_efficient_alg.png&quot; alt=&quot;space-efficient-alg&quot; /&gt;  &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;devide_and_conquer.png&quot; alt=&quot;divide-conquer&quot; /&gt;&lt;/p&gt;
+
 &lt;p&gt;The algorithm of Backward-Space-Efficient-Alignment() is the reverse of Space-Efficient-Alignment().&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/time_cost_plot.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-532&quot; alt=&quot;time_cost_plot&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/time_cost_plot.png&quot; width=&quot;529&quot; height=&quot;398&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;time_cost_plot.png&quot; alt=&quot;time_cost_plot&quot; /&gt; &lt;/p&gt;
+
 &lt;p&gt;Time cost of sequences from 10bp-510bp.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://bonny95.files.wordpress.com/2013/04/memory_cost_plot.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-533&quot; alt=&quot;memory_cost_plot&quot; src=&quot;http://bonny95.files.wordpress.com/2013/04/memory_cost_plot.png&quot; width=&quot;529&quot; height=&quot;395&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;memory_cost_plot.png&quot; alt=&quot;memory_cost_plot&quot; /&gt;&lt;/p&gt;
+
 &lt;p&gt;Memory cost of sequences from 10bp-510bp.&lt;/p&gt;
 &lt;pre class=&quot;cpp&quot;&gt;#include &amp;lt;iostream&amp;gt;
 #include &amp;lt;fstream&amp;gt;
