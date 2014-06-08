@@ -42,6 +42,30 @@ links:
 
   <div class="span3 right">
 
+	<div class="side-container shadow">
+      <div class="sidebar">
+        {% if page.links %}
+        <h3>Links</h3>
+        <ul>
+        {% assign links = page.links %}
+        {% include bo/links %}
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+
+	<div class="side-container shadow">
+      <div class="sidebar">
+        {% unless site.tags == empty %}
+        <h3>Tags</h3>
+        <div class="tag_box">
+        {% assign tags_list = site.tags %}
+        {% include bo/tags_list %}
+        </div>
+        {% endunless %}
+      </div>
+    </div>
+
     <div class="side-container shadow">
       <div class="sidebar">
         {% unless site.posts == empty %}
@@ -56,29 +80,6 @@ links:
       </div>
     </div>
 
-    <div class="side-container shadow">
-      <div class="sidebar">
-        {% unless site.tags == empty %}
-        <h3>Tags</h3>
-        <div class="tag_box">
-        {% assign tags_list = site.tags %}
-        {% include bo/tags_list %}
-        </div>
-        {% endunless %}
-      </div>
-    </div>
-
-    <div class="side-container shadow">
-      <div class="sidebar">
-        {% if page.links %}
-        <h3>Links</h3>
-        <ul>
-        {% assign links = page.links %}
-        {% include bo/links %}
-        </ul>
-        {% endif %}
-      </div>
-    </div>
-  </div>
+   </div>
 
 </div>
