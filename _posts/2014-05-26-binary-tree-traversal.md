@@ -100,69 +100,67 @@ Following are my implementations of LRU cache. There is one tricky thing of impl
 
 `struct` implementation:
 
-```C++
 
-class LRUCache{
-public:
-	struct Node {
-		int key;
-		int val;
-		Node(int k, int v):key(k),val(v) {}
-	};
-
-	LRUCache(int capacity) {
-        cap=capacity;
-    }
-
-    int get(int key) {
-		unordered_map<int,list<Node>::iterator>::iterator got=hash.find(key);
-		if(got!=hash.end()) {
-			// update key&value
-			Node ptr=*(got->second);
-			cache.erase(got->second);
-			cache.push_front(ptr);
-			hash[key]=cache.begin();
-
-			return ptr.val;
-		} else {
-			return -1;
-		}
-    }
+    class LRUCache{
+    public:
+    	struct Node {
+    		int key;
+    		int val;
+    		Node(int k, int v):key(k),val(v) {}
+    	};
     
-    void set(int key, int value) {
-		Node ptr(key, value);
-		unordered_map<int,list<Node>::iterator>::iterator got=hash.find(key);
-		if(got!=hash.end()) {
-			cache.erase(got->second); // erase so as to update key&value
-			hash.erase(key);
-		} else {
-			// Assume that least recently used items are stored at the end of the cache
-	        while(cache.size()>=cap) {
-				Node it=cache.back();
-				//cout<<"Erase pair <"<<key<<","<<it.val<<">"<<endl; // TEST ONLY
-				hash.erase(it.key);
-				cache.pop_back();
-			}
-		}
+    	LRUCache(int capacity) {
+            cap=capacity;
+        }
+    
+        int get(int key) {
+    		unordered_map<int,list<Node>::iterator>::iterator got=hash.find(key);
+    		if(got!=hash.end()) {
+    			// update key&value
+    			Node ptr=*(got->second);
+    			cache.erase(got->second);
+    			cache.push_front(ptr);
+    			hash[key]=cache.begin();
+    
+    			return ptr.val;
+    		} else {
+    			return -1;
+    		}
+        }
+        
+        void set(int key, int value) {
+    		Node ptr(key, value);
+    		unordered_map<int,list<Node>::iterator>::iterator got=hash.find(key);
+    		if(got!=hash.end()) {
+    			cache.erase(got->second); // erase so as to update key&value
+    			hash.erase(key);
+    		} else {
+    			// Assume that least recently used items are stored at the end of the cache
+    	        while(cache.size()>=cap) {
+    				Node it=cache.back();
+    				//cout<<"Erase pair <"<<key<<","<<it.val<<">"<<endl; // TEST ONLY
+    				hash.erase(it.key);
+    				cache.pop_back();
+    			}
+    		}
+    
+    		cache.push_front(ptr);
+    		hash[key]=cache.begin();
+    
+        }
+    
+    	void print() {
+    		cout<<"Key  Value"<<endl;
+    		for(auto& x: cache)
+    			cout<<x.key<<": "<<x.val<<endl;
+    	}
+    
+    private:
+    	list<Node> cache; // <value>
+    	unordered_map<int,list<Node>::iterator> hash; // <key, iterator>
+    	int cap;
+    };
 
-		cache.push_front(ptr);
-		hash[key]=cache.begin();
-
-    }
-
-	void print() {
-		cout<<"Key  Value"<<endl;
-		for(auto& x: cache)
-			cout<<x.key<<": "<<x.val<<endl;
-	}
-
-private:
-	list<Node> cache; // <value>
-	unordered_map<int,list<Node>::iterator> hash; // <key, iterator>
-	int cap;
-};
-
-```
 
 `pair` implementation:
 
