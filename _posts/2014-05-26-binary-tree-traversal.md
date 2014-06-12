@@ -67,7 +67,7 @@ To fix the order issue, there are three candidates: `vector`, `list`, `queue`. S
 
 However, the potential issue for list is that searching for an item requires O(n) time. To find an item in list in constant time, the best way is constructing a hashmap to record the key and its corresponding address in list. In C++, the builtin(actually, from C++ STL) hashmap data structure is `unordered_map`.
 
-In order to update the values in the cache according to keys, `list` also needs to record both keys and values. There are two data structures can be used: `pair<int, int>` or `struct{int key;int val;}`. We were trained to use data strcutures/algorithms provided by standard library, so people tend to use `pair` at first. Unfortunately, when dealing with large data, the STL `pair` struct will be much slower than the self-defined `struct`, because [std::pair<int, int>::pair() constructor initializes the fields with default values and initializing requires writing to each field which requires a whole lot of memory accesses that are relatively time consuming](http://stackoverflow.com/questions/1606894/stdpairint-int-vs-struct-with-two-ints).  
+In order to update the values in the cache according to keys, `list` also needs to record both keys and values. There are two data structures can be used: `pair<int, int>` or `struct{int key;int val;}`. There is a saying, when dealing with large data, the STL `pair` struct will be much slower than the self-defined `struct`, because [std::pair<int, int>::pair() constructor initializes the fields with default values and initializing requires writing to each field which requires a whole lot of memory accesses that are relatively time consuming](http://stackoverflow.com/questions/1606894/stdpairint-int-vs-struct-with-two-ints). But my tests showed that **the `pair` implementation always performs better**.
 
 I implemented LRU cache using both `pair<int, int>` and `struct{int key;int val;}`, and I also tested the time cost on my Mac. When setting the LRU capacity to 100, with the same test code, the `pair<int, int>` implementation is faster.
 
@@ -83,17 +83,29 @@ user	0m0.016s
 sys	0m0.003s
 </pre>
 
-However, when setting the LRU capacity to 10000, the `pair<int, int>` is much slower than `struct{int key;int val;}` implementation.
+When setting the LRU capacity to 10000:
 
 <pre>
 macmini:LRU boyang$ time ./lru_pair
-real	0m0.334s
-user	0m0.330s
+real	0m0.575s
+user	0m0.547s
 sys	0m0.003s
 macmini:LRU boyang$ time ./lru_struct
-real	0m1.083s
-user	0m1.079s
-sys	0m0.004s
+real	0m0.584s
+user	0m0.580s
+sys	0m0.003s
+</pre>
+
+When setting the LRU capacity to 100000:
+<pre>
+macmini:LRU boyang$ time ./lru_pair
+real	1m23.615s
+user	1m23.509s
+sys	0m0.079s
+macmini:LRU boyang$ time ./lru_struct 
+real	2m1.782s
+user	2m1.552s
+sys	0m0.167s
 </pre>
 
 Following are my implementations of LRU cache. There is one tricky thing of implementing `set(key,value)`: if you check if the cache size surpasses the capacity for every input and move the `while` clause out of the `if` block, then your code won't pass the LeetCode tests, and you will receive an error of exceeding time limit. I think the cache size checking should be trivial, but I still cannot really understand why it matters so much in large data tests.
@@ -164,58 +176,55 @@ Following are my implementations of LRU cache. There is one tricky thing of impl
 
 `pair` implementation:
 
-<pre>
-class LRUCache{
-public:
-    LRUCache(int capacity) {
-        cap=capacity;
-    }
+    class LRUCache{
+    public:
+        LRUCache(int capacity) {
+            cap=capacity;
+        }
+        
+        int get(int key) {
+    		unordered_map<int,list<pair<int,int>>::iterator>::iterator got=hash.find(key);
+    		if(got!=hash.end()) {
+    			// update key&value
+    			int val=got->second->second;
+    			cache.erase(got->second);
+    			cache.push_front(pair<int,int>(key,val));
+    			hash[key]=cache.begin();
     
-    int get(int key) {
-		unordered_map<int,list<pair<int,int>>::iterator>::iterator got=hash.find(key);
-		if(got!=hash.end()) {
-			// update key&value
-			int val=got->second->second;
-			cache.erase(got->second);
-			cache.push_front(pair<int,int>(key,val));
-			hash[key]=cache.begin();
-
-			return val;
-		} else {
-			return -1;
-		}
-    }
+    			return val;
+    		} else {
+    			return -1;
+    		}
+        }
+        
+        void set(int key, int value) {
+    		// Assume that least recently used items are stored at the end of the cache
+    		unordered_map<int,list<pair<int,int>>::iterator>::iterator got=hash.find(key);
+    		if(got!=hash.end()) {
+    			cache.erase(got->second); // erase so as to update key&value
+    			hash.erase(key);
+    		} else {
+    			while(cache.size()>=cap) { // for big data, must run here
+    				pair<int,int> it=cache.back();
+    				//cout<<"Erase pair <"<<it.first<<","<<it.second<<">"<<endl; // TEST ONLY
+    				hash.erase(it.first);
+    				cache.pop_back();
+    			}
+    		}
     
-    void set(int key, int value) {
-		// Assume that least recently used items are stored at the end of the cache
-		unordered_map<int,list<pair<int,int>>::iterator>::iterator got=hash.find(key);
-		if(got!=hash.end()) {
-			cache.erase(got->second); // erase so as to update key&value
-			hash.erase(key);
-		} else {
-			while(cache.size()>=cap) { // for big data, must run here
-				pair<int,int> it=cache.back();
-				//cout<<"Erase pair <"<<it.first<<","<<it.second<<">"<<endl; // TEST ONLY
-				hash.erase(it.first);
-				cache.pop_back();
-			}
-		}
-
-		cache.push_front(pair<int,int>(key,value));
-		hash[key]=cache.begin();
-
-    }
-
-	void print() {
-		cout<<"Key  Value"<<endl;
-		for(auto& x: cache)
-			cout<<x.first<<": "<<x.second<<endl;
-	}
-
-private:
-	list<pair<int,int> > cache; // <key, value>
-	unordered_map<int,list<pair<int,int>>::iterator> hash; // <key, iterator>
-	int cap;
-};
-
-</pre>
+    		cache.push_front(pair<int,int>(key,value));
+    		hash[key]=cache.begin();
+    
+        }
+    
+    	void print() {
+    		cout<<"Key  Value"<<endl;
+    		for(auto& x: cache)
+    			cout<<x.first<<": "<<x.second<<endl;
+    	}
+    
+    private:
+    	list<pair<int,int> > cache; // <key, value>
+    	unordered_map<int,list<pair<int,int>>::iterator> hash; // <key, iterator>
+    	int cap;
+    };
