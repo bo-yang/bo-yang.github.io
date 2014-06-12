@@ -14,13 +14,13 @@ author: Bo Yang
 ---
 According to [LeetCode](https://oj.leetcode.com/problems/lru-cache/):
 
->Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: get and set.
+>Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: `get` and `set`.
 
->get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+>`get(key)` - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
 
->set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+>`set(key, value)` - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
 
-When dealing with (key, vlaue) pairs, the most straight-forward data structure is hashmap(map or unordered_map in C++). However, at least for C++, it is difficult to control the insertion of new items: (1) the position you can specify is just a hint and does not force the new element to be inserted at that position within the map/unordered_map container, and (2) there is no push_back or push_front methods provided for map/unordered_map. 
+When dealing with (key, vlaue) pairs, the most straight-forward data structure is hashmap(map or unordered_map in C++). However, at least for C++, it is difficult to control the insertion of new items: (1) the position you can specify is just a hint and does not force the new element to be inserted at that position within the map/unordered_map container, and (2) there is no `push_back` or `push_front` methods provided for map/unordered_map. 
 
 So if you implement the LRU cache only using hashmap, you may find that the order of inserted/deleted items is a mess. If you at first insert 10 items(keys 0~9) into the LRU cache of size 10, then enter another 10 items(keys 10~19), you will find that old items are not replaced in order.
 
@@ -72,7 +72,7 @@ In order to update the values in the cache according to keys, `list` also needs 
 
 I implemented LRU cache using both `pair<int, int>` and `struct{int key;int val;}`, and I also tested the time cost on my Mac. When setting the LRU capacity to 100, with the same test code, the `pair<int, int>` implementation is faster.
 
-```
+<pre>
 macmini:LRU boyang$ time ./lru_pair
 real	0m0.010s
 user	0m0.007s
@@ -82,11 +82,11 @@ macmini:LRU boyang$ time ./lru_struct
 real	0m0.020s
 user	0m0.016s
 sys	0m0.003s
-```
+</pre>
 
 However, when setting the LRU capacity to 10000, the `pair<int, int>` is much slower than `struct{int key;int val;}` implementation.
 
-```
+<pre>
 macmini:LRU boyang$ time ./lru_pair
 real	0m0.334s
 user	0m0.330s
@@ -95,12 +95,12 @@ macmini:LRU boyang$ time ./lru_struct
 real	0m1.083s
 user	0m1.079s
 sys	0m0.004s
-```
+</pre>
 
 Following are my implementations of LRU cache. There is one tricky thing of implementing `set(key,value)`: if you check if the cache size surpasses the capacity for every input and move the `while` clause out of the `if` block, then your code won't pass the LeetCode tests, and you will receive an error of exceeding time limit. I think the cache size checking should be trivial, but I still cannot really understand why it matters so much in large data tests.
 
 // struct implementation
-```
+<pre>
 class LRUCache{
 public:
 	struct Node {
@@ -160,10 +160,10 @@ private:
 	unordered_map<int,list<Node>::iterator> hash; // <key, iterator>
 	int cap;
 };
-```
+</pre>
 
 // pair implementation
-```
+<pre>
 class LRUCache{
 public:
     LRUCache(int capacity) {
@@ -216,4 +216,4 @@ private:
 	unordered_map<int,list<pair<int,int>>::iterator> hash; // <key, iterator>
 	int cap;
 };
-```
+</pre>
