@@ -100,7 +100,7 @@ Following are my implementations of LRU cache. There is one tricky thing of impl
 
 `struct` implementation:
 
-<pre>
+```
 class LRUCache{
 public:
 	struct Node {
@@ -161,7 +161,7 @@ private:
 	int cap;
 };
 
-</pre>
+```
 
 `pair` implementation:
 
