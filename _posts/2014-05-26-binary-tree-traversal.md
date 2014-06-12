@@ -99,6 +99,7 @@ sys	0m0.004s
 Following are my implementations of LRU cache. There is one tricky thing of implementing `set(key,value)`: if you check if the cache size surpasses the capacity for every input and move the `while` clause out of the `if` block, then your code won't pass the LeetCode tests, and you will receive an error of exceeding time limit. I think the cache size checking should be trivial, but I still cannot really understand why it matters so much in large data tests.
 
 // struct implementation
+
 <pre>
 class LRUCache{
 public:
