@@ -24,7 +24,7 @@ When dealing with (key, vlaue) pairs, the most straight-forward data structure i
 
 So if you implement the LRU cache only using hashmap, you may find that the order of inserted/deleted items is a mess. If you at first insert 10 items(keys 0~9) into the LRU cache of size 10, then enter another 10 items(keys 10~19), you will find that old items are not replaced in order.
 
-```
+<pre>
 Initial LRU cache:
 Key  Value
 9: 54
@@ -61,8 +61,7 @@ Key  Value
 1: 35
 11: 53
 0: 83
-
-```
+</pre>
 
 To fix the order issue, there are three candidates: `vector`, `list`, `queue`. Since queue doesn't support deleting an item at arbitrary position and deleting an item requires O(n) time cost for vector, the best choice is list. List is flexible enough to support inserting items into any position and erazing an arbitrary item in constant time. 
 
@@ -163,6 +162,7 @@ private:
 </pre>
 
 // pair implementation
+
 <pre>
 class LRUCache{
 public:
