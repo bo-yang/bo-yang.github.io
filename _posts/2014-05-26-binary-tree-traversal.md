@@ -100,7 +100,8 @@ Following are my implementations of LRU cache. There is one tricky thing of impl
 
 `struct` implementation:
 
-```
+```C++
+
 class LRUCache{
 public:
 	struct Node {
