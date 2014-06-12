@@ -160,6 +160,7 @@ private:
 	unordered_map<int,list<Node>::iterator> hash; // <key, iterator>
 	int cap;
 };
+
 </pre>
 
 `pair` implementation:
@@ -217,4 +218,5 @@ private:
 	unordered_map<int,list<pair<int,int>>::iterator> hash; // <key, iterator>
 	int cap;
 };
+
 </pre>
