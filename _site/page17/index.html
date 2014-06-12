@@ -77,6 +77,150 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2008/09/26/cpp-operator-priority">[转]C++ 运算符优先级列表</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-09-26</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+<span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:14px;"><br />
+<h2 style="margin-top:10px;font-size:1em;"><a id="viewpost1_TitleUrl" href="http://www.cppblog.com/aqazero/archive/2006/06/08/8284.html" style="text-decoration:none;color:rgb(0,102,0);">C++ 运算符优先级列表</a></h2>
+<p><a href="http://www.cppreference.com/operator_precedence.html" style="text-decoration:none;color:rgb(0,102,0);">http://www.cppreference.com/operator_precedence.html</a> <br />
+<table class="code-table" border="1">
+<tbody>
+<tr>
+<th class="code-table-th">Precedence</th>
+<th class="code-table-th">Operator</th>
+<th class="code-table-th">Description</th>
+<th class="code-table-th">Example</th>
+<th class="code-table-th">Associativity</th>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">1</td>
+<td class="code-table-td" style="font-size:12px;">()<br />[]<br />-&gt;<br />.<br />::<br />++<br />--</td>
+<td class="code-table-td" style="font-size:12px;">Grouping operator<br />Array access<br />Member access from a pointer<br />Member access from an object<br />Scoping operator<br />Post-increment<br />Post-decrement</td>
+<td class="code-table-td" style="font-size:12px;">(a + b) / 4;<br />array[4] = 2;<br />ptr-&gt;age = 34;<br />obj.age = 34;<br />Class::age = 2;<br />for( i = 0; i &lt; 10; i++ ) ...<br />for( i = 10; i &gt; 0; i-- ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">2</td>
+<td class="code-table-td" style="font-size:12px;">!<br />~<br />++<br />--<br />-<br />+<br />*<br />&amp;<br />(type)<br /><a href="http://www.cppreference.com/keywords/sizeof.html" style="text-decoration:none;color:rgb(0,102,0);">sizeof</a></td>
+<td class="code-table-td" style="font-size:12px;">Logical negation<br />Bitwise complement<br />Pre-increment<br />Pre-decrement<br />Unary minus<br />Unary plus<br />Dereference<br />Address of<br />Cast to a given type<br />Return size in bytes</td>
+<td class="code-table-td" style="font-size:12px;">if( !done ) ...<br />flags = ~flags;<br />for( i = 0; i &lt; 10; ++i ) ...<br />for( i = 10; i &gt; 0; --i ) ...<br />int i = -1;<br />int i = +1;<br />data = *ptr;<br />address = &amp;obj;<br />int i = (int) floatNum;<br />int size = sizeof(floatNum);</td>
+<td class="code-table-td" style="font-size:12px;">right to left</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">3</td>
+<td class="code-table-td" style="font-size:12px;">-&gt;*<br />.*</td>
+<td class="code-table-td" style="font-size:12px;">Member pointer selector<br />Member pointer selector</td>
+<td class="code-table-td" style="font-size:12px;">ptr-&gt;*var = 24;<br />obj.*var = 24;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">4</td>
+<td class="code-table-td" style="font-size:12px;">*<br />/<br />%</td>
+<td class="code-table-td" style="font-size:12px;">Multiplication<br />Division<br />Modulus</td>
+<td class="code-table-td" style="font-size:12px;">int i = 2 * 4;<br />float f = 10 / 3;<br />int rem = 4 % 3;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">5</td>
+<td class="code-table-td" style="font-size:12px;">+<br />-</td>
+<td class="code-table-td" style="font-size:12px;">Addition<br />Subtraction</td>
+<td class="code-table-td" style="font-size:12px;">int i = 2 + 3;<br />int i = 5 - 1;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">6</td>
+<td class="code-table-td" style="font-size:12px;">&lt;&lt;<br />&gt;&gt;</td>
+<td class="code-table-td" style="font-size:12px;">Bitwise shift left<br />Bitwise shift right</td>
+<td class="code-table-td" style="font-size:12px;">int flags = 33 &lt;&lt; 1;<br />int flags = 33 &gt;&gt; 1;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">7</td>
+<td class="code-table-td" style="font-size:12px;">&lt;<br />&lt;=<br />&gt;<br />&gt;=</td>
+<td class="code-table-td" style="font-size:12px;">Comparison less-than<br />Comparison less-than-or-equal-to<br />Comparison greater-than<br />Comparison geater-than-or-equal-to</td>
+<td class="code-table-td" style="font-size:12px;">if( i &lt; 42 ) ...<br />if( i &lt;= 42 ) ...<br />if( i &gt; 42 ) ...<br />if( i &gt;= 42 ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">8</td>
+<td class="code-table-td" style="font-size:12px;">==<br />!=</td>
+<td class="code-table-td" style="font-size:12px;">Comparison equal-to<br />Comparison not-equal-to</td>
+<td class="code-table-td" style="font-size:12px;">if( i == 42 ) ...<br />if( i != 42 ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">9</td>
+<td class="code-table-td" style="font-size:12px;">&amp;</td>
+<td class="code-table-td" style="font-size:12px;">Bitwise AND</td>
+<td class="code-table-td" style="font-size:12px;">flags = flags &amp; 42;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">10</td>
+<td class="code-table-td" style="font-size:12px;">^</td>
+<td class="code-table-td" style="font-size:12px;">Bitwise exclusive OR</td>
+<td class="code-table-td" style="font-size:12px;">flags = flags ^ 42;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">11</td>
+<td class="code-table-td" style="font-size:12px;">|</td>
+<td class="code-table-td" style="font-size:12px;">Bitwise inclusive (normal) OR</td>
+<td class="code-table-td" style="font-size:12px;">flags = flags | 42;</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">12</td>
+<td class="code-table-td" style="font-size:12px;">&amp;&amp;</td>
+<td class="code-table-td" style="font-size:12px;">Logical AND</td>
+<td class="code-table-td" style="font-size:12px;">if( conditionA &amp;&amp; conditionB ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">13</td>
+<td class="code-table-td" style="font-size:12px;">||</td>
+<td class="code-table-td" style="font-size:12px;">Logical OR</td>
+<td class="code-table-td" style="font-size:12px;">if( conditionA || conditionB ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">14</td>
+<td class="code-table-td" style="font-size:12px;">? :</td>
+<td class="code-table-td" style="font-size:12px;">Ternary conditional (if-then-else)</td>
+<td class="code-table-td" style="font-size:12px;">int i = (a &gt; b) ? a : b;</td>
+<td class="code-table-td" style="font-size:12px;">right to left</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">15</td>
+<td class="code-table-td" style="font-size:12px;">=<br />+=<br />-=<br />*=<br />/=<br />%=<br />&amp;=<br />^=<br />|=<br />&lt;&lt;=<br />&gt;&gt;=</td>
+<td class="code-table-td" style="font-size:12px;">Assignment operator<br />Increment and assign<br />Decrement and assign<br />Multiply and assign<br />Divide and assign<br />Modulo and assign<br />Bitwise AND and assign<br />Bitwise exclusive OR and assign<br />Bitwise inclusive (normal) OR and assign<br />Bitwise shift left and assign<br />Bitwise shift right and assign</td>
+<td class="code-table-td" style="font-size:12px;">int a = b;<br />a += 3;<br />b -= 4;<br />a *= 5;<br />a /= 2;<br />a %= 3;<br />flags &amp;= new_flags;<br />flags ^= new_flags;<br />flags |= new_flags;<br />flags &lt;&lt;= 2;<br />flags &gt;&gt;= 2;</td>
+<td class="code-table-td" style="font-size:12px;">right to left</td>
+</tr>
+<tr>
+<td class="code-table-td" style="font-size:12px;">16</td>
+<td class="code-table-td" style="font-size:12px;">,</td>
+<td class="code-table-td" style="font-size:12px;">Sequential evaluation operator</td>
+<td class="code-table-td" style="font-size:12px;">for( i = 0, j = 0; i &lt; 10; i++, j++ ) ...</td>
+<td class="code-table-td" style="font-size:12px;">left to right</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p></span></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2008/09/23/beginning-linux-programming-4">《Beiginning Linux programming || Linux 程序设计》读书笔记(四)</a></h2>
         <p>
           Posted by <strong>Bo Yang</strong> at <strong>2008-09-23</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
@@ -980,34 +1124,6 @@ n表示文件更改时间距现在n天以前。Find命令还有-atime和-ctime�
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/07/31/fedora-startdict">Fedora 9安装星际译王(stardict)</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-07-31</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-    Fedora 9安装星际译王(stardict)</p>
-<p>一直苦于Linux下没有好用的翻译软件，一直再用Google的在线辞典，感觉还好。但Google在线词典最大的问题就是不能屏幕取词，而且用起来也不怎么方便，于是下决心找到一款比较好的翻译软件。</p>
-<p>Google了一下，发现了星际译王的口碑不错，于是去<a id="aa:_3" href="http://stardict.sourceforge.net/cn/download.php"><span id="aa:_4" class="articlebody">http://stardict.sourceforge.net/cn/download.php </span></a>上下了一个rpm安装包，结果安装时报错：</p>
-<p><span id="aa:_7" class="articlebody">rpm -ivh stardict-3.0.1-1.fc8.i386.rpm <br />
-error: Failed dependencies:<br />
-&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;espeak is needed by stardict-3.0.1-1.fc8.i386<br />
-&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;libespeak.so.1 is needed by stardict-3.0.1-1.fc8.i386</p>
-<p>又下了.bz2的安装包，./configure时有N多错误。幼小的心灵倍受打击，深感国产Linux软件之不专业。</p>
-<p>正郁闷之时，忽见网上有人说用yum安装。于是打开终端输入 yum install stardict，没想到竟然成功安装了！根本不需要特殊配置。</p>
-<p>然后又下载了可用于星际译王的朗道英汉、汉英辞典，rpm安装，一切顺利。</p>
-<p>试着在终端敲入 stardict运行了一下，界面很漂亮，效果很不错。顿时感觉国产开源软件还是有希望的。</p>
-<p>谢谢胡正等前辈！</span></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1128,7 +1244,7 @@ error: Failed dependencies:<br />
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>8</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>9</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1212,7 +1328,7 @@ error: Failed dependencies:<br />
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>3</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>4</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1285,6 +1401,9 @@ error: Failed dependencies:<br />
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
+            Least Recently Used(LRU) Cache</a></li>
+        
           <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
             Binary Tree Operations</a></li>
         
@@ -1311,9 +1430,6 @@ error: Failed dependencies:<br />
         
           <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
             "undefined reference" error during installing OpenCV</a></li>
-        
-          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
-            Build Dense Trajectory Codes in Ubuntu</a></li>
         
         </ul>
         

@@ -77,6 +77,41 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2010/09/14/clone-vm-in-ESXi">How to Clone VMs in ESXi</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2010-09-14</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <a href="/tags.html#ESXi-ref" rel="nofollow">ESXi</a>, <a href="/tags.html#Virtual Machine-ref" rel="nofollow">Virtual Machine</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;</p>
+<p class="MsoNormal"><span lang="EN-US">1. Create a new VM (clone2) without a disk equipped.</span></p>
+<p class="MsoNormal"><span lang="EN-US">2. Use the VM tool to clone the disk from<br />
+the existing VM to the new VM. Usually, you can find all the VMs in the /vmfs/volumes/datastore1/.</span></p>
+<p class="MsoNormal">
+<pre>vmkfstools -i /vmfs/volumes/4c3b50b8-d57dc2fc-d2b7-00241d1852fa/Test_wjh/Test_wjh.vmdk /vmfs/volumes/4c3b50b8-d57dc2fc-d2b7-00241d1852fa/clone2/disk1.vmdk</pre>
+<p>&nbsp;</p>
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal"><span lang="EN-US">3. On the client add the cloned disk to the<br />
+VM clone2</span></p>
+<p class="MsoNormal"><span lang="EN-US"><span>&nbsp;</span>&ldquo;edit settings&hellip; -&gt;<span>&nbsp; </span>Harware -&gt; add &ldquo;hard disk&rdquo; -&gt; &ldquo;using<br />
+existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose it.</span></p>
+<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
+<p class="MsoNormal"><span lang="EN-US">4. Power on the VM.</span></p>
+<p>&nbsp;</p>
+<p>[Warning]:</p>
+<ul>
+<li>You must shutdown the VM which you want to clone.</li>
+<li>The cloned VM is identical to the original one, including the physical address(MAC) of the network card, the network configuration and so on. So, please change such config after clone.&nbsp;</li>
+</ul>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2010/09/03/delete-realplayer">Linux下如何删除已安装的realplayer</a></h2>
         <p>
           Posted by <strong>Bo Yang</strong> at <strong>2010-09-03</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
@@ -569,34 +604,6 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/06/13/batch-process-with-excel-vba">利用Excel VBA处理文档</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-06-13</strong> with tags <a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>遇到如下格式的一篇WORD文档，格式混乱，不适合打印：</p>
-<p>&nbsp;</p>
-<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;"><img src="http://bonny95.files.wordpress.com/2010/06/64_1276413753mmbm.jpg" alt="" width="232" height="614" /></span></span></p>
-<p>&nbsp;</p>
-<p>由于没有接触过Word VBA，因此决定用Excel VBA来处理这篇文档。首先全选该文档的内容，粘贴到Excel文档中。然后创建一个新的macro,修改该Macro为以下代码：</p>
-<p>&nbsp;</p>
-<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;">
-<pre>Sub FormatSheet()'' FormatSheet Macro' Macro recorded 6/13/2010 by Bo Yang'' Keyboard Shortcut: Ctrl+f'    Dim str As String    Dim i As Long        ' Remove blank rows    rownumber = Range(&quot;A65536&quot;).End(xlUp).Row    Do While rownumber &gt;= 1        If Cells(rownumber, 1).Value = &quot;&quot; Then            Rows(rownumber).Delete            rownumber = rownumber - 1        End If        rownumber = rownumber - 1    Loop        ' Copy the Chinese intepretation    For rownumber = 2 To 65535        Cells(rownumber, 2).Value = Cells(rownumber + 1, 1).Value    Next        ' Delete rows which contians Chinese character    ' in their first cells    For rownumber = 2 To 65535        For i = 1 To Len(Cells(rownumber, 1).Value)            str = Mid(Cells(rownumber, 1).Value, i, 1)            If str Like &quot;[Ò»£­ý›]&quot; Then                Rows(rownumber).Delete            End If        Next    Next    End Sub</pre>
-<p> </span></span></p>
-<p>&nbsp;</p>
-<p>然后按自定义快捷键Ctrl+f， 数秒钟后，文档处理完毕，秩序井然矣。</p>
-<p>&nbsp;</p>
-<p><img src="http://bonny95.files.wordpress.com/2010/06/64_12764139792ekk.jpg" alt="" width="464" height="523" /></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -717,7 +724,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>8</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>9</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -801,7 +808,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>3</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>4</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -874,6 +881,9 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
+            Least Recently Used(LRU) Cache</a></li>
+        
           <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
             Binary Tree Operations</a></li>
         
@@ -900,9 +910,6 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
         
           <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
             "undefined reference" error during installing OpenCV</a></li>
-        
-          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
-            Build Dense Trajectory Codes in Ubuntu</a></li>
         
         </ul>
         

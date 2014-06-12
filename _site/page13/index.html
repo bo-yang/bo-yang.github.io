@@ -77,6 +77,33 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2009/08/26/1byte-file-in-unix">UNIX下大小为1byte的文件——都是换行符(EOL)惹得祸</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2009-08-26</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>某同事用tcl和ksh写了一个程序，利用进行某项操作，如有错误就将错误信息写入某个文件中，写入方法是 2&gt;$stderr，然后判断该文件的大小，如果大于0，则认为有错误发生，报错。</p>
+<p>&nbsp;</p>
+<p>奇怪的是该程序一直不能成功执行，一直报错。同事逐行追踪他的代码，结果发现文件$stderr刚创建时大小为0，可过一会之后自己就会变成1byte. 然而打开查看时，该文件内容却是空的。后来用vi按照16进制打开(:%!xxd)，发现了0a。</p>
+<p>&nbsp;</p>
+<p>0x0a是UNIX下默认的行结束符(EOL)，每行都会有的。我们试验了一下，凡是用print在UNIX下创建一个文件：</p>
+<p>
+<pre>print $test &gt; test</pre>
+<p>&nbsp;</p>
+<p>其中$test为未定义的变量，则会生成一个大小为1byte的文件。打开文件，也能发现0a的存在。</p>
+<p>&nbsp;</p>
+<p>可是如果是用C语言编写一个文件操作的函数，却能得到一个大小为0而打开后也有0a的文件。很是奇怪&hellip;&hellip;</p>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2009/08/24/big-num-operations">大数运算</a></h2>
         <p>
           Posted by <strong>Bo Yang</strong> at <strong>2009-08-24</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C-ref" rel="nofollow">C</a>
@@ -656,107 +683,6 @@ function showAnswer() {
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/04/11/regular-expression">[转]在C语言中使用正则表达式</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2009-04-11</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
-<div><span></p>
-<h1>在C语言中使用正则表达式</h1>
-<p><span style="font-size:small;">如果用户熟悉Linux下的sed、awk、grep或vi，那么对正则表达式这一概念肯定不会陌生。由于它可以极大地简化处理字符串时的复杂度，因此现在已经在许多Linux实用工具中得到了应用。千万不要以为正则表达式只是Perl、Python、Bash等脚本语言的专利，作为C语言程序员，用户同样可以在自己的程序中运用正则表达式。&nbsp;&nbsp;</p>
-<p>标准的C和C++都不支持正则表达式，但有一些函数库可以辅助C/C++程序员完成这一功能，其中最著名的当数Philip Hazel的Perl-Compatible Regular Expression库，许多Linux发行版本都带有这个函数库。&nbsp;&nbsp;</p>
-<h3>编译正则表达式 &nbsp;</h3>
-<p>为了提高效率，在将一个字符串与正则表达式进行比较之前，首先要用regcomp()函数对它进行编译，将其转化为regex_t结构：&nbsp;&nbsp;</p>
-<p>int regcomp(regex_t *preg, const char *regex, int cflags);&nbsp;</p>
-<p>参数regex是一个字符串，它代表将要被编译的正则表达式；参数preg指向一个声明为regex_t的数据结构，用来保存编译结果；参数cflags决定了正则表达式该如何被处理的细节。&nbsp;&nbsp;</p>
-<p>如果函数regcomp()执行成功，并且编译结果被正确填充到preg中后，函数将返回0，任何其它的返回结果都代表有某种错误产生。&nbsp;&nbsp;</p>
-<h3>匹配正则表达式 &nbsp;</h3>
-<p>一旦用regcomp()函数成功地编译了正则表达式，接下来就可以调用regexec()函数完成模式匹配：&nbsp;&nbsp;</p>
-<p>int regexec(const&nbsp; regex_t&nbsp; *preg,&nbsp; const&nbsp; char *string, size_t nmatch,regmatch_t pmatch[], int eflags);&nbsp;<br />typedef struct {&nbsp;<br />&nbsp;&nbsp;regoff_t rm_so;&nbsp;<br />&nbsp;&nbsp;regoff_t rm_eo;&nbsp;<br />} regmatch_t;&nbsp;<br />&nbsp;&nbsp;<br />参数preg指向编译后的正则表达式，参数string是将要进行匹配的字符串，而参数nmatch和pmatch则用于把匹配结果返回给调用程序，最后一个参数eflags决定了匹配的细节。&nbsp;&nbsp;</p>
-<p>在调用函数regexec()进行模式匹配的过程中，可能在字符串string中会有多处与给定的正则表达式相匹配，参数pmatch就是用来保存这些匹配位置的，而参数nmatch则告诉函数regexec()最多可以把多少个匹配结果填充到pmatch数组中。当regexec()函数成功返回时，从string+pmatch[0].rm_so到string+pmatch[0].rm_eo是第一个匹配的字符串，而从string+pmatch[1].rm_so到string+pmatch[1].rm_eo，则是第二个匹配的字符串，依此类推。&nbsp;&nbsp;</p>
-<h3>释放正则表达式 &nbsp;</h3>
-<p>无论什么时候，当不再需要已经编译过的正则表达式时，都应该调用函数regfree()将其释放，以免产生内存泄漏。&nbsp;&nbsp;</p>
-<p>void regfree(regex_t *preg);&nbsp;</p>
-<p>函数regfree()不会返回任何结果，它仅接收一个指向regex_t数据类型的指针，这是之前调用regcomp()函数所得到的编译结果。&nbsp;&nbsp;</p>
-<p>如果在程序中针对同一个regex_t结构调用了多次regcomp()函数，POSIX标准并没有规定是否每次都必须调用regfree()函数进行释放，但建议每次调用regcomp()函数对正则表达式进行编译后都调用一次regfree()函数，以尽早释放占用的存储空间。&nbsp;&nbsp;</p>
-<h3>报告错误信息 &nbsp;</h3>
-<p>如果调用函数regcomp()或regexec()得到的是一个非0的返回值，则表明在对正则表达式的处理过程中出现了某种错误，此时可以通过调用函数regerror()得到详细的错误信息。&nbsp;&nbsp;</p>
-<p>size_t regerror(int errcode, const regex_t *preg, char *errbuf, size_t errbuf_size);&nbsp;</p>
-<p>参数errcode是来自函数regcomp()或regexec()的错误代码，而参数preg则是由函数regcomp()得到的编译结果，其目的是把格式化消息所必须的上下文提供给regerror()函数。在执行函数regerror()时，将按照参数errbuf_size指明的最大字节数，在errbuf缓冲区中填入格式化后的错误信息，同时返回错误信息的长度。&nbsp;&nbsp;</p>
-<h3>应用正则表达式 &nbsp;</h3>
-<p>最后给出一个具体的实例，介绍如何在C语言程序中处理正则表达式。 &nbsp;</span></span></p>
-<div></p>
-<div>
-<div>
-<pre>#include &lt;stdio.h&gt;; 
-#include &lt;sys/types.h&gt;; 
-#include &lt;regex.h&gt;; 
-/* 取子串的函数 */ 
-static char* substr(const char*str, unsigned start, unsigned end) 
-{ 
-  unsigned n = end - start; 
-  static char stbuf[256]; 
-  strncpy(stbuf, str + start, n); 
-  stbuf[n] = 0; 
-  return stbuf; 
-} 
-/* 主程序 */ 
-int main(int argc, char** argv) 
-{ 
-  char * pattern; 
-  int x, z, lno = 0, cflags = 0; 
-  char ebuf[128], lbuf[256]; 
-  regex_t reg; 
-  regmatch_t pm[10]; 
-  const size_t nmatch = 10; 
-  /* 编译正则表达式*/ 
-  pattern = argv[1]; 
-  z = regcomp(&reg;, pattern, cflags); 
-  if (z != 0){ 
-    regerror(z, &reg;, ebuf, sizeof(ebuf)); 
-    fprintf(stderr, "%s: pattern '%s' /n", ebuf, pattern); 
-    return 1; 
-  } 
-  /*  逐行处理输入的数据 */ 
-  while(fgets(lbuf, sizeof(lbuf), stdin)) { 
-    ++lno; 
-    if ((z = strlen(lbuf)) &gt; 0 &amp;&amp; lbuf[z-1] == '/n') 
-      lbuf[z - 1] = 0; 
-    /* 对每一行应用正则表达式进行匹配 */ 
-    z = regexec(&reg;, lbuf, nmatch, pm, 0); 
-    if (z == REG_NOMATCH) 
-       continue; 
-    else if (z != 0) { 
-      regerror(z, &reg;, ebuf, sizeof(ebuf)); 
-      fprintf(stderr, "%s: regcom('%s')/n", ebuf, lbuf); 
-      return 2; 
-    } 
-    /* 输出处理结果 */ 
-    for (x = 0; x &lt; nmatch &amp;&amp; pm[x].rm_so != -1; ++ x) { 
-      if (!x) printf("%04d: %s/n", lno, lbuf); 
-      printf("  %d='%s'/n", x, substr(lbuf, pm[x].rm_so, pm[x].rm_eo)); 
-    } 
-  } 
-  /* 释放正则表达式  */ 
-  regfree(&reg;); 
-  return 0; 
-} </pre>
-<p>&nbsp;</p></div>
-</div>
-</div>
-</div>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -877,7 +803,7 @@ int main(int argc, char** argv)
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>8</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>9</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -961,7 +887,7 @@ int main(int argc, char** argv)
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>3</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>4</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1034,6 +960,9 @@ int main(int argc, char** argv)
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
+            Least Recently Used(LRU) Cache</a></li>
+        
           <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
             Binary Tree Operations</a></li>
         
@@ -1060,9 +989,6 @@ int main(int argc, char** argv)
         
           <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
             "undefined reference" error during installing OpenCV</a></li>
-        
-          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
-            Build Dense Trajectory Codes in Ubuntu</a></li>
         
         </ul>
         

@@ -4,13 +4,243 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-06-08T13:34:25-07:00</updated>
+ <updated>2014-06-12T13:19:22-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Least Recently Used(LRU) Cache</title>
+   <link href="http://bo-yang.github.com//2014/06/12/lru-cache"/>
+   <updated>2014-06-12T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/06/12/lru-cache</id>
+   <content type="html">&lt;p&gt;According to &lt;a href=&quot;https://oj.leetcode.com/problems/lru-cache/&quot;&gt;LeetCode&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: &lt;code&gt;get&lt;/code&gt; and &lt;code&gt;set&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code&gt;get(key)&lt;/code&gt; - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code&gt;set(key, value)&lt;/code&gt; - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;When dealing with (key, vlaue) pairs, the most straight-forward data structure is hashmap(map or unordered_map in C++). However, at least for C++, it is difficult to control the insertion of new items: (1) the position you can specify is just a hint and does not force the new element to be inserted at that position within the map/unordered_map container, and (2) there is no &lt;code&gt;push_back&lt;/code&gt; or &lt;code&gt;push_front&lt;/code&gt; methods provided for map/unordered_map. &lt;/p&gt;
+
+&lt;p&gt;So if you implement the LRU cache only using hashmap, you may find that the order of inserted/deleted items is a mess. If you at first insert 10 items(keys 0~9) into the LRU cache of size 10, then enter another 10 items(keys 10~19), you will find that old items are not replaced in order.&lt;/p&gt;
+
+&lt;pre&gt;
+Initial LRU cache:
+Key  Value
+9: 54
+8: 71
+7: 49
+6: 12
+5: 42
+4: 10
+3: 37
+2: 12
+1: 35
+0: 83
+
+Erase pair &amp;lt;9,54&amp;gt;
+Erase pair &amp;lt;10,2&amp;gt;
+Erase pair &amp;lt;8,71&amp;gt;
+Erase pair &amp;lt;7,49&amp;gt;
+Erase pair &amp;lt;6,12&amp;gt;
+Erase pair &amp;lt;5,42&amp;gt;
+Erase pair &amp;lt;15,87&amp;gt;
+Erase pair &amp;lt;16,35&amp;gt;
+Erase pair &amp;lt;17,72&amp;gt;
+Erase pair &amp;lt;18,36&amp;gt;
+
+Updated LRU cache:
+Key  Value
+19: 61
+4: 10
+14: 20
+3: 37
+13: 72
+2: 12
+12: 4
+1: 35
+11: 53
+0: 83
+&lt;/pre&gt;
+
+&lt;p&gt;To fix the order issue, there are three candidates: &lt;code&gt;vector&lt;/code&gt;, &lt;code&gt;list&lt;/code&gt;, &lt;code&gt;queue&lt;/code&gt;. Since queue doesn’t support deleting an item at arbitrary position and deleting an item requires O(n) time cost for vector, the best choice is list. List is flexible enough to support inserting items into any position and erazing an arbitrary item in constant time. &lt;/p&gt;
+
+&lt;p&gt;However, the potential issue for list is that searching for an item requires O(n) time. To find an item in list in constant time, the best way is constructing a hashmap to record the key and its corresponding address in list. In C++, the builtin(actually, from C++ STL) hashmap data structure is &lt;code&gt;unordered_map&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In order to update the values in the cache according to keys, &lt;code&gt;list&lt;/code&gt; also needs to record both keys and values. There are two data structures can be used: &lt;code&gt;pair&amp;lt;int, int&amp;gt;&lt;/code&gt; or &lt;code&gt;struct{int key;int val;}&lt;/code&gt;. There is a saying, when dealing with large data, the STL &lt;code&gt;pair&lt;/code&gt; struct will be much slower than the self-defined &lt;code&gt;struct&lt;/code&gt;, because &lt;a href=&quot;http://stackoverflow.com/questions/1606894/stdpairint-int-vs-struct-with-two-ints&quot;&gt;std::pair&amp;lt;int, int&amp;gt;::pair() constructor initializes the fields with default values and initializing requires writing to each field which requires a whole lot of memory accesses that are relatively time consuming&lt;/a&gt;. But my tests showed that &lt;strong&gt;the &lt;code&gt;pair&lt;/code&gt; implementation always performs better&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;I implemented LRU cache using both &lt;code&gt;pair&amp;lt;int, int&amp;gt;&lt;/code&gt; and &lt;code&gt;struct{int key;int val;}&lt;/code&gt;, and I also tested the time cost on my Mac. When setting the LRU capacity to 100, with the same test code, the &lt;code&gt;pair&amp;lt;int, int&amp;gt;&lt;/code&gt; implementation is faster.&lt;/p&gt;
+
+&lt;pre&gt;
+macmini:LRU boyang$ time ./lru_pair
+real	0m0.010s
+user	0m0.007s
+sys	0m0.003s
+
+macmini:LRU boyang$ time ./lru_struct
+real	0m0.020s
+user	0m0.016s
+sys	0m0.003s
+&lt;/pre&gt;
+
+&lt;p&gt;When setting the LRU capacity to 10000:&lt;/p&gt;
+
+&lt;pre&gt;
+macmini:LRU boyang$ time ./lru_pair
+real	0m0.575s
+user	0m0.547s
+sys	0m0.003s
+macmini:LRU boyang$ time ./lru_struct
+real	0m0.584s
+user	0m0.580s
+sys	0m0.003s
+&lt;/pre&gt;
+
+&lt;p&gt;When setting the LRU capacity to 100000:&lt;/p&gt;
+&lt;pre&gt;
+macmini:LRU boyang$ time ./lru_pair
+real	1m23.615s
+user	1m23.509s
+sys	0m0.079s
+macmini:LRU boyang$ time ./lru_struct 
+real	2m1.782s
+user	2m1.552s
+sys	0m0.167s
+&lt;/pre&gt;
+
+&lt;p&gt;Following are my implementations of LRU cache. There is one tricky thing of implementing &lt;code&gt;set(key,value)&lt;/code&gt;: if you check if the cache size surpasses the capacity for every input and move the &lt;code&gt;while&lt;/code&gt; clause out of the &lt;code&gt;if&lt;/code&gt; block, then your code won’t pass the LeetCode tests, and you will receive an error of exceeding time limit. I think the cache size checking should be trivial, but I still cannot really understand why it matters so much in large data tests.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;struct&lt;/code&gt; implementation:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class LRUCache{
+public:
+	struct Node {
+		int key;
+		int val;
+		Node(int k, int v):key(k),val(v) {}
+	};
+
+	LRUCache(int capacity) {
+        cap=capacity;
+    }
+
+    int get(int key) {
+		unordered_map&amp;lt;int,list&amp;lt;Node&amp;gt;::iterator&amp;gt;::iterator got=hash.find(key);
+		if(got!=hash.end()) {
+			// update key&amp;amp;value
+			Node ptr=*(got-&amp;gt;second);
+			cache.erase(got-&amp;gt;second);
+			cache.push_front(ptr);
+			hash[key]=cache.begin();
+
+			return ptr.val;
+		} else {
+			return -1;
+		}
+    }
+    
+    void set(int key, int value) {
+		Node ptr(key, value);
+		unordered_map&amp;lt;int,list&amp;lt;Node&amp;gt;::iterator&amp;gt;::iterator got=hash.find(key);
+		if(got!=hash.end()) {
+			cache.erase(got-&amp;gt;second); // erase so as to update key&amp;amp;value
+			hash.erase(key);
+		} else {
+			// Assume that least recently used items are stored at the end of the cache
+	        while(cache.size()&amp;gt;=cap) {
+				Node it=cache.back();
+				//cout&amp;lt;&amp;lt;&quot;Erase pair &amp;lt;&quot;&amp;lt;&amp;lt;key&amp;lt;&amp;lt;&quot;,&quot;&amp;lt;&amp;lt;it.val&amp;lt;&amp;lt;&quot;&amp;gt;&quot;&amp;lt;&amp;lt;endl; // TEST ONLY
+				hash.erase(it.key);
+				cache.pop_back();
+			}
+		}
+
+		cache.push_front(ptr);
+		hash[key]=cache.begin();
+
+    }
+
+	void print() {
+		cout&amp;lt;&amp;lt;&quot;Key  Value&quot;&amp;lt;&amp;lt;endl;
+		for(auto&amp;amp; x: cache)
+			cout&amp;lt;&amp;lt;x.key&amp;lt;&amp;lt;&quot;: &quot;&amp;lt;&amp;lt;x.val&amp;lt;&amp;lt;endl;
+	}
+
+private:
+	list&amp;lt;Node&amp;gt; cache; // &amp;lt;value&amp;gt;
+	unordered_map&amp;lt;int,list&amp;lt;Node&amp;gt;::iterator&amp;gt; hash; // &amp;lt;key, iterator&amp;gt;
+	int cap;
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;pair&lt;/code&gt; implementation:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class LRUCache{
+public:
+    LRUCache(int capacity) {
+        cap=capacity;
+    }
+    
+    int get(int key) {
+		unordered_map&amp;lt;int,list&amp;lt;pair&amp;lt;int,int&amp;gt;&amp;gt;::iterator&amp;gt;::iterator got=hash.find(key);
+		if(got!=hash.end()) {
+			// update key&amp;amp;value
+			int val=got-&amp;gt;second-&amp;gt;second;
+			cache.erase(got-&amp;gt;second);
+			cache.push_front(pair&amp;lt;int,int&amp;gt;(key,val));
+			hash[key]=cache.begin();
+
+			return val;
+		} else {
+			return -1;
+		}
+    }
+    
+    void set(int key, int value) {
+		// Assume that least recently used items are stored at the end of the cache
+		unordered_map&amp;lt;int,list&amp;lt;pair&amp;lt;int,int&amp;gt;&amp;gt;::iterator&amp;gt;::iterator got=hash.find(key);
+		if(got!=hash.end()) {
+			cache.erase(got-&amp;gt;second); // erase so as to update key&amp;amp;value
+			hash.erase(key);
+		} else {
+			while(cache.size()&amp;gt;=cap) { // for big data, must run here
+				pair&amp;lt;int,int&amp;gt; it=cache.back();
+				//cout&amp;lt;&amp;lt;&quot;Erase pair &amp;lt;&quot;&amp;lt;&amp;lt;it.first&amp;lt;&amp;lt;&quot;,&quot;&amp;lt;&amp;lt;it.second&amp;lt;&amp;lt;&quot;&amp;gt;&quot;&amp;lt;&amp;lt;endl; // TEST ONLY
+				hash.erase(it.first);
+				cache.pop_back();
+			}
+		}
+
+		cache.push_front(pair&amp;lt;int,int&amp;gt;(key,value));
+		hash[key]=cache.begin();
+
+    }
+
+	void print() {
+		cout&amp;lt;&amp;lt;&quot;Key  Value&quot;&amp;lt;&amp;lt;endl;
+		for(auto&amp;amp; x: cache)
+			cout&amp;lt;&amp;lt;x.first&amp;lt;&amp;lt;&quot;: &quot;&amp;lt;&amp;lt;x.second&amp;lt;&amp;lt;endl;
+	}
+
+private:
+	list&amp;lt;pair&amp;lt;int,int&amp;gt; &amp;gt; cache; // &amp;lt;key, value&amp;gt;
+	unordered_map&amp;lt;int,list&amp;lt;pair&amp;lt;int,int&amp;gt;&amp;gt;::iterator&amp;gt; hash; // &amp;lt;key, iterator&amp;gt;
+	int cap;
+};
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Binary Tree Operations</title>

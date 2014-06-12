@@ -77,6 +77,54 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2010/12/02/kshell-tips">Ksh的几点小技巧</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2010-12-02</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <ol>
+<li>在一个函数(function)中，如果不希望局部变量影响到全局变量或环境变量，可以用typeset来定义。</li>
+<li>对于多个参数的函数或脚本，对多个输入参数的处理有两种办法：</li>
+</ol>
+<ul>
+<li>一是利用如下方式：</li>
+</ul>
+<p>
+<pre>while (($# != 0)) 
+do 
+      # process $1 
+      shift 
+done </pre>
+<p>&nbsp;</p>
+<ul>
+<li>另一种方法是利用如下方式：</li>
+</ul>
+<p>
+<pre>while getopts :A:B:c:d:e:E:C:i:G:L:M:R:hD:V OPT; do
+	case $OPT in
+	A)	export E_CONFIG=${OPTARG}
+		;;
+	B)	Banner=$(echo "$OPTARG" | tr '%' ' ');;
+	C)	Mach="-m $OPTARG"; MachName=$OPTARG;;
+	D)	DBDir=$OPTARG;;
+	G)	TRCellGen=$OPTARG;;
+	i)	iconic='-iconic';;
+	L)  Lab3BEM=$OPTARG;;
+	M)  NumMobileSub=$OPTARG;;
+	esac
+done
+shift OPTIND-1</pre>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2010/11/28/plan9-intro-note-1">Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(I)</a></h2>
         <p>
           Posted by <strong>Bo Yang</strong> at <strong>2010-11-28</strong> with tags <a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
@@ -769,41 +817,6 @@ parameter assignment value or as a file name.</p>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/09/14/clone-vm-in-ESXi">How to Clone VMs in ESXi</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-09-14</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <a href="/tags.html#ESXi-ref" rel="nofollow">ESXi</a>, <a href="/tags.html#Virtual Machine-ref" rel="nofollow">Virtual Machine</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
-<p class="MsoNormal"><span lang="EN-US">1. Create a new VM (clone2) without a disk equipped.</span></p>
-<p class="MsoNormal"><span lang="EN-US">2. Use the VM tool to clone the disk from<br />
-the existing VM to the new VM. Usually, you can find all the VMs in the /vmfs/volumes/datastore1/.</span></p>
-<p class="MsoNormal">
-<pre>vmkfstools -i /vmfs/volumes/4c3b50b8-d57dc2fc-d2b7-00241d1852fa/Test_wjh/Test_wjh.vmdk /vmfs/volumes/4c3b50b8-d57dc2fc-d2b7-00241d1852fa/clone2/disk1.vmdk</pre>
-<p>&nbsp;</p>
-<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
-<p class="MsoNormal"><span lang="EN-US">3. On the client add the cloned disk to the<br />
-VM clone2</span></p>
-<p class="MsoNormal"><span lang="EN-US"><span>&nbsp;</span>&ldquo;edit settings&hellip; -&gt;<span>&nbsp; </span>Harware -&gt; add &ldquo;hard disk&rdquo; -&gt; &ldquo;using<br />
-existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose it.</span></p>
-<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
-<p class="MsoNormal"><span lang="EN-US">4. Power on the VM.</span></p>
-<p>&nbsp;</p>
-<p>[Warning]:</p>
-<ul>
-<li>You must shutdown the VM which you want to clone.</li>
-<li>The cloned VM is identical to the original one, including the physical address(MAC) of the network card, the network configuration and so on. So, please change such config after clone.&nbsp;</li>
-</ul>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -924,7 +937,7 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>8</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>9</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1008,7 +1021,7 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>3</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>4</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1081,6 +1094,9 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
+            Least Recently Used(LRU) Cache</a></li>
+        
           <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
             Binary Tree Operations</a></li>
         
@@ -1107,9 +1123,6 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
         
           <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
             "undefined reference" error during installing OpenCV</a></li>
-        
-          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">
-            Build Dense Trajectory Codes in Ubuntu</a></li>
         
         </ul>
         
