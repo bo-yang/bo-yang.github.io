@@ -476,4 +476,8 @@ _[Updated 05/30/2014]_
 ### References
 1. https://oj.leetcode.com/problems/binary-tree-inorder-traversal/
 2. [Binary tree traversal: Preorder, Inorder, and Postorder](http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html)
+<<<<<<< HEAD
 3. [Tree Traversal](http://en.wikipedia.org/wiki/Tree_traversal)
+=======
+3. [Tree Traversal](http://en.wikipedia.org/wiki/Tree_traversal)
+>>>>>>> FETCH_HEAD
