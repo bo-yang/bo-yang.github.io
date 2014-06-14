@@ -77,6 +77,37 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2013/10/10/undefined-reference-error-during-installing-opencv">"undefined reference" error during installing OpenCV</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2013-10-10</strong> with tags <a href="/tags.html#ffmpeg-ref" rel="nofollow">ffmpeg</a>, <a href="/tags.html#Linux-ref" rel="nofollow">Linux</a>, <a href="/tags.html#OpenCV-ref" rel="nofollow">OpenCV</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>Many people(including me) met the infamous "undefined reference" error during installing OpenCV, such as</p>
+<pre>../../lib/libopencv_highgui.so.2.4.1: undefined reference to `avpriv_vorbis_parse_extradata’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_init’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_rc4_crypt’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_aes_crypt’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_mac’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_tree_destroy’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_sha_update’
+collect2: ld returned 1 exit status
+make[2]: *** [bin/opencv_perf_imgproc] Error 1
+make[1]: *** [modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/all] Error 2
+make: *** [all] Error 2</pre>
+<p>This error was caused by lacking of or improper installation of <a href="http://www.ffmpeg.org/">ffmpeg</a>. If you are sure the ffmpeg is successfully installed, and you can find "– FFMPEG: YES" after cmake opencv, then you'd better think about adding option "<code>--enable-shared</code> " when <i>configure</i> ffmpeg. After re-installing ffmpeg, then this "undefined reference" error should disappear.</p>
+<p>PS: A very good guideline of installing OpenCV on Ubuntu: </p>
+<h1><a href="http://www.ozbotz.org/opencv-installation/">A Comprehensive Guide to Installing and Configuring OpenCV 2.4.2 on Ubuntu</a></h1>
+<p>PPS: Damn Ubuntu!!!</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">Build Dense Trajectory Codes in Ubuntu</a></h2>
         <p>
           Posted by <strong>Bo Yang</strong> at <strong>2013-10-10</strong> with tags <a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>, <a href="/tags.html#DTF-ref" rel="nofollow">DTF</a>
@@ -1513,63 +1544,6 @@ cout&lt;&lt;"cdf: ppois(1,2.9)="&lt;&lt;cdf(p,1)&lt;&lt;endl;</p>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2012/11/04/an-implementation-of-merge-sort-in-c">An Implementation of Merge Sort in C</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2012-11-04</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#Merge sort-ref" rel="nofollow">Merge sort</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. </p>
-<p>The merge sort below was found in Internet. Sorry that I forgot to record the hyperlink of the webpage. Only a few changes were made by me. </p>
-<p> </p>
-<p><code>void Merge(int* input, long p, long r)<br />
-{<br />
-	long mid = floor((p + r) / 2);<br />
-	long i1 = 0;<br />
-	long i2 = p;<br />
-	long i3 = mid + 1;</p>
-<p>	// Temp array<br />
-	int* temp=new int[r-p+1];</p>
-<p>	// Merge in sorted form the 2 arrays<br />
-	while ( i2 &lt;= mid &amp;&amp; i3 &lt;= r )<br />
-		if ( input[i2] &lt; input[i3] )<br />
-			temp[i1++] = input[i2++];<br />
-		else<br />
-			temp[i1++] = input[i3++];</p>
-<p>	// Merge the remaining elements in left array<br />
-	while ( i2 &lt;= mid )<br />
-		temp[i1++] = input[i2++];</p>
-<p>	// Merge the remaining elements in right array<br />
-	while ( i3 &lt;= r )<br />
-		temp[i1++] = input[i3++];</p>
-<p>	// Move from temp array to master array<br />
-	for ( int i = p; i &lt;= r; i++ )<br />
-		input[i] = temp[i-p];</p>
-<p>	delete [] temp;<br />
-}</p>
-<p>// inputs:<br />
-//	p - the start index of array input<br />
-//	r - the end index of array input<br />
-void Merge_sort(int* input, long p, long r)<br />
-{<br />
-	if ( p &lt; r )<br />
-	{<br />
-		long mid = floor((p + r) / 2);<br />
-		Merge_sort(input, p, mid);<br />
-		Merge_sort(input, mid + 1, r);<br />
-		Merge(input, p, r);<br />
-	}<br />
-}<br />
-</code></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1690,7 +1664,7 @@ void Merge_sort(int* input, long p, long r)<br />
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>9</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1774,7 +1748,7 @@ void Merge_sort(int* input, long p, long r)<br />
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>4</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1847,6 +1821,9 @@ void Merge_sort(int* input, long p, long r)<br />
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
+            Check Soduku Solution</a></li>
+        
           <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
             Least Recently Used(LRU) Cache</a></li>
         
@@ -1873,9 +1850,6 @@ void Merge_sort(int* input, long p, long r)<br />
         
           <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
             Notes of Advanced Machine Learning(I)</a></li>
-        
-          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
-            "undefined reference" error during installing OpenCV</a></li>
         
         </ul>
         

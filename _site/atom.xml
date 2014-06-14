@@ -4,13 +4,92 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-06-14T09:50:48-07:00</updated>
+ <updated>2014-06-14T10:04:08-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Check Soduku Solution</title>
+   <link href="http://bo-yang.github.com//2014/06/14/soduku"/>
+   <updated>2014-06-14T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/06/14/soduku</id>
+   <content type="html">&lt;p&gt;The objective of Soduku game is to fill a \(9 \times 9\) grid with digits so that each column, each row, and each of the nine \(3 \times 3\) sub-grids that compose the grid (also called “boxes”, “blocks”, “regions”, or “sub-squares”) contains all of the digits from 1 to 9. A solved Soduku game is like:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/sudoku_solution.png&quot; alt=&quot;Solved_Suduku&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To check if a \(9 \times 9\) grid is a valid solution, we need to check every row, every column and \(3 \times 3\) subgrids. It is not hard to check rows and columns, but checking subgrids is little tricky. When considering going through the grid only one time, it will be much harder.&lt;/p&gt;
+
+&lt;p&gt;My solution is define a 9-item-long vector to count the occurrences of each element in a row, a 9-item-long vector to count the occurrences of each element in a column, and a \(3 \times 9\) matrix to count the occurrences of elements in the 3 nearby subgrids. If found one element occured more than one time, then return false.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;bool isSoduku(vector&amp;lt;vector&amp;lt;int&amp;gt;&amp;gt; grid) {
+	const int dim=3;
+	vector&amp;lt;vector&amp;lt;int&amp;gt;&amp;gt; subGridCnt(grid[0].size()/dim,vector&amp;lt;int&amp;gt;(dim*dim+1,0)); // count the occurrences of elements in 3 nearby 3x3 subgrids.
+	// check row,column, subgrids
+	for(int i=0;i&amp;lt;grid.size();++i) {
+		if(i%3==0) { // reset subGridCnt
+			subGridCnt.clear();
+			for(int cnt=0;cnt&amp;lt;grid[0].size()/dim;++cnt)
+				subGridCnt.push_back(vector&amp;lt;int&amp;gt;(dim*dim+1,0));
+		}
+		vector&amp;lt;int&amp;gt; rowCnt(grid[0].size()+1,0); // count the occurrences of elements in one row.
+		vector&amp;lt;int&amp;gt; colCnt(grid.size()+1,0); // count the occurrences of elements in one column.
+		for(int j=0;j&amp;lt;grid[i].size();++j) {
+			rowCnt[grid[i][j]]++;
+			colCnt[grid[j][i]]++;
+			subGridCnt[j/3][grid[i][j]]++;
+			if(rowCnt[grid[i][j]]&amp;gt;1) {
+				cout&amp;lt;&amp;lt;&quot;Error: &quot;&amp;lt;&amp;lt;rowCnt[grid[i][j]]&amp;lt;&amp;lt;&quot; &quot;&amp;lt;&amp;lt;grid[i][j]&amp;lt;&amp;lt;&quot;s found in row &quot;&amp;lt;&amp;lt;i+1&amp;lt;&amp;lt;&quot;.&quot;&amp;lt;&amp;lt;endl;
+				return false;
+			}
+			if(colCnt[grid[j][i]]&amp;gt;1) {
+				cout&amp;lt;&amp;lt;&quot;Error: &quot;&amp;lt;&amp;lt;colCnt[grid[j][i]]&amp;lt;&amp;lt;&quot; &quot;&amp;lt;&amp;lt;grid[j][i]&amp;lt;&amp;lt;&quot;s found in column &quot;&amp;lt;&amp;lt;i+1&amp;lt;&amp;lt;&quot;.&quot;&amp;lt;&amp;lt;endl;
+				return false;
+			}
+			if(subGridCnt[j/3][grid[i][j]]&amp;gt;1) {
+				cout&amp;lt;&amp;lt;&quot;Error: duplicate elements found in subgrid &amp;lt;&quot;&amp;lt;&amp;lt;i/3+1&amp;lt;&amp;lt;&quot;,&quot;&amp;lt;&amp;lt;j/3+1&amp;lt;&amp;lt;&quot;&amp;gt;: &quot;&amp;lt;&amp;lt;grid[i][j]&amp;lt;&amp;lt;&quot;.&quot;&amp;lt;&amp;lt;endl;
+				return false;
+			}
+		}
+	}
+	
+	return true;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To test above funciton, following code segment can be used:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int main() {
+	vector&amp;lt;vector&amp;lt;int&amp;gt;&amp;gt; grid={ 
+		{6,5,7,2,9,1,8,4,3},
+		{8,9,4,6,7,3,2,1,5},
+		{1,2,3,5,8,4,7,9,6},
+		{5,6,8,3,4,7,1,8,2},
+		{7,3,1,9,2,8,5,6,4},
+		{4,8,2,1,6,5,3,7,9},
+		{2,7,6,8,3,9,4,5,1},
+		{3,4,5,7,1,6,9,2,8},
+		{9,1,8,4,5,2,6,3,7} 
+	};
+
+	for(int i=0;i&amp;lt;grid.size();++i) {
+		for(int j=0;j&amp;lt;grid[i].size();++j) {
+			cout&amp;lt;&amp;lt;grid[i][j]&amp;lt;&amp;lt;&quot; &quot;;
+		}
+		cout&amp;lt;&amp;lt;endl;
+	}
+	
+	if(isSoduku(grid))
+		cout&amp;lt;&amp;lt;&quot;A valid solution!&quot;&amp;lt;&amp;lt;endl;
+	else
+		cout&amp;lt;&amp;lt;&quot;Not a solution!&quot;&amp;lt;&amp;lt;endl;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Least Recently Used(LRU) Cache</title>
@@ -717,8 +796,13 @@ private:
 &lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;https://oj.leetcode.com/problems/binary-tree-inorder-traversal/&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html&quot;&gt;Binary tree traversal: Preorder, Inorder, and Postorder&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal&quot;&gt;Tree Traversal&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html&quot;&gt;Binary tree traversal: Preorder, Inorder, and Postorder&lt;/a&gt;
+«««&amp;lt; HEAD&lt;/li&gt;
+  &lt;li&gt;
+    &lt;h1 id=&quot;tree-traversalhttpenwikipediaorgwikitreetraversal&quot;&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal&quot;&gt;Tree Traversal&lt;/a&gt;&lt;/h1&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal&quot;&gt;Tree Traversal&lt;/a&gt;
+»»»&amp;gt; FETCH_HEAD&lt;/li&gt;
 &lt;/ol&gt;
 </content>
  </entry>

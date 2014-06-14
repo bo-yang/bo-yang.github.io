@@ -77,6 +77,46 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2012/02/02/file-descriptors-per-process">File Descriptors per Process</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2012-02-02</strong> with tags <a href="/tags.html#file descriptor-ref" rel="nofollow">file descriptor</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:</p>
+<ol>
+<li><code>ulimit -a # all limitations</code></li>
+<li><code>ulimit -Sn # soft limit</code></li>
+<li><code>ulimit -Hn # hard limit</code></li>
+</ol>
+<p>If the file descriptor limit is exceeded for a process, you may see the error <code>Too Many Open Files</code>.</p>
+<p>And if you want to change the limit per process temporarily, you can:</p>
+<ol>
+<li><code>ulimit -n &lt;desired_#&gt; # both</code></li>
+<li><code>ulimit -Sn &lt;desired_#&gt; # soft limit</code></li>
+<li><code>ulimit -Hn &lt;desired_#&gt; # hard limit</code></li>
+</ol>
+<p>To check the open files of a process, you can use command <code>pfiles &lt;PID&gt;</code>.</p>
+<p>To check the run time limit of each process in Solaris, you can <code>plimit &lt;PID&gt;</code>(it seems this command is not supported in Linux). If you have the root permission and you want to change the limit of an process without killing or restarting the process, you can <code>plimit -n &lt;desired_#&gt;</code>.</p>
+<p>It was said that it may be dangerous to set the soft limit higher than 256 or hard limit greater than 1024 due to limitations with the stdio library.If programs require more file descriptors, they should use setrlimit directly.</p>
+<p>-------------<br />
+References:</p>
+<ol>
+<li><a href="http://www.brandonhutchinson.com/File_descriptors.html">File descriptors</a></li>
+<li><a href="http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/">Linux Increase The Maximum Number Of Open Files / File Descriptors (FD)</a></li>
+<li><a href="http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/">Linux / UNIX: List Open Files for Process</a></li>
+<li><a href="http://www.princeton.edu/~unix/Solaris/troubleshoot/filedesc.html">Princeton University Enterprise Servers and Storage, File Descriptors</a></li>
+<li><a href="http://compute.cnr.berkeley.edu/cgi-bin/man-cgi?plimit+1">plimit</a></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2012/01/13/onlive">OnLive——在iPad上使用MS Word, Excel, PowerPoint</a></h2>
         <p>
           Posted by <strong>Bo Yang</strong> at <strong>2012-01-13</strong> with tags <a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>, <a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
@@ -689,25 +729,6 @@ std::ios_base::Init::~Init()<br />
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/11/28/whats-the-differences-between-virtualization-and-cloud-computing">What's the differences between  virtualization and cloud computing?</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-11-28</strong> with tags 
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>Many people will be confused by the relations and differences between virtualization and cloud computing. Following essays will clarify the nature of the two technologies.<br />
-1. Cloud is an operations model, not technology: <a href="http://news.cnet.com/8301-19413_3-10249486-240.html">http://news.cnet.com/8301-19413_3-10249486-240.html</a><br />
-2. Difference Between Virtualization and Cloud Computing: <a href="http://data-centers.in/virtualization-and-cloud-computing/">http://data-centers.in/virtualization-and-cloud-computing/</a><br />
-3. The Difference Between Virtualization and Cloud Computing: <a href="http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/">http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/</a></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -828,7 +849,7 @@ std::ios_base::Init::~Init()<br />
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>9</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -912,7 +933,7 @@ std::ios_base::Init::~Init()<br />
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>4</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -985,6 +1006,9 @@ std::ios_base::Init::~Init()<br />
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
+            Check Soduku Solution</a></li>
+        
           <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
             Least Recently Used(LRU) Cache</a></li>
         
@@ -1011,9 +1035,6 @@ std::ios_base::Init::~Init()<br />
         
           <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
             Notes of Advanced Machine Learning(I)</a></li>
-        
-          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
-            "undefined reference" error during installing OpenCV</a></li>
         
         </ul>
         

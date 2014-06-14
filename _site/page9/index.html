@@ -77,6 +77,312 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2010/12/31/linux-shared-memory">Linux Shared Memory的查看与设置</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2010-12-31</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;</p>
+<h1 class="entry-title">1.&nbsp;<a href="http://www.cyberciti.biz/faq/linux-check-memory-usage/">Linux Check Memory Usage</a></h1>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1 id="nointelliTXT" class="Heading1a">2.&nbsp;<a href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html">How to Check Shared Memory on Linux</a></h1>
+<p>&nbsp;</p>
+<h1>3.&nbsp;<a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html">Shared Memory Configuration</a></h1>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span>共享内存就是进程之间可以共享的一段内存，通过一个唯一的KEY值绑定<br />shmget()创建或获取<br />shmat()连接<br />shmdt()断连</p>
+<p>共享内存的访问涉及同步措施，通常与信号灯一起使用<br />用ipcs -m命令可以查看系统中已有的共享内存段</span></p>
+<p><span><span>/proc/sys/kernel/shm开头的几个文件是共享内存的参数</span></span></p>
+<p><span><br />共享内存的访问涉及同步措施，通常与信号灯一起使用<br />用ipcs -m命令可以查看系统中已有的共享内存段</span></p>
+<p><span><span>ipcs&nbsp;</span></span>-m 看Shared Memory 共享内存</p>
+<p><span><span>ipcs -q 看Message Queues 消息队列<br />ipcs -s 看Semaphore Arrays 信号量</span></span></p>
+<p>&nbsp;</p>
+<p><span><span><span>使用命令：ipcs -al</p>
+<p>------ Shared Memory Limits --------<br />max number of segments = 4096<br />max seg size (kbytes) = 4091826<br />max total shared memory (pages) = 2097152<br />min seg size (bytes) = 1<br /></span></span></span></p>
+<p><span><br />
+</span></p>
+<div class="headline_area">
+<h1 class="entry-title">1.&nbsp;<a href="http://www.cyberciti.biz/faq/linux-check-memory-usage/">Linux Check Memory Usage</a></h1>
+<p class="headline_meta">by&nbsp;<span class="author vcard fn">VIVEK GITE</span>&nbsp;on&nbsp;<abbr class="published" title="2006-04-06">APRIL 6, 2006</abbr>&nbsp;&middot;&nbsp;<span><a rel="nofollow" href="http://www.cyberciti.biz/faq/linux-check-memory-usage/#comments">36 COMMENTS</a></span></p>
+</div>
+<div class="format_text entry-content">
+<p><span class="drop_cap">H</span>ow do I check used and free RAM memory usage under Linux operating systems using command line and GUI tools?</p>
+<p>Linux comes with different set of commands to check memory usage. The free command displays  the  total amount of free and used physical and swap memory in the system, as well as the buffers used by the kernel. The  vmstat command reports information about processes, memory, paging, block IO, traps, and cpu activity. Finally, you can use the top command which provides a dynamic real-time view of a running system.  It can display system summary information as well as a list of tasks currently being managed by the Linux kernel.</p>
+<h2>free command </h2>
+<p>Display free memory size in MB:</p>
+<p><code>$ free -m</code>Output:</p>
+<pre>             total       used       free     shared    buffers     cached
+Mem:           750        625        125          0         35        335
+-/+ buffers/cache:        254        496
+Swap:          956          0        956</pre>
+<p>Displays a line containing the totals memory in MB:<br />
+<code>$ free -t -m</code><br /> <br />
+Output:</p>
+<pre>       total       used       free     shared    buffers     cached
+Mem:           750        625        125          0         35        335
+-/+ buffers/cache:        253        496
+Swap:          956          0        956
+Total:        1707        625       1082</pre>
+<h2>vmstat command</h2>
+<p>Type vmstat command at shell prompt:</p>
+<p><code>$ vmstat</code><br /> <br />
+Output:</p>
+<pre>procs -----------memory---------- ---swap-- -----io---- --system-- ----cpu----
+r  b   swpd   free   buff  cache   si   so    bi    bo   in    cs us sy id wa
+1  0      0 131620  35432 341496    0    0    42    82  737  1364 15  3 81  1</pre>
+<h2>top command</h2>
+<p>Type top command at the shell prompt:<br />
+<code>$ top</code><br /> <br />
+Sample outputs:</p>
+<div id="attachment_8468" class="wp-caption alignnone" style="width:599px;">
+<a rel="attachment wp-att-8468" href="http://www.cyberciti.biz/faq/linux-check-memory-usage/linux-memory-usage-monitor-top-command/"><img class="size-full wp-image-8468" title="Find: Linux process memory usage command" src="http://files.cyberciti.biz/uploads/faq/2006/04/Linux-memory-usage-monitor-top-command.png" alt="Fig.01: top command displaying used memory" width="599" height="397" /></a></p>
+<p class="wp-caption-text">Fig.01: top command displaying used memory</p>
+</div>
+<p> <br />
+To exit from top command type q key. Read man page of free, vmstat, top command for more information.</p>
+<p>&nbsp;</p>
+<h2>GNOME Desktop: GUI Tool</h2>
+<p>The Gnome System Monitor application enables you to display basic system information and monitor system processes, usage of system resources, and file systems. You can also use System Monitor to modify the behavior of your system. You can start System Monitor by visiting <span style="color:#996633;">System</span> menu &gt; Choose <span style="color:#996633;">Administration</span> &gt; <span style="color:#996633;">System Monitor</span> option. Or type the following command at the shell prompt:</p>
+<pre class="bash">&nbsp;
+gnome-system-monitor
+&nbsp;</pre>
+<p>Sample outputs:</p>
+<div id="attachment_8471" class="wp-caption alignnone" style="width:599px;">
+<a rel="attachment wp-att-8471" href="http://www.cyberciti.biz/faq/linux-check-memory-usage/screenshot-system-monitor/"><img class="size-full wp-image-8471" title="Linux See Memory Usage With GUI System Monitor Tool" src="http://files.cyberciti.biz/uploads/faq/2006/04/Screenshot-System-Monitor.png" alt="Fig.02: Linux See Memory Usage With GUI System Monitor Tool" width="599" height="468" /></a></p>
+<p class="wp-caption-text">Fig.02: Linux See Memory Usage With GUI System Monitor Tool</p>
+</div>
+<p>&nbsp;</p>
+<p>----------------------------------------------------------------------------------------</p>
+<div class="intro FLC">
+<h1 id="nointelliTXT" class="Heading1a">2. <a href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html">How to Check Shared Memory on Linux</a></h1>
+<div class="info">
+<div class="byLine">
+<div class="author"><cite><span>By</span>&nbsp;<a class="jsNoFollow" rel="http://www.ehow.com/members/ds_8351f73d-556e-44c4-8811-e5f67070c254.html" href="http://www.ehow.com/members/ds_8351f73d-556e-44c4-8811-e5f67070c254.html">Garrett Genet</a>,&nbsp;<span>eHow Contributor</span></cite></div>
+<div class="dateUpdated"><span>updated: August 11, 2010</span></div>
+</div>
+<div class="Details">
+<p id="intelliTxt">Shared memory is responsible for the smooth operation of your system; it acts as a space that multiple programs can access at once. This enables those programs to communicate in sync, while avoiding file redundancy. Shared memory can exist in the system's physical RAM or the swap file (which is virtual memory). In&nbsp;<a class="iAs" href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html" target="_blank">Linux</a>&nbsp;operating systems, check the details of shared memory by typing in a few simple commands.</p>
+</div>
+</div>
+</div>
+<div class="article FLC">
+<div class="sectionTitle FLC">
+<div class="difficulty"><span>Difficulty:</span>&nbsp;Moderately Easy</div>
+<h2 class="Heading1a Underline header"><span>Instructions</span></h2>
+</div>
+<ol id="intelliTxt">
+<li id="jsArticleStep1">
+<div class="stepNumber">1</div>
+<p>Power on your&nbsp;<a class="iAs" href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html" target="_blank">system</a>&nbsp;and log in.</p>
+</li>
+<li id="jsArticleStep2">
+<div class="stepNumber">2</div>
+<p>Open a "Terminal" window.</p>
+</li>
+<li id="jsArticleStep3">
+<div class="stepNumber">3</div>
+<p>Type in "cat /proc/sys/kernel/shmall" and press "Enter." You'll see the total amount of shared memory available displayed in bytes.&nbsp;<span class="goog_qs-tidbit goog_qs-tidbit-0">The max size of a shared memory segment is displayed with "cat</span>&nbsp;/proc/sys/kernel/shmmax", and the total number of segments in the system is displayed with "cat /proc/sys/kernel/shmmni".</p>
+</li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p><span></p>
+<p>Read more:&nbsp;<a href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html#ixzz19eUg5rtL">How to Check Shared Memory on Linux | eHow.com</a>&nbsp;<a href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html#ixzz19eUg5rtL">http://www.ehow.com/how_6849046_check-shared-memory-linux.html#ixzz19eUg5rtL</a></span></p>
+<p>&nbsp;</p>
+<p>-------------------------------------------------------------------------------------------</p>
+<p><span><br />
+</span></p>
+<h1>3. <a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html">Shared Memory Configuration</a></h1>
+<p>
+<span><img src="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/images/blueline.gif" alt="" /></span></p>
+<p>McIDAS-X 200<em>x</em>&nbsp;uses shared memory for a variety of tasks including frame allocation. By default, the shared memory facility is activated and should have sufficient maximum segment size on HP, IBM and SGI systems. However, this is not true for Sun systems running Solaris 2.<em>x</em>&nbsp;or Digital systems running True64.&nbsp;<span class="goog_qs-tidbit goog_qs-tidbit-0">On Linux systems, the amount of available shared memory appears is equivalent to</span>&nbsp;the combination of physical RAM and swap.</p>
+<p class="Body-Text">The system administrator should complete the steps below the first time McIDAS-X 200<em>x</em>&nbsp;is installed on Sun Solaris or Digital True64 workstations or if they desire to increase shared memory defaults on HP, IBM, or SGI systems.</p>
+<p>
+<span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#solaris">Sun Solaris 2.X</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#irix">SGI IRIX 6.x</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#hpux10">HP HP-UX 10, 11</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#aix">IBM AIX</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#osf1">Compaq Tru64 UNIX</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#linux">RedHat Linux</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#freebsd">FreeBSD 4.[789]</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#macos">MacOS-X 7.4.0</a></span></p>
+<p>&nbsp;</p>
+<h2 class="D-Head"><a name="solaris"></a>Sun Solaris 2.x</h2>
+<p class="Body-Text"><a name="pgfId=31995"></a>The system administrator must complete the steps below the first time McIDAS-X is installed on a Sun workstation running Solaris 2.<em>&nbsp;x</em>&nbsp;.</p>
+<ol>
+<li>&nbsp;
+<ul>
+<p class="Type/Press"><a name="pgfId=28226"></a>Type:&nbsp;<strong>/usr/sbin/sysdef | grep SHMMAX</strong></p>
+<table border="1">
+<tbody>
+<tr>
+<td valign="TOP">
+<pre class="Screen"><a name="pgfId=124517"></a>
+536870912 max shared memory segment size (SHMMAX)</pre>
+</td>
+</tr>
+</tbody>
+</table>
+</ul>
+</li>
+<p class="firstnum"><a name="pgfId=28222"></a>1.	Force the kernel to activate the shared memory system at boot time by adding the line below to the appropriate location in the file&nbsp;<br /><strong>/etc/system</strong>&nbsp;.</p>
+<table border="1">
+<tbody>
+<tr>
+<td valign="TOP">
+<pre class="Screen"><a name="pgfId=28466"></a>
+forceload: sys/shmsys</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="Numbers"><a name="pgfId=28225"></a>2.	Check the maximum size of a shared memory segment using the command below. The value is indicated in bytes; the example lists a 512 MB maximum shared memory segment.</p>
+<p class="Numbers-Text"><a name="pgfId=28228"></a>If your value is less than 512 MB, go to step 3. If your value is 512 MB or greater, go to step 4.</p>
+<p class="Numbers"><a name="pgfId=28230"></a>3.	<span class="goog_qs-tidbit goog_qs-tidbit-1 goog_qs-tidbit-hilite">Set the shared memory size to 512 MB by adding the line below to the</span>&nbsp;appropriate location in the file&nbsp;<strong>/etc/system</strong>&nbsp;.</p>
+<table border="1">
+<tbody>
+<tr>
+<td valign="TOP">
+<pre class="Screen"><a name="pgfId=28496"></a>
+set shmsys:shminfo_shmmax = 536870912</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="Numbers"><a name="pgfId=28233"></a>4.	Reboot the system so the forceload entry and 512 MB maximum shared memory size take effect.</p>
+</ol>
+<p><span><a name="irix"></a></span></p>
+<h2 class="D-Head">SGI IRIX 6.x</h2>
+<p class="Body-Text">On Irix, SHMMAX defaults to 512 MB (0x20000000 bytes), so tuning this parameter is unlikely to be needed. SHMMAX is found in&nbsp;<strong>/var/sysgen/mtune/shm</strong>.</p>
+<p>
+<span><a name="hpux10"></a></span></p>
+<h2>HP HP-UX 10, 11</h2>
+<p>On HP-UX 10 and 11, the maximum value for SHMMAX is 1024 MB (0x40000000; the default value for 64 MB (0x04000000). SHMMAX is found in&nbsp;<strong>/etc/conf/master.d/core-hpux</strong>.</p>
+<p>The procedure for changing the parameter is similar, if not identical, to the one described for HP-UX 9.</p>
+<p>One way to check the current value of SHMMAX is to enter the following command:</p>
+<p class="Type/Press">Type:&nbsp;<strong>grep SHMMAX /etc/master</strong></p>
+<p>If the grep does not print anything, you are using the default value of 64 MB. If the grep prints something, the output might look like this:</p>
+<table border="1">
+<tbody>
+<tr>
+<td valign="TOP">
+<pre class="Screen"> shmmax          SHMMAX              0X20000000 </pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The value is&nbsp;<em>bytes</em>, so here the maximum segment size has been set to 512 MB.</p>
+<p>
+<span><a name="aix"></a></span></p>
+<h2>IBM AIX 4.x</h2>
+<p>The shmget(2) man page says that the maximum shared-memory segment size is 256 MB (0x10000000); this limit does not appear to be tunable.</p>
+<p>
+<span><a name="osf1"></a></span></p>
+<h2>Compaq Tru64 UNIX</h2>
+<p>The easiest way to increase shared-memory allocation on True64 is to use the GUI called&nbsp;<strong>dxkerneltuner</strong>, but one can also use the&nbsp;<strong>sysconfigdb</strong>&nbsp;command-line interface.</p>
+<p>Running&nbsp;<strong>dxkerneltuner</strong>&nbsp;and increasing the shared-memory size to 64 MB will result in the following entry in the file /etc/sysconfigtab:</p>
+<p>
+<span><br />
+</span></p>
+<pre> ipc:
+       shm-max=67108864
+</pre>
+<p>
+<span>The following are the out-of-the-box defaults for the ipc subsystem for OSF/1 Version 4.0. They may be helpful for True64:</span><span><br />
+</span></p>
+<pre>% sysconfig -q ipc
+ipc:
+msg-max = 8192
+msg-mnb = 16384
+msg-mni = 64
+msg-tql = 40
+shm-max = 4194304
+shm-min = 1
+shm-mni = 128
+shm-seg = 32
+sem-mni = 16
+sem-msl = 25
+sem-opm = 10
+sem-ume = 10
+sem-vmx = 32767
+sem-aem = 16384
+num-of-sems = 60
+max-kernel-ports = 22487
+port-hash-max-num = 1124350
+port-reserved-max-num = 22487
+set-max-num = 1029
+ssm-threshold = 8388608
+ssm-enable-core-dump = 1
+</pre>
+<p>
+<span><a name="linux"></a></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>RedHat Linux</h2>
+<p>There appears to be two ways of (re)defining the amount of shared memory in your system (tips thanks to Dave Glowacki of SSEC):</p>
+<ul>
+<li>add this line to your /etc/rc.d/rc.local file:
+<p><tt>echo</tt>&nbsp;<em>shared_memory_size</em>&nbsp;<tt>&gt; /proc/sys/kernel/shmmax</tt></p>
+<p>(where&nbsp;<em>shared_memory_size</em>&nbsp;is the amount of shared memory you want to declare in bytes) and reboot.</p>
+<p><strong>Note:</strong>&nbsp;since this will be the last thing run before your system comes up, your McIDAS session won't get a larger shared memory segment if it's started during the boot process).</p>
+<p>&nbsp;</p>
+</li>
+<li>a more permanent solution would be to change the value of SHMMAX in&nbsp;<tt>/usr/src/linux/include/asm/shmparam.h</tt>&nbsp;and rebuild your kernel</li>
+</ul>
+<p><a name="freebsd"></a></p>
+<h2>FreeBSD 4.[789]</h2>
+<p>Shared memory parameters are only read when the system goes from single user to multi user mode.</p>
+<p>Add setting of shared memory max to&nbsp;<strong>/etc/sysctl.conf</strong></p>
+<p>
+<span><br />
+</span></p>
+<pre># $FreeBSD: src/etc/sysctl.conf,v 1.1.2.3 2002/04/15 00:44:13 dougb Exp $
+#
+#  This file is read when going to multi-user and its contents piped thru
+#  ``sysctl'' to adjust kernel values.  ``man 5 sysctl.conf'' for details.
+#
+kern.ipc.shmmax=536870912
+</pre>
+<p>
+<span>and then reboot.</span></p>
+<p>&nbsp;</p>
+<p><a name="macos"></a></p>
+<h2>MacOS-X 7.4.0 (Panther)</h2>
+<p>In the Panther release of MacOS-X, shared memory is set in the file&nbsp;<strong>/etc/rc</strong>. The default settings will look something like:</p>
+<p>
+<span><br />
+</span></p>
+<pre># System tuning
+sysctl -w kern.maxvnodes=$(echo $(sysctl -n hw.physmem) '33554432 / 512 * 1024 +p'|dc)
+sysctl -w kern.sysv.shmmax=4194304
+sysctl -w kern.sysv.shmmin=1
+sysctl -w kern.sysv.shmmni=32
+sysctl -w kern.sysv.shmseg=8
+sysctl -w kern.sysv.shmall=1024
+</pre>
+<p>&nbsp;</p>
+<p>We recommend changing this to:</p>
+<p>
+<span><br />
+</span></p>
+<pre># System tuning
+sysctl -w kern.maxvnodes=$(echo $(sysctl -n hw.physmem) '33554432 / 512 * 1024 +p'|dc)
+sysctl -w kern.sysv.shmmax=536870912
+sysctl -w kern.sysv.shmmin=1
+sysctl -w kern.sysv.shmmni=4096
+sysctl -w kern.sysv.shmseg=4096
+sysctl -w kern.sysv.shmall=131072
+</pre>
+<p>&nbsp;</p>
+<p>After making these changes, the system will need to be rebooted for the changes to take effect.</p>
+<p><img src="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/images/blueline.gif" alt="" /></p>
+<p>&nbsp;</p>
+</div>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2010/12/02/kshell-tips">Ksh的几点小技巧</a></h2>
         <p>
           Posted by <strong>Bo Yang</strong> at <strong>2010-12-02</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
@@ -797,26 +1103,6 @@ Perl</strong></em></span></span><span style="font-size:x-small;"><span lang="en-
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/09/21/special-var-in-ksh">Ksh中的$*和$@</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-09-21</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>The meaning of $* and $@ is identical when not quoted or when used as a<br />
-parameter assignment value or as a file name.</p>
-<p>&nbsp;</p>
-<p>However, when used as a command argument, "$*" is equivalent to "$1<span class="docEmphasis">d</span>$2<span class="docEmphasis">d</span>..." , where <span class="docEmphasis">d</span> is the first character of the <span class="docEmphStrong">IFS</span> parameter, whereas "$@" is equivalent to "$1"<br />
-"$2" ....</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -937,7 +1223,7 @@ parameter assignment value or as a file name.</p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>9</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1021,7 +1307,7 @@ parameter assignment value or as a file name.</p>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>4</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1094,6 +1380,9 @@ parameter assignment value or as a file name.</p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
+            Check Soduku Solution</a></li>
+        
           <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
             Least Recently Used(LRU) Cache</a></li>
         
@@ -1120,9 +1409,6 @@ parameter assignment value or as a file name.</p>
         
           <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
             Notes of Advanced Machine Learning(I)</a></li>
-        
-          <li><span>2013-10-10</span> &raquo; <a href="/2013/10/10/undefined-reference-error-during-installing-opencv">
-            "undefined reference" error during installing OpenCV</a></li>
         
         </ul>
         
