@@ -4,13 +4,105 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-06-14T10:04:08-07:00</updated>
+ <updated>2014-06-17T12:57:53-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Sort Colors</title>
+   <link href="http://bo-yang.github.com//2014/06/17/sort-colors"/>
+   <updated>2014-06-17T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/06/17/sort-colors</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://oj.leetcode.com/problems/sort-colors/&quot;&gt;Problem&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.&lt;/p&gt;
+
+  &lt;p&gt;Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This problem is trivial when using two-pass counting sort: first pass count the numbers of each color, and then assign each element in array into corresponding regions in the array in the second pass.&lt;/p&gt;
+
+&lt;p&gt;The follow up of this problem requires to design a one-pass algorithm using constant space. The strategy is go through all the elements in the array, and move red colors(0s) to the left and move blue colors to the right(2s). The green colors(1s) will finally remain in the middle part of the array.&lt;/p&gt;
+
+&lt;p&gt;In order to implement above strategy, three indices can be used: one index for current element, one idex for the right-most red color, and one index for the left-most blue color. When meeting a red color, move it to the end of the red colors. When meeting a blue color, move it to the front(left-most) of the blue colors. And when meeting a green color, just increase current index.&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    void sortColors(int A[], int n) {
+		int idx=0,ridx=0,bidx=n-1; // ridx - index for red color, bidx - index for blue color
+        while(idx&amp;lt;=bidx) {
+			switch(A[idx]) {
+				case 0: { // Red color, move it to left
+					while(A[ridx]==0 &amp;amp;&amp;amp; ridx&amp;lt;n)
+						++ridx;
+					if(idx&amp;gt;ridx){
+						swap(A[idx],A[ridx]);
+						++ridx;
+					} else {
+						idx=ridx;
+					}
+					break;
+				}
+				case 1: { // Green color, skip it
+					++idx;					
+					break;
+				}
+				case 2: { // Blue color, move it to right
+					while(A[bidx]==2 &amp;amp;&amp;amp; bidx&amp;gt;idx)
+						--bidx;
+					swap(A[idx],A[bidx]);
+					--bidx;
+					break;
+				}
+				default:
+					cout&amp;lt;&amp;lt;&quot;Error: invalid color detected&quot;&amp;lt;&amp;lt;endl;
+			}
+		} // end while
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And the following code can be used for test:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;utility&amp;gt;
+#include &amp;lt;cstdlib&amp;gt;
+using namespace std;
+
+int main() {
+	/* initialize random seed: */
+	srand (time(NULL));
+	
+	const int N=10;
+	Solution sol;
+	int* A=new int[N];
+	cout&amp;lt;&amp;lt;&quot;Before sorting:&quot;&amp;lt;&amp;lt;endl;
+	for(int i=0;i&amp;lt;N;++i) {
+		A[i]=rand()%3;
+		cout&amp;lt;&amp;lt;A[i]&amp;lt;&amp;lt;&quot; &quot;;
+	}
+	cout&amp;lt;&amp;lt;endl;
+
+	sol.sortColors(A,N);
+	
+	cout&amp;lt;&amp;lt;&quot;After sorting:&quot;&amp;lt;&amp;lt;endl;
+	for(int i=0;i&amp;lt;N;++i)
+		cout&amp;lt;&amp;lt;A[i]&amp;lt;&amp;lt;&quot; &quot;;
+	cout&amp;lt;&amp;lt;endl;
+
+
+	delete [] A;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Check Soduku Solution</title>
@@ -23,7 +115,7 @@
 
 &lt;p&gt;To check if a \(9 \times 9\) grid is a valid solution, we need to check every row, every column and \(3 \times 3\) subgrids. It is not hard to check rows and columns, but checking subgrids is little tricky. When considering going through the grid only one time, it will be much harder.&lt;/p&gt;
 
-&lt;p&gt;My solution is define a 9-item-long vector to count the occurrences of each element in a row, a 9-item-long vector to count the occurrences of each element in a column, and a \(3 \times 9\) matrix to count the occurrences of elements in the 3 nearby subgrids. If found one element occured more than one time, then return false.&lt;/p&gt;
+&lt;p&gt;My solution is define a 9-item-long vector to count the occurrences of each element in a row, a 9-item-long vector to count the occurrences of each element in a column, and a \(3 \times 9\) matrix to count the occurrences of elements in the 3 nearby subgrids. The value of each element in grid can be used as the indices of the counting vectors, because they are supposed to be in the range of 0~9. If found one occurrence greater than one in the vectors, then return false.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;bool isSoduku(vector&amp;lt;vector&amp;lt;int&amp;gt;&amp;gt; grid) {
 	const int dim=3;

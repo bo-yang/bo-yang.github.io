@@ -9,12 +9,10 @@
   
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-  <!-- using baidu cdn instead
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  -->
+  <!--
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-
+  -->
+   <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Google Prettify -->
   <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
@@ -22,10 +20,9 @@
 
   <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- using baidu cdn instead
-  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-  -->
-
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -73,7 +70,30 @@
 
 <div class="row-fluid page-body">
 
-  <div class="span9 left">
+  <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/02/cfilt">C++filt</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-12-02</strong> with tags <a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>c++flit decodes(demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
+<p>You may use c++filt to demangle the symbols.<br />
+[sourcecode language="text"]<br />
+$ c++filt _ZNSt8ios_base4InitD1Ev<br />
+std::ios_base::Init::~Init()<br />
+[/sourcecode]</p>
+<p>You may try adding-lstdc++ to your link command to resolve the issue.</p>
+<p><a href="http://sourceware.org/binutils/docs-2.16/binutils/c_002b_002bfilt.html"><strong>c++filt manual</strong></a> </p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -735,62 +755,6 @@ This process provides user quota information for remote users.&nbsp;<code class=
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/08/24/sctp_event_subscribe-in-RHEL">RHEL5和RHEL6中的sctp_event_subscribe定义大不同</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-08-24</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        </p>
-<p>近来碰到一个关于SCTP的问题：某个产品跑在Monta Vista上，其内核版本号为2.6.21；可每次该产品泡在我们的Red Hat Enterprise Linux 5.5上时，都会报错错误信息如下：
-<pre>^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt() setsockopt - Invalid argument
-^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts(): failed to set SCTP_EVENTS for socket 6</pre></p>
-<p>ammsSetSockOpt()调用了Linux API setsockopt()。产品的同事告诉我们他们升级过libsctp.so，于是我们copy了MV中的这个shared lib到RHEL中，问题依旧。后来我们以为是RHEL5.5的内核和Monta Vista的内核不一致，于是我把RHEL的内核从2.6.18-194.el5升级到2.6.18-238.9.1.el5，问题还在。当我们还在考虑要不要把我们的server替换为Monta Vista时，一位同事受<a href="http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500">http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500</a><br />
- 的启发，把setsockopt()最后一个参数由sizeof(events)改为8，竟然成功了！ events定义如下。
-<pre>struct sctp_event_subscribe events; </pre></p>
-<pre></pre>
-<p>最终，发现RHEL5和RHEL6中struct<span style="font-family:'Times New Roman';font-size:13px;">&nbsp;</span><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);">sctp_event_subscribe</span>的定义竟然完全不同！要想根本解决上面的问题，只能升级操作系统到RHEL6了。</p></p>
-<p>RHEL5中的定义：<a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">http://rhkernel.org/RHEL5&#043;2.6.18-194.el5/include/net/sctp/user.h#L367</a></p></p>
-<pre>/*
- 364 * Described in Section 7.3
- 365 *   Ancillary Data and Notification Interest Options
- 366 */
- 367struct sctp_event_subscribe {
- 368        __u8 sctp_data_io_event;
- 369        __u8 sctp_association_event;
- 370        __u8 sctp_address_event;
- 371        __u8 sctp_send_failure_event;
- 372        __u8 sctp_peer_error_event;
- 373        __u8 sctp_shutdown_event;
- 374        __u8 sctp_partial_delivery_event;
- 375        __u8 sctp_adaption_layer_event;
- 376};</pre></p>
-<p>RHEL 6中的定义：<a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">http://rhkernel.org/RHEL6&#043;2.6.32-71.18.2.el6/include/net/sctp/user.h#L406</a></p></p>
-<pre>/*
- 403 * Described in Section 7.3
- 404 *   Ancillary Data and Notification Interest Options
- 405 */
- 406struct sctp_event_subscribe {
- 407        __u8 sctp_data_io_event;
- 408        __u8 sctp_association_event;
- 409        __u8 sctp_address_event;
- 410        __u8 sctp_send_failure_event;
- 411        __u8 sctp_peer_error_event;
- 412        __u8 sctp_shutdown_event;
- 413        __u8 sctp_partial_delivery_event;
- 414        __u8 sctp_adaptation_layer_event;
- 415        __u8 sctp_authentication_event;
- 416};
- 417</pre></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -911,7 +875,7 @@ This process provides user quota information for remote users.&nbsp;<code class=
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -995,7 +959,7 @@ This process provides user quota information for remote users.&nbsp;<code class=
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1068,6 +1032,9 @@ This process provides user quota information for remote users.&nbsp;<code class=
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
+            Sort Colors</a></li>
+        
           <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
             Check Soduku Solution</a></li>
         
@@ -1094,9 +1061,6 @@ This process provides user quota information for remote users.&nbsp;<code class=
         
           <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
             Parallelize mex file in Matlab</a></li>
-        
-          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
-            Notes of Advanced Machine Learning(I)</a></li>
         
         </ul>
         

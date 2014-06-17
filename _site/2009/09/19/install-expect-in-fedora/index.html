@@ -9,12 +9,10 @@
   
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-  <!-- using baidu cdn instead
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  -->
+  <!--
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-
+  -->
+   <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Google Prettify -->
   <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
@@ -22,10 +20,9 @@
 
   <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- using baidu cdn instead
-  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-  -->
-
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -64,11 +61,11 @@
     <div class="content">
       
 <div class="page-header">
-  <h1>Fedora安装Expect</h1>
+	<h1>Fedora安装Expect</h1>
 </div>
 
 <div class="row-fluid page-body">
-  <div class="span9 left">
+  <div class="span11 left">
     <div class="main-container shadow">
       <div class="mainbody thepost">
         <p>费了很大力气才下到Expect的源代码，然后参考了Expect的INSTALL说明文件，还需要Tcl/Tk的源代码支持，于是又下载了Tcl/Tk的源代码，把它们都给放到/usr/local/src下面。先编译安装tcl和tk，完了之后进入expect的文件夹下面，./configure，结果报错，说找不到tclInt.h。于是在tcl的源文件的文件夹下面搜索tclInt.h，发现该文件确实存在，在generic下面。又参考了一下Expect的INSTALL说明文件，才知道可以加--withtclincluse=选项，于是重新configure：</p>
@@ -201,6 +198,8 @@ var linkwithin_site_id = 2140443;
 			-->
 			<h4>Related Posts</h4>
 			
+  				<li><a href="/2014/06/17/sort-colors">Sort Colors</a></li>
+			
   				<li><a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
 			
   				<li><a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
@@ -211,8 +210,6 @@ var linkwithin_site_id = 2140443;
 			
   				<li><a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></li>
 			
-  				<li><a href="/2014/03/26/c-code-to-print-pascal-triangle">C++ Code to Print Pascal Triangle</a></li>
-			
       </div>
   </div>
   	
@@ -221,6 +218,8 @@ var linkwithin_site_id = 2140443;
 		<div class="sidebar">
 			<h4>Recent Posts</h4>
 			
+  				<li><a href="/2014/06/17/sort-colors">Sort Colors</a></li>
+  			
   				<li><a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
   			
   				<li><a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
@@ -238,8 +237,6 @@ var linkwithin_site_id = 2140443;
   				<li><a href="/2014/01/10/dense-trajectory-notes">Dense Trajectory Notes</a></li>
   			
   				<li><a href="/2013/10/20/parallel-mex-file-in-matlab">Parallelize mex file in Matlab</a></li>
-  			
-  				<li><a href="/2013/10/11/notes-of-advanced-machine-learningi">Notes of Advanced Machine Learning(I)</a></li>
   			
       </div>
     </div>

@@ -9,12 +9,10 @@
   
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-  <!-- using baidu cdn instead
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  -->
+  <!--
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-
+  -->
+   <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Google Prettify -->
   <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
@@ -22,10 +20,9 @@
 
   <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- using baidu cdn instead
-  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-  -->
-
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -73,7 +70,87 @@
 
 <div class="row-fluid page-body">
 
-  <div class="span9 left">
+  <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2010/07/17/ifs-in-kshell">Korn Shell中IFS的妙用</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2010-07-17</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>IFS是internal field separator的缩写，shell的特殊环境变量。ksh根据IFS存储的值，可以是空格、tab、换行符或者其他自定义符号，来解析输入和输出的变量值。</p>
+<p>&nbsp;</p>
+<p>如果有一IP地址220.112.253.111, 欲将这个IP地址颠倒顺序，你可以定义IFS为"."，然后直接echo这个地址即可得到此IP的4个数值，然后c重新把IFS设为空格，重新组合四个IP地址的数值即可。</p>
+<p>
+<pre># The following code segment will only work in ksh, 
+# and it will fail in bash
+IP=220.112.253.111
+IFS="."
+TMPIP=$(echo $IP)
+IFS=" " # space
+echo $TMPIP | read ip1 ip2 ip3 ip4
+INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>更详细的IFS的介绍参见下文：（原文地址：<a href="http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm">http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm</a>）</p>
+<p>&nbsp;</p>
+<table style="width:100%;" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Another shell variable that you should become comfortable using is the IFS, or internal field separator, variable.<span>&nbsp;&nbsp;</span>The shell uses the value stored in IFS, which is the space, tab, and newline characters by default, to delimit words for the read and set commands, when parsing output from command substitution, and when performing variable substitution.</span><span></p>
+<p><span style="text-decoration:underline;">IFS can be redefined to parse one or more lines of data whose fields are not delimited by the default white-space characters.</span><span>&nbsp;&nbsp;</span>Consider this sequence of variable assignments and for loops:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">$ line=learn:unix:at:livefire:labs<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn:unix:at:livefire:labs<br />$ OIFS=$IFS<br />$ IFS=:<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn<br />unix<br />at<br />livefire<br />labs<br />$</p>
+<p></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>The first command assigns the string &ldquo;learn:unix:at:livefire:labs&rdquo; to the variable named line.<span>&nbsp;&nbsp;</span>You can see from the first for loop that the shell treats the entire string as a single field.<span>&nbsp;&nbsp;</span>This is because the string does not contain a space, tab, or newline character.&nbsp;</p>
+<p></span><span>After redefining IFS, the second for loop treats the string as four separated fields, each delimited by a colon.<span>&nbsp;&nbsp;</span>Using a colon for IFS would be appropriate when parsing the fields in a record from /etc/passwd, the user account information file:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">livefire:x:100:1::/export/home/livefire:/bin/ksh</p>
+<p></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Notice that the original value of IFS was stored in OIFS (&ldquo;O&rdquo; for original) prior to changing its value.<span>&nbsp;&nbsp;</span>After you are finished using the new definition, it would be wise to return it to its original value to avoid unexpected side effects that may surface later on in your script.&nbsp;</p>
+<p></span><span>TIP &ndash; The current value of IFS may be viewed using the following pipeline:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<blockquote>
+<p><span style="font-family:Arial;font-size:x-small;">$ echo "$IFS" | od -b<br />0000000 040 011 012 012<br />0000004<br />$</span></p>
+</blockquote>
+</td>
+</tr>
+<tr>
+<td width="100%"><span style="font-family:Arial;font-size:x-small;"><span>The output of the echo command is piped into the octal dump command, giving you its octal equivalent.<span>&nbsp;&nbsp;</span>You can then use an ASCII table to determine what characters are stored in the variable.<span>&nbsp;&nbsp;</span>Hint: Ignore the first set of zeros and the second newline character (012), which was generated by echo.<br /></span></span></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -911,118 +988,6 @@ _exit(0)
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/12/23/update-chrome-in-fedora12">Fedora 12升级Chromium遇到的问题及解决方法</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2009-12-23</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>自打装好Fedora 12之后就发现chromium不能用rpm安装了，安装时总是缺这少那，很是费劲，于是按照网上的方法，在/etc/yum.repos.d/下创建一个chromium.repo，内容如下：</p>
-<p>
-<pre>[chromium]
-name=Chromium Test Packages
-baseurl=http://spot.fedorapeople.org/chromium/F$releasever/
-enabled=0
-gpgcheck=0
-</pre>
-<p>&nbsp;</p>
-<p>然后通过yum安装就可以了。</p>
-<p>&nbsp;</p>
-<p>今天在Fedora People看到有新的chromium安装包出现，于是打算升级chromium。下载了所有的rpm包(忘记了最初是通过yum安装的)。安装时chromium, chromium-libs都能通过rpm -Uvh正常安装，可是升级v8时还是出了问题。想起以前的教训，打算先把v8完全卸载再安装，可是缺无法卸载，无论是通过rpm -e还是yum remove都不行。</p>
-<p>&nbsp;</p>
-<p>这时想到了用yum upodate v8-*，结果却出现了&ldquo;Package v8-devel-2.0.3-1.20091209svn3443.fc12.i686.rpm is not signed&rdquo;的错误。在网上找到一个办法，就是编辑&nbsp;<strong>/etc/yum.conf</strong><br />
-，把gpgcheck=1 改为 gpgcheck=0。不过这样做有潜在的风险，因此在安装完v8之后就立刻把gpgcheck重新设为1.</p>
-<p>&nbsp;</p>
-<p>另外一个奇怪的问题是，打开Chromium时，浏览器打不开，而且SELinux总是报错：</p>
-<p>&nbsp;</p>
-<p>
-<pre>Summary:
-SELinux is preventing /usr/lib/chromium-browser/chromium-browser from loading
-/usr/lib/chromium-browser/libmedia.so which requires text relocation.
-Detailed Description:
-The chromium-browse application attempted to load
-/usr/lib/chromium-browser/libmedia.so which requires text relocation. This is a
-potential security problem. Most libraries do not need this permission.
-Libraries are sometimes coded incorrectly and request this permission. The
-SELinux Memory Protection Tests
-(http://people.redhat.com/drepper/selinux-mem.html) web page explains how to
-remove this requirement. You can configure SELinux temporarily to allow
-/usr/lib/chromium-browser/libmedia.so to use relocation as a workaround, until
-the library is fixed. Please file a bug report.
-Allowing Access:
-If you trust /usr/lib/chromium-browser/libmedia.so to run correctly, you can
-change the file context to textrel_shlib_t. &quot;chcon -t textrel_shlib_t
-'/usr/lib/chromium-browser/libmedia.so'&quot; You must also change the default file
-context files on the system in order to preserve them even on a full relabel.
-&quot;semanage fcontext -a -t textrel_shlib_t
-'/usr/lib/chromium-browser/libmedia.so'&quot;
-Fix Command:
-chcon -t textrel_shlib_t '/usr/lib/chromium-browser/libmedia.so'
-Additional Information:
-Source Context                unconfined_u:unconfined_r:unconfined_execmem_t:s0-
-                              s0:c0.c1023
-Target Context                system_u:object_r:lib_t:s0
-Target Objects                /usr/lib/chromium-browser/libmedia.so [ file ]
-Source                        chromium-browse
-Source Path                   /usr/lib/chromium-browser/chromium-browser
-Port                          &lt;Unknown&gt;
-Host                          bonn.yang
-Source RPM Packages           chromium-4.0.273.0-0.1.20091216svn34775.fc12
-Target RPM Packages           chromium-libs-4.0.273.0-0.1.20091216svn34775.fc12
-Policy RPM                    selinux-policy-3.6.32-56.fc12
-Selinux Enabled               True
-Policy Type                   targeted
-Enforcing Mode                Enforcing
-Plugin Name                   allow_execmod
-Host Name                     bonn.yang
-Platform                      Linux bonn.yang 2.6.31.6-166.fc12.i686.PAE #1 SMP
-                              Wed Dec 9 11:00:30 EST 2009 i686 i686
-Alert Count                   11
-First Seen                    Wed 23 Dec 2009 09:38:16 PM CST
-Last Seen                     Wed 23 Dec 2009 10:28:36 PM CST
-Local ID                      b1f55f28-145d-48dd-9d71-6fb7fe6a57c8
-Line Numbers                  
-Raw Audit Messages            
-node=bonn.yang type=AVC msg=audit(1261578516.240:27332): avc:  denied  { execmod } for  pid=2946 comm=&quot;chromium-browse&quot; path=&quot;/usr/lib/chromium-browser/libmedia.so&quot; dev=sda2 ino=277322 scontext=unconfined_u:unconfined_r:unconfined_execmem_t:s0-s0:c0.c1023 tcontext=system_u:object_r:lib_t:s0 tclass=file
-node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 syscall=125 success=no exit=-13 a0=8ff8000 a1=63000 a2=5 a3=bf899bf0 items=0 ppid=1 pid=2946 auid=500 uid=500 gid=500 euid=500 suid=500 fsuid=500 egid=500 sgid=500 fsgid=500 tty=(none) ses=1 comm=&quot;chromium-browse&quot; exe=&quot;/usr/lib/chromium-browser/chromium-browser&quot; subj=unconfined_u:unconfined_r:unconfined_execmem_t:s0-s0:c0.c1023 key=(null)
-</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>试了半天也没能在SELinux中设好libmedia.so的permission（有人说只要把libmedia.so的permission设为permissive就可以）。后来在一个法语的网页上(<a href="http://tuxmaya.wordpress.com/2009/12/21/nuevos-paquetes-de-chormium-en-fedora/">http://tuxmaya.wordpress.com/2009/12/21/nuevos-paquetes-de-chormium-en-fedora/</a><br />
-)发现了这样一条命令来取消 SELinux 对 /usr/lib/chromium-browser/下的所有.so文件的permission 的检查。</p>
-<p>&nbsp;</p>
-<p>
-<pre>chcon -t texrel_shlib_t /usr/lib*/chromium-browser/*.so</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>另外，该网页(<a href="http://forums.fedoraforum.org/showthread.php?t=237029">http://forums.fedoraforum.org/showthread.php?t=237029</a><br />
-)上也提到了这种方法。</p>
-<p>&nbsp;</p>
-<p>设置之后，chromium就可以正常工作了。这篇博文就是用chromium来写的。</p>
-<p>&nbsp;</p>
-<p>PS:&nbsp;</p>
-<p>&nbsp;</p>
-<p>写完博文后在SELinux的错误信息中发现了fix的方法：</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>
-<pre>hcon -t textrel_shlib_t '/usr/lib/chromium-browser/libmedia.so'</pre>
-<p>&nbsp;</p>
-<p>
-<pre>semanage fcontext -a -t textrel_shlib_t
-'/usr/lib/chromium-browser/libmedia.so'</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>实在是太粗心了，当时竟然没有仔细看&hellip;&hellip; 谨记这一教训！</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1143,7 +1108,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1227,7 +1192,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1300,6 +1265,9 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
+            Sort Colors</a></li>
+        
           <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
             Check Soduku Solution</a></li>
         
@@ -1326,9 +1294,6 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
         
           <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
             Parallelize mex file in Matlab</a></li>
-        
-          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
-            Notes of Advanced Machine Learning(I)</a></li>
         
         </ul>
         

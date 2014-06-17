@@ -9,12 +9,10 @@
   
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-  <!-- using baidu cdn instead
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  -->
+  <!--
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-
+  -->
+   <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Google Prettify -->
   <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
@@ -22,10 +20,9 @@
 
   <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- using baidu cdn instead
-  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-  -->
-
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -73,7 +70,51 @@
 
 <div class="row-fluid page-body">
 
-  <div class="span9 left">
+  <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/05/16/yum-proxy">yum的proxy设置</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-05-16</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>方法一：</p>
+<p>
+<pre>export http_proxy="proxy:portnum"</pre>
+<p>&nbsp;</p>
+<p>方法二：（<a href="http://www.fedoraforum.org/forum/showthread.php?t=742">http://www.fedoraforum.org/forum/showthread.php?t=742</a>）</p>
+<table id="post4089" class="tborder" style="width:100%;" border="0" cellspacing="1" cellpadding="6" align="center">
+<tbody>
+<tr>
+<td class="alt1">
+<div id="post_message_4089">create the following files in /etc/profile.d, and then this will work in *any* shell for *any* user of the system</p>
+<pre>#proxy.sh
+export http_proxy=http://host.com:port/
+export ftp_proxy=http://host.com:port/
+export no_proxy=.domain.com
+export HTTP_PROXY=http://host.com:port/
+export FTP_PROXY=http://host.com:port/
+#proxy.csh
+setenv http_proxy http://host.com:port/
+setenv ftp_proxy http://host.com:port/
+setenv no_proxy .domain.com
+setenv HTTP_PROXY http://host.com:port/
+setenv FTP_PROXY http://host.com:port/</pre>
+<p>&nbsp;</p></div>
+<div>方法三：(<a href="http://linux.die.net/man/5/yum.conf">http://linux.die.net/man/5/yum.conf</a>)</div>
+<div>在/etc/yum.conf中设置proxy，prox_username和proxy_password选项。</div>
+</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -717,92 +758,6 @@ main(int argc, char* argv[])
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/02/27/plan9-intro-note-3">Plan9 Environment Variables -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(III)</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-02-27</strong> with tags <a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
-interface for using environment variables in Plan 9 is a file<br />
-interface.<br />
- All interfaces of environment variables can be found<br />
-under <span style="font-family:'Courier New', monospace;">/env</span>.</span></p>
-<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">To<br />
-obtain the value for a environment variable, from a C program, we can<br />
-use the </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">getenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><br />
-system call. If the variable is not defined, </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">getenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><br />
-returns a null string. A related call is </span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">putenv</span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">,<br />
-which accepts a name and a value, and set the corresponding<br />
-environment variable accordingly.</span></span></p>
-<p><span style="font-family:'Trebuchet MS', sans-serif;">
-<pre>#include &lt;u.h&gt;
-#include &lt;libc.h&gt;
-void main()
-{
-char * path;
-path=getenv("path");
-if(path==nil)
-sysfatal("path not defined!");
-print("PATH is %s /n", path);
-exits(nil);
-}</pre>
-<p>&nbsp;</span></p>
-<p>&nbsp;</p>
-<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">In<br />
-some cases it is convenient to define an environment variable just<br />
-for a command. This can be<br />
- done by defining it in the same command<br />
-line, before the command, like in the following exam-ple:<br />
-</span></span></p>
-<p><span style="font-family:'Courier New', monospace;">
-<pre>; temp=/tmp/foobar echo $temp
-/tmp/foobar
-; echo $temp
-;
-</pre>
-<p>&nbsp;</span></p>
-<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><strong>Useful<br />
-Environment Variables:</strong></span></span></p>
-<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">status</span><br />
-is updated by the shell once it finds out how it went to the last<br />
-command it executed.<br />
-</span></span></p>
-<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">path</span><br />
-is a list of paths where the shell should<br />
-look for executable files<br />
-to run the user commands.<br />
-</span></span></p>
-<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">user</span><br />
-contains the user name<br />
-.</span></span></p>
-<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-family:'Courier New', monospace;">sysname</span><br />
-contains the machine name.<br />
-</span></span></p>
-<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
-file <span style="font-family:'Courier New', monospace;">/dev/text </span>represents<br />
-the<br />
- text shown in the window (when used within that window). To make<br />
-a copy of your shell session,<br />
- you already know what to do:<br />
-</span></span></p>
-<p><span style="color:#000000;"><span style="font-family:'Courier New', monospace;">;<br />
-cp /dev/text $home/saved<br />
-</span></span></p>
-<p><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;">The<br />
-same can be done for the image shown in the display for your window,<br />
-which is also represented as a file, <span style="font-family:'Courier New', monospace;">/dev/window</span>.<br />
-This is what we did to capture screen images .</span></span></p>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -923,7 +878,7 @@ This is what we did to capture screen images .</span></span></p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1007,7 +962,7 @@ This is what we did to capture screen images .</span></span></p>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1080,6 +1035,9 @@ This is what we did to capture screen images .</span></span></p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
+            Sort Colors</a></li>
+        
           <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
             Check Soduku Solution</a></li>
         
@@ -1106,9 +1064,6 @@ This is what we did to capture screen images .</span></span></p>
         
           <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
             Parallelize mex file in Matlab</a></li>
-        
-          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
-            Notes of Advanced Machine Learning(I)</a></li>
         
         </ul>
         

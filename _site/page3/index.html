@@ -9,12 +9,10 @@
   
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-  <!-- using baidu cdn instead
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  -->
+  <!--
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-
+  -->
+   <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Google Prettify -->
   <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
@@ -22,10 +20,9 @@
 
   <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- using baidu cdn instead
-  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-  -->
-
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -73,7 +70,42 @@
 
 <div class="row-fluid page-body">
 
-  <div class="span9 left">
+  <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library">Calculate the CDF of Poisson Distribution with Boost C++ Library</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2012-11-05</strong> with tags <a href="/tags.html#boost-ref" rel="nofollow">boost</a>, <a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>, <a href="/tags.html#CDF-ref" rel="nofollow">CDF</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>The Cumulative Distribution Function(CDF) of Poisson distribution can be easily calculated by R function ppois() or octave/Matlab function poisspdf(). However, it is not a easy thing to deal with statistics with C++ from scratch.</p>
+<p>Today I found a very powerful C++ mathematical library(actually not limited to math), boost. Unfortunately, it is hard to figure out the API of boost library from the code if you are not familiar with generalization programming(just like me). Besides, there is no useful "hello world" examples on the Internet to show the boost library handling statistics(examples on webpage <a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a> is a bit complicated and the header files are not included).</p>
+<p>Therefore, I made up following example to show how to get the cdf of Poisson distribution with boost C++ library:<br />
+<code><br />
+#include &lt;boost/math/distributions/poisson.hpp&gt;<br />
+#include &lt;iostream&gt;</code></p>
+<p>using namespace std;<br />
+using namespace boost::math;</p>
+<p>int main()<br />
+{<br />
+poisson_distribution&lt;&gt; p(2.9);<br />
+cout&lt;&lt;"cdf: ppois(1,2.9)="&lt;&lt;cdf(p,1)&lt;&lt;endl;</p>
+<p>return 0;<br />
+}</p>
+<p><em>References:</em></p>
+<ol>
+<li><a href="http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html">http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html</a></li>
+<li><a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a></li>
+<li><a href="http://www.datasimfinancial.com/forum/viewtopic.php?t=111">http://www.datasimfinancial.com/forum/viewtopic.php?t=111</a></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -982,86 +1014,6 @@ exit 0
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2012/03/06/expect-here-doc-in-shell">Shell中使用Expect Here Document</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2012-03-06</strong> with tags <a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>在使用Shell写程序时，有时不得不面对交互的问题——可惜shell往往无法自动完成交互。如果交互的内容很多，自然是直接应用Expect脚本比较方便；如果交互的内容很少，而且考虑到Shell的易用性，在Shell脚本中创建一个Expect 的Here Document更加方便灵活。</p>
-<p>如下例所示，Expect&nbsp;Here Document可以直接运行并将运行结果赋给KSH变量rcs_stat。</p>
-<p>
-<pre>#!/bin/ksh
-
-autoload formatAPnum
-
-# Set the lab name, COOLLAB
-. $COOLXDIR/.netlabs
-# Get the RCS cell list
-set -A RCSs
-typeset -i nx=0
-cat $COOLXDIR/.coolcell2dcs | while read cell
-do
-	if [[ &quot;$cell&quot; = c* ]]
-	then
-		rcs=${cell%%$COOLLAB*}
-		RCSs[$nx]=${rcs#c}
-		nx=$nx+1
-	fi
-done
-
-# Check RCS status
-typeset -i loopCount=0
-rcs_cnt=${#RCSs[*]}
-B_server=$(formatAPnum $BserverAP)
-while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
-do
-	loopCount=${loopCount}+1
-
-	nx=0
-	while [ $nx -lt $rcs_cnt ]
-	do
-		rcs_stat=&quot;OOS&quot;
-		rcs_stat=$(
-expect - &lt;&lt;!
-log_user 0
-set timeout 20
-spawn $COOL_RSH ap$B_server TICLI
-send &quot;op:cell ${RCSs[$nx]}r&quot;
-expect {
-	timeout {puts &quot;OOSn&quot;}
-	&quot;*DL(S) DOWN&quot; {puts &quot;OOSn&quot;}
-	&quot;*DL(S) UP&quot; {puts &quot;UPn&quot;}
-}
-!
-		)
-
-		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
-		then
-			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
-			unset RCSs[$nx]
-		fi
-
-		nx=${nx}+1
-	done
-
-	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
-done
-
-coolprint - &quot;All RCSs are up.&quot;
-exit 0
-</pre></p>
-<p></p>
-<p></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1182,7 +1134,7 @@ exit 0
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1266,7 +1218,7 @@ exit 0
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1339,6 +1291,9 @@ exit 0
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
+            Sort Colors</a></li>
+        
           <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
             Check Soduku Solution</a></li>
         
@@ -1365,9 +1320,6 @@ exit 0
         
           <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
             Parallelize mex file in Matlab</a></li>
-        
-          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
-            Notes of Advanced Machine Learning(I)</a></li>
         
         </ul>
         

@@ -9,12 +9,10 @@
   
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-  <!-- using baidu cdn instead
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  -->
+  <!--
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-
+  -->
+   <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Google Prettify -->
   <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
@@ -22,10 +20,9 @@
 
   <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- using baidu cdn instead
-  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-  -->
-
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -73,7 +70,106 @@
 
 <div class="row-fluid page-body">
 
-  <div class="span9 left">
+  <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/06/17/sort-colors">Sort Colors</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2014-06-17</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p><a href="https://oj.leetcode.com/problems/sort-colors/">Problem</a>:</p>
+
+<blockquote>
+  <p>Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.</p>
+
+  <p>Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.</p>
+</blockquote>
+
+<p>This problem is trivial when using two-pass counting sort: first pass count the numbers of each color, and then assign each element in array into corresponding regions in the array in the second pass.</p>
+
+<p>The follow up of this problem requires to design a one-pass algorithm using constant space. The strategy is go through all the elements in the array, and move red colors(0s) to the left and move blue colors to the right(2s). The green colors(1s) will finally remain in the middle part of the array.</p>
+
+<p>In order to implement above strategy, three indices can be used: one index for current element, one idex for the right-most red color, and one index for the left-most blue color. When meeting a red color, move it to the end of the red colors. When meeting a blue color, move it to the front(left-most) of the blue colors. And when meeting a green color, just increase current index.</p>
+
+<p>Following is my C++ implementation:</p>
+
+<pre><code>class Solution {
+public:
+    void sortColors(int A[], int n) {
+		int idx=0,ridx=0,bidx=n-1; // ridx - index for red color, bidx - index for blue color
+        while(idx&lt;=bidx) {
+			switch(A[idx]) {
+				case 0: { // Red color, move it to left
+					while(A[ridx]==0 &amp;&amp; ridx&lt;n)
+						++ridx;
+					if(idx&gt;ridx){
+						swap(A[idx],A[ridx]);
+						++ridx;
+					} else {
+						idx=ridx;
+					}
+					break;
+				}
+				case 1: { // Green color, skip it
+					++idx;					
+					break;
+				}
+				case 2: { // Blue color, move it to right
+					while(A[bidx]==2 &amp;&amp; bidx&gt;idx)
+						--bidx;
+					swap(A[idx],A[bidx]);
+					--bidx;
+					break;
+				}
+				default:
+					cout&lt;&lt;"Error: invalid color detected"&lt;&lt;endl;
+			}
+		} // end while
+    }
+};
+</code></pre>
+
+<p>And the following code can be used for test:</p>
+
+<pre><code>#include &lt;iostream&gt;
+#include &lt;utility&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+int main() {
+	/* initialize random seed: */
+	srand (time(NULL));
+	
+	const int N=10;
+	Solution sol;
+	int* A=new int[N];
+	cout&lt;&lt;"Before sorting:"&lt;&lt;endl;
+	for(int i=0;i&lt;N;++i) {
+		A[i]=rand()%3;
+		cout&lt;&lt;A[i]&lt;&lt;" ";
+	}
+	cout&lt;&lt;endl;
+
+	sol.sortColors(A,N);
+	
+	cout&lt;&lt;"After sorting:"&lt;&lt;endl;
+	for(int i=0;i&lt;N;++i)
+		cout&lt;&lt;A[i]&lt;&lt;" ";
+	cout&lt;&lt;endl;
+
+
+	delete [] A;
+}
+</code></pre>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -89,7 +185,7 @@
 
 <p>To check if a \(9 \times 9\) grid is a valid solution, we need to check every row, every column and \(3 \times 3\) subgrids. It is not hard to check rows and columns, but checking subgrids is little tricky. When considering going through the grid only one time, it will be much harder.</p>
 
-<p>My solution is define a 9-item-long vector to count the occurrences of each element in a row, a 9-item-long vector to count the occurrences of each element in a column, and a \(3 \times 9\) matrix to count the occurrences of elements in the 3 nearby subgrids. If found one element occured more than one time, then return false.</p>
+<p>My solution is define a 9-item-long vector to count the occurrences of each element in a row, a 9-item-long vector to count the occurrences of each element in a column, and a \(3 \times 9\) matrix to count the occurrences of elements in the 3 nearby subgrids. The value of each element in grid can be used as the indices of the counting vectors, because they are supposed to be in the range of 0~9. If found one occurrence greater than one in the vectors, then return false.</p>
 
 <pre><code>bool isSoduku(vector&lt;vector&lt;int&gt;&gt; grid) {
 	const int dim=3;
@@ -1427,103 +1523,6 @@ end</code></p>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2013/10/11/notes-of-advanced-machine-learningi">Notes of Advanced Machine Learning(I)</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2013-10-11</strong> with tags <a href="/tags.html#Machine Learning-ref" rel="nofollow">Machine Learning</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <ol>
-<li>Two different ways represent a distribution over several random variables: (1) product of conditional probabilities: \(p(x_1,x_2,x_3,x_4)=p(x_4)p(x_3|x_4)p(x_2|x_3,x_4)p(x_1|x_2,x_3,x_4)\) and (2) global energy function: \(p(x_1,x_2,x_3,x_4)=\frac{1}{Z}e^{-E(x_1,x_2,x_3,x_4)}\), where \(Z\) is the partition function.</li>
-<li>Directed graphical models use conditional probabilities, which undirected graphical models use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</li>
-<li>
-<ol>
-<li>
-<h3>Probabilistic Model</h3>
-</li>
-</ol>
-<p dir="ltr">Two different ways represent a distribution over several random variables:</p>
-<ul>
-<li>
-<p dir="ltr">product of conditional probabilities: p(x1,x2,x3,x4)=p(x4)p(x3|x4)p(x2|x3,x4)p(x1|x2,x3,x4)</p>
-</li>
-<li>
-<p dir="ltr">global energy function:</p>
-</li>
-</ul>
-<p dir="ltr">p(x1,x2,x3,x4)=1Ze{-E(x1,x2,x3,x4)},</p>
-<p dir="ltr">where Zis the partition function.</p>
-<p dir="ltr">Directed graphical models use conditional probabilities(Bayesian networks), while undirected graphical models(Markov random fields, Boltzmann machines) use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</p>
-<h4>Directed Graphs</h4>
-<p dir="ltr">Directed graphs are useful for expressing causal relationships between random variables.</p>
-<ul>
-<li>
-<p dir="ltr">The joint distribution defined by the graph is given by the product of a conditional distribution for each node conditioned on its parents.</p>
-</li>
-<li>
-<p dir="ltr">For example, the joint distribution over x1,,x7 factorizes:</p>
-</li>
-</ul>
-<p dir="ltr">p(x)=p(x1)p(x2)p(x3)p(x4|x1,x2,x3)p(x5|x1,x3)p(x6|x4)p(x7|x4,x5)</p>
-<h4>Markov Random Fields</h4>
-<p dir="ltr">p(x)=1Zcc(xc)</p>
-<ul>
-<li>
-<p dir="ltr">Each potential function is a mapping from joint configurations of random variables in a clique to non-negative real numbers.</p>
-</li>
-<li>
-<p dir="ltr">The choice of potential functions is not restricted to having specific probabilistic interpretations.</p>
-</li>
-<li>
-<p dir="ltr">Potential functions are often represented as exponentials:</p>
-</li>
-</ul>
-<p dir="ltr">p(x)=1Zcc(xc)=1Z(-cE(xc))=1Z(-E(x)) (Boltzmann distribution)</p>
-<ul>
-<li>
-<p dir="ltr">Computing Z is very hard, which represents a major limitation of undirected models.</p>
-</li>
-</ul>
-<p dir="ltr">
-<hr />
-<p>&nbsp;</p>
-<ol start="2">
-<li>
-<h3>Singular Value Decomposition</h3>
-</li>
-</ol>
-<p dir="ltr">Singular Value Decomposition(SVD) is a factorization of a real or complex matrix. Formally, the singular value decomposition of an mn matrix M is a factorization of the form</p>
-<p dir="ltr">M=UV*</p>
-<p dir="ltr">where U is a mm unitary matrix,  is an mn rectangular diagonal matrix with nonnegative real numbers on the diagonal, and V*(the conjugate transpose of V: (V*)ij=Vji, for real matrix, it equals the transpose) is an nn unitary matrix.</p>
-<p dir="ltr">A complex square matrix U is unitary if U*U=UU*=I.</p>
-<p dir="ltr">The diagonal entries ij of  are known as the singular values of M, which means they are the square roots of the eigenvalues of matrix MM*. The m columns of U and n columns of V are called the left-singular vectors and right-singular vectors of M, respectively.</p>
-<p dir="ltr">The SVD and the eigendecomposition are closely related:</p>
-<ul>
-<li>
-<p dir="ltr">The left-singular vectors of M(columns of U) are eigenvectors of MM*.</p>
-</li>
-<li>
-<p dir="ltr">The right-singular vectors of M(columns of V) are eigenvectors of M*M.</p>
-</li>
-<li>
-<p dir="ltr">The non-zero singular values of M(diagonal entries of ) are the square roots of the non-zero eigenvalues of both M*M and MM*.</p>
-</li>
-</ul>
-</li>
-</ol>
-<p>References:</p>
-<ol>
-<li>U Toronto CSC2535: <a href="http://www.cs.toronto.edu/~hinton/csc2535/lectures.html">http://www.cs.toronto.edu/~hinton/csc2535/lectures.html</a></li>
-</ol>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1641,7 +1640,7 @@ end</code></p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1725,7 +1724,7 @@ end</code></p>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1798,6 +1797,9 @@ end</code></p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
+            Sort Colors</a></li>
+        
           <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
             Check Soduku Solution</a></li>
         
@@ -1824,9 +1826,6 @@ end</code></p>
         
           <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
             Parallelize mex file in Matlab</a></li>
-        
-          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
-            Notes of Advanced Machine Learning(I)</a></li>
         
         </ul>
         

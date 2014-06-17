@@ -9,12 +9,10 @@
   
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-  <!-- using baidu cdn instead
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  -->
+  <!--
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-
+  -->
+   <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Google Prettify -->
   <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
@@ -22,10 +20,9 @@
 
   <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- using baidu cdn instead
-  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-  -->
-
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -73,7 +70,37 @@
 
 <div class="row-fluid page-body">
 
-  <div class="span9 left">
+  <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/04/30/several-solaris-10-problems">近期遇到的几个Solaris 10 的问题</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2009-04-30</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>公司正在逐渐把server升级为Solaris 10， 对于新平台我非常陌生（当然了，对于以前的Solaris 9也不怎么懂），遇到了几个值得记录下来的问题。</p>
+<p>&nbsp;</p>
+<p>1. $HOME目录几乎所有文件（夹）的owner和group都被改为nobody</p>
+<p>昨天在工作时遇到了问题，自己无法解决，求助于同事。同事帮忙查了半天，发现了我的$HOME下的所有的文件和文件夹的owner和group都被改为nobody了。我们都很诧异为什么会出现这种情况，求助于公司的IT，IT们说这是因为我们部门有两个NFS storage,其中一个和NFS的版本和Solaris 10兼容，另外一个不兼容。而我的$HOME恰好就在不兼容的Storage上，结果权限就变了。</p>
+<p>&nbsp;</p>
+<p>今天上午IT把这个问题FIX了，但我对于NFS还是不清楚，对于权限如何变的也不知道。有时间再去仔细研究NFS的问题。</p>
+<p>&nbsp;</p>
+<p>2.&nbsp;ld.so.1: cp:<span style="white-space:pre;">fatal: libsec.so.1: open failed: No such file or directory</span></p>
+<p><span style="white-space:pre;">ld.so.1: cp: fatal: libsec.so.1: version `SUNW_1.2' not found (required by file /usr/bin/cp)</span></p>
+<p>&nbsp;</p>
+<p><span style="white-space:pre;">这是一个动态链接库的问题。这个问题Google了一下发现很多人也有类似的问题，但没有看到如何解决。貌似</span></p>
+<p><span style="white-space:pre;">Sun推出了一个patch来解决这个问题。但具体情况不了解。</span></p>
+<p>&nbsp;</p>
+<p><span style="white-space:pre;">前几天早晨遇到了这个问题，和同事查了一上午也没发现原因，结果当我们绝望的时候这个问题自己消失了。莫名其妙。</span></p>
+<p><span style="white-space:pre;">但这个问题估计在往后系统重启以后还会发生。</span></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1344,46 +1371,6 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/02/10/google-out-of-service">Google老矣，能不宕否？</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2009-02-10</strong> with tags <a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
-<div>
-<h1 style="text-align:center;"><span>Goolge老矣，能不宕否？</span></h1>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal"><span>金融风暴来袭，</span>&nbsp;Google<span>难以独善其身本在我意料之中，但令我感到意外的是</span>Google<span>竟也裁员，更令我大跌眼镜的是</span>Google<span>的各项服务质量竟直线下降</span>:&nbsp;<span>许多常用的服务下线（如</span>Google Notes<span>），宕机不断（</span>Goolge Apps<span>，</span>Gmail<span>啊），</span>Android<span>雷声大雨点小（连</span>Android<span>的创始人都出走了）,Chrome发展缓慢&hellip;&hellip;</span></p>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal"><span>我应该算</span>Google<span>的忠实</span>Fans<span>了：我一直在用</span>Google Documents, Gmail, Google&nbsp; Map, Google Earth, Google Notes, Chrome, Google Finance, Google Reader, iGoogle, Picasa, Youtube<span>&hellip;&hellip;</span>&nbsp;<span>还准备研究一下</span>Google Apps<span>，</span>&nbsp;<span>下载了</span>Android SDK&nbsp;<span>并且编了一个</span>hello world<span>程序，但由于没有时间就没有继续。当然就更不要说</span>Google Search<span>了。</span></p>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal"><span>以前，</span>Google<span>每推出一项新的服务都会令人眼前一亮，即便今天</span>google&nbsp;<span>仍然占据着新闻媒体的头条。对于这样一个诞生不过十年，上市不过五年的</span>Baby Giant<span>而言，媒体、用户给予它的赞誉、光环实在是太多了。而</span>Google<span>也确实不负众望，推出了一个又一个服务。但随着服务的增加，人们开始迷惑：</span>Google<span>到底要干什么？一大堆杂七杂八的在线服务，相互之间并没有任何根本的联系，难免让人一头雾水。</span></p>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal">Google<span>也感觉到了用户的迷惑，于是在</span>2008<span>年初抛出了&ldquo;云计算&rdquo;的概念。当然，云计算早已有之，而且第一个推出商业云计算平台的也不是</span>Google<span>而是</span>Amazon<span>。但无论如何，</span>Google<span>的云计算确实能够从某种程度上解释它的一系列服务，但细细想来却也有些牵强，毕竟有些服务很难往云计算上靠拢，比如</span>Picasa&nbsp;<span>等桌面软件；另一方面，把搜索引擎、网络邮箱等等都归结为云计算，未免有些宽泛，如此一来岂不是所有推出网络邮箱的公司都可以算作云计算服务商？那云计算岂不是也没有多大的技术含量？尽管我很早就对&ldquo;网格计算&rdquo;心向往之，对于云计算也是非常期待，但我对</span>Google<span>云计算的一些定义表示怀疑。业界短期内也不能就&ldquo;云计算&rdquo;达成共识，现在还只是处于概念炒作阶段。毕竟</span>Google<span>的迅猛发展很大程度上是通过并购实现的，</span>Picasa<span>本来并不是</span>Google<span>的产品。对于</span>Google<span>云计算总体的感觉是比较粗糙。但我坚信在所有口口声声要做云计算的公司中，</span>Google<span>无疑是最有技术实力的一个。</span></p>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal"><span>由于</span>Google<span>的优势在于网络，本能的要将所有的服务放在&ldquo;云&rdquo;上，尽可能的摆脱&ldquo;端&rdquo;的束缚。而微软恰恰相反，微软的云计算理念是尽可能的延缓应用向&ldquo;云&rdquo;的迁移，延缓&ldquo;端&rdquo;（</span>Windows<span>）的寿命。只有&ldquo;云&rdquo;而没有&ldquo;端&rdquo;，则&ldquo;云&rdquo;就成了断线的风筝，无法为用户所使用。而</span>Google<span>又要慢慢绕开微软的&ldquo;端&rdquo;，因此便于去年</span>9<span>月份推出了</span>Chrome<span>浏览器，要用自己的浏览器去取代操作系统，所有的云端应用都可以在</span>Chrome<span>上完成。而且</span>Chrome<span>本身的设计就融入了操作系统的理念，其意图相当明显。</span>Google<span>的确很高明，推出</span>Chrome<span>的目的并不是真的要花大力气加入浏览器的竞争，即便</span>Chrome<span>失败了或者市场占用率很低（这几乎是可以肯定的，毕竟优秀如</span>Firefox<span>者深耕多年也只落得</span>20%<span>的占有率），也能加剧浏览器的竞争，促进浏览器的发展，从而加速网络应用的普及。</span></p>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal"><span>可就是这样一款颇具战略意义的产品，其表现却有些令人失望。</span>Chrome<span>的优点自不待言，但缺点也很明显：自身兼容性较差&mdash;&mdash;</span>Google<span>已经有很多应用，但这些应用有时竟然不能使用（最令我不能容忍的就是半年过去了谷歌金山词霸仍然不支持</span>Chrome<span>屏幕取词）；网页显示的极为丑陋&mdash;&mdash;很多网页在</span>IE<span>下面非常漂亮（</span>HTML<span>标准的网页），但</span>Chrome<span>现实出来就很难看，同样大小的竟然显示的有大有小、有粗有细；地址栏不够只能&mdash;&mdash;和Firefox的地址栏相比，尽管Chrome有自己的优势（集成搜索），但明显没有Firefox的智能；收藏夹很难找到&mdash;&mdash;这其实是一个用户习惯的问题，我很欣赏</span>Google<span>的简洁明快，但</span>Google<span>没有把收藏夹放在显著的位置而且如果不打开新的标签页就很难找到，这一点我实在有点想不通。另外，</span>Chrome<span>的</span>Linux<span>版本迟迟没有发布，也着实令人不爽。</span></p>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal"><span>说到</span>Google<span>的&ldquo;端&rdquo;，就不得不再捎带谈一谈</span>Google Android<span>。</span>Android<span>本来也不是</span>google<span>的产品，</span>Google<span>貌似于</span>2004<span>年收购了</span>Android<span>公司，并继续在此基础上开发</span>Android<span>手机操作系统。</span>Android<span>本来可以是一款划时代的手机操作系统，可惜生不逢时，风头被</span>iPhone<span>占尽。</span>Google<span>于去年也仿照</span>Apple Store<span>推出了</span>Android Store<span>，尽管条件比</span>Apple Store<span>优惠的多，但至今里面的应用不足</span>1000<span>个。也许是因为很难在手机领域有重大突破，</span>Google<span>已经将</span>Andorid<span>的重心转到了</span>netbook<span>上面（离职的前</span>Goolge Andoid<span>负责人披露），据说有人轻松的将</span>Android<span>移植到</span>EeePC<span>上。但</span>netbook<span>上的竞争对手又何其之多：</span>Moblin<span>，</span>Ubuntu<span>，</span>WindowsXP/Windows 7<span>&hellip;&hellip;尽管出师不利，</span>Google<span>已经决定在移动领域大展拳脚了。</span></p>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal">Google<span>近来的表现，愈发显示出其龙钟老态。先是股价大跌、取消福利、员工离职，然后就是部分产品下线，随后又有取消年终奖（每人发了一部</span>G1<span>），紧接着就是把所有网页误认为恶意网页，始终伴随整个过程的就是宕机宕机&hellip;&hellip;</span>&nbsp;<span>负面消息不断涌现。显然，金融危机下的</span>Google&nbsp;<span>已经进入到了一个内外交困的关键阶段。曾经那个朝气蓬勃&ldquo;永不不作恶&rdquo;的</span>Google<span>，已经由当年的初出茅庐逐渐长大成熟，所有微软们、</span>yahoo<span>们遇到过的和没遇到过的问题都摆在了它的面前。</span></p>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal"><span>最近</span>Twitter<span>风头正劲，有人语言</span>Twitter<span>将取代</span>Google<span>，因为</span>Twitter<span>对于实时新闻的搜索要好于</span>Google<span>。昨晚试了一下</span>Twitter<span>，注册只需几步，但浪费了我</span>40<span>分钟的时间也没有注册成功&mdash;&mdash;先是验证码以图片的形式出现，仔细看半天也看不懂是什么，听语音更是不懂，换了好几个验证码总算看清了也注册完成了，结果等到真正需要登录时却又说我用户名和密码错误！</span>My God!&nbsp;<span>也许我才疏学浅，我目前实在看不出</span>Twitter<span>有什么能力打败</span>Google<span>。今天</span>Google<span>真正的威胁还是来自它自己&hellip;&hellip;</span></p>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal">【说明】：欢迎讨论，转载请注明出处&hellip;&hellip;</p>
-</div>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1504,7 +1491,7 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1588,7 +1575,7 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1661,6 +1648,9 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
+            Sort Colors</a></li>
+        
           <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
             Check Soduku Solution</a></li>
         
@@ -1687,9 +1677,6 @@ progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes
         
           <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
             Parallelize mex file in Matlab</a></li>
-        
-          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
-            Notes of Advanced Machine Learning(I)</a></li>
         
         </ul>
         

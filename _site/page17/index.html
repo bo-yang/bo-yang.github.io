@@ -9,12 +9,10 @@
   
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-  <!-- using baidu cdn instead
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  -->
+  <!--
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
-
+  -->
+   <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Google Prettify -->
   <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
@@ -22,10 +20,9 @@
 
   <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- using baidu cdn instead
-  <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-  -->
-
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+  -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -73,7 +70,33 @@
 
 <div class="row-fluid page-body">
 
-  <div class="span9 left">
+  <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/10/06/perl-note-1">Perl笔记（一）</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-10-06</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+    1 Perl中所有数字内部格式一致，只有双精度浮点数（Perl内部没有整数值）。<br />2 Perl中允许用下划线来分隔比较长的整数，如612980400283768和612_980_400_283_768是相同的值。<br />3 Perl中的非十进制整数：八进制以0开头，十六机制以0x开头，二进制以0b开头。<br />4 Perl中的数字操作符除加减乘除之外，还有模数运算符(%)和指数操作符(**)。对于%，两个操作数首先变成对应的整数值，如10.5%3.2首先变成10%3后再计算。在模数运算中，如果有一个操作数为负数，其结果和Perl的具体实现有关。另外，通常不能进行一个负数的非整数次方的运算（这将产生一个复数），除非有了Math::Complex模块。<br />5 单引号字符串<br />&nbsp;&nbsp; &nbsp;单引号不是字符串的一部分，但Perl可以用它辨别字符串的开始和结束。除了单引号或者反斜线（包括换行字符，如果字符串在下一行继续）之外的任何字符都表示它自身。要得到一个反斜线，可以把两个反斜线放在一起；要得到单引号，需要在单引号之前加上反斜线。单引号字符串中的/n不会被当作换行符来处理，其仅仅是两个字符/和n。只有在反斜线后面接的是/或者是单引号'才会被当作特殊字符来处理。<br />6 双引号字符串<br />&nbsp;&nbsp; &nbsp;双引号字符串中/n为换行符。双引号中的转义字符：<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ 符号&nbsp;&nbsp; &nbsp;｜ 含义&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /n&nbsp;&nbsp; &nbsp;｜ 换行&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /r&nbsp;&nbsp; &nbsp;｜ 回车&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /t&nbsp;&nbsp; &nbsp;｜ 制表符&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /f&nbsp;&nbsp; &nbsp;｜ formfeed&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /b&nbsp;&nbsp; &nbsp;｜ 退格&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /a&nbsp;&nbsp; &nbsp;｜ 响铃&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /e&nbsp;&nbsp; &nbsp;｜ escape(ASCII中的escape字符)&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /007&nbsp;&nbsp; &nbsp;｜ 任何八进制值（这里是007=bell）&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /x7f&nbsp;&nbsp; &nbsp;｜ 任何十六进制值（这里是007＝bell）&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /cC&nbsp;&nbsp; &nbsp;｜ 一个控制符（这里是Ctrl+c）&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ //&nbsp;&nbsp; &nbsp;｜ 反斜线&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /"&nbsp;&nbsp; &nbsp;｜ 双引号&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /l&nbsp;&nbsp; &nbsp;｜ 下个字符小写&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /L&nbsp;&nbsp; &nbsp;｜ 接下来的字符均小写直到/E&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /u&nbsp;&nbsp; &nbsp;｜ 下个字符大写&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /U&nbsp;&nbsp; &nbsp;｜ 接下来的字符均大写知道/E&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /Q&nbsp;&nbsp; &nbsp;｜ 在non-word字符之前加上/,直到/E&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－<br />｜ /E&nbsp;&nbsp; &nbsp;｜ 结束/L, /E和/Q&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;｜<br />&nbsp;－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－</p>
+<p>双引号字符串的另一个性质是可以进行变量内插，也即当使用字符串时，如果字符串中含有变量名，将由变量的当前值替换它。</p>
+<p>7 字符串操作符<br />&nbsp;&nbsp; &nbsp;字符串可由.操作符连接。<br />&nbsp;&nbsp; &nbsp;字符串重复操作符为小写字母x，如"fred" x 3 #"fredfredfred", 5 x 4 #实际上是"5555"。</p>
+<p>8 数字和字符串之间的自动转换<br />&nbsp;&nbsp; &nbsp;Perl将在需要的时候根据标量值之间的操作符自动进行数字和字符串之间的自动转换。 </p>
+<p>9 Perl中的标量变量都形如$fred。当一个字符串由双引号括起来时，如果变量前没有反斜线，则变量的值会被替换（如果一个变量未被赋值，则将使用空值）。Perl提供了分隔符{}将变量名括起来，如：<br />&nbsp;&nbsp; &nbsp;$what="brontosaurus steak";<br />&nbsp;&nbsp; &nbsp;$n=3;<br />&nbsp;&nbsp; &nbsp;print "fred ate $n $whats./n";&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;#输出不是steaks，而是$whats的值<br />&nbsp;&nbsp; &nbsp;print "fred ate $n ${what}s./n";&nbsp;&nbsp; &nbsp;#现在使用$what的值。</p>
+<p>10 Perl中没有Boolean类型，但可以利用一下几条法则帮助记忆：<br />&nbsp;&nbsp; &nbsp;如果值为数字，0是false，其余为真；<br />&nbsp;&nbsp; &nbsp;如果值为字符串，则空串('')为false，其余为真；<br />&nbsp;&nbsp; &nbsp;如果值的类型既不是数字又不是字符串，则将其转换为数值或字符串再利用上述规则。</p>
+<p>11 行输入运算符：&lt;STDIN&gt;。&lt;STDIN&gt;作为标量值来使用，Perl每次在标准输入中读入文本下一行，将其传给&lt;STDIN&gt;。利用&lt;STDIN&gt;读入的字符串行尾是有换行符的，可以利用chomp函数来去掉。chomp是一个函数，作为函数它有一个返回值，为移除的字符的个数。在使用chomp时，可以使用或不使用（），这又是perl中的一条通用规则：除非移除它们会改变含义，否则括号是可以省略的。如果结尾有两个或两个以上的换行符，chomp仅去掉一个。</p>
+<p>12 undef值<br />&nbsp;&nbsp; &nbsp;Perl中，变量在第一次赋值前有一个特殊值undef，如果该变量是数值型，则undef为0；如果是字符串，则undef为空串。</p>
+<p>13 defined函数</p>
+<p></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -999,103 +1022,6 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/08/26/big-array-in-c">C语言函数中定义大数组耗尽堆栈的问题</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-08-26</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-    今晚上一同学请我帮忙看一个C程序，GCC编译时一直抱错，说是段错误。<br />程序本身写的比较差，但编译能通过，只是有几十个警告。<br />两个小时过去了，在Eclipse+GCC下没有找到问题（这个环境还不熟悉），换到了VC下面，逐步调试，才发现问题出在被main调用的一个叫做readmctal()的函数的前面几行中。该函数如下：
-<div class="highlighter">
-<ol class="highlighter-c" start="1">
-<li><span></span></li>
-<li class="alt"><span></span><span class="keyword">void</span><span>&nbsp;readmctal(</span><span class="keyword">void</span><span>)</span></li>
-<li><span>{</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;number,count,sign,num_tally,nflag;</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;ncell,nstep,mstep,sum;</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">char</span><span>&nbsp;*(str_temp[80]);</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">float</span><span>&nbsp;temp_spectra[num_cell][egroup],temp_error[num_cell][egroup];</span></li>
-<li class="alt"><span></span><span class="keyword">float</span><span>&nbsp;temp_flux[num_cell],temp_flux_error[num_cell];</span></li>
-<li><span></span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;total_cell_no[num_cell];</span></li>
-<li><span></span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;sum=0;&nbsp;&nbsp;</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;number=0;</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/*&nbsp;open&nbsp;the&nbsp;mctal&nbsp;file&nbsp;*/</span><span></span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span>&nbsp;((fpt_mc=fopen(</span><span class="string">"mctal"</span><span>,</span><span class="string">"r"</span><span>))==NULL){</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(</span><span class="string">"/nERROR&nbsp;-&nbsp;Cannot&nbsp;open&nbsp;mctal&nbsp;file/n"</span><span>);</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit(1);</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">else</span><span></span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(</span><span class="string">"File&nbsp;mctal&nbsp;opened.../n"</span><span>);</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;......</span></li>
-</ol>
-</div>
-<p>同时
-<div class="highlighter">
-<ol class="highlighter-c" start="1">
-<li><span class="preprocessor">#&nbsp;define&nbsp;num_cell&nbsp;9999</span><span></span></li>
-<li class="alt"><span></span><span class="preprocessor">#&nbsp;define&nbsp;egroup&nbsp;175</span><span></span></li>
-</ol>
-</div>
-<p>定义的二位数组实在是太大了。看了反汇编之后感觉貌似是堆栈的问题，试着将<br /><span class="keyword">float</span><span>&nbsp;temp_spectra[num_cell][egroup],temp_error[num_cell][egroup];</span><br /><span></span><span class="keyword">float</span><span>&nbsp;temp_flux[num_cell],temp_flux_error[num_cell];</span><br />移动到函数体外，大功告成！<br />到Linux下用GCC编译，“段错误”的提示消失了。</p>
-<p>经过分析，我认为一个函数分配的内存是有限的，在函数体内定义的二维数组太大了，耗尽了堆栈，因此报错。</p>
-<p>PS：论坛达人的观点：<br /><font color="#ff6600">养成良好的编程习惯，一般公司都有coding style，里面应该有规定： <br /> 函数内部(局部变量)禁止定义大数组，而应使用动态内存；如数组需传入函数应使用指针作为参数； <br /> 其实就算你调用这个函数不出错，但是如果函数嵌套很多的话也会发生segment error <br /> 在某些资源有限的系统下，更需要注意这个问题，比如51单片机</font></p>
-<p><font color="#ff6600">函数内是在栈分配内存，栈大小一般限制在1M到2M <br /> 函数外则是全局变量，在DATA段分配内存</font></p>
-<p><font color="#000000">PSPS：转一篇关于C内存分配的文章，原文链接</font>：<u><a href="http://www.lupaworld.com/bbs/viewthread.php?tid=29577">http://www.lupaworld.com/bbs/viewthread.php?tid=29577</a></u><br />
-<h2>浅谈C内存分配</h2>
-<div id="postmessage_58839" class="t_msgfont">很早之前写的了，现在发到C版来。</p>
-<p>关于C语言内存方面的话题要真说起来的话那恐怕就没头了，所以本文仅仅是一个浅谈。<br />
-关于内存问题不同平台之间有一定的区别。本文所指的平台是x86的Linux平台<br />
-用C语言做程序（其实其他语言也一样），不仅要熟悉语法，其实很多相关的背景知识也很重要。在学习和研究C语言中内存分配的问题前，首先要了解一下Linux分配给进程（运行中的程序）的地址空间是什么样的。<br />
-总的来说有3个段，即代码段，数据段和堆栈段（学过汇编的朋友一定很熟悉了）。代码段就是存储程序文本的，所以有时候也叫做文本段，指令指针中的指令就是<br />
-从这里取得。这个段一般是可以被共享的，比如你在Linux开了2个Vi来编辑文本，那么一般来说这两个Vi是共享一个代码段的，但是数据段不同（这点有<br />
-点类似C++中类的不同对象共享相同成员函数）。数据段是存储数据用的，还可以分成初始化为非零的数据区，BSS，和堆(Heap)三个区域。初始化非零<br />
-数据区域一般存放静态非零数据和全局的非零数据。BSS是Block Started by<br />
-Symbol的缩写，原本是汇编语言中的术语。该区域主要存放未初始化的全局数据和静态数据。还有就是堆了，这个区域是给动态分配内存是使用的，也就是用<br />
-malloc等函数分配的内存就是在这个区域里的。它的地址是向上增长的。最后一个堆栈段（注意，堆栈是Stack,堆是Heap，不是同一个东西），堆<br />
-栈可太重要了，这里存放着局部变量和函数参数等数据。例如递归算法就是靠栈实现的。栈的地址是向下增长的。具体如下：<br />
-========高地址&nbsp; &nbsp;&nbsp;&nbsp;=======<br />
-程序栈&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; 堆栈段<br />
-&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;向下增长<br />
-“空洞”&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;=======<br />
-&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;向上增长<br />
-堆<br />
-------&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; 数据段<br />
-BSS<br />
-------<br />
-非零数据<br />
-=========低地址&nbsp; &nbsp; =======<br />
-=========&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; =======<br />
-代码&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;代码段<br />
-=========&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; =======<br />
-需要注意的是，代码段和数据段之间有明确的分隔，但是数据段和堆栈段之间没有，而且栈是向下增长，堆是向上增长的，因此理论上来说堆和栈会“增长到一起”，但是操作系统会防止这样的错误发生，所以不用过分担心。<br />
-有了以上理论做铺垫，下面就说动态内存的分配。上面说了，动态内存空间是在堆中分配的。实现动态分配的也就是下面几个函数：<br />
-stdlib.h ：<br />
-void *malloc(size_t size);<br />
-void *calloc(size_t nmemb, size_t size);<br />
-void *realloc(void *ptr, size_t size);<br />
-void free(void *ptr);<br />
-一个一个说吧。malloc就是分配一个size大小的内存空间，并且用一个void类型的指针指向这个空间，然后返回这个指针。也就是说，malloc<br />
-返回了一个指向size大小的空间的void类型的指针，如果要使用这个空间，还得把void*类型转换成一个你需要的类型，比如int*之类。<br />
-calloc和malloc基本一样，不同的是有两点，一是calloc分配的空间大小是由nmemb*size决定的，也就是说nmemb是条目个数，<br />
-而size可以看成是条目的大小，计算总空间任务由calloc去做。二是calloc返回的空间都用0填充，而malloc则不确定内存中会有什么东<br />
-西。realloc是用来改变已经分配的空间的大小。指针ptr是void类型的，它应该指向一个需要重新分配大小的空间，而size参数则是重新分配之<br />
-后的整个空间大小，而不是增加的大小。同样，返回的是一个指向新空间的指针。free用来释放由上面3个函数分配的空间，其参数就是指向某空间的指针。<br />
-基本就这些了，这些都是比较基础的话题，高级话题和细节问题还有很多，这里就不进行说明了，有机会我会继续总结一番的</div>
-<p></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1216,7 +1142,7 @@ calloc和malloc基本一样，不同的是有两点，一是calloc分配的空�
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>10</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1300,7 +1226,7 @@ calloc和malloc基本一样，不同的是有两点，一是calloc分配的空�
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>5</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1373,6 +1299,9 @@ calloc和malloc基本一样，不同的是有两点，一是calloc分配的空�
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
+            Sort Colors</a></li>
+        
           <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
             Check Soduku Solution</a></li>
         
@@ -1399,9 +1328,6 @@ calloc和malloc基本一样，不同的是有两点，一是calloc分配的空�
         
           <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
             Parallelize mex file in Matlab</a></li>
-        
-          <li><span>2013-10-11</span> &raquo; <a href="/2013/10/11/notes-of-advanced-machine-learningi">
-            Notes of Advanced Machine Learning(I)</a></li>
         
         </ul>
         
