@@ -3,10 +3,10 @@ layout: post
 title: Linear Space Sequence Alignment
 categories: 
 - Algorithm
-- CPP
+- C/C++
 tags:
 - Algorithm
-- CPP
+- C/C++
 status: publish
 type: post
 published: true

@@ -3,8 +3,10 @@ layout: post
 title: Action Recognition with Fisher Vectors
 categories: 
 - Computer Vision
+- Machine Learning
 tags:
 - Computer Vision
+- Machine Learning
 - Fisher Vector
 - SVM
 status: publish
