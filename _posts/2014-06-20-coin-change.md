@@ -21,9 +21,9 @@ Actually the [change-making problem](http://en.wikipedia.org/wiki/Change-making_
 
 Given denominations \\( \{x_1, x_2,\cdots,x_n\} \\), in order to get value \\(V\\), there are two possibilities for a denomination \\( x_i \\): (1) if \\( x_i \\) is not picked, then value \\( V \\) could be made out of \\( \{ x_1, x_2,\cdots,x_{i-1} \} \\). (2) if \\( x_i \\) is picked, then value \\(V-x_i\\) should be made out of \\( \{ x_1, x_2,\cdots,x_i \} \\). Since our goal is to find the least number of coins, we can formulate the following recursive function:
 
-$$ OPT(i,v)=0,\quad \text{if} i=0 $$
+$$ OPT(i,v)=0,\quad \text{if} \enspace i=0 $$
 
-$$ OPT(i,v)=OPT(i-1,v),\quad \text{if} x_i>v $$
+$$ OPT(i,v)=OPT(i-1,v),\quad \text{if} \enspace x_i>v $$
 
 $$ OPT(i,v)=\min { OPT(i-1,v), 1+OPT(i,v-v_i) }, \quad \text{otherwise}$$
 
