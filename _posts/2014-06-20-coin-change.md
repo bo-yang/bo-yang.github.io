@@ -24,7 +24,8 @@ Given denominations \\( \{x_1, x_2,\cdots,x_n\} \\), in order to get value \\(V\
 $$ OPT(i,v)=0,\quad \text{if} i=0 $$
 
 $$ OPT(i,v)=OPT(i-1,v),\quad \text{if} x_i>v $$
-$$ OPT(i,v)=\min \left{ OPT(i-1,v), 1+OPT(i,v-v_i) \right}, \quad \text{otherwise}$$
+
+$$ OPT(i,v)=\min { OPT(i-1,v), 1+OPT(i,v-v_i) }, \quad \text{otherwise}$$
 
 Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination \\(x_i\\) of the row), then the smallest coin changes should be \\(v/x_i\\). 
 
