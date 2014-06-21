@@ -1,9 +1,6 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -23,6 +20,13 @@
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
   -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Config({
+    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  	});
+  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -71,6 +75,197 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/03/03/an-error-made-by-apple-store">Apple Store的错误</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2009-03-03</strong> with tags <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>今天在Apple4us上看到Apple将于今晚发布新的产品，并且Apple Store的网页正在升级，已经无法正常显示产品信息，于是就随便打开看了一看。想不到不看则以，一看还真让我深感意外: Apple竟然做起了张冠李戴、分裂我中华国土的勾当！</p>
+<p>&nbsp;</p>
+<p>尽管本人对Apple景仰已久，但大是大非面前岂能是非不分？遂给Apple发邮件一封,内容如下：</p>
+<p><a name="英文开始"></a></p>
+<div>Dear Sir/Ms. ,</div>
+<div></div>
+<div>I found something confusing in the webpage <a href="http://store.apple.com/">http://store.apple.com/</a>(following "You can contact our telesales team at the following numbers:").</div>
+<div></div>
+<div></div>
+<div>The logo of Taiwan is not appropriate: you add two Chinese characters "日本" above "Taiwan", which will confuse many people. Taiwan is a part of China, so you should add "中国" instead.</div>
+<div></div>
+<div></div>
+<div>I sincerely remind you about this negligence and hope you can change the logo as soon as possible.</div>
+<div></div>
+<div>Thank you in advance!<br />
+Best wishes!</div>
+<div><a name="英文结束"></a></div>
+<div></div>
+<div>我们还是对Apple的行为拭目以待吧。</div>
+<div></div>
+<div></div>
+<div><img src="http://docs.google.com/File?id=dd6nw3mt_239gjv5ggfw_b" alt="Apple的错误" width="800" height="481" /></div>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/02/17/call-google-translate">网页取词并调用Google Translate</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2009-02-17</strong> with tags <a href="/tags.html#Cloud Computing-ref" rel="nofollow">Cloud Computing</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>1. translate.html</p>
+<p>&nbsp;</p>
+<p>
+<pre>&lt;html&gt; 
+  &lt;head&gt;     
+    &lt;mce:script src="http://graphics8.nytimes.com/js/common.js" mce_src="http://graphics8.nytimes.com/js/common.js" type="text/javascript"&gt;&lt;/mce:script&gt; 
+    &lt;mce:script type="text/javascript" language="JavaScript" src="file:///C:/Documents%20and%20Settings/bonny/My%20Documents/GoogleApps/FreeTranslator/altClickToSearch.js" mce_src="file:///C:/Documents%20and%20Settings/bonny/My%20Documents/GoogleApps/FreeTranslator/altClickToSearch.js"&gt;&lt;/mce:script&gt;
+    &lt;mce:script type="text/javascript" src="http://www.google.com/jsapi" mce_src="http://www.google.com/jsapi"&gt;&lt;/mce:script&gt;
+    &lt;link href="http://www.google.com/uds/modules/elements/transliteration/api.css" mce_href="http://www.google.com/uds/modules/elements/transliteration/api.css"
+      type="text/css" rel="stylesheet"/&gt; 
+    &lt;mce:script type="text/javascript"&gt;&lt;!--
+ 
+    
+    google.load("language", "1");
+ 
+    function initialize() {
+      var text = document.getElementById("text").innerHTML;
+      google.language.detect(text, function(result) {
+        if (!result.error &amp;&amp; result.language) {
+          google.language.translate(text, result.language, "en",
+                                    function(result) {
+            var translated = document.getElementById("translation");
+            if (result.translation) {
+              translated.innerHTML = result.translation;
+            }
+          });
+        }
+      });
+    }
+    google.setOnLoadCallback(initialize);
+ 
+    
+// --&gt;&lt;/mce:script&gt; 
+  &lt;/head&gt; 
+  &lt;body&gt; 
+    &lt;div id="text"&gt;你好，见到你很高兴!&lt;/div&gt; 
+      &lt;div id="translation"&gt;&lt;/div&gt; 
+    &lt;p&gt;Detection of Unicode font rendering supportNew!
+Browsers and operating systems may or may not have the support for rendering particular Unicode fonts. You can detect whether the user using your webpage has support for rendering the fonts of a given language in a readable way or not using the font rendering support detection API. Please note that this works correctly for Unicode fonts alone. If your webpage renders using non-Unicode fonts, this function will not be useful for you. If font rendering support is not present for a given language, there are several solutions available to fix this - please read this article for more information.&lt;/p&gt; 
+   &lt;textarea id="transliterateTextarea" style="width:600px;height:200px"&gt;</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>2. altClickToSearch.js</p>
+<p>&nbsp;</p>
+<p>
+<pre>NYTD.require("http://graphics8.nytimes.com/js/app/lib/prototype/1.6.0.2/prototype.js", function(){NYTD.WordReference.initialize();});
+NYTD.WordReference = (function(){
+  
+  var selection, selectionText, selectionButton, newRange;
+  
+  function handleClick(event) {
+    if (selectionButton){
+      cleanUp();
+    }
+    
+    selection = getSelection();
+    selectionText = selection &amp;&amp; selection.toString();
+    if (selectionText) {
+      window.setTimeout(insertButton, 0);
+      event.stop();
+    }
+  }
+  
+  function getSelection() {
+    return Try.these(
+      function() { return window.getSelection() },
+      function() { return document.getSelection() },
+      function() { 
+        var selection = document.selection &amp;&amp; document.selection.createRange();
+        selection.toString = function() { return this.text };
+        return selection;
+      }
+    ) || false;
+  }
+  
+  function insertButton() {
+    
+    selectionButton = new Element(
+        'span', {
+          'className':'nytd_selection_button',
+          'id':'nytd_selection_button',
+          'title':'Lookup Word',
+          'style': 'margin:-20px 0 0 -20px; position:absolute; background:url
+(http://graphics8.nytimes.com/images/global/word_reference/ref_bubble.png);width:25px;height:29px;cursor:pointer;_background-image: none;filter: 
+progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://graphics8.nytimes.com/images/global/word_reference/ref_bubble.png", sizingMethod="image");'
+        }
+    )
+      
+    if (Prototype.Browser.IE) {
+      var tmp = new Element('div');
+      tmp.appendChild(selectionButton);
+      newRange = selection.duplicate();
+      newRange.setEndPoint( "StartToEnd", selection);
+      newRange.pasteHTML(tmp.innerHTML);
+      selectionButton = $('nytd_selection_button');
+    }
+    else {
+      var range = selection.getRangeAt(0);
+      newRange = document.createRange();
+      newRange.setStart(selection.focusNode, range.endOffset);
+      newRange.insertNode(selectionButton);
+    }
+    
+    Element.observe(selectionButton, 'mouseup', exportSelection, true);
+    
+  }
+  
+  function cleanUp() {
+    selection = null;
+    selectionButton.stopObserving('mouseup', exportSelection);
+    newRange &amp;&amp; newRange.pasteHTML &amp;&amp; newRange.pasteHTML('');
+    newRange = null;
+    selectionButton.remove();
+    selectionButton = null;
+    selectionText = '';
+  }
+  
+  function exportSelection(event) {
+ //    var url = 'http://www.google.com/dictionary?langpair=en|zh-CN&amp;q=' + encodeURIComponent(selectionText) + '&amp;hl=zh-CN&amp;aq=f';
+ //   var newwin = window.open(url,'answersdotcom','height=450,width=820,location=false,menubar=false,toolbar=false,status=false,resizable, scrollbars');
+//    if (newwin) newwin.focus();
+//    event.stop();
+	google.language.translate(selectionText, "en", "zh-CN", function(result) {
+  	if (!result.error) {
+    		alert(encodeURIComponent(selectionText) +":"+result.translation);
+  	}
+	
+	});
+  }
+  
+  return {
+    initialize: function() {
+      document.observe('mouseup', handleClick, false);
+    }
+  };
+  
+})();</pre>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1798,128 +1993,6 @@ undef() # is a function returning the undefined value, so false.</pre>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/12/24/get-ip-addr-from-host-name">由服务器名字(Host name)获得IP地址</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-12-24</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-    一下代码可以根据host name获得IP地址：
-<div>
-<div class="highlighter">
-<ol start="1" class="highlighter-c">
-<li><span class="preprocessor">#include &lt;stdio.h&gt;</span><span></span></li>
-<li class="alt"><span></span><span class="preprocessor">#include &lt;netdb.h&gt;</span><span></span></li>
-<li><span></span><span class="preprocessor">#include &lt;sys/socket.h&gt;</span><span></span></li>
-<li class="alt"><span></span><span class="preprocessor">#include &lt;arpa/inet.h&gt;</span><span></span></li>
-<li><span></span><span class="preprocessor">#include &lt;netinet/in.h&gt;</span><span></span></li>
-<li class="alt"><span></span></li>
-<li><span></span><span class="keyword">int</span><span> main(</span><span class="keyword">int</span><span> argc,</span><span class="keyword">char</span><span> **argv)</span></li>
-<li class="alt"><span>{</span></li>
-<li><span>    </span><span class="keyword">struct</span><span> hostent *hptr;</span></li>
-<li class="alt"><span>    </span><span class="keyword">struct</span><span> in_addr *in_addr_ptr;</span></li>
-<li><span>    </span><span class="keyword">char</span><span> *ptr,**pptr,**listptr,*addr_ptr;</span></li>
-<li class="alt"><span>    </span><span class="keyword">char</span><span> str[32];</span></li>
-<li><span>    </span><span class="comment">/*Host name--the first param*/</span><span></span></li>
-<li class="alt"><span>    ptr=argv[1];</span></li>
-<li><span>    </span><span class="keyword">if</span><span>((hptr=gethostbyname(ptr))==NULL)</span></li>
-<li class="alt"><span>    {</span></li>
-<li><span>        printf(</span><span class="string">"gethostbyname error for host: %s/n"</span><span>,ptr);</span></li>
-<li class="alt"><span>        </span><span class="keyword">return</span><span> -1;</span></li>
-<li><span>    }</span></li>
-<li class="alt"><span>    </span><span class="comment">/*print official host name*/</span><span></span></li>
-<li><span>    printf(</span><span class="string">"offial host name: %s/n"</span><span>,hptr-&gt;h_name);</span></li>
-<li class="alt"><span>    </span><span class="comment">/*print all the aliases of the host*/</span><span></span></li>
-<li><span>    </span><span class="keyword">for</span><span>(pptr=hptr-&gt;h_aliases;*pptr!=NULL;pptr++)</span></li>
-<li class="alt"><span>        printf(</span><span class="string">"alias:%s/n"</span><span>,*pptr);</span></li>
-<li><span></span></li>
-<li class="alt"><span>    </span><span class="comment">/*print IP address*/</span><span></span></li>
-<li><span>    </span><span class="keyword">switch</span><span> (hptr-&gt;h_addrtype) {</span></li>
-<li class="alt"><span>    </span><span class="keyword">case</span><span> AF_INET:</span></li>
-<li><span>        listptr = hptr-&gt;h_addr_list;</span></li>
-<li class="alt"><span>        </span><span class="keyword">if</span><span> ( (in_addr_ptr = (</span><span class="keyword">struct</span><span> in_addr *) *listptr) != NULL) {</span></li>
-<li><span></span></li>
-<li class="alt"><span>            addr_ptr = inet_ntoa(*in_addr_ptr);</span></li>
-<li><span>            </span></li>
-<li class="alt"><span>            printf(</span><span class="string">"address: %s/n"</span><span>,addr_ptr);</span></li>
-<li><span>        </span></li>
-<li class="alt"><span>            </span><span class="keyword">return</span><span>(0);</span></li>
-<li><span>        }</span></li>
-<li class="alt"><span>        </span><span class="keyword">else</span><span> {</span></li>
-<li><span>            </span><span class="keyword">return</span><span>(NULL);</span></li>
-<li class="alt"><span>        }</span></li>
-<li><span></span></li>
-<li class="alt"><span>    </span><span class="keyword">default</span><span>:</span></li>
-<li><span>        printf(</span><span class="string">"unknown address type %d/n"</span><span>,hptr-&gt;h_addrtype);</span></li>
-<li class="alt"><span></span></li>
-<li><span>        </span><span class="keyword">return</span><span>(NULL);</span></li>
-<li class="alt"><span>    }</span></li>
-<li><span></span></li>
-<li class="alt"><span>    </span><span class="keyword">return</span><span> 0;</span></li>
-<li><span>}</span></li>
-<li class="alt"><span></span></li>
-<li><span></span></li>
-</ol>
-</div>
-<p><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:verdana;line-height:18px;font-size:10pt;"></span>
-<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><font size="4">struct hostent *gethostbyname(const char *name);<br />这个函数的传入值是域名或者主机名，例如"</font><a href="http://www.google.com%22%2C%22wpc/" style="text-decoration:none;color:rgb(51,102,153);"><font size="4">www.google.com","wpc</font></a><font size="4">"等等。<br />传出值，是一个hostent的结构（如下）。如果函数调用失败，将返回NULL。</font></p>
-<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><font size="4">struct hostent {<br />  char  *h_name;<br />  char  **h_aliases;<br />  int   h_addrtype;<br />  int   h_length;<br />  char  **h_addr_list;<br />  };<br />解释一下这个结构：<br />其中，<br />  char *h_name 表示的是主机的规范名。例如</font><a href="http://www.google.com/" style="text-decoration:none;color:rgb(51,102,153);"><font size="4">www.google.com</font></a><font size="4">的规范名其实是</font><a href="http://www.l.google.com/" style="text-decoration:none;color:rgb(51,102,153);"><font size="4">www.l.google.com</font></a><font size="4">。<br />  char   **h_aliases 表示的是主机的别名。</font><a href="http://www.google.com/" style="text-decoration:none;color:rgb(51,102,153);"><font size="4">www.google.com</font></a><font size="4">就是google他自己的别名。有的时候，有的主机可能有好几个别名，这些，其实都是为了易于用户记忆而为自己的网站多取的名字。<br />  int   h_addrtype 表示的是主机ip地址的类型，到底是ipv4(AF_INET)，还是ipv6(AF_INET6)<br />  int   h_length 表示的是主机ip地址的长度<br />  int   **h_addr_lisst 表示的是主机的ip地址，注意，这个是以网络字节序存储的。千万不要直接用printf带%s参数来打这个东西，会有问题的哇。所以到真正需要打印出这个IP的话，需要调用inet_ntop()。</font></p>
-<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><span class="Apple-style-span" style="font-size:18px;"><span class="Apple-style-span" style="color:rgb(128,128,128);font-family:新宋体;font-size:12px;line-height:14px;">#include &lt;arpa/inet.h&gt;</span><br /></span></p>
-<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><font size="4">const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt) ：<br />这个函数，是将类型为af的网络地址结构src，转换成主机序的字符串形式，存放在长度为cnt的字符串中。<br />这个函数，其实就是返回指向dst的一个指针。如果函数调用错误，返回值是NULL。</font></p>
-<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><span class="Apple-style-span" style="font-size:18px;">编译时要加上-lsocket选项，否则编译器将会报出invalid reference的错误。如： gcc -o name2addr name2addr.c -lsocket.</span></p>
-</div>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/12/04/return-ulong-pointer">return (((ulong*)(x))[-1])</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-12-04</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-<span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">看到一个函数，定义如下： </span>
-<div>
-<div class="highlighter">
-<ol start="1" class="highlighter-c">
-<li><span class="preprocessor">#include "u.h"</span><span></span></li>
-<li class="alt"><span></span><span class="preprocessor">#include "lib.h"</span><span></span></li>
-<li><span></span></li>
-<li class="alt"><span></span><span class="keyword">ulong</span><span></span></li>
-<li><span>getcallerpc(</span><span class="keyword">void</span><span> *x)</span></li>
-<li class="alt"><span>{</span></li>
-<li><span>    </span><span class="keyword">return</span><span> (((</span><span class="keyword">ulong</span><span>*)(x))[-1]);</span></li>
-<li class="alt"><span>}</span></li>
-<li><span></span></li>
-<li class="alt"><span></span></li>
-</ol>
-</div>
-<p><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">((ulong*)(x))  将void* 的x针针强制转换为 ulong* </p>
-<p>此时可以理解为x指向一个ulong类型的数组 <br />[-1] : 表示去x前面的那个元素 </p>
-<p>上面的代码等价与 </p>
-<p>ulong px=（ulong*）x <br />--px <br />return (*px) </p>
-<p>一般情况下不会用 下表-1,估计此处有什么特殊用法，要看实际是怎么用的了.<br /></span></div>
-<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;"><br /></span></div>
-<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">------------------------------------------------------------------------</span></div>
-<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;"><br /></span></div>
-<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">ulong getcallerpc(void *x) <br />{ <br />    return (((ulong*)(x))[-1]); <br />} </p>
-<p>在((ulong*)(x))[-1] 中： <br />x是一个指针 <br />（ulong*)(x)：将x转换为ulong型的指针，我们假设（ulong*)(x)转换后指针为y，则 <br />((ulong*)(x))[-1]为：y[-1]，而y[-1]就指向y首地址前面的那个地址。这种情况只有 <br />当你自己知道前面那个地址是什么了，也就是楼上所说的特殊用法了。~_~<br /></span></div>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1995,6 +2068,9 @@ undef() # is a function returning the undefined value, so false.</pre>
             <li><a href="/page20">20</a></li>
             
         
+            <li><a href="/page21">21</a></li>
+            
+        
     
 
     
@@ -2040,11 +2116,11 @@ undef() # is a function returning the undefined value, so false.</pre>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
     
         <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
     
@@ -2058,17 +2134,13 @@ undef() # is a function returning the undefined value, so false.</pre>
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
     
-        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
-    
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
     
         <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
-    
-        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
     
         <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
     
@@ -2102,13 +2174,13 @@ undef() # is a function returning the undefined value, so false.</pre>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
     
-        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
         <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
     
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
     
         <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
     
@@ -2123,8 +2195,6 @@ undef() # is a function returning the undefined value, so false.</pre>
         <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -2158,7 +2228,7 @@ undef() # is a function returning the undefined value, so false.</pre>
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -2166,7 +2236,7 @@ undef() # is a function returning the undefined value, so false.</pre>
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     
@@ -2182,6 +2252,10 @@ undef() # is a function returning the undefined value, so false.</pre>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
+    
   
 
 
@@ -2196,6 +2270,12 @@ undef() # is a function returning the undefined value, so false.</pre>
         
         <h3>Recent Posts</h3>
         <ul>
+        
+          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
+            Coin Change Problem</a></li>
+        
+          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
+            Text Justification</a></li>
         
           <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
             Sort Colors</a></li>
@@ -2220,12 +2300,6 @@ undef() # is a function returning the undefined value, so false.</pre>
         
           <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
             BACI Simple Install and Compile Guide</a></li>
-        
-          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
-            Dense Trajectory Notes</a></li>
-        
-          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
-            Parallelize mex file in Matlab</a></li>
         
         </ul>
         

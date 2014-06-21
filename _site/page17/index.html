@@ -1,9 +1,6 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -23,6 +20,13 @@
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
   -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Config({
+    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  	});
+  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -71,6 +75,517 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/10/27/tcl-tk-note-1">Tcl/Tk Notes (1)</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-10-27</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <div>
+<div style="text-align:center;">
+<h1>
+      Tcl/Tk Notes<br />
+    </h1>
+</div>
+<p></p>
+<div></p>
+<h2>
+      Part I TCL Overview<br />
+    </h2>
+<h3>
+      1 Everything Is a String<br />
+    </h3>
+<p>    &nbsp;&nbsp; &nbsp;In Tcl, evrything is a string, and you have to explicitly ask for evaluation of variables and nested commands.</p>
+<h3>
+      2 Substitution<br />
+</h3>
+<ul>
+<li>
+        Variable
+      </li>
+</ul>
+</div>
+<div>
+    &nbsp;&nbsp;&nbsp; The use of dollar sign($) is one kind of substitution. Variables can be assigned values by <span style="font-family:Courier New;">set</span> command.</p>
+<ul>
+<li>
+        Command Substitution
+</li>
+</ul>
+</div>
+<div>
+&nbsp;&nbsp;&nbsp; A nested command is delimited by square brackets, [ and ]. The Tcl<br />
+takes everything between the brackets and evaluates it as a command. It<br />
+Reqrites the outer command by replacing the square brackets and<br />
+everything between them with the result of nested command.
+</div>
+<p></p>
+<ul>
+<li>
+      Math Expression
+    </li>
+</ul>
+</div>
+<div>
+  &nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">expr </span>command is used to evaluate math expressions. The Tcl interpreter treats <span style="font-family:Courier New;">expr <span style="font-family:Verdana;">just like any other command, and it leaves the expression parsing up to the <span style="font-family:Courier New;">expr </span>implementation.</span></span></p>
+</div>
+<div>
+<ul>
+<li>
+      Backslash Substitution
+    </li>
+</ul>
+<p>  &nbsp;&nbsp;&nbsp; Backslash(/) is used to quote characters that have special meaning to the interpreter. <br />&nbsp;&nbsp; &nbsp;You can also specify characters that are hard to type directly by giving their octal or hexadecimal value. <br />&nbsp;&nbsp;<br />
+&nbsp;Another common use of backslashes is to continue long commands on<br />
+multiple lines. A backslash as the last character in a line is<br />
+converted into a space.<br />
+<h3>3 Double Quotes vs. Curly Braces</h3>
+<p>&nbsp;&nbsp;&nbsp;<br />
+Double quotes, like braces, are used to group words together. The<br />
+difference between double quotes and curly braces is that quotes allow<br />
+substitutions to occur in the group, while curly braces prevent<br />
+substitutions.
+<div id="o6jd" style="padding:1em 0;text-align:left;"><a target="_blank" href="http://docs.google.com/File?id=dd6nw3mt_112fm5tm2gc_b"><img style="width:666px;height:166px;" src="http://docs.google.com/File?id=dd6nw3mt_112fm5tm2gc_b" /></a><br />&nbsp;&nbsp;&nbsp;<br />
+In practice, grouping with curly braces is used when substitutions on<br />
+the argument need to be delayed until a later time( or never done at<br />
+all). Examples include contrl flow statements and procedure<br />
+declararions. Double quotes are usefulin simple cases like the <span style="font-family:Courier New;">puts</span> command.</div>
+<p>&nbsp;&nbsp;&nbsp; Another common use of quotes is with the <span style="font-family:Courier New;">format </span>command<br />
+that is similar to C printf function. The only way to effectively group<br />
+special characters in format command into a single argument is with<br />
+quotes.<br />&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">e.g. puts [format "Item: %s/t%5.3f" $name $value]</span><br />
+<h3>4 Procedures</h3>
+<p>&nbsp;&nbsp;&nbsp; Tcl uses the <span style="font-family:Courier New;">proc</span> command to define procedures. The syntax is : <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; proc <i>name arglist body</i><br />&nbsp;&nbsp;&nbsp; <span style="color:rgb(255,0,0);">The <span style="font-family:Courier New;">return</span><br />
+command in Tcl procedure is optional because the interpreter will<br />
+return the value of the last command in the body as the value of the<br />
+procedure.</span><br />
+<h3>5 A While Loop Example </h3>
+<div id="azjc" style="padding:1em 0;text-align:left;"><img style="width:584px;height:205px;" src="http://docs.google.com/File?id=dd6nw3mt_113d4kxm7gt_b" /><br />&nbsp;&nbsp; &nbsp;The loop around boolean expression <span style="font-family:Courier New;">$i&lt;=10</span><br />
+is crucial, because it delays substitution until while command<br />
+implementation tests the expression. The following expression is an<br />
+infinite loop:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set i; while $i&lt;=10 {incr i}</span><br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp; &nbsp;The Tcl interpreter will substitute for $i before while is called, so while gets a constant expression <span style="font-family:Courier New;">1&lt;=10</span><br />
+that will always be ture.You can avoid this kind of errors by adopting<br />
+a consistent coding style that always groups expressions and command<br />
+bodies with curly braces.<br />&nbsp;&nbsp;&nbsp; The command in the example uses <span style="font-family:Courier New;">set</span> with a single argument. When used in this way the <span style="font-family:Courier New;">set</span> command returns the current value of the named variable.</p>
+<h3>6 Grouping And Command Substitution</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>Grouping<br />
+decisions are made before substitutions are performed. This means that<br />
+the values of variables or command results do not affect grouping.<br /><span>&nbsp;&nbsp;&nbsp; </span>A<br />
+single round if substitutions is performed before command invocation.<br />
+That is, the result of a substitution is not interpreted a second time.<br />
+This rule is important if you have a variable value or a command result<br />
+that contains special characters such as spaces, dollar-signs, square<br />
+brackets or braces. Because only a single round of substitution is<br />
+done, you don't have to worry about special characters in values<br />
+causing extra substitutions.</p>
+<h3>7 Comments</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>Tcl<br />
+uses # for comments. Unlike many languages, the # character must occur<br />
+at the begining of a command. An easy trick to append a comment to the<br />
+end of a command is to proceed the # with a semicolon in order to<br />
+terminate the previous command.<br /><span>&nbsp;&nbsp;&nbsp; </span>A backslash(/)<br />
+continues a comment line onto the next line of the script. In addition,<br />
+a semi-colon inside a comment is not significant. only a newline<br />
+terminates comments.<br />
+<h3>8 Reference</h3>
+<ul>
+<li>backslash Sequences</li>
+</ul>
+</div>
+</div>
+<div>
+<div id="z8dm" style="padding:1em 0;text-align:left;"><img style="width:725px;height:491px;" src="http://docs.google.com/File?id=dd6nw3mt_114hkq332ct_b" /></div>
+<p>
+<ul>
+<li>Arithmetic Operators</li>
+</ul>
+</div>
+<div>
+<div id="t0kt" style="padding:1em 0;text-align:left;"><img style="width:713px;height:448px;" src="http://docs.google.com/File?id=dd6nw3mt_115cx6tf2gk_b" /></div>
+<ul>
+<li>Built-in Math Function</li>
+</ul>
+</div>
+<div>
+<div id="wkim" style="padding:1em 0;text-align:left;"><img style="width:584px;height:625px;" src="http://docs.google.com/File?id=dd6nw3mt_116gqq38zfc_b" /></div>
+<ul>
+<li>Core Tcl Commands</li>
+</ul>
+</div>
+<div>
+<div id="dwzb" style="padding:1em 0;text-align:left;"><img style="width:584px;height:94px;" src="http://docs.google.com/File?id=dd6nw3mt_117fsn9v3dj_b" />
+<div id="f3wa" style="padding:1em 0;text-align:left;"><img style="width:561px;height:804px;" src="http://docs.google.com/File?id=dd6nw3mt_118vb3288fz_b" /></div>
+<div id="vr6z" style="padding:1em 0;text-align:left;"><img style="width:561px;height:804px;" src="http://docs.google.com/File?id=dd6nw3mt_119vq4tt6fx_b" /></p>
+<ul>
+<li>Predefined Variables
+</li>
+</ul>
+</div>
+<div id="gq9h" style="padding:1em 0;text-align:left;"><img style="width:562px;height:376px;" src="http://docs.google.com/File?id=dd6nw3mt_120c9tpw3fv_b" /></div>
+<p></div>
+<p>
+</div>
+<p>
+<div>
+<div>
+<div><span style="background-color:rgb(255,255,0);"></span></div>
+<p></div>
+<p></div>
+<p></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/10/21/unix-workshop-note">UNIX Workshop Notes</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-10-21</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&lt;style&gt;<br />
+st1/:*{behavior:url(#ieooui) }<br />
+&lt;/style&gt;<br />
+&lt;![endif]--&gt;</p>
+<h1 style="text-align:center;" align="center"><i><span style='font-family:"Times New Roman";'>UNIX Workshop</span></i> Notes</h1>
+<h3>1 <a href="http://hebb.cis.uoguelph.ca/%7Edave/27320/new/unixphil.html">The<br />
+UNIX Philosophy</a></h3>
+<ul style="margin-top:0;" type="disc">
+<li class="MsoNormal">small<br />
+     is beautiful </li>
+<li class="MsoNormal">make<br />
+     each program do one thing well </li>
+<li class="MsoNormal">build<br />
+     a prototype as soon as possible </li>
+<li class="MsoNormal">choose<br />
+     portability over efficiency </li>
+<li class="MsoNormal">store<br />
+     numerical data in flat files </li>
+<li class="MsoNormal">use<br />
+     software leverage to your advantage </li>
+<li class="MsoNormal">use<br />
+     shell scripts to increase leverage and portability </li>
+<li class="MsoNormal">avoid<br />
+     captive user interfaces </li>
+<li class="MsoNormal">make<br />
+     every program a filter</li>
+</ul>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">The Ten Lesser Tenets</p>
+<ul style="margin-top:0;" type="disc">
+<li class="MsoNormal">allow<br />
+     the user to tailor the environment </li>
+<li class="MsoNormal">make<br />
+     operating system kernels small and lightweight </li>
+<li class="MsoNormal">use<br />
+     lower case and keep it short </li>
+<li class="MsoNormal">save<br />
+     trees </li>
+<li class="MsoNormal">silence<br />
+     is golden </li>
+<li class="MsoNormal">think<br />
+     parallel </li>
+<li class="MsoNormal">the<br />
+     sum of the parts if greater than the whole </li>
+<li class="MsoNormal">look<br />
+     for the ninety percent solution </li>
+<li class="MsoNormal">worse<br />
+     is better </li>
+<li class="MsoNormal">think<br />
+     hierarchically</li>
+</ul>
+<p class="MsoNormal">&nbsp;</p>
+<h3>2 /etc/passwd</h3>
+<p class="MsoNormal" style="text-indent:10.5pt;">The /etc/passwd file determines<br />
+which shell takes effect during your interactive UNIX session.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">/etc/passwd also contains account<br />
+info, which includes UID and GID.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<h3>3 init process</h3>
+<p class="MsoNormal" style="text-indent:10.5pt;">Each process can have one or more<br />
+child process. If you kill the parent of a child process, it automatically<br />
+becomes the child of init.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b><i>init</i></b> is the last process<br />
+created at boot time. It always has a process ID (PID) of 1 (i.e. on all<br />
+Unixes). init is responsible for starting all subsequent processes.<br />
+Consequently, it is the parent (in other words, mother of all processes!) of<br />
+all (non-dummy) Unix processes.</p>
+<p class="MsoNormal">&nbsp;</p>
+<h3>4 Address Space</h3>
+<p class="MsoNormal" style="text-indent:10.5pt;">For each new process created, the<br />
+kernel sets up an address space in memory. This address space consists of the<br />
+following logical segments:</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">•</span> text - contains the program's instructions.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">•</span> data - contains initialized program variables.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">•</span> bss - contains uninitialized program variables.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">•</span> stack - a dynamically growable segment, it contains<br />
+variables allocated locally</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">and parameters passed to<br />
+functions in the program.</p>
+<p class="MsoNormal">&nbsp;</p>
+<h3>5 Process</h3>
+<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>1)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->Context of Process &amp; Context Switching</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">The <b>context of a process</b> is essentially a snapshot of its current<br />
+runtime environment, including its address space, stack space, etc. At any<br />
+given time, a process can be in user-mode, kernel-mode, sleeping, waiting on<br />
+I/O, and so on. The process scheduling subsystem within the kernel uses a time<br />
+slice of typically 20ms to rotate among currently running processes. Each<br />
+process is given its share of the CPU for 20ms, then left to sleep until its turn<br />
+again at the CPU. This process of moving processes in and out of the CPU is<br />
+called <b>context switching</b>. The kernel<br />
+makes the operating system appear to be multi-tasking (i.e. running processes<br />
+concurrently) via the use of efficient context-switching.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>2)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->Process status:</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">R - runable, currently on the run<br />
+queue</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">S - currently sleeping (waiting<br />
+on a pipe, completion of I/O, terminal input, memory)</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">T - currently stopped</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">Z - defunct or zombie (a process<br />
+with no swappable image but a structure in memory)</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>3)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->Signal:</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">SIGHUP<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>1<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Hangup</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">SIGINT<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>2<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Interrupt</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">SIGKILL<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>9<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Kill (cannot be<br />
+caught or ignore)</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">SIGTERM<span>&nbsp;&nbsp;&nbsp; </span>15<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Terminate<br />
+(termination signal from SIGKILL)</p>
+<p class="MsoNormal">&nbsp;</p>
+<h3>6 Boot and Shutdown UNIX</h3>
+<p class="MsoNormal" style="margin-left:10.5pt;">(1) Boot System</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">Boot scripts are normal shell<br />
+scripts. The boot scripts will execute by “init” process through sh. Boot<br />
+scripts’ task include set computer name, set timezone, check hard disk with<br />
+fsck, install file system, configure network interface, start daemon process<br />
+and network services, start log and disk quota etc.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">BSD doesn’t have run level. ATT<br />
+System V has run level define in <b>/etc/inittab</b>.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">(2) Shutdown System</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span>&nbsp;</span>Poweroff<br />
+( !!! may damage system )</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span>&nbsp;</span>Shutdown<br />
+( good way )</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span>&nbsp;</span>halt (<br />
+will change system to single user mode )</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span>&nbsp;</span>reboot</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span>&nbsp;</span>init or<br />
+telinit ( change the run level )</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<h3>7 su V.S. su -</h3>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">”</span>su &lt;account&gt;” only change to another user’s<br />
+account. “su – &lt;account&gt;“ will excute</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">user’s profile while changing.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">“</span>su” or “su –“ without any account parameter means<br />
+you hope to change to</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">superuser(root).</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<h3>8 Unix Environment </h3>
+<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>1)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->setup user environment in ksh</p>
+<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->$HOME/.profile</p>
+<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->shell variables: varname=value</p>
+<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->unset variables</p>
+<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->aliases</p>
+<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->options</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">Any variable can become an<br />
+environment variable with the command<b>:<br />
+export <i>varnames</i></b>.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">environment file will told sub<br />
+process other variables, options, aliases that shell wish to told it. Environment<br />
+file name can be any name, as long as you set the environment variable ENV to<br />
+the file's name.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="color:red;">Alias</span><br />
+is a synonym for a command or command string. You define an alias by entering<br />
+(or adding to your .profile) a line with the following form: <b>alias <i>new</i>=<i>original</i></b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="color:red;">Options</span><br />
+let you change the shell's behavior. The basic commands that relate to options<br />
+are <b>set -o <i>optionnames</i></b> and <b>set +o <i>optionnames</i></b>, where <b><i>optionnames</i></b><br />
+is a list of option names separated by blanks. the <b>-</b> turns the named option on, while the <b>+</b> turns it off.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>2)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->Built-in Variables</p>
+<ul style="margin-top:0;" type="disc">
+<li class="MsoNormal">PS1,<br />
+     PS2, PS3 , PS4</li>
+<li class="MsoNormal">TERM</li>
+<li class="MsoNormal">PATH,<br />
+     MANPATH</li>
+<li class="MsoNormal">HOME</li>
+<li class="MsoNormal">PWD</li>
+<li class="MsoNormal">HISTFILE</li>
+<li class="MsoNormal">EDITOR</li>
+<li class="MsoNormal">VISUAL</li>
+</ul>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<h3>9 Common Control Characters</h3>
+<p class="MsoNormal" style="margin-left:36pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>1)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->Erase Character</p>
+<p class="MsoNormal" style="margin-left:72pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-size:10.5pt;font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span style="font-size:10.5pt;font-family:Arial;">[BACKSPACE]</span></p>
+<p class="MsoNormal" style="margin-left:72pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-size:10.5pt;font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span style="font-size:9.5pt;font-family:Symbol;"><span>&nbsp;</span></span><span style="font-size:10.5pt;font-family:Arial;">[DELETE], [DEL] key</span></p>
+<p class="MsoNormal" style="margin-left:72pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]--><span style="font-size:9.5pt;font-family:Symbol;"><span>&nbsp;</span></span><span style="font-size:10.5pt;font-family:Arial;">[CTRL-H]</span></p>
+<p class="MsoNormal" style="margin-left:36pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>2)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->Other Control Characters</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->[CTRL-U]<span>&nbsp;&nbsp;&nbsp; </span>Erases<br />
+the whole input line; you can start over.</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->[CTRL-S]<span>&nbsp;&nbsp;&nbsp;&nbsp; </span>Pauses<br />
+output from a program that is writing to the screen.</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->[CTRL-Q]<span>&nbsp;&nbsp;&nbsp; </span>Restarts<br />
+output after a pause by [CTRL-S].</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->[CTRL-D]<span>&nbsp;&nbsp;&nbsp; </span>Used<br />
+to signal end-of-input for some programs.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<h3>10 File System Inside</h3>
+<p class="MsoNormal" style="text-align:center;text-indent:10.5pt;" align="center"><!--[if !vml]--><img src="/DOCUME%7E1/bonny/LOCALS%7E1/Temp/msohtml1/01/clip_image002.gif" width="519" border="0" height="193" /><!--[endif]--></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>super</b> block describes the state of the file system: the total size<br />
+of the partition, the block size, pointers to a list of free blocks, the inode<br />
+number of the root directory, magic number, etc.</p>
+<p class="MsoNormal" style="text-align:center;text-indent:10.5pt;" align="center"><!--[if !vml]--><img src="/DOCUME%7E1/bonny/LOCALS%7E1/Temp/msohtml1/01/clip_image004.gif" width="177" border="0" height="151" /><!--[endif]--></p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<h3>11 I/O Redirection</h3>
+<p class="MsoNormal" style="text-align:center;text-indent:10.5pt;" align="center"><!--[if !vml]--><img src="/DOCUME%7E1/bonny/LOCALS%7E1/Temp/msohtml1/01/clip_image006.gif" width="576" border="0" height="394" /><!--[endif]--></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>xargs</b> <i>[options] [command]</i></p>
+<p class="MsoNormal" style="text-indent:10.5pt;">Execute command (with any initial<br />
+arguments), but read remaining arguments from standard input instead of<br />
+specifying them directly. xargs passes these arguments in several bundles to<br />
+command, allowing command to process more arguments than it could normally<br />
+handle at once. The arguments are typically a long list of filenames (generated<br />
+by ls or find, for example) that get passed to xargs via a pipe.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">Example:</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">grep for pattern in all files on<br />
+the home directory /home/foo:</p>
+<p class="MsoNormal" style="text-indent:36pt;"><i>find /home/foo -print | xargs grep pattern &gt; out &amp;</i></p>
+<h3>12 Search and Patterns</h3>
+<p class="MsoNormal" style="text-indent:10.5pt;">(1) Searching Commands</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->… find</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->… grep</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->… egrep</p>
+<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+</span></span></span><!--[endif]-->… fgrep</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">①</span><b> find</b> <i>pathname(s)<br />
+condition(s)</i></p>
+<p class="MsoNormal" style="text-indent:10.5pt;">find descends the directory tree<br />
+beginning at each pathname and locates files that meet the specified<br />
+conditions. At least one pathname and one condition must be specified. The most<br />
+useful conditions include -print (which must be explicitly given to display any<br />
+output), -name and -type (for general use), -exec and -size (for advanced<br />
+users), and -mtime and -user (for administrators). Examples:</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><i>find $HOME –print</i></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><i>find $HOME –name ‘core’ –exec rm –rf {} /;</i></p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">②</span> <b>grep</b> <i>[options] regexp [files]</i></p>
+<p class="MsoNormal" style="text-indent:10.5pt;">Search one or more files for<br />
+lines that match a regular expression regexp. Examples:</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">List the number of users who use<br />
+the korn shell:</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><i>grep -c /bin/ksh /etc/passwd</i></p>
+<p class="MsoNormal" style="text-indent:10.5pt;">List header files that have at<br />
+least one #include directive:</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><i>grep -l '^#include' /usr/include/*</i></p>
+<p class="MsoNormal" style="text-indent:10.5pt;">List files that don't contain<br />
+pattern:</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><i>grep -c pattern files | grep :0</i></p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">(2) Patterns (Regular Expressions<br />
+)</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">A regular expression describes a <b>pattern<br />
+</b>or a particular sequence of characters, although it does not necessarily<br />
+specify a single exact sequence. Pattern is composed of mixed sequence of<br />
+characters and <b>metacharacters</b>.</p>
+<p class="MsoNormal" style="text-align:center;text-indent:10.5pt;" align="center"><!--[if !vml]--><img src="/DOCUME%7E1/bonny/LOCALS%7E1/Temp/msohtml1/01/clip_image008.gif" width="483" border="0" height="454" /><!--[endif]--></p>
+<h3>13 UNIX Power Tools</h3>
+<p class="MsoNormal" style="text-indent:10.5pt;">(1) Backup &amp; Compression</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>tar</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>cpio</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>dd</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>compress</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>uncompress</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>unzip</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>gzip/gunzip/zcat</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>bzip2/bzcat</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>filename suffix</b></p>
+<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .tar</p>
+<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .Z</p>
+<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .gz</p>
+<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .tar.Z</p>
+<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .tar.gz</p>
+<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .zip</p>
+<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .bz; .tar.bz</p>
+<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">(2) Text Processing</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>cut<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Select columns for display.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>join<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Merge different columns into a database.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>paste<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Merge columns or switch order.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>sort<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Sort or merge files.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>tr<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Translate (redefine) characters.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>uniq<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Find repeated or unique lines in a file.</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>sed<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Stream editor, edit one or more files without user<br />
+interaction</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>awk<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Use the pattern-matching program to modify the<br />
+specified files</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">(3) Job Control</p>
+<p class="MsoNormal" style="text-indent:36pt;">jobs</p>
+<p class="MsoNormal" style="text-indent:36pt;">fg</p>
+<p class="MsoNormal" style="text-indent:36pt;">bg</p>
+<p class="MsoNormal" style="text-indent:36pt;">ps</p>
+<p class="MsoNormal" style="text-indent:36pt;">kill</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">(4) Communication and network<br />
+utilities</p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>ftp</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>rsh/remsh</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>$HOME/.rhosts</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>rup</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>mailx</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>$HOME/.forward</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>ping</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>netstat</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;"><b>ifconfig</b></p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -615,413 +1130,6 @@ work as you expect.</p>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/09/08/function-pointer-in-class">类成员函数指针浅析</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-09-08</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-    今天看某软件的源代码时，发现有这样一行
-<div class="highlighter">
-<ol class="highlighter-c" start="1">
-<li><span>typedef&nbsp;CPB_RETVAL&nbsp;(CPBprb_Prb::*CPBprb_action)(CPBprb_Prb&nbsp;&amp;,&nbsp;unsigned);</span></li>
-</ol>
-</div>
-<p>其中CPB_RETVAL是一个enum类型，CPBprb_Prb是一个类，CPBprb_action在代码中其他地方没有找到定义。因不知这行代码所为何意，遂在论坛发贴请教<a href="http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230">http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230</a>。</p>
-<p>承蒙众多高手赐教，才知上段代码定义了成员函数指针<span>类型CPBprb_action，</span>该类型函数有2个参数，类型分别为CPBprb_Prb &amp;, unsigned，返回值类型为CPB_RETVAL。此函数指针的类型有个定义域，它是类CPBprb_Prb的成员<span>（CPBprb_Prb::*CPBprb_action）。</p>
-<p>另外，</span><span>CPBprb_action不仅可以指向</span>CPBprb_Prb的成员函数，也可以指向CPBprb_Prb的派生类成员函数。甚至,CPBprb_Prb里可以根本就没有任何诸如CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned)这样的函数,而完全可以在CPBprb_Prb的派生类里去增加 CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned);这样的函数，如：</p>
-<div class="highlighter">
-<ol class="highlighter-c" start="1">
-<li><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><span></span></li>
-<li class="alt"><span></span></li>
-<li><span></span><span class="keyword">class</span><span>&nbsp;A</span></li>
-<li class="alt"><span>{</span></li>
-<li><span></span><span class="keyword">public</span><span>:</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;A(){};</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">virtual</span><span>&nbsp;~A(){};</span></li>
-<li class="alt"><span>};</span></li>
-<li><span></span></li>
-<li class="alt"><span></span><span class="keyword">class</span><span>&nbsp;B&nbsp;:&nbsp;</span><span class="keyword">public</span><span>&nbsp;&nbsp;A</span></li>
-<li><span>{</span></li>
-<li class="alt"><span></span><span class="keyword">public</span><span>:</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B(){};</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;~B(){};</span></li>
-<li><span></span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;Fb(</span><span class="keyword">int</span><span>&nbsp;a){&nbsp;</span><span class="keyword">return</span><span>&nbsp;a*a;}</span></li>
-<li><span>};</span></li>
-<li class="alt"><span></span></li>
-<li><span>typedef&nbsp;</span><span class="keyword">int</span><span>&nbsp;(A::*Myfunction)(</span><span class="keyword">int</span><span>);</span></li>
-<li class="alt"><span></span></li>
-<li><span></span><span class="keyword">int</span><span>&nbsp;main()</span></li>
-<li class="alt"><span>{</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B*&nbsp;pB&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;B;</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;Myfunction&nbsp;pf&nbsp;=&nbsp;(Myfunction)(&amp;B::Fb);</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;retValue&nbsp;=&nbsp;(pB-&gt;*pf)(3);</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cout&lt;&lt;retValue;</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cin&gt;&gt;retValue;</span></li>
-<li class="alt"><span></span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;1;</span></li>
-<li class="alt"><span>}</span></li>
-</ol>
-</div>
-<p>通过typedef int (A::*Myfunction)(int);定义的Myfunction是A的成员（函数指针），但只能在类外定义。</p>
-<p>需要指出的是，使用指向成员函数的指针变量是比较危险的!因此不建议这么用。</p>
-<p>（<font color="#800000">上文引用了论坛中对我帖子的回复，再次对关心并帮助我的人表示感谢。</font>）</p>
-<p><font color="#000080">PS：</font><br />
-<h1>函数指针(全局函数/类成员函数)和函数对象</h1>
-<p>（原文链接：<a href="http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og">http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</a>）</p>
-<h2>关键字：函数指针 全局函数 类成员函数 函数对象 Function object </h2>
-<h2>作者：ErranLi&nbsp; &nbsp; 更新：2007-01-06 02:31:47&nbsp; &nbsp; 浏览：9166</h2>
-<div id="divCodeArea">
-<div class="source">
-<p>
-函数指针(全局函数/类成员函数)、函数对象(Function&nbsp;object)</p>
-<p>一.&nbsp;函数指针类型为全局函数.</p>
-<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
-<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
-<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
-<p><span class="reserved">class</span>&nbsp;TestAction;</p>
-<p><span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(*fp)(<span class="reserved">int</span>);</p>
-<p><span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
-{<br />
-&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
-}</p>
-<p><span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
-{<br />
-&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
-}</p>
-<p><span class="reserved">class</span>&nbsp;TestAction<br />
-{<br />
-<span class="reserved">public</span>:<br />
-&nbsp; &nbsp; fp&nbsp;testAct;</p>
-<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
-&nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;(testAct&nbsp;!=&nbsp;NULL)<br />
-&nbsp; &nbsp; &nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
-&nbsp; &nbsp; &nbsp; &nbsp; }<br />
-&nbsp; &nbsp; }<br />
-};</p>
-<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
-{<br />
-&nbsp; &nbsp; TestAction&nbsp;doact;<br />
-&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Drink;<br />
-&nbsp; &nbsp; doact.TestAct(0);<br />
-&nbsp; &nbsp; doact.TestAct(1);<br />
-&nbsp; &nbsp; doact.TestAct(2);<br />
-&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Eat;<br />
-&nbsp; &nbsp; doact.TestAct(0);<br />
-&nbsp; &nbsp; doact.TestAct(1);<br />
-&nbsp; &nbsp; doact.TestAct(2);<br />
-&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
-}</p>
-<p>二.&nbsp;函数指针类型为类成员函数.</p>
-<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
-<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
-<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
-<p><span class="reserved">class</span>&nbsp;Action;<br />
-<span class="reserved">class</span>&nbsp;TestAction;</p>
-<p><span class="comment">//&nbsp;函数指针类型为类&nbsp;Action&nbsp;的成员函数</span><br />
-<span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(Action::*fp)(<span class="reserved">int</span>);</p>
-<p><span class="reserved">class</span>&nbsp;Action<br />
-{<br />
-<span class="reserved">public</span>:<br />
-&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
-&nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
-&nbsp; &nbsp; }</p>
-<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
-&nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
-&nbsp; &nbsp; }<br />
-};</p>
-<p><span class="reserved">class</span>&nbsp;TestAction<br />
-{<br />
-<span class="reserved">public</span>:<br />
-&nbsp; &nbsp; <span class="comment">//&nbsp;定义一个函数指针</span><br />
-&nbsp; &nbsp; fp&nbsp;testAct;<br />
-&nbsp; &nbsp; <span class="comment">//Action&nbsp;对象实例&nbsp;,&nbsp;该指针用于记录被实例化的&nbsp;Action&nbsp;对象</span><br />
-&nbsp; &nbsp; Action&nbsp;*&nbsp;pAction;</p>
-<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
-&nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;((pAction&nbsp;!=&nbsp;NULL)&nbsp;&amp;&amp;&nbsp;(testAct&nbsp;!=&nbsp;NULL))<br />
-&nbsp; &nbsp; &nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">//&nbsp;调用</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (pAction-&gt;*testAct)(i);<br />
-&nbsp; &nbsp; &nbsp; &nbsp; }<br />
-&nbsp; &nbsp; }<br />
-};</p>
-<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
-{<br />
-&nbsp; &nbsp; Action&nbsp;act;<br />
-&nbsp; &nbsp; TestAction&nbsp;doact;<br />
-&nbsp; &nbsp; doact.pAction&nbsp;=&nbsp;&amp;act;<br />
-&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Drink;<br />
-&nbsp; &nbsp; doact.TestAct(0);<br />
-&nbsp; &nbsp; doact.TestAct(1);<br />
-&nbsp; &nbsp; doact.TestAct(2);<br />
-&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Eat;<br />
-&nbsp; &nbsp; doact.TestAct(0);<br />
-&nbsp; &nbsp; doact.TestAct(1);<br />
-&nbsp; &nbsp; doact.TestAct(2);<br />
-&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
-}</p>
-<p>三.&nbsp;函数对象&nbsp;(Function&nbsp;object)<br />
-<span class="sp874">// 本文转自 C++Builder研究 - http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</span></p>
-<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
-<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
-<span class="preprocessor">#include&nbsp;&lt;functional&gt;</span></p>
-<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
-<p><span class="reserved">class</span>&nbsp;Action;<br />
-<span class="reserved">class</span>&nbsp;Drink;<br />
-<span class="reserved">class</span>&nbsp;Eat;<br />
-<span class="reserved">class</span>&nbsp;TestAction;</p>
-<p><span class="reserved">class</span>&nbsp;Action<br />
-{<br />
-<span class="reserved">public</span>:<br />
-&nbsp; &nbsp; <span class="reserved">int</span>&nbsp;<span class="reserved">operator</span>()(<span class="reserved">int</span>&nbsp;i)<br />
-&nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; Act(i);<br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;i;<br />
-&nbsp; &nbsp; }</p>
-<p>&nbsp; &nbsp; <span class="reserved">virtual</span>&nbsp;<span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)&nbsp;=&nbsp;0;<br />
-};</p>
-<p><span class="reserved">class</span>&nbsp;Drink&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
-{<br />
-&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
-&nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
-&nbsp; &nbsp; }<br />
-};</p>
-<p><span class="reserved">class</span>&nbsp;Eat&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
-{<br />
-&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
-&nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
-&nbsp; &nbsp; }<br />
-};</p>
-<p><span class="reserved">class</span>&nbsp;TestAction<br />
-{<br />
-<span class="reserved">public</span>:<br />
-&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i,&nbsp;Action&amp;&nbsp;testAct)<br />
-&nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
-&nbsp; &nbsp; }<br />
-};</p>
-<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
-{<br />
-&nbsp; &nbsp; TestAction&nbsp;doact;<br />
-&nbsp; &nbsp; doact.TestAct(0,&nbsp;Drink());<br />
-&nbsp; &nbsp; doact.TestAct(1,&nbsp;Drink());<br />
-&nbsp; &nbsp; doact.TestAct(2,&nbsp;Drink());<br />
-&nbsp; &nbsp; doact.TestAct(0,&nbsp;Eat());<br />
-&nbsp; &nbsp; doact.TestAct(1,&nbsp;Eat());<br />
-&nbsp; &nbsp; doact.TestAct(2,&nbsp;Eat());<br />
-&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
-}</p>
-<p>虽然传递函数指针被广泛应用于事件驱动系统中，以此实现回调函数通过指针来调用。但&nbsp;C++&nbsp;还是提供了另外一种可供选择的办法，即函数对象，利用它可以<br />
-避免使用函数指针。这样做有几个优点。首先，&nbsp;因为对象可以在内部修改而不用改动外部接口，因此设计更灵活，更富有弹性。函数对象也具备有存储先前调用结<br />
-果的数据成员。。&nbsp;此外，编译器可以内联函数对象，从而进一步增强性能。函数对象可以具体表达依赖成员模板的通用算法&nbsp;,&nbsp;这些算法借助普通的函数指针难<br />
-以完成。例用函数对象实现了一个通用的&nbsp;Negation&nbsp;算法操作：</p>
-<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span><br />
-<span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span></p>
-<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
-<p><span class="reserved">class</span>&nbsp;Negate<br />
-{<br />
-<span class="reserved">public</span>:<br />
-&nbsp; &nbsp; <span class="reserved">template</span>&lt;<span class="reserved">class</span>&nbsp;T&gt;&nbsp;T&nbsp;<span class="reserved">operator</span>()(T&nbsp;t)&nbsp;const<br />
-&nbsp; &nbsp; {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;-t;<br />
-&nbsp; &nbsp; }<br />
-};</p>
-<p><span class="reserved">void</span>&nbsp;Callback(<span class="reserved">int</span>&nbsp;n,&nbsp;<span class="reserved">const</span>&nbsp;Negate&amp;&nbsp;neg)&nbsp; <span class="comment">//&nbsp;传递一个函数对象</span><br />
-{<br />
-&nbsp; &nbsp; n&nbsp;=&nbsp;neg(n);&nbsp; <span class="comment">//&nbsp;调用重载的&nbsp;()&nbsp;操作&nbsp;来对&nbsp;n&nbsp;进行&nbsp;negate&nbsp;操作</span><br />
-&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;n&nbsp;&lt;&lt;&nbsp;endl;<br />
-}</p>
-<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
-{<br />
-&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式一</span><br />
-&nbsp; &nbsp; Callback(5,&nbsp;Negate());</p>
-<p>&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式二</span><br />
-&nbsp; &nbsp; Negate&nbsp;neg;<br />
-&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(9.99999)&nbsp;&lt;&lt;&nbsp;endl;<br />
-&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(<span class="reserved">__int32</span>(39999999))&nbsp;&lt;&lt;&nbsp;endl;</p>
-<p>&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
-}</p>
-<p>&nbsp; &nbsp; STL&nbsp;库中定义了很多函数对象以供相关算法调用，如&nbsp;模板化的函数对象&nbsp;greater&lt;&gt;&nbsp;或者&nbsp;less&lt;&gt;:</p>
-<p>vector&nbsp;&lt;<span class="reserved">int</span>&gt;&nbsp;vi;<br />
-<span class="comment">//..&nbsp;填充向量</span><br />
-sort(vi.begin(),&nbsp;vi.end(),&nbsp;greater&lt;<span class="reserved">int</span>&gt;()&nbsp;);<span class="comment">//&nbsp;降序&nbsp;(descending)</span><br />
-sort(vi.begin(),&nbsp;vi.end(),&nbsp;less&lt;<span class="reserved">int</span>&gt;()&nbsp;);&nbsp;<span class="comment">//&nbsp;升序&nbsp;(ascending)</span></p>
-</div>
-</div>
-<p><!-- end of divCodeArea --></p>
-<p>本文转自：http://www.cppblog.com/erran/archive/2006/12/26/16868.html</p>
-<p><span style="color:rgb(255,0,0);">函数对象（function&nbsp;<br />
-object）,又名仿函数（functor),是重载了operator（）的一个类，其实在stl算法中有大量运用，c++标准预定义的如<br />
-less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么引入仿函数？&nbsp;  <br /> &nbsp; 原因：&nbsp;  <br /> &nbsp; １．仿函数有具体型别，可用在模板参数，而函数不行&nbsp;  <br /> &nbsp; ２．同类仿函数可有不同植，可代表不同状态，比函数灵活（须定义多个）&nbsp;  <br /> &nbsp; ３．仿函数可能比普通函数快&nbsp;  <br /> &nbsp; ．．．．．．．．可能还有，不过凭印象就这些了</span> </p>
-<p></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/09/08/function-object">函数对象</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-09-08</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-    看到有个概念叫“函数对象”，搜了一下关于它的解释： </p>
-<p> <span style="color:rgb(255,0,0);">函<br />
-数对象（function&nbsp;<br />
-object）,又名仿函数（functor),是重载了operator（）的一个类，其实在stl算法中有大量运用，c++标准预定义的如<br />
-less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么引入仿函数？&nbsp;  <br /> &nbsp; 原因：&nbsp;  <br /> &nbsp; １．仿函数有具体型别，可用在模板参数，而函数不行&nbsp;  <br /> &nbsp; ２．同类仿函数可有不同植，可代表不同状态，比函数灵活（须定义多个）&nbsp;  <br /> &nbsp; ３．仿函数可能比普通函数快&nbsp;  <br /> &nbsp; ．．．．．．．．可能还有，不过凭印象就这些了</span></p>
-<p>&nbsp; <font color="#ff0000">和普通函数相比,在不破坏接口的情况下,函数对象可以有自己的状态.</font></p>
-<p>另外，</p>
-<p><font color="#ff0000">1 什么是函数对象 </p>
-<p> c＋＋在模板方面使用很多的一个技术，写一个类，这个类有个成员函数，可以让类象函数一样运行。 <br /> 主要用于模板函数中。 </p>
-<p> 2 实现 </p>
-<p> 类的成员函数，()可以让一个类运行起来象一个函数一样，如我们在排序的时候我们使用sort <br /> 可能sort是这样的sort(int, int) <br /> 我们自己可以写一个类，其中重载void operator()(int, int)来实现。 </p>
-<p> for_each（begin, end, func) <br /> 这个func如果是函数的话，会把value（*it)放在函数的参数位置上，如果是一个类在那个位置，将会调用运算符函数()来将参数传递进去。首先调用构造函数，构造函数初始化一个对象后，对象调用函数()来实现函数对象操作。 </p>
-<p> 3 函数对象的优势 </p>
-<p> 函数对象的功能于函数的功能是一样的，那为什么要使用默认构造函数。 <br /> 1 函数对象是一个智能对象，他可以利用对象中的成员函数，和成员变量。 <br /> 2 完全可以使用类的优势，可以使用类的重载特性，同样的一个类的名字，可以调用各种函数。 </font> </p>
-<p>在<i>more exceptional c++</i>和<i>The C++ Programming Language</i>等书里有看到。</p>
-<p>函数对象示例：
-<div class="highlighter">
-<ol class="highlighter-c" start="1">
-<li><span class="comment">//&nbsp;Negate.cpp</span><span></span></li>
-<li class="alt"><span></span><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><span></span></li>
-<li><span></span><span class="keyword">using</span><span>&nbsp;</span><span class="keyword">namespace</span><span>&nbsp;std;</span></li>
-<li class="alt"><span>&nbsp;</span></li>
-<li><span></span><span class="keyword">class</span><span>&nbsp;Negate</span></li>
-<li class="alt"><span>{</span></li>
-<li><span></span><span class="keyword">public</span><span>:</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template&lt;</span><span class="keyword">class</span><span>&nbsp;T&gt;&nbsp;T&nbsp;</span><span class="keyword">operator</span><span>()(T&nbsp;t)&nbsp;</span><span class="keyword">const</span><span></span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;-t;</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span></li>
-<li class="alt"><span>};</span></li>
-<li><span></span></li>
-<li class="alt"><span></span><span class="keyword">void</span><span>&nbsp;Callback(</span><span class="keyword">int</span><span>&nbsp;n,&nbsp;</span><span class="keyword">const</span><span>&nbsp;Negate&amp;&nbsp;neg)&nbsp;&nbsp;</span><span class="comment">//&nbsp;传递一个函数对象</span><span></span></li>
-<li><span>{</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n&nbsp;=&nbsp;neg(n);&nbsp;&nbsp;</span><span class="comment">//&nbsp;调用重载的&nbsp;()&nbsp;操作&nbsp;来对&nbsp;n&nbsp;进行&nbsp;negate&nbsp;操作</span><span></span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;n&nbsp;&lt;&lt;&nbsp;endl;</span></li>
-<li class="alt"><span>}</span></li>
-<li><span></span></li>
-<li class="alt"><span></span><span class="keyword">int</span><span>&nbsp;main(</span><span class="keyword">int</span><span>&nbsp;argc,&nbsp;</span><span class="keyword">char</span><span>*&nbsp;argv[])</span></li>
-<li><span>{</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">//&nbsp;调用方式一</span><span></span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Callback(5,&nbsp;Negate());</span></li>
-<li class="alt"><span></span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">//&nbsp;调用方式二</span><span></span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Negate&nbsp;neg;</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;neg(9.99999)&nbsp;&lt;&lt;&nbsp;endl;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;neg(__int32(39999999))&nbsp;&lt;&lt;&nbsp;endl;</span></li>
-<li><span></span></li>
-<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getchar();</span></li>
-<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;0;</span></li>
-<li class="alt"><span>}</span></li>
-</ol>
-</div>
-<p>PS：</p>
-<p><span id="ArticleContent1_ArticleContent1_lblContent"></span>
-<p class="p14" align="center"><b>定义函数对象 </b></p>
-<table width="100%" align="center" border="0" cellpadding="1" cellspacing="0">
-<tbody>
-<tr>
-<td bgcolor="#febf01">
-<table width="100%" align="center" border="0" cellpadding="3" cellspacing="0">
-<tbody>
-<tr>
-<td width="60%" bgcolor="#eeeeee">时间：2001/02/07 15:22</td>
-<td width="40%" bgcolor="#eeeeee">作者：vckbase <a target="_blank" href="http://www.vckbase.com/">VC知识库</a></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-<p><!--标题:结束--><br /><!--正文:开始--></p>
-<p>　 尽管函数指针被广泛用于实现函数回调，但C++还提供了一个重要的实现回调函数的方法，那就是函数对象。函数对象（也称“算符”）是重载了“()”操作符的普通类对象。因此从语法上讲，函数对象与普通的函数行为类似。 </p>
-<p>用函数对象代替函数指针有几个优点，首先，因为对象可以在内部修改而不用改动外部接口，因此设计更灵活，更富有弹性。函数对象也具备有存储先前调用<br />
-结果的数据成员。在使用普通函数时需要将先前调用的结果存储在全程或者本地静态变量中，但是全程或者本地静态变量有某些我们不愿意看到的缺陷。 </p>
-<p>其次，在函数对象中编译器能实现内联调用，从而更进一步增强了性能。这在函数指针中几乎是不可能实现的。 </p>
-<p>下面举例说明如何定义和使用函数对象。首先，声明一个普通的类并重载“()”操作符： </p>
-<p>class Negate </p>
-<p>{ </p>
-<p>public: </p>
-<p>int operator() (int n) { return -n;} </p>
-<p>}; </p>
-<p>重载操作语句中，记住第一个圆括弧总是空的,因为它代表重载的操作符名；第二个圆括弧是参数列表。一般在重载操作符时，参数数量是固定的，而重载“()”操作符时有所不同，它可以有任意多个参数。 </p>
-<p>因为在Negate中内建的操作是一元的（只有一个操作数），重载的“()”操作符也只有一个参数。返回类型与参数类型相同-本例中为int。函数返回与参数符号相反的整数。 </p>
-<p>使用函数对象 </p>
-<p>我们现在定义一个叫Callback()的函数来测试函数对象。Callback()有两个参数：一个为int一个是对类Negate的引用。Callback()将函数对象neg作为一个普通的函数名： </p>
-<p>#include </p>
-<p>using std::cout; </p>
-<p>void Callback(int n, Negate &amp; neg) </p>
-<p>{ </p>
-<p>int val = neg(n); //调用重载的操作符“()” </p>
-<p>cout &lt;&lt; val; </p>
-<p>} </p>
-<p>不要的代码中，注意neg是对象，而不是函数。编译器将语句 </p>
-<p>int val = neg(n); </p>
-<p>转化为 </p>
-<p>int val = neg.operator()(n); </p>
-<p>通常，函数对象不定义构造函数和析构函数。因此，在创建和销毁过程中就不会发生任何问题。前面曾提到过，编译器能内联重载的操作符代码，所以就避免了与函数调用相关的运行时问题。 </p>
-<p>为了完成上面个例子，我们用主函数main()实现Callback()的参数传递： </p>
-<p>int main() </p>
-<p>{ </p>
-<p>Callback(5, Negate() ); //输出 -5 </p>
-<p>} </p>
-<p>本例传递整数5和一个临时Negate对象到Callback()，然后程序输出-5。 </p>
-<p>模板函数对象 </p>
-<p>从上面的例子中可以看出，其数据类型被限制在int，而通用性是函数对象的优势之一，如何创建具有通用性的函数对象呢？方法是使用模板，也就是将重载的操作符“（）”定义为类成员模板，以便函数对象适用于任何数据类型：如double，_int64或char： </p>
-<p>class GenericNegate </p>
-<p>{ </p>
-<p>public: </p>
-<p>template T operator() (T t) const {return -t;} </p>
-<p>}; </p>
-<p>int main() </p>
-<p>{ </p>
-<p>GenericNegate negate; </p>
-<p>cout&lt;&lt; negate(5.3333); // double </p>
-<p>cout&lt;&lt; negate(10000000000i64); // __int64 </p>
-<p>} </p>
-<p>如果用普通的回调函数实现上述的灵活性是相当困难的。 </p>
-<p>标准库中函数对象 </p>
-<p>C++标准库定义了几个有用的函数对象，它们可以被放到STL算法中。例如，sort()算法以判断对象（predicate<br />
-object）作为其第三个参数。判断对象是一个返回Boolean型结果的模板化的函数对象。可以向sort()传递greater&lt;&gt;或<br />
-者less&lt;&gt;来强行实现排序的升序或降序： </p>
-<p>#include // for greater&lt;&gt; and less&lt;&gt; </p>
-<p>#include //for sort() </p>
-<p>#include </p>
-<p>using namespace std; </p>
-<p>int main() </p>
-<p>{ </p>
-<p>vector vi; </p>
-<p>//..填充向量 </p>
-<p>sort(vi.begin(), vi.end(), greater() );//降序( descending ) </p>
-<p>sort(vi.begin(), vi.end(), less() ); //升序 ( ascending ) </p>
-<p>} </p>
-<p></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1097,6 +1205,9 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
             <li><a href="/page20">20</a></li>
             
         
+            <li><a href="/page21">21</a></li>
+            
+        
     
 
     
@@ -1142,11 +1253,11 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
     
         <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
     
@@ -1160,17 +1271,13 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
     
-        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
-    
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
     
         <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
-    
-        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
     
         <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
     
@@ -1204,13 +1311,13 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
     
-        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
         <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
     
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
     
         <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
     
@@ -1225,8 +1332,6 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
         <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1260,7 +1365,7 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -1268,7 +1373,7 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     
@@ -1284,6 +1389,10 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
+    
   
 
 
@@ -1298,6 +1407,12 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
         
         <h3>Recent Posts</h3>
         <ul>
+        
+          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
+            Coin Change Problem</a></li>
+        
+          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
+            Text Justification</a></li>
         
           <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
             Sort Colors</a></li>
@@ -1322,12 +1437,6 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
         
           <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
             BACI Simple Install and Compile Guide</a></li>
-        
-          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
-            Dense Trajectory Notes</a></li>
-        
-          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
-            Parallelize mex file in Matlab</a></li>
         
         </ul>
         

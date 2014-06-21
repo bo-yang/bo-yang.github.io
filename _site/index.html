@@ -1,9 +1,6 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -23,6 +20,13 @@
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
   -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Config({
+    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  	});
+  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -71,6 +75,222 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/06/20/coin-change">Coin Change Problem</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2014-06-20</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#Java-ref" rel="nofollow">Java</a>, <a href="/tags.html#Dynamic Programming-ref" rel="nofollow">Dynamic Programming</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>Given (N) denominations,how can a given amount of money (V) be made with the least number of coins? The most intuitive solution is greedy algorithm: sort the denominations, try the largest denominations lower than the value every time, and decrease the value with the denominations picked in every iteration. Repeat this process until the value reduces to 0. This greedy strategy works for the US (and most other) coin systems, However, it is not a general solution to all denomincations. For example, if the coin denominations were 1, 3 and 4, then to make 6, the greedy algorithm would choose three coins (4,1,1) whereas the optimal solution is two coins (3,3).</p>
+
+<p>Actuallt the <a href="http://en.wikipedia.org/wiki/Change-making_problem">change-making problem</a> is a knapsack type problem, which can be solved efficiently by Dynamic Programming. </p>
+
+<p>Given denominations $\left{ x_1, x_2,\cdots,x_n \right}$, in order to get value (V), there are two possibilities for a denomination (x_i): (1) if (x_i) is not picked, then value (V) could be made out of (\left{ x_1, x_2,\cdots,x_{i-1} \right}). (2) if (x_i) is picked, then value (V-x_i) should be made out of (\left{ x_1, x_2,\cdots,x_i \right}). Since our goal is to find the least number of coins, we can formulate the following recursive function:
+<script type="math/tex">% <![CDATA[
+ OPT(i,v)=\left{ \begin{aligned}
+	0 & \text{if} i=0 \\
+	OPT(i-1,v) & \text{if} x_i>v \\
+	\min \left{ OPT(i-1,v), 1+OPT(i,v-v_i) \right} & \text{otherwise}
+	\end{aligned}  %]]></script></p>
+
+<p>Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination (x_i) of the row), then the smallest coin changes should be (v/x_i). </p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Denominations</td>
+      <td>Values</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0 1 2 3 4 5 6 7 8 9 10 11</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0 1 2 1 2 3 2 3 4 3 4 5</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0 1 2 1 1 2 2 2 2 3 3 3</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code>public class Coin {
+	public static int CoinChange(int value, int[] denom) {
+		int M[][]=new int[denom.length][value+1];
+
+		// Initialization
+		final int INF=9999999;
+		for(int i=0;i&lt;denom.length;++i) {
+			for(int j=0;j&lt;=value;++j) {
+				if(j%denom[i]==0)
+					M[i][j]=j/denom[i];
+				else
+					M[i][j]=INF;	
+			}
+		}
+
+		// Fill the table with smallest coin changes
+		for(int i=1;i&lt;denom.length;++i) {
+			for(int j=1;j&lt;=value;++j) {
+				if(denom[i]&gt;j)
+					M[i][j]=M[i-1][j];
+				else
+					M[i][j]=M[i-1][j]&lt;1+M[i][j-denom[i]] ? M[i-1][j] : 1+M[i][j-denom[i]];
+			}
+		}
+
+		// Print the table
+		for(int i=0;i&lt;denom.length;++i) {
+			for(int j=0;j&lt;=value;++j) {
+				System.out.print(M[i][j]+" ");
+			}
+			System.out.print("\n");
+		}
+
+		return M[denom.length-1][value];
+	}
+
+	public static void main(String[] args) {
+		int[] denom={1,3,4};
+		int value=10;
+		int num=CoinChange(value,denom);
+		System.out.println(num);
+	}
+}
+</code></pre>
+
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/06/18/text-justification">Text Justification</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2014-06-18</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p><a href="https://oj.leetcode.com/problems/text-justification/">The Problem</a>:</p>
+
+<blockquote>
+  <p>Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.</p>
+
+  <p>You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ‘ ‘ when necessary so that each line has exactly L characters.</p>
+
+  <p>Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.</p>
+
+  <p>For the last line of text, it should be left justified and no extra space is inserted between words.</p>
+
+  <p>For example,
+words: [“This”, “is”, “an”, “example”, “of”, “text”, “justification.”]
+L: 16.</p>
+
+  <p>Return the formatted lines as:
+[
+  “This    is    an”,
+  “example  of text”,
+  “justification.  “
+]
+Note: Each word is guaranteed not to exceed L in length.</p>
+</blockquote>
+
+<p>This problem can be solved in two steps in general: (1) count the number of words that can be placed in current line, and then (2) allocate spaces. </p>
+
+<p>For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the (N) words plus the default (N-1) spaces between the N words. Be careful to the last word in this line.</p>
+
+<p>For the second step, we should treat two types of lines differently. Assume there are totally (M) spaces should be inserted in a line. For the lines other than the last line, insert (M/(N-1)) spaces between two nearby words if (M) can be divided by (N-1)(where (N) is the number of words in this line). If (M) cannot be divided by (N-1), add 1 space for the first (M \mod (N-1)) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  </p>
+
+<p>Following is my C++ implementation of text justification:</p>
+
+<pre>
+class Solution {
+public:
+    vector<string> fullJustify(vector<string> &amp;words, int L) {
+        vector<string> ret;
+		int word_cnt=0; // count words that have been processed
+		
+		while(word_cnt &lt; static_cast<int>(words.size())) {
+			// count words that can be placed in current line
+			int char_cnt=0; // characters justified in a line
+			vector<string> vec;
+			int idx=word_cnt;
+			while(char_cnt+static_cast<int>(vec.size())-1&lt;=L &amp;&amp; idx&lt;static_cast<int>(words.size())) {
+				char_cnt+=static_cast<int>(words[idx].size());
+				vec.push_back(words[idx]);
+				idx++;
+			}
+			if(char_cnt+static_cast<int>(vec.size())-1&gt;L) {
+				char_cnt-=vec.back().size();
+				vec.pop_back(); // remove the last word because it surpasses the line limit
+			}
+			word_cnt+=vec.size();
+
+			// assign spaces for this line
+			string line;
+			int total_spaces=L-char_cnt;
+			int avg_spaces; // average spaces for 
+			int left_spaces; //spaces left
+			if(word_cnt!=static_cast<int>(words.size())) {
+				if(static_cast<int>(vec.size())&gt;1) { // This line contains more than 1 word
+					avg_spaces=total_spaces/(static_cast<int>(vec.size())-1);
+					left_spaces=total_spaces%(static_cast<int>(vec.size())-1);
+					// Formulate strings per line
+					for(int i=0;i&lt;static_cast<int>(vec.size())-1;++i) {
+						line+=vec[i];
+						for(int j=0;j&lt;avg_spaces;++j)
+							line+=" ";
+						if(left_spaces&gt;0) {
+							line+=" ";
+							left_spaces--;
+						}
+					}
+					line+=vec.back(); // put the last word to the rightmost position
+				} else { // Only one word
+					avg_spaces=0;
+					left_spaces=total_spaces;
+					line+=vec.back();
+					while(left_spaces&gt;0) {
+						line+=" "; // append spaces to the last word
+						--left_spaces;
+					}
+				}
+			} else { 
+				// The last line
+				avg_spaces=1;
+				left_spaces=total_spaces-static_cast<int>(vec.size())+1;
+				for(int i=0;i&lt;static_cast<int>(vec.size())-1;++i) {
+					line+=vec[i];
+					line+=" ";
+				}
+				line+=vec.back();
+				while(left_spaces&gt;0) {
+					line+=" "; // append spaces to the last word
+					--left_spaces;
+				}
+			}
+			ret.push_back(line);
+		}
+
+		return ret;
+    }
+};
+
+</int></int></int></int></int></int></int></int></int></int></int></string></int></string></string></string></pre>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -991,7 +1211,7 @@ private:
       <div class="mainbody">
         <h2><a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></h2>
         <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2014-04-30</strong> with tags <a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>, <a href="/tags.html#Fisher Vector-ref" rel="nofollow">Fisher Vector</a>, <a href="/tags.html#SVM-ref" rel="nofollow">SVM</a>
+          Posted by <strong>Bo Yang</strong> at <strong>2014-04-30</strong> with tags <a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>, <a href="/tags.html#Machine Learning-ref" rel="nofollow">Machine Learning</a>, <a href="/tags.html#Fisher Vector-ref" rel="nofollow">Fisher Vector</a>, <a href="/tags.html#SVM-ref" rel="nofollow">SVM</a>
         </p>
         
         <div class="post_at_index thepost">
@@ -1203,7 +1423,7 @@ sudo -E gem install jekyll </pre>
       <div class="mainbody">
         <h2><a href="/2014/03/26/c-code-to-print-pascal-triangle">C++ Code to Print Pascal Triangle</a></h2>
         <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2014-03-26</strong> with tags <a href="/tags.html#Alogrithm-ref" rel="nofollow">Alogrithm</a>, <a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>
+          Posted by <strong>Bo Yang</strong> at <strong>2014-03-26</strong> with tags <a href="/tags.html#Alogrithm-ref" rel="nofollow">Alogrithm</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
         </p>
         
         <div class="post_at_index thepost">
@@ -1387,142 +1607,6 @@ The output looks like:</p></p>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2014/01/10/dense-trajectory-notes">Dense Trajectory Notes</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2014-01-10</strong> with tags <a href="/tags.html#notes-ref" rel="nofollow">notes</a>, <a href="/tags.html#DTF-ref" rel="nofollow">DTF</a>, <a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p><span style="font-size:12px;font-weight:bold;line-height:1em;">Notes of Dense Trajectories</span><img class="aligncenter" style="font-size:12px;font-weight:bold;line-height:1em;" alt="" src="https://lh6.googleusercontent.com/AysSQ7M6yvc5hbkBHzsEHc1c7L4ZJcIXmdSfzh9g4iBDsL_q9lZD_8fhH8TEPMwAJ12Kp_s4z1FWmX3rndc6DTFAwARyWkx-mJiixB4X7nQRV5XcB391xltefQ" width="568px;" height="178px;" /></p>
-<ul>
-<li>densely sample feature points in each frame</li>
-<li>track points in the video based on optical flow.</li>
-<li>compute multiple descriptors along the trajectories of feature points to capture shape, appearance and motion information.</li>
-</ul>
-<ul>
-<li>
-<h3>Dense Sampling</h3>
-<ul>
-<li>Sampling step size \( W=5 \) pixels</li>
-<li># spatial scales ≤ 8</li>
-<li>Spatial scale increase: \( 1 / \sqrt{2} \)</li>
-<li>Removing points in homogeneous areas: 
-$$ T=0.001 \times \max_{i \in l}\min(\lambda_{i}^{1},\lambda_{i}^{2}) $$,
-where \( (\lambda_{i}^{1},\lambda_{i}^{2}) \) are eigenvalues of point \(i\) in image \(I\) (the auto-correlation matrix).</span></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>
-<h3>Descriptors</h3>
-<ul>
-<li>
-<p dir="ltr">Trajectory shape descriptor(TR):</p>
-</li>
-</ul>
-</li>
-</ul>
-<p dir="ltr"><img alt="" src="https://lh3.googleusercontent.com/TZG6Zx9WlI95UsEDsemdeXUHBtPrV6gJh_50zZzKJYTV45heKGfIx7xjlN079nJUZWMb93j9Vr72R0cvPQtdyVb49vDDeFpcLhcjeVq_VL8JhSh2VlZwtvNnxw" width="206px;" height="61px;" /></p>
-<p dir="ltr">where L is the length of trajectory, and the displacement vectors <img alt="" src="https://lh3.googleusercontent.com/DqC7Y6vrH4mfXOVQQ29w8S9KH4jNH6kPpmyViWd5AhXhpVebHPO5xMTIdyWVAOPMvFU379KWsBR5FjV6cER0-whR6TxlBpch33vMqEVDXwC80uon5hQJMR3cxg" width="422px;" height="27px;" /></p>
-<ul>
-<li>HOG – static appearance information</li>
-<li>HOF – local motion information</li>
-<li>MBH – motion descriptor for trajectories</li>
-</ul>
-<ul>
-<li>
-<h3>Format of DTF features</h3>
-</li>
-</ul>
-<h4>The format of the computed features</h4>
-<p dir="ltr">The features are computed one by one, and each one in a single line, with the following format:</p>
-<p dir="ltr">frameNum mean_x mean_y var_x var_y length scale x_pos y_pos t_pos Trajectory HOG HOF MBHx MBHy</p>
-<p dir="ltr">The first 10 elements are information about the trajectory:</p>
-<ul>
-<li>frameNum:     The trajectory ends on which frame</li>
-<li>mean_x:       The mean value of the x coordinates of the trajectory</li>
-<li>mean_y:       The mean value of the y coordinates of the trajectory</li>
-<li>var_x:        The variance of the x coordinates of the trajectory</li>
-<li>var_y:        The variance of the y coordinates of the trajectory</li>
-<li>length:       The length of the trajectory</li>
-<li>scale:        The trajectory is computed on which scale</li>
-<li>x_pos:        The normalized x position w.r.t. the video (0~0.999), for spatio-temporal pyramid</li>
-<li>y_pos:        The normalized y position w.r.t. the video (0~0.999), for spatio-temporal pyramid</li>
-<li>t_pos:        The normalized t position w.r.t. the video (0~0.999), for spatio-temporal pyramid</li>
-</ul>
-<p dir="ltr">The following element are five descriptors concatenated one by one:</p>
-<ul>
-<li>Trajectory:    2x[trajectory length] (default 30 dimension)</li>
-<li>HOG:           8x[spatial cells]x[spatial cells]x[temporal cells] (default 96 dimension)</li>
-<li>HOF:           9x[spatial cells]x[spatial cells]x[temporal cells] (default 108 dimension)</li>
-<li>MBHx:          8x[spatial cells]x[spatial cells]x[temporal cells] (default 96 dimension)</li>
-<li>MBHy:          8x[spatial cells]x[spatial cells]x[temporal cells] (default 96 dimension)</li>
-</ul>
-<ol start="2">
-<li>
-<h3>Improved Dense Trajectories</h3>
-</li>
-</ol>
-<ul>
-<li>Explicit camera motion estimation</li>
-<li>Assumption: two consecutive frames are related by a homography.</li>
-<li>Match feature points between frames using SURF descriptors and dense optical flow</li>
-<li>Removing inconsistent matches due to humans: use a human detector to remove matches from human regions (computation expensive)</li>
-<li>Estimate a homography with RANSAC with these matches</li>
-</ul>
-<h3>References:</h3>
-<ol>
-<li>
-<div>H Wang, C Schmid, Action recognition with improved trajectories, ICCV 2013</div>
-</li>
-<li>
-<div>H Wang, A Kläser, C Schmid, CL Liu, Dense trajectories and motion boundary descriptors for action recognition, International Journal of Computer Vision, May 2013, Volume 103, Issue 1, pp 60-79</div>
-</li>
-</ol>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2013/10/20/parallel-mex-file-in-matlab">Parallelize mex file in Matlab</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2013-10-20</strong> with tags <a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>, <a href="/tags.html#parfor-ref" rel="nofollow">parfor</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>By default mex file cannot be executed in parallel in Matlab, which will be a major bottleneck for Matlab program. Fortunately, there is a way to execute loop operations in parallel -- <a href="http://www.mathworks.com/help/distcomp/parfor.html">parfor</a>. Matlab provides a good tutorial on parfor: <a href="http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html">Getting Started with parfor</a>.</p>
-<p>One tricky problem with parfor is dealing with reduction assignments, which means the value of some variables are updated by each iteration, such as assignment to an array/matrix indexed by loop index.  My suggestion is to separate the loop into two parts: one part deal with non-reduction assignment with <code>parfor</code>, and the other part do the reduction assignment with traditional <code>for</code> loop.</p>
-<p>If you cannot save all the <code>parfor</code>-assigned variables in memory, then you must save them into mat file and load them in the next for-loop. In the <code>parfor</code>-loop, command "<code>save</code>" cannot  be used directly because it violates the transparency(God knows what does it mean!). As an alternative, you can create a wrapper function of <code>save</code> and call that function instead. FOr example:</p>
-<p>Save the following as "parsave.m":<br />
-<code>function parsave(fname, x,y)<br />
-save(fname, 'x', 'y')<br />
-end<br />
-</code><br />
-Then run it with:<br />
-<code>parfor ii = 1:4<br />
-x = rand(10,10);<br />
-y = ones(1,3);<br />
-parsave(sprintf('output%d.mat', ii), x, y);<br />
-end</code></p>
-<p>References:</p>
-<ol>
-<li>parfor manual: http://www.mathworks.com/help/distcomp/parfor.html</li>
-<li>Getting Started with parfor: http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html</li>
-<li>How do I use SAVE with a PARFOR loop: http://www.mathworks.com/support/solutions/en/data/1-D8103H/?product=DM&amp;solution=1-D8103H</li>
-</ol>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1595,6 +1679,9 @@ end</code></p>
             <li><a href="/page20">20</a></li>
             
         
+            <li><a href="/page21">21</a></li>
+            
+        
     
 
     
@@ -1640,11 +1727,11 @@ end</code></p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
     
         <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
     
@@ -1658,17 +1745,13 @@ end</code></p>
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
     
-        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
-    
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
     
         <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
-    
-        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
     
         <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
     
@@ -1702,13 +1785,13 @@ end</code></p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
     
-        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
         <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
     
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
     
         <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
     
@@ -1723,8 +1806,6 @@ end</code></p>
         <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1758,7 +1839,7 @@ end</code></p>
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -1766,7 +1847,7 @@ end</code></p>
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     
@@ -1782,6 +1863,10 @@ end</code></p>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
+    
   
 
 
@@ -1796,6 +1881,12 @@ end</code></p>
         
         <h3>Recent Posts</h3>
         <ul>
+        
+          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
+            Coin Change Problem</a></li>
+        
+          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
+            Text Justification</a></li>
         
           <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
             Sort Colors</a></li>
@@ -1820,12 +1911,6 @@ end</code></p>
         
           <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
             BACI Simple Install and Compile Guide</a></li>
-        
-          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
-            Dense Trajectory Notes</a></li>
-        
-          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
-            Parallelize mex file in Matlab</a></li>
         
         </ul>
         

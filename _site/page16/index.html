@@ -1,9 +1,6 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -23,6 +20,13 @@
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
   -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Config({
+    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  	});
+  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -74,6 +78,128 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2008/12/24/get-ip-addr-from-host-name">由服务器名字(Host name)获得IP地址</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-12-24</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+    一下代码可以根据host name获得IP地址：
+<div>
+<div class="highlighter">
+<ol start="1" class="highlighter-c">
+<li><span class="preprocessor">#include &lt;stdio.h&gt;</span><span></span></li>
+<li class="alt"><span></span><span class="preprocessor">#include &lt;netdb.h&gt;</span><span></span></li>
+<li><span></span><span class="preprocessor">#include &lt;sys/socket.h&gt;</span><span></span></li>
+<li class="alt"><span></span><span class="preprocessor">#include &lt;arpa/inet.h&gt;</span><span></span></li>
+<li><span></span><span class="preprocessor">#include &lt;netinet/in.h&gt;</span><span></span></li>
+<li class="alt"><span></span></li>
+<li><span></span><span class="keyword">int</span><span> main(</span><span class="keyword">int</span><span> argc,</span><span class="keyword">char</span><span> **argv)</span></li>
+<li class="alt"><span>{</span></li>
+<li><span>    </span><span class="keyword">struct</span><span> hostent *hptr;</span></li>
+<li class="alt"><span>    </span><span class="keyword">struct</span><span> in_addr *in_addr_ptr;</span></li>
+<li><span>    </span><span class="keyword">char</span><span> *ptr,**pptr,**listptr,*addr_ptr;</span></li>
+<li class="alt"><span>    </span><span class="keyword">char</span><span> str[32];</span></li>
+<li><span>    </span><span class="comment">/*Host name--the first param*/</span><span></span></li>
+<li class="alt"><span>    ptr=argv[1];</span></li>
+<li><span>    </span><span class="keyword">if</span><span>((hptr=gethostbyname(ptr))==NULL)</span></li>
+<li class="alt"><span>    {</span></li>
+<li><span>        printf(</span><span class="string">"gethostbyname error for host: %s/n"</span><span>,ptr);</span></li>
+<li class="alt"><span>        </span><span class="keyword">return</span><span> -1;</span></li>
+<li><span>    }</span></li>
+<li class="alt"><span>    </span><span class="comment">/*print official host name*/</span><span></span></li>
+<li><span>    printf(</span><span class="string">"offial host name: %s/n"</span><span>,hptr-&gt;h_name);</span></li>
+<li class="alt"><span>    </span><span class="comment">/*print all the aliases of the host*/</span><span></span></li>
+<li><span>    </span><span class="keyword">for</span><span>(pptr=hptr-&gt;h_aliases;*pptr!=NULL;pptr++)</span></li>
+<li class="alt"><span>        printf(</span><span class="string">"alias:%s/n"</span><span>,*pptr);</span></li>
+<li><span></span></li>
+<li class="alt"><span>    </span><span class="comment">/*print IP address*/</span><span></span></li>
+<li><span>    </span><span class="keyword">switch</span><span> (hptr-&gt;h_addrtype) {</span></li>
+<li class="alt"><span>    </span><span class="keyword">case</span><span> AF_INET:</span></li>
+<li><span>        listptr = hptr-&gt;h_addr_list;</span></li>
+<li class="alt"><span>        </span><span class="keyword">if</span><span> ( (in_addr_ptr = (</span><span class="keyword">struct</span><span> in_addr *) *listptr) != NULL) {</span></li>
+<li><span></span></li>
+<li class="alt"><span>            addr_ptr = inet_ntoa(*in_addr_ptr);</span></li>
+<li><span>            </span></li>
+<li class="alt"><span>            printf(</span><span class="string">"address: %s/n"</span><span>,addr_ptr);</span></li>
+<li><span>        </span></li>
+<li class="alt"><span>            </span><span class="keyword">return</span><span>(0);</span></li>
+<li><span>        }</span></li>
+<li class="alt"><span>        </span><span class="keyword">else</span><span> {</span></li>
+<li><span>            </span><span class="keyword">return</span><span>(NULL);</span></li>
+<li class="alt"><span>        }</span></li>
+<li><span></span></li>
+<li class="alt"><span>    </span><span class="keyword">default</span><span>:</span></li>
+<li><span>        printf(</span><span class="string">"unknown address type %d/n"</span><span>,hptr-&gt;h_addrtype);</span></li>
+<li class="alt"><span></span></li>
+<li><span>        </span><span class="keyword">return</span><span>(NULL);</span></li>
+<li class="alt"><span>    }</span></li>
+<li><span></span></li>
+<li class="alt"><span>    </span><span class="keyword">return</span><span> 0;</span></li>
+<li><span>}</span></li>
+<li class="alt"><span></span></li>
+<li><span></span></li>
+</ol>
+</div>
+<p><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:verdana;line-height:18px;font-size:10pt;"></span>
+<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><font size="4">struct hostent *gethostbyname(const char *name);<br />这个函数的传入值是域名或者主机名，例如"</font><a href="http://www.google.com%22%2C%22wpc/" style="text-decoration:none;color:rgb(51,102,153);"><font size="4">www.google.com","wpc</font></a><font size="4">"等等。<br />传出值，是一个hostent的结构（如下）。如果函数调用失败，将返回NULL。</font></p>
+<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><font size="4">struct hostent {<br />  char  *h_name;<br />  char  **h_aliases;<br />  int   h_addrtype;<br />  int   h_length;<br />  char  **h_addr_list;<br />  };<br />解释一下这个结构：<br />其中，<br />  char *h_name 表示的是主机的规范名。例如</font><a href="http://www.google.com/" style="text-decoration:none;color:rgb(51,102,153);"><font size="4">www.google.com</font></a><font size="4">的规范名其实是</font><a href="http://www.l.google.com/" style="text-decoration:none;color:rgb(51,102,153);"><font size="4">www.l.google.com</font></a><font size="4">。<br />  char   **h_aliases 表示的是主机的别名。</font><a href="http://www.google.com/" style="text-decoration:none;color:rgb(51,102,153);"><font size="4">www.google.com</font></a><font size="4">就是google他自己的别名。有的时候，有的主机可能有好几个别名，这些，其实都是为了易于用户记忆而为自己的网站多取的名字。<br />  int   h_addrtype 表示的是主机ip地址的类型，到底是ipv4(AF_INET)，还是ipv6(AF_INET6)<br />  int   h_length 表示的是主机ip地址的长度<br />  int   **h_addr_lisst 表示的是主机的ip地址，注意，这个是以网络字节序存储的。千万不要直接用printf带%s参数来打这个东西，会有问题的哇。所以到真正需要打印出这个IP的话，需要调用inet_ntop()。</font></p>
+<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><span class="Apple-style-span" style="font-size:18px;"><span class="Apple-style-span" style="color:rgb(128,128,128);font-family:新宋体;font-size:12px;line-height:14px;">#include &lt;arpa/inet.h&gt;</span><br /></span></p>
+<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><font size="4">const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt) ：<br />这个函数，是将类型为af的网络地址结构src，转换成主机序的字符串形式，存放在长度为cnt的字符串中。<br />这个函数，其实就是返回指向dst的一个指针。如果函数调用错误，返回值是NULL。</font></p>
+<p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><span class="Apple-style-span" style="font-size:18px;">编译时要加上-lsocket选项，否则编译器将会报出invalid reference的错误。如： gcc -o name2addr name2addr.c -lsocket.</span></p>
+</div>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/12/04/return-ulong-pointer">return (((ulong*)(x))[-1])</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-12-04</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+<span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">看到一个函数，定义如下： </span>
+<div>
+<div class="highlighter">
+<ol start="1" class="highlighter-c">
+<li><span class="preprocessor">#include "u.h"</span><span></span></li>
+<li class="alt"><span></span><span class="preprocessor">#include "lib.h"</span><span></span></li>
+<li><span></span></li>
+<li class="alt"><span></span><span class="keyword">ulong</span><span></span></li>
+<li><span>getcallerpc(</span><span class="keyword">void</span><span> *x)</span></li>
+<li class="alt"><span>{</span></li>
+<li><span>    </span><span class="keyword">return</span><span> (((</span><span class="keyword">ulong</span><span>*)(x))[-1]);</span></li>
+<li class="alt"><span>}</span></li>
+<li><span></span></li>
+<li class="alt"><span></span></li>
+</ol>
+</div>
+<p><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">((ulong*)(x))  将void* 的x针针强制转换为 ulong* </p>
+<p>此时可以理解为x指向一个ulong类型的数组 <br />[-1] : 表示去x前面的那个元素 </p>
+<p>上面的代码等价与 </p>
+<p>ulong px=（ulong*）x <br />--px <br />return (*px) </p>
+<p>一般情况下不会用 下表-1,估计此处有什么特殊用法，要看实际是怎么用的了.<br /></span></div>
+<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;"><br /></span></div>
+<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">------------------------------------------------------------------------</span></div>
+<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;"><br /></span></div>
+<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">ulong getcallerpc(void *x) <br />{ <br />    return (((ulong*)(x))[-1]); <br />} </p>
+<p>在((ulong*)(x))[-1] 中： <br />x是一个指针 <br />（ulong*)(x)：将x转换为ulong型的指针，我们假设（ulong*)(x)转换后指针为y，则 <br />((ulong*)(x))[-1]为：y[-1]，而y[-1]就指向y首地址前面的那个地址。这种情况只有 <br />当你自己知道前面那个地址是什么了，也就是楼上所说的特殊用法了。~_~<br /></span></div>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2008/12/03/null-pointer">NULL Pointer Bugs</a></h2>
         <p>
           Posted by <strong>Bo Yang</strong> at <strong>2008-12-03</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
@@ -117,7 +243,7 @@
       <div class="mainbody">
         <h2><a href="/2008/12/01/kshell-note-5">Korn Shell Notes(V)</a></h2>
         <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-12-01</strong> with tags <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>, <a href="/tags.html#Linux-ref" rel="nofollow">Linux</a>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-12-01</strong> with tags <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
         </p>
         
         <div class="post_at_index thepost">
@@ -295,7 +421,7 @@
       <div class="mainbody">
         <h2><a href="/2008/11/30/kshell-note-4">Korn Shell Notes(IV)</a></h2>
         <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-11-30</strong> with tags <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>, <a href="/tags.html#Linux-ref" rel="nofollow">Linux</a>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-11-30</strong> with tags <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
         </p>
         
         <div class="post_at_index thepost">
@@ -1526,517 +1652,6 @@ these events occurs. It is invoked as:<br />
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/10/27/tcl-tk-note-1">Tcl/Tk Notes (1)</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-10-27</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <div>
-<div style="text-align:center;">
-<h1>
-      Tcl/Tk Notes<br />
-    </h1>
-</div>
-<p></p>
-<div></p>
-<h2>
-      Part I TCL Overview<br />
-    </h2>
-<h3>
-      1 Everything Is a String<br />
-    </h3>
-<p>    &nbsp;&nbsp; &nbsp;In Tcl, evrything is a string, and you have to explicitly ask for evaluation of variables and nested commands.</p>
-<h3>
-      2 Substitution<br />
-</h3>
-<ul>
-<li>
-        Variable
-      </li>
-</ul>
-</div>
-<div>
-    &nbsp;&nbsp;&nbsp; The use of dollar sign($) is one kind of substitution. Variables can be assigned values by <span style="font-family:Courier New;">set</span> command.</p>
-<ul>
-<li>
-        Command Substitution
-</li>
-</ul>
-</div>
-<div>
-&nbsp;&nbsp;&nbsp; A nested command is delimited by square brackets, [ and ]. The Tcl<br />
-takes everything between the brackets and evaluates it as a command. It<br />
-Reqrites the outer command by replacing the square brackets and<br />
-everything between them with the result of nested command.
-</div>
-<p></p>
-<ul>
-<li>
-      Math Expression
-    </li>
-</ul>
-</div>
-<div>
-  &nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">expr </span>command is used to evaluate math expressions. The Tcl interpreter treats <span style="font-family:Courier New;">expr <span style="font-family:Verdana;">just like any other command, and it leaves the expression parsing up to the <span style="font-family:Courier New;">expr </span>implementation.</span></span></p>
-</div>
-<div>
-<ul>
-<li>
-      Backslash Substitution
-    </li>
-</ul>
-<p>  &nbsp;&nbsp;&nbsp; Backslash(/) is used to quote characters that have special meaning to the interpreter. <br />&nbsp;&nbsp; &nbsp;You can also specify characters that are hard to type directly by giving their octal or hexadecimal value. <br />&nbsp;&nbsp;<br />
-&nbsp;Another common use of backslashes is to continue long commands on<br />
-multiple lines. A backslash as the last character in a line is<br />
-converted into a space.<br />
-<h3>3 Double Quotes vs. Curly Braces</h3>
-<p>&nbsp;&nbsp;&nbsp;<br />
-Double quotes, like braces, are used to group words together. The<br />
-difference between double quotes and curly braces is that quotes allow<br />
-substitutions to occur in the group, while curly braces prevent<br />
-substitutions.
-<div id="o6jd" style="padding:1em 0;text-align:left;"><a target="_blank" href="http://docs.google.com/File?id=dd6nw3mt_112fm5tm2gc_b"><img style="width:666px;height:166px;" src="http://docs.google.com/File?id=dd6nw3mt_112fm5tm2gc_b" /></a><br />&nbsp;&nbsp;&nbsp;<br />
-In practice, grouping with curly braces is used when substitutions on<br />
-the argument need to be delayed until a later time( or never done at<br />
-all). Examples include contrl flow statements and procedure<br />
-declararions. Double quotes are usefulin simple cases like the <span style="font-family:Courier New;">puts</span> command.</div>
-<p>&nbsp;&nbsp;&nbsp; Another common use of quotes is with the <span style="font-family:Courier New;">format </span>command<br />
-that is similar to C printf function. The only way to effectively group<br />
-special characters in format command into a single argument is with<br />
-quotes.<br />&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">e.g. puts [format "Item: %s/t%5.3f" $name $value]</span><br />
-<h3>4 Procedures</h3>
-<p>&nbsp;&nbsp;&nbsp; Tcl uses the <span style="font-family:Courier New;">proc</span> command to define procedures. The syntax is : <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; proc <i>name arglist body</i><br />&nbsp;&nbsp;&nbsp; <span style="color:rgb(255,0,0);">The <span style="font-family:Courier New;">return</span><br />
-command in Tcl procedure is optional because the interpreter will<br />
-return the value of the last command in the body as the value of the<br />
-procedure.</span><br />
-<h3>5 A While Loop Example </h3>
-<div id="azjc" style="padding:1em 0;text-align:left;"><img style="width:584px;height:205px;" src="http://docs.google.com/File?id=dd6nw3mt_113d4kxm7gt_b" /><br />&nbsp;&nbsp; &nbsp;The loop around boolean expression <span style="font-family:Courier New;">$i&lt;=10</span><br />
-is crucial, because it delays substitution until while command<br />
-implementation tests the expression. The following expression is an<br />
-infinite loop:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set i; while $i&lt;=10 {incr i}</span><br />&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp; &nbsp;The Tcl interpreter will substitute for $i before while is called, so while gets a constant expression <span style="font-family:Courier New;">1&lt;=10</span><br />
-that will always be ture.You can avoid this kind of errors by adopting<br />
-a consistent coding style that always groups expressions and command<br />
-bodies with curly braces.<br />&nbsp;&nbsp;&nbsp; The command in the example uses <span style="font-family:Courier New;">set</span> with a single argument. When used in this way the <span style="font-family:Courier New;">set</span> command returns the current value of the named variable.</p>
-<h3>6 Grouping And Command Substitution</h3>
-<p><span>&nbsp;&nbsp;&nbsp; </span>Grouping<br />
-decisions are made before substitutions are performed. This means that<br />
-the values of variables or command results do not affect grouping.<br /><span>&nbsp;&nbsp;&nbsp; </span>A<br />
-single round if substitutions is performed before command invocation.<br />
-That is, the result of a substitution is not interpreted a second time.<br />
-This rule is important if you have a variable value or a command result<br />
-that contains special characters such as spaces, dollar-signs, square<br />
-brackets or braces. Because only a single round of substitution is<br />
-done, you don't have to worry about special characters in values<br />
-causing extra substitutions.</p>
-<h3>7 Comments</h3>
-<p><span>&nbsp;&nbsp;&nbsp; </span>Tcl<br />
-uses # for comments. Unlike many languages, the # character must occur<br />
-at the begining of a command. An easy trick to append a comment to the<br />
-end of a command is to proceed the # with a semicolon in order to<br />
-terminate the previous command.<br /><span>&nbsp;&nbsp;&nbsp; </span>A backslash(/)<br />
-continues a comment line onto the next line of the script. In addition,<br />
-a semi-colon inside a comment is not significant. only a newline<br />
-terminates comments.<br />
-<h3>8 Reference</h3>
-<ul>
-<li>backslash Sequences</li>
-</ul>
-</div>
-</div>
-<div>
-<div id="z8dm" style="padding:1em 0;text-align:left;"><img style="width:725px;height:491px;" src="http://docs.google.com/File?id=dd6nw3mt_114hkq332ct_b" /></div>
-<p>
-<ul>
-<li>Arithmetic Operators</li>
-</ul>
-</div>
-<div>
-<div id="t0kt" style="padding:1em 0;text-align:left;"><img style="width:713px;height:448px;" src="http://docs.google.com/File?id=dd6nw3mt_115cx6tf2gk_b" /></div>
-<ul>
-<li>Built-in Math Function</li>
-</ul>
-</div>
-<div>
-<div id="wkim" style="padding:1em 0;text-align:left;"><img style="width:584px;height:625px;" src="http://docs.google.com/File?id=dd6nw3mt_116gqq38zfc_b" /></div>
-<ul>
-<li>Core Tcl Commands</li>
-</ul>
-</div>
-<div>
-<div id="dwzb" style="padding:1em 0;text-align:left;"><img style="width:584px;height:94px;" src="http://docs.google.com/File?id=dd6nw3mt_117fsn9v3dj_b" />
-<div id="f3wa" style="padding:1em 0;text-align:left;"><img style="width:561px;height:804px;" src="http://docs.google.com/File?id=dd6nw3mt_118vb3288fz_b" /></div>
-<div id="vr6z" style="padding:1em 0;text-align:left;"><img style="width:561px;height:804px;" src="http://docs.google.com/File?id=dd6nw3mt_119vq4tt6fx_b" /></p>
-<ul>
-<li>Predefined Variables
-</li>
-</ul>
-</div>
-<div id="gq9h" style="padding:1em 0;text-align:left;"><img style="width:562px;height:376px;" src="http://docs.google.com/File?id=dd6nw3mt_120c9tpw3fv_b" /></div>
-<p></div>
-<p>
-</div>
-<p>
-<div>
-<div>
-<div><span style="background-color:rgb(255,255,0);"></span></div>
-<p></div>
-<p></div>
-<p></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/10/21/unix-workshop-note">UNIX Workshop Notes</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-10-21</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&lt;style&gt;<br />
-st1/:*{behavior:url(#ieooui) }<br />
-&lt;/style&gt;<br />
-&lt;![endif]--&gt;</p>
-<h1 style="text-align:center;" align="center"><i><span style='font-family:"Times New Roman";'>UNIX Workshop</span></i> Notes</h1>
-<h3>1 <a href="http://hebb.cis.uoguelph.ca/%7Edave/27320/new/unixphil.html">The<br />
-UNIX Philosophy</a></h3>
-<ul style="margin-top:0;" type="disc">
-<li class="MsoNormal">small<br />
-     is beautiful </li>
-<li class="MsoNormal">make<br />
-     each program do one thing well </li>
-<li class="MsoNormal">build<br />
-     a prototype as soon as possible </li>
-<li class="MsoNormal">choose<br />
-     portability over efficiency </li>
-<li class="MsoNormal">store<br />
-     numerical data in flat files </li>
-<li class="MsoNormal">use<br />
-     software leverage to your advantage </li>
-<li class="MsoNormal">use<br />
-     shell scripts to increase leverage and portability </li>
-<li class="MsoNormal">avoid<br />
-     captive user interfaces </li>
-<li class="MsoNormal">make<br />
-     every program a filter</li>
-</ul>
-<p class="MsoNormal">&nbsp;</p>
-<p class="MsoNormal">The Ten Lesser Tenets</p>
-<ul style="margin-top:0;" type="disc">
-<li class="MsoNormal">allow<br />
-     the user to tailor the environment </li>
-<li class="MsoNormal">make<br />
-     operating system kernels small and lightweight </li>
-<li class="MsoNormal">use<br />
-     lower case and keep it short </li>
-<li class="MsoNormal">save<br />
-     trees </li>
-<li class="MsoNormal">silence<br />
-     is golden </li>
-<li class="MsoNormal">think<br />
-     parallel </li>
-<li class="MsoNormal">the<br />
-     sum of the parts if greater than the whole </li>
-<li class="MsoNormal">look<br />
-     for the ninety percent solution </li>
-<li class="MsoNormal">worse<br />
-     is better </li>
-<li class="MsoNormal">think<br />
-     hierarchically</li>
-</ul>
-<p class="MsoNormal">&nbsp;</p>
-<h3>2 /etc/passwd</h3>
-<p class="MsoNormal" style="text-indent:10.5pt;">The /etc/passwd file determines<br />
-which shell takes effect during your interactive UNIX session.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">/etc/passwd also contains account<br />
-info, which includes UID and GID.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<h3>3 init process</h3>
-<p class="MsoNormal" style="text-indent:10.5pt;">Each process can have one or more<br />
-child process. If you kill the parent of a child process, it automatically<br />
-becomes the child of init.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b><i>init</i></b> is the last process<br />
-created at boot time. It always has a process ID (PID) of 1 (i.e. on all<br />
-Unixes). init is responsible for starting all subsequent processes.<br />
-Consequently, it is the parent (in other words, mother of all processes!) of<br />
-all (non-dummy) Unix processes.</p>
-<p class="MsoNormal">&nbsp;</p>
-<h3>4 Address Space</h3>
-<p class="MsoNormal" style="text-indent:10.5pt;">For each new process created, the<br />
-kernel sets up an address space in memory. This address space consists of the<br />
-following logical segments:</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">•</span> text - contains the program's instructions.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">•</span> data - contains initialized program variables.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">•</span> bss - contains uninitialized program variables.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">•</span> stack - a dynamically growable segment, it contains<br />
-variables allocated locally</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">and parameters passed to<br />
-functions in the program.</p>
-<p class="MsoNormal">&nbsp;</p>
-<h3>5 Process</h3>
-<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>1)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->Context of Process &amp; Context Switching</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">The <b>context of a process</b> is essentially a snapshot of its current<br />
-runtime environment, including its address space, stack space, etc. At any<br />
-given time, a process can be in user-mode, kernel-mode, sleeping, waiting on<br />
-I/O, and so on. The process scheduling subsystem within the kernel uses a time<br />
-slice of typically 20ms to rotate among currently running processes. Each<br />
-process is given its share of the CPU for 20ms, then left to sleep until its turn<br />
-again at the CPU. This process of moving processes in and out of the CPU is<br />
-called <b>context switching</b>. The kernel<br />
-makes the operating system appear to be multi-tasking (i.e. running processes<br />
-concurrently) via the use of efficient context-switching.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>2)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->Process status:</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">R - runable, currently on the run<br />
-queue</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">S - currently sleeping (waiting<br />
-on a pipe, completion of I/O, terminal input, memory)</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">T - currently stopped</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">Z - defunct or zombie (a process<br />
-with no swappable image but a structure in memory)</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>3)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->Signal:</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">SIGHUP<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>1<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Hangup</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">SIGINT<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>2<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Interrupt</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">SIGKILL<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>9<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Kill (cannot be<br />
-caught or ignore)</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">SIGTERM<span>&nbsp;&nbsp;&nbsp; </span>15<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Terminate<br />
-(termination signal from SIGKILL)</p>
-<p class="MsoNormal">&nbsp;</p>
-<h3>6 Boot and Shutdown UNIX</h3>
-<p class="MsoNormal" style="margin-left:10.5pt;">(1) Boot System</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">Boot scripts are normal shell<br />
-scripts. The boot scripts will execute by “init” process through sh. Boot<br />
-scripts’ task include set computer name, set timezone, check hard disk with<br />
-fsck, install file system, configure network interface, start daemon process<br />
-and network services, start log and disk quota etc.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">BSD doesn’t have run level. ATT<br />
-System V has run level define in <b>/etc/inittab</b>.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">(2) Shutdown System</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]--><span>&nbsp;</span>Poweroff<br />
-( !!! may damage system )</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]--><span>&nbsp;</span>Shutdown<br />
-( good way )</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]--><span>&nbsp;</span>halt (<br />
-will change system to single user mode )</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]--><span>&nbsp;</span>reboot</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]--><span>&nbsp;</span>init or<br />
-telinit ( change the run level )</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<h3>7 su V.S. su -</h3>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">”</span>su &lt;account&gt;” only change to another user’s<br />
-account. “su – &lt;account&gt;“ will excute</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">user’s profile while changing.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">“</span>su” or “su –“ without any account parameter means<br />
-you hope to change to</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">superuser(root).</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<h3>8 Unix Environment </h3>
-<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>1)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->setup user environment in ksh</p>
-<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->$HOME/.profile</p>
-<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->shell variables: varname=value</p>
-<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->unset variables</p>
-<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->aliases</p>
-<p class="MsoNormal" style="margin-left:64.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->options</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">Any variable can become an<br />
-environment variable with the command<b>:<br />
-export <i>varnames</i></b>.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">environment file will told sub<br />
-process other variables, options, aliases that shell wish to told it. Environment<br />
-file name can be any name, as long as you set the environment variable ENV to<br />
-the file's name.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="color:red;">Alias</span><br />
-is a synonym for a command or command string. You define an alias by entering<br />
-(or adding to your .profile) a line with the following form: <b>alias <i>new</i>=<i>original</i></b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="color:red;">Options</span><br />
-let you change the shell's behavior. The basic commands that relate to options<br />
-are <b>set -o <i>optionnames</i></b> and <b>set +o <i>optionnames</i></b>, where <b><i>optionnames</i></b><br />
-is a list of option names separated by blanks. the <b>-</b> turns the named option on, while the <b>+</b> turns it off.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="margin-left:28.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>2)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->Built-in Variables</p>
-<ul style="margin-top:0;" type="disc">
-<li class="MsoNormal">PS1,<br />
-     PS2, PS3 , PS4</li>
-<li class="MsoNormal">TERM</li>
-<li class="MsoNormal">PATH,<br />
-     MANPATH</li>
-<li class="MsoNormal">HOME</li>
-<li class="MsoNormal">PWD</li>
-<li class="MsoNormal">HISTFILE</li>
-<li class="MsoNormal">EDITOR</li>
-<li class="MsoNormal">VISUAL</li>
-</ul>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<h3>9 Common Control Characters</h3>
-<p class="MsoNormal" style="margin-left:36pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>1)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->Erase Character</p>
-<p class="MsoNormal" style="margin-left:72pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-size:10.5pt;font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]--><span style="font-size:10.5pt;font-family:Arial;">[BACKSPACE]</span></p>
-<p class="MsoNormal" style="margin-left:72pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-size:10.5pt;font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]--><span style="font-size:9.5pt;font-family:Symbol;"><span>&nbsp;</span></span><span style="font-size:10.5pt;font-family:Arial;">[DELETE], [DEL] key</span></p>
-<p class="MsoNormal" style="margin-left:72pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]--><span style="font-size:9.5pt;font-family:Symbol;"><span>&nbsp;</span></span><span style="font-size:10.5pt;font-family:Arial;">[CTRL-H]</span></p>
-<p class="MsoNormal" style="margin-left:36pt;text-indent:-18pt;"><!--[if !supportLists]--><span><span>2)<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->Other Control Characters</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->[CTRL-U]<span>&nbsp;&nbsp;&nbsp; </span>Erases<br />
-the whole input line; you can start over.</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->[CTRL-S]<span>&nbsp;&nbsp;&nbsp;&nbsp; </span>Pauses<br />
-output from a program that is writing to the screen.</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->[CTRL-Q]<span>&nbsp;&nbsp;&nbsp; </span>Restarts<br />
-output after a pause by [CTRL-S].</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->[CTRL-D]<span>&nbsp;&nbsp;&nbsp; </span>Used<br />
-to signal end-of-input for some programs.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<h3>10 File System Inside</h3>
-<p class="MsoNormal" style="text-align:center;text-indent:10.5pt;" align="center"><!--[if !vml]--><img src="/DOCUME%7E1/bonny/LOCALS%7E1/Temp/msohtml1/01/clip_image002.gif" width="519" border="0" height="193" /><!--[endif]--></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>super</b> block describes the state of the file system: the total size<br />
-of the partition, the block size, pointers to a list of free blocks, the inode<br />
-number of the root directory, magic number, etc.</p>
-<p class="MsoNormal" style="text-align:center;text-indent:10.5pt;" align="center"><!--[if !vml]--><img src="/DOCUME%7E1/bonny/LOCALS%7E1/Temp/msohtml1/01/clip_image004.gif" width="177" border="0" height="151" /><!--[endif]--></p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<h3>11 I/O Redirection</h3>
-<p class="MsoNormal" style="text-align:center;text-indent:10.5pt;" align="center"><!--[if !vml]--><img src="/DOCUME%7E1/bonny/LOCALS%7E1/Temp/msohtml1/01/clip_image006.gif" width="576" border="0" height="394" /><!--[endif]--></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>xargs</b> <i>[options] [command]</i></p>
-<p class="MsoNormal" style="text-indent:10.5pt;">Execute command (with any initial<br />
-arguments), but read remaining arguments from standard input instead of<br />
-specifying them directly. xargs passes these arguments in several bundles to<br />
-command, allowing command to process more arguments than it could normally<br />
-handle at once. The arguments are typically a long list of filenames (generated<br />
-by ls or find, for example) that get passed to xargs via a pipe.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">Example:</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">grep for pattern in all files on<br />
-the home directory /home/foo:</p>
-<p class="MsoNormal" style="text-indent:36pt;"><i>find /home/foo -print | xargs grep pattern &gt; out &amp;</i></p>
-<h3>12 Search and Patterns</h3>
-<p class="MsoNormal" style="text-indent:10.5pt;">(1) Searching Commands</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->… find</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->… grep</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->… egrep</p>
-<p class="MsoNormal" style="margin-left:46.5pt;text-indent:-18pt;"><!--[if !supportLists]--><span style="font-family:Symbol;"><span>·<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-</span></span></span><!--[endif]-->… fgrep</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">①</span><b> find</b> <i>pathname(s)<br />
-condition(s)</i></p>
-<p class="MsoNormal" style="text-indent:10.5pt;">find descends the directory tree<br />
-beginning at each pathname and locates files that meet the specified<br />
-conditions. At least one pathname and one condition must be specified. The most<br />
-useful conditions include -print (which must be explicitly given to display any<br />
-output), -name and -type (for general use), -exec and -size (for advanced<br />
-users), and -mtime and -user (for administrators). Examples:</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><i>find $HOME –print</i></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><i>find $HOME –name ‘core’ –exec rm –rf {} /;</i></p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><span style="font-family:宋体;" lang="ZH-CN">②</span> <b>grep</b> <i>[options] regexp [files]</i></p>
-<p class="MsoNormal" style="text-indent:10.5pt;">Search one or more files for<br />
-lines that match a regular expression regexp. Examples:</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">List the number of users who use<br />
-the korn shell:</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><i>grep -c /bin/ksh /etc/passwd</i></p>
-<p class="MsoNormal" style="text-indent:10.5pt;">List header files that have at<br />
-least one #include directive:</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><i>grep -l '^#include' /usr/include/*</i></p>
-<p class="MsoNormal" style="text-indent:10.5pt;">List files that don't contain<br />
-pattern:</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><i>grep -c pattern files | grep :0</i></p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">(2) Patterns (Regular Expressions<br />
-)</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">A regular expression describes a <b>pattern<br />
-</b>or a particular sequence of characters, although it does not necessarily<br />
-specify a single exact sequence. Pattern is composed of mixed sequence of<br />
-characters and <b>metacharacters</b>.</p>
-<p class="MsoNormal" style="text-align:center;text-indent:10.5pt;" align="center"><!--[if !vml]--><img src="/DOCUME%7E1/bonny/LOCALS%7E1/Temp/msohtml1/01/clip_image008.gif" width="483" border="0" height="454" /><!--[endif]--></p>
-<h3>13 UNIX Power Tools</h3>
-<p class="MsoNormal" style="text-indent:10.5pt;">(1) Backup &amp; Compression</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>tar</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>cpio</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>dd</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>compress</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>uncompress</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>unzip</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>gzip/gunzip/zcat</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>bzip2/bzcat</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>filename suffix</b></p>
-<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .tar</p>
-<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .Z</p>
-<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .gz</p>
-<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .tar.Z</p>
-<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .tar.gz</p>
-<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .zip</p>
-<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">. .bz; .tar.bz</p>
-<p class="MsoNormal" style="margin-left:10.55pt;text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">(2) Text Processing</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>cut<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Select columns for display.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>join<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Merge different columns into a database.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>paste<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Merge columns or switch order.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>sort<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Sort or merge files.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>tr<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Translate (redefine) characters.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>uniq<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Find repeated or unique lines in a file.</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>sed<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Stream editor, edit one or more files without user<br />
-interaction</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>awk<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b>Use the pattern-matching program to modify the<br />
-specified files</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">(3) Job Control</p>
-<p class="MsoNormal" style="text-indent:36pt;">jobs</p>
-<p class="MsoNormal" style="text-indent:36pt;">fg</p>
-<p class="MsoNormal" style="text-indent:36pt;">bg</p>
-<p class="MsoNormal" style="text-indent:36pt;">ps</p>
-<p class="MsoNormal" style="text-indent:36pt;">kill</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">(4) Communication and network<br />
-utilities</p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>ftp</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>rsh/remsh</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>$HOME/.rhosts</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>rup</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>mailx</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>$HOME/.forward</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>ping</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>netstat</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;"><b>ifconfig</b></p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-<p class="MsoNormal" style="text-indent:10.5pt;">&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -2112,6 +1727,9 @@ utilities</p>
             <li><a href="/page20">20</a></li>
             
         
+            <li><a href="/page21">21</a></li>
+            
+        
     
 
     
@@ -2157,11 +1775,11 @@ utilities</p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
     
         <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
     
@@ -2175,17 +1793,13 @@ utilities</p>
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
     
-        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
-    
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
     
         <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
-    
-        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
     
         <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
     
@@ -2219,13 +1833,13 @@ utilities</p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
     
-        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
         <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
     
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
     
         <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
     
@@ -2240,8 +1854,6 @@ utilities</p>
         <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -2275,7 +1887,7 @@ utilities</p>
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -2283,7 +1895,7 @@ utilities</p>
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     
@@ -2299,6 +1911,10 @@ utilities</p>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
+    
   
 
 
@@ -2313,6 +1929,12 @@ utilities</p>
         
         <h3>Recent Posts</h3>
         <ul>
+        
+          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
+            Coin Change Problem</a></li>
+        
+          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
+            Text Justification</a></li>
         
           <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
             Sort Colors</a></li>
@@ -2337,12 +1959,6 @@ utilities</p>
         
           <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
             BACI Simple Install and Compile Guide</a></li>
-        
-          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
-            Dense Trajectory Notes</a></li>
-        
-          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
-            Parallelize mex file in Matlab</a></li>
         
         </ul>
         

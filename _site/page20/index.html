@@ -1,9 +1,6 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -23,6 +20,13 @@
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
   -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Config({
+    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  	});
+  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -71,6 +75,71 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/04/29/mfc-param">利用自定义消息处理函数的WPARAM或LPARAM参数传递指针</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-04-29</strong> with tags <a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+    有自定义消息：</p>
+<div style="border:.5pt solid windowtext;padding:4px 5.4pt;background:rgb(230,230,230) none repeat scroll 0 0;-moz-background-clip:-moz-initial;-moz-background-origin:-moz-initial;width:95%;">
+<div><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><span style="color:rgb(0,0,255);">#define</span><span style="color:rgb(0,0,0);">&nbsp;WM_TEST&nbsp;WM_USER+121</span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /></span></div>
+</div>
+<p>消息处理函数：</p>
+<div style="border:.5pt solid windowtext;padding:4px 5.4pt;background:rgb(230,230,230) none repeat scroll 0 0;-moz-background-clip:-moz-initial;-moz-background-origin:-moz-initial;width:95%;">
+<div><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><span style="color:rgb(0,0,0);">afx_msg&nbsp;</span><span style="color:rgb(0,0,255);">void</span><span style="color:rgb(0,0,0);">&nbsp;OnTest(WPARAM&nbsp;wParam,LPARAM&nbsp;lParam);</span></div>
+</div>
+<p>该消息是一个主线程向辅助线程发送数据的消息。<br />主线程中发送消息的代码：</p>
+<div style="border:.5pt solid windowtext;padding:4px 5.4pt;background:rgb(230,230,230) none repeat scroll 0 0;-moz-background-clip:-moz-initial;-moz-background-origin:-moz-initial;width:95%;">
+<div><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_param.pDoc</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">pDoc;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;m_param.pSpecAnlyz</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">m_pSpecAnlyz;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /></span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;&nbsp;&nbsp;&nbsp;CWinThread*&nbsp;pThread=AfxBeginThread(ThreadTest,static_cast&lt;LPVOID&gt;(&amp;m_param));</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;m_pTestThread</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">(CTestThread</span><span style="color:rgb(0,0,0);">*</span><span style="color:rgb(0,0,0);">)AfxBeginThread(RUNTIME_CLASS(CTestThread));<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;Sleep(</span><span style="color:rgb(0,0,0);">200</span><span style="color:rgb(0,0,0);">);<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;必须先把&amp;m_param转化为void*指针，然后才可以进一步强制转化为WPARAM</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;m_pTestThread</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">PostThreadMessageW(WM_TEST,(WPARAM)((</span><span style="color:rgb(0,0,255);">void</span><span style="color:rgb(0,0,0);">*</span><span style="color:rgb(0,0,0);">)</span><span style="color:rgb(0,0,0);">&amp;</span><span style="color:rgb(0,0,0);">m_param),</span><span style="color:rgb(0,0,0);">1</span><span style="color:rgb(0,0,0);">);</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;发送测试消息</span></div>
+</div>
+<p><span style="color:rgb(0,0,0);">&nbsp;m_param为自定义类型，其成员为指针变量，因此</span><span style="color:rgb(0,0,0);"> m_param无法强制转化为</span>WPARAM。但是<span style="color:rgb(0,0,0);">m_param的地址指针和</span><span style="color:rgb(0,0,0);"></span>WPARAM一样，都是4个字节，因此可以将<span style="color:rgb(0,0,0);">m_param的地址指针起那个只转换为</span>WPARAM。在VC.NET2005中，直接转换编译报错。考虑到void * 之后，先将<span style="color:rgb(0,0,0);">&amp;m_param转化为void*指针，然后才可以进一步强制转化为WPARAM</span><span style="color:rgb(0,128,0);"><span style="color:rgb(0,0,0);">。</p>
+<p>同样的，在</span></span><span style="color:rgb(0,0,0);">OnTest中，必须先将</span><span style="color:rgb(0,0,0);">wParam强制转换为</span>void * ，然后进一步转换为其他类型。</p>
+<p>PS：网上有高手指出，局部指针变量最好不要作为<span style="color:rgb(0,0,0);"></span><span style="color:rgb(0,0,0);">wParam或</span><span style="color:rgb(0,0,0);"> lParam传递，因为当消息响应时改变量</span>可能已经不在了。</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/04/25/emi-cbr-notes-1">EMC-CBR故障诊断研究（一）</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-04-25</strong> with tags <a href="/tags.html#notes-ref" rel="nofollow">notes</a>, <a href="/tags.html#CBR-ref" rel="nofollow">CBR</a>, <a href="/tags.html#fault diagnosis-ref" rel="nofollow">fault diagnosis</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p class="MsoNormal" style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 该系列文章致力于建立一个基于CBR（Case-Based Reasoning）的电磁兼容故障诊断系统模型。这篇文章将首先阐述用语义网络对故障进行表示。</p>
+<p class="MsoNormal"><strong><span lang="EN-US" style="color:red;"><br /></span></strong></p>
+<p class="MsoNormal"><strong><span lang="EN-US" style="color:red;">Case6</span></strong><strong><span style="font-family:宋体;color:red;">：</span><span lang="EN-US" style="color:red;"></span></strong></p>
+<p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:宋体;color:rgb(0,176,80);">【故障特征】：辐射骚扰测试，</span><span lang="EN-US" style="color:rgb(0,176,80);">120MHz</span><span style="font-family:宋体;color:rgb(0,176,80);">附近多个频点超标</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+<p class="MsoNormal"><span style="font-family:宋体;">合式公式表示为</span><span lang="EN-US">(</span><span style="font-family:宋体;">默认频率单位</span><span lang="EN-US">MHz)</span><span style="font-family:宋体;">：</span></p>
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US">Test_content(RE) </span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Exceed_standard(Range(120))</span></p>
+<p class="MsoNormal"><span lang="EN-US" style="color:rgb(0,176,80);"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:宋体;color:rgb(0,176,80);">【系统结构】：某模块安装在屏蔽底板上，模块与底板连接器处已经用导电胶条进行了屏蔽处理，并与底板的金属部分之间采用了&ldquo;</span><span lang="EN-US" style="color:rgb(0,176,80);">360</span><span style="font-family:宋体;color:rgb(0,176,80);">&deg;&rdquo;搭接；产品采用屏蔽结构；模块安装处辐射最大</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+<p align="center" style="text-align:center;" class="MsoNormal"><span lang="EN-US"><!--[if !vml]--><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/系统结构语义网络.JPG" alt="" /><!--[endif]--></span></p>
+<p align="left" style="text-align:left;" class="MsoNormal"><span style="font-family:宋体;">合式公式表示为</span></p>
+<p align="left" style="margin-left:21pt;text-align:left;" class="MsoNormal"><span lang="EN-US">Part_of(module_x, product)</span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Connect_to(module_x, connector)</span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Shielding(connector ,conductive_tape)</span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Main_problem(connector, RE)</span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Connect_to(bottom_plane, connector)</span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Part_of(bottom_plane, product)</span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Part_of(metal_area, bottom_plane)</span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Object(bond, metal_area)</span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Main_body(bond, module_x)</span><span style="font-family:宋体;">&and;</span><span lang="EN-US">Bond_type(bond, 360_degree)</span></p>
+<p align="left" style="text-align:left;" class="MsoNormal"><span lang="EN-US" style="color:rgb(0,176,80);">&nbsp;</span></p>
+<p class="MsoNormal"><span lang="EN-US" style="color:rgb(0,176,80);"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:宋体;color:rgb(0,176,80);">【原因分析】：产品采用了屏蔽结构，所以必定是缝隙辐射造成的超标；产品进行了屏蔽和搭接，还能测到很大的辐射，必定是因为导电胶条与模块屏蔽体或导电胶条与底板屏蔽体之间的&ldquo;</span><span lang="EN-US" style="color:rgb(0,176,80);">360</span><span style="font-family:宋体;color:rgb(0,176,80);">&deg;&rdquo;搭接不理想，存在阻抗不连续或结构意义上的缝隙。</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;color:rgb(0,176,80);">【解决措施】：</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+<p style="margin-left:21pt;text-indent:0;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US" style="color:rgb(0,176,80);"><span>（1）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;color:rgb(0,176,80);">用较厚的导电橡胶代替原来的导电橡胶，使导电橡胶的压缩量增加，便可以满足测试要求；</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+<p style="margin-left:21pt;text-indent:0;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US" style="color:rgb(0,176,80);"><span>（2）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;color:rgb(0,176,80);">将底板中的</span><span lang="EN-US" style="color:rgb(0,176,80);">PCB</span><span style="font-family:宋体;color:rgb(0,176,80);">模块垫高（也可达到同样效果）。</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+<p style="text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;color:rgb(0,176,80);">【相关结论】：</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+<p style="margin-left:21pt;text-indent:0;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US" style="color:rgb(0,176,80);"><span>（1）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;color:rgb(0,176,80);">使用导电橡胶、衬垫之类的屏蔽材料时，不但要保证接触面上的良好的导电性（接触面去除所有漆），而且还要保证一定的压缩量。</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+<p style="margin-left:21pt;text-indent:0;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US" style="color:rgb(0,176,80);"><span>（2）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;color:rgb(0,176,80);">缝隙也是天线。</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+<p style="margin-left:21pt;text-indent:0;" class="MsoNormal"><!--[if !supportLists]--><span lang="EN-US" style="color:rgb(0,176,80);"><span>（3）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><!--[endif]--><span style="font-family:宋体;color:rgb(0,176,80);">一个</span><span lang="EN-US" style="color:rgb(0,176,80);">EMC</span><span style="font-family:宋体;color:rgb(0,176,80);">观点上搭接良好的等电位系统是指：搭接点直接的电阻小于</span><span lang="EN-US" style="color:rgb(0,176,80);">2m</span><span style="font-family:宋体;color:rgb(0,176,80);">&Omega;，并且整个预期的等电位系统的任何两点之间的电阻小于<span lang="EN-US">25m</span>&Omega;。</span><span lang="EN-US" style="color:rgb(0,176,80);"></span></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1706,30 +1775,6 @@
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/02/16/mfc-propertypage">关于属性页和属性单的应用总结</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-02-16</strong> with tags <a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;关于属性页和属性单的应用总结</p>
-<p>1、属性页(CPropertyPage)中获取<br />&nbsp;(1) 程序主框架指针：CMainFrame* pMainFrame=(CMainFrame*)AfxGetMainWnd();<br />&nbsp;(2) 程序子框架指针：CChildFrame* pframe=(CChildFrame*)((CMainFrame*)AfxGetMainWnd())-&gt;GetActiveFrame();<br />&nbsp;(3) 程序活动文档指针：CEMCDoc* m_pDoc=(CEMCDoc*)pframe-&gt;GetActiveDocument();&nbsp;//获取活动的文档<br />&nbsp;(4) 属性单(CPropertySheet)指针：CMyPropertySheet* pSheet=(CMyPropertySheet*)this-&gt;GetParent();&nbsp;// 获取CMyPropertySheet指针<br />&nbsp;(5) 程序活动视图指针：CEMCView* pView=(CEMCView*)pframe-&gt;GetActiveView();&nbsp;// 获取活动视图</p>
-<p>2、在属性单(CPropertySheet)单击OK按钮后，程序框架将逐个遍历加载的CPropertyPage（从GetPage(0)～GetPage(N-1)），查询是否<br />有CPropertyPage重载了OnOK()，若有则执行重载的代码，否则执行默认的CPropertyPage::OnOK()。</p>
-<p>3、CPropertySheet和加载的CPropertyPage通信，可以在CPropertySheet中定义<br />&nbsp;CPPageContentMode* pCM=(CPPageContentMode*)this-&gt;GetPage(0);<br />&nbsp;然后利用pCM操作CPPageContentMode中的成员变量。<br />&nbsp;也可以在CPropertyPage中获取CPropertySheet的指针。</p>
-<p>4、两个或多个加载的CPropertyPage之间通信，可以借助于CPropertySheet实现。</p>
-<p>5、对CPropertySheet标准按钮的操作<br />&nbsp;(1)更改标准按钮的标题：<br />&nbsp;CWnd* pWnd=GetDlgItem(IDOK);<br />&nbsp;pWnd-&gt;SetWindowTextW(_T(&quot;开始&quot;));<br />&nbsp;(2)去掉&ldquo;应用&rdquo;按钮：<br />&nbsp;pWnd=GetDlgItem(ID_APPLY_NOW);<br />&nbsp;pWnd-&gt;ShowWindow(FALSE);<br />&nbsp;(3)移动标准按钮至对话框中间</p>
-<div style="border-right:windowtext .5pt solid;border-top:windowtext .5pt solid;background:#e6e6e6;border-left:windowtext .5pt solid;width:95%;word-break:break-all;border-bottom:windowtext .5pt solid;padding:4px 5.4pt;">
-<div><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /><span style="color:#000000;">CPropertyPage</span><span style="color:#000000;">*</span><span style="color:#000000;">&nbsp;pPage;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pPage</span><span style="color:#000000;">=</span><span style="color:#0000ff;">this</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">GetPage(</span><span style="color:#000000;">0</span><span style="color:#000000;">);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;CRect&nbsp;rectPage;</span><span style="color:#008000;"><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#000000;">&nbsp;pPage</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">GetWindowRect(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectPage);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;CWnd</span><span style="color:#000000;">*</span><span style="color:#000000;">&nbsp;pWndOK</span><span style="color:#000000;">=</span><span style="color:#000000;">GetDlgItem(IDOK);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;CWnd</span><span style="color:#000000;">*</span><span style="color:#000000;">&nbsp;pWndCancel</span><span style="color:#000000;">=</span><span style="color:#000000;">GetDlgItem(IDCANCEL);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;CRect&nbsp;rectOK,rectCancel;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pWndOK</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">GetWindowRect(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectOK);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pWndCancel</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">GetWindowRect(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectCancel);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;</span><span style="color:#0000ff;">int</span><span style="color:#000000;">&nbsp;BtnCenter</span><span style="color:#000000;">=</span><span style="color:#000000;">(rectCancel.right</span><span style="color:#000000;">-</span><span style="color:#000000;">rectOK.left)</span><span style="color:#000000;">/</span><span style="color:#000000;">2</span><span style="color:#000000;">;&nbsp;</span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;OK和CANCEL按钮中轴线</span><span style="color:#008000;"><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">int</span><span style="color:#000000;">&nbsp;PageCenter</span><span style="color:#000000;">=</span><span style="color:#000000;">(rectPage.right</span><span style="color:#000000;">-</span><span style="color:#000000;">rectPage.left)</span><span style="color:#000000;">/</span><span style="color:#000000;">2</span><span style="color:#000000;">;&nbsp;</span><span style="color:#008000;">//</span><span style="color:#008000;">属性单的中轴线</span><span style="color:#008000;"><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">int</span><span style="color:#000000;">&nbsp;dist</span><span style="color:#000000;">=</span><span style="color:#000000;">PageCenter</span><span style="color:#000000;">-</span><span style="color:#000000;">BtnCenter;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;rectOK.left</span><span style="color:#000000;">+=</span><span style="color:#000000;">dist;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;rectOK.right</span><span style="color:#000000;">+=</span><span style="color:#000000;">dist;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;rectCancel.left</span><span style="color:#000000;">+=</span><span style="color:#000000;">dist;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;rectCancel.right</span><span style="color:#000000;">+=</span><span style="color:#000000;">dist;&nbsp;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;ScreenToClient(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectOK);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;ScreenToClient(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectCancel);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pWndOK</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">MoveWindow(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectOK);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pWndCancel</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">MoveWindow(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectCancel);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span></div>
-</div>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1805,10 +1850,13 @@
             <li class="disabled"><a>20</a></li>
             
         
+            <li><a href="/page21">21</a></li>
+            
+        
     
 
     
-        <li class="next disabled"><a>Next &rarr;</a></li>
+        <li class="next"><a href="/page21">Next &rarr;</a></li>
     
     </ul>
 </div>
@@ -1850,11 +1898,11 @@
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
     
         <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
     
@@ -1868,17 +1916,13 @@
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
     
-        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
-    
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
     
         <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
-    
-        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
     
         <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
     
@@ -1912,13 +1956,13 @@
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
     
-        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
         <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
     
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
     
         <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
     
@@ -1933,8 +1977,6 @@
         <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1968,7 +2010,7 @@
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -1976,7 +2018,7 @@
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     
@@ -1992,6 +2034,10 @@
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
+    
   
 
 
@@ -2006,6 +2052,12 @@
         
         <h3>Recent Posts</h3>
         <ul>
+        
+          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
+            Coin Change Problem</a></li>
+        
+          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
+            Text Justification</a></li>
         
           <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
             Sort Colors</a></li>
@@ -2030,12 +2082,6 @@
         
           <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
             BACI Simple Install and Compile Guide</a></li>
-        
-          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
-            Dense Trajectory Notes</a></li>
-        
-          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
-            Parallelize mex file in Matlab</a></li>
         
         </ul>
         

@@ -1,9 +1,6 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -23,6 +20,13 @@
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
   -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Config({
+    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  	});
+  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -71,6 +75,79 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/06/02/chroot-setuid-setgid">chroot, setuid() and set gid</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-06-02</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>这篇文章搜集整理了网上chroot, setuid() &amp; set gid相关的文章。</p>
+<ol>
+<li><a href="http://www.unixwiz.net/techtips/chroot-practices.html">Best Practices for UNIX chroot() Operations</a></li>
+<li><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">How to break out of a&nbsp;<tt>chroot()</tt></a></strong><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">&nbsp;jail</a></strong></li>
+<li><strong><a href="http://www.cs.berkeley.edu/~daw/papers/setuid-usenix02.pdf">Setuid Demystifid</a></strong></li>
+<li><strong><a href="http://oldfield.wattle.id.au/luv/permissions.html">Introduction to Unix file permissions</a></strong></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/05/20/zcat-gzcat">如何判断一个(压缩)文件的类型，以及zcat/gzcat</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-05-20</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>恰似&ldquo;一师是个好学校&rdquo;，dd是个好工具&mdash;&mdash;只消用它逐字copy出某个文件第一个block的内容，就可以判断出该文件的类型！！！</p>
+<p>&nbsp;</p>
+<p>
+<pre>bjbldd&gt;1&gt; dd if=MMEgolden.tar bs=512 count=1 &gt; dd_tmp
+1+0 records in
+1+0 records out
+bjbldd&gt;&gt; file dd_tmp
+dd_tmp:         USTAR tar archive
+bjbldd&gt;&gt; dd if=varofvar bs=512 count=1 &gt; dd_tmp
+0+1 records in
+0+1 records out
+bjbldd&gt;&gt; file dd_tmp
+dd_tmp:         executable /bin/ksh script
+bjbldd&gt;&gt; dd if=Tk-804.029.tar.gz bs=512 count=1 &gt; dd_tmp
+1+0 records in
+1+0 records out
+bjbldd&gt;&gt; file dd_tmp
+dd_tmp:         gzip compressed data - deflate method , original file name , max compression
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>另外，zcat或者gzcat是用于cat gzip压缩文件的工具，只是在不同的平台有些差异：/bin/zcat在Linux上work的很好，可是当它在Solaris上cat gzip文件的内容时，就会报错。Solaris上cat gzip文件只能用/bin/gzcat. &mdash;&mdash;就是这个小小的差异，浪费了我一天的时间！</p>
+<p>&nbsp;</p>
+<p>跨平台的cat gzip文件的代码如下：</p>
+<p>
+<pre>OS="`/bin/uname`"
+if [ "${OS}" != "Linux" ]
+then
+	ZCAT="/bin/zcat"
+else
+	ZCAT="/bin/gzcat"
+fi
+.......
+${ZCAT} ${TMPDIR}/ngn_platform.cpio.Z | /bin/cpio -idmvu  -H odc ${SAT_CPIO_FLAG}</pre>
+<p>&nbsp;</p>
+<p>貌似cpio的用法也很强大哦～</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -663,101 +740,6 @@ rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/03/07/plan9-intro-note-4">Plan9 Files -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(IV)</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-03-07</strong> with tags <a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
-<div>
-<h4 id="internal-source-marker_0.12957935757003725"><span>2.1 Input/Output</span></h4>
-<p><span>Most of the times, standard input, standard output, and standard error go to </span><span>/dev/cons</span><span>. This file represents the console for your program.It is the interface to use the device that is known as the console, which corresponds to your terminal.</span><span>The file interface provided for each process in Plan 9 has a file that provides the list of open file descriptors for the process. For example, to know which file descriptors are open in the shell we are using we can do this.</span>
-<pre> term% cat /proc/$pid/fd/usr/glenda
- 0 r  M   40 (0000000000000001 0 00)  8192       47 /dev/cons
- 1 w  M   40 (0000000000000001 0 00)  8192     3506 /dev/cons
- 2 w  M   40 (0000000000000001 0 00)  8192     3506 /dev/cons
- 3 r  M    8 (000000000000166b 2 00)  8192      512 /rc/lib/rcmain
- 4 r  M   40 (0000000000000001 0 00)  8192       47 /dev/cons</pre>
-<p><span>Each time you open a file, the system keeps track of a file offset for that open file, to know the offset in the file where to start working at the next </span><span>read</span><span> or </span><span>write</span><span>. </span><br /><span>The offset for a file descriptor can be changed using the </span><span>seek</span><span> system call.</span></p>
-<h4><span>2.2 Write games</span></h4>
-<p><span>A </span><span>Chan</span><span>(or Channel) is a data structure, which contains all the information needed to let the kernel reach the file server and perform operations on the file. A </span><span>Chan</span><span> is just something used by Plan 9 to speak to a server regarding a file. This may require doing remote procedure calls across the network, but that is up to your kernel, and you can forget. There is one </span><span>Chan</span><span> per file in use in the system.</span></p>
-<p><span>The size of a file corresponds to the highest file offset ever written on it. All the bytes that we did not write were set to zero by Plan 9.</span><br /><span>seek(fd, 0, 2); // move to the end</span><br /><span>append only permission bit :</span><br /><span>; chmod +a /sys/log/diagnostics</span><br /><span>; ls -l /sys/log/diagnostics</span><br /><span>a-rw-r--r-- M 19 nemo nemo 0 Jul 10 01:11 /sys/log/diagnostics</span><br /><span>+a</span><span> permission bit guarantees that any write will happen at the end of existing data, no matter what the offset is.</span><br /><span>Doing a </span><span>seek</span><span> in all programs using this file might not suffice. If there are multiple machines writing to this file, each machine would keep its own offset for the file. Therefore, there is some risk of overwriting some data in the file.</span><br /><span>The </span><span>create</span><span> system call creates one file.</span><br /><span>The system call </span><span>remove</span><span> removes the named file. </span><br /><span>The system call </span><span>access</span><span> to check file properties.</span></p>
-<h4><span>2.3 Directory Entry</span></h4>
-<p><span>File </span><span>metadata</span><span> is simply what the system needs to know about the file to be able to implement it. File metadata includes the file name, the file size, the time for the last modification to the file, the time for the last access to the file, and other attributes for the file. Thus, file metadata is also known as file attributes.</span><br /><span>Plan 9 stores attributes for a file in the directory that contains the file. Thus, the data structure that contains file metadata is known as a directory entry. A directory contains just a sequence of entries, each one providing the attributes for a file contained in it.</span><br /><span>To obtain the directory entry for a file, i.e., its attributes, we can use </span><span>dirstat</span><span>. This function &nbsp;uses the actual system call, </span><span>stat</span><span>, to read the data, and returns a Dir structure that is more convenient to use in C programs. This structure is stored in dynamic memory allocated with malloc &nbsp;by dirstat, and the caller is responsible for calling free on it. </span><br /><span>Because directories contain directory entries, reading from a directory is very similar to &nbsp;what we have just done. The function </span><span>read</span><span> can be used to read directories as well as files. The &nbsp;only difference is that the system will read only an integral number of directory entries. If one &nbsp;more entry does not fit in the buffer you supply to read, it will have to wait until you read again. </span><br /><span>The entries are stored in the directory in a portable, machine independent, and not amenable, format. Therefore, instead of using </span><span>read</span><span>, it is more convenient to use </span><span>dirread</span><span>. This &nbsp;function calls read to read the data stored in the directory. But before returning to the caller, it &nbsp;unpacks them into a, more convenient, array of Dir structures. </span><br /><span>The function </span><span>dirwstat</span><span> is the counterpart of </span><span>dirstat</span><span>. It works in a similar way, but &nbsp;instead of reading the attributes, it updates them. New values for the update are taken from a Dir &nbsp;structure given as a parameter. However, the function ignores any field set to a null value, to &nbsp;allow you to change just one attribute, or a few ones. Beware that zero is not a null value for some of the fields, because it would be a perfectly legal value for them. The function </span><span>nulldir</span><span> &nbsp;is to be used to null all of the fields in a given Dir. </span></p>
-<h3><span>2.4 Bio</span></h3>
-<p><span>The bio(2) library in Plan 9 provides buffered input/output. This is an abstraction that,although not provided by the underlying Plan 9, is so common that you really must know how it works. The idea is that your program creates a </span><span>Bio</span><span> buffer for reading or writing, called a </span><span>Biobuf</span><span>. Your program reads from the </span><span>Biobuf</span><span>, by calling a library function, and the library will call read only to refill the buffer each time you exhaust its contents. </span>
-<pre>#include &lt;u.h&gt;
-#include &lt;libc.h&gt;
-#include &lt;bio.h&gt;
-static void
-usage(void)
-{
-    fprint(2,"usage: %s [-b bufsz] infile outfile/n", argv0);
-    exits("usage");
-}
-void
-main(int argc, char* argv[])
-{
-    char* buf;
-    long nr, bufsz = 8*1024;
-    Biobuf* bin;
-    Biobuf* bout;
-    ARGBEGIN{
-    case 'b':
-        bufsz = atoi(EARGF(usage()));
-        break;
-    default:
-        usage();
-    }ARGEND;
-    if (argc !=2)
-        usage();
-    buf = malloc(bufsz);
-    if (buf == nil)
-        sysfatal("no more memory");
-    bin = Bopen(argv[0], OREAD);
-    if (bin == nil)
-        sysfatal("%s: %s: %r", argv0, argv[0]);
-    bout = Bopen(argv[1], OWRITE);
-    if (bout == nil)
-        sysfatal("%s: %s: %r", argv0, argv[1]);
-    for(;;) {
-        nr = Bread(bin, buf, bufsz);
-        if (nr &lt; 0)
-            break;
-        Bwrite(bout, buf, nr);
-    }
-    Bterm(bin);
-    Bterm(bout);
-    exits(nil);
-}</pre>
-<p>&nbsp;</p></div>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/03/02/regexp-per-line">regexp -line逐行匹配</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-03-02</strong> with tags <a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>以前没注意到Tcl/Tk的正则表达式命令regexp还有一个逐行匹配的选项-line（其实是三个-line, <span>-lineanchor和</span><span>-linestop，第一个是后两者的综合</span>），因此碰到需要在多行内容中匹配某一行的中的某字符（串）是总是不得不用AWK,PERL等其他工具，现在有了-line，直接regexp -line &lt;pattern&gt; &lt;var&gt;就搞定了！</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -833,6 +815,9 @@ main(int argc, char* argv[])
             <li><a href="/page20">20</a></li>
             
         
+            <li><a href="/page21">21</a></li>
+            
+        
     
 
     
@@ -878,11 +863,11 @@ main(int argc, char* argv[])
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
     
         <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
     
@@ -896,17 +881,13 @@ main(int argc, char* argv[])
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
     
-        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
-    
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
     
         <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
-    
-        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
     
         <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
     
@@ -940,13 +921,13 @@ main(int argc, char* argv[])
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
     
-        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
         <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
     
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
     
         <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
     
@@ -961,8 +942,6 @@ main(int argc, char* argv[])
         <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -996,7 +975,7 @@ main(int argc, char* argv[])
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -1004,7 +983,7 @@ main(int argc, char* argv[])
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     
@@ -1020,6 +999,10 @@ main(int argc, char* argv[])
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
+    
   
 
 
@@ -1034,6 +1017,12 @@ main(int argc, char* argv[])
         
         <h3>Recent Posts</h3>
         <ul>
+        
+          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
+            Coin Change Problem</a></li>
+        
+          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
+            Text Justification</a></li>
         
           <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
             Sort Colors</a></li>
@@ -1058,12 +1047,6 @@ main(int argc, char* argv[])
         
           <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
             BACI Simple Install and Compile Guide</a></li>
-        
-          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
-            Dense Trajectory Notes</a></li>
-        
-          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
-            Parallelize mex file in Matlab</a></li>
         
         </ul>
         

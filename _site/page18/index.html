@@ -1,9 +1,6 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -23,6 +20,13 @@
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
   -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Config({
+    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  	});
+  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -71,6 +75,413 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/09/08/function-pointer-in-class">类成员函数指针浅析</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-09-08</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+    今天看某软件的源代码时，发现有这样一行
+<div class="highlighter">
+<ol class="highlighter-c" start="1">
+<li><span>typedef&nbsp;CPB_RETVAL&nbsp;(CPBprb_Prb::*CPBprb_action)(CPBprb_Prb&nbsp;&amp;,&nbsp;unsigned);</span></li>
+</ol>
+</div>
+<p>其中CPB_RETVAL是一个enum类型，CPBprb_Prb是一个类，CPBprb_action在代码中其他地方没有找到定义。因不知这行代码所为何意，遂在论坛发贴请教<a href="http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230">http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230</a>。</p>
+<p>承蒙众多高手赐教，才知上段代码定义了成员函数指针<span>类型CPBprb_action，</span>该类型函数有2个参数，类型分别为CPBprb_Prb &amp;, unsigned，返回值类型为CPB_RETVAL。此函数指针的类型有个定义域，它是类CPBprb_Prb的成员<span>（CPBprb_Prb::*CPBprb_action）。</p>
+<p>另外，</span><span>CPBprb_action不仅可以指向</span>CPBprb_Prb的成员函数，也可以指向CPBprb_Prb的派生类成员函数。甚至,CPBprb_Prb里可以根本就没有任何诸如CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned)这样的函数,而完全可以在CPBprb_Prb的派生类里去增加 CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned);这样的函数，如：</p>
+<div class="highlighter">
+<ol class="highlighter-c" start="1">
+<li><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><span></span></li>
+<li class="alt"><span></span></li>
+<li><span></span><span class="keyword">class</span><span>&nbsp;A</span></li>
+<li class="alt"><span>{</span></li>
+<li><span></span><span class="keyword">public</span><span>:</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;A(){};</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">virtual</span><span>&nbsp;~A(){};</span></li>
+<li class="alt"><span>};</span></li>
+<li><span></span></li>
+<li class="alt"><span></span><span class="keyword">class</span><span>&nbsp;B&nbsp;:&nbsp;</span><span class="keyword">public</span><span>&nbsp;&nbsp;A</span></li>
+<li><span>{</span></li>
+<li class="alt"><span></span><span class="keyword">public</span><span>:</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B(){};</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;~B(){};</span></li>
+<li><span></span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;Fb(</span><span class="keyword">int</span><span>&nbsp;a){&nbsp;</span><span class="keyword">return</span><span>&nbsp;a*a;}</span></li>
+<li><span>};</span></li>
+<li class="alt"><span></span></li>
+<li><span>typedef&nbsp;</span><span class="keyword">int</span><span>&nbsp;(A::*Myfunction)(</span><span class="keyword">int</span><span>);</span></li>
+<li class="alt"><span></span></li>
+<li><span></span><span class="keyword">int</span><span>&nbsp;main()</span></li>
+<li class="alt"><span>{</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B*&nbsp;pB&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;B;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;Myfunction&nbsp;pf&nbsp;=&nbsp;(Myfunction)(&amp;B::Fb);</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;retValue&nbsp;=&nbsp;(pB-&gt;*pf)(3);</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cout&lt;&lt;retValue;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cin&gt;&gt;retValue;</span></li>
+<li class="alt"><span></span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;1;</span></li>
+<li class="alt"><span>}</span></li>
+</ol>
+</div>
+<p>通过typedef int (A::*Myfunction)(int);定义的Myfunction是A的成员（函数指针），但只能在类外定义。</p>
+<p>需要指出的是，使用指向成员函数的指针变量是比较危险的!因此不建议这么用。</p>
+<p>（<font color="#800000">上文引用了论坛中对我帖子的回复，再次对关心并帮助我的人表示感谢。</font>）</p>
+<p><font color="#000080">PS：</font><br />
+<h1>函数指针(全局函数/类成员函数)和函数对象</h1>
+<p>（原文链接：<a href="http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og">http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</a>）</p>
+<h2>关键字：函数指针 全局函数 类成员函数 函数对象 Function object </h2>
+<h2>作者：ErranLi&nbsp; &nbsp; 更新：2007-01-06 02:31:47&nbsp; &nbsp; 浏览：9166</h2>
+<div id="divCodeArea">
+<div class="source">
+<p>
+函数指针(全局函数/类成员函数)、函数对象(Function&nbsp;object)</p>
+<p>一.&nbsp;函数指针类型为全局函数.</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(*fp)(<span class="reserved">int</span>);</p>
+<p><span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
+{<br />
+&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+}</p>
+<p><span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
+{<br />
+&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+}</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; fp&nbsp;testAct;</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;(testAct&nbsp;!=&nbsp;NULL)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Drink;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Eat;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>二.&nbsp;函数指针类型为类成员函数.</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Action;<br />
+<span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="comment">//&nbsp;函数指针类型为类&nbsp;Action&nbsp;的成员函数</span><br />
+<span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(Action::*fp)(<span class="reserved">int</span>);</p>
+<p><span class="reserved">class</span>&nbsp;Action<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="comment">//&nbsp;定义一个函数指针</span><br />
+&nbsp; &nbsp; fp&nbsp;testAct;<br />
+&nbsp; &nbsp; <span class="comment">//Action&nbsp;对象实例&nbsp;,&nbsp;该指针用于记录被实例化的&nbsp;Action&nbsp;对象</span><br />
+&nbsp; &nbsp; Action&nbsp;*&nbsp;pAction;</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;((pAction&nbsp;!=&nbsp;NULL)&nbsp;&amp;&amp;&nbsp;(testAct&nbsp;!=&nbsp;NULL))<br />
+&nbsp; &nbsp; &nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">//&nbsp;调用</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (pAction-&gt;*testAct)(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; Action&nbsp;act;<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.pAction&nbsp;=&nbsp;&amp;act;<br />
+&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Drink;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Eat;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>三.&nbsp;函数对象&nbsp;(Function&nbsp;object)<br />
+<span class="sp874">// 本文转自 C++Builder研究 - http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</span></p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="preprocessor">#include&nbsp;&lt;functional&gt;</span></p>
+<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Action;<br />
+<span class="reserved">class</span>&nbsp;Drink;<br />
+<span class="reserved">class</span>&nbsp;Eat;<br />
+<span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="reserved">class</span>&nbsp;Action<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">int</span>&nbsp;<span class="reserved">operator</span>()(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Act(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;i;<br />
+&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; <span class="reserved">virtual</span>&nbsp;<span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)&nbsp;=&nbsp;0;<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;Drink&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
+{<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;Eat&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
+{<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i,&nbsp;Action&amp;&nbsp;testAct)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.TestAct(0,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(1,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(2,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(0,&nbsp;Eat());<br />
+&nbsp; &nbsp; doact.TestAct(1,&nbsp;Eat());<br />
+&nbsp; &nbsp; doact.TestAct(2,&nbsp;Eat());<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>虽然传递函数指针被广泛应用于事件驱动系统中，以此实现回调函数通过指针来调用。但&nbsp;C++&nbsp;还是提供了另外一种可供选择的办法，即函数对象，利用它可以<br />
+避免使用函数指针。这样做有几个优点。首先，&nbsp;因为对象可以在内部修改而不用改动外部接口，因此设计更灵活，更富有弹性。函数对象也具备有存储先前调用结<br />
+果的数据成员。。&nbsp;此外，编译器可以内联函数对象，从而进一步增强性能。函数对象可以具体表达依赖成员模板的通用算法&nbsp;,&nbsp;这些算法借助普通的函数指针难<br />
+以完成。例用函数对象实现了一个通用的&nbsp;Negation&nbsp;算法操作：</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span><br />
+<span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span></p>
+<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Negate<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">template</span>&lt;<span class="reserved">class</span>&nbsp;T&gt;&nbsp;T&nbsp;<span class="reserved">operator</span>()(T&nbsp;t)&nbsp;const<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;-t;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">void</span>&nbsp;Callback(<span class="reserved">int</span>&nbsp;n,&nbsp;<span class="reserved">const</span>&nbsp;Negate&amp;&nbsp;neg)&nbsp; <span class="comment">//&nbsp;传递一个函数对象</span><br />
+{<br />
+&nbsp; &nbsp; n&nbsp;=&nbsp;neg(n);&nbsp; <span class="comment">//&nbsp;调用重载的&nbsp;()&nbsp;操作&nbsp;来对&nbsp;n&nbsp;进行&nbsp;negate&nbsp;操作</span><br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;n&nbsp;&lt;&lt;&nbsp;endl;<br />
+}</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式一</span><br />
+&nbsp; &nbsp; Callback(5,&nbsp;Negate());</p>
+<p>&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式二</span><br />
+&nbsp; &nbsp; Negate&nbsp;neg;<br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(9.99999)&nbsp;&lt;&lt;&nbsp;endl;<br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(<span class="reserved">__int32</span>(39999999))&nbsp;&lt;&lt;&nbsp;endl;</p>
+<p>&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>&nbsp; &nbsp; STL&nbsp;库中定义了很多函数对象以供相关算法调用，如&nbsp;模板化的函数对象&nbsp;greater&lt;&gt;&nbsp;或者&nbsp;less&lt;&gt;:</p>
+<p>vector&nbsp;&lt;<span class="reserved">int</span>&gt;&nbsp;vi;<br />
+<span class="comment">//..&nbsp;填充向量</span><br />
+sort(vi.begin(),&nbsp;vi.end(),&nbsp;greater&lt;<span class="reserved">int</span>&gt;()&nbsp;);<span class="comment">//&nbsp;降序&nbsp;(descending)</span><br />
+sort(vi.begin(),&nbsp;vi.end(),&nbsp;less&lt;<span class="reserved">int</span>&gt;()&nbsp;);&nbsp;<span class="comment">//&nbsp;升序&nbsp;(ascending)</span></p>
+</div>
+</div>
+<p><!-- end of divCodeArea --></p>
+<p>本文转自：http://www.cppblog.com/erran/archive/2006/12/26/16868.html</p>
+<p><span style="color:rgb(255,0,0);">函数对象（function&nbsp;<br />
+object）,又名仿函数（functor),是重载了operator（）的一个类，其实在stl算法中有大量运用，c++标准预定义的如<br />
+less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么引入仿函数？&nbsp;  <br /> &nbsp; 原因：&nbsp;  <br /> &nbsp; １．仿函数有具体型别，可用在模板参数，而函数不行&nbsp;  <br /> &nbsp; ２．同类仿函数可有不同植，可代表不同状态，比函数灵活（须定义多个）&nbsp;  <br /> &nbsp; ３．仿函数可能比普通函数快&nbsp;  <br /> &nbsp; ．．．．．．．．可能还有，不过凭印象就这些了</span> </p>
+<p></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/09/08/function-object">函数对象</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-09-08</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+    看到有个概念叫“函数对象”，搜了一下关于它的解释： </p>
+<p> <span style="color:rgb(255,0,0);">函<br />
+数对象（function&nbsp;<br />
+object）,又名仿函数（functor),是重载了operator（）的一个类，其实在stl算法中有大量运用，c++标准预定义的如<br />
+less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么引入仿函数？&nbsp;  <br /> &nbsp; 原因：&nbsp;  <br /> &nbsp; １．仿函数有具体型别，可用在模板参数，而函数不行&nbsp;  <br /> &nbsp; ２．同类仿函数可有不同植，可代表不同状态，比函数灵活（须定义多个）&nbsp;  <br /> &nbsp; ３．仿函数可能比普通函数快&nbsp;  <br /> &nbsp; ．．．．．．．．可能还有，不过凭印象就这些了</span></p>
+<p>&nbsp; <font color="#ff0000">和普通函数相比,在不破坏接口的情况下,函数对象可以有自己的状态.</font></p>
+<p>另外，</p>
+<p><font color="#ff0000">1 什么是函数对象 </p>
+<p> c＋＋在模板方面使用很多的一个技术，写一个类，这个类有个成员函数，可以让类象函数一样运行。 <br /> 主要用于模板函数中。 </p>
+<p> 2 实现 </p>
+<p> 类的成员函数，()可以让一个类运行起来象一个函数一样，如我们在排序的时候我们使用sort <br /> 可能sort是这样的sort(int, int) <br /> 我们自己可以写一个类，其中重载void operator()(int, int)来实现。 </p>
+<p> for_each（begin, end, func) <br /> 这个func如果是函数的话，会把value（*it)放在函数的参数位置上，如果是一个类在那个位置，将会调用运算符函数()来将参数传递进去。首先调用构造函数，构造函数初始化一个对象后，对象调用函数()来实现函数对象操作。 </p>
+<p> 3 函数对象的优势 </p>
+<p> 函数对象的功能于函数的功能是一样的，那为什么要使用默认构造函数。 <br /> 1 函数对象是一个智能对象，他可以利用对象中的成员函数，和成员变量。 <br /> 2 完全可以使用类的优势，可以使用类的重载特性，同样的一个类的名字，可以调用各种函数。 </font> </p>
+<p>在<i>more exceptional c++</i>和<i>The C++ Programming Language</i>等书里有看到。</p>
+<p>函数对象示例：
+<div class="highlighter">
+<ol class="highlighter-c" start="1">
+<li><span class="comment">//&nbsp;Negate.cpp</span><span></span></li>
+<li class="alt"><span></span><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><span></span></li>
+<li><span></span><span class="keyword">using</span><span>&nbsp;</span><span class="keyword">namespace</span><span>&nbsp;std;</span></li>
+<li class="alt"><span>&nbsp;</span></li>
+<li><span></span><span class="keyword">class</span><span>&nbsp;Negate</span></li>
+<li class="alt"><span>{</span></li>
+<li><span></span><span class="keyword">public</span><span>:</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template&lt;</span><span class="keyword">class</span><span>&nbsp;T&gt;&nbsp;T&nbsp;</span><span class="keyword">operator</span><span>()(T&nbsp;t)&nbsp;</span><span class="keyword">const</span><span></span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;-t;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span></li>
+<li class="alt"><span>};</span></li>
+<li><span></span></li>
+<li class="alt"><span></span><span class="keyword">void</span><span>&nbsp;Callback(</span><span class="keyword">int</span><span>&nbsp;n,&nbsp;</span><span class="keyword">const</span><span>&nbsp;Negate&amp;&nbsp;neg)&nbsp;&nbsp;</span><span class="comment">//&nbsp;传递一个函数对象</span><span></span></li>
+<li><span>{</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n&nbsp;=&nbsp;neg(n);&nbsp;&nbsp;</span><span class="comment">//&nbsp;调用重载的&nbsp;()&nbsp;操作&nbsp;来对&nbsp;n&nbsp;进行&nbsp;negate&nbsp;操作</span><span></span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;n&nbsp;&lt;&lt;&nbsp;endl;</span></li>
+<li class="alt"><span>}</span></li>
+<li><span></span></li>
+<li class="alt"><span></span><span class="keyword">int</span><span>&nbsp;main(</span><span class="keyword">int</span><span>&nbsp;argc,&nbsp;</span><span class="keyword">char</span><span>*&nbsp;argv[])</span></li>
+<li><span>{</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">//&nbsp;调用方式一</span><span></span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Callback(5,&nbsp;Negate());</span></li>
+<li class="alt"><span></span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">//&nbsp;调用方式二</span><span></span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Negate&nbsp;neg;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;neg(9.99999)&nbsp;&lt;&lt;&nbsp;endl;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;neg(__int32(39999999))&nbsp;&lt;&lt;&nbsp;endl;</span></li>
+<li><span></span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getchar();</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;0;</span></li>
+<li class="alt"><span>}</span></li>
+</ol>
+</div>
+<p>PS：</p>
+<p><span id="ArticleContent1_ArticleContent1_lblContent"></span>
+<p class="p14" align="center"><b>定义函数对象 </b></p>
+<table width="100%" align="center" border="0" cellpadding="1" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#febf01">
+<table width="100%" align="center" border="0" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td width="60%" bgcolor="#eeeeee">时间：2001/02/07 15:22</td>
+<td width="40%" bgcolor="#eeeeee">作者：vckbase <a target="_blank" href="http://www.vckbase.com/">VC知识库</a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p><!--标题:结束--><br /><!--正文:开始--></p>
+<p>　 尽管函数指针被广泛用于实现函数回调，但C++还提供了一个重要的实现回调函数的方法，那就是函数对象。函数对象（也称“算符”）是重载了“()”操作符的普通类对象。因此从语法上讲，函数对象与普通的函数行为类似。 </p>
+<p>用函数对象代替函数指针有几个优点，首先，因为对象可以在内部修改而不用改动外部接口，因此设计更灵活，更富有弹性。函数对象也具备有存储先前调用<br />
+结果的数据成员。在使用普通函数时需要将先前调用的结果存储在全程或者本地静态变量中，但是全程或者本地静态变量有某些我们不愿意看到的缺陷。 </p>
+<p>其次，在函数对象中编译器能实现内联调用，从而更进一步增强了性能。这在函数指针中几乎是不可能实现的。 </p>
+<p>下面举例说明如何定义和使用函数对象。首先，声明一个普通的类并重载“()”操作符： </p>
+<p>class Negate </p>
+<p>{ </p>
+<p>public: </p>
+<p>int operator() (int n) { return -n;} </p>
+<p>}; </p>
+<p>重载操作语句中，记住第一个圆括弧总是空的,因为它代表重载的操作符名；第二个圆括弧是参数列表。一般在重载操作符时，参数数量是固定的，而重载“()”操作符时有所不同，它可以有任意多个参数。 </p>
+<p>因为在Negate中内建的操作是一元的（只有一个操作数），重载的“()”操作符也只有一个参数。返回类型与参数类型相同-本例中为int。函数返回与参数符号相反的整数。 </p>
+<p>使用函数对象 </p>
+<p>我们现在定义一个叫Callback()的函数来测试函数对象。Callback()有两个参数：一个为int一个是对类Negate的引用。Callback()将函数对象neg作为一个普通的函数名： </p>
+<p>#include </p>
+<p>using std::cout; </p>
+<p>void Callback(int n, Negate &amp; neg) </p>
+<p>{ </p>
+<p>int val = neg(n); //调用重载的操作符“()” </p>
+<p>cout &lt;&lt; val; </p>
+<p>} </p>
+<p>不要的代码中，注意neg是对象，而不是函数。编译器将语句 </p>
+<p>int val = neg(n); </p>
+<p>转化为 </p>
+<p>int val = neg.operator()(n); </p>
+<p>通常，函数对象不定义构造函数和析构函数。因此，在创建和销毁过程中就不会发生任何问题。前面曾提到过，编译器能内联重载的操作符代码，所以就避免了与函数调用相关的运行时问题。 </p>
+<p>为了完成上面个例子，我们用主函数main()实现Callback()的参数传递： </p>
+<p>int main() </p>
+<p>{ </p>
+<p>Callback(5, Negate() ); //输出 -5 </p>
+<p>} </p>
+<p>本例传递整数5和一个临时Negate对象到Callback()，然后程序输出-5。 </p>
+<p>模板函数对象 </p>
+<p>从上面的例子中可以看出，其数据类型被限制在int，而通用性是函数对象的优势之一，如何创建具有通用性的函数对象呢？方法是使用模板，也就是将重载的操作符“（）”定义为类成员模板，以便函数对象适用于任何数据类型：如double，_int64或char： </p>
+<p>class GenericNegate </p>
+<p>{ </p>
+<p>public: </p>
+<p>template T operator() (T t) const {return -t;} </p>
+<p>}; </p>
+<p>int main() </p>
+<p>{ </p>
+<p>GenericNegate negate; </p>
+<p>cout&lt;&lt; negate(5.3333); // double </p>
+<p>cout&lt;&lt; negate(10000000000i64); // __int64 </p>
+<p>} </p>
+<p>如果用普通的回调函数实现上述的灵活性是相当困难的。 </p>
+<p>标准库中函数对象 </p>
+<p>C++标准库定义了几个有用的函数对象，它们可以被放到STL算法中。例如，sort()算法以判断对象（predicate<br />
+object）作为其第三个参数。判断对象是一个返回Boolean型结果的模板化的函数对象。可以向sort()传递greater&lt;&gt;或<br />
+者less&lt;&gt;来强行实现排序的升序或降序： </p>
+<p>#include // for greater&lt;&gt; and less&lt;&gt; </p>
+<p>#include //for sort() </p>
+<p>#include </p>
+<p>using namespace std; </p>
+<p>int main() </p>
+<p>{ </p>
+<p>vector vi; </p>
+<p>//..填充向量 </p>
+<p>sort(vi.begin(), vi.end(), greater() );//降序( descending ) </p>
+<p>sort(vi.begin(), vi.end(), less() ); //升序 ( ascending ) </p>
+<p>} </p>
+<p></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -253,7 +664,7 @@ error: Failed dependencies:<br />
       <div class="mainbody">
         <h2><a href="/2008/07/20/cdma2000-naming">CDMA2000 Channel Naming Conventions</a></h2>
         <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-07-20</strong> with tags <a href="/tags.html#网络/通信-ref" rel="nofollow">网络/通信</a>, <a href="/tags.html#Telecommunication-ref" rel="nofollow">Telecommunication</a>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-07-20</strong> with tags <a href="/tags.html#Telecommunication-ref" rel="nofollow">Telecommunication</a>
         </p>
         
         <div class="post_at_index thepost">
@@ -563,94 +974,6 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/06/05/emc-cbr-4">EMC-CBR故障诊断研究（四）</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-06-05</strong> with tags <a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#电磁兼容-ref" rel="nofollow">电磁兼容</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p><font size="3"><span><span style="font-size:12pt;line-height:173%;font-family:宋体;">1、系统组成</span></span><span></span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;"><br />&nbsp;&nbsp; 本系统是由</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">组成的混合系统。系统结构如下图</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;">所示。系统的核心是推理机，推理机根据用户输入的故障描述，既可以将故障描述转化为新的案例，从而进行对案例库进行操作；又可以将故障描述转化为事实，对规则库进行操作。但</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的地位并不是等同的，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起主导作用，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">对</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起监督作用，二者的推理结果由综合机制进行综合。本系统采用友好的人机界面，普通用户输入故障描述后，系统经推理后给出诊断建议，并对给出的建议进行解释。另外，为了便于对系统知识（案例库、知识库和事实库）进行管理，系统可以由知识工程师进行修改。</span></font></p>
-<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/系统结构.JPG" alt="" /></font></p>
-<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">2、案例表示与存储</font></p>
-<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">参见博文&ldquo;EMC-CBR故障诊断研究（一、二）&rdquo;</font></p>
-<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">3、案例检索</font></p>
-<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">参见博文&ldquo;EMC-CBR故障诊断研究（三）&rdquo;</font></p>
-<p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">4、<span style="font-size:12pt;line-height:173%;font-family:宋体;">案例重用</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span></font> </p>
-<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">案例重用的主要任务是对检索到的案例的结论进行修正。基本思想就是将案例库中与目标案例最相似的案例的结论与次相似的案例的结论进行对比，如果二者仅仅是谓词函数的参数不同，可以认定无需对最佳匹配案例进行修改；如果二者不仅参数不同而且有谓词上的出入，则需启用基于规则的推理，最终利用</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的综合机制利用</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的结论对最佳匹配案例的结论进行修正。</span></font></p>
-<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3">5、 </font></p>
-<p><font size="3"><span style="font-size:12pt;line-height:173%;font-family:宋体;">案例的保存</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span></font> </p>
-<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">&nbsp;&nbsp;&nbsp; 在案例保存时要进行模式归纳（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>Schema Induction</span><span style="font-size:12pt;font-family:宋体;">）。模式归纳的含义就是指：如果类比导致了一个解，则执行两类似体的泛化过程，以便形成一个抽象的案例模式。简而言之，就是寻找两类似体的共性，然后加以抽象和泛化。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p><font size="3"><span style="font-size:12pt;font-family:宋体;">案例保存的过程可以看作一个归纳学习的过程，很多归纳学习的方法都可以应用于案例保存，如产生预测试方法（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>INDUCE1.2</span><span style="font-size:12pt;font-family:宋体;">）。</span></font></p>
-<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3">6、案例的维护</font></p>
-<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal">
-<p style="text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">心理学家在研究记忆机理时，提出了著名的遗忘曲线理论，即长期不用的信息将会被逐渐遗忘。在基于案例推理中，案例库的维护很重要，必须将长期不用的案例删除，因为这种案例很可能是噪声案例，例如误诊的病例、误判的案件等。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>Aha</span><span style="font-size:12pt;font-family:宋体;">建议对案例库中的每个案例建立一个匹配记录，就可以删除那些噪声或无用的案例，以维护案例库的有效性。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>Aha</span><span style="font-size:12pt;font-family:宋体;">提出案例求精算法</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>IB3</span><span style="font-size:12pt;font-family:宋体;">，表述如下</span><sup><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>[51]</span></sup><span style="font-size:12pt;font-family:宋体;">：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p style="text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">输入：案例库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">和测试案例集</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>T</span></font></p>
-<p style="text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">输出：精化案例库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S&rsquo;</span></font></p>
-<p style="text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">过程：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（1）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从测试案例集</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>T</span><span style="font-size:12pt;font-family:宋体;">中任选一个测试案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（2）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">设法从案例库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中找到一个案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">，它与</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">有最佳匹配，其相似度超过某个阈值；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（3）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">如果找不到这样的</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">，则转到（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>8</span><span style="font-size:12pt;font-family:宋体;">）；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（4）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">若确认</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">属于同一类，则转（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>9</span><span style="font-size:12pt;font-family:宋体;">）；否则把</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">加上它所属的类</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>c</span><span style="font-size:12pt;font-family:宋体;">的标志后存入库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（5）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中找出所有这样的案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">，它们和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">的相似程度至多不大于</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">的相似程度，所有这些</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">的匹配记录要扣分；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（6）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中删除记录分数小于某个规定值的所有案例；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（7）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">如果测试集的案例已经用完，则算法结束，否则转（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>1</span><span style="font-size:12pt;font-family:宋体;">）；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（8）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中任选一个案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">，转到（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>4</span><span style="font-size:12pt;font-family:宋体;">）；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（9）<span style='font-family:"Times New Roman";font-style:normal;font-variant:normal;font-weight:normal;font-size:7pt;line-height:normal;font-size-adjust:none;font-stretch:normal;'>&nbsp;&nbsp;&nbsp; </span></span></span><span style="font-size:12pt;font-family:宋体;">从库</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>S</span><span style="font-size:12pt;font-family:宋体;">中找出所有这样的案例</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">，它们和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">的相似程度至少不亚于</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t</span><span style="font-size:12pt;font-family:宋体;">的相似程度；</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p style="margin-left:57pt;text-indent:-36pt;line-height:22pt;" class="MsoNormal"><!--[if !supportLists]--><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>（10）</span></span><span style="font-size:12pt;font-family:宋体;">转到（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>7</span><span style="font-size:12pt;font-family:宋体;">）。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font><!--[endif]--></p>
-<p><font size="3"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  7、 </font></p>
-<p><font size="3"><span style="font-size:12pt;line-height:173%;font-family:宋体;">基于规则的推理</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span></font></p>
-<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">基于规则推理（</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">）子系统是一个简化的专家系统。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">子系统由事实库和规则库组成，规则库中存放由专家经验中提取出来的专家规则，以产生式表示；事实库是由推理机通过人机界面从用户的输入中提取出来的事实，以命题逻辑表示。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p align="left" style="text-align:left;text-indent:21pt;line-height:22pt;" class="MsoNormal"><font size="3"><span style="font-size:12pt;font-family:宋体;">例如，和上面讨论的</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>case6</span><span style="font-size:12pt;font-family:宋体;">相关的规则有&ldquo;</span><span style="font-size:12pt;font-family:楷体_GB2312;">使用导电橡胶、衬垫之类的屏蔽材料时，不但要保证接触面上的良好的导电性（接触面去除所有漆），而且还要保证一定的压缩量。&rdquo;</span><span style="font-size:12pt;font-family:宋体;">，可以用产生式规则表述如下：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";color:rgb(0,176,80);'></span></font></p>
-<p align="left" style="margin-left:21pt;text-align:left;line-height:22pt;" class="MsoNormal"><font size="3"><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>Shielding(product, conductive_tape) </span><span style="font-size:12pt;font-family:宋体;">&or;</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> Shielding(product, condutive_gasket) =&gt; Wipe_off(interface, lacquer) </span><span style="font-size:12pt;font-family:宋体;">&and;</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> (Compress(conductive_tape) </span><span style="font-size:12pt;font-family:宋体;">&or;</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> Compress(conductive_ gasket))</span></font></p>
-<p><font size="3"><span style="font-size:12pt;font-family:宋体;">&nbsp;&nbsp; </span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的推理采用不确定性推理。不确定推理包括前提条件的不确定性、结论的不确定性以及推理过程的不确定性。根据电磁兼容知识的特点，必须综合利用这三种不确定性才能比较确切的模拟电磁兼容专家的推理过程。不确定推理的通用表示方法为</span><sup><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>[20]</span></sup><span style="font-size:12pt;font-family:宋体;">：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IF</span></strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> [(p<sub>1</sub>, f<sub>1</sub>, t<sub>1</sub>) <strong>AND</strong> (p<sub>2</sub>, f<sub>2</sub>, t<sub>2</sub>) <strong>AND</strong> &hellip; <strong>AND</strong> (p<sub>m</sub>, f<sub>m</sub>, t<sub>m</sub>)]</span></font></p>
-<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; THEN</span></strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> [((q<sub>1</sub>, g<sub>1</sub>, s<sub>1</sub>), (q<sub>2</sub>, g<sub>2</sub>, s<sub>2</sub>)&hellip;)] <strong>WITH CF</strong>(R)</span></font></p>
-<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">其中，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>p<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">表示模糊前提条件，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>q<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">表示模糊结论及动作，</span><strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CF</span></strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>(R)</span><span style="font-size:12pt;font-family:宋体;">为可信度，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>f<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">是表达前件的可能性分布，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>t<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">是前件的确信程度，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>g<sub>i</sub></span><span style="font-size:12pt;font-family:宋体;">是表达结论的可能性分布，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>s<sub>1</sub></span><span style="font-size:12pt;font-family:宋体;">是结论的确信程度。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">&nbsp;&nbsp;&nbsp; 对于前件，可以采用表达方案：</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:12pt;"><!--[if !vml]--></span></span><span style="font-family:宋体;"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/p.JPG" alt="" />,<span style="font-style:italic;">p</span></span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--></span></span><span style="font-size:12pt;font-family:宋体;">为模糊命题，<span style="font-style:italic;">x</span></span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:3pt;"><!--[endif]--></span></span><span style="font-size:12pt;font-family:宋体;">为对象名，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>A</span><span style="font-size:12pt;font-family:宋体;">是</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:3pt;"><!--[if !vml]--></span></span><span style="font-size:12pt;font-family:宋体;"><span style="font-style:italic;">x</span>的属性名，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>D</span><span style="font-size:12pt;font-family:宋体;">是确定性状态表达，</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--></span></span><span style="font-size:12pt;font-family:宋体;">是</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:12pt;"><!--[if !vml]--></span></span><span style="font-size:12pt;font-family:宋体;"><span style="font-style:italic;">p</span>的相应的确定性命题，</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:3pt;"><!--[if !vml]--><img height="16" width="9" src="/DOCUME~1/ADMINI~1/LOCALS~1/Temp/msohtmlclip1/01/clip_image021.gif" alt="" /><!--[endif]--></span></span><span style="font-size:12pt;font-family:宋体;">是命题的不确定性度量。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">例如，某模糊命题为：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:楷体_GB2312;">如果为感应耦合</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>(</span><span style="font-size:12pt;font-family:楷体_GB2312;">可信度</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>0.9)</span><span style="font-size:12pt;font-family:楷体_GB2312;">，且电路频率很高</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>(</span><span style="font-size:12pt;font-family:楷体_GB2312;">模糊数</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>0.8)</span><span style="font-size:12pt;font-family:楷体_GB2312;">，则耦合为容性耦合</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>(</span><span style="font-size:12pt;font-family:楷体_GB2312;">可信度</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>0.7)</span><span style="font-size:12pt;font-family:楷体_GB2312;">。</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">则该命题可以表述为：</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p style="line-height:22pt;" class="MsoListParagraph"><font size="3"><strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IF</span></strong><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'> [(p<sub>1</sub>,0.9) <strong>AND</strong> (p<sub>2</sub>,0.8)] <strong>THEN</strong>[(q<sub>1</sub>, 0.7)] <strong>WITH CF</strong>(R)</span></font></p>
-<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">其中，<img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/p1.JPG" alt="" /></span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--><!--[endif]--></span></span><span style="font-family:宋体;">，<img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/p2.JPG" alt="" /></span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--><!--[endif]--></span></span><span style="font-family:宋体;">，</span><span lang="EN-US" style='font-family:"Times New Roman", "serif";'></span></font></p>
-<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3"><span lang="EN-US" style='font-family:"Times New Roman", "serif";'><span style="position:relative;top:5pt;"><!--[if !vml]--></span></span><span style="font-family:宋体;"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/q1.JPG" alt="" />，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>R</span><span style="font-size:12pt;font-family:宋体;">为根据不确定推理理论计算出的整个命题的可信度。</span></font></p>
-<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3">&nbsp;&nbsp;&nbsp;&nbsp; 8、 </font></p>
-<p><font size="3"><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;line-height:173%;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;line-height:173%;font-family:宋体;">的综合机制</span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span> <span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-size:12pt;font-family:宋体;"><br /></span></font></p>
-<p style="text-indent:0;line-height:22pt;" class="MsoListParagraph"><font size="3"><span style="font-size:12pt;font-family:宋体;">&nbsp;&nbsp; 当目标案例和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">案例库中的源案例的相似度低于阈值时，启用</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">。如果利用</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">能够推导出结果，则将</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的结论作为最终诊断结果，将</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">的结论作为建议一同提交给用户；如果由于规则的不完整</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">无法推导出结论，则将</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">的结论作为诊断结果提交给用户，但此时必须注明该结论的可信度（可信度可以用目标案例和源案例的相似度表示）。</span></font></p>
-<p><font size="3"><span style="font-size:12pt;font-family:宋体;"></span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/05/27/logic-parser-result">逻辑表达式词法分析器分析结果的显示</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-05-27</strong> with tags <a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 上篇博客文章《<a href="void(0);/*1211894183336*/"><span style="font-family:宋体;">简易逻辑表达式词法分析器</span></a>》讲到设计了一个逻辑表达式词法分析器，这次以那个词法分析器作为后端，利用VC搭建前端界面，展示一下分析效果。</p>
-<p><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/词法分析器结果.JPG" alt="" /></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 分析结果以树的形式表示：同一级节点表示具有相同的等级，参数比它的谓词的等级要高，比如Missile(x)中Missile等级为0级，x为1级。分析之后各个节点存储在Parser.list中，可以根据该链表的节点的level属性将各节点插入树种的相应位置。<br />&nbsp;&nbsp;&nbsp;&nbsp; 分析以上逻辑表达式可知，各个节点的等级如下：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Missile&nbsp; x&nbsp; AND&nbsp; Owns&nbsp; Nono&nbsp; Sub&nbsp; x&nbsp; =&gt;&nbsp; Sells&nbsp; West&nbsp; x&nbsp; Nono<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; 2&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1<br />&nbsp;&nbsp;&nbsp;&nbsp; 可见，利用堆栈来辅助将节点插入树中是最理想的方法。思路如下：将树的TVI_ROOT压栈；若当前节点的等级大于其前一个节点，将前一个节点压栈；若当前节点等级小于前一个节点，出栈前一节点等级 和&nbsp; 当前节点等级之差次；若当前节点等级等于前一节点等级，既不压栈也不出栈。每个当前节点的父节点为栈顶元素。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 源代码如下：</p>
-<div style="border:.5pt solid windowtext;padding:4px 5.4pt;background:rgb(230,230,230) none repeat scroll 0 0;-moz-background-clip:-moz-initial;-moz-background-origin:-moz-initial;width:95%;">
-<div><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><span style="color:rgb(0,0,255);">void</span><span style="color:rgb(0,0,0);">&nbsp;CPPageFaultLogicExpression::OnBnClickedButtonParse()<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBlockStart.gif" alt="" /><img align="top" style="display:none;" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedBlock.gif" alt="" /></span><span style="border:1px solid rgb(128,128,128);background-color:rgb(255,255,255);display:none;" id="_58_1515_Closed_Text">...</span><span id="_58_1515_Open_Text"><span style="color:rgb(0,0,0);">{<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;TODO:&nbsp;在此添加控件通知处理程序代码</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;UpdateData(TRUE);<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,0,255);">if</span><span style="color:rgb(0,0,0);">(m_strLogicExpression</span><span style="color:rgb(0,0,0);">==</span><span style="color:rgb(0,0,0);">L</span><span style="color:rgb(0,0,0);">&quot;&quot;</span><span style="color:rgb(0,0,0);">)<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockStart.gif" alt="" /><img align="top" style="display:none;" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedSubBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="border:1px solid rgb(128,128,128);background-color:rgb(255,255,255);display:none;" id="_137_168_Closed_Text">...</span><span id="_137_168_Open_Text"><span style="color:rgb(0,0,0);">{<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MessageBox(L</span><span style="color:rgb(0,0,0);">&quot;</span><span style="color:rgb(0,0,0);">请输入逻辑表达式！</span><span style="color:rgb(0,0,0);">&quot;</span><span style="color:rgb(0,0,0);">);<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockEnd.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;}</span></span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,0,255);">else</span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockStart.gif" alt="" /><img align="top" style="display:none;" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedSubBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="border:1px solid rgb(128,128,128);background-color:rgb(255,255,255);display:none;" id="_177_1499_Closed_Text">...</span><span id="_177_1499_Open_Text"><span style="color:rgb(0,0,0);">{<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_parser.Parse((wstring)m_strLogicExpression);&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;进行词法分析</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_bIsParsed</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">TRUE;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockStart.gif" alt="" /><img align="top" style="display:none;" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedSubBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="border:1px solid rgb(128,128,128);background-color:rgb(255,255,255);display:none;" id="_261_284_Closed_Text">/**/</span><span id="_261_284_Open_Text"><span style="color:rgb(128,128,128);">///</span><span style="color:rgb(0,128,0);">/&nbsp;向词法分析树种添加分析结果&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(128,128,128);">///</span><span style="color:rgb(0,128,0);">/</span><span style="color:rgb(128,128,128);"></span></span><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m_tLexer.DeleteAllItems();&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;清除所有节点</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NodeList_It&nbsp;it</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">m_parser.list.begin();<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NodeList_It&nbsp;tmp_it</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">it;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wchar_t&nbsp;tmp[</span><span style="color:rgb(0,0,0);">128</span><span style="color:rgb(0,0,0);">];<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wcscpy(tmp,it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">content.c_str());<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stack</span><span style="color:rgb(0,0,0);">&lt;</span><span style="color:rgb(0,0,0);">HTREEITEM</span><span style="color:rgb(0,0,0);">&gt;</span><span style="color:rgb(0,0,0);">&nbsp;st;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;定义堆栈</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TVINSERTSTRUCT&nbsp;tvInsert;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tvInsert.hParent&nbsp;</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">&nbsp;TVI_ROOT;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tvInsert.hInsertAfter&nbsp;</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">&nbsp;TVI_LAST;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tvInsert.item.mask&nbsp;</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">&nbsp;TVIF_TEXT;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tvInsert.item.pszText&nbsp;</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">&nbsp;tmp;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HTREEITEM&nbsp;hcur</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">TVI_ROOT;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;st.push(hcur);<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hcur</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">m_tLexer.InsertItem(</span><span style="color:rgb(0,0,0);">&amp;</span><span style="color:rgb(0,0,0);">tvInsert);&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;插入根节点</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HTREEITEM&nbsp;hprev;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hprev</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">hcur;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;level=0,max_level=0;</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it</span><span style="color:rgb(0,0,0);">++</span><span style="color:rgb(0,0,0);">;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,0,255);">for</span><span style="color:rgb(0,0,0);">(it;it</span><span style="color:rgb(0,0,0);">!=</span><span style="color:rgb(0,0,0);">m_parser.list.end();it</span><span style="color:rgb(0,0,0);">++</span><span style="color:rgb(0,0,0);">)<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockStart.gif" alt="" /><img align="top" style="display:none;" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedSubBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="border:1px solid rgb(128,128,128);background-color:rgb(255,255,255);display:none;" id="_846_1474_Closed_Text">...</span><span id="_846_1474_Open_Text"><span style="color:rgb(0,0,0);">{<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wcscpy(tmp,it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">content.c_str());<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,0,255);">if</span><span style="color:rgb(0,0,0);">(it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">level&nbsp;</span><span style="color:rgb(0,0,0);">&gt;</span><span style="color:rgb(0,0,0);">&nbsp;tmp_it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">level)&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;当前节点深度大于前一节点时，前一节点所在的树的位置入栈</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockStart.gif" alt="" /><img align="top" style="display:none;" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedSubBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="border:1px solid rgb(128,128,128);background-color:rgb(255,255,255);display:none;" id="_952_1042_Closed_Text">...</span><span id="_952_1042_Open_Text"><span style="color:rgb(0,0,0);">{<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;st.push(hprev);<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hcur</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">m_tLexer.InsertItem(tmp,hprev,TVI_LAST);&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;插入新的节点</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockEnd.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span></span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,0,255);">else</span><span style="color:rgb(0,0,0);">&nbsp;</span><span style="color:rgb(0,0,255);">if</span><span style="color:rgb(0,0,0);">(it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">level&nbsp;</span><span style="color:rgb(0,0,0);">&lt;</span><span style="color:rgb(0,0,0);">&nbsp;tmp_it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">level)&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;当前节点深度小于前一节点时，根据两节点深度之差将保存的节点出栈</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockStart.gif" alt="" /><img align="top" style="display:none;" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedSubBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="border:1px solid rgb(128,128,128);background-color:rgb(255,255,255);display:none;" id="_1120_1292_Closed_Text">...</span><span id="_1120_1292_Open_Text"><span style="color:rgb(0,0,0);">{<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,0,255);">int</span><span style="color:rgb(0,0,0);">&nbsp;level</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">tmp_it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">level;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,0,255);">while</span><span style="color:rgb(0,0,0);">(it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">level&nbsp;</span><span style="color:rgb(0,0,0);">&lt;</span><span style="color:rgb(0,0,0);">&nbsp;level</span><span style="color:rgb(0,0,0);">--</span><span style="color:rgb(0,0,0);">)<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockStart.gif" alt="" /><img align="top" style="display:none;" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedSubBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="border:1px solid rgb(128,128,128);background-color:rgb(255,255,255);display:none;" id="_1186_1207_Closed_Text">...</span><span id="_1186_1207_Open_Text"><span style="color:rgb(0,0,0);">{<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;st.pop();<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockEnd.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span></span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hprev</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">st.top();<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hcur</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">m_tLexer.InsertItem(tmp,hprev,TVI_LAST);&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;插入新的节点</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockEnd.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span></span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:rgb(0,0,255);">else</span><span style="color:rgb(0,0,0);">&nbsp;</span><span style="color:rgb(0,0,255);">if</span><span style="color:rgb(0,0,0);">(it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">level&nbsp;</span><span style="color:rgb(0,0,0);">==</span><span style="color:rgb(0,0,0);">&nbsp;tmp_it</span><span style="color:rgb(0,0,0);">-&gt;</span><span style="color:rgb(0,0,0);">level)&nbsp;</span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;当前节点深度等于前一节点时，根据栈顶元素插入新节点</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockStart.gif" alt="" /><img align="top" style="display:none;" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedSubBlock.gif" alt="" /></span><span style="color:rgb(0,0,0);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="border:1px solid rgb(128,128,128);background-color:rgb(255,255,255);display:none;" id="_1365_1440_Closed_Text">...</span><span id="_1365_1440_Open_Text"><span style="color:rgb(0,0,0);">{<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hprev</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">st.top();<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hcur</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">m_tLexer.InsertItem(tmp,hprev,TVI_LAST);<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockEnd.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span></span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hprev</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">hcur;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tmp_it</span><span style="color:rgb(0,0,0);">=</span><span style="color:rgb(0,0,0);">it;<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockEnd.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</span></span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" /><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UpdateData(FALSE);<br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedSubBlockEnd.gif" alt="" />&nbsp;&nbsp;&nbsp;&nbsp;}</span></span><span style="color:rgb(0,128,0);">//</span><span style="color:rgb(0,128,0);">&nbsp;end&nbsp;of&nbsp;else</span><span style="color:rgb(0,128,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBlockEnd.gif" alt="" /></span><span style="color:rgb(0,0,0);">}</span></span></div>
-</div>
-<p>&nbsp;&nbsp; PS1:&nbsp; 当初考虑到中文的支持，利用wstring定义节点内容，现在发现是个错误，在字符转换的过程中很是麻烦，耽误了不少时间，走了不少弯路。<br />&nbsp; PS2: 也许因为我对STL不是很熟悉，感觉比较麻烦，不知道如何被C++标准委员会接纳的？</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -726,6 +1049,9 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
             <li><a href="/page20">20</a></li>
             
         
+            <li><a href="/page21">21</a></li>
+            
+        
     
 
     
@@ -771,11 +1097,11 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
     
         <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
     
@@ -789,17 +1115,13 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
     
-        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
-    
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
     
         <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
-    
-        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
     
         <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
     
@@ -833,13 +1155,13 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
     
-        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
         <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
     
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
     
         <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
     
@@ -854,8 +1176,6 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
         <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -889,7 +1209,7 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -897,7 +1217,7 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     
@@ -913,6 +1233,10 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
+    
   
 
 
@@ -927,6 +1251,12 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
         
         <h3>Recent Posts</h3>
         <ul>
+        
+          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
+            Coin Change Problem</a></li>
+        
+          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
+            Text Justification</a></li>
         
           <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
             Sort Colors</a></li>
@@ -951,12 +1281,6 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
         
           <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
             BACI Simple Install and Compile Guide</a></li>
-        
-          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
-            Dense Trajectory Notes</a></li>
-        
-          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
-            Parallelize mex file in Matlab</a></li>
         
         </ul>
         

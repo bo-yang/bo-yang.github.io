@@ -1,9 +1,6 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -23,6 +20,13 @@
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
   -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Config({
+    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  	});
+  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -71,6 +75,104 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/09/15/solaris-cpu-usage">solaris下查看进程的cpu占用率</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2009-09-15</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;</p>
+<h3>solaris下查看某进程的资源占用率及其它</h3>
+<p>
+<span></p>
+<div class="t_msgfontfix"><span style="font-size:x-small;"><br />
+</span>
+<p><span style="font-size:small;"><span style="color:#000000;">1. &nbsp; &nbsp; # ps -eo pid,pcpu,args | sort +1n&nbsp;</p>
+<p>该命令输出当前系统进程的pid, cpu占用率及命令描述，并以pcpu来排序(尝试过，没有成功，据说在RedHat上可行的。)</p>
+<p>2. top -p &lt;pid&gt;</span></span></p>
+<p><span style="font-size:x-small;"><br /></span></p>
+<p><span style="font-size:small;"><span style="color:#000000;">不同的系统top的设置不尽相同，因此使用时需要注意。</p>
+<p>3. prstat -p &lt;pid&gt;</span></span></p>
+<p><span style="font-size:x-small;"><br /></span></p>
+<p><span style="font-size:small;"><span style="color:#000000;">prstat 检查系统中进程占用CPU，内存等情况。可以代替top，不过好像solaris5.8之后才有，5.7上就没有。</p>
+<p>4. 查看IO情况 iostat</span></span></p>
+<p><span style="font-size:small;"><span style="color:#000000;"><br />iostat -x -I 1 若系统明显变慢，也可用此命令检查磁盘I/O情况</span></span></p>
+<p><span style="font-size:small;"><span style="color:#000000;"><br />5. 查看CPU 可以用 psrinfo -v</p>
+<p>查看详细信息</p>
+<p>/usr/platform/sun4u/sbin/prtdiag -v</p>
+<p>&nbsp;6. sar</span></span></p>
+<p><span style="font-size:small;"><span style="color:#000000;">sar -u 3 20 若系统明显变慢，用此命令检查cpu占用率<br />sar &ndash;r 3 20 用此命令检查内存使用情况</span></span></p>
+</div>
+<p></span></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/09/03/fedora11-sound-card">Fedora11声卡不能外放</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2009-09-03</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        </p>
+<p>这些天一直苦恼于在Thinkpad R61上新装的Fedora声音无法外放，上网搜索了各种各样的方法，结果全都未果。</p>
+<p>&nbsp;</p>
+<p>昨晚怀疑是Linux Kernel的问题，因为Kernel不是最新的，于是下载了最新的Kernel，编译了一晚上才装上。</p>
+<p>&nbsp;</p>
+<p>今晚上再次对下载的ALSA源代码编译，由于是最新的Kernel，编译过程中遇到了一些问题，好在或者是缺少一些头文件(version.h,autoconf.h)或者是某个文件不存在。解决方法就是通过locate -e &lt;source_file&gt;找到系统中已经有的源文件，通过which找到可执行文件，然后在目标目录创建符号链接，编译通过。</p>
+<p>&nbsp;</p>
+<p>装完ALSA重启之后，再次通过alsamixer -c 0对alsa驱动进行设置。结果这时发现一直按向右的方向键会一直有新的item出现，最后一个是speaker，这些是我之前使用alsamixer时所没有发现的，而这个speaker恰恰就是我一直苦恼的！那个speaker项默认是MM，mute也即静音的，必须按M键将其unmute.设好之后，声卡终于可以外放了！</p>
+<p>&nbsp;</p>
+<p>尽管在网上找到的很多资料没有真正起作用，但还是将其中一些至今仍然有效的摘抄如下，以飨读者。</p>
+<p>&nbsp;</p>
+<p>**********************************************************************************</p>
+<p>原文链接：<a href="http://www.thinkwiki.org/wiki/Installing_Ubuntu_7.04_(Feisty_Fawn)_on_a_ThinkPad_T61#ALSA_driver_update_.28hard_fix.2C_recommended_for_advanced_users.29">http://www.thinkwiki.org/wiki/Installing_Ubuntu_7.04_(Feisty_Fawn)_on_a_ThinkPad_T61#ALSA_driver_update_.28hard_fix.2C_recommended_for_advanced_users.29</a></p>
+<p>&nbsp;</p>
+<p>ALSA driver update (hard fix, recommended for advanced users)</p>
+<p>&nbsp;</p>
+<p>Note: This section assumes a high level of technical proficiency. Please fix it.</p>
+<p>At www.asla-project.org, did you download only alsa-driver-1.0.14? That and alsa-lib-1.0.14a?</p>
+<p>Download alsa-driver, alsa-kernel, alsa-lib, and alsa-utils, according to http://alsa.opensrc.org/index.php/AlsaCVS. Other sources, however, say only the driver is necessary. Perhaps alsa-project.org simply recommends the other two?</p>
+<p>&nbsp;</p>
+<p>How did you compile it from source? How did you add the patch?</p>
+<p>&nbsp;</p>
+<p>In short, please explain how you did these things in addition to just telling us what you did. I&acute;m not trying to be rude but seriously, not all Linux users are programmers ;). Thanks. SteveSims 22:19, 11 August 2007 (UTC)</p>
+<p>After upgrading to 1.0.14 I still had no sound, and this took about a week to solved (though it was so sadly obvious though). Just upgrading to alsa 1.0.14 will not be enough, there were a few patches released right after the release that fix the Thinkpad's. The reason I missed this was because it was the same day so the release of 1.0.14!</p>
+<p>VERY SIMPLE METHOD OF MAKING SOUND WORK [<a href="http://forums.fedoraforum.org/showthread.php?t=159516&amp;page=1&amp;pp=15">http://forums.fedoraforum.org/showthread.php?t=159516&amp;page=1&amp;pp=15</a>] Just follow the instructions step by step, except for two small things: When doing "cp ../patch_analog.c alsa-driver-1.0.14/alsa-kernel/pci/hda/" use "cp ../patch_analog.c alsa-kernel/pci/hda/" instead. Also, when you get to the part about modifying the /etc/modprobe.conf file, it doesn't exist in ubuntu. Adding "options snd-hda-intel index=0 model=thinkpad" to any file (even one you make yourself) inside /etc/modprobe.d should work. I personally added it to the options file, and it works fine.(这种情况在Fedora 11中也是如此，解决方法也应是在/etc/modprobe.d/下自己创建一个*.conf文件，或者添加到dist.conf中去。)</p>
+<p>&nbsp;</p>
+<p><span> </span>-credit for the guide goes to ciphermonk, and credit to the small changes needed to make this work on ubuntu go to my friend John.</p>
+<p><span> </span>-hotkeys control mic volume, not speaker volume for some reason. I do not know how to fix this -- If you're using Gnome, from the System menu, click Preferences -&gt; Sound, and in the Default Mixer Tracks field, choose PCM.(在Fedora 11的Sound中没有这个选项。)</p>
+<p>&nbsp;</p>
+<p>-this fix should provide sound for both headphones and speakers.</p>
+<p>-this edit by fatalchaos</p>
+<p>&nbsp;</p>
+<p>First make sure these packages are installed (System -&gt; Administration -&gt; Synaptic Package Manager) : automake, autoconfig, cvs, libtool, python-dev, build-essential</p>
+<p>&nbsp;</p>
+<p>Then download the source code to the alsa-driver and apply these patches: (links to the revisions)</p>
+<p>&nbsp;</p>
+<p>Fix Oops with AD1984 thinkpad model (http://hg.alsa-project.org/alsa-kernel/rev/958b39f3e8dd)</p>
+<p>Fix AD1984 basic model (http://hg.alsa-project.org/alsa-kernel/rev/47ca87407c84)</p>
+<p>Fix Thinkpad X61/T61 outputs (http://hg.alsa-project.org/alsa-kernel/rev/ca37aeeeb0ea)</p>
+<p>**********************************************************************************************</p>
+<p>查看安装了哪些alsa的模块：<span> </span><strong>rpm -qa|grep alsa</strong></p>
+<p>查看声卡信息：<span><strong> </strong></span><strong>lspci|grep Audio</strong></p>
+<p>另外就是常用的alsamixer和amixer。</p>
+<p>***********************************************************************************************</p>
+<p>还有就是其他的针对Fedora 10之前的版本的资料基本上都已经过时了，大多从fedora中移除了(比如alsaconf就已经不支持了)。貌似Fedora 11中只能用alsamixer来设置声卡，Preferences -&gt; Sound的功能非常弱。</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -725,56 +827,6 @@ I) ldconfig</p>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/05/27/check-process-parameters-in-unix">在UNIX/Linux下查看某个进程的详细参数</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2009-05-27</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>如果要在UNIX/Linux下查看某个进程的详细参数， 可以用命令：</p>
-<p>&nbsp;</p>
-<pre>          <strong><span style="color:#ff0000;"> </span><span style="font-family:mceinline;"><span style="font-family:mceinline;">ps -axuww|grep &lt;process&gt;</span></span></strong></pre>
-<p>但需要注意的是，在Solaris下，存在两个版本的ps:一是/usr/bin/ps；一是/usr/bin/ps。只有/usr/bin/ps可以用于上述命令。</p>
-<pre><p>"/usr/ucb/ps" 是从BSD UNIX中继承而来的，而/usr/bin/ps从AT&amp;T SVR4继承而来的。二者之间存在较大区别， 如果有些</p><p>参数在某个ps中不能应用，可以考虑换用另外一个。</p><p>&nbsp;</p><p>&nbsp;</p><p>本文参考了如下网页：</p><p><a href="http://www.sunmanagers.org/pipermail/summaries/2006-March/007182.html"><span style="color:#000000;"><span style="text-decoration:none;">http://www.sunmanagers.org/pipermail/summaries/2006-March/007182.html</span></span></a></p>
-</pre>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/05/15/swine-flew-in-us">在美国体验猪流感</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2009-05-15</strong> with tags <a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
-<div><span style="font-size:x-small;"><br />
-</span>
-<pre style="text-align:center;"><strong><span style="font-family:mceinline;">在美国体验猪流感</span></strong></pre>
-<p><span style="font-family:mceinline;"><br />
-赴美之前，很多人就提醒我美国的猪流感正流行，而且我所要去的Illinois更是重灾区。我自己也很担心，尤其是当中国也有了猪流感疑似病例之后。</span><span style="font-family:mceinline;"><br />
-</span></p>
-<div><span style="font-size:x-small;"><span style="font-family:mceinline;">一进首都机场就已经感受到了人们的恐惧，很多中国人都带着口罩。因为考虑到需要坐12.5个小时的飞机，而且我相信在中国的外国人也应该没有收到感染，因此我就没有戴口罩（其实是拿了两个的，放在包里一直没有拿出来）。</span></span></div>
-<div><span style="font-size:x-small;"><span style="font-family:mceinline;">在飞机上，发现坐我后面的一个哥们一直带着口罩，睡觉的时候都没有摘下来，实在是太佩服他的耐心了。同时我发现没有一个外国人戴口罩。 来到芝加哥下了飞机，入海关，直到出了机场，又在机场外面等了同事一个小时，也没有发现一个人戴口罩&mdash;&mdash;即使是原来戴口罩的中国人，也不得不把口罩摘了下来，因为没人戴口罩。可以想见，如果谁胆敢带着口罩入海关，搞不好会被海关大叔/大婶给盘问甚至reject的&mdash;&mdash;海关人员都是很拽的样子。</span></span></div>
-<div><span style="font-family:'Courier New';color:#666666;"><span style="font-family:mceinline;">昨晚在 一个同事的带领下去了Naperville的一个小教堂进行Church Talk(美国退休的老头老太太自愿在教堂工作，每天晚上和外国人交谈是他们工作的一部分，叫做Church Talk；话题可以海阔天空，不限于宗教，尽管他们和你谈话的最终目的是希望你入教，但绝大多数中国人去那里的最初目的是练口语)。几个老头老太太一见到我得知我是刚刚从中国来的，就问我中国人怎么看美国的猪流感？为什么那么多中国人如此的害怕美国的猪流感？我说几年前中国刚刚经历过一场SARS，很多人在那场瘟疫中死掉了。中国人现在对猪流感心存忌惮也是有情可原的。而出乎我的预料的是，几个老头竟然告诉我只要勤洗手和保持充足的睡眠，猪流感是完全不必担心的。这些我在国内的时候就知道，但是在几个美国老头的口中说出，仍让我很诧异：连这样的匹夫匹妇对于猪流感的认识都如此轻松，美国人的自信以及新闻媒体在美国的重要性可见一斑。</span></span></div>
-<div><span style="font-family:'Courier New';color:#666666;"><br /></span></div>
-</div>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -850,6 +902,9 @@ I) ldconfig</p>
             <li><a href="/page20">20</a></li>
             
         
+            <li><a href="/page21">21</a></li>
+            
+        
     
 
     
@@ -895,11 +950,11 @@ I) ldconfig</p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
     
         <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
     
@@ -913,17 +968,13 @@ I) ldconfig</p>
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
     
-        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
-    
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
     
         <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
-    
-        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
     
         <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
     
@@ -957,13 +1008,13 @@ I) ldconfig</p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
     
-        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
         <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
     
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
     
         <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
     
@@ -978,8 +1029,6 @@ I) ldconfig</p>
         <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1013,7 +1062,7 @@ I) ldconfig</p>
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -1021,7 +1070,7 @@ I) ldconfig</p>
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     
@@ -1037,6 +1086,10 @@ I) ldconfig</p>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
+    
   
 
 
@@ -1051,6 +1104,12 @@ I) ldconfig</p>
         
         <h3>Recent Posts</h3>
         <ul>
+        
+          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
+            Coin Change Problem</a></li>
+        
+          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
+            Text Justification</a></li>
         
           <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
             Sort Colors</a></li>
@@ -1075,12 +1134,6 @@ I) ldconfig</p>
         
           <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
             BACI Simple Install and Compile Guide</a></li>
-        
-          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
-            Dense Trajectory Notes</a></li>
-        
-          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
-            Parallelize mex file in Matlab</a></li>
         
         </ul>
         

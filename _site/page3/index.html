@@ -1,9 +1,6 @@
 
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <head>
   <title>Bo Yang | Bo's Blog</title>
   
@@ -23,6 +20,13 @@
   <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
   -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
+  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Config({
+    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+  	});
+  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -74,9 +78,135 @@
     
     <div class="main-container shadow">
       <div class="mainbody">
+        <h2><a href="/2012/12/06/simple-matlaboctave-commands-to-process-data">Simple Matlab/Octave Commands to Process Data</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2012-12-06</strong> with tags <a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>To load data in following format stored in a text file "read_pos' into Matlab/Octave, use commands<br />
+<code><br />
+    f=fopen('read_pos','r'); % open file<br />
+    a=textscan(f,'%s%d');  % read file<br />
+    y=a{2}; % a is a cell: a{1} stores read id, a{2} stores numbers.<br />
+</code><br />
+<br />
+Then data of the second column are stored in variable y.<br />
+<code><br />
+r12353.1 	2407054.5<br />
+r12361.1 	5328858.5<br />
+r12363.1 	2360272<br />
+r12368.1 	4726440.5<br />
+r12372.1 	2224001<br />
+r12373.1 	5165613.5<br />
+r12381.1 	501776<br />
+r12385.1 	3475398<br />
+r12394.1 	3376364<br />
+r12401.1 	2142875.5<br />
+r12411.1 	2191090.5<br />
+r12419.1 	1240590<br />
+r12420.1 	4903572<br />
+r12422.1 	767011.5<br />
+r12426.1 	3575915.5<br />
+r12429.1 	554956<br />
+r12433.1 	4786335<br />
+r12435.1 	3373955.5<br />
+r12442.1 	5363611.5<br />
+r12452.1 	1903660.5<br />
+r12454.1 	2784165<br />
+r12466.1 	5137479<br />
+r12470.1 	592191<br />
+</code><br />
+<br />
+If there are only numbers stored in file "read_pos", following commands should be used:<br />
+<code><br />
+    f=fopen('read_pos','r'); % open file<br />
+    a=textscan(f,'%s%d');  % read file<br />
+    y=cell2mat{a}; % convert cell a to vector<br />
+    size(y) % check the size<br />
+</code></p>
+<p>
+To plot the distribution of all the numbers, you can:<br />
+<code><br />
+    x=zeros(size(y));<br />
+    plot(y,x,'bo');<br />
+</code><br />
+<br />
+If another data set z is also loaded and you want to plot y and z in the same graph, you can:<br />
+<code><br />
+    figure<br />
+    x=zeros(size(y));<br />
+    plot(y,x,'bo');<br />
+    hold on<br />
+    x=ones(size(z));<br />
+    plot(z,x,'r+');<br />
+</code></p>
+<p>
+To annotate and scale the graph, use commands;<br />
+<code><br />
+    xlabel('AMD Data k-mer Occurrances');<br />
+    title('GPD Classification of AMD k-mers')<br />
+    legend('Bin 1','Bin 2')<br />
+    axis([-5 5 0 10000]) % scale axes<br />
+</code></p>
+<p>A matlab function to plot multiple datasets:<br />
+<code><br />
+function result=plot_distr(varargin)</p>
+<p>nVarargs=length(varargin);</p>
+<p>marker={'bo' 'r+' 'k*' 'gs' 'y^' 'md' 'cp' 'bx' 'r.' 'k&gt;' 'gh' 'y&lt;&#039;};<br />
+figure<br />
+for k=1:nVarargs<br />
+	f=fopen(varargin{k},&#039;r&#039;);<br />
+	a=textscan(f,&#039;%d&#039;);<br />
+	y=cell2mat(a);<br />
+	x=zeros(size(y))+k;<br />
+	plot(y,x,marker{k});<br />
+	hold on<br />
+end<br />
+ylim([0-5*nVarargs 6*nVarargs]); % scale y-axis<br />
+</code></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2012/11/17/tips-about-regular-expression">Tips about Regular Expression</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2012-11-17</strong> with tags <a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <ol>
+<li>In Vim, greedy matching is used by default. In order to use non-greedy matching, you can use \{-}, or \{-n,m}, such as: :/Q.\{-0,200}[IL].\{-0,2000}FF.</li>
+<li>In Perl, default matching is also greedy. To use non-greedy matching, please change <code>*</code> , <code>+</code> , <code>?</code> , and<code>{}</code> into <code>*?</code> , <code>+?</code> , <code>??</code> , and <code>{}?</code> , respectively.</li>
+<li>To count the number of matching in Vim, you can use command ":%s/&lt;pattern&gt;//g". After get the number of matches, then execute ":u" to undo the changes.</li>
+<li>In Perl, to count the number of matching, you can use command: 
+<pre><code>my $number =()= $string =~ /\./gi;</code></pre>
+</li>
+</ol>
+<p>References:</p>
+<ol>
+<li>http://vimregex.com/</li>
+<li>http://stackoverflow.com/questions/1849329/is-there-a-perl-shortcut-to-count-the-number-of-matches-in-a-string</li>
+<li>http://docstore.mik.ua/orelly/perl/cookbook/ch06_16.htm</li>
+</ol>
+<p> </p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
         <h2><a href="/2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library">Calculate the CDF of Poisson Distribution with Boost C++ Library</a></h2>
         <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2012-11-05</strong> with tags <a href="/tags.html#boost-ref" rel="nofollow">boost</a>, <a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>, <a href="/tags.html#CDF-ref" rel="nofollow">CDF</a>
+          Posted by <strong>Bo Yang</strong> at <strong>2012-11-05</strong> with tags <a href="/tags.html#boost-ref" rel="nofollow">boost</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <a href="/tags.html#CDF-ref" rel="nofollow">CDF</a>
         </p>
         
         <div class="post_at_index thepost">
@@ -195,7 +325,7 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
       <div class="mainbody">
         <h2><a href="/2012/08/08/how-to-make-nic-bcm57780-work-in-scientific-linux">How to make NIC BCM57780 work in Scientific Linux?</a></h2>
         <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2012-08-08</strong> with tags <a href="/tags.html#Linux-ref" rel="nofollow">Linux</a>, <a href="/tags.html#NIC-ref" rel="nofollow">NIC</a>
+          Posted by <strong>Bo Yang</strong> at <strong>2012-08-08</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <a href="/tags.html#NIC-ref" rel="nofollow">NIC</a>
         </p>
         
         <div class="post_at_index thepost">
@@ -902,118 +1032,6 @@ boot</pre>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2012/04/21/briss-intro">Briss -- Crop the Margins of Your PDF Files</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2012-04-21</strong> with tags <a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p><span style="font-size:18px;">今天用iPad阅读一个PDF文档时，发现每页留白太多，字体特别小，在iBooks中每翻一页都要手动去缩放，实在是麻烦。于是搜索去掉PDF留白的方法。</span></p>
-<p><span style="font-size:18px;">先是寄希望于Linux系统自带的pdfcrop，结果尝试了各种选项后，发现PDF的size没有变，还是原来的8.5x8.9 inch。</span></p>
-<p><span style="font-size:18px;">后来搜索Ghostscript的用法，把papersize或者resolution强制改成希望的数&#20540;，仍然没有变化。郁闷！</span></p>
-<p><span style="font-size:18px;">再后来发现了网上的一个PDFcrop版本，也是用Perl写的，只是更加友好一点，尝试之后仍不奏效。自己上手用hardcode改为自己想要的结果，失败。不过在该tool中最大的发现就是<em> 1inch=28.3464567bp(dpi)</em>.</span></p>
-<p><span style="font-size:18px;">总结一晚上失败的经验就是：<strong>该PDF文档是扫描的图片转PDF&#26684;式，而不是文字直接转的，因此pdfcrop等工具无法发现并处理留白！</strong></span></p>
-<p><span style="font-size:18px;">最后在网上搜索PDF Margin Crop，无意中发现了<a href="http://sourceforge.net/projects/briss/">Briss</a>，抱着试试看的心态下载使用了一下，发现竟然能够识别图片转PDF的文字区域，拖动左上或右下脚上的蓝色正方形区域还可一手动选择保留的区域， Terrific！</span></p>
-<p><span style="font-size:18px;">使用方法就是下载<a href="http://sourceforge.net/projects/briss/">Briss</a>，解压缩，然后执行</span></p></p>
-<pre>java -jar briss-0.0.13.jar
-or
-java -jar briss-0.0.13.jar cropthis.pdf
-
-(The second line comes in handy if you want shortlinks for pdf editing) 
-</pre>
-<p>
-<span style="font-size:18px;">更详细的使用说明参见&nbsp;<a href="http://www.freewaregenius.com/2011/01/18/briss-crop-your-pdf-documents-using-a-visual-interface/" title="Briss: crop your PDF documents using a visual interface" rel="bookmark" style="font-family:'Myriad Pro', Calibri;line-height:22px;vertical-align:baseline;outline-style:none;outline-width:initial;outline-color:initial;background-color:transparent;border-width:initial;border-color:initial;color:rgb(34,34,34);border-style:none;margin:0;padding:0;">Briss:<br />
- crop your PDF documents using a visual interface</a><span style="color:rgb(68,68,68);font-family:'Myriad Pro', Calibri;line-height:22px;">。</span></span></p>
-<p></p>
-<p></p>
-<p></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2012/03/06/using-expect-here-document-in-shell-scripts-4">Using Expect Here Document in Shell Scripts</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2012-03-06</strong> with tags <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>, <a href="/tags.html#Expect-ref" rel="nofollow">Expect</a>, <a href="/tags.html#Here Document-ref" rel="nofollow">Here Document</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>Sometimes simple interactions are needed for Shell scripts. In this scenario, a here document written in Expect will work well. In following example, the output of Expect here document is assigned to KSH variable rcs_stat.<br />
-<P></p>
-<pre class="python">#!/bin/ksh
-
-autoload formatAPnum
-
-# Set the lab name, COOLLAB
-. $COOLXDIR/.netlabs
-# Get the RCS cell list
-set -A RCSs
-typeset -i nx=0
-cat $COOLXDIR/.coolcell2dcs | while read cell
-do
-	if [[ &quot;$cell&quot; = c* ]]
-	then
-		rcs=${cell%%$COOLLAB*}
-		RCSs[$nx]=${rcs#c}
-		nx=$nx+1
-	fi
-done
-
-# Check RCS status
-typeset -i loopCount=0
-rcs_cnt=${#RCSs[*]}
-B_server=$(formatAPnum $BserverAP)
-while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
-do
-	loopCount=${loopCount}+1
-
-	nx=0
-	while [ $nx -lt $rcs_cnt ]
-	do
-		rcs_stat=&quot;OOS&quot;
-		rcs_stat=$(
-expect - &lt;&lt;!
-log_user 0
-set timeout 20
-spawn $COOL_RSH ap$B_server TICLI
-send &quot;op:cell ${RCSs[$nx]}\r&quot;
-expect {
-	timeout {puts &quot;OOS\n&quot;}
-	&quot;*DL(S) DOWN&quot; {puts &quot;OOS\n&quot;}
-	&quot;*DL(S) UP&quot; {puts &quot;UP\n&quot;}
-}
-!
-		)
-
-		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
-		then
-			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
-			unset RCSs[$nx]
-		fi
-
-		nx=${nx}+1
-	done
-
-	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
-done
-
-coolprint - &quot;All RCSs are up.&quot;
-exit 0
-</pre>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1089,6 +1107,9 @@ exit 0
             <li><a href="/page20">20</a></li>
             
         
+            <li><a href="/page21">21</a></li>
+            
+        
     
 
     
@@ -1134,11 +1155,11 @@ exit 0
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>11</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>5</span></a>
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
     
         <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
     
@@ -1152,17 +1173,13 @@ exit 0
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
     
-        <a href="/tags.html#电磁兼容-ref" class="btn btn-mini">电磁兼容 <span>4</span></a>
-    
         <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>5</span></a>
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
     
         <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>88</span></a>
-    
-        <a href="/tags.html#网络/通信-ref" class="btn btn-mini">网络/通信 <span>1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
     
         <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
     
@@ -1196,13 +1213,13 @@ exit 0
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>6</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
     
-        <a href="/tags.html#Linux/UNIX-ref" class="btn btn-mini">Linux/UNIX <span>1</span></a>
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
         <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
     
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>1</span></a>
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
     
         <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
     
@@ -1217,8 +1234,6 @@ exit 0
         <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
     
         <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>6</span></a>
     
         <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
     
@@ -1252,7 +1267,7 @@ exit 0
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
     
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>3</span></a>
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
     
         <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
     
@@ -1260,7 +1275,7 @@ exit 0
     
         <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
     
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>1</span></a>
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
     
         <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
     
@@ -1276,6 +1291,10 @@ exit 0
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
     
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
+    
   
 
 
@@ -1290,6 +1309,12 @@ exit 0
         
         <h3>Recent Posts</h3>
         <ul>
+        
+          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
+            Coin Change Problem</a></li>
+        
+          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
+            Text Justification</a></li>
         
           <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
             Sort Colors</a></li>
@@ -1314,12 +1339,6 @@ exit 0
         
           <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
             BACI Simple Install and Compile Guide</a></li>
-        
-          <li><span>2014-01-10</span> &raquo; <a href="/2014/01/10/dense-trajectory-notes">
-            Dense Trajectory Notes</a></li>
-        
-          <li><span>2013-10-20</span> &raquo; <a href="/2013/10/20/parallel-mex-file-in-matlab">
-            Parallelize mex file in Matlab</a></li>
         
         </ul>
         
