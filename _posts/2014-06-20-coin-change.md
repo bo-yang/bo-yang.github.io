@@ -28,7 +28,7 @@ $$
 	\end{aligned} 
 $$
 
-Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination \(x_i\) of the row), then the smallest coin changes should be \(v/x_i\). 
+Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination \\(x_i\\) of the row), then the smallest coin changes should be \\(v/x_i\\). 
 
 Denom|Values
 -----|-----
