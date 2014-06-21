@@ -35,7 +35,7 @@ Denom|Values
 3|0 1 2 1 2 3 2 3 4 3 4 5 
 4|0 1 2 1 1 2 2 2 2 3 3 3 
 
-
+The bottom right number in above table is the smallest coin changes.
 
 	public class Coin {
 		public static int CoinChange(int value, int[] denom) {
