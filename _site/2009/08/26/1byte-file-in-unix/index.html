@@ -71,7 +71,7 @@
 <div class="row-fluid page-body">
   <div class="span11 left">
     <div class="main-container shadow">
-      <div class="mainbody thepost">
+	  <div class="mainbody thepost">
         <p>某同事用tcl和ksh写了一个程序，利用进行某项操作，如有错误就将错误信息写入某个文件中，写入方法是 2&gt;$stderr，然后判断该文件的大小，如果大于0，则认为有错误发生，报错。</p>
 <p>&nbsp;</p>
 <p>奇怪的是该程序一直不能成功执行，一直报错。同事逐行追踪他的代码，结果发现文件$stderr刚创建时大小为0，可过一会之后自己就会变成1byte. 然而打开查看时，该文件内容却是空的。后来用vi按照16进制打开(:%!xxd)，发现了0a。</p>
@@ -256,7 +256,8 @@ var linkwithin_site_id = 2140443;
           if (now_year != 2007) {
               $('#now_year').html('- ' + now_year);
           }
-        </script>
+	    </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 

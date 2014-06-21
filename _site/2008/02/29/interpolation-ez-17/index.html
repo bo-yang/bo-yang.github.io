@@ -71,7 +71,7 @@
 <div class="row-fluid page-body">
   <div class="span11 left">
     <div class="main-container shadow">
-      <div class="mainbody thepost">
+	  <div class="mainbody thepost">
         <p align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关于EZ-17探头系数修正的说明</p>
 <p>///// 电流探头EZ17测试结果修正&nbsp;/////<br />// 根据ROHDE&amp;SCHWARZ公司的手册，EZ17的测试结果需要<br />// 进行修正，加上转移电阻K。由手册给出的曲线(第二页)<br />// 和测试数据(第12页，表4-1),可知在对数坐标中，500KHz<br />// 以下可看作一条直线；500KHz～10MHz为一非线性变化段；<br />// 10MHz～200MHz为另一非线性变化段。据此，对测试数据进行<br />// 校正。以下所有拟合函数均为对数坐标系下的拟合函数。<br />//<br />// 20Hz～500KHz拟合函数为：<br />//&nbsp;&nbsp;p1=-19.1838*x-8.1953<br />// 500KHz～10MHz拟合函数为：<br />//&nbsp;&nbsp;p4=18.2253*x^4-31.3557*x^3+16.5565*x^2-6.6261*x-6.8<br />// 10MHz～20MHz拟合函数为：<br />//&nbsp;&nbsp;p0=-10<br />//&nbsp;20MHz～100MHz拟合函数为：<br />//&nbsp;&nbsp;p2=0.1157*x^2-0.0959*x-10.0711<br />// 100MHz～200MHz拟合函数为：<br />//&nbsp;&nbsp;p3=175.6*x^3-1044.5*x^2+2067.7*x-1371.9<br />//&nbsp;以上各式中，x为频率的对数，p为频率所对应的修正因子。<br />//</p>
 <p>&nbsp;</p>
@@ -250,7 +250,8 @@ var linkwithin_site_id = 2140443;
           if (now_year != 2007) {
               $('#now_year').html('- ' + now_year);
           }
-        </script>
+	    </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 

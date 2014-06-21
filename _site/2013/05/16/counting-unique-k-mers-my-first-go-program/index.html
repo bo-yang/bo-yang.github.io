@@ -71,7 +71,7 @@
 <div class="row-fluid page-body">
   <div class="span11 left">
     <div class="main-container shadow">
-      <div class="mainbody thepost">
+	  <div class="mainbody thepost">
         <p>Previously, I wrote a Perl program to count the number of unique k-mers. It is very convenient to implement it in Perl, because Perl supports hash-of-hashes(which could dynamically count distinct k-mers) and sorting hashes by value(which can easily list the occurrences of unique k-mers in descending order).</p>
 <p>Unfortunately, comparing to C++, Perl program usually costs more memory and longer time. This is not a big issue when the FASTA files are not large(smaller than 400MB). However, when handling larger FASTA files, my Perl program would require more than 8GB memory, which exceeds the limits of my computer. Therefore, I decided to rewrite the program by Go, a system language that supports concurrent features and can has C/C++-comparable speed.</p>
 <p>The syntax of Go is very different from C/C++, which takes me a whole day familiarize. Some operations that can be implemented easily in Perl can only be done in complicated way, such as calling system command, reading file line-by-line, writing file and sorting map by value. Since this small tool doesn't involve network and concurrency, I cannot compare the difficulty of writing Go program to implement such work. </p>
@@ -383,7 +383,8 @@ var linkwithin_site_id = 2140443;
           if (now_year != 2007) {
               $('#now_year').html('- ' + now_year);
           }
-        </script>
+	    </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 

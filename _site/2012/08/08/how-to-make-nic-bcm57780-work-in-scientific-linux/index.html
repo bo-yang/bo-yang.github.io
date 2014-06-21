@@ -71,7 +71,7 @@
 <div class="row-fluid page-body">
   <div class="span11 left">
     <div class="main-container shadow">
-      <div class="mainbody thepost">
+	  <div class="mainbody thepost">
         <p>I decided to install Scientific Linux on the computer in my lab. Partly because this distribution is called "Scientific", partly because it is compiled from Red Hat Enterprise Linux, the most prestigious Linux distribution in the world.</p>
 <p>At first, I downloaded the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso">Everything DVDs</a> and burned it into my USB stick via <a href="http://unetbootin.sourceforge.net/">UNetbootin</a>. Unfortunately, it couldn't boot. Then I tried the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveCD.iso">Live CD</a>. It did worked and I installed the SL in a few minutes. However, the network could not be connected and the NIC could not be activated. I checked the NIC type by "<code>lspci | grep net</code>", and I found it was <strong>Broadcom Corporation NetLink BCM57780</strong>.</p>
 <p>Many people complain this network card. Some guys tried to download the<a href="http://www.broadcom.com/support/ethernet_nic/netlink_k57.php"> source code </a>of the driver from Broadcom and compiled it by themselves. I didn't want to do that, so I searched "tg3 rpm" and finally got the rpm package for SL <a href="ftp://ftp.ntua.gr/pub/linux/scientificlinux/6.2/x86_64/updates/fastbugs/kmod-tg3-3.122-1.el6_2.x86_64.rpm">kmod-tg3-3.122-1.el6_2.x86_64.rpm</a>. I installed it and restarted the network even the computer, the NIC still didn't work.</p>
@@ -265,7 +265,8 @@ var linkwithin_site_id = 2140443;
           if (now_year != 2007) {
               $('#now_year').html('- ' + now_year);
           }
-        </script>
+	    </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 

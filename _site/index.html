@@ -99,22 +99,32 @@
 <p>Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination (x_i) of the row), then the smallest coin changes should be (v/x_i). </p>
 
 <table>
+  <thead>
+    <tr>
+      <th>Denom</th>
+      <th>Values</th>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
-      <td>Denominations</td>
-      <td>Values</td>
-    </tr>
-    <tr>
       <td>1</td>
-      <td>0 1 2 3 4 5 6 7 8 9 10 11</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2 3 4 5 6 7 8 9 10 11</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0 1 2 1 2 3 2 3 4 3 4 5</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2 1 2 3 2 3 4 3 4 5</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0 1 2 1 1 2 2 2 2 3 3 3</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2 1 1 2 2 2 2 3 3 3</td>
     </tr>
   </tbody>
 </table>
@@ -184,30 +194,46 @@
 <blockquote>
   <p>Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.</p>
 
+</blockquote>
+
+<blockquote>
   <p>You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ‘ ‘ when necessary so that each line has exactly L characters.</p>
 
+</blockquote>
+
+<blockquote>
   <p>Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.</p>
 
+</blockquote>
+
+<blockquote>
   <p>For the last line of text, it should be left justified and no extra space is inserted between words.</p>
 
-  <p>For example,
-words: [“This”, “is”, “an”, “example”, “of”, “text”, “justification.”]
-L: 16.</p>
+</blockquote>
 
+<blockquote>
+  <p>For example, words: [“This”, “is”, “an”, “example”, “of”, “text”, “justification.”] 
+L: 16.</p>
+</blockquote>
+
+<blockquote>
   <p>Return the formatted lines as:
 [
   “This    is    an”,
   “example  of text”,
   “justification.  “
-]
-Note: Each word is guaranteed not to exceed L in length.</p>
+]</p>
+</blockquote>
+
+<blockquote>
+  <p>Note: Each word is guaranteed not to exceed L in length.</p>
 </blockquote>
 
 <p>This problem can be solved in two steps in general: (1) count the number of words that can be placed in current line, and then (2) allocate spaces. </p>
 
-<p>For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the (N) words plus the default (N-1) spaces between the N words. Be careful to the last word in this line.</p>
+<p>For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the ( N ) words plus the default ( N-1 ) spaces between the N words. Be careful to the last word in this line.</p>
 
-<p>For the second step, we should treat two types of lines differently. Assume there are totally (M) spaces should be inserted in a line. For the lines other than the last line, insert (M/(N-1)) spaces between two nearby words if (M) can be divided by (N-1)(where (N) is the number of words in this line). If (M) cannot be divided by (N-1), add 1 space for the first (M \mod (N-1)) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  </p>
+<p>For the second step, we should treat two types of lines differently. Assume there are totally ( M ) spaces should be inserted in a line. For the lines other than the last line, insert ( M/(N-1) ) spaces between two nearby words if ( M ) can be divided by ( N-1 )(where ( N ) is the number of words in this line). If ( M ) cannot be divided by ( N-1 ), add 1 space for the first (M  \mod (N-1) ) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  </p>
 
 <p>Following is my C++ implementation of text justification:</p>
 
@@ -1934,7 +1960,8 @@ The output looks like:</p></p>
           if (now_year != 2007) {
               $('#now_year').html('- ' + now_year);
           }
-        </script>
+	    </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 

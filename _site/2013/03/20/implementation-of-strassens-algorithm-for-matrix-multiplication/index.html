@@ -71,7 +71,7 @@
 <div class="row-fluid page-body">
   <div class="span11 left">
     <div class="main-container shadow">
-      <div class="mainbody thepost">
+	  <div class="mainbody thepost">
         <p>Strassen's algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen's algorithm on <a href="http://en.wikipedia.org/wiki/Strassen_algorithm">Wikipedia</a>.</p>
 <p>However, the implementation of Strassen's algorithm cannot be used directly, because it  just sets the base case of the divide-and-conquer to be 1x1 matrix, which would consume huge time cost for iteration. If set the base case to 2x2 matrix, which means 2x2 matrix and 1x1 matrix will be multiplied by naive algorithm, then the Strassen's algorithm will be more efficient for matrices larger than 512x512.</p>
 <p>[caption id="attachment_521" align="alignnone" width="529"]<a href="http://bonny95.files.wordpress.com/2013/03/local_double_41.png"><img class="size-full wp-image-521" alt="When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512." src="http://bonny95.files.wordpress.com/2013/03/local_double_41.png" width="529" height="395" /></a> When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512.[/caption]</p>
@@ -576,7 +576,8 @@ var linkwithin_site_id = 2140443;
           if (now_year != 2007) {
               $('#now_year').html('- ' + now_year);
           }
-        </script>
+	    </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 

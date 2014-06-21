@@ -71,7 +71,7 @@
 <div class="row-fluid page-body">
   <div class="span11 left">
     <div class="main-container shadow">
-      <div class="mainbody thepost">
+	  <div class="mainbody thepost">
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;关于属性页和属性单的应用总结</p>
 <p>1、属性页(CPropertyPage)中获取<br />&nbsp;(1) 程序主框架指针：CMainFrame* pMainFrame=(CMainFrame*)AfxGetMainWnd();<br />&nbsp;(2) 程序子框架指针：CChildFrame* pframe=(CChildFrame*)((CMainFrame*)AfxGetMainWnd())-&gt;GetActiveFrame();<br />&nbsp;(3) 程序活动文档指针：CEMCDoc* m_pDoc=(CEMCDoc*)pframe-&gt;GetActiveDocument();&nbsp;//获取活动的文档<br />&nbsp;(4) 属性单(CPropertySheet)指针：CMyPropertySheet* pSheet=(CMyPropertySheet*)this-&gt;GetParent();&nbsp;// 获取CMyPropertySheet指针<br />&nbsp;(5) 程序活动视图指针：CEMCView* pView=(CEMCView*)pframe-&gt;GetActiveView();&nbsp;// 获取活动视图</p>
 <p>2、在属性单(CPropertySheet)单击OK按钮后，程序框架将逐个遍历加载的CPropertyPage（从GetPage(0)～GetPage(N-1)），查询是否<br />有CPropertyPage重载了OnOK()，若有则执行重载的代码，否则执行默认的CPropertyPage::OnOK()。</p>
@@ -253,7 +253,8 @@ var linkwithin_site_id = 2140443;
           if (now_year != 2007) {
               $('#now_year').html('- ' + now_year);
           }
-        </script>
+	    </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 

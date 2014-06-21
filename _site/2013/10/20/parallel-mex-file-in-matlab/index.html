@@ -71,7 +71,7 @@
 <div class="row-fluid page-body">
   <div class="span11 left">
     <div class="main-container shadow">
-      <div class="mainbody thepost">
+	  <div class="mainbody thepost">
         <p>By default mex file cannot be executed in parallel in Matlab, which will be a major bottleneck for Matlab program. Fortunately, there is a way to execute loop operations in parallel -- <a href="http://www.mathworks.com/help/distcomp/parfor.html">parfor</a>. Matlab provides a good tutorial on parfor: <a href="http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html">Getting Started with parfor</a>.</p>
 <p>One tricky problem with parfor is dealing with reduction assignments, which means the value of some variables are updated by each iteration, such as assignment to an array/matrix indexed by loop index.  My suggestion is to separate the loop into two parts: one part deal with non-reduction assignment with <code>parfor</code>, and the other part do the reduction assignment with traditional <code>for</code> loop.</p>
 <p>If you cannot save all the <code>parfor</code>-assigned variables in memory, then you must save them into mat file and load them in the next for-loop. In the <code>parfor</code>-loop, command "<code>save</code>" cannot  be used directly because it violates the transparency(God knows what does it mean!). As an alternative, you can create a wrapper function of <code>save</code> and call that function instead. FOr example:</p>
@@ -266,7 +266,8 @@ var linkwithin_site_id = 2140443;
           if (now_year != 2007) {
               $('#now_year').html('- ' + now_year);
           }
-        </script>
+	    </script>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 
