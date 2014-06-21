@@ -45,7 +45,7 @@ This problem can be solved in two steps in general: (1) count the number of word
 
 For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the \\( N \\) words plus the default \\( N-1 \\) spaces between the N words. Be careful to the last word in this line.
 
-For the second step, we should treat two types of lines differently. Assume there are totally \\( M \\) spaces should be inserted in a line. For the lines other than the last line, insert \\( M/(N-1) \\) spaces between two nearby words if \\( M \\) can be divided by \\( N-1 \\)(where \\( N \\) is the number of words in this line). If \\( M \\) cannot be divided by \\( N-1 \\), add 1 space for the first \\(M  \mod (N-1) \\) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  
+For the second step, we should treat two types of lines differently. Assume there are totally \\( M \\) spaces should be inserted in a line. For the lines other than the last line, insert \\( M/(N-1) \\) spaces between two nearby words if \\( M \\) can be divided by \\( N-1 \\)(where \\( N \\) is the number of words in this line). If \\( M \\) cannot be divided by \\( N-1 \\), add 1 space for the first \\(M \mod (N-1) \\) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  
 
 Following is my C++ implementation of text justification:
 
