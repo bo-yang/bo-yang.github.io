@@ -19,14 +19,14 @@ Given \\(N\\) denominations,how can a given amount of money \\(V\\) be made with
 
 Actually the [change-making problem](http://en.wikipedia.org/wiki/Change-making_problem) is a knapsack type problem, which can be solved efficiently by Dynamic Programming. 
 
-Given denominations \\(\left{ x_1, x_2,\cdots,x_n \right}\\), in order to get value \(V\), there are two possibilities for a denomination \(x_i\): (1) if \(x_i\) is not picked, then value \(V\) could be made out of \(\left{ x_1, x_2,\cdots,x_{i-1} \right}\). (2) if \(x_i\) is picked, then value \(V-x_i\) should be made out of \(\left{ x_1, x_2,\cdots,x_i \right}\). Since our goal is to find the least number of coins, we can formulate the following recursive function:
-\[
+Given denominations \\( \left{ x_1, x_2,\cdots,x_n \right} \\), in order to get value \\(V\\), there are two possibilities for a denomination \\(x_i\\): (1) if \\(x_i\\) is not picked, then value \\(V\\) could be made out of \\(\left{ x_1, x_2,\cdots,x_{i-1} \right}\\). (2) if \\(x_i\) is picked, then value \(V-x_i\\) should be made out of \\( \left{ x_1, x_2,\cdots,x_i \right} \\). Since our goal is to find the least number of coins, we can formulate the following recursive function:
+$$
 	OPT(i,v)=\left{ \begin{aligned}
 	0 & \text{if} i=0 \\
 	OPT(i-1,v) & \text{if} x_i>v \\
 	\min \left{ OPT(i-1,v), 1+OPT(i,v-v_i) \right} & \text{otherwise}
 	\end{aligned} 
-\]
+$$
 
 Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination \(x_i\) of the row), then the smallest coin changes should be \(v/x_i\). 
 
