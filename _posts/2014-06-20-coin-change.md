@@ -19,7 +19,7 @@ Given \\(N\\) denominations,how can a given amount of money \\(V\\) be made with
 
 Actually the [change-making problem](http://en.wikipedia.org/wiki/Change-making_problem) is a knapsack type problem, which can be solved efficiently by Dynamic Programming. 
 
-Given denominations \\( \left{ x_1, x_2,\cdots,x_n \right} \\), in order to get value \\(V\\), there are two possibilities for a denomination \\(x_i\\): (1) if \\(x_i\\) is not picked, then value \\(V\\) could be made out of \\(\left{ x_1, x_2,\cdots,x_{i-1} \right}\\). (2) if \\(x_i\) is picked, then value \(V-x_i\\) should be made out of \\( \left{ x_1, x_2,\cdots,x_i \right} \\). Since our goal is to find the least number of coins, we can formulate the following recursive function:
+Given denominations \\( {x_1, x_2,\cdots,x_n} \\), in order to get value \\(V\\), there are two possibilities for a denomination \\( x_i \\): (1) if \\( x_i \\) is not picked, then value \\( V \\) could be made out of \\( { x_1, x_2,\cdots,x_{i-1} } \\). (2) if \\( x_i \\) is picked, then value \\(V-x_i\\) should be made out of \\( \left{ x_1, x_2,\cdots,x_i \right} \\). Since our goal is to find the least number of coins, we can formulate the following recursive function:
 $$
 	OPT(i,v)=\left{ \begin{aligned}
 	0 & \text{if} i=0 \\
