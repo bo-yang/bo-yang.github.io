@@ -4,7 +4,7 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-06-20T23:44:13-07:00</updated>
+ <updated>2014-06-22T08:50:07-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
@@ -17,50 +17,44 @@
    <link href="http://bo-yang.github.com//2014/06/20/coin-change"/>
    <updated>2014-06-20T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2014/06/20/coin-change</id>
-   <content type="html">&lt;p&gt;Given (N) denominations,how can a given amount of money (V) be made with the least number of coins? The most intuitive solution is greedy algorithm: sort the denominations, try the largest denominations lower than the value every time, and decrease the value with the denominations picked in every iteration. Repeat this process until the value reduces to 0. This greedy strategy works for the US (and most other) coin systems, However, it is not a general solution to all denomincations. For example, if the coin denominations were 1, 3 and 4, then to make 6, the greedy algorithm would choose three coins (4,1,1) whereas the optimal solution is two coins (3,3).&lt;/p&gt;
+   <content type="html">&lt;p&gt;Given \(N\) denominations,how can a given amount of money \(V\) be made with the least number of coins? The most intuitive solution is greedy algorithm: sort the denominations, try the largest denominations lower than the value every time, and decrease the value with the denominations picked in every iteration. Repeat this process until the value reduces to 0. This greedy strategy works for the US (and most other) coin systems, However, it is not a general solution to all denomincations. For example, if the coin denominations were 1, 3 and 4, then to make 6, the greedy algorithm would choose three coins (4,1,1) whereas the optimal solution is two coins (3,3).&lt;/p&gt;
 
-&lt;p&gt;Actuallt the &lt;a href=&quot;http://en.wikipedia.org/wiki/Change-making_problem&quot;&gt;change-making problem&lt;/a&gt; is a knapsack type problem, which can be solved efficiently by Dynamic Programming. &lt;/p&gt;
+&lt;p&gt;Actually the &lt;a href=&quot;http://en.wikipedia.org/wiki/Change-making_problem&quot;&gt;change-making problem&lt;/a&gt; is a knapsack type problem, which can be solved efficiently by Dynamic Programming. &lt;/p&gt;
 
-&lt;p&gt;Given denominations $\left{ x_1, x_2,\cdots,x_n \right}$, in order to get value (V), there are two possibilities for a denomination (x_i): (1) if (x_i) is not picked, then value (V) could be made out of (\left{ x_1, x_2,\cdots,x_{i-1} \right}). (2) if (x_i) is picked, then value (V-x_i) should be made out of (\left{ x_1, x_2,\cdots,x_i \right}). Since our goal is to find the least number of coins, we can formulate the following recursive function:
-&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
- OPT(i,v)=\left{ \begin{aligned}
-	0 &amp; \text{if} i=0 \\
-	OPT(i-1,v) &amp; \text{if} x_i&gt;v \\
-	\min \left{ OPT(i-1,v), 1+OPT(i,v-v_i) \right} &amp; \text{otherwise}
-	\end{aligned}  %]]&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;Given denominations \( {x_1, x_2,\cdots,x_n} \), in order to get value \(V\), there are two possibilities for a denomination \( x_i \): (1) if \( x_i \) is not picked, then value \( V \) could be made out of \( { x_1, x_2,\cdots,x_{i-1} } \). (2) if \( x_i \) is picked, then value \(V-x_i\) should be made out of \( { x_1, x_2,\cdots,x_i } \). Since our goal is to find the least number of coins, we can formulate the following recursive function:&lt;/p&gt;
 
-&lt;p&gt;Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination (x_i) of the row), then the smallest coin changes should be (v/x_i). &lt;/p&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt; OPT(i,v)=0,\quad \text{if} \enspace i=0 &lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt; OPT(i,v)=OPT(i-1,v),\quad \text{if} \enspace x_i&gt;v &lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt; OPT(i,v)=\min \{ OPT(i-1,v), 1+OPT(i,v-x_i) \}, \quad \text{otherwise}&lt;/script&gt;
+
+&lt;p&gt;Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination \(x_i\) of the row), then the smallest coin changes should be \(v/x_i\). &lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th&gt;Denom&lt;/th&gt;
       &lt;th&gt;Values&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
       &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;2 3 4 5 6 7 8 9 10 11&lt;/td&gt;
+      &lt;td&gt;0 1 2 3 4 5 6 7 8 9 10 11&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;3&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;2 1 2 3 2 3 4 3 4 5&lt;/td&gt;
+      &lt;td&gt;0 1 2 1 2 3 2 3 4 3 4 5&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;2 1 1 2 2 2 2 3 3 3&lt;/td&gt;
+      &lt;td&gt;0 1 2 1 1 2 2 2 2 3 3 3&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
+
+&lt;p&gt;The bottom right number in above table is the smallest coin changes.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;public class Coin {
 	public static int CoinChange(int value, int[] denom) {
@@ -143,13 +137,15 @@ L: 16.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Return the formatted lines as:
-[
-  “This    is    an”,
-  “example  of text”,
-  “justification.  “
-]&lt;/p&gt;
+  &lt;p&gt;Return the formatted lines as:&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;pre&gt;
+[
+   &quot;This    is    an&quot;,
+   &quot;example  of text&quot;,
+   &quot;justification.  &quot;
+]
+&lt;/pre&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Note: Each word is guaranteed not to exceed L in length.&lt;/p&gt;
@@ -157,9 +153,9 @@ L: 16.&lt;/p&gt;
 
 &lt;p&gt;This problem can be solved in two steps in general: (1) count the number of words that can be placed in current line, and then (2) allocate spaces. &lt;/p&gt;
 
-&lt;p&gt;For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the ( N ) words plus the default ( N-1 ) spaces between the N words. Be careful to the last word in this line.&lt;/p&gt;
+&lt;p&gt;For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the \( N \) words plus the default \( N-1 \) spaces between the N words. Be careful to the last word in this line.&lt;/p&gt;
 
-&lt;p&gt;For the second step, we should treat two types of lines differently. Assume there are totally ( M ) spaces should be inserted in a line. For the lines other than the last line, insert ( M/(N-1) ) spaces between two nearby words if ( M ) can be divided by ( N-1 )(where ( N ) is the number of words in this line). If ( M ) cannot be divided by ( N-1 ), add 1 space for the first (M  \mod (N-1) ) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  &lt;/p&gt;
+&lt;p&gt;For the second step, we should treat two types of lines differently. Assume there are totally \( M \) spaces should be inserted in a line. For the lines other than the last line, insert \( M/(N-1) \) spaces between two nearby words if \( M \) can be divided by \( N-1 \)(where \( N \) is the number of words in this line). If \( M \) cannot be divided by \( N-1 \), add 1 space for the first \(M \mod (N-1) \) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  &lt;/p&gt;
 
 &lt;p&gt;Following is my C++ implementation of text justification:&lt;/p&gt;
 

@@ -9,24 +9,21 @@
   <!--
   <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
   -->
-   <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- font-awesome -->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
 
   <!-- Google Prettify -->
   <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
   <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
-  <!-- using baidu cdn instead
-  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
-  -->
+  
+  
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shCore.js?ver=2.2.4'></script>
-  <script type='text/javascript' src='http://www.mathjax.org/wp-content/plugins/syntax-highlighter-mt/scripts/shAutoloader.js?ver=2.2.4'></script>
-  <script type="text/x-mathjax-config">
-  	MathJax.Hub.Config({
-    	tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
-  	});
-  </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
@@ -100,13 +97,15 @@ L: 16.</p>
 </blockquote>
 
 <blockquote>
-  <p>Return the formatted lines as:
-[
-  “This    is    an”,
-  “example  of text”,
-  “justification.  “
-]</p>
+  <p>Return the formatted lines as:</p>
 </blockquote>
+<pre>
+[
+   "This    is    an",
+   "example  of text",
+   "justification.  "
+]
+</pre>
 
 <blockquote>
   <p>Note: Each word is guaranteed not to exceed L in length.</p>
@@ -114,9 +113,9 @@ L: 16.</p>
 
 <p>This problem can be solved in two steps in general: (1) count the number of words that can be placed in current line, and then (2) allocate spaces. </p>
 
-<p>For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the ( N ) words plus the default ( N-1 ) spaces between the N words. Be careful to the last word in this line.</p>
+<p>For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the \( N \) words plus the default \( N-1 \) spaces between the N words. Be careful to the last word in this line.</p>
 
-<p>For the second step, we should treat two types of lines differently. Assume there are totally ( M ) spaces should be inserted in a line. For the lines other than the last line, insert ( M/(N-1) ) spaces between two nearby words if ( M ) can be divided by ( N-1 )(where ( N ) is the number of words in this line). If ( M ) cannot be divided by ( N-1 ), add 1 space for the first (M  \mod (N-1) ) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  </p>
+<p>For the second step, we should treat two types of lines differently. Assume there are totally \( M \) spaces should be inserted in a line. For the lines other than the last line, insert \( M/(N-1) \) spaces between two nearby words if \( M \) can be divided by \( N-1 \)(where \( N \) is the number of words in this line). If \( M \) cannot be divided by \( N-1 \), add 1 space for the first \(M \mod (N-1) \) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  </p>
 
 <p>Following is my C++ implementation of text justification:</p>
 
