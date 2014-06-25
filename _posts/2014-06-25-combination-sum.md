@@ -3,10 +3,10 @@ layout: post
 title: Combination Sum Problem
 categories: 
 - Algorithm
-- C++ 
+- C/C++ 
 tags:
 - Algorithm
-- C++
+- C/C++
 status: publish
 type: post
 published: true
