@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,144 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/02/16/pvx-tutorial">9vx tutorial: running a cpu server from kfs (RFC)</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-02-16</strong> with tags <a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>原文：<a href="http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd">&nbsp;http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div>
+<p><span>【说明】</span></p>
+<p><span>本文是yiyus发布在9fans上的一篇教程。文中用到的9vx是yiyus维护的分支：</span><a href="http://bytebucket.org/yiyus/vx32/overview">http://bytebucket.org/yiyus/vx32/overview</a>。根据yiyus在9fans中的说明，他的9vx分支是从ron的分支上更改的。vx32/9vx的创始人Russ Cox最近在9fans中声明他本人已经放弃了对9vx的维护，准备将所有权限转交给ron minnich（八卦一下：Russ Cox现在是Google Go语言的核心成员之一，正与Rob Pike，Ken Tompson等原plan9的元老一起维护Go&hellip;&hellip;）。</p>
+</div>
+<div>&nbsp;-------------------------------------------------------</div>
+<p>&nbsp;</p>
+<div>
+<h1 id="zw-12e2e7c010cc6H2Tp3916c"><span id="zw-12e2ede98aavnmvgj3916c">9vx tutorial:</span><span id="zw-12e2edec946BgJF9J3916c">&nbsp;</span><span id="zw-12e2ede99882FtZgu3916c">running a cpu server from kfs (RFC)</span><span id="zw-12e2ede9988SM7byw3916c">&nbsp;&nbsp;</span></h1>
+<p id="zw-12e2e7c3536WlOKdt3916c"><span id="zw-12e2e7c3537XVH5MS3916c">This tutorial is a work in progress (it will eventually be added to&nbsp;</span><span id="zw-12e2e7c3537arcii83916c">the 9vx documentation and probably to the Plan 9 wiki). Please let me&nbsp;</span><span id="zw-12e2e7c3537TL8RB33916c">know if you see anything I'm doing wrong (unfortunately I don't have&nbsp;</span><span id="zw-12e2e7c3537whmwf43916c">too much experience&nbsp;with real Plan 9 systems of more than one&nbsp;</span><span id="zw-12e2e7c3537XtRCA3916c">machine). In particular, I don't know why I could not use mkfs instead&nbsp;</span><span id="zw-12e2e7c3537gPJh1d3916c">of dircp. The line&nbsp;</span></p>
+<p id="zw-12e2e94864bSyqBpZ3916c"><span id="zw-12e2e94864bEE4NC33916c">&nbsp;&nbsp;
+<pre> % disk/mkfs -s /n/9660 /sys/lib/sysconfig/proto/allproto </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e3eEKEBu13916c"><span id="zw-12e2e95854a9D-czm3916c">gave me this error:&nbsp;</span><span id="zw-12e2edec95bhi6LFZ3916c">&nbsp;</span></p>
+<p id="zw-12e2e7c1df8QFHSYZ3916c"><span id="zw-12e2e7c1df9E8SbsK3916c">&nbsp; &nbsp;</span><span id="zw-12e2e960dcaLCGKRy3916c">&nbsp;</span><span style="font-family:mceinline;"><span id="zw-12e2edf46e0GLLVZ3916c">mkfs: /sys/lib/sysconfig/proto/allproto:1: can't move tmp file to&nbsp;</span><span id="zw-12e2e95e07btk4zLw3916c">/n/kfs/dist/replica/plan9.compressed.db: wstat -- unknown type/mode&nbsp;</span></span></p>
+<p id="zw-12e2e7c1dfaWgaIQN3916c"><span id="zw-12e2e7c1dfbpYEmbw3916c">Anyway, these instructions are working here. Please, let me know if&nbsp;</span><span id="zw-12e2e965525WjSCTn3916c">they work for you too.&nbsp;</span></p>
+<p id="zw-12e2e7c1dfcHzaUAw3916c"><span id="zw-12e2e7c1dfdxBy3T73916c">By the way, this tutorial is only the first one, but I'd like to have&nbsp;</span><span id="zw-12e2e967f47zy0X-O3916c">some more. For example, to run several 9vx instances in a private&nbsp;</span><span id="zw-12e2e9686a5ISlVW83916c">network using the tap device and to run 9vx from fossil backed up by&nbsp;</span><span id="zw-12e2e968f83cjlZom3916c">p9p's venti. Contributions are welcomed ;-)&nbsp;</span></p>
+<p id="zw-12e2e7c1e00sZ2bi3916c"><span id="zw-12e2e7c1e01DWUEbQ3916c">----------------------------------------------------------------------</span><span id="zw-12e2edec95cu_sRsD3916c">​</span></p>
+<p id="zw-12e2e7c1e02ZfffOa3916c"><span id="zw-12e2e7c1e03rCtzas3916c">This is a brief tutorial on how to run a 9vx cpu server from a kfs&nbsp;</span><span id="zw-12e2e970b10h9TSbm3916c">file system. You will need 9vx, a plan9.iso and some free disk space.&nbsp;</span></p>
+<p id="zw-12e2e7c1e04R1Jx63916c"><span id="zw-12e2e7c1e05bbvaaI3916c">First, go to the destination directory and install 9vx:&nbsp;</span></p>
+<p id="zw-12e2e7c1e05svn39h3916c"><span id="zw-12e2eefeb87mcWL1O3916c">&nbsp;&nbsp;
+<pre>$ hg clone http://bitbucket.org/yiyus/vx32/ 
+$ cd vx32/src/ 
+$ make 9vx/9vx &amp;&amp; sudo make 9vx/install </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e09V3a83916c"><span id="zw-12e2e7c1e09GQZ4fp3916c">(<strong>Commands run on the host are preceded by $, commands run from inside&nbsp;</strong></span><span id="zw-12e2e988e4bNr603d3916c"><strong>9vx are preceded with %</strong>)&nbsp;</span></p>
+<p id="zw-12e2e7c1e0aSQCEmh3916c"><span id="zw-12e2e7c1e0b-b3A9E3916c">You can check that 9vx is working running the minimal system embedded&nbsp;</span><span id="zw-12e2e98ab92nzZNTv3916c">in the executable. The rcvx script should take you to a vx32% rc&nbsp;</span><span id="zw-12e2e98b4ffnklqHV3916c">prompt in the current directory. Once you have played a bit with a&nbsp;</span><span id="zw-12e2e98c1bbOW6Z2h3916c">rootless 9vx type exit to go back to your host system.&nbsp;</span></p>
+<p id="zw-12e2e7c1e0d_O1Dd3916c"><span id="zw-12e2e7c1e0eZiwMVZ3916c">rcvx is cool but you will want a full Plan 9 tree to have real fun.&nbsp;</span><span id="zw-12e2edec95f8uPmz3916c">&nbsp;</span></p>
+<p id="zw-12e2e7c1e41YAeJd_3916c"><span id="zw-12e2e7c1e0ezorRNc3916c">Let's boot from the iso file:&nbsp;</span></p>
+<p id="zw-12e2e7c1e0f5rF-Fj3916c"><span id="zw-12e2e7c1e0fW1F1Cf3916c">&nbsp;&nbsp;
+<pre> $ 9vx -r plan9.iso -u glenda "CWD=#Z`pwd`" "nvram=#Z`pwd`/plan9.nvr" </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e41-SWd8A3916c"><span id="zw-12e2e99b018PJMlg63916c">You should be in rio now, have an acme and a rio window, stats,&nbsp;</span><span id="zw-12e2e9a8581RJi33V3916c">faces... This is the live system in the iso that you probably already&nbsp;</span><span id="zw-12e2e9a93b7IDfw_43916c">know. The CWD=... and nvram=... arguments are interpreted as plan9.ini&nbsp;</span><span id="zw-12e2e9a9a949Ka7In3916c">lines and passed as environment variables, we will use them later.&nbsp;</span></p>
+<p id="zw-12e2e7c1e13HHsmwG3916c"><span id="zw-12e2e7c1e14E_-xFU3916c">Open a new rio window:&nbsp;</span></p>
+<p id="zw-12e2e7c1e14r-aZU3916c"><span id="zw-12e2ef48ddf7wmF-E3916c">&nbsp;&nbsp; &nbsp;
+<pre>% cd $CWD 
+% dd -if /dev/random -of plan9.nvr -bs 512 -count 1 
+% dd -if /dev/zero -of plan9.kfs -bs 1024 -count 320000 </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e16Q2tDoO3916c"><span id="zw-12e2e7c1e178Xvjp33916c">Those files will be our nvram and kfs partitions (check the size of&nbsp;</span><span id="zw-12e2ebb332fVCtHPl3916c">your kfs file, 320Mb is not too much, but will be enough). Nvram needs&nbsp;</span><span id="zw-12e2ebb437bvlQGlr3916c">to be initialized:&nbsp;</span></p>
+<p id="zw-12e2e7c1e18-UPMoz3916c">
+<pre>    % auth/wrkey 
+    authid: bootes 
+    authdom: 9vx 
+    secstore key: 
+    password: </pre>
+<p>&nbsp;</p>
+<p id="zw-12e2e7c1e1cJK0W053916c"><span id="zw-12e2e7c1e1cHkXjtz3916c">We can populate the file system now:&nbsp;</span></p>
+<p id="zw-12e2e7c1e43SMA8A3916c"><span style="font-family:monospace;font-size:x-small;"><span style="white-space:pre-wrap;">
+<pre>% 9660srv -f plan9.iso 
+% 9fs 9660 
+% disk/kfs -f plan9.kfs 
+File system main inconsistent 
+Would you like to ream it (y/n)? y 
+% 9fs kfs 
+% dircp /n/9660 /n/kfs </pre>
+<p> </span></span></p>
+<p id="zw-12e2e7c1e21S6igCx3916c"><span id="zw-12e2e7c1e22xV5I8q3916c">The system is now installed. You should be able to open a new 9vx&nbsp;</span><span id="zw-12e2e9d16dcxMQUuw3916c">instance from your new root:&nbsp;</span></p>
+<p id="zw-12e2e7c1e22cfR4fL3916c"><span id="zw-12e2ef4e62b1b7gn83916c">&nbsp;&nbsp; &nbsp;
+<pre>$ 9vx "nvram=#Z`pwd`/plan9.nvr" -r plan9.kfs -u glenda </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e43i5zhP3916c"><span id="zw-12e2e9d829dcizCED3916c">You can also boot a cpu server. We will use the canopenpath option, so&nbsp;</span><span id="zw-12e2e9d8d67pWo5o3916c">that only the files which begin with `pwd`/plan9 can be opened from&nbsp;</span><span id="zw-12e2e9d940dlOmSsY3916c">9vx, the -ic flags tell 9vx to pass -c to /386/init:&nbsp;</span></p>
+<p id="zw-12e2e7c1e252kexP-3916c"><span id="zw-12e2ef4fea6GrOSQ3916c">&nbsp;</span><span id="zw-12e2e9db9feHedRAA3916c">&nbsp;
+<pre>$ 9vx -gic -r plan9.kfs "nvram=#Z`pwd`/plan9.nvr" "canopenpath=`pwd`/plan9" -u bootes </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e27kMzC7K3916c"><span id="zw-12e2e7c1e27aKeSLj3916c">When you see the vx32# prompt add a key so that you can cpu as glenda:&nbsp;</span></p>
+<p id="zw-12e2e7c1e44wabKIv3916c"><span id="zw-12e2ef51c08DQfrMq3916c">&nbsp;&nbsp; &nbsp;
+<pre>vx32# echo 'key proto=p9sk1 dom=9vx user=glenda !password=password' &gt;/mnt/factotum/ctl </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e29dHLgZ3916c"><span id="zw-12e2e7c1e2a_uAPXD3916c">Now you can cpu to your new server. From another 9vx instance (for&nbsp;</span><span id="zw-12e2ea171ccTkGuT3916c">example, booted from the iso):&nbsp;</span></p>
+<p id="zw-12e2e7c1e2aM_7KT83916c"><span id="zw-12e2e7c1e2bZTc5Ep3916c">&nbsp;&nbsp; &nbsp;
+<pre>% cpu -h 127.0.0.1 </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e44vK_Dc3916c">&nbsp;</p>
+<p id="zw-12e2e7c1e2bmcFPV3916c"><span id="zw-12e2e7c1e2dErEswl3916c">If it worked we are done.&nbsp;</span></p>
+<p id="zw-12e2e7c1e44N-mz8b3916c">&nbsp;</p>
+<p id="zw-12e2e7c1e2dlCMKe73916c"><span id="zw-12e2e7c1e2dz_k0Ct3916c">Now you will probably want to adjust to your needs the 9vxc script to&nbsp;</span><span id="zw-12e2ef0574aISfLe3916c">launch cpu servers (also, think about adding a /cfg/vx32/cpurc file).&nbsp;</span></p>
+<p id="zw-12e2e7c1e451b74Pj3916c"><span id="zw-12e2e7c1e2eN3pQF3916c">You could be interested in the options localroot, canopenpath,&nbsp;</span><span id="zw-12e2e7c1e2fXsSTFb3916c">cpulimit and memsize. Or maybe you want to setup a virtual ethernet&nbsp;</span><span id="zw-12e2e7c1e2fCMPtOk3916c">device (have a look at the tap script and the 9vx man page).&nbsp;</span></p>
+<p id="zw-12e2e7c1e2frKWNh93916c"><span id="zw-12e2e7c1e30E_qQB83916c">Have fun! (and please, report bugs)&nbsp;</span></p>
+<p id="zw-12e2e7c1e45ChSS03916c">&nbsp;</p>
+<p id="zw-12e2e7c1e31k8xSAq3916c"><span id="zw-12e2e7c1e32ahNphh3916c">--&nbsp;</span></p>
+<p id="zw-12e2e7c1e45mXjHMA3916c"></p>
+<p id="zw-12e2e7c1e45WjjzbV3916c"><span id="zw-12e2e7c1e33mjLvWi3916c">- yiyus || JGL . 4l77.com&nbsp;</span><span id="zw-12e2e7c1e330DFFyj3916c">&nbsp;&nbsp;</span></p>
+<p id="zw-12e2e7c1e4d8qBIi3916c">&nbsp;</p>
+</div>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/01/19/tools-for-manipulate-object-files">Tools for Manipulating Object Files</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-01-19</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;</p>
+<p>There are a number of tools available on Unix systems to help you understand and manipulate object files.&nbsp;In particular, the GNU binutils package is especially helpful and runs on every Unix platform.</p>
+<p>&nbsp;</p>
+<ol>
+<li><strong>AR</strong> :&nbsp;Creates static libraries, and inserts, deletes, lists, and extracts members.</li>
+<li><strong>STRINGS</strong>: Lists all of the printable strings contained in an object file.</li>
+<li><strong>STRIP</strong>:&nbsp;Deletes symbol table information from an object file.</li>
+<li><strong>NM </strong>:&nbsp;Lists the symbols defined in the symbol table of an object file.</li>
+<li><strong>SIZE</strong>:&nbsp;Lists the names and sizes of the sections in an object file.</li>
+<li><strong>READELF</strong>:&nbsp;Displays the complete structure of an object file, including all of the information encoded in the&nbsp;ELF header. Subsumes the functionality of SIZE and NM.</li>
+<li><strong>OBJDUMP</strong>:&nbsp;The mother of all binary tools. Can display all of the information in an object file. Its most&nbsp;useful function is disassembling the binary instructions in the .text section.</li>
+<li><strong>LDD </strong>:&nbsp;Lists the shared libraries that an executable needs at run time.</li>
+</ol>
+<div>--- From <em>Computer Systems: A Programmer's Perspective</em>.</div>
+<div></div>
+<p>PS: </p>
+<ol>
+<li>A very good webpage introducing Linux libraries:&nbsp;<a href="http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html">Static, Shared Dynamic and Loadable Linux Libraries</a></li>
+<li><a href="http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html"></a>How to Write Shared Libraries?&nbsp;<a href="http://www.akkadia.org/drepper/dsohowto.pdf">http://www.akkadia.org/drepper/dsohowto.pdf</a></li>
+<li>Program Library HOWTO:&nbsp;<a href="http://tldp.org/HOWTO/Program-Library-HOWTO/index.html">http://tldp.org/HOWTO/Program-Library-HOWTO/index.html</a></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1730,331 +1868,6 @@ void main()
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/11/16/debugging-perl">Debugging Perl</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-11-16</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p><strong>&nbsp;How to Debug Perl Library and Scripts?</strong></p>
-<p>&nbsp;</p>
-<p><span style="font-family:Arial, sans-serif;"><span style="font-size:small;"><span lang="ru-RU"><strong>1.&nbsp;Changing<br />
-@INC - where Perl loads its modules<br />
-</strong></span></span></span><span style="color:#bb0000;"><span style="font-family:'Arial Narrow', sans-serif;"><span style="font-size:medium;">(</span></span></span><a href="http://www.wellho.net/mouth/588_Changing-INC-where-Perl-loads-its-modules.html"><span style="color:#0000ff;"><span style="text-decoration:underline;">http://www.wellho.net/mouth/588_Changing-INC-where-Perl-loads-its-modules.html</span></span></a><span style="color:#bb0000;"><span style="font-family:'Arial Narrow', sans-serif;"><span style="font-size:medium;">)</span></span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;">&nbsp;</span></span></p>
-<p><span style="font-family:Arial, sans-serif;"><span style="font-size:small;">The<br />
-@</span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:small;"><strong>INC</strong></span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:small;">&nbsp;array<br />
-is a list of directories&nbsp;</span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:small;"><strong>Perl</strong></span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:small;">&nbsp;searches<br />
-when attempting to load modules.&nbsp;</span></span></p>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>Where<br />
-does Perl load modules from in its&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>use</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;and&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>require</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;statements?<br />
-It loads them from directorys in a special list called&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>@INC</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>,<br />
-from files with a .pm extension in those directorys.&nbsp;<br />&nbsp;<br />When<br />
-Perl's installed, @INC is set to a list of directorys that includes<br />
-generic locations for its standard modules, some release specific<br />
-directories, and "." the current directory, which are<br />
-checked in order each time you do a&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>use</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;or&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>require</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>.&nbsp;<br />&nbsp;<br /></span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span style="text-decoration:underline;"><span>Some<br />
-ways to modify @INC</span></span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;</span></span></span></span></p>
-<ul>
-<li>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>**<br />
-	You can add to the list in @INC by using the -I command line option:</span></span></span></span></p>
-</li>
-</ul>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>perl<br />
--I /Users/grahamellis/jan06 i2</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;<br />says<br />
-"run the perl program i2, additionally checking the jan06<br />
-directory for modules"&nbsp;</span></span></span></span></p>
-<ul>
-<li>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>**<br />
-	You can add to the list within your program by doing so in a BEGIN<br />
-	block prior to the&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>use</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;statements:</span></span></span></span></p>
-</li>
-</ul>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>BEGIN<br />
-{&nbsp;<br />push @INC,"/Users/grahamellis/jan06";&nbsp;<br />}&nbsp;<br />use<br />
-demo;&nbsp;<br />print "hello world";&nbsp;</span></span></span></span></p>
-<p>
-<span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>Rather<br />
-curiously,&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>use</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;calls<br />
-are run at compile time not at run time ... but then so are BEGIN<br />
-blocks ... so you put your manipulation of @INC into one of those to<br />
-get it to happen early enough.&nbsp;</span></span></span></span></p>
-<ul>
-<li>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>**<br />
-	You can add to the beginning of the list by setting the PERL5LIB<br />
-	environment variable prior to running your program:</span></span></span></span></p>
-</li>
-</ul>
-<p>
-<span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>export<br />
-PERL5LIB=/Users/grahamellis/jan06</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;</span></span></span></span></p>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>and<br />
-you can use a colon separated list for that if you want to pre-pend<br />
-more than one directory.</span></span></span></span></p>
-<ul>
-<li>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>**There<br />
-	is also the "use lib" pragma - this is probably the most<br />
-	common approach. And $PERL5LIB can also be called just $PERLLIB.</span></span></span></span></p>
-</li>
-</ul>
-<h3 class="western">2.<br />
-Debugging Perl&nbsp;<a href="http://ralphie.perlmonk.org/mosix/debug.html"><span style="color:#0000ff;"><span style="font-family:Verdana, sans-serif;"><span style="font-size:x-small;"><span style="text-decoration:underline;"><span>http://ralphie.perlmonk.org/mosix/debug.html</span></span></span></span></span></a></h3>
-<p><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><span>To<br />
-check the syntax of your scripts, type "</span></span></span><span style="color:#ff0000;"><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><strong><span>perl<br />
--c&nbsp;</span></strong></span></span></span><span style="color:#ff0000;"><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><em><strong><span>scriptname</span></strong></em></span></span></span><span style="color:#ff0000;"><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><strong><span>.pl<br />
-</span></strong></span></span></span><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><span>"<br />
-. It is also worthwhile to add the -w switch ("perl -cw ..."),<br />
-to turn on warning mode. If you were wise enough to "use strict"<br />
-in the body of the code, the syntax check will also specify<br />
-inappropriate scalar scoping, which goes a little beyond the normal<br />
-syntactical problems that are identified. Once your script will pass<br />
-through the syntax check with a "syntax ok" message, you<br />
-will have a legal perl script from the standpoint that all of the<br />
-statements are legal perl statements. That doesn't mean that the<br />
-manner in which any given statement is expressed will return the<br />
-result that you are looking for, that the functions that are used in<br />
-the code are the right ones for the job, or that the overall<br />
-structure of the script does anything like what you think it supposed<br />
-to do. It just means that all of the perl i's are dotted and t's are<br />
-crossed. (On the other hand, this is not such a minor thing, either.)</span></span></span></p>
-<p><span style="font-family:Arial, sans-serif;"><span style="font-size:small;"><span lang="ru-RU"><strong>3.<br />
-perldebug</strong></span></span></span><span style="font-size:x-small;"><br />
-(</span><span style="color:#000080;"><span lang="zxx"><span style="text-decoration:underline;"><a href="http://perldoc.perl.org/perldebug.html">http://perldoc.perl.org/perldebug.html</a></span></span></span><span style="font-size:x-small;">)</span></p>
-<p lang="en-US"><span style="font-size:x-small;">Calling<br />
-the debugger</span></p>
-<p lang="en-US"><span style="font-size:x-small;">There<br />
-are several ways to call the debugger:</span></p>
-<ul>
-<li>
-<p lang="en-US"><a name="perl--d-program_name"></a><br />
-<span style="font-size:x-small;"><strong>perl -d program_name</strong></span></p>
-</li>
-</ul>
-<p lang="en-US"><span style="font-size:x-small;">On<br />
-the given program identified by&nbsp;program_name&nbsp;.</span></p>
-<ul>
-<li>
-<p lang="en-US"><a name="perl--d--e-0"></a><br />
-<span style="font-size:x-small;"><strong>perl -d -e 0</strong></span></p>
-</li>
-</ul>
-<p lang="en-US"><span style="font-size:x-small;">Interactively<br />
-supply an arbitrary&nbsp;expression&nbsp;using&nbsp;-e&nbsp;.</span></p>
-<ul>
-<li>
-<p lang="en-US"><a name="perl--d%3APtkdb-program_name"></a><br />
-<span style="font-size:x-small;"><strong>perl -d:Ptkdb program_name</strong></span></p>
-</li>
-</ul>
-<p lang="en-US"><span style="font-size:x-small;">Debug<br />
-a given program via the&nbsp;Devel::Ptkdb&nbsp;GUI.</span></p>
-<ul>
-<li>
-<p lang="en-US"><a name="perl--dt-threaded_program_name"></a><br />
-<span style="font-size:x-small;"><strong>perl -dt<br />
-	threaded_program_name</strong></span></p>
-</li>
-</ul>
-<p lang="en-US"><span style="font-size:x-small;">Debug<br />
-a given program using threads (experimental).</span></p>
-<h3 class="western"><span lang="en-US">4. </span><span lang="en-US">Summary<br />
-of Subprocess Operations</span></h3>
-<table style="width:590px;" border="1" cellspacing="3" cellpadding="3">
-<col width="191" />
-<col width="90" />
-<col width="91" />
-<col width="87" />
-<col width="84" />
-<thead>
-<tr>
-<td colspan="5" width="578">
-<p lang="en-US" align="CENTER"><a name="ch14-pgfId-121"></a><span style="font-size:x-small;">Table<br />
-				14.1: Summary of Subprocess Operations</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Operation</strong></span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Standard<br />
-				Input</strong></span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Standard<br />
-				Output</strong></span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Standard<br />
-				Error</strong></span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Waited<br />
-				for?</strong></span></p>
-</td>
-</tr>
-</thead>
-<tbody>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">system()</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">Yes</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">Backquoted<br />
-				string</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">Captured as<br />
-				string value</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">Yes</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">open()&nbsp;command<br />
-				as filehandle for output</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">Connected to<br />
-				filehandle</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">Only at time<br />
-				of&nbsp;close()</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">open()&nbsp;command<br />
-				as filehandle for input</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">Connected to<br />
-				filehandle</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">Only at time<br />
-				of&nbsp;close()</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">fork,&nbsp;exec,&nbsp;wait,&nbsp;waitpid</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">User<br />
-				selected</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">User<br />
-				selected</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">User<br />
-				selected</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">User<br />
-				selected</span></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p lang="en-US">&nbsp;</p>
-<p><span style="font-size:x-small;"><span lang="en-US">Above<br />
-table is from the book </span></span><span style="font-size:x-small;"><span lang="en-US"><em><strong>Learning<br />
-Perl</strong></em></span></span><span style="font-size:x-small;"><span lang="en-US">.</span></span></p>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/11/05/update-fedora12-to-fedora14">升级Fedora 12到最新的Fedora 14</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-11-05</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>Fedora 14于11月2号正式发布了，而我的Fedora 12已经用了1年多了，尽管仍然十分稳定，但还是想着赶赶潮流。</p>
-<p>&nbsp;</p>
-<p>完全重装当然是舍不得的，于是Google了一下，发现了preupgrade这个Tool可以用来升级系统，详情参见：<a href="http://fedoraproject.org/wiki/PreUpgrade">http://fedoraproject.org/wiki/PreUpgrade</a>。</p>
-<p>&nbsp;</p>
-<p>升级还是很傻瓜话的，惟一的问题就是由于我家网络不太好，下载升级包的过程中找不到mirror而终端过一次。重新开始之后，正好是凌晨5~6点，以平均600K的速度疯狂下载，很快就把1917个升级包下好了，然后就是安装，没什么好说的。</p>
-<p>&nbsp;</p>
-<p>升级完之后检查了一下软件的兼容性，发现除极个别的软件之外，如aMule和Vim (vi可以)，其它都可以正常工作。aMule又得重新编译了。</p>
-<p>&nbsp;</p>
-<p>升级之后，用package-cleanup --orphans查了一下垃圾软件包，不是很多。看见这些垃圾我就很不爽，于是就准备手动删除它们。第一个要删的就是ModemManager，用的命令是yum remove XXX，由于没仔细看它的dependency，结果直接输入y之后把所有depend on它的NetworkManager们都给删了，于是乎我的网络中断了&hellip;&hellip;</p>
-<p>&nbsp;</p>
-<p>好在我为防不测，已经下好了Fedora14的DVD ISO文件，于是挂载上ISO之后到它的Packages里面找到ModemManager和NetworkManager们，统统装上，重启，网络又OK了！</p>
-<p>&nbsp;</p>
-<p>由此可见，升级有风险，删包需谨慎。</p>
-<p>&nbsp;</p>
-<p>总体而言，Fedora14和以前版本Gnome界面上变化不是很大，感觉稳定性资源利用率有所提高，某些软件的易用性有所增强&mdash;&mdash;每次进步一点点，这就够了！</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -2192,7 +2005,7 @@ Perl</strong></em></span></span><span style="font-size:x-small;"><span lang="en-
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -2250,7 +2063,7 @@ Perl</strong></em></span></span><span style="font-size:x-small;"><span lang="en-
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -2347,6 +2160,12 @@ Perl</strong></em></span></span><span style="font-size:x-small;"><span lang="en-
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -2370,12 +2189,6 @@ Perl</strong></em></span></span><span style="font-size:x-small;"><span lang="en-
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         

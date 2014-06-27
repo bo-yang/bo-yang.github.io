@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,297 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/06/27/nqueens">N-Queens Problem</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2014-06-27</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p><a href="https://oj.leetcode.com/problems/n-queens/">N-Queens Problem</a>:</p>
+
+<blockquote>
+  <p>The \(n\)-queens puzzle is the problem of placing \(n\) queens on an \(n \times n\) chessboard such that no two queens attack each other, which means <a href="http://en.wikipedia.org/wiki/Eight_queens_puzzle">no two queens share the same row, column, or diagonal</a>.
+Given an integer \(n\), return all distinct solutions to the \(n\)-queens puzzle.
+Each solution contains a distinct board configuration of the \(n\)-queens’ placement, where ‘Q’ and ‘.’ both indicate a queen and an empty space respectively.</p>
+</blockquote>
+
+<p>This problem can be solved recursively: for every free grid in a row, resursively check possible solutions in the row below, until (1) there is no free grid in the next row(failure) or (2) there is no row below(current row is the last row, sucess). </p>
+
+<p>For any grid in the table, if the value of the grid is <em>true</em>, then this grid is free. Otherwise, it is not free. In order to guaranttee there is no two queens in the same row, column or diagonal, after picking up a grid, set the value of grids in the same row, column or diagonal to be <em>false</em>. After checking the remaining rows, the states of grids set in this step should be restored. </p>
+
+<p>Following is my C++ implementation. Functions checkRow() and setGrid() are very tricky.</p>
+
+<pre>
+class Solution {
+public:
+	vector&lt;vector<string> &gt; solveNQueens(int n) {
+	   vector&lt;vector<bool> &gt; grid;
+	   vector<bool> row_bool;
+	   for(int j=0;j&lt;n;++j) 
+		   row_bool.push_back(true);
+	   for(int i=0;i&lt;n;++i)
+		   grid.push_back(row_bool);
+
+	   vector&lt;vector&lt;pair&lt;int,int&gt; &gt; &gt; points;
+	   vector&lt;pair&lt;int,int&gt; &gt; path;
+	   checkRow(grid,path,points,n,0);
+
+	   vector&lt;vector<string> &gt; ret;
+	   for(int i=0;i&lt;points.size();++i) {
+		   vector<string> trace;
+		   string row_trace;
+		   for(int i=0;i&lt;n;++i)
+			   row_trace+=".";
+		   for(int i=0;i&lt;n;++i)
+			   trace.push_back(row_trace);
+
+		   for(auto&amp; pt: points[i]) 
+			   trace[pt.first][pt.second]='Q';
+
+		   ret.push_back(trace);
+	   }
+
+	   return ret;
+    }
+
+	// Recrusively try a solution row-by-row
+	void checkRow(vector&lt;vector<bool> &gt;&amp; grid, vector&lt;pair&lt;int,int&gt; &gt;&amp; path, vector&lt;vector&lt;pair&lt;int,int&gt; &gt; &gt;&amp; trace, int n, int row) {
+		if(row==n &amp;&amp; path.size()==n) {
+			trace.push_back(path);	// store the solution
+			return;
+		}
+
+		vector<int> avail_cols;
+		findAvailGrids(grid,avail_cols,row);
+		if(avail_cols.empty())
+			return;
+
+		for(auto&amp; col:avail_cols) {
+			path.push_back(pair&lt;int,int&gt;(row,col));
+			vector&lt;pair&lt;int,int&gt; &gt; points;
+			setGrid(grid,points,row,col,false);
+			checkRow(grid,path,trace,n,row+1);
+			setGrid(grid,points,true);	// recover the state of table
+			path.pop_back();
+		}
+	}
+
+	// Find available grids in a row
+	void findAvailGrids(vector&lt;vector<bool> &gt;&amp; grid,vector<int>&amp; vec,int row) {
+		for(int j=0;j&lt;grid[0].size();++j) {
+			if(grid[row][j])
+				vec.push_back(j);
+		}
+	}
+
+	// Set grids to val based on the coordinate of a given grid
+	void setGrid(vector&lt;vector<bool> &gt;&amp; grid,vector&lt;pair&lt;int,int&gt; &gt;&amp; points, int row, int col, bool val) {
+		const int n=grid.size();
+		// set grids in the same row and column
+		for(int i=0;i&lt;n;++i) {
+			if(grid[i][col]!=val)
+				points.push_back(pair&lt;int,int&gt;(i,col));
+			if(grid[row][i]!=val)
+				points.push_back(pair&lt;int,int&gt;(row,i));
+			grid[i][col]=val;
+			grid[row][i]=val;
+		}
+		// set diagnal grids
+		int x=row;
+		int y=col;
+		while(x&gt;=0 &amp;&amp; y&gt;=0) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&lt;int,int&gt;(x,y));
+			grid[x][y]=val;
+			x--;y--;
+		}
+		x=row+1; y=col+1;
+		while(x&lt;n &amp;&amp; y&lt;n) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&lt;int,int&gt;(x,y));
+			grid[x][y]=val;
+			x++;y++;
+		}
+		x=row-1; y=col+1;
+		while(x&gt;=0 &amp;&amp; y&lt;n) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&lt;int,int&gt;(x,y));
+			grid[x][y]=val;
+			x--;y++;
+		}
+		x=row+1; y=col-1;
+		while(x&lt;n &amp;&amp; y&gt;=0) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&lt;int,int&gt;(x,y));
+			grid[x][y]=val;
+			x++;y--;
+		}
+	}
+
+	// Set grids to val based on a collection of grids
+	void setGrid(vector&lt;vector<bool> &gt;&amp; grid, vector&lt;pair&lt;int,int&gt; &gt;&amp; points, bool val) {
+		for(auto&amp; pt:points)
+			grid[pt.first][pt.second]=val;
+	}
+
+	// Print all solutions, test only
+	void printSolution(vector&lt;vector<string> &gt;&amp; trace) {
+		cout&lt;&lt;"["&lt;&lt;endl;
+		for(int i=0;i&lt;trace.size();++i) {
+			cout&lt;&lt;"  [\""&lt;&lt;trace[i][0]&lt;&lt;"\","&lt;&lt;endl;
+			for(int j=1;j&lt;trace[i].size();++j) {
+				if(j!=trace[i].size()-1)
+					cout&lt;&lt;"   \""&lt;&lt;trace[i][j]&lt;&lt;"\","&lt;&lt;endl;
+				else
+					cout&lt;&lt;"   \""&lt;&lt;trace[i][j]&lt;&lt;"\"]"&lt;&lt;endl;
+			}
+			cout&lt;&lt;endl;
+		}
+	}
+
+	// Print the values of all grids in the table, test only
+	void printGrid(vector&lt;vector<bool> &gt;&amp; grid,int row,int col,string str) {
+		cout&lt;&lt;"("&lt;&lt;row&lt;&lt;","&lt;&lt;col&lt;&lt;")"&lt;&lt;str&lt;&lt;":"&lt;&lt;endl;
+		for(int i=0;i&lt;grid.size();++i) {
+			for(int j=0;j&lt;grid[0].size();++j) {
+				if(grid[i][j])
+					cout&lt;&lt;"T ";
+				else
+					cout&lt;&lt;"F ";
+			}
+			cout&lt;&lt;endl;
+		}
+		cout&lt;&lt;endl;
+	}
+};
+
+</bool></string></bool></bool></int></bool></int></bool></string></string></bool></bool></string></pre>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2014-06-25</strong> with tags <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p><a href="https://oj.leetcode.com/problems/combination-sum/">Combination Sum Problem</a>:</p>
+
+<blockquote>
+  <p>Given a set of candidate numbers \(C\) and a target number \(T\), find all unique combinations in \(C\) where the candidate numbers sums to \(T\).</p>
+
+  <p>The same repeated number may be chosen from \(C\) unlimited number of times.</p>
+
+  <p>Note:</p>
+
+  <ul>
+    <li>All numbers (including target) will be positive integers.</li>
+    <li>Elements in a combination (\(a_1, a_2, \cdots , a_k\)) must be in non-descending order. (ie, \(a_1 \leq a_2 \leq \cdots ≤ a_k\)).</li>
+    <li>The solution set must not contain duplicate combinations.</li>
+  </ul>
+
+  <p>For example, given candidate set 2,3,6,7 and target 7,</p>
+</blockquote>
+
+<blockquote>
+  <p>a solution set is:
+[7]</p>
+</blockquote>
+
+<blockquote>
+  <p>[2, 2, 3] </p>
+</blockquote>
+
+<p>The popular solution is to recursively scan all elements in the cadidate set, such as <a href="http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html">http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html</a>.</p>
+
+<p>However, I don’t want to use recursion. My solution to this problem is to build trees level by level for each number in the candidate set, where the nodes are candidate set number. The sum of the sequence from root to current node is compared to the target:
+* if the sum equals to the target, then we find one solution;
+* if the sum is less than the target, then subnodes could be added to this node; 
+* if the sum is larger than the target, then this node is a leaf node.</p>
+
+<p>Only numbers equal to or larger than current node can be used as the children of current node. When there is no child could be added, this tree stops growing.</p>
+
+<p>For example, given candidate set, \({2,3,6,7}\) and target 7, the following trees could be built:</p>
+
+<p><img src="/assets/images/2014-06-25/combi_sum_trees.png" alt="Combination sum trees" /></p>
+
+<p>Based on above strategy, my C++ implementation is:</p>
+
+<pre>
+class Solution {
+public:
+	struct Node {
+		int val;
+		int sum; // sum to now
+		vector<int> path; // path to now
+		//Node* pre; // parent node
+	};
+
+    vector&lt;vector<int> &gt; combinationSum(vector<int> &amp;candidates, int target) {
+		vector&lt;vector<int> &gt; trace;
+
+       	for(auto&amp; x:candidates) {
+			if(x==target) {
+				vector<int> tr={x};
+				trace.push_back(tr);
+				continue;
+			}
+
+		   	// Build trees in level order for every candidate
+		   	vector&lt;vector<node>&gt; layers;
+			int cur=0;
+		   	int next=1;
+			vector<node> tmp;
+			layers.push_back(tmp);
+			layers.push_back(tmp);
+
+		  	Node nd={x,x,{x}};
+		   	layers[cur].push_back(nd);
+		  	while(layers[cur].size()&gt;0) {
+				for(auto&amp; y:layers[cur]) {
+					for(auto&amp; z: candidates) {
+						if(z&gt;=y.val &amp;&amp; z+y.sum&lt;=target) {
+							Node tmp_nd;
+							tmp_nd.val=z;
+							tmp_nd.sum=z+y.sum;
+							tmp_nd.path=y.path;
+							tmp_nd.path.push_back(z);
+							if(tmp_nd.sum==target) // reach the target, record the trace
+								trace.push_back(tmp_nd.path);
+							else
+								layers[next].push_back(tmp_nd);
+						}
+					} // end for z
+			   	} // end for y
+				cur=!cur;
+				next=!next;
+				layers[next].clear();
+
+				//cout&lt;&lt;endl;; // TEST ONLY
+		   	} // end while
+	   	}// end for
+
+		return trace;
+    } 
+};
+
+
+</node></node></int></int></int></int></int></pre>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1438,194 +1729,6 @@ sudo -E gem install jekyll </pre>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2014/03/26/c-code-to-print-pascal-triangle">C++ Code to Print Pascal Triangle</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2014-03-26</strong> with tags <a href="/tags.html#Alogrithm-ref" rel="nofollow">Alogrithm</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-	Printing Pascal Triangle seems like an easy problem, however, it is not that easy to print a good-looking Pascal Triangle.&nbsp;</p>
-<p>
-	To print the Pascal Triangle, for each line, first print spaces to the left of numbers, and then print digit numbers.</p>
-<p>
-	To calculate Pascal numbers, two assays can be used: one array to store numbers of above line, the other array to store numbers of this line. The first line has 1 number(1), the second lien has 2 numbers(1 1), the third line has three numbers(1 2 1) and so on.</p>
-<p>
-	To make the Pascal Triangle more readable, print spaces between two neighbor &nbsp;numbers in the same line.</p></p>
-<pre class="cpp">// Pascal triangle
-#include &lt;iostream&gt;
-#include &lt;iomanip&gt;
-#include &lt;cstring&gt;
-using namespace std;
-
-const int WIDTH=7;
-int main()
-{
-	int* oldarr=new int[WIDTH]; // store numbers of above row
-	int* newarr=new int[WIDTH]; // store numbers of current row
-
-	for(int i=0;i&lt;WIDTH;++i) // cntrol row counting
-	{
-		for(int j=0;j&lt;WIDTH-i-1;++j) // left space
-			cout&lt;&lt;setw(2)&lt;&lt;&quot; &quot;;
-
-		// set default boundary numbers
-		newarr[0]=1;
-		if(i&gt;=1)
-			newarr[i]=1;
-
-		if(i&gt;=2)
-		{
-			for(int k=1;k&lt;i;++k)
-				newarr[k]=oldarr[k-1]+oldarr[k];
-		}
-		memcpy(oldarr,newarr,sizeof(int)*WIDTH);
-
-		// Print the middle part
-		int idx=0;
-		int flag=(WIDTH-i-1)%2;
-		for(int j=WIDTH-i-1;j&lt;WIDTH+i;++j)
-		{
-			if(j%2==flag)
-			{
-				cout&lt;&lt;setw(2)&lt;&lt;newarr[idx++];
-			} else {
-				cout&lt;&lt;setw(2)&lt;&lt;&quot; &quot;;
-			}
-		}
-		
-		//for(int j=WIDTH+i;j&lt;WIDTH;++j) // Print right space, if you like
-		//	cout&lt;&lt;setw(4)&lt;&lt;&quot; &quot;;
-
-		cout&lt;&lt;endl;
-	}
-
-	delete [] oldarr;
-	delete [] newarr;
-
-	return 0;
-}
-</pre>
-<p>
-The output looks like:</p></p>
-<pre class="plain">             1
-           1   1
-         1   2   1
-       1   3   3   1
-     1   4   6   4   1
-   1   5  10  10   5   1
- 1   6  15  20  15   6   1</pre></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2014/01/22/baci-simple-install-and-compile-guide">BACI Simple Install and Compile Guide</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2014-01-22</strong> with tags <a href="/tags.html#BACI-ref" rel="nofollow">BACI</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>This is a guideline for a course of this semester, for which I am serving as a teaching assistant. I publish it here in hope that it can also help someone else who want to use BACI.</p>
-<h2>Install BACI</h2>
-<ol>
-<li>
-<p dir="ltr">Go to <a href="http://inside.mines.edu/~tcamp/baci/baci_index.html#Obtain">http://inside.mines.edu/~tcamp/baci/baci_index.html#Obtain</a> and download BACI executables:</p>
-<ul>
-<li>
-<p dir="ltr"><a href="http://inside.mines.edu/~tcamp/baci/badosxe-2005Nov09.zip">BACI DOS executables</a> for Windows,</p>
-</li>
-<li>
-<p dir="ltr"><a href="http://inside.mines.edu/~tcamp/baci/balnxxe32-2007Nov25.tar.gz">BACI LINUX executables (32 bit)</a> and <a href="http://inside.mines.edu/~tcamp/baci/balnxxe64-2012Oct01.tar.gz">BACI LINUX executables (64 bit)</a> for Linux.</p>
-</li>
-</ul>
-</li>
-<li>
-<p dir="ltr">For windows user, after download and unzip the BACI DOS executables, please put the folder called badosxe directly under the C:\ drive so it’s easy to find it. You can do all your BACI work inside this directory.</p>
-<ul>
-<li>
-<p dir="ltr">If your badosxe folder is C:\badosxe, then in your command prompt (cmd) your path should be C:\badosxe&gt; bacc &lt;file_name&gt; .</p>
-</li>
-</ul>
-</li>
-<li>
-<p dir="ltr">For Linux user, after download and gunzip the BACI executables, please make sure to add balnxxe into your PATH: export PATH=$PATH:/path/to/your/balnxxe (You also can add this line into $HOME/.profile, so that this command will be executed every time you login).</p>
-</li>
-<li>
-<p dir="ltr">If you want to use jBACI(BACI with a graphical IDE), please go to <a href="https://code.google.com/p/jbaci/downloads/list">https://code.google.com/p/jbaci/downloads/list</a>, and choose the <a href="https://code.google.com/p/jbaci/downloads/detail?name=jbaci-1.4.6.binaries.zip&amp;can=2&amp;q=">jbaci-1.4.6.binaries.zip</a>. Unfortunately, currently jBACI is only available for Windows.</p>
-</li>
-<li>
-<p dir="ltr">If you want to use BACI on the Eustis server, please download Linux version BACI first, gunzip it and then upload them into your home folder of Eustis server. Please remember to add BACI executables into your PATH(as step 3).</p>
-</li>
-<li>
-<p dir="ltr">NetBeans + BACI plugin is the best choice for people who prefer a modern IDE or MAC users. You need to install NetBeans first, and then follow the <a href="http://www.cslab.pepperdine.edu/warford/cosc450/cosc-450-Setup-for-BACI.pdf">guide of setting up BaciBeans</a>. NetBeans is a cross-platform IDE, so it can work on all operating systems that have Java JDK installed.</p>
-</li>
-</ol>
-<h2>Compile and run BACI program</h2>
-<ol>
-<li>
-<p dir="ltr">Make sure that bacc is in your PATH, or put your BACI program in the same folder of bacc. Note the .cm extension. This is the extension that identifies BACI source files to the BACI compiler.</p>
-</li>
-<li>
-<p dir="ltr">Invoke the compile command bacc your_prog.cm. This creates an object file called your_prog.pco and also a listing file called your_prog.lst.</p>
-</li>
-<li>
-<p dir="ltr">Invoke the interpreter through the command bainterp your_prog (please note, there is no suffix here) to execute your code. bainterp has an option -t that will display the order in which processes terminate within the program.</p>
-</li>
-</ol>
-<h2>Verify the installation of BACI</h2>
-<ol>
-<li>
-<p dir="ltr">Download <a href="http://www.cs.ucf.edu/courses/cop4020/spr2014/BACI/example.cm">example.cm</a>.</p>
-</li>
-<li>
-<p dir="ltr">Run command  bacc example.cm. If you see following outputs, then the example.cm is successfully compiled:</p>
-</li>
-</ol>
-<p dir="ltr">bo@HEC-2GQFTK1:~/Documents/BACI$ bacc example.cm</p>
-<p dir="ltr">Pcode and tables are stored in example.pco</p>
-<p dir="ltr">Compilation listing is stored in example.lst</p>
-<ol start="3">
-<li>
-<p dir="ltr">Execute command  bainterp -t example. If you get following message, then bainterp runs correctly.</p>
-</li>
-</ol>
-<p dir="ltr">bo@HEC-2GQFTK1:~/Documents/BACI$ bainterp -t example</p>
-<p dir="ltr">Source file: example.cm  Wed Jan 22 15:16:12 2014</p>
-<p dir="ltr">Executing PCODE ...</p>
-<p dir="ltr">before v(count) value of count is 0</p>
-<p dir="ltr">process 2 increment,  procedure increment ended</p>
-<p dir="ltr">before p(count) value of count is 1</p>
-<p dir="ltr">process 1 decrement,  procedure decrement ended</p>
-<h2><a href="http://inside.mines.edu/~tcamp/baci/baci_index.html#Using">More Options of BACI Compiler</a></h2>
-<p dir="ltr">A BACI source file using the C-- compiler should use a .cm suffix. To execute a program in BACI, there are two steps:</p>
-<p dir="ltr">1. Compile a ".cm" file to obtain a PCODE file (.pco)</p>
-<p dir="ltr">Usage: bacc [optional_flags] source_filename</p>
-<p dir="ltr">Optional_flags:</p>
-<p dir="ltr">-h show this help</p>
-<p dir="ltr">-c make a .pob object file for subsequent linkingInterpret a PCODE file (.pco) to execute the program</p>
-<p dir="ltr">2. Usage bainterp [optional_flags] pcode_filename</p>
-<p dir="ltr">Optional_flags:</p>
-<p dir="ltr">-d enter the debugger, single step, set breakpoints</p>
-<p dir="ltr">-e show the activation record (AR) on entry to each process</p>
-<p dir="ltr">-x show the AR on exit from each process</p>
-<p dir="ltr">-t announce process termination</p>
-<p dir="ltr">-h show this help</p>
-<p dir="ltr">-p show PCODE instructions as they are executed</p>
-<p dir="ltr">There is a shell script, baccint, that will call the compiler and then call the interpreter for you. It passes the options that you give it along to the interpreter. If you are using the Pascal compiler syntax, then the source file should be with a .pm suffix, and you compile the program with the bapas compiler.</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1760,7 +1863,7 @@ The output looks like:</p></p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1818,7 +1921,7 @@ The output looks like:</p></p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -1915,6 +2018,12 @@ The output looks like:</p></p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -1938,12 +2047,6 @@ The output looks like:</p></p>
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         

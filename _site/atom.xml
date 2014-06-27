@@ -4,13 +4,290 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-06-22T08:50:07-07:00</updated>
+ <updated>2014-06-27T16:32:03-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>N-Queens Problem</title>
+   <link href="http://bo-yang.github.com//2014/06/27/nqueens"/>
+   <updated>2014-06-27T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/06/27/nqueens</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://oj.leetcode.com/problems/n-queens/&quot;&gt;N-Queens Problem&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The \(n\)-queens puzzle is the problem of placing \(n\) queens on an \(n \times n\) chessboard such that no two queens attack each other, which means &lt;a href=&quot;http://en.wikipedia.org/wiki/Eight_queens_puzzle&quot;&gt;no two queens share the same row, column, or diagonal&lt;/a&gt;.
+Given an integer \(n\), return all distinct solutions to the \(n\)-queens puzzle.
+Each solution contains a distinct board configuration of the \(n\)-queens’ placement, where ‘Q’ and ‘.’ both indicate a queen and an empty space respectively.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This problem can be solved recursively: for every free grid in a row, resursively check possible solutions in the row below, until (1) there is no free grid in the next row(failure) or (2) there is no row below(current row is the last row, sucess). &lt;/p&gt;
+
+&lt;p&gt;For any grid in the table, if the value of the grid is &lt;em&gt;true&lt;/em&gt;, then this grid is free. Otherwise, it is not free. In order to guaranttee there is no two queens in the same row, column or diagonal, after picking up a grid, set the value of grids in the same row, column or diagonal to be &lt;em&gt;false&lt;/em&gt;. After checking the remaining rows, the states of grids set in this step should be restored. &lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation. Functions checkRow() and setGrid() are very tricky.&lt;/p&gt;
+
+&lt;pre&gt;
+class Solution {
+public:
+	vector&amp;lt;vector&lt;string&gt; &amp;gt; solveNQueens(int n) {
+	   vector&amp;lt;vector&lt;bool&gt; &amp;gt; grid;
+	   vector&lt;bool&gt; row_bool;
+	   for(int j=0;j&amp;lt;n;++j) 
+		   row_bool.push_back(true);
+	   for(int i=0;i&amp;lt;n;++i)
+		   grid.push_back(row_bool);
+
+	   vector&amp;lt;vector&amp;lt;pair&amp;lt;int,int&amp;gt; &amp;gt; &amp;gt; points;
+	   vector&amp;lt;pair&amp;lt;int,int&amp;gt; &amp;gt; path;
+	   checkRow(grid,path,points,n,0);
+
+	   vector&amp;lt;vector&lt;string&gt; &amp;gt; ret;
+	   for(int i=0;i&amp;lt;points.size();++i) {
+		   vector&lt;string&gt; trace;
+		   string row_trace;
+		   for(int i=0;i&amp;lt;n;++i)
+			   row_trace+=&quot;.&quot;;
+		   for(int i=0;i&amp;lt;n;++i)
+			   trace.push_back(row_trace);
+
+		   for(auto&amp;amp; pt: points[i]) 
+			   trace[pt.first][pt.second]=&#39;Q&#39;;
+
+		   ret.push_back(trace);
+	   }
+
+	   return ret;
+    }
+
+	// Recrusively try a solution row-by-row
+	void checkRow(vector&amp;lt;vector&lt;bool&gt; &amp;gt;&amp;amp; grid, vector&amp;lt;pair&amp;lt;int,int&amp;gt; &amp;gt;&amp;amp; path, vector&amp;lt;vector&amp;lt;pair&amp;lt;int,int&amp;gt; &amp;gt; &amp;gt;&amp;amp; trace, int n, int row) {
+		if(row==n &amp;amp;&amp;amp; path.size()==n) {
+			trace.push_back(path);	// store the solution
+			return;
+		}
+
+		vector&lt;int&gt; avail_cols;
+		findAvailGrids(grid,avail_cols,row);
+		if(avail_cols.empty())
+			return;
+
+		for(auto&amp;amp; col:avail_cols) {
+			path.push_back(pair&amp;lt;int,int&amp;gt;(row,col));
+			vector&amp;lt;pair&amp;lt;int,int&amp;gt; &amp;gt; points;
+			setGrid(grid,points,row,col,false);
+			checkRow(grid,path,trace,n,row+1);
+			setGrid(grid,points,true);	// recover the state of table
+			path.pop_back();
+		}
+	}
+
+	// Find available grids in a row
+	void findAvailGrids(vector&amp;lt;vector&lt;bool&gt; &amp;gt;&amp;amp; grid,vector&lt;int&gt;&amp;amp; vec,int row) {
+		for(int j=0;j&amp;lt;grid[0].size();++j) {
+			if(grid[row][j])
+				vec.push_back(j);
+		}
+	}
+
+	// Set grids to val based on the coordinate of a given grid
+	void setGrid(vector&amp;lt;vector&lt;bool&gt; &amp;gt;&amp;amp; grid,vector&amp;lt;pair&amp;lt;int,int&amp;gt; &amp;gt;&amp;amp; points, int row, int col, bool val) {
+		const int n=grid.size();
+		// set grids in the same row and column
+		for(int i=0;i&amp;lt;n;++i) {
+			if(grid[i][col]!=val)
+				points.push_back(pair&amp;lt;int,int&amp;gt;(i,col));
+			if(grid[row][i]!=val)
+				points.push_back(pair&amp;lt;int,int&amp;gt;(row,i));
+			grid[i][col]=val;
+			grid[row][i]=val;
+		}
+		// set diagnal grids
+		int x=row;
+		int y=col;
+		while(x&amp;gt;=0 &amp;amp;&amp;amp; y&amp;gt;=0) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&amp;lt;int,int&amp;gt;(x,y));
+			grid[x][y]=val;
+			x--;y--;
+		}
+		x=row+1; y=col+1;
+		while(x&amp;lt;n &amp;amp;&amp;amp; y&amp;lt;n) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&amp;lt;int,int&amp;gt;(x,y));
+			grid[x][y]=val;
+			x++;y++;
+		}
+		x=row-1; y=col+1;
+		while(x&amp;gt;=0 &amp;amp;&amp;amp; y&amp;lt;n) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&amp;lt;int,int&amp;gt;(x,y));
+			grid[x][y]=val;
+			x--;y++;
+		}
+		x=row+1; y=col-1;
+		while(x&amp;lt;n &amp;amp;&amp;amp; y&amp;gt;=0) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&amp;lt;int,int&amp;gt;(x,y));
+			grid[x][y]=val;
+			x++;y--;
+		}
+	}
+
+	// Set grids to val based on a collection of grids
+	void setGrid(vector&amp;lt;vector&lt;bool&gt; &amp;gt;&amp;amp; grid, vector&amp;lt;pair&amp;lt;int,int&amp;gt; &amp;gt;&amp;amp; points, bool val) {
+		for(auto&amp;amp; pt:points)
+			grid[pt.first][pt.second]=val;
+	}
+
+	// Print all solutions, test only
+	void printSolution(vector&amp;lt;vector&lt;string&gt; &amp;gt;&amp;amp; trace) {
+		cout&amp;lt;&amp;lt;&quot;[&quot;&amp;lt;&amp;lt;endl;
+		for(int i=0;i&amp;lt;trace.size();++i) {
+			cout&amp;lt;&amp;lt;&quot;  [\&quot;&quot;&amp;lt;&amp;lt;trace[i][0]&amp;lt;&amp;lt;&quot;\&quot;,&quot;&amp;lt;&amp;lt;endl;
+			for(int j=1;j&amp;lt;trace[i].size();++j) {
+				if(j!=trace[i].size()-1)
+					cout&amp;lt;&amp;lt;&quot;   \&quot;&quot;&amp;lt;&amp;lt;trace[i][j]&amp;lt;&amp;lt;&quot;\&quot;,&quot;&amp;lt;&amp;lt;endl;
+				else
+					cout&amp;lt;&amp;lt;&quot;   \&quot;&quot;&amp;lt;&amp;lt;trace[i][j]&amp;lt;&amp;lt;&quot;\&quot;]&quot;&amp;lt;&amp;lt;endl;
+			}
+			cout&amp;lt;&amp;lt;endl;
+		}
+	}
+
+	// Print the values of all grids in the table, test only
+	void printGrid(vector&amp;lt;vector&lt;bool&gt; &amp;gt;&amp;amp; grid,int row,int col,string str) {
+		cout&amp;lt;&amp;lt;&quot;(&quot;&amp;lt;&amp;lt;row&amp;lt;&amp;lt;&quot;,&quot;&amp;lt;&amp;lt;col&amp;lt;&amp;lt;&quot;)&quot;&amp;lt;&amp;lt;str&amp;lt;&amp;lt;&quot;:&quot;&amp;lt;&amp;lt;endl;
+		for(int i=0;i&amp;lt;grid.size();++i) {
+			for(int j=0;j&amp;lt;grid[0].size();++j) {
+				if(grid[i][j])
+					cout&amp;lt;&amp;lt;&quot;T &quot;;
+				else
+					cout&amp;lt;&amp;lt;&quot;F &quot;;
+			}
+			cout&amp;lt;&amp;lt;endl;
+		}
+		cout&amp;lt;&amp;lt;endl;
+	}
+};
+
+&lt;/bool&gt;&lt;/string&gt;&lt;/bool&gt;&lt;/bool&gt;&lt;/int&gt;&lt;/bool&gt;&lt;/int&gt;&lt;/bool&gt;&lt;/string&gt;&lt;/string&gt;&lt;/bool&gt;&lt;/bool&gt;&lt;/string&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Combination Sum Problem - A Non-recursive Method</title>
+   <link href="http://bo-yang.github.com//2014/06/25/combination-sum"/>
+   <updated>2014-06-25T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/06/25/combination-sum</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://oj.leetcode.com/problems/combination-sum/&quot;&gt;Combination Sum Problem&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a set of candidate numbers \(C\) and a target number \(T\), find all unique combinations in \(C\) where the candidate numbers sums to \(T\).&lt;/p&gt;
+
+  &lt;p&gt;The same repeated number may be chosen from \(C\) unlimited number of times.&lt;/p&gt;
+
+  &lt;p&gt;Note:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;All numbers (including target) will be positive integers.&lt;/li&gt;
+    &lt;li&gt;Elements in a combination (\(a_1, a_2, \cdots , a_k\)) must be in non-descending order. (ie, \(a_1 \leq a_2 \leq \cdots ≤ a_k\)).&lt;/li&gt;
+    &lt;li&gt;The solution set must not contain duplicate combinations.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;For example, given candidate set 2,3,6,7 and target 7,&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;a solution set is:
+[7]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;[2, 2, 3] &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The popular solution is to recursively scan all elements in the cadidate set, such as &lt;a href=&quot;http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html&quot;&gt;http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, I don’t want to use recursion. My solution to this problem is to build trees level by level for each number in the candidate set, where the nodes are candidate set number. The sum of the sequence from root to current node is compared to the target:
+* if the sum equals to the target, then we find one solution;
+* if the sum is less than the target, then subnodes could be added to this node; 
+* if the sum is larger than the target, then this node is a leaf node.&lt;/p&gt;
+
+&lt;p&gt;Only numbers equal to or larger than current node can be used as the children of current node. When there is no child could be added, this tree stops growing.&lt;/p&gt;
+
+&lt;p&gt;For example, given candidate set, \({2,3,6,7}\) and target 7, the following trees could be built:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2014-06-25/combi_sum_trees.png&quot; alt=&quot;Combination sum trees&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Based on above strategy, my C++ implementation is:&lt;/p&gt;
+
+&lt;pre&gt;
+class Solution {
+public:
+	struct Node {
+		int val;
+		int sum; // sum to now
+		vector&lt;int&gt; path; // path to now
+		//Node* pre; // parent node
+	};
+
+    vector&amp;lt;vector&lt;int&gt; &amp;gt; combinationSum(vector&lt;int&gt; &amp;amp;candidates, int target) {
+		vector&amp;lt;vector&lt;int&gt; &amp;gt; trace;
+
+       	for(auto&amp;amp; x:candidates) {
+			if(x==target) {
+				vector&lt;int&gt; tr={x};
+				trace.push_back(tr);
+				continue;
+			}
+
+		   	// Build trees in level order for every candidate
+		   	vector&amp;lt;vector&lt;node&gt;&amp;gt; layers;
+			int cur=0;
+		   	int next=1;
+			vector&lt;node&gt; tmp;
+			layers.push_back(tmp);
+			layers.push_back(tmp);
+
+		  	Node nd={x,x,{x}};
+		   	layers[cur].push_back(nd);
+		  	while(layers[cur].size()&amp;gt;0) {
+				for(auto&amp;amp; y:layers[cur]) {
+					for(auto&amp;amp; z: candidates) {
+						if(z&amp;gt;=y.val &amp;amp;&amp;amp; z+y.sum&amp;lt;=target) {
+							Node tmp_nd;
+							tmp_nd.val=z;
+							tmp_nd.sum=z+y.sum;
+							tmp_nd.path=y.path;
+							tmp_nd.path.push_back(z);
+							if(tmp_nd.sum==target) // reach the target, record the trace
+								trace.push_back(tmp_nd.path);
+							else
+								layers[next].push_back(tmp_nd);
+						}
+					} // end for z
+			   	} // end for y
+				cur=!cur;
+				next=!next;
+				layers[next].clear();
+
+				//cout&amp;lt;&amp;lt;endl;; // TEST ONLY
+		   	} // end while
+	   	}// end for
+
+		return trace;
+    } 
+};
+
+
+&lt;/node&gt;&lt;/node&gt;&lt;/int&gt;&lt;/int&gt;&lt;/int&gt;&lt;/int&gt;&lt;/int&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Coin Change Problem</title>

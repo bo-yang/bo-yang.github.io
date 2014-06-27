@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,201 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/09/24/cronjob-crontab">cronjob and crontab</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2009-09-24</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;</p>
+<h3><span style="font-weight:normal;">今天要设置一个cron job，查了一些资料，发现了很好的一篇文章，见下文，原文参见：<a href="http://www.aota.net/Script_Installation_Tips/cronhelp.php4">http://www.aota.net/Script_Installation_Tips/cronhelp.php4</a>。</span></h3>
+<h3><span style="font-weight:normal;">但是我按照这篇文章的介绍，在Solaris 9下设置crontab的文件时，老是报错</span></h3>
+<p><span style="font-weight:normal;"><br />
+</span></p>
+<p>
+<pre>$ crontab chkbjservers.cron
+MAILTO=xxx@xxxxx.com
+crontab: error on previous line; unexpected character found in line.
+crontab: errors detected in input, no crontab file generated.</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>后来查了Solaris的crontab的手册，发现Solaris的crontab不支持MAILTO，必须要用mailx之类的Unix邮件发送命令。另外，整个cron file只要一句话：<strong>minute(s) hour(s) day(s) month(s) weekday(s) command(s). </strong><span>比如：</span></p>
+<p>&nbsp;</p>
+<p><span><br />
+</span></p>
+<p>
+<pre>30 7 * * 1 /bld/xxxx/mytool/chkbjserver.sh|cat chkbjserver.out|mailx -s "Shared memory checked result in BJ COOL" xxxx@xxxxxxx.com</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><strong>=========================================================================</strong></p>
+<h3>What is a&nbsp;<a href="http://www.aota.net/keyword.php?cronjob">cronjob</a>, and how do I use it?</h3>
+<p>
+The&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;daemon is a long running process that executes commands at specific dates and times. To schedule one-time only tasks with&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>, use&nbsp;<strong>at</strong>&nbsp;or&nbsp;<strong>batch</strong>. For commands that need to be executed repeatedly (e.g. hourly, daily or weekly), use&nbsp;<strong>crontab</strong>, which has the following options:</p>
+<table border="0" cellpadding="4">
+<tbody>
+<tr valign="TOP">
+<td align="LEFT"><strong>crontab filename</strong></td>
+<td align="LEFT">Install filename as your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file.</td>
+</tr>
+<tr valign="TOP">
+<td align="LEFT"><strong>crontab -e</strong></td>
+<td align="LEFT">Edit your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file.</td>
+</tr>
+<tr valign="TOP">
+<td align="LEFT"><strong>crontab -l</strong></td>
+<td align="LEFT">Show your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file.</td>
+</tr>
+<tr valign="TOP">
+<td align="LEFT"><strong>crontab -r</strong></td>
+<td align="LEFT">Remove your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file.</td>
+</tr>
+<tr valign="TOP">
+<td align="LEFT"><strong>MAILTO=user@domain.com</strong></td>
+<td align="LEFT">Emails the output to the specified address.</td>
+</tr>
+</tbody>
+</table>
+<p>The&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;command creates a&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file containing commands and how often&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;should execute them. Each entry in a&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file consists of six fields, specified in the following order:</p>
+<ul>
+<strong>minute(s) hour(s) day(s) month(s) weekday(s) command(s)</strong>
+</ul>
+<p>The fields are separated by spaces or tabs. The first five are integer patterns and the sixth is the command to be executed. The following table briefly describes each of the fields.</p>
+<table border="0" cellpadding="4">
+<tbody>
+<tr valign="TOP">
+<th align="LEFT">Field</th>
+<th align="LEFT">Value</th>
+<th align="LEFT">Description</th>
+</tr>
+<tr valign="TOP">
+<td align="LEFT">minute</td>
+<td align="LEFT">0-59</td>
+<td align="LEFT">The exact minute that the command sequence executes.</td>
+</tr>
+<tr valign="TOP">
+<td align="LEFT">hour</td>
+<td align="LEFT">0-23</td>
+<td align="LEFT">The hour of the day that the command sequence executes.</td>
+</tr>
+<tr valign="TOP">
+<td align="LEFT">day</td>
+<td align="LEFT">1-31</td>
+<td align="LEFT">The day of the month that the command sequence executes.</td>
+</tr>
+<tr valign="TOP">
+<td align="LEFT">month</td>
+<td align="LEFT">1-12</td>
+<td align="LEFT">The month of the year that the command sequence executes.</td>
+</tr>
+<tr valign="TOP">
+<td align="LEFT">weekday</td>
+<td align="LEFT">0-6</td>
+<td align="LEFT">The day of the week that the command sequence executes. Sunday=0, Monday = 1, Tuesday = 2, and so forth.</td>
+</tr>
+<tr valign="TOP">
+<td align="LEFT">command</td>
+<td align="LEFT">Special</td>
+<td align="LEFT">The complete command sequence variable that is to be executed.</td>
+</tr>
+</tbody>
+</table>
+<p>Each of the patterns from the first five fields may either be an asterisk (*) (meaning all legal values) or a list of elements separated by commas. An element is either a number or two numbers separated by a minus sign (meaning an inclusive range). Note that the specification of days may be made by two fields (day of the month and day of the week). If both are specified as a list of elements, both are followed. For example:</p>
+<ul>
+<strong>MAILTO=user@domain.com</strong>&nbsp;<br /><strong>0 0 1,15 * 1 /big/dom/xdomain/cgi-bin/scriptname.cgi</strong>
+</ul>
+<p>The&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;daemon would run the program&nbsp;<strong>scriptname.cgi</strong>&nbsp;in the&nbsp;<strong>cgi-bin</strong>&nbsp;directory on the first and fifteenth of each month, as well as on every Monday. To specify days by only one field, the other field should be set to *. For example:</p>
+<ul>
+<strong>MAILTO=user@domain.com</strong>&nbsp;<br /><strong>0 0 * * 1 /big/dom/xdomain/cgi-bin/scriptname.cgi</strong>
+</ul>
+<p>The program would then only run on Mondays.</p>
+<p>If a&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;job specified in your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;entry produces any error messages when it runs, they will be reported to you via email.</p>
+<p>You may create&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;files in notepad (being sure to upload them in ASCII) or you may create them within&nbsp;<a href="http://www.aota.net/keyword.php?telnet">telnet</a>&nbsp;by simply typing:</p>
+<ul>
+<strong>mcedit cronfile.txt</strong>
+</ul>
+<p>For more information, consult the man pages. man pages are the directions and tutorials available to you right at the command line from within&nbsp;<a href="http://www.aota.net/keyword.php?telnet">telnet</a>. Type any of the following lines to open the relevant tutorials:</p>
+<ul>
+<strong>man 5 crontab</strong>&nbsp;{enter}&nbsp;<br /><strong>man 1 crontab</strong>&nbsp;{enter}&nbsp;<br /><strong>man cron</strong>&nbsp;{enter}&nbsp;<br /><strong>man at</strong>&nbsp;{enter}&nbsp;<br /><strong>man batch</strong>&nbsp;{enter}&nbsp;<br /><strong>man 1 cron</strong>&nbsp;{enter}
+</ul>
+<p>
+<strong>Note:</strong>&nbsp;<br />Your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file&nbsp;<strong>must</strong>&nbsp;end with a line feed - in other words, make sure to press [Enter] after the last line in the file.</p>
+<hr />
+<h3>Try It!</h3>
+<p>
+Now that you have read an overview of&nbsp;<a href="http://www.aota.net/keyword.php?Cron">Cron</a>, test your skills by following the steps below. Once completed you should have a&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;file of your own!&nbsp;</p>
+<p><strong>Step 1:</strong>&nbsp;Create a simple text file using Notepad or any simple text editor that contains the following text:</p>
+<ul>
+<strong>MAILTO=yourusername@yourdomain.com {Enter}<br />58 23 * * * /big/dom/xdomain/cgi-bin/yourscript.pl<br />{Enter}</strong>
+</ul>
+<p>
+<strong>Notes for Step 1</strong></p>
+<ol>
+<li>You may create this file using your&nbsp;<a href="http://www.futurequest.net/Services/CNC/">CNC</a>&nbsp;File Manager by navigating to the /big/dom/xdomain/ directory and clicking 'Create New File' or any other simple text editor such as Notepad.</li>
+<li>{Enter} should not actually be typed. [Enter] means hit the {Enter} (return) key to begin the next line and to add a blank line feed at the end of the last line of your&nbsp;<a href="http://www.aota.net/keyword.php?Cron">Cron</a>&nbsp;File. It is important to always remember to do this.</li>
+<li>MAILTO: Replace the email address with a valid email address of your own. This will ensure that when your&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>runs, that any output from the script, such as error message, will be emailed to you.</li>
+<li>The second line tells your server when to run this script. In this example, the script will be run at 11:58 PM Eastern Time every day of the year.</li>
+<li>It is very important that you double check the script path to ensure it is correct and remember the file names are CaSe SeNsiTive.</li>
+</ol>
+<p><strong>Step 2:</strong>&nbsp;Name the text file. (Example: cronfile.txt)<br />The&nbsp;<em>cronfile</em>&nbsp;name may be replaced with any name you choose. For instance if you are running a&nbsp;<a href="http://www.aota.net/keyword.php?Cron">Cron</a>&nbsp;to trigger an email reminder script it could be called&nbsp;<em>reminder.txt</em>. Many choose to simply call it cronfile.txt.&nbsp;</p>
+<p><strong>Step 3:</strong>&nbsp;Upload the file in&nbsp;<a href="http://www.aota.net/keyword.php?ASCII">ASCII</a>.<br />Any standard FTP client or your account's&nbsp;<a href="http://www.futurequest.net/Services/CNC/">CNC</a>&nbsp;upload feature will work for this. It must be uploaded in&nbsp;<a href="http://www.aota.net/keyword.php?ASCII">ASCII</a>&nbsp;mode and it is recommended that it be placed in your&nbsp;<strong>/big/dom/xdomain/</strong>&nbsp;directory. It may be placed anywhere in your account but to prevent browser access (security risks) it is strongly recommended to place it above your /www directory.&nbsp;</p>
+<p><strong>Step 4:</strong>&nbsp;<a href="http://www.aota.net/keyword.php?Telnet">Telnet</a>&nbsp;into your account and issue the following command:</p>
+<ul>
+<strong><a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;/big/dom/xdomain/cronfile.txt</strong>
+</ul>
+<p>
+The above tells the server's&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;where the file is located and that you wish to make it active. Make sure the path to the file is the actual path to where the file was placed. If successful you will be returned to the command bash line, if not an error will be displayed)&nbsp;</p>
+<p><strong>IMPORTANT NOTES</strong>&nbsp;</p>
+<p>Removing/Stopping the Cron: Deleting the&nbsp;<em>cronfile.txt</em>&nbsp;file from your account will&nbsp;<strong>not</strong>&nbsp;stop the&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>. You may remove this file at any time, since the server's&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;already has the contents, and the&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;will still run after you have made it active.&nbsp;</p>
+<p>To turn the&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;off you must&nbsp;<a href="http://www.aota.net/keyword.php?Telnet">Telnet</a>&nbsp;into your account and issue the following command:</p>
+<ul>
+<strong><a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;-r</strong>
+</ul>
+<p>
+The&nbsp;<em>crontab -r</em>&nbsp;will deactivate the&nbsp;<a href="http://www.aota.net/keyword.php?cronjob">cronjob</a>&nbsp;and remove the file contents from the server.&nbsp;</p>
+<p><strong>Security Note:</strong>&nbsp;If the script the&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;is setup to run is in the /cgi-bin/ or /www/ directory it may be run at anytime by anyone with browser access. If the&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;is all that should run the script and you do not want the public to be able to run the script, then you will need to place the script in a directory above the /cgi-bin/ and /www/ directories such as:<strong>/big/dom/xdom/user/cronscripts/scriptname</strong></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2009/09/19/install-expect-in-fedora">Fedora安装Expect</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2009-09-19</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>费了很大力气才下到Expect的源代码，然后参考了Expect的INSTALL说明文件，还需要Tcl/Tk的源代码支持，于是又下载了Tcl/Tk的源代码，把它们都给放到/usr/local/src下面。先编译安装tcl和tk，完了之后进入expect的文件夹下面，./configure，结果报错，说找不到tclInt.h。于是在tcl的源文件的文件夹下面搜索tclInt.h，发现该文件确实存在，在generic下面。又参考了一下Expect的INSTALL说明文件，才知道可以加--withtclincluse=选项，于是重新configure：</p>
+<p>&nbsp;</p>
+<p>./configure --withtclinclude=/usr/local/src/tcl8.6b1/generic</p>
+<p>&nbsp;</p>
+<p>configure成功。于是输入make,正式编译，结果又发现了如下错误：</p>
+<p>&nbsp;</p>
+<p>exp_main_exp.c:32: error: &lsquo;Tcl_Interp&rsquo; has no member named &lsquo;result&rsquo;<br />
+exp_main_exp.c:33: warning: incompatible implicit declaration of built-in function &lsquo;exit&rsquo;<br />
+make: *** [exp_main_exp.o] Error 1</p>
+<p>&nbsp;</p>
+<p>网上一搜，在<a href="http://groups.google.com/group/comp.lang.tcl/browse_thread/thread/e63b1bd2d350d024/8bbd5758f6193120?show_docid=8bbd5758f6193120&amp;pli=1">http://groups.google.com/group/comp.lang.tcl/browse_thread/thread/e63b1bd2d350d024/8bbd5758f6193120?show_docid=8bbd5758f6193120&amp;pli=1</a><br />
+ 发现有人遇到过同样的问题。在<a href="http://www.tcl.tk/cgi-bin/tct/tip/330.html">http://www.tcl.tk/cgi-bin/tct/tip/330.html</a><br />
+给出了原因，说是因为在新版(8.6)的tcl的tcl.h中Tcl_Interp被重命名为unused1了，而expect的源代码并没有做相应修改。并且给出了解决方案，就是添加预定义USE_INTERP_RESULT，或者用8.5以下的tcl源代码。</p>
+<p>&nbsp;</p>
+<p>我没有再继续尝试编译安装expect。我想起来可以尝试通过yum安装，于是输入yum install expect，竟然成功了！不过在安装expect的同时，还自动安装了tcl8.5.3，估计这是因为安装的expect是基于tcl8.5的源代码变异的。</p>
+<p>&nbsp;</p>
+<p>看来Expect开发者乏人啊，这么长时间这个bug竟然没有人修复，唉&hellip;&hellip;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -746,84 +941,6 @@ I) ldconfig</p>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/07/27/trip-in-us">车·行·记</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2009-07-27</strong> with tags <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>, <a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
-<div>
-<h1>车&middot;行&middot;记</h1>
-<p>&nbsp;</p>
-<div>傍晚时分，深感闷在酒店一个白天实在没有前途，终于无法按奈心中那股出去兜风的冲动。打电话叫同事，他说他在洗澡，我说我可以等你洗完澡，他说你不用等我洗完澡，因为我没兴趣出去。崇拜，五体投地的崇拜那哥们，多少次我们拉他出去逛一圈，人家都是拒绝，人家宁愿选择天天蜗居在20平米的酒店一隅，也不愿出门半步，而且还是坐车出行&hellip;&hellip;</div>
-<div></div>
-<div>想起最近网上流行的那句&ldquo;执子之手&hellip;&hellip;&rdquo;，此时此刻我义无反顾的选择了&ldquo;子不走我走&rdquo;。</div>
-<div></div>
-<div>太阳已经落下，但天光还算明亮。沿着前往Chicago Premium Outlets的路信马由缰&mdash;&mdash;这条路非常顺，一路不用拐弯，直着开30分钟左右就到了。</div>
-<div></div>
-<div>道路两旁要么是荒郊野地，要么是灌木丛林，相当的原生态。路很宽，而且没车，我一个多月前此一次上路就是跑的这条路。从那以后到现在已经来来回回跑了不下10趟。盛夏时节的Naperville每天云卷云舒，傍晚时分更是争奇斗艳之时。车行至半路，天已经慢慢黑下来了。前方是一个高坡，由于光线黯淡，远远望去，此路直达云天。</div>
-<div></div>
-<div>日落后的云，峥嵘如巨石，嶙峋如山峦，狰狞如怪兽，凶险如深渊。黑夜正在向大地无情的压过来。现在的我竟然还和小时候一样，身临此境时，心底里总会有些恐惧。&mdash;&mdash;人是群体动物，人多时觉得咱们工人有力量，当然天不怕地不怕，所以在北京不会有这种感觉；但是在人烟稀少的美国，孤身一人置身荒野，对于自然，不得不心生敬畏之情。人其实是很渺小的。渺沧海之一粟，羡长江之无穷啊。</div>
-<div></div>
-<div>平日里走这条路都是白天，阳光灿烂；现在是晚上，别有一番滋味。一时想到也许这是我最后一次在这条路开车，经由一些伤感。于是打定主意，要好好的总结一下在美国开车出行的经历。</div>
-<div></div>
-<div>
-刚到美国的第一个周末就和两个同事去了UIUC(University of Illinois @ Urbana<span>-Champaign</span>)。从Naperville到Champaign只有100多个mile，而且那次出行的主要目的是练车，熟悉美国高速路况，为下个周末的纽约之行做准备。当时我还不会开车，也不能开车，自己坐在后排可以尽情的拍一些照片（也是因为当时新鲜劲还没过）。那次对于美国高速最大的感觉就是&ldquo;热闹&rdquo;&mdash;&mdash;车多、人多。各种各样叫出名字叫不出名字的车，拖着各种各样的装备，包括房车、游艇、自行车等等。我们都在感叹，美国人太会享受生活了。</div>
-<div></div>
-<div>第二个周末是美国的memorial day，放一天假，加上周末总共3天。还是和那两个同事，他（她）们开车，我副驾，去了纽约。尽管路程长达850多mile，再加上中途吃饭、加油的距离得近900个mile，但是路其实很顺，大多路段很好走。就是同一条高速路，一直开到纽约，只是在不同的州叫不同的名字而已。沿途经过了好几个州，从Illinois出发，首先进入Indiana,然后横穿Ohio，然后进入Pennsylvania， 最后穿越一小段New Jersey之后就到了纽约。我们总结了一些有意思的发现：(1) Pennsylvania的环境最好（高速路两边全是国家森林公园），而且高速基本不收费；Indiana的路况最好，车速最高，收费也比较高；Ohio路况最不好，收费也不便宜。(2) 在Illinois，高速两边的休息区域叫Oasis，其他几个州叫Service Plaza或者Service Area；后来又发现Illinois的高速两边的Oasis是联通的，一条全封闭的天桥横跨高速，而其他经过的几个州没有这种情况。(3) Ohio的Service Area里面的食物最贵，而且最难吃，就连麦当劳的店员的衣服都脏兮兮的，而且目光呆滞；Pennsylvania的设施最好，因为这个州很有钱。(4) 高速两边经常见到被撞死的鹿或其他小动物（粗略算一下来回路上见到的死鹿不下100头）。去得路上大姐（十几年工作经验，近十年开车经验的同事）开车的时候，轧死了一只小兔子，她愧疚了一路。被撞死的鹿很肥，很嫩，可惜没法扛回来。据说在美国法律规定，在路上见了野生动物尽量避让，否则是犯罪；但如果实在让不开把它撞死了，你可以把撞死的动物带回家(宰了吃)。</div>
-<div></div>
-<div>去纽约还有一件不得不提的事情就是警察。一路上看见了太多的警察。很多地方高速两个方向之间是一片灌木丛，灌木丛中间经常会有空地或者小路，警察们就藏在那里面。去得路上一开始司机们开车很Happy，车少路宽，一直超速行驶，后来我发现了一次警察，大家就小心一点了。后来发现所有的车都在超速，而且一般超10～20 mile，警察并不管，我们也就放心大胆的超了。但是发现警察之后还是会减减速的，不能不给人家面子。回来的路上，刚进Pennsylvania，大姐开车，限速65mile/h，她平均开到了85以上，偶尔高达95&mdash;&mdash;一辆现代sonata，开到95mile也就是<span>152.88768公里每小时！很疯狂啊～ 后来换了另外一哥们开车，快出Pennsylvania了，他也开的很快，平均80以上。突然我们发现隔离带里面一辆警车，可是再刹车已经来不及了。不出所料，那辆警车立刻打开警灯在我们后面跟了上来。那哥们知道自己麻烦来了，慢慢地把车停到路边，拿出驾照，双手放到方向盘上。我也摇下车窗，把双手放在警察能看见的位置。过了很久，警车门开了，下来一位女警察，走到我的车窗边，问谁开的车，知不知道刚才已经开到83mile/h了，把驾照拿出来。那哥们乖乖把驾照给了女警察，警察一看，看不懂。那哥们解释，他只有中国驾照，美国出差一段时间，现在是纽约回Chicago。女警察一听就笑了，问我们是住在北京吗。我们说是，她说去年北京的奥运会很好，我也赶紧吹嘘奥运会。女警察话锋一转，说<span>technically</span>讲，没有美国驾照是不能开车的，对于你们这种情况还是小心为妙。我们连说yes, thank you. 很幸运，我们没有被开ticket；如果开了的话，一个罚单就得几百刀，一个月的补助就没了一半。从这以后，那哥们在高速上就不敢很嚣张了。而我从那时起就养成一个习惯，时刻寻找警车，一旦发现警察的存在，立马规规矩矩的开车。其实美国人也是这么做的。</span></div>
-<div><span><br /></span></div>
-<div>后来那两位同事还去了拉斯维加斯，坐飞机过去的，我没有去，没钱。听说他(她)们在拉斯维加斯租了一辆车，当天开车去科罗拉多大峡谷(几百个mile)，晚上之前回拉斯维加斯；第二天又是如此。我不得不佩服他(她)们的疯狂。他们从拉斯维加斯回来的时候，在机场租了一辆车，就是我现在开的雪佛莱IMPALA。机场租车非常贵，因为机场的租车行是要叫保护费的，官方称呼叫特许经营费(C<span>hartered Fee<span>)。我们开了一周，然后在local给还了，然后续租这辆车，便宜了100多$。后来听很多中国同事说，其实在机场租了第二天就可以在local还，而不必真的租一周，能省更多钱。不得不佩服中国人的小聪明。</span></span></div>
-<div>6月11号我考过了笔试，拿到了permit，然后就开始学车。那两位有驾照的同事教，幸亏同一个team的同事有两位资深司机。我考了三次才终于在6月31号把驾照拿到。</div>
-<div></div>
-<div>从6月下旬开始，因为那两个同事7月6号要走了，所以她们就开始了疯狂采购。我们也跟着一起采购。开车去Wisconsin的outlets，去Michigan的outlets。到那之后才知道为什么这两个地方东西会比较便宜，穷！这两个地方很穷，消费水平不高，而且税比较低，所以大多中国同事都建议我们去那里买东西。对于一些化妆品，只能去Oak Brook Shopping Mall去买。中产阶层很少去Outlets购物，那是穷人去的地方。而我们这些人，连人家的穷人都比不上&hellip;&hellip;</div>
-<div></div>
-<div>这周末就打道回府了。还能再开5天车，还打算去一趟Oak Brook，同事要买东西。还打算去一趟费米实验室，今晚上才听说大名鼎鼎的Fermilab就在附近，查了一下地图竟然就在去Chicago Premium Outlets的那条路的旁边。不一定能进的去，在外边拍几张照片也行啊。</div>
-</div>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/06/19/google-china-in-porn-gate">谷歌中国的“色情门“</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2009-06-19</strong> with tags <a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>, <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>这一次央视的屠刀又批向了谷歌中国。对于央视乃至Z*F最近一连串的所谓过滤或屏蔽对儿童不良信息的举措我实在是觉得有矫枉过正之嫌。尽管我一直认为谷歌中国和美国的Google不在同一个数量级，但还是对他们的&rdquo;搜索自动补全&ldquo;进行了一些比较：</p>
-<p>&nbsp;</p>
-<p style="text-align:center;"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/EntryImages/20090619/Google_CN.JPG" alt="" width="640" height="465" /></p>
-<p style="text-align:center;">谷歌中国的自动补全</p>
-<p>&nbsp;</p>
-<p style="text-align:center;"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/EntryImages/20090619/Google_US.JPG" alt="" width="640" height="425" /></p>
-<p style="text-align:center;">Google的自动补全</p>
-<p style="text-align:center;">&nbsp;</p>
-<p style="text-align:left;">可见， Google英文搜索比中文搜索生猛的多。为过滤不良信息，上图中的生词，还是自己查一下吧，我就不 翻译了。</p>
-<p style="text-align:center;"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/EntryImages/20090619/Google_CN2.JPG" alt="" width="640" height="470" /></p>
-<p style="text-align:center;">在谷歌中国输入&rdquo;s*ex&ldquo;时的提示</p>
-<p>&nbsp;</p>
-<p>我们的生活越来越倚重于Internet，而Internet也成为现实社会的一种反映，如何在信息泛滥、良莠不齐的网络生活中保护儿童健康快乐的成长，这是全世界共同面临的一个教育难题。而现在相关部门却把它简化为一个技术问题，未免本末倒置。</p>
-<p>&nbsp;</p>
-<p>这让我不仅联想起大禹治水的故事。禹的父亲鲧采用&rdquo;堵&ldquo;的方法，洪水不但不退反尔愈发泛滥，以失败而告终；禹治水采用&rdquo;疏&ldquo;的方法对洪水加以引导，终于治水成功。所谓&rdquo;不良信息&ldquo;，不也和洪水一样吗？小孩子终归要长大，总有洞房花烛的那一天，在他们对X好奇的时候，是大人们想堵就能堵的住的吗？</p>
-<p>&nbsp;</p>
-<p>再者说来，小孩子绝对不像大人们想象的那么脆弱，我认识的很多人都是出污泥而不染的，我相信下一代也可以濯清涟而不妖。</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -961,7 +1078,7 @@ I) ldconfig</p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1019,7 +1136,7 @@ I) ldconfig</p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -1116,6 +1233,12 @@ I) ldconfig</p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -1139,12 +1262,6 @@ I) ldconfig</p>
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         

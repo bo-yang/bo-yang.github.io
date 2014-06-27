@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,192 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/09/14/beginning-linux-programming-2">《Beginning Linux Programming》读书笔记（二）</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-09-14</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+    &nbsp;<font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
+"&gt;", by default, if the file already exists, then it will be<br />
+overwritten. If you want to change the default behavior, you can use<br />
+the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
+<p>&nbsp;&nbsp;&nbsp;<br />
+File descriptor 0 is the standard input to a program, file descriptor 1<br />
+is the standard output, and file descriptor 2 is the standard error<br />
+output. It’s unusual to want to redirect any other than the standard<br />
+ones: 0, 1, and 2.</p>
+<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
+standard error output, preface the &gt; operator with the number of the<br />
+file descriptor you wish to redirect. Because the standard error is on<br />
+file descriptor 2, use the 2&gt; operator. This is often useful to<br />
+discard error information and prevent it from appearing on the screen.</p>
+<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
+<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
+put both the output and error outputs into the same file. Notice the<br />
+order of the operators. This reads as “redirect standard output to the<br />
+file killouterr.txt, and then direct standard error to the same place<br />
+as the standard output.” If you get the order wrong, the redirect won’t<br />
+work as you expect.</p>
+<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
+<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
+<p>3.4 <span style="color:rgb(0,0,255);"><i>file</i></span> command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
+<p>3.5 <span style="color:rgb(0,0,255);"><i>read</i></span> command
+<div>&nbsp;&nbsp; &nbsp;You can assign user input to a variable by using the <span style="color:rgb(0,0,255);"><i>read</i></span> command.The read normally&nbsp;completes when the user presses Enter.</div>
+<div></div>
+<div>3.6 <span style="color:rgb(0,0,255);"><i>which</i></span></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>Check which command is used, e.g. <i>which test</i>.</p>
+<p>3.7 <i>touch</i> filename<br /><span>&nbsp;&nbsp;&nbsp; </span>Check whether it exists and create it if it doesn’t.
+<div><font size="4">4 Shell Scripts</font></div>
+<div>4.1 Quoting</div>
+<div>&nbsp;&nbsp;<br />
+&nbsp;If you&nbsp;enclose a $ variable expression in double quotes, then it’s<br />
+replaced with its value when the line is executed.&nbsp;If you enclose it in<br />
+single quotes, then no substitution takes place. You can also remove<br />
+the special&nbsp;meaning of the $ symbol by prefacing it with a /.</div>
+<div></div>
+<div>&nbsp;&nbsp;<br />
+&nbsp;Usually, strings are enclosed in double quotes, which protects<br />
+variables from being separated by whitespace but allows $ expansion to<br />
+take place.</div>
+<div></div>
+<div>4.2 Environment Variables</div>
+<div style="padding:1em 0;text-align:center;" id="tfjq"><img src="http://docs.google.com/File?id=dd6nw3mt_59g32fh2hs_b" style="width:830px;height:522px;" /></div>
+<div style="padding:1em 0;text-align:left;" id="tfjq">&nbsp;&nbsp; &nbsp;If you want to check out how the program works in a different environment by running&nbsp;the <span style="color:rgb(0,0,255);"><i>env &lt;command&gt;</i></span>, try looking at the env manual pages.</div>
+<p>4.3 Parameter&nbsp;Variables<br />&nbsp;&nbsp;<br />
+&nbsp;If<br />
+your&nbsp;script&nbsp;is&nbsp;invoked&nbsp;with&nbsp;parameters,&nbsp;some&nbsp;additional&nbsp;variables&nbsp;are&nbsp;created.&nbsp;If&nbsp;no&nbsp;parameters&nbsp;are&nbsp;passed,&nbsp;the&nbsp;environment&nbsp;variable&nbsp;<span style="color:rgb(0,0,255);">$#</span>&nbsp;still&nbsp;exists&nbsp;but&nbsp;has&nbsp;a&nbsp;value&nbsp;of&nbsp;0.
+<div style="padding:1em 0;text-align:center;" id="mmzl"><img src="http://docs.google.com/File?id=dd6nw3mt_60d6q52vkg_b" style="width:822px;height:231px;" /></div>
+<div>&nbsp;&nbsp;&nbsp;<br />
+As&nbsp;you&nbsp;can&nbsp;see,&nbsp;within&nbsp;double&nbsp;quotes,&nbsp;$@&nbsp;expands&nbsp;the&nbsp;positional&nbsp;parameters&nbsp;as&nbsp;separate&nbsp;fields,&nbsp;regardless&nbsp;of&nbsp;the&nbsp;IFS&nbsp;value.&nbsp;In&nbsp;general,&nbsp;if&nbsp;you&nbsp;want&nbsp;access&nbsp;to&nbsp;the&nbsp;parameters,&nbsp;$@&nbsp;is&nbsp;the&nbsp;sensible&nbsp;choice.</p>
+</div>
+<div>4.4 A Problem With Variables<br />&nbsp;&nbsp;&nbsp; &nbsp;For a script<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);font-family:Courier New;">if [ $timeofday = “yes” ]</span><br />, if just press "Enter",rather than answer anything.When the variable <span style="background-color:rgb(204,204,204);"><span style="font-family:Courier New;">timeofday </span><span style="background-color:rgb(255,255,255);">was tested,</span></span> it consisted of a blank string. Therefore, the <span style="background-color:rgb(204,204,204);">if</span> clause looks like<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ = “yes” ]</span><br />which isn't a valid condition. To avoid this, you must use quotes around the variable:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “$timeofday” = “yes” ]</span><br />An empty variable then gives the valid test:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “” = “yes” ]</span></p>
+<p>&nbsp;&nbsp; &nbsp;<span style="color:rgb(0,0,255);">Remember<br />
+that adding the quotes tells the shell to consider everything between<br />
+them as a single string. This is one way of getting spaces to be stored<br />
+in a variable.</span></p>
+<p>4.5 The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> Command</div>
+<div>&nbsp;&nbsp; &nbsp;The <span style="color:rgb(0,0,255);"><i>[</i></span> and <span style="color:rgb(0,0,255);"><i>test</i></span> commands are synonymous, except that when the <span style="color:rgb(0,0,255);"><i>[</i></span> command is used, a trailing <span style="color:rgb(0,0,255);"><i>]</i></span> is also used. The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> can be used to check to see whether a file exists.</div>
+<div>e.g.&nbsp;&nbsp; &nbsp;<i>test -f &lt;filename&gt; </i>or<i> [ -f &lt;filename&gt; ]</i></div>
+<div>&nbsp;&nbsp; &nbsp;(<span style="color:rgb(255,0,0);">Note: You must put spaces between the [ braces and the condition being checked.</span>)</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp;Conditions that you can use <span style="color:rgb(0,0,255);"><i>test</i></span> command are:</div>
+<div style="padding:1em 0;text-align:center;" id="p1.x"><img src="http://docs.google.com/File?id=dd6nw3mt_61fhn45rcs_b" style="width:546px;height:645px;" /></div>
+<div>4.6 Control Structures</div>
+<div>(1)<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">if</span> <i>condition</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">then</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">elif</span> <i>condition</i><span style="font-family:Courier New;">; then</span> <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">else</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">fi</p>
+<p></span>(2)</div>
+<p>&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">for</span> <i><span style="font-family:Arial;">variable</span></i> <span style="font-family:Courier New;">in</span> <i>values</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p>Note: <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="background-color:rgb(204,204,204);">for file in $(ls f*.sh); do</span><br />In this example,&nbsp; the parameter list for the for command is provided by the output of the command enclosed in the $() sequence.</p>
+<p>(3) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">while</span> <i>condition</i> <span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p>(4) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">until </span><i>condition</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
+<p><font size="3"><span style="background-color:rgb(255,229,153);font-family:Arial;">Note:&nbsp;&nbsp;&nbsp; In general, if a loop should always execute at least once, use a <span style="font-family:Courier New;">while</span> loop; if it may not need to execute at all, use an <span style="font-family:Courier New;">until</span> loop.</span></font></p>
+<p>(5)</p>
+<p>&nbsp;&nbsp; &nbsp;case variable in<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;...<br />&nbsp;&nbsp; &nbsp;esac</p>
+<p>&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(255,229,153);">Note:<br /><span></span></span>
+<ul>
+<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp;&nbsp; </span>Notice<br />
+that each pattern line is terminated with double semicolons (;;). You<br />
+can put multiple statements between each pattern and the next, so a<br />
+double semicolon is needed to mark where one statement ends and the<br />
+next pattern begins.</span></span></li>
+</ul>
+<p><span style="background-color:rgb(255,229,153);"><br /><span> </span></span>
+<ul>
+<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp; &nbsp;</span></span>Be<br />
+careful with the case construct if you are using wildcards such as ‘*‘<br />
+in the pattern. The problem is that the first matching pattern will be<br />
+taken, even if a later pattern matches more exactly.</span></li>
+</ul>
+<p>(6) Lists
+<ul>
+<li><span>&nbsp;&nbsp;&nbsp; </span><b>AND</b><br />
+List: The AND list construct enables you to execute a series of<br />
+commands, executing the next command only if all the previous commands<br />
+have succeeded. The syntax is<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 &amp;&amp; statement2 &amp;&amp; statement3 &amp;&amp; ...</span></li>
+</ul>
+<ul>
+<li><span>&nbsp;&nbsp;&nbsp; </span><b>OR</b><br />
+List: The OR list construct enables us to execute a series of commands<br />
+until one succeeds, and then not execute any more. The syntax is as<br />
+follows:<br />&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 || statement2 || statement3 || ...</span></p>
+</li>
+</ul>
+<p>(7) Statement Blocks<br />
+<span>&nbsp;&nbsp; &nbsp;</span>If you want to use multiple statements in a place<br />
+where only one is allowed, such as in an AND or OR list, you can do so<br />
+by enclosing them in braces {} to make a statement block.</p>
+<p>(8) Shell Function<br />
+<span>&nbsp;&nbsp;&nbsp; </span><span style="background-color:rgb(204,204,204);">function_name () {</span><br style="background-color:rgb(204,204,204);" /><br />
+<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;statements</span><br style="background-color:rgb(204,204,204);" /><br />
+<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;}</span></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/09/11/linux-program-design-1">《Linux程序设计》读书笔记（一）</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-09-11</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+    &nbsp;
+<div id="xrgo" style="text-align:center;"><font size="5"><span id="y5c80" style="font-family:SimHei, 黑体, MS Hei, sans-serif;">《Linux程序设计》读书笔记</span></font></div>
+<p><b><br /><font size="4">1、编译C程序的技巧</font></b><br />&nbsp;&nbsp;&nbsp;&nbsp;在调用C语言编译器的时候可以通过给出“-I”标志来引用保存在下级子目录或者非标准目录下的头文件，如：<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;$ gcc -I /usr/openwin/include fred.c<br />它会使编译器在/usr/openwin/include的子目录和标准目录两个地方去查找fred.c程序里所包含的头文件。</p>
+<p>&nbsp;&nbsp;&nbsp; 用grep查找含有某些特定定义与函数生命的头文件是很方便的。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ grep EXIT_ *.h<br />grep命令会在该子目录下的所有名字以.h结尾的文件里查找字符串“EXIT_”。</p>
+<p><font size="4"><b>2、库文件</b></font><br />&nbsp;&nbsp;&nbsp;<br />
+标准的系统库文件一般保存在/lib或/usr/lib子目录中。库文件的名字永远以“lib”这几个字母打头，随后便是函数库说明的部分（比如用c表示<br />
+这是一个C语言函数库，用m表示一个数学运算库），文件名的最后部分以一个“.”开始，然后给出这个库文件的类型：静态函数库.a;共享函数库.so<br />
+或.sa。<br />&nbsp;&nbsp;&nbsp; 在通知编译器查找某个库文件的时候，既可以给出其完整的路径名，也可以使用“-l”标志，。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c /usr/lib/libm.a<br />或<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c -lm<br />-lm代表标准目录库中名为libm.a的函数库。 更详细的解释参见下面的例子。<br />&nbsp;&nbsp;&nbsp;&nbsp;虽然库文件与头文件相似，都是被保存在某个标准位置，但我们仍然可以通过“-L”标志给编译器增加搜索子目录库。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o x11fred -L/usr/openwin/lib x11fred.c -lX11<br />该命令在编译和链接程序x11fred时将使用在子目录/usr/openwin/lib中找到的libX11函数库版本。</p>
+<p>&nbsp;&nbsp;&nbsp; 2.1 静态库(archive)<br />&nbsp;&nbsp;&nbsp; 假设现有源文件bill.c和fred.c，则建立静态库的方法：<br />&nbsp;&nbsp;&nbsp; （1）编译源文件生成二进制目标文件，需要在调用C编译器时加上“-c”选项以防止生成最终应用程序。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -c bill.c fred.c<br />&nbsp;&nbsp;&nbsp; （2）为函数库建立一个头文件（lib.h），它的作用是在我们的函数库里对这两个函数进行声明；如果有程序要使用这个函数库，就必须使用include引用。<br />&nbsp;&nbsp;&nbsp; <img alt="" /><img alt="" />（3）调用程序（program.c）引用库函数头文件并调用其中的函数。<br />&nbsp;&nbsp;&nbsp; （4）使用ar工具简历档案并把目标代码加入其中。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ar crv</b> libfoo.a bill.o fred.o<br />&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;另外，某些系统（尤其是Berkley&nbsp;UNIX操作系统发展而来的系统）上，要想成功是用函数库，必须先为这个函数库建立一个内容表：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ranlib</b> libfoo.a</p>
+<p>&nbsp;&nbsp;&nbsp; 可以通过使用“-L”选项告诉编译器静态库的位置：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o program program.o -L. -lfoo<br />“-L.”告诉编译器在当前子目录中查找函数库。“-lfoo”选项告诉编译器使用那个名为libfoo.a的函数库（或者一个名为libfoo.so的共享库，如果有的话）。</p>
+<p>&nbsp;&nbsp;&nbsp; 可以使用nm命令查看某个目标代码文件、函数库或者可执行程序里都包含那些函数。</p>
+<p>&nbsp;&nbsp;&nbsp; 2.2 共享库<br />&nbsp;&nbsp;&nbsp;<br />
+如果一个程序使用了共享库，它的连接方式是这样的：它本身不再保存函数的代码，而只保存共享代码的调用线索，共享代码是在运行的时候才加入其中的。对<br />
+Linux系统而言，负责加载共享库并解析客户程序中函数调用线索的程序（即共享库动态加载器）是ld.so或ld-linux.so.2；查找共享库的<br />
+其他地点是在/etc/ld.so.conf文件里配置的；如果这个文件进行了修改，就需要用ldconfig命令进行处理。<br />&nbsp;&nbsp;&nbsp; 可以使用<b>ldd</b>程序查看某个程序要求使用的是哪一个共享库：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ ldd program</p>
+<p>&nbsp;&nbsp;&nbsp; .so类似于Windows中的.DLL文件，是运行时加入程序的；.sa类似于Windows中的.LIB文件，是加入到可执行文件里面的。</p>
+<p><font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
+"&gt;", by default, if the file already exists, then it will be<br />
+overwritten. If you want to change the default behavior, you can use<br />
+the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
+<p>&nbsp;&nbsp;&nbsp;<br />
+File descriptor 0 is the standard input to a program, file descriptor 1<br />
+is the standard output, and file descriptor 2 is the standard error<br />
+output. It’s unusual to want to redirect any other than the standard<br />
+ones: 0, 1, and 2.</p>
+<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
+standard error output, preface the &gt; operator with the number of the<br />
+file descriptor you wish to redirect. Because the standard error is on<br />
+file descriptor 2, use the 2&gt; operator. This is often useful to<br />
+discard error information and prevent it from appearing on the screen.</p>
+<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
+<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
+put both the output and error outputs into the same file. Notice the<br />
+order of the operators. This reads as “redirect standard output to the<br />
+file killouterr.txt, and then direct standard error to the same place<br />
+as the standard output.” If you get the order wrong, the redirect won’t<br />
+work as you expect.</p>
+<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
+<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
+<p>3.4 file command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
+<p><font size="4">4 Shell Scripts</font></p>
+<p>P60, to be continued...</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -909,68 +1095,6 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/06/27/open-source-license">开源授权协议</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-06-27</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p style="margin-bottom:0;"><font face="Times New Roman, serif">［说明］：本文摘自《程序员》2008年06月刊许洪波教授的《开源授权协议（License）初探》一文，版权归原作者所有。</font></p>
-<p style="margin-bottom:0;"><font face="Times New Roman, serif"><br />
-</font></p>
-<p style="margin-bottom:0;"><font face="Times New Roman, serif">1</font>、<font face="Times New Roman, serif">OSI(<a href="http://www.opensource.org/">www.opensource.org</a>)</font>是目前世界上针对开源软件授权进行认证的唯一机构。 </p>
-<p style="margin-bottom:0;"><font face="Times New Roman, serif">2</font>、开源软件的特点： </p>
-<ul>
-<li>
-<p style="margin-bottom:0;">免费的再发布：软件授权拥有者必须允许，包括软件的获得者和使用者将软件重新分发给其他人，而不向版权的拥有者支付版权相关的费用。</p>
-</li>
-<li>
-<p style="margin-bottom:0;">源代码的访问：开源授权需要提供源代码。</p>
-</li>
-<li>
-<p style="margin-bottom:0;">衍生作品：授权必须允许使用者修改软件，并在其基础上做出创新工作。授权必须允许这些修改和衍生作品在和原来的软件版权条件相同下发布。</p>
-</li>
-<li>
-<p style="margin-bottom:0;">杜绝歧视：只要遵守开源许可版权，人人都可以使用开源软件；同时，开源软件版权不得限制任何人在特定领域使用该软件。</p>
-</li>
-</ul>
-<p style="margin-bottom:0;"><font face="Times New Roman, serif">3</font>、开源授权模式：</p>
-<p style="margin-bottom:0;">  （<font face="Times New Roman, serif">1</font>）强开源约束授权&mdash;&mdash;<font face="Times New Roman, serif">GNU GPL</font>。基于<font face="Times New Roman, serif">GPL</font>的任何软件及衍生应用程序，其源代码必须公开，并不得因此收费。</p>
-<p style="margin-bottom:0;">  （<font face="Times New Roman, serif">2</font>）弱开源约束授权&mdash;&mdash;<font face="Times New Roman, serif">Mozilla</font>公用授权（<font face="Times New Roman, serif">MPL</font>）和<font face="Times New Roman, serif">LGPL</font>。<font face="Times New Roman, serif">MPL</font>协议要求假如你修改了一个基于<font face="Times New Roman, serif">MPL</font>协议的源代码，则必须列入或公开你所做的修改。假如你的软件采用了基于<font face="Times New Roman, serif">LGPL</font>的开源软件，<font face="Times New Roman, serif">LGPL</font>要求任何针对<font face="Times New Roman, serif">LGPL</font>开源软件的修改必须公开其源代码，但不要求基于源代码之上的衍生应用开放其源代码。</p>
-<p style="margin-bottom:0;">  （<font face="Times New Roman, serif">3</font>）无开源约束授权&mdash;&mdash;<font face="Times New Roman, serif">BSD</font>授权协议。<font face="Times New Roman, serif">BSD</font>几乎允许用户做任何他们想要想要在<font face="Times New Roman, serif">BSD</font>的授权代码上做的事情；他们也可以将软件用于免费或商业目的；他们也可以发布或不发布变更后的源代码。<font face="Times New Roman, serif">BSD</font>的唯一要求就是软件使用者声明他们使用了软件原作者的著作权。</p>
-<p style="margin-bottom:0;">（4）其他开源授权。</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/06/06/fedora9-hard-disk">硬盘安装Fedora 9时死机？</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-06-06</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-    前天晚上在Fedora9下装完ATI显卡的驱动以后，升级系统，昨天早晨起来一看，我的本本过热休眠了（发现Fedora下经常出现这种情况，而Windows下很少出现，可见Linux的电源管理确实还有问题），当时没有管它。</p>
-<p>昨天晚上到了半夜，决定切换到Fedora下玩一玩，结果发现进不了图形界面了，字符界面也还闪来闪去的，实在没办法，重装。非常不幸的是，重装到一半的时候，CPU过热又歇菜了。</p>
-<p>这时重启发现只能进grub控制台，无法进Windows了。顿时傻了。</p>
-<p>今天早晨来实验室上网搜索修复MBR的方法，最简单的就是用Windows安装盘。拿出Win2003的盘插到光驱一试，没反应，My God！光驱又坏了！！！难道我辛辛苦苦好几年积攒的文档就眼看要人间蒸发付诸东流了吗？</p>
-<p>我不甘心，继续搜索grub的使用方法，试着敲入如下的命令：</p>
-<pre>kernel (hd0,6)/isolinux/vmlinuz &lt;br  /&gt;initrd (hd0,6)/isolinux/initrd.img &lt;br  /&gt;boot</pre>
-<p>成功了，终于可以进入继续安装Fedora 9的界面了！<br />只要能够进入一个操作系统就好说了，不管它是Windows还是Linux！</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1108,7 +1232,7 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1166,7 +1290,7 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -1263,6 +1387,12 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -1286,12 +1416,6 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         

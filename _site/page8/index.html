@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,256 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/03/21/transfer-excel-to-xml">Excel文件转换为XML以及Linux文件编码格式转换</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-03-21</strong> with tags <a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>今天需要将多个Excel文档转换为XML&#26684;式，本打算用MS Office自带的另存为XML文件的功能，结果转换成MS Office2003 XML之后的文件就是一坨屎！Office 2007自带的XML文档转换的功能也TMD超级繁琐，根据帮助手册自己建了.xsd文件导入到Excel之后也无法导出XML数据，白白浪费了时间。</p>
+<p>后来Google到了<a href="http://www.meadinkent.co.uk/xl_xml1.htm">这篇文章</a>。文中提供了现成的VBA源代码，稍微修改一下即可拿来使用（中文注释为本人所加）：</p>
+<p>
+<pre>'Attribute VB_Name = &quot;XL_to_XML&quot;
+Sub MakeXML()
+' create an XML file from an Excel table
+Dim MyRow As Integer, MyCol As Integer, Temp As String, YesNo As Variant, DefFolder As String
+Dim XMLFileName As String, XMLRecSetName As String, MyLF As String, RTC1 As Integer
+Dim RangeOne As String, RangeTwo As String, Tt As String, FldName(99) As String
+
+MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
+DefFolder = &quot;C:MyXML&quot;   'change this to the location of saved XML files
+
+YesNo = MsgBox(&quot;This procedure requires the following data:&quot; &amp; MyLF _
+ &amp; &quot;1 A filename for the XML file&quot; &amp; MyLF _
+ &amp; &quot;2 A groupname for an XML record&quot; &amp; MyLF _
+ &amp; &quot;3 A cellrange containing fieldnames (col titles)&quot; &amp; MyLF _
+ &amp; &quot;4 A cellrange containing the data table&quot; &amp; MyLF _
+ &amp; &quot;Are you ready to proceed?&quot;, vbQuestion + vbYesNo, &quot;MakeXML CiM&quot;)
+ 
+If YesNo = vbNo Then
+ Debug.Print &quot;User aborted with 'No'&quot;
+ Exit Sub
+End If
+
+XMLFileName = FillSpaces(InputBox(&quot;1. Enter the name of the XML file:&quot;, &quot;MakeXML CiM&quot;, &quot;GRE_Core_Words&quot;))
+If Right(XMLFileName, 4) &lt;&gt; &quot;.xml&quot; Then
+ XMLFileName = XMLFileName &amp; &quot;.xml&quot;
+End If
+
+XMLRecSetName = FillSpaces(InputBox(&quot;2. Enter an identifying name of a record:&quot;, &quot;MakeXML CiM&quot;, &quot;item&quot;))
+
+RangeOne = InputBox(&quot;3. Enter the range of cells containing the field names (or column titles):&quot;, &quot;MakeXML CiM&quot;, &quot;A2:D2&quot;)
+If MyRng(RangeOne, 1) &lt;&gt; MyRng(RangeOne, 2) Then
+  MsgBox &quot;Error: names must be on a single row&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+End If
+MyRow = MyRng(RangeOne, 1)
+For MyCol = MyRng(RangeOne, 3) To MyRng(RangeOne, 4)
+ If Len(Cells(MyRow, MyCol).Value) = 0 Then
+  MsgBox &quot;Error: names range contains blank cell&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+ End If
+ FldName(MyCol - MyRng(RangeOne, 3)) = FillSpaces(Cells(MyRow, MyCol).Value)
+Next MyCol
+
+RangeTwo = InputBox(&quot;4. Enter the range of cells containing the data table:&quot;, &quot;MakeXML CiM&quot;, &quot;A3:D6257&quot;)
+If MyRng(RangeOne, 4) - MyRng(RangeOne, 3) &lt;&gt; MyRng(RangeTwo, 4) - MyRng(RangeTwo, 3) Then
+  MsgBox &quot;Error: number of field names &lt;&gt; data columns&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
+  Exit Sub
+End If
+RTC1 = MyRng(RangeTwo, 3)
+
+If InStr(1, XMLFileName, &quot;:&quot;) = 0 Then
+ XMLFileName = DefFolder &amp; XMLFileName
+End If
+
+Open XMLFileName For Output As #1
+Print #1, &quot;&lt;?xml version=&quot; &amp; Chr(34) &amp; &quot;1.0&quot; &amp; Chr(34) &amp; &quot; encoding=&quot; &amp; Chr(34) &amp; &quot;UTF-8&quot; &amp; Chr(34) &amp; &quot;?&gt;&quot;
+Print #1, &quot;&lt;wordbook&gt;&quot;
+
+For MyRow = MyRng(RangeTwo, 1) To MyRng(RangeTwo, 2)
+Print #1, &quot;&lt;&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
+  For MyCol = RTC1 To MyRng(RangeTwo, 4)
+  ' the next line uses the FormChk function to format dates and numbers
+     Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; Cells(MyRow, MyCol).Value &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
+  ' the next line does not apply any formatting
+  '  Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; RemoveAmpersands(Cells(MyRow, MyCol).Value) &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
+    Next MyCol
+ Print #1, &quot;&lt;/&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
+
+Next MyRow
+Print #1, &quot;&lt;/wordbook&gt;&quot;
+Close #1
+MsgBox XMLFileName &amp; &quot; created.&quot; &amp; MyLF &amp; &quot;Process finished&quot;, vbOKOnly + vbInformation, &quot;MakeXML CiM&quot;
+Debug.Print XMLFileName &amp; &quot; saved&quot;
+End Sub
+Function MyRng(MyRangeAsText As String, MyItem As Integer) As Integer
+' analyse a range, where MyItem represents 1=TR, 2=BR, 3=LHC, 4=RHC
+
+Dim UserRange As Range
+Set UserRange = Range(MyRangeAsText)
+Select Case MyItem
+ Case 1
+ MyRng = UserRange.Row
+ Case 2
+ MyRng = UserRange.Row + UserRange.Rows.Count - 1
+ Case 3
+ MyRng = UserRange.Column
+ Case 4
+ MyRng = UserRange.Columns(UserRange.Columns.Count).Column
+End Select
+Exit Function
+
+End Function
+Function FillSpaces(AnyStr As String) As String
+' remove any spaces and replace with underscore character
+Dim MyPos As Integer
+MyPos = InStr(1, AnyStr, &quot; &quot;)
+Do While MyPos &gt; 0
+ Mid(AnyStr, MyPos, 1) = &quot;_&quot;
+ MyPos = InStr(1, AnyStr, &quot; &quot;)
+Loop
+FillSpaces = LCase(AnyStr)
+End Function
+
+Function FormChk(RowNum As Integer, ColNum As Integer) As String
+' formats numeric and date cell values to comma 000's and DD MMM YY
+FormChk = Cells(RowNum, ColNum).Value
+If IsNumeric(Cells(RowNum, ColNum).Value) Then
+ FormChk = Format(Cells(RowNum, ColNum).Value, &quot;#,##0 ;(#,##0)&quot;)
+End If
+If IsDate(Cells(RowNum, ColNum).Value) Then
+ FormChk = Format(Cells(RowNum, ColNum).Value, &quot;dd mmm yy&quot;)
+End If
+End Function
+
+Function RemoveAmpersands(AnyStr As String) As String
+Dim MyPos As Integer
+' replace Ampersands (&amp;) with plus symbols (+)
+
+MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
+Do While MyPos &gt; 0
+ Mid(AnyStr, MyPos, 1) = &quot;+&quot;
+ MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
+Loop
+RemoveAmpersands = AnyStr
+End Function
+</pre>
+<p></p>
+<p></p>
+<p>如果不想将文件中的&amp;替换为&#043;，可以将第55行的<span>RemoveAmpersands(FormChk(MyRow,&nbsp;MyCol))替换为</span><span>Cells(MyRow,&nbsp;MyCol).Value。</span></p>
+<p>&nbsp;</p>
+<p>需要注意的是在Excel文件中必须有一行是标题行——即改行存放各列的标题，否则生成的XML文件&#26684;式不一定是你所需要的。</p>
+<p>&nbsp;</p>
+<p>由于我对XML文件的编码&#26684;式有要求，必须是UTF-8，而Windows默认的编码&#26684;式是GBXXXX，因此需要对生成的XML文件进行编码&#26684;式转换。搜索到了<a href="http://tech.16c.cn/linux/glpz/20100221/22560.html">linux 查看文件编码以及修改编码</a>一文，摘录重点如下：</p>
+<p>&nbsp;</p>
+<p>查看文件编码</p>
+<p>&nbsp;</p>
+<p>　　在Linux中查看文件编码可以通过以下几种方式：</p>
+<p>　　1.在Vim中可以直接查看文件编码</p>
+<p>　　:set fileencoding</p>
+<p>　　即可显示文件编码&#26684;式。</p>
+<p>　　如果你只是想查看其它编码&#26684;式的文件或者想解决用Vim查看文件乱码的问题，那么你可以在~/.vimrc 文件中添加以下内容：</p>
+<p>　　set encoding=utf-8 fileencodings=ucs-bom,utf-8,cp936</p>
+<p>　　这样，就可以让vim自动识别文件编码（可以自动识别UTF-8或者GBK编码的文件），其实就是依照fileencodings提供的编码列表尝试，如果没有找到合适的编码，就用latin-1(ASCII)编码打开。</p>
+<p>　　2. enca (如果你的系统中没有安装这个命令，可以用sudo yum install -y enca 安装 )查看文件编码</p>
+<p>　　$ enca filename</p>
+<p>　　filename: Universal transformation format 8 bits; UTF-8</p>
+<p>　　CRLF line terminators</p>
+<p>　　需要说明一点的是，enca对某些GBK编码的文件识别的不是很好，识别时会出现：</p>
+<p>　　Unrecognized encoding</p>
+<p>&nbsp;</p>
+<p>文件编码转换</p>
+<p>　　1.在Vim中直接进行转换文件编码,比如将一个文件转换成utf-8&#26684;式</p>
+<p>　　:set fileencoding=utf-8</p>
+<p>　　2. enconv 转换文件编码，比如要将一个GBK编码的文件转换成UTF-8编码，操作如下</p>
+<p>　　enconv -L zh_CN -x UTF-8 filename</p>
+<p>　　3. iconv 转换，iconv的命令&#26684;式如下：</p>
+<p>　　iconv -f encoding -t encoding inputfile</p>
+<p>　　比如将一个UTF-8 编码的文件转换成GBK编码</p>
+<p>　　iconv -f GBK -t UTF-8 file1 -o file2</p>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/03/10/hostname-in-etc-hosts">在/etc/hosts中定义Linux的hostname</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-03-10</strong> with tags <a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>今天碰到这样一个问题：一个程序在刚刚装好的Linux server上获取IP地址时永远都是0x7f000001。一开始没有注意，后来仔细一想，0x7f000001不正好就是127.0.0.1嘛！有同事查了一下/etc/hosts，发现在该文件中有这样一行：</p>
+<p>
+<pre>127.0.0.1     mylinuxsvr localhost.localhost.localdomain localhost
+</pre>
+<p>&nbsp;</p>
+<p>其中，mylinuxsvr是这个server的名字。难怪每次都只能获取到127.0.0.1呢。当然了，这台server的IP地址其实是配好了的，只是不知为什么，有一个不同server间通信的程序非要通过/etc/hosts来获取IP地址&hellip;&hellip;</p>
+<p>&nbsp;</p>
+<p>找了一些Linux server网络配置的文章，记录于此：</p>
+<ol>
+<li><a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a></li>
+<li><a href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Virtualization_for_Servers/2.2/html/Administration_Guide/Administration_Guide-Create_Objects-Add_Server.html">Adding Red Hat Enterprise Linux Hosts</a></li>
+</ol>
+<p>下文摘自<a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a>。</p>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1><span id="Configuring_Your_.2Fetc.2Fhosts_File" class="mw-headline">Configuring Your /etc/hosts File</span></h1>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0 goog_qs-tidbit-hilite">The /etc/hosts file is just a list of IP addresses and their corresponding server names.</span>&nbsp;Your server will typically check this file before referencing DNS. If the name is found with a corresponding IP address then DNS won't be queried at all. Unfortunately, if the IP address for that host changes, you also have to also update the file. This may not be much of a concern for a single server, but can become laborious if it has to be done companywide. For ease of management, it is often easiest to limit entries in this file to just the loopback interface and also the server's own hostname, and use a centralized DNS server to handle most of the rest. Sometimes you might not be the one managing the DNS server, and in such cases it may be easier to add a quick /etc/hosts file entry till the centralized change can be made.</p>
+<pre>192.168.1.101  smallfry
+
+</pre>
+<p>In the example above server smallfry has an IP address of 192.168.1.101. You can access 192.168.1.101 using the ping, telnet or any other network aware program by referring to it as smallfry. Here is an example using the ping command to see whether smallfry is alive and well on the network:</p>
+<pre>[root@bigboy tmp]# ping smallfry
+PING zero (192.168.1.101) 56(84) bytes of data.
+64 bytes from smallfry (192.168.1.101): icmp_seq=0 ttl=64 time=0.197 ms
+64 bytes from smallfry (192.168.1.101): icmp_seq=1 ttl=64 time=0.047 ms
+
+
+--- smallfry ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 2017ms
+rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
+[root@bigboy tmp]#
+
+</pre>
+<p>You can also add aliases to the end of the line which enable you to refer to the server using other names. Here we have set it up so that smallfry can also be accessed using the names&nbsp;<code>tiny</code>&nbsp;and&nbsp;<code>littleguy</code>.</p>
+<pre>192.168.1.101  smallfry  tiny  littleguy
+
+</pre>
+<p>You should never have an IP address more than once in this file because Linux will use only the values in the first entry it finds.</p>
+<pre>192.168.1.101  smallfry    # (Wrong)
+192.168.1.101  tiny        # (Wrong)
+192.168.1.101  littleguy   # (Wrong)
+</pre>
+<p>&nbsp;</p>
+<h2><span id="The_loopback_Interface.27s_localhost_Entry" class="mw-headline">The loopback Interface's localhost Entry</span></h2>
+<p>Usually the first entry in /etc/hosts defines the IP address of the server's virtual loopback interface. This is usually mapped to the name localhost.localdomain (the universal name used when a server refers to itself) and localhost (the shortened alias name). By default, Fedora inserts the hostname of the server between the 127.0.0.1 and the localhost entries like this:</p>
+<pre>127.0.0.1     bigboy    localhost.localdomain    localhost
+
+</pre>
+<p>When the server is connected to the Internet this first entry after the 127.0.0.1 needs to be the fully qualified domain name (FQDN) of the server. For example,&nbsp;<code>bigboy.mysite.com</code>, like this:</p>
+<pre>127.0.0.1     bigboy.my-site.com    localhost.localdomain    localhost
+
+</pre>
+<p>Some programs such as Sendmail are very sensitive to this and if they detect what they feel is an incorrect FQDN they will default to using the name localhost.localdomain when communicating with another server on the network. This can cause confusion, as the other server also feels it is localhost.localdomain.</p>
+<p>Note:&nbsp;You must always have a localhost and localhost.localdomain entry mapping to 127.0.0.1 for Linux to work properly and securely.</p>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1073,144 +1323,6 @@ fi
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/02/16/pvx-tutorial">9vx tutorial: running a cpu server from kfs (RFC)</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-02-16</strong> with tags <a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>原文：<a href="http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd">&nbsp;http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd</a></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<div>
-<p><span>【说明】</span></p>
-<p><span>本文是yiyus发布在9fans上的一篇教程。文中用到的9vx是yiyus维护的分支：</span><a href="http://bytebucket.org/yiyus/vx32/overview">http://bytebucket.org/yiyus/vx32/overview</a>。根据yiyus在9fans中的说明，他的9vx分支是从ron的分支上更改的。vx32/9vx的创始人Russ Cox最近在9fans中声明他本人已经放弃了对9vx的维护，准备将所有权限转交给ron minnich（八卦一下：Russ Cox现在是Google Go语言的核心成员之一，正与Rob Pike，Ken Tompson等原plan9的元老一起维护Go&hellip;&hellip;）。</p>
-</div>
-<div>&nbsp;-------------------------------------------------------</div>
-<p>&nbsp;</p>
-<div>
-<h1 id="zw-12e2e7c010cc6H2Tp3916c"><span id="zw-12e2ede98aavnmvgj3916c">9vx tutorial:</span><span id="zw-12e2edec946BgJF9J3916c">&nbsp;</span><span id="zw-12e2ede99882FtZgu3916c">running a cpu server from kfs (RFC)</span><span id="zw-12e2ede9988SM7byw3916c">&nbsp;&nbsp;</span></h1>
-<p id="zw-12e2e7c3536WlOKdt3916c"><span id="zw-12e2e7c3537XVH5MS3916c">This tutorial is a work in progress (it will eventually be added to&nbsp;</span><span id="zw-12e2e7c3537arcii83916c">the 9vx documentation and probably to the Plan 9 wiki). Please let me&nbsp;</span><span id="zw-12e2e7c3537TL8RB33916c">know if you see anything I'm doing wrong (unfortunately I don't have&nbsp;</span><span id="zw-12e2e7c3537whmwf43916c">too much experience&nbsp;with real Plan 9 systems of more than one&nbsp;</span><span id="zw-12e2e7c3537XtRCA3916c">machine). In particular, I don't know why I could not use mkfs instead&nbsp;</span><span id="zw-12e2e7c3537gPJh1d3916c">of dircp. The line&nbsp;</span></p>
-<p id="zw-12e2e94864bSyqBpZ3916c"><span id="zw-12e2e94864bEE4NC33916c">&nbsp;&nbsp;
-<pre> % disk/mkfs -s /n/9660 /sys/lib/sysconfig/proto/allproto </pre>
-<p>&nbsp;</span></p>
-<p id="zw-12e2e7c1e3eEKEBu13916c"><span id="zw-12e2e95854a9D-czm3916c">gave me this error:&nbsp;</span><span id="zw-12e2edec95bhi6LFZ3916c">&nbsp;</span></p>
-<p id="zw-12e2e7c1df8QFHSYZ3916c"><span id="zw-12e2e7c1df9E8SbsK3916c">&nbsp; &nbsp;</span><span id="zw-12e2e960dcaLCGKRy3916c">&nbsp;</span><span style="font-family:mceinline;"><span id="zw-12e2edf46e0GLLVZ3916c">mkfs: /sys/lib/sysconfig/proto/allproto:1: can't move tmp file to&nbsp;</span><span id="zw-12e2e95e07btk4zLw3916c">/n/kfs/dist/replica/plan9.compressed.db: wstat -- unknown type/mode&nbsp;</span></span></p>
-<p id="zw-12e2e7c1dfaWgaIQN3916c"><span id="zw-12e2e7c1dfbpYEmbw3916c">Anyway, these instructions are working here. Please, let me know if&nbsp;</span><span id="zw-12e2e965525WjSCTn3916c">they work for you too.&nbsp;</span></p>
-<p id="zw-12e2e7c1dfcHzaUAw3916c"><span id="zw-12e2e7c1dfdxBy3T73916c">By the way, this tutorial is only the first one, but I'd like to have&nbsp;</span><span id="zw-12e2e967f47zy0X-O3916c">some more. For example, to run several 9vx instances in a private&nbsp;</span><span id="zw-12e2e9686a5ISlVW83916c">network using the tap device and to run 9vx from fossil backed up by&nbsp;</span><span id="zw-12e2e968f83cjlZom3916c">p9p's venti. Contributions are welcomed ;-)&nbsp;</span></p>
-<p id="zw-12e2e7c1e00sZ2bi3916c"><span id="zw-12e2e7c1e01DWUEbQ3916c">----------------------------------------------------------------------</span><span id="zw-12e2edec95cu_sRsD3916c">​</span></p>
-<p id="zw-12e2e7c1e02ZfffOa3916c"><span id="zw-12e2e7c1e03rCtzas3916c">This is a brief tutorial on how to run a 9vx cpu server from a kfs&nbsp;</span><span id="zw-12e2e970b10h9TSbm3916c">file system. You will need 9vx, a plan9.iso and some free disk space.&nbsp;</span></p>
-<p id="zw-12e2e7c1e04R1Jx63916c"><span id="zw-12e2e7c1e05bbvaaI3916c">First, go to the destination directory and install 9vx:&nbsp;</span></p>
-<p id="zw-12e2e7c1e05svn39h3916c"><span id="zw-12e2eefeb87mcWL1O3916c">&nbsp;&nbsp;
-<pre>$ hg clone http://bitbucket.org/yiyus/vx32/ 
-$ cd vx32/src/ 
-$ make 9vx/9vx &amp;&amp; sudo make 9vx/install </pre>
-<p>&nbsp;</span></p>
-<p id="zw-12e2e7c1e09V3a83916c"><span id="zw-12e2e7c1e09GQZ4fp3916c">(<strong>Commands run on the host are preceded by $, commands run from inside&nbsp;</strong></span><span id="zw-12e2e988e4bNr603d3916c"><strong>9vx are preceded with %</strong>)&nbsp;</span></p>
-<p id="zw-12e2e7c1e0aSQCEmh3916c"><span id="zw-12e2e7c1e0b-b3A9E3916c">You can check that 9vx is working running the minimal system embedded&nbsp;</span><span id="zw-12e2e98ab92nzZNTv3916c">in the executable. The rcvx script should take you to a vx32% rc&nbsp;</span><span id="zw-12e2e98b4ffnklqHV3916c">prompt in the current directory. Once you have played a bit with a&nbsp;</span><span id="zw-12e2e98c1bbOW6Z2h3916c">rootless 9vx type exit to go back to your host system.&nbsp;</span></p>
-<p id="zw-12e2e7c1e0d_O1Dd3916c"><span id="zw-12e2e7c1e0eZiwMVZ3916c">rcvx is cool but you will want a full Plan 9 tree to have real fun.&nbsp;</span><span id="zw-12e2edec95f8uPmz3916c">&nbsp;</span></p>
-<p id="zw-12e2e7c1e41YAeJd_3916c"><span id="zw-12e2e7c1e0ezorRNc3916c">Let's boot from the iso file:&nbsp;</span></p>
-<p id="zw-12e2e7c1e0f5rF-Fj3916c"><span id="zw-12e2e7c1e0fW1F1Cf3916c">&nbsp;&nbsp;
-<pre> $ 9vx -r plan9.iso -u glenda "CWD=#Z`pwd`" "nvram=#Z`pwd`/plan9.nvr" </pre>
-<p>&nbsp;</span></p>
-<p id="zw-12e2e7c1e41-SWd8A3916c"><span id="zw-12e2e99b018PJMlg63916c">You should be in rio now, have an acme and a rio window, stats,&nbsp;</span><span id="zw-12e2e9a8581RJi33V3916c">faces... This is the live system in the iso that you probably already&nbsp;</span><span id="zw-12e2e9a93b7IDfw_43916c">know. The CWD=... and nvram=... arguments are interpreted as plan9.ini&nbsp;</span><span id="zw-12e2e9a9a949Ka7In3916c">lines and passed as environment variables, we will use them later.&nbsp;</span></p>
-<p id="zw-12e2e7c1e13HHsmwG3916c"><span id="zw-12e2e7c1e14E_-xFU3916c">Open a new rio window:&nbsp;</span></p>
-<p id="zw-12e2e7c1e14r-aZU3916c"><span id="zw-12e2ef48ddf7wmF-E3916c">&nbsp;&nbsp; &nbsp;
-<pre>% cd $CWD 
-% dd -if /dev/random -of plan9.nvr -bs 512 -count 1 
-% dd -if /dev/zero -of plan9.kfs -bs 1024 -count 320000 </pre>
-<p>&nbsp;</span></p>
-<p id="zw-12e2e7c1e16Q2tDoO3916c"><span id="zw-12e2e7c1e178Xvjp33916c">Those files will be our nvram and kfs partitions (check the size of&nbsp;</span><span id="zw-12e2ebb332fVCtHPl3916c">your kfs file, 320Mb is not too much, but will be enough). Nvram needs&nbsp;</span><span id="zw-12e2ebb437bvlQGlr3916c">to be initialized:&nbsp;</span></p>
-<p id="zw-12e2e7c1e18-UPMoz3916c">
-<pre>    % auth/wrkey 
-    authid: bootes 
-    authdom: 9vx 
-    secstore key: 
-    password: </pre>
-<p>&nbsp;</p>
-<p id="zw-12e2e7c1e1cJK0W053916c"><span id="zw-12e2e7c1e1cHkXjtz3916c">We can populate the file system now:&nbsp;</span></p>
-<p id="zw-12e2e7c1e43SMA8A3916c"><span style="font-family:monospace;font-size:x-small;"><span style="white-space:pre-wrap;">
-<pre>% 9660srv -f plan9.iso 
-% 9fs 9660 
-% disk/kfs -f plan9.kfs 
-File system main inconsistent 
-Would you like to ream it (y/n)? y 
-% 9fs kfs 
-% dircp /n/9660 /n/kfs </pre>
-<p> </span></span></p>
-<p id="zw-12e2e7c1e21S6igCx3916c"><span id="zw-12e2e7c1e22xV5I8q3916c">The system is now installed. You should be able to open a new 9vx&nbsp;</span><span id="zw-12e2e9d16dcxMQUuw3916c">instance from your new root:&nbsp;</span></p>
-<p id="zw-12e2e7c1e22cfR4fL3916c"><span id="zw-12e2ef4e62b1b7gn83916c">&nbsp;&nbsp; &nbsp;
-<pre>$ 9vx "nvram=#Z`pwd`/plan9.nvr" -r plan9.kfs -u glenda </pre>
-<p>&nbsp;</span></p>
-<p id="zw-12e2e7c1e43i5zhP3916c"><span id="zw-12e2e9d829dcizCED3916c">You can also boot a cpu server. We will use the canopenpath option, so&nbsp;</span><span id="zw-12e2e9d8d67pWo5o3916c">that only the files which begin with `pwd`/plan9 can be opened from&nbsp;</span><span id="zw-12e2e9d940dlOmSsY3916c">9vx, the -ic flags tell 9vx to pass -c to /386/init:&nbsp;</span></p>
-<p id="zw-12e2e7c1e252kexP-3916c"><span id="zw-12e2ef4fea6GrOSQ3916c">&nbsp;</span><span id="zw-12e2e9db9feHedRAA3916c">&nbsp;
-<pre>$ 9vx -gic -r plan9.kfs "nvram=#Z`pwd`/plan9.nvr" "canopenpath=`pwd`/plan9" -u bootes </pre>
-<p>&nbsp;</span></p>
-<p id="zw-12e2e7c1e27kMzC7K3916c"><span id="zw-12e2e7c1e27aKeSLj3916c">When you see the vx32# prompt add a key so that you can cpu as glenda:&nbsp;</span></p>
-<p id="zw-12e2e7c1e44wabKIv3916c"><span id="zw-12e2ef51c08DQfrMq3916c">&nbsp;&nbsp; &nbsp;
-<pre>vx32# echo 'key proto=p9sk1 dom=9vx user=glenda !password=password' &gt;/mnt/factotum/ctl </pre>
-<p>&nbsp;</span></p>
-<p id="zw-12e2e7c1e29dHLgZ3916c"><span id="zw-12e2e7c1e2a_uAPXD3916c">Now you can cpu to your new server. From another 9vx instance (for&nbsp;</span><span id="zw-12e2ea171ccTkGuT3916c">example, booted from the iso):&nbsp;</span></p>
-<p id="zw-12e2e7c1e2aM_7KT83916c"><span id="zw-12e2e7c1e2bZTc5Ep3916c">&nbsp;&nbsp; &nbsp;
-<pre>% cpu -h 127.0.0.1 </pre>
-<p>&nbsp;</span></p>
-<p id="zw-12e2e7c1e44vK_Dc3916c">&nbsp;</p>
-<p id="zw-12e2e7c1e2bmcFPV3916c"><span id="zw-12e2e7c1e2dErEswl3916c">If it worked we are done.&nbsp;</span></p>
-<p id="zw-12e2e7c1e44N-mz8b3916c">&nbsp;</p>
-<p id="zw-12e2e7c1e2dlCMKe73916c"><span id="zw-12e2e7c1e2dz_k0Ct3916c">Now you will probably want to adjust to your needs the 9vxc script to&nbsp;</span><span id="zw-12e2ef0574aISfLe3916c">launch cpu servers (also, think about adding a /cfg/vx32/cpurc file).&nbsp;</span></p>
-<p id="zw-12e2e7c1e451b74Pj3916c"><span id="zw-12e2e7c1e2eN3pQF3916c">You could be interested in the options localroot, canopenpath,&nbsp;</span><span id="zw-12e2e7c1e2fXsSTFb3916c">cpulimit and memsize. Or maybe you want to setup a virtual ethernet&nbsp;</span><span id="zw-12e2e7c1e2fCMPtOk3916c">device (have a look at the tap script and the 9vx man page).&nbsp;</span></p>
-<p id="zw-12e2e7c1e2frKWNh93916c"><span id="zw-12e2e7c1e30E_qQB83916c">Have fun! (and please, report bugs)&nbsp;</span></p>
-<p id="zw-12e2e7c1e45ChSS03916c">&nbsp;</p>
-<p id="zw-12e2e7c1e31k8xSAq3916c"><span id="zw-12e2e7c1e32ahNphh3916c">--&nbsp;</span></p>
-<p id="zw-12e2e7c1e45mXjHMA3916c"></p>
-<p id="zw-12e2e7c1e45WjjzbV3916c"><span id="zw-12e2e7c1e33mjLvWi3916c">- yiyus || JGL . 4l77.com&nbsp;</span><span id="zw-12e2e7c1e330DFFyj3916c">&nbsp;&nbsp;</span></p>
-<p id="zw-12e2e7c1e4d8qBIi3916c">&nbsp;</p>
-</div>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/01/19/tools-for-manipulate-object-files">Tools for Manipulating Object Files</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-01-19</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
-<p>There are a number of tools available on Unix systems to help you understand and manipulate object files.&nbsp;In particular, the GNU binutils package is especially helpful and runs on every Unix platform.</p>
-<p>&nbsp;</p>
-<ol>
-<li><strong>AR</strong> :&nbsp;Creates static libraries, and inserts, deletes, lists, and extracts members.</li>
-<li><strong>STRINGS</strong>: Lists all of the printable strings contained in an object file.</li>
-<li><strong>STRIP</strong>:&nbsp;Deletes symbol table information from an object file.</li>
-<li><strong>NM </strong>:&nbsp;Lists the symbols defined in the symbol table of an object file.</li>
-<li><strong>SIZE</strong>:&nbsp;Lists the names and sizes of the sections in an object file.</li>
-<li><strong>READELF</strong>:&nbsp;Displays the complete structure of an object file, including all of the information encoded in the&nbsp;ELF header. Subsumes the functionality of SIZE and NM.</li>
-<li><strong>OBJDUMP</strong>:&nbsp;The mother of all binary tools. Can display all of the information in an object file. Its most&nbsp;useful function is disassembling the binary instructions in the .text section.</li>
-<li><strong>LDD </strong>:&nbsp;Lists the shared libraries that an executable needs at run time.</li>
-</ol>
-<div>--- From <em>Computer Systems: A Programmer's Perspective</em>.</div>
-<div></div>
-<p>PS: </p>
-<ol>
-<li>A very good webpage introducing Linux libraries:&nbsp;<a href="http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html">Static, Shared Dynamic and Loadable Linux Libraries</a></li>
-<li><a href="http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html"></a>How to Write Shared Libraries?&nbsp;<a href="http://www.akkadia.org/drepper/dsohowto.pdf">http://www.akkadia.org/drepper/dsohowto.pdf</a></li>
-<li>Program Library HOWTO:&nbsp;<a href="http://tldp.org/HOWTO/Program-Library-HOWTO/index.html">http://tldp.org/HOWTO/Program-Library-HOWTO/index.html</a></li>
-</ol>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1348,7 +1460,7 @@ Would you like to ream it (y/n)? y
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1406,7 +1518,7 @@ Would you like to ream it (y/n)? y
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -1503,6 +1615,12 @@ Would you like to ream it (y/n)? y
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -1526,12 +1644,6 @@ Would you like to ream it (y/n)? y
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         

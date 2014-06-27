@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,106 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/06/22/solaris-shared-lib-error">Solaris下/usr/lib/secure/0@0.so.1的错误</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-06-22</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>&nbsp;</p>
+<p>这两天一直被下面的错误所困扰：</p>
+<p>
+<pre>AP13: lb -m ccmscell uptime 
+ld.so.1: uname: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
+ksh[216]: 4412 Killed
+ld.so.1: uptime: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
+</pre>
+<p>&nbsp;&nbsp;</p>
+<p>lb是一个调用rsh的脚本，ccmscell是一个server pool，uname是在lb中被调用的。</p>
+<p>&nbsp;</p>
+<p>仔细研究了N遍相关的脚本，Google了N次相关的错误信息，都没有找到有价&#20540;的线索。后来问了一位做过IT的同事，她说以前遇见过类&#20284;的问题，可她的解决方案最终被证明无效。</p>
+<p>&nbsp;</p>
+<p>最终发现不是所有的server上执行这条命令都有问题，有些是可以执行的。对比了之后发现，如果/usr/lib/secure/0@0.so.1的group设置为bin，owner设为root，就不会出现上面的问题。出问题的server上/usr/lib/secure/0@0.so.1的group为other。</p>
+<p>&nbsp;</p>
+<p>进一步调查后发现，/usr/lib/secure/0@0.so.1是在Solaris 5.8上被设为LD_PRELOAD_32的，因为很多程序要被setuid&#043;chroot的伪root调用。当且仅当上面的命令被该伪root执行时，才会出现上面的错误！</p>
+<p>&nbsp;</p>
+<p>幸亏Solaris 5.8已经开始走进坟墓了，即使在落后如我们公司的地方！</p>
+<p>&nbsp;</p>
+<p><strong><span style="font-family:mceinline;">【update2011-06-23】：</span></strong></p>
+<p><strong><span style="font-family:mceinline;">今天发现root cause 不是由于/usr/lib/secure/0@0.so.1的group不对，而是因为remote server（比如pool&nbsp;ccmscell中的server）上没有/usr/lib/secure/0@0.so.1 —— 执行rsh命令的login是setuid&#043;chroot实现的伪root，因此远程的server就需要/usr/lib/secure/0@0.so.1了。</span></strong></p>
+<p><span style="font-family:mceinline;font-weight:bold;">【update 2012-03-12】</span></p>
+<p><strong><span style="font-family:mceinline;">今天在Solaris 9上遇到了这样一个错误：</span></strong></p>
+<p><span style="font-family:mceinline;">&nbsp; &nbsp; ld.so.1: pt_chmod: warning: /lib/0@0.so.1: open failed: illegal insecure pathname<br />
+</span></p>
+<p><strong><span style="font-family:mceinline;">查了很久才想起来有可能是</span></strong><strong>/usr/lib/secure/0@0.so.1造成的。一检查</strong><strong>/usr/lib/secure/0@0.so.1，果然不存在。</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在一个正常工作的server上，</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
+<pre>AP31: echo $LD_PRELOAD_32
+/usr/lib/secure/0@0.so.1</pre></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在不能工作的server上，</strong></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
+<pre>AP13: echo $LD_PRELOAD_32
+/lib/0@0.so.1</pre></p>
+<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>——仅仅升级了一个软件就又把这个library搞丢了，某些同志们啊，唉……</strong></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/06/03/ksh-IPCSCMD-variable">ksh中包含变量的命令调用</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-06-03</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>当一个含有变量a的命令存储在某个变量b中时, 利用$($b)时有可能会报错。如下面的代码，有时可以成功执行，有时会发生&ldquo;ipcs|grep xxx can not be found"的错误。&nbsp;</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	IPCSCMD="ipcs"
+else
+	IPCSCMD="ipcs|grep $LOGNAME"
+fi
+for Eachline in $($IPCSCMD)
+do
+	IFS=" " # Space
+	# Handle IPCs
+	...
+done</pre>
+<p>&nbsp;</p>
+<p>究其根源，应该是对IPCSCMD的解析出了问题。将代码改为下面的形式，就可以正确执行了。注意IFS的变化&mdash;&mdash;改成下面的形式后必须将循环内的IFS改为Space和Tab。</p>
+<p>
+<pre>IFS="
+"
+if isLinux
+then
+	ipcs
+else
+	ipcs|grep $LOGNAME
+fi | while read Eachline
+do
+	IFS=" 	" # Space and tab
+	# Handle IPCs
+	...
+done
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -487,256 +587,6 @@ set tty com0</pre>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/03/21/transfer-excel-to-xml">Excel文件转换为XML以及Linux文件编码格式转换</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-03-21</strong> with tags <a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>今天需要将多个Excel文档转换为XML&#26684;式，本打算用MS Office自带的另存为XML文件的功能，结果转换成MS Office2003 XML之后的文件就是一坨屎！Office 2007自带的XML文档转换的功能也TMD超级繁琐，根据帮助手册自己建了.xsd文件导入到Excel之后也无法导出XML数据，白白浪费了时间。</p>
-<p>后来Google到了<a href="http://www.meadinkent.co.uk/xl_xml1.htm">这篇文章</a>。文中提供了现成的VBA源代码，稍微修改一下即可拿来使用（中文注释为本人所加）：</p>
-<p>
-<pre>'Attribute VB_Name = &quot;XL_to_XML&quot;
-Sub MakeXML()
-' create an XML file from an Excel table
-Dim MyRow As Integer, MyCol As Integer, Temp As String, YesNo As Variant, DefFolder As String
-Dim XMLFileName As String, XMLRecSetName As String, MyLF As String, RTC1 As Integer
-Dim RangeOne As String, RangeTwo As String, Tt As String, FldName(99) As String
-
-MyLF = Chr(10) &amp; Chr(13)    ' a line feed command
-DefFolder = &quot;C:MyXML&quot;   'change this to the location of saved XML files
-
-YesNo = MsgBox(&quot;This procedure requires the following data:&quot; &amp; MyLF _
- &amp; &quot;1 A filename for the XML file&quot; &amp; MyLF _
- &amp; &quot;2 A groupname for an XML record&quot; &amp; MyLF _
- &amp; &quot;3 A cellrange containing fieldnames (col titles)&quot; &amp; MyLF _
- &amp; &quot;4 A cellrange containing the data table&quot; &amp; MyLF _
- &amp; &quot;Are you ready to proceed?&quot;, vbQuestion + vbYesNo, &quot;MakeXML CiM&quot;)
- 
-If YesNo = vbNo Then
- Debug.Print &quot;User aborted with 'No'&quot;
- Exit Sub
-End If
-
-XMLFileName = FillSpaces(InputBox(&quot;1. Enter the name of the XML file:&quot;, &quot;MakeXML CiM&quot;, &quot;GRE_Core_Words&quot;))
-If Right(XMLFileName, 4) &lt;&gt; &quot;.xml&quot; Then
- XMLFileName = XMLFileName &amp; &quot;.xml&quot;
-End If
-
-XMLRecSetName = FillSpaces(InputBox(&quot;2. Enter an identifying name of a record:&quot;, &quot;MakeXML CiM&quot;, &quot;item&quot;))
-
-RangeOne = InputBox(&quot;3. Enter the range of cells containing the field names (or column titles):&quot;, &quot;MakeXML CiM&quot;, &quot;A2:D2&quot;)
-If MyRng(RangeOne, 1) &lt;&gt; MyRng(RangeOne, 2) Then
-  MsgBox &quot;Error: names must be on a single row&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
-  Exit Sub
-End If
-MyRow = MyRng(RangeOne, 1)
-For MyCol = MyRng(RangeOne, 3) To MyRng(RangeOne, 4)
- If Len(Cells(MyRow, MyCol).Value) = 0 Then
-  MsgBox &quot;Error: names range contains blank cell&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
-  Exit Sub
- End If
- FldName(MyCol - MyRng(RangeOne, 3)) = FillSpaces(Cells(MyRow, MyCol).Value)
-Next MyCol
-
-RangeTwo = InputBox(&quot;4. Enter the range of cells containing the data table:&quot;, &quot;MakeXML CiM&quot;, &quot;A3:D6257&quot;)
-If MyRng(RangeOne, 4) - MyRng(RangeOne, 3) &lt;&gt; MyRng(RangeTwo, 4) - MyRng(RangeTwo, 3) Then
-  MsgBox &quot;Error: number of field names &lt;&gt; data columns&quot; &amp; MyLF &amp; &quot;Procedure STOPPED&quot;, vbOKOnly + vbCritical, &quot;MakeXML CiM&quot;
-  Exit Sub
-End If
-RTC1 = MyRng(RangeTwo, 3)
-
-If InStr(1, XMLFileName, &quot;:&quot;) = 0 Then
- XMLFileName = DefFolder &amp; XMLFileName
-End If
-
-Open XMLFileName For Output As #1
-Print #1, &quot;&lt;?xml version=&quot; &amp; Chr(34) &amp; &quot;1.0&quot; &amp; Chr(34) &amp; &quot; encoding=&quot; &amp; Chr(34) &amp; &quot;UTF-8&quot; &amp; Chr(34) &amp; &quot;?&gt;&quot;
-Print #1, &quot;&lt;wordbook&gt;&quot;
-
-For MyRow = MyRng(RangeTwo, 1) To MyRng(RangeTwo, 2)
-Print #1, &quot;&lt;&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
-  For MyCol = RTC1 To MyRng(RangeTwo, 4)
-  ' the next line uses the FormChk function to format dates and numbers
-     Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; Cells(MyRow, MyCol).Value &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
-  ' the next line does not apply any formatting
-  '  Print #1, &quot;&lt;&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot; &amp; RemoveAmpersands(Cells(MyRow, MyCol).Value) &amp; &quot;&lt;/&quot; &amp; FldName(MyCol - RTC1) &amp; &quot;&gt;&quot;
-    Next MyCol
- Print #1, &quot;&lt;/&quot; &amp; XMLRecSetName &amp; &quot;&gt;&quot;
-
-Next MyRow
-Print #1, &quot;&lt;/wordbook&gt;&quot;
-Close #1
-MsgBox XMLFileName &amp; &quot; created.&quot; &amp; MyLF &amp; &quot;Process finished&quot;, vbOKOnly + vbInformation, &quot;MakeXML CiM&quot;
-Debug.Print XMLFileName &amp; &quot; saved&quot;
-End Sub
-Function MyRng(MyRangeAsText As String, MyItem As Integer) As Integer
-' analyse a range, where MyItem represents 1=TR, 2=BR, 3=LHC, 4=RHC
-
-Dim UserRange As Range
-Set UserRange = Range(MyRangeAsText)
-Select Case MyItem
- Case 1
- MyRng = UserRange.Row
- Case 2
- MyRng = UserRange.Row + UserRange.Rows.Count - 1
- Case 3
- MyRng = UserRange.Column
- Case 4
- MyRng = UserRange.Columns(UserRange.Columns.Count).Column
-End Select
-Exit Function
-
-End Function
-Function FillSpaces(AnyStr As String) As String
-' remove any spaces and replace with underscore character
-Dim MyPos As Integer
-MyPos = InStr(1, AnyStr, &quot; &quot;)
-Do While MyPos &gt; 0
- Mid(AnyStr, MyPos, 1) = &quot;_&quot;
- MyPos = InStr(1, AnyStr, &quot; &quot;)
-Loop
-FillSpaces = LCase(AnyStr)
-End Function
-
-Function FormChk(RowNum As Integer, ColNum As Integer) As String
-' formats numeric and date cell values to comma 000's and DD MMM YY
-FormChk = Cells(RowNum, ColNum).Value
-If IsNumeric(Cells(RowNum, ColNum).Value) Then
- FormChk = Format(Cells(RowNum, ColNum).Value, &quot;#,##0 ;(#,##0)&quot;)
-End If
-If IsDate(Cells(RowNum, ColNum).Value) Then
- FormChk = Format(Cells(RowNum, ColNum).Value, &quot;dd mmm yy&quot;)
-End If
-End Function
-
-Function RemoveAmpersands(AnyStr As String) As String
-Dim MyPos As Integer
-' replace Ampersands (&amp;) with plus symbols (+)
-
-MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
-Do While MyPos &gt; 0
- Mid(AnyStr, MyPos, 1) = &quot;+&quot;
- MyPos = InStr(1, AnyStr, &quot;&amp;&quot;)
-Loop
-RemoveAmpersands = AnyStr
-End Function
-</pre>
-<p></p>
-<p></p>
-<p>如果不想将文件中的&amp;替换为&#043;，可以将第55行的<span>RemoveAmpersands(FormChk(MyRow,&nbsp;MyCol))替换为</span><span>Cells(MyRow,&nbsp;MyCol).Value。</span></p>
-<p>&nbsp;</p>
-<p>需要注意的是在Excel文件中必须有一行是标题行——即改行存放各列的标题，否则生成的XML文件&#26684;式不一定是你所需要的。</p>
-<p>&nbsp;</p>
-<p>由于我对XML文件的编码&#26684;式有要求，必须是UTF-8，而Windows默认的编码&#26684;式是GBXXXX，因此需要对生成的XML文件进行编码&#26684;式转换。搜索到了<a href="http://tech.16c.cn/linux/glpz/20100221/22560.html">linux 查看文件编码以及修改编码</a>一文，摘录重点如下：</p>
-<p>&nbsp;</p>
-<p>查看文件编码</p>
-<p>&nbsp;</p>
-<p>　　在Linux中查看文件编码可以通过以下几种方式：</p>
-<p>　　1.在Vim中可以直接查看文件编码</p>
-<p>　　:set fileencoding</p>
-<p>　　即可显示文件编码&#26684;式。</p>
-<p>　　如果你只是想查看其它编码&#26684;式的文件或者想解决用Vim查看文件乱码的问题，那么你可以在~/.vimrc 文件中添加以下内容：</p>
-<p>　　set encoding=utf-8 fileencodings=ucs-bom,utf-8,cp936</p>
-<p>　　这样，就可以让vim自动识别文件编码（可以自动识别UTF-8或者GBK编码的文件），其实就是依照fileencodings提供的编码列表尝试，如果没有找到合适的编码，就用latin-1(ASCII)编码打开。</p>
-<p>　　2. enca (如果你的系统中没有安装这个命令，可以用sudo yum install -y enca 安装 )查看文件编码</p>
-<p>　　$ enca filename</p>
-<p>　　filename: Universal transformation format 8 bits; UTF-8</p>
-<p>　　CRLF line terminators</p>
-<p>　　需要说明一点的是，enca对某些GBK编码的文件识别的不是很好，识别时会出现：</p>
-<p>　　Unrecognized encoding</p>
-<p>&nbsp;</p>
-<p>文件编码转换</p>
-<p>　　1.在Vim中直接进行转换文件编码,比如将一个文件转换成utf-8&#26684;式</p>
-<p>　　:set fileencoding=utf-8</p>
-<p>　　2. enconv 转换文件编码，比如要将一个GBK编码的文件转换成UTF-8编码，操作如下</p>
-<p>　　enconv -L zh_CN -x UTF-8 filename</p>
-<p>　　3. iconv 转换，iconv的命令&#26684;式如下：</p>
-<p>　　iconv -f encoding -t encoding inputfile</p>
-<p>　　比如将一个UTF-8 编码的文件转换成GBK编码</p>
-<p>　　iconv -f GBK -t UTF-8 file1 -o file2</p>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/03/10/hostname-in-etc-hosts">在/etc/hosts中定义Linux的hostname</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-03-10</strong> with tags <a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>今天碰到这样一个问题：一个程序在刚刚装好的Linux server上获取IP地址时永远都是0x7f000001。一开始没有注意，后来仔细一想，0x7f000001不正好就是127.0.0.1嘛！有同事查了一下/etc/hosts，发现在该文件中有这样一行：</p>
-<p>
-<pre>127.0.0.1     mylinuxsvr localhost.localhost.localdomain localhost
-</pre>
-<p>&nbsp;</p>
-<p>其中，mylinuxsvr是这个server的名字。难怪每次都只能获取到127.0.0.1呢。当然了，这台server的IP地址其实是配好了的，只是不知为什么，有一个不同server间通信的程序非要通过/etc/hosts来获取IP地址&hellip;&hellip;</p>
-<p>&nbsp;</p>
-<p>找了一些Linux server网络配置的文章，记录于此：</p>
-<ol>
-<li><a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a></li>
-<li><a href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Virtualization_for_Servers/2.2/html/Administration_Guide/Administration_Guide-Create_Objects-Add_Server.html">Adding Red Hat Enterprise Linux Hosts</a></li>
-</ol>
-<p>下文摘自<a href="http://www.linuxhomenetworking.com/wiki/index.php/Quick_HOWTO_:_Ch03_:_Linux_Networking">Quick HOWTO : Ch03 : Linux Networking</a>。</p>
-<p>&nbsp;</p>
-<hr />
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<h1><span id="Configuring_Your_.2Fetc.2Fhosts_File" class="mw-headline">Configuring Your /etc/hosts File</span></h1>
-<p><span class="goog_qs-tidbit goog_qs-tidbit-0 goog_qs-tidbit-hilite">The /etc/hosts file is just a list of IP addresses and their corresponding server names.</span>&nbsp;Your server will typically check this file before referencing DNS. If the name is found with a corresponding IP address then DNS won't be queried at all. Unfortunately, if the IP address for that host changes, you also have to also update the file. This may not be much of a concern for a single server, but can become laborious if it has to be done companywide. For ease of management, it is often easiest to limit entries in this file to just the loopback interface and also the server's own hostname, and use a centralized DNS server to handle most of the rest. Sometimes you might not be the one managing the DNS server, and in such cases it may be easier to add a quick /etc/hosts file entry till the centralized change can be made.</p>
-<pre>192.168.1.101  smallfry
-
-</pre>
-<p>In the example above server smallfry has an IP address of 192.168.1.101. You can access 192.168.1.101 using the ping, telnet or any other network aware program by referring to it as smallfry. Here is an example using the ping command to see whether smallfry is alive and well on the network:</p>
-<pre>[root@bigboy tmp]# ping smallfry
-PING zero (192.168.1.101) 56(84) bytes of data.
-64 bytes from smallfry (192.168.1.101): icmp_seq=0 ttl=64 time=0.197 ms
-64 bytes from smallfry (192.168.1.101): icmp_seq=1 ttl=64 time=0.047 ms
-
-
---- smallfry ping statistics ---
-2 packets transmitted, 2 received, 0% packet loss, time 2017ms
-rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
-[root@bigboy tmp]#
-
-</pre>
-<p>You can also add aliases to the end of the line which enable you to refer to the server using other names. Here we have set it up so that smallfry can also be accessed using the names&nbsp;<code>tiny</code>&nbsp;and&nbsp;<code>littleguy</code>.</p>
-<pre>192.168.1.101  smallfry  tiny  littleguy
-
-</pre>
-<p>You should never have an IP address more than once in this file because Linux will use only the values in the first entry it finds.</p>
-<pre>192.168.1.101  smallfry    # (Wrong)
-192.168.1.101  tiny        # (Wrong)
-192.168.1.101  littleguy   # (Wrong)
-</pre>
-<p>&nbsp;</p>
-<h2><span id="The_loopback_Interface.27s_localhost_Entry" class="mw-headline">The loopback Interface's localhost Entry</span></h2>
-<p>Usually the first entry in /etc/hosts defines the IP address of the server's virtual loopback interface. This is usually mapped to the name localhost.localdomain (the universal name used when a server refers to itself) and localhost (the shortened alias name). By default, Fedora inserts the hostname of the server between the 127.0.0.1 and the localhost entries like this:</p>
-<pre>127.0.0.1     bigboy    localhost.localdomain    localhost
-
-</pre>
-<p>When the server is connected to the Internet this first entry after the 127.0.0.1 needs to be the fully qualified domain name (FQDN) of the server. For example,&nbsp;<code>bigboy.mysite.com</code>, like this:</p>
-<pre>127.0.0.1     bigboy.my-site.com    localhost.localdomain    localhost
-
-</pre>
-<p>Some programs such as Sendmail are very sensitive to this and if they detect what they feel is an incorrect FQDN they will default to using the name localhost.localdomain when communicating with another server on the network. This can cause confusion, as the other server also feels it is localhost.localdomain.</p>
-<p>Note:&nbsp;You must always have a localhost and localhost.localdomain entry mapping to 127.0.0.1 for Linux to work properly and securely.</p>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -874,7 +724,7 @@ rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -932,7 +782,7 @@ rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -1029,6 +879,12 @@ rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -1052,12 +908,6 @@ rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         

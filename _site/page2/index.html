@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,194 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/03/26/c-code-to-print-pascal-triangle">C++ Code to Print Pascal Triangle</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2014-03-26</strong> with tags <a href="/tags.html#Alogrithm-ref" rel="nofollow">Alogrithm</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+	Printing Pascal Triangle seems like an easy problem, however, it is not that easy to print a good-looking Pascal Triangle.&nbsp;</p>
+<p>
+	To print the Pascal Triangle, for each line, first print spaces to the left of numbers, and then print digit numbers.</p>
+<p>
+	To calculate Pascal numbers, two assays can be used: one array to store numbers of above line, the other array to store numbers of this line. The first line has 1 number(1), the second lien has 2 numbers(1 1), the third line has three numbers(1 2 1) and so on.</p>
+<p>
+	To make the Pascal Triangle more readable, print spaces between two neighbor &nbsp;numbers in the same line.</p></p>
+<pre class="cpp">// Pascal triangle
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+const int WIDTH=7;
+int main()
+{
+	int* oldarr=new int[WIDTH]; // store numbers of above row
+	int* newarr=new int[WIDTH]; // store numbers of current row
+
+	for(int i=0;i&lt;WIDTH;++i) // cntrol row counting
+	{
+		for(int j=0;j&lt;WIDTH-i-1;++j) // left space
+			cout&lt;&lt;setw(2)&lt;&lt;&quot; &quot;;
+
+		// set default boundary numbers
+		newarr[0]=1;
+		if(i&gt;=1)
+			newarr[i]=1;
+
+		if(i&gt;=2)
+		{
+			for(int k=1;k&lt;i;++k)
+				newarr[k]=oldarr[k-1]+oldarr[k];
+		}
+		memcpy(oldarr,newarr,sizeof(int)*WIDTH);
+
+		// Print the middle part
+		int idx=0;
+		int flag=(WIDTH-i-1)%2;
+		for(int j=WIDTH-i-1;j&lt;WIDTH+i;++j)
+		{
+			if(j%2==flag)
+			{
+				cout&lt;&lt;setw(2)&lt;&lt;newarr[idx++];
+			} else {
+				cout&lt;&lt;setw(2)&lt;&lt;&quot; &quot;;
+			}
+		}
+		
+		//for(int j=WIDTH+i;j&lt;WIDTH;++j) // Print right space, if you like
+		//	cout&lt;&lt;setw(4)&lt;&lt;&quot; &quot;;
+
+		cout&lt;&lt;endl;
+	}
+
+	delete [] oldarr;
+	delete [] newarr;
+
+	return 0;
+}
+</pre>
+<p>
+The output looks like:</p></p>
+<pre class="plain">             1
+           1   1
+         1   2   1
+       1   3   3   1
+     1   4   6   4   1
+   1   5  10  10   5   1
+ 1   6  15  20  15   6   1</pre></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2014/01/22/baci-simple-install-and-compile-guide">BACI Simple Install and Compile Guide</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2014-01-22</strong> with tags <a href="/tags.html#BACI-ref" rel="nofollow">BACI</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>This is a guideline for a course of this semester, for which I am serving as a teaching assistant. I publish it here in hope that it can also help someone else who want to use BACI.</p>
+<h2>Install BACI</h2>
+<ol>
+<li>
+<p dir="ltr">Go to <a href="http://inside.mines.edu/~tcamp/baci/baci_index.html#Obtain">http://inside.mines.edu/~tcamp/baci/baci_index.html#Obtain</a> and download BACI executables:</p>
+<ul>
+<li>
+<p dir="ltr"><a href="http://inside.mines.edu/~tcamp/baci/badosxe-2005Nov09.zip">BACI DOS executables</a> for Windows,</p>
+</li>
+<li>
+<p dir="ltr"><a href="http://inside.mines.edu/~tcamp/baci/balnxxe32-2007Nov25.tar.gz">BACI LINUX executables (32 bit)</a> and <a href="http://inside.mines.edu/~tcamp/baci/balnxxe64-2012Oct01.tar.gz">BACI LINUX executables (64 bit)</a> for Linux.</p>
+</li>
+</ul>
+</li>
+<li>
+<p dir="ltr">For windows user, after download and unzip the BACI DOS executables, please put the folder called badosxe directly under the C:\ drive so it’s easy to find it. You can do all your BACI work inside this directory.</p>
+<ul>
+<li>
+<p dir="ltr">If your badosxe folder is C:\badosxe, then in your command prompt (cmd) your path should be C:\badosxe&gt; bacc &lt;file_name&gt; .</p>
+</li>
+</ul>
+</li>
+<li>
+<p dir="ltr">For Linux user, after download and gunzip the BACI executables, please make sure to add balnxxe into your PATH: export PATH=$PATH:/path/to/your/balnxxe (You also can add this line into $HOME/.profile, so that this command will be executed every time you login).</p>
+</li>
+<li>
+<p dir="ltr">If you want to use jBACI(BACI with a graphical IDE), please go to <a href="https://code.google.com/p/jbaci/downloads/list">https://code.google.com/p/jbaci/downloads/list</a>, and choose the <a href="https://code.google.com/p/jbaci/downloads/detail?name=jbaci-1.4.6.binaries.zip&amp;can=2&amp;q=">jbaci-1.4.6.binaries.zip</a>. Unfortunately, currently jBACI is only available for Windows.</p>
+</li>
+<li>
+<p dir="ltr">If you want to use BACI on the Eustis server, please download Linux version BACI first, gunzip it and then upload them into your home folder of Eustis server. Please remember to add BACI executables into your PATH(as step 3).</p>
+</li>
+<li>
+<p dir="ltr">NetBeans + BACI plugin is the best choice for people who prefer a modern IDE or MAC users. You need to install NetBeans first, and then follow the <a href="http://www.cslab.pepperdine.edu/warford/cosc450/cosc-450-Setup-for-BACI.pdf">guide of setting up BaciBeans</a>. NetBeans is a cross-platform IDE, so it can work on all operating systems that have Java JDK installed.</p>
+</li>
+</ol>
+<h2>Compile and run BACI program</h2>
+<ol>
+<li>
+<p dir="ltr">Make sure that bacc is in your PATH, or put your BACI program in the same folder of bacc. Note the .cm extension. This is the extension that identifies BACI source files to the BACI compiler.</p>
+</li>
+<li>
+<p dir="ltr">Invoke the compile command bacc your_prog.cm. This creates an object file called your_prog.pco and also a listing file called your_prog.lst.</p>
+</li>
+<li>
+<p dir="ltr">Invoke the interpreter through the command bainterp your_prog (please note, there is no suffix here) to execute your code. bainterp has an option -t that will display the order in which processes terminate within the program.</p>
+</li>
+</ol>
+<h2>Verify the installation of BACI</h2>
+<ol>
+<li>
+<p dir="ltr">Download <a href="http://www.cs.ucf.edu/courses/cop4020/spr2014/BACI/example.cm">example.cm</a>.</p>
+</li>
+<li>
+<p dir="ltr">Run command  bacc example.cm. If you see following outputs, then the example.cm is successfully compiled:</p>
+</li>
+</ol>
+<p dir="ltr">bo@HEC-2GQFTK1:~/Documents/BACI$ bacc example.cm</p>
+<p dir="ltr">Pcode and tables are stored in example.pco</p>
+<p dir="ltr">Compilation listing is stored in example.lst</p>
+<ol start="3">
+<li>
+<p dir="ltr">Execute command  bainterp -t example. If you get following message, then bainterp runs correctly.</p>
+</li>
+</ol>
+<p dir="ltr">bo@HEC-2GQFTK1:~/Documents/BACI$ bainterp -t example</p>
+<p dir="ltr">Source file: example.cm  Wed Jan 22 15:16:12 2014</p>
+<p dir="ltr">Executing PCODE ...</p>
+<p dir="ltr">before v(count) value of count is 0</p>
+<p dir="ltr">process 2 increment,  procedure increment ended</p>
+<p dir="ltr">before p(count) value of count is 1</p>
+<p dir="ltr">process 1 decrement,  procedure decrement ended</p>
+<h2><a href="http://inside.mines.edu/~tcamp/baci/baci_index.html#Using">More Options of BACI Compiler</a></h2>
+<p dir="ltr">A BACI source file using the C-- compiler should use a .cm suffix. To execute a program in BACI, there are two steps:</p>
+<p dir="ltr">1. Compile a ".cm" file to obtain a PCODE file (.pco)</p>
+<p dir="ltr">Usage: bacc [optional_flags] source_filename</p>
+<p dir="ltr">Optional_flags:</p>
+<p dir="ltr">-h show this help</p>
+<p dir="ltr">-c make a .pob object file for subsequent linkingInterpret a PCODE file (.pco) to execute the program</p>
+<p dir="ltr">2. Usage bainterp [optional_flags] pcode_filename</p>
+<p dir="ltr">Optional_flags:</p>
+<p dir="ltr">-d enter the debugger, single step, set breakpoints</p>
+<p dir="ltr">-e show the activation record (AR) on entry to each process</p>
+<p dir="ltr">-x show the AR on exit from each process</p>
+<p dir="ltr">-t announce process termination</p>
+<p dir="ltr">-h show this help</p>
+<p dir="ltr">-p show PCODE instructions as they are executed</p>
+<p dir="ltr">There is a shell script, baccint, that will call the compiler and then call the interpreter for you. It passes the options that you give it along to the interpreter. If you are using the Pascal compiler syntax, then the source file should be with a .pm suffix, and you compile the program with the bapas compiler.</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1144,476 +1332,6 @@ int main(int argc, char** argv)
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication">Implementation of Strassen's Algorithm for Matrix Multiplication</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2013-03-20</strong> with tags <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>Strassen's algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen's algorithm on <a href="http://en.wikipedia.org/wiki/Strassen_algorithm">Wikipedia</a>.</p>
-<p>However, the implementation of Strassen's algorithm cannot be used directly, because it  just sets the base case of the divide-and-conquer to be 1x1 matrix, which would consume huge time cost for iteration. If set the base case to 2x2 matrix, which means 2x2 matrix and 1x1 matrix will be multiplied by naive algorithm, then the Strassen's algorithm will be more efficient for matrices larger than 512x512.</p>
-<p>[caption id="attachment_521" align="alignnone" width="529"]<a href="http://bonny95.files.wordpress.com/2013/03/local_double_41.png"><img class="size-full wp-image-521" alt="When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512." src="http://bonny95.files.wordpress.com/2013/03/local_double_41.png" width="529" height="395" /></a> When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512.[/caption]</p>
-<p>[caption id="attachment_520" align="alignnone" width="529"]<a href="http://bonny95.files.wordpress.com/2013/03/local_int_36.png"><img class=" wp-image-520  " alt="When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128. " src="http://bonny95.files.wordpress.com/2013/03/local_int_36.png" width="529" height="396" /></a> When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128.[/caption]</p>
-<pre><code>
-/*------------------------------------------------------------------------------*/
-// matrix_mult.cc -- Implementation of matrix multiplication with
-// Strassen's algorithm.
-//
-// Compile this file with gcc command:
-// g++ -Wall -o matrix_mult matrix_mult.cc 
-
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;time.h&gt;
-#include &lt;ctype.h&gt;
-#include &lt;unistd.h&gt;
-#include &lt;iostream&gt;
-#include &lt;fstream&gt;
-#include &lt;cmath&gt;
-#include &lt;cstring&gt;
-
-using namespace std;
-
-// This function allocates the matrix
-inline double** allocate_matrix(int n)
-{
-double** mat=new double*[n];
-for(int i=0;i&lt;n;++i)
-{
-mat[i]=new double[n];
-memset(mat[i],0,sizeof(double)*n);
-}
-
-return (mat); // returns the pointer to the vector.
-}
-
-/*------------------------------------------------------------------------------*/
-// This function unallocates the matrix (frees memory)
-inline void free_matrix(double **M, int n)
-{
-for (int i = 0; i &lt; n; i++)
-{
-delete [] M[i];
-}
-
-delete [] M; // frees the pointer /
-M = NULL;
-}
-
-/*------------------------------------------------------------------------------*/
-// function to sum two matrices
-inline void sum(double **a, double **b, double **result, int tam) {
-
-int i, j;
-
-for (i = 0; i &lt; tam; i++) {
-for (j = 0; j &lt; tam; j++) {
-result[i][j] = a[i][j] + b[i][j];
-}
-}
-}
-
-/*------------------------------------------------------------------------------*/
-// function to subtract two matrices
-inline void subtract(double **a, double **b, double **result, int tam) {
-
-int i, j;
-
-for (i = 0; i &lt; tam; i++) {
-for (j = 0; j &lt; tam; j++) {
-result[i][j] = a[i][j] - b[i][j];
-}
-}
-}
-
-/*------------------------------------------------------------------------------*/
-// naive method
-void naive(double** A, double** B,double** C, int n)
-{
-for (int i=0;i&lt;n;i++)
-for (int j=0;j&lt;n;j++)
-for(int k=0;k&lt;n;k++)
-C[i][j] += A[i][k]*B[k][j];
-}
-
-/*------------------------------------------------------------------------------*/
-// Strassen's method
-void strassen(double **a, double **b, double **c, int tam)
-{
-// Key observation: call naive method for matrices smaller than 2 x 2
-if(tam &lt;= 4)
-{
-naive(a,b,c,tam);
-return;
-}
-
-// other cases are treated here:
-int newTam = tam/2;
-double **a11, **a12, **a21, **a22;
-double **b11, **b12, **b21, **b22;
-double **c11, **c12, **c21, **c22;
-double **p1, **p2, **p3, **p4, **p5, **p6, **p7;
-
-// memory allocation:
-a11 = allocate_matrix(newTam);
-a12 = allocate_matrix(newTam);
-a21 = allocate_matrix(newTam);
-a22 = allocate_matrix(newTam);
-
-b11 = allocate_matrix(newTam);
-b12 = allocate_matrix(newTam);
-b21 = allocate_matrix(newTam);
-b22 = allocate_matrix(newTam);
-
-c11 = allocate_matrix(newTam);
-c12 = allocate_matrix(newTam);
-c21 = allocate_matrix(newTam);
-c22 = allocate_matrix(newTam);
-
-p1 = allocate_matrix(newTam);
-p2 = allocate_matrix(newTam);
-p3 = allocate_matrix(newTam);
-p4 = allocate_matrix(newTam);
-p5 = allocate_matrix(newTam);
-p6 = allocate_matrix(newTam);
-p7 = allocate_matrix(newTam);
-
-double **aResult = allocate_matrix(newTam);
-double **bResult = allocate_matrix(newTam);
-
-//dividing the matrices in 4 sub-matrices:
-for (int i = 0; i &lt; newTam; i++) {
-for (int j = 0; j &lt; newTam; j++) {
-a11[i][j] = a[i][j];
-a12[i][j] = a[i][j + newTam];
-a21[i][j] = a[i + newTam][j];
-a22[i][j] = a[i + newTam][j + newTam];
-
-b11[i][j] = b[i][j];
-b12[i][j] = b[i][j + newTam];
-b21[i][j] = b[i + newTam][j];
-b22[i][j] = b[i + newTam][j + newTam];
-}
-}
-
-// Calculating p1 to p7:
-
-sum(a11, a22, aResult, newTam); // a11 + a22
-sum(b11, b22, bResult, newTam); // b11 + b22
-strassen(aResult, bResult, p1, newTam); // p1 = (a11+a22) * (b11+b22)
-
-sum(a21, a22, aResult, newTam); // a21 + a22
-strassen(aResult, b11, p2, newTam); // p2 = (a21+a22) * (b11)
-
-subtract(b12, b22, bResult, newTam); // b12 - b22
-strassen(a11, bResult, p3, newTam); // p3 = (a11) * (b12 - b22)
-
-subtract(b21, b11, bResult, newTam); // b21 - b11
-strassen(a22, bResult, p4, newTam); // p4 = (a22) * (b21 - b11)
-
-sum(a11, a12, aResult, newTam); // a11 + a12
-strassen(aResult, b22, p5, newTam); // p5 = (a11+a12) * (b22)
-
-subtract(a21, a11, aResult, newTam); // a21 - a11
-sum(b11, b12, bResult, newTam); // b11 + b12
-strassen(aResult, bResult, p6, newTam); // p6 = (a21-a11) * (b11+b12)
-
-subtract(a12, a22, aResult, newTam); // a12 - a22
-sum(b21, b22, bResult, newTam); // b21 + b22
-strassen(aResult, bResult, p7, newTam); // p7 = (a12-a22) * (b21+b22)
-
-// calculating c21, c21, c11 e c22:
-
-sum(p3, p5, c12, newTam); // c12 = p3 + p5
-sum(p2, p4, c21, newTam); // c21 = p2 + p4
-
-sum(p1, p4, aResult, newTam); // p1 + p4
-sum(aResult, p7, bResult, newTam); // p1 + p4 + p7
-subtract(bResult, p5, c11, newTam); // c11 = p1 + p4 - p5 + p7
-
-sum(p1, p3, aResult, newTam); // p1 + p3
-sum(aResult, p6, bResult, newTam); // p1 + p3 + p6
-subtract(bResult, p2, c22, newTam); // c22 = p1 + p3 - p2 + p6
-
-// Grouping the results obtained in a single matrix:
-for (int i = 0; i &lt; newTam ; i++) {
-for (int j = 0 ; j &lt; newTam ; j++) {
-c[i][j] = c11[i][j];
-c[i][j + newTam] = c12[i][j];
-c[i + newTam][j] = c21[i][j];
-c[i + newTam][j + newTam] = c22[i][j];
-}
-}
-
-// deallocating memory (free):
-free_matrix(a11, newTam);
-free_matrix(a12, newTam);
-free_matrix(a21, newTam);
-free_matrix(a22, newTam);
-
-free_matrix(b11, newTam);
-free_matrix(b12, newTam);
-free_matrix(b21, newTam);
-free_matrix(b22, newTam);
-
-free_matrix(c11, newTam);
-free_matrix(c12, newTam);
-free_matrix(c21, newTam);
-free_matrix(c22, newTam);
-
-free_matrix(p1, newTam);
-free_matrix(p2, newTam);
-free_matrix(p3, newTam);
-free_matrix(p4, newTam);
-free_matrix(p5, newTam);
-free_matrix(p6, newTam);
-free_matrix(p7, newTam);
-free_matrix(aResult, newTam);
-free_matrix(bResult, newTam);
-
-} // end of Strassen function
-
-/*------------------------------------------------------------------------------*/
-// Generate random matrices
-void gen_matrix(double** M,int n)
-{
-for(int i=0;i&lt;n;++i)
-{
-for(int j=0;j&lt;n;++j)
-{
-M[i][j]=rand()%100;
-//M[i][j]=1;
-}
-}
-}
-
-/*------------------------------------------------------------------------------*/
-// print matrix M using specied fstream
-void print_matrix(fstream&amp; fs, double** M, int n)
-{
-for(int i=0;i&lt;n;++i)
-{
-for(int j=0;j&lt;n;++j)
-{
-fs&lt;&lt;M[i][j]&lt;&lt;" ";
-}
-fs&lt;&lt;endl;
-}
-fs&lt;&lt;endl;
-}
-
-/*------------------------------------------------------------------------------*/
-// record the generated matrix and the final product
-void mat_mult_log(double** A, double** B,double** C,int n,char* file)
-{
-fstream fs;
-fs.open(file,fstream::out);
-
-fs&lt;&lt;"Random Matrix A:"&lt;&lt;endl;
-print_matrix(fs,A,n);
-fs&lt;&lt;"Random Matrix B:"&lt;&lt;endl;
-print_matrix(fs,B,n);
-fs&lt;&lt;"C=A * B"&lt;&lt;endl;
-print_matrix(fs,C,n);
-
-fs.close();
-}
-
-/*------------------------------------------------------------------------------*/
-
-int main(int argc, char** argv)
-{
-srand(time(NULL));
-
-int mdim=2; // matrix dimension
-char* output=NULL;
-bool is_strassen=false;
-int c;
-
-while ((c = getopt (argc, argv, "sn:o:")) != -1)
-{
-switch (c)
-{
-case 's':
-is_strassen=true;
-break;
-case 'n':
-mdim = pow((int)2,atoi(optarg)); // 2^n dimensions
-break;
-case 'o':
-output = optarg; // 2^n dimensions
-break;
-case '?':
-if (optopt == 'n')
-fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-else if (isprint (optopt))
-fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-else
-fprintf (stderr,
-"Unknown option character `\x%x'.\n",
-optopt);
-return 1;
-default:
-abort ();
-}
-}
-
-// create new matrices
-double** A=allocate_matrix(mdim);
-double** B=allocate_matrix(mdim);
-double** C=allocate_matrix(mdim);
-gen_matrix(A,mdim);
-gen_matrix(B,mdim);
-
-// matrices multiplication
-if(is_strassen)
-strassen(A,B,C,mdim);
-else
-naive(A,B,C,mdim);
-
-if(output!=NULL)
-mat_mult_log(A,B,C,mdim,output);
-
-free_matrix(A,mdim);
-free_matrix(B,mdim);
-free_matrix(C,mdim);
-
-return 0;
-}</code></pre>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2013/01/29/basic-linux-multi-process-multi-thread-programming">Basic Linux Multi-Process and Multi-Thread Programming</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2013-01-29</strong> with tags <a href="/tags.html#Multi-Process-ref" rel="nofollow">Multi-Process</a>, <a href="/tags.html#Multi-Threading-ref" rel="nofollow">Multi-Threading</a>, <a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-	Today I have to make my algorithm running in parallel in order to make it faster. At first I used following way to implement multi-process:</p>
-<pre class="cpp">	unsigned int proc_num = 5;
-	pid_t* pids=new pid_t[proc_num];
-	double incr=(double)N/(double)proc_num;
-	
-	/* Start children. */
-	for (unsigned int i = 0; i &lt; proc_num; ++i) {
-		if ((pids[i] = fork()) &lt; 0) {
-	    		perror(&quot;fork&quot;);
-	    		abort();
-	 	} else if (pids[i] == 0) {
-	    		// DoWorkInChild();
-
-	    		exit(0);
-	  	}
-	}
-	
-	/* Wait for children to exit. */
-	int status;
-	pid_t pid;
-	while (proc_num &gt; 0) {
-	  	pid = wait(&amp;status);
-		if(status != 0)
-	  		printf(&quot;Child Process with PID %ld aborted with status 0x%x.\n&quot;, (long)pid, status);
-	  	--proc_num;  // TODO(pts): Remove pid from the pids array.
-	}
-</pre>
-<p>
-Above way worked well, however, there's no way to change the &quot;shared&quot; variables in child processes. Because each child process has an independent copy of all variables.</p>
-<p>
-	In order to change the same array in parallel, I implemented multi threads.</p></p>
-<pre class="cpp">struct thread_info {    /* Used as argument to thread_start() */
-	pthread_t thread_id;        /* ID returned by pthread_create() */
-	int	start;       /* Application-defined thread # */
-	int     end;      /* From command-line argument */
-	int*	gpdarr;	/* Array to store GPD number */
-	long int G;	/* genome length */
-	unsigned int L;	/* read length */
-	double l1;	// GPD parameter lambda1
-	double l2;	// GPD parameter lambda2
-	double M;	// maximum of GPD density
-};
-
-void printPt(pthread_t pt) {
-  unsigned char *ptc = (unsigned char*)(void*)(&amp;pt);
-  printf(&quot;0x&quot;);
-  for (size_t i=0; i&lt;sizeof(pt); i++) {
-    printf(&quot;%02x&quot;, (unsigned)(ptc[i]));
-  }
-}
-
-void* gen_gpd_num(void* arg)
-{
-	struct thread_info *tinfo = (struct thread_info *) arg;
-	// do something here
-
-	pthread_exit(0);
-}
-
-int main()
-{
-        unsigned int tnum = 20;
-	double incr=(double)N/(double)tnum;
-	
-	thread_info* tinfo=new thread_info[tnum];
-
-	int err;
-	void* res;
-	
-	/* Start children. */
-	for(unsigned int idx=0;idx&lt;tnum;++idx) 
-	{
-		tinfo[idx].start=incr*idx;
-		tinfo[idx].end=incr*(idx+1);
-		tinfo[idx].gpdarr=gpdnum;
-		tinfo[idx].G=G;
-		tinfo[idx].L=l;
-		tinfo[idx].l1=l1;
-		tinfo[idx].l2=l2;
-		tinfo[idx].M=M;
-
-		err = pthread_create(&amp;tinfo[idx].thread_id, NULL, &amp;gen_gpd_num, &amp;tinfo[idx]);
-
-		if(err!=0)
-			printf(&quot;can't create thread :[%s]&quot;, strerror(err));
-		else
-			pthread_join(tinfo[idx].thread_id, &amp;res);
-	}
-        delete [] tinfo;
-}</pre>
-<p>
-The potential problem of using multi-threading in Linux is -- it is hard to figure out if there really are many threads are running&nbsp;simultaneously.&nbsp;</p>
-<p>
-	When compiling multi-threading program using GCC, pthread library must be specified:</p></p>
-<pre class="cpp">g++ -o foo -Wall foo.cc -L/usr/lib -lpthread</pre>
-<p>
-References:</p></p>
-<ol>
-<li>
-		<a href="http://www.thegeekstuff.com/2012/04/create-threads-in-linux/" style="font-size:14px;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;letter-spacing:-1px;line-height:1.364em;">How to Create Threads in Linux (With a C Example Program)</a></p>
-<h1 class="entry-title" style="padding:0;margin:0;font-weight:normal;color:rgb(169,0,0);line-height:1.364em;letter-spacing:-1px;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
-		</h1>
-</li>
-<li>
-		http://www.kernel.org/doc/man-pages/online/pages/man3/pthread_create.3.html</p>
-</li>
-</ol></p>
-<p>
-	</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1751,7 +1469,7 @@ References:</p></p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1809,7 +1527,7 @@ References:</p></p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -1906,6 +1624,12 @@ References:</p></p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -1929,12 +1653,6 @@ References:</p></p>
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         

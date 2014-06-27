@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,106 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2010/03/05/root-hero-200">Sprint HTC Hero(Hero 200)获取ROOT权限</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2010-03-05</strong> with tags <a href="/tags.html#Android-ref" rel="nofollow">Android</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>I. 开始之前你需要完成的：</p>
+<div class="comment_count">你需要确认你能通过ADB来访问你的HERO。如果不行的话就先看看如何安装HERO的驱动（这个方法转自<span style="text-decoration:underline;"><strong>draculading</strong></span>的帖子<a href="http://www.hiapk.com/bbs/thread-13053-1-1.html" target="_blank"><span class="t_tag">HTC</span>&nbsp;HERO 取得<span class="t_tag">root</span><span class="t_tag">权限</span>完全傻瓜<span class="t_tag">教程</span>，适合<span class="t_tag">新人</span>。。。</a>其中安装驱动部分。）</div>
+<div class="comment_count"></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><strong>1.&nbsp;<span class="t_tag">下载</span><span class="t_tag">Android</span>&nbsp;SDK</strong><br />到<span class="t_tag">Google</span>官网去下个SDK里面有root要用的工具和驱动，网址&nbsp;<span><a href="http://developer.android.com/index.html" target="_blank">http://developer.android.com/index.html</a>（<em>博主：该网页已经被墙，尝试这个网页</em><a href="http://androidappdocs.appspot.com/sdk/index.html"><em>http://androidappdocs.appspot.com/sdk/index.html</em></a><span>）</span><span>下载以后可以解压到任意位置，建议解压到C:/sdk/ ,后面的教程里说的sdk<span class="t_tag">文件</span>夹就是指的这个文件夹</span></span></span></span></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><br /><strong>2.安装</strong><strong><span class="t_tag">USB</span></strong><strong>&nbsp;de</strong><strong><span class="t_tag">bug</span></strong><strong>ging驱动</strong><br />确定你的<span class="t_tag">手机</span>已经打开USB Debugging，在<span>Settings - Applications -Development - USB Debugging</span><br /><span>现在把手机通过usb线连到<span class="t_tag">电脑</span>上，电脑会<span class="t_tag">提示</span>你安装驱动，驱动的位置在sdk文件夹里的usb_driver, 如果是32位的<span class="t_tag">系统</span>选择x86文件夹安装驱动，如果是64位系统选择amd64文件夹（驱动可以兼容win7,我用的是64位的win7）</span><span>另外最好从始至终使用同一个usb接口，不然有可能会再次提示你安装驱动</span></span></span></div>
+<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><span><br /></span></span></span></div>
+<div class="comment_count">【<em>博主：如果安装了HTCsync2.0.8，那么USB驱动就已经安装好了，以上第二步可以省略。</em>】</p>
+<p><strong>驱动搞定后就可以开始啦（以下部分是从</strong><a href="http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4" target="_blank">http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4</a><strong>翻译而来）</strong></p>
+<p>II. 获取CDMA HERO的root权限
+<ol>
+<li>下载附件中的asroot2.zip，并解压.</li>
+<li>把解压后的asroot2放到SDK的TOOLS目录里</li>
+<li>&nbsp;卸下<span class="t_tag">SD卡</span>，然后手机连接电脑</li>
+<li>打开XP的命令行工具，到SDK的TOOLS目录输入以下指令，</li>
+</ol>
+<pre>cd/
+cd AndroidSDK/Tools/ （到这里是进入SDK的TOOLS目录）
+adb devices（与手机建立连接）</pre>
+<p>请确认你手机的序列号有列出，并提示成功，否则请确认第一步是否完成（也就是说如果没有出现你HERO的序列，那就是驱动没装成功）</p>
+<p>5. 然后输入
+<pre>adb push asroot2 /data/local/ （回车）
+adb shell chmod 0755 /data/local/asroot2 （回车）
+adb shell （回车，会变成$提示符）
+/data/local/asroot2 /system/bin/sh （回车，会变成#提示符）</pre>
+<p>6. 然后输入
+<pre>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system（回车）
+cd /system/bin（回车）
+cat sh &gt; su（回车）
+chmod 4775 su（回车）</pre>
+<p>7.退出一直输入exit回车就可以了</div>
+<div class="comment_count"><strong>然后就OK了! 重启机子吧!&nbsp;</strong></div>
+<div class="comment_count"><strong><br /></strong></div>
+<p>以上步骤完成后，安装Root Explorer试验以上操作是否成功，请参考《<span style="white-space:pre;"><a href="http://www.hiapk.com/bbs/thread-7350-1-1.html">冒死体验～～～Root Explorer文件管理</a>》</span></p>
+<p><span style="white-space:pre;"><br /></span></p>
+<div class="comment_count">============================================================</div>
+<div class="comment_count">【英文原文】</div>
+<h2>HOW TO ROOT YOUR CDMA HTC HERO</h2>
+<p>Posted by&nbsp;<a href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/"></a>on 8th November 2009</p>
+<div class="entry">
+<p>This guide will walk you through gaining root access to your CDMA HTC Hero currently on the Sprint and Verizon&nbsp;<a id="KonaLink0" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Networks</span></span></a>. &nbsp;</p>
+<p>I. Before You Begin</p>
+<p>You need to be able to access the phone via ADB.</p>
+<p>Follow this procedure to get ADB setup on your Hero.</p>
+<p><a href="http://theunlockr.com/2009/10/06/how-to-set-up-adb-usb-drivers-for-android-devices/" target="_blank">How To Setup ADB/Install USB Drivers</a></p>
+<p>II. Root the CDMA Hero</p>
+<p>1. Download the following file and then&nbsp;<a id="KonaLink1" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">unzip</span></span></a>&nbsp;it.</p>
+<p><a href="http://forum.xda-developers.com/attachment.php?attachmentid=244212&amp;d=1257621154" target="_blank">AsRoot2</a></p>
+<p>2. Take the unzipped file and save it into the Tools folder of your AndroidSDK.<br />3. Plug your phone in via USB and do NOT mount the SD card.<br />4. Open the&nbsp;<a id="KonaLink2" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Command&nbsp;</span><span class="kLink">Prompt</span></span></a>&nbsp;and type the following (hitting enter at the end of every line):</p>
+<blockquote>
+<p>cd/<br />cd AndroidSDK/Tools/<br />adb devices</p>
+</blockquote>
+<p>And make sure your phones&rsquo;s serial number&nbsp;<a id="KonaLink3" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">pops&nbsp;</span><span class="kLink">up</span></span></a><br />(if not redo section I).</p>
+<p>5. Then type:</p>
+<blockquote>
+<p>adb push asroot2 /data/local/<br />adb shell chmod 0755 /data/local/asroot2<br />adb shell<br />/data/local/asroot2 /<a id="KonaLink5" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">system</span></span></a>/bin/sh</p>
+</blockquote>
+<p>6. Then type:</p>
+<blockquote>
+<p>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system<br />cd /system/bin<br />cat sh &gt; su<br />chmod 4775 su</p>
+</blockquote>
+<p>All Done! You now have root access! Try to download a root program from the Market and see if it works&nbsp;<img class="wp-smiley" src="http://www.androidspin.com/wp-includes/images/smilies/icon_razz.gif" alt=":P" /></p>
+<p>&nbsp;</p>
+<p>-------------------------------------------------------------------------------------------------------</p>
+</div>
+<p>&nbsp;</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2010/03/03/cpio-params">cpio解压参数</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2010-03-03</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>解压cpio文件&nbsp;<br />cpio -idmv &lt; filename.cpio&nbsp;</p>
+<p>同样可以解压img文件：<br />cpio -idmv &lt; filename.img</p>
+<p>cpio 备份命令<br />备份：cpio -covB &gt; [file|device] 将数据备份到文件或设备上<br />还原：cpio -icduv &lt; [file|device} 将数据还原到系统中</p>
+<p>常用参数：<br />-o&nbsp;&nbsp; ：将数据copy到文件或设备上<br />-i&nbsp;&nbsp;&nbsp; ：将数据从文件或设备上还原到系统中<br />-t&nbsp;&nbsp;&nbsp; ：查看cpio建立的文件或设备内容<br />-c&nbsp;&nbsp; ：一种比较新的portable format方式存储<br />-v&nbsp;&nbsp; ：在屏幕上显示备份过程中的文件名<br />-B&nbsp;&nbsp; ：让预设的blocks可以增加到5120bytes，默认是512bytes，这样可以使备份速度加快<br />-d&nbsp;&nbsp; ：自动建立目录，这样还原时才不会出现找不到路径的问题<br />-u&nbsp;&nbsp; ：更新，用较新的文件覆盖旧的文件</p>
+<p>cpio常与find 配合使用</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1119,201 +1219,6 @@ for generation of Perl executables </td>
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/09/24/cronjob-crontab">cronjob and crontab</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2009-09-24</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
-<h3><span style="font-weight:normal;">今天要设置一个cron job，查了一些资料，发现了很好的一篇文章，见下文，原文参见：<a href="http://www.aota.net/Script_Installation_Tips/cronhelp.php4">http://www.aota.net/Script_Installation_Tips/cronhelp.php4</a>。</span></h3>
-<h3><span style="font-weight:normal;">但是我按照这篇文章的介绍，在Solaris 9下设置crontab的文件时，老是报错</span></h3>
-<p><span style="font-weight:normal;"><br />
-</span></p>
-<p>
-<pre>$ crontab chkbjservers.cron
-MAILTO=xxx@xxxxx.com
-crontab: error on previous line; unexpected character found in line.
-crontab: errors detected in input, no crontab file generated.</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>后来查了Solaris的crontab的手册，发现Solaris的crontab不支持MAILTO，必须要用mailx之类的Unix邮件发送命令。另外，整个cron file只要一句话：<strong>minute(s) hour(s) day(s) month(s) weekday(s) command(s). </strong><span>比如：</span></p>
-<p>&nbsp;</p>
-<p><span><br />
-</span></p>
-<p>
-<pre>30 7 * * 1 /bld/xxxx/mytool/chkbjserver.sh|cat chkbjserver.out|mailx -s "Shared memory checked result in BJ COOL" xxxx@xxxxxxx.com</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p><strong>=========================================================================</strong></p>
-<h3>What is a&nbsp;<a href="http://www.aota.net/keyword.php?cronjob">cronjob</a>, and how do I use it?</h3>
-<p>
-The&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;daemon is a long running process that executes commands at specific dates and times. To schedule one-time only tasks with&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>, use&nbsp;<strong>at</strong>&nbsp;or&nbsp;<strong>batch</strong>. For commands that need to be executed repeatedly (e.g. hourly, daily or weekly), use&nbsp;<strong>crontab</strong>, which has the following options:</p>
-<table border="0" cellpadding="4">
-<tbody>
-<tr valign="TOP">
-<td align="LEFT"><strong>crontab filename</strong></td>
-<td align="LEFT">Install filename as your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file.</td>
-</tr>
-<tr valign="TOP">
-<td align="LEFT"><strong>crontab -e</strong></td>
-<td align="LEFT">Edit your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file.</td>
-</tr>
-<tr valign="TOP">
-<td align="LEFT"><strong>crontab -l</strong></td>
-<td align="LEFT">Show your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file.</td>
-</tr>
-<tr valign="TOP">
-<td align="LEFT"><strong>crontab -r</strong></td>
-<td align="LEFT">Remove your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file.</td>
-</tr>
-<tr valign="TOP">
-<td align="LEFT"><strong>MAILTO=user@domain.com</strong></td>
-<td align="LEFT">Emails the output to the specified address.</td>
-</tr>
-</tbody>
-</table>
-<p>The&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;command creates a&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file containing commands and how often&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;should execute them. Each entry in a&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file consists of six fields, specified in the following order:</p>
-<ul>
-<strong>minute(s) hour(s) day(s) month(s) weekday(s) command(s)</strong>
-</ul>
-<p>The fields are separated by spaces or tabs. The first five are integer patterns and the sixth is the command to be executed. The following table briefly describes each of the fields.</p>
-<table border="0" cellpadding="4">
-<tbody>
-<tr valign="TOP">
-<th align="LEFT">Field</th>
-<th align="LEFT">Value</th>
-<th align="LEFT">Description</th>
-</tr>
-<tr valign="TOP">
-<td align="LEFT">minute</td>
-<td align="LEFT">0-59</td>
-<td align="LEFT">The exact minute that the command sequence executes.</td>
-</tr>
-<tr valign="TOP">
-<td align="LEFT">hour</td>
-<td align="LEFT">0-23</td>
-<td align="LEFT">The hour of the day that the command sequence executes.</td>
-</tr>
-<tr valign="TOP">
-<td align="LEFT">day</td>
-<td align="LEFT">1-31</td>
-<td align="LEFT">The day of the month that the command sequence executes.</td>
-</tr>
-<tr valign="TOP">
-<td align="LEFT">month</td>
-<td align="LEFT">1-12</td>
-<td align="LEFT">The month of the year that the command sequence executes.</td>
-</tr>
-<tr valign="TOP">
-<td align="LEFT">weekday</td>
-<td align="LEFT">0-6</td>
-<td align="LEFT">The day of the week that the command sequence executes. Sunday=0, Monday = 1, Tuesday = 2, and so forth.</td>
-</tr>
-<tr valign="TOP">
-<td align="LEFT">command</td>
-<td align="LEFT">Special</td>
-<td align="LEFT">The complete command sequence variable that is to be executed.</td>
-</tr>
-</tbody>
-</table>
-<p>Each of the patterns from the first five fields may either be an asterisk (*) (meaning all legal values) or a list of elements separated by commas. An element is either a number or two numbers separated by a minus sign (meaning an inclusive range). Note that the specification of days may be made by two fields (day of the month and day of the week). If both are specified as a list of elements, both are followed. For example:</p>
-<ul>
-<strong>MAILTO=user@domain.com</strong>&nbsp;<br /><strong>0 0 1,15 * 1 /big/dom/xdomain/cgi-bin/scriptname.cgi</strong>
-</ul>
-<p>The&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;daemon would run the program&nbsp;<strong>scriptname.cgi</strong>&nbsp;in the&nbsp;<strong>cgi-bin</strong>&nbsp;directory on the first and fifteenth of each month, as well as on every Monday. To specify days by only one field, the other field should be set to *. For example:</p>
-<ul>
-<strong>MAILTO=user@domain.com</strong>&nbsp;<br /><strong>0 0 * * 1 /big/dom/xdomain/cgi-bin/scriptname.cgi</strong>
-</ul>
-<p>The program would then only run on Mondays.</p>
-<p>If a&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;job specified in your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;entry produces any error messages when it runs, they will be reported to you via email.</p>
-<p>You may create&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;files in notepad (being sure to upload them in ASCII) or you may create them within&nbsp;<a href="http://www.aota.net/keyword.php?telnet">telnet</a>&nbsp;by simply typing:</p>
-<ul>
-<strong>mcedit cronfile.txt</strong>
-</ul>
-<p>For more information, consult the man pages. man pages are the directions and tutorials available to you right at the command line from within&nbsp;<a href="http://www.aota.net/keyword.php?telnet">telnet</a>. Type any of the following lines to open the relevant tutorials:</p>
-<ul>
-<strong>man 5 crontab</strong>&nbsp;{enter}&nbsp;<br /><strong>man 1 crontab</strong>&nbsp;{enter}&nbsp;<br /><strong>man cron</strong>&nbsp;{enter}&nbsp;<br /><strong>man at</strong>&nbsp;{enter}&nbsp;<br /><strong>man batch</strong>&nbsp;{enter}&nbsp;<br /><strong>man 1 cron</strong>&nbsp;{enter}
-</ul>
-<p>
-<strong>Note:</strong>&nbsp;<br />Your&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;file&nbsp;<strong>must</strong>&nbsp;end with a line feed - in other words, make sure to press [Enter] after the last line in the file.</p>
-<hr />
-<h3>Try It!</h3>
-<p>
-Now that you have read an overview of&nbsp;<a href="http://www.aota.net/keyword.php?Cron">Cron</a>, test your skills by following the steps below. Once completed you should have a&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;file of your own!&nbsp;</p>
-<p><strong>Step 1:</strong>&nbsp;Create a simple text file using Notepad or any simple text editor that contains the following text:</p>
-<ul>
-<strong>MAILTO=yourusername@yourdomain.com {Enter}<br />58 23 * * * /big/dom/xdomain/cgi-bin/yourscript.pl<br />{Enter}</strong>
-</ul>
-<p>
-<strong>Notes for Step 1</strong></p>
-<ol>
-<li>You may create this file using your&nbsp;<a href="http://www.futurequest.net/Services/CNC/">CNC</a>&nbsp;File Manager by navigating to the /big/dom/xdomain/ directory and clicking 'Create New File' or any other simple text editor such as Notepad.</li>
-<li>{Enter} should not actually be typed. [Enter] means hit the {Enter} (return) key to begin the next line and to add a blank line feed at the end of the last line of your&nbsp;<a href="http://www.aota.net/keyword.php?Cron">Cron</a>&nbsp;File. It is important to always remember to do this.</li>
-<li>MAILTO: Replace the email address with a valid email address of your own. This will ensure that when your&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>runs, that any output from the script, such as error message, will be emailed to you.</li>
-<li>The second line tells your server when to run this script. In this example, the script will be run at 11:58 PM Eastern Time every day of the year.</li>
-<li>It is very important that you double check the script path to ensure it is correct and remember the file names are CaSe SeNsiTive.</li>
-</ol>
-<p><strong>Step 2:</strong>&nbsp;Name the text file. (Example: cronfile.txt)<br />The&nbsp;<em>cronfile</em>&nbsp;name may be replaced with any name you choose. For instance if you are running a&nbsp;<a href="http://www.aota.net/keyword.php?Cron">Cron</a>&nbsp;to trigger an email reminder script it could be called&nbsp;<em>reminder.txt</em>. Many choose to simply call it cronfile.txt.&nbsp;</p>
-<p><strong>Step 3:</strong>&nbsp;Upload the file in&nbsp;<a href="http://www.aota.net/keyword.php?ASCII">ASCII</a>.<br />Any standard FTP client or your account's&nbsp;<a href="http://www.futurequest.net/Services/CNC/">CNC</a>&nbsp;upload feature will work for this. It must be uploaded in&nbsp;<a href="http://www.aota.net/keyword.php?ASCII">ASCII</a>&nbsp;mode and it is recommended that it be placed in your&nbsp;<strong>/big/dom/xdomain/</strong>&nbsp;directory. It may be placed anywhere in your account but to prevent browser access (security risks) it is strongly recommended to place it above your /www directory.&nbsp;</p>
-<p><strong>Step 4:</strong>&nbsp;<a href="http://www.aota.net/keyword.php?Telnet">Telnet</a>&nbsp;into your account and issue the following command:</p>
-<ul>
-<strong><a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;/big/dom/xdomain/cronfile.txt</strong>
-</ul>
-<p>
-The above tells the server's&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;where the file is located and that you wish to make it active. Make sure the path to the file is the actual path to where the file was placed. If successful you will be returned to the command bash line, if not an error will be displayed)&nbsp;</p>
-<p><strong>IMPORTANT NOTES</strong>&nbsp;</p>
-<p>Removing/Stopping the Cron: Deleting the&nbsp;<em>cronfile.txt</em>&nbsp;file from your account will&nbsp;<strong>not</strong>&nbsp;stop the&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>. You may remove this file at any time, since the server's&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;already has the contents, and the&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;will still run after you have made it active.&nbsp;</p>
-<p>To turn the&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;off you must&nbsp;<a href="http://www.aota.net/keyword.php?Telnet">Telnet</a>&nbsp;into your account and issue the following command:</p>
-<ul>
-<strong><a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;-r</strong>
-</ul>
-<p>
-The&nbsp;<em>crontab -r</em>&nbsp;will deactivate the&nbsp;<a href="http://www.aota.net/keyword.php?cronjob">cronjob</a>&nbsp;and remove the file contents from the server.&nbsp;</p>
-<p><strong>Security Note:</strong>&nbsp;If the script the&nbsp;<a href="http://www.aota.net/keyword.php?cron">cron</a>&nbsp;is setup to run is in the /cgi-bin/ or /www/ directory it may be run at anytime by anyone with browser access. If the&nbsp;<a href="http://www.aota.net/keyword.php?crontab">crontab</a>&nbsp;is all that should run the script and you do not want the public to be able to run the script, then you will need to place the script in a directory above the /cgi-bin/ and /www/ directories such as:<strong>/big/dom/xdom/user/cronscripts/scriptname</strong></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2009/09/19/install-expect-in-fedora">Fedora安装Expect</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2009-09-19</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>费了很大力气才下到Expect的源代码，然后参考了Expect的INSTALL说明文件，还需要Tcl/Tk的源代码支持，于是又下载了Tcl/Tk的源代码，把它们都给放到/usr/local/src下面。先编译安装tcl和tk，完了之后进入expect的文件夹下面，./configure，结果报错，说找不到tclInt.h。于是在tcl的源文件的文件夹下面搜索tclInt.h，发现该文件确实存在，在generic下面。又参考了一下Expect的INSTALL说明文件，才知道可以加--withtclincluse=选项，于是重新configure：</p>
-<p>&nbsp;</p>
-<p>./configure --withtclinclude=/usr/local/src/tcl8.6b1/generic</p>
-<p>&nbsp;</p>
-<p>configure成功。于是输入make,正式编译，结果又发现了如下错误：</p>
-<p>&nbsp;</p>
-<p>exp_main_exp.c:32: error: &lsquo;Tcl_Interp&rsquo; has no member named &lsquo;result&rsquo;<br />
-exp_main_exp.c:33: warning: incompatible implicit declaration of built-in function &lsquo;exit&rsquo;<br />
-make: *** [exp_main_exp.o] Error 1</p>
-<p>&nbsp;</p>
-<p>网上一搜，在<a href="http://groups.google.com/group/comp.lang.tcl/browse_thread/thread/e63b1bd2d350d024/8bbd5758f6193120?show_docid=8bbd5758f6193120&amp;pli=1">http://groups.google.com/group/comp.lang.tcl/browse_thread/thread/e63b1bd2d350d024/8bbd5758f6193120?show_docid=8bbd5758f6193120&amp;pli=1</a><br />
- 发现有人遇到过同样的问题。在<a href="http://www.tcl.tk/cgi-bin/tct/tip/330.html">http://www.tcl.tk/cgi-bin/tct/tip/330.html</a><br />
-给出了原因，说是因为在新版(8.6)的tcl的tcl.h中Tcl_Interp被重命名为unused1了，而expect的源代码并没有做相应修改。并且给出了解决方案，就是添加预定义USE_INTERP_RESULT，或者用8.5以下的tcl源代码。</p>
-<p>&nbsp;</p>
-<p>我没有再继续尝试编译安装expect。我想起来可以尝试通过yum安装，于是输入yum install expect，竟然成功了！不过在安装expect的同时，还自动安装了tcl8.5.3，估计这是因为安装的expect是基于tcl8.5的源代码变异的。</p>
-<p>&nbsp;</p>
-<p>看来Expect开发者乏人啊，这么长时间这个bug竟然没有人修复，唉&hellip;&hellip;</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1451,7 +1356,7 @@ make: *** [exp_main_exp.o] Error 1</p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1509,7 +1414,7 @@ make: *** [exp_main_exp.o] Error 1</p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -1606,6 +1511,12 @@ make: *** [exp_main_exp.o] Error 1</p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -1629,12 +1540,6 @@ make: *** [exp_main_exp.o] Error 1</p>
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Combination Sum Problem: A Non-recursive Method
+title: Combination Sum Problem - A Non-recursive Method
 categories: 
 - Algorithm
 - C/C++ 
@@ -34,9 +34,10 @@ author: Bo Yang
 The popular solution is to recursively scan all elements in the cadidate set, such as [http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html](http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html).
 
 However, I don't want to use recursion. My solution to this problem is to build trees level by level for each number in the candidate set, where the nodes are candidate set number. The sum of the sequence from root to current node is compared to the target:
-* if the sum equals to the target, then we find one solution;
-* if the sum is less than the target, then subnodes could be added to this node; 
-* if the sum is larger than the target, then this node is a leaf node.
+
+- if the sum equals to the target, then we find one solution;
+- if the sum is less than the target, then subnodes could be added to this node; 
+- if the sum is larger than the target, then this node is a leaf node.
 
 Only numbers equal to or larger than current node can be used as the children of current node. When there is no child could be added, this tree stops growing.
 

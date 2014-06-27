@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,198 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/11/09/praise-683">行行出状元——表扬683路公交车售票员wen师傅</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-11-09</strong> with tags <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p>
+    今天坐683路公交车，又遇到了一个月前遇到的那位售票员（<a href="http://blog.csdn.net/bonny95/archive/2008/10/12/3062688.aspx">http://blog.csdn.net/bonny95/archive/2008/10/12/3062688.aspx</a>）。她依然是那样热情的帮助乘客，依然如数家珍的报站名，依然用音乐抚慰着乘客拥挤的心灵。</p>
+<p>不同的是：车厢内更加整洁了；车厢后面多了一排小花；车厢内的高台上（新型公交车有比较大的高台）铺着她自己做的小垫子供人坐，合理利用了空间，也为乘客提供了方便；大多数乘客已经习惯了她的热诚，放心的把东西交给她保管，甚至有些乘客已经成了她的朋友（亲眼见到一位小姐亲切的叫她“wen姐”和她打招呼，不知道是“闻”还是“文”）；绝大多数公交车内一片漆黑（晚上），只有她的车内灯火通明。</p>
+<p>另外，一位中年妇女下车时不小心把买的爆米花弄撒了，wen师傅连忙安慰她。由此令我联想到坐某辆公交车，由于司机急刹车致使某位小姑娘摔倒在地，小姑娘的同伴抱怨时，而那位售票员竟然还大声呵斥摔倒的小姑娘为什么不小心……</p>
+<p>到了某个我家附近不出名的小站，wen师傅一口气将周围所有的饭店统统报了出来。我不禁伸出大拇指称赞，她笑着说“其实我只是比较喜欢吃东西”我抓住机会看了看她的工作牌，只看清了“<font color="#ff0000"><b>120513C</b></font>”，不知道是不是她的工号。</p>
+<p>我要由衷的谢谢她——她用实际行动告诉了我们无论什么事情，哪怕别人都认为没有前途或者无可改进，只要用心，照样也可以做的风生水起。</p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2008/11/02/tcl-tk-note-3">Tcl/Tk Notes (3)</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2008-11-02</strong> with tags <a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <br />
+<h2>Part III&nbsp;Tcl&nbsp;Data&nbsp;Structures<br />
+    </h2>
+<h3><a id="1_More_about_Variables_8194860" name="1_More_about_Variables_8194860"></a>1 More&nbsp;about&nbsp;Variables</h3>
+<ul>
+<li>
+        The <span style="font-family:'Courier New';">set </span>command
+      </li>
+</ul>
+<p>    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;The <span style="font-family:'Courier New';">set</span><br />
+command is used to define variables of any type. In addition, the set<br />
+command will return the value &nbsp;of a variable if it is only passed a<br />
+single argument. It treats that argument as a variable name and returns<br />
+the current value of the variable. </p>
+<div style="padding:1em 0;text-align:left;">
+<img src="http://docs.google.com/File?id=dd6nw3mt_126frfnfccm_b" style="width:695px;height:222px;" />
+</div>
+<div style="padding:1em 0;">
+    &nbsp;&nbsp; &nbsp;In the&nbsp;last&nbsp;command,&nbsp;<span style="font-family:'Courier New';">$name</span>&nbsp;gets&nbsp;substituted&nbsp;with&nbsp;<span style="font-family:'Courier New';">var</span>.&nbsp;Then&nbsp;the&nbsp;<span style="font-family:'Courier New';">set</span>&nbsp;command&nbsp;returns&nbsp;the&nbsp;value&nbsp;of&nbsp;<span style="font-family:'Courier New';">var</span>,&nbsp;which&nbsp;is&nbsp;<span style="font-family:'Courier New';">the&nbsp;value&nbsp;of&nbsp;var</span>.&nbsp;Another&nbsp;way&nbsp;to&nbsp;achieve&nbsp;a&nbsp;level&nbsp;of&nbsp;indirection&nbsp;like&nbsp;this&nbsp;is&nbsp;with&nbsp;nested&nbsp;<span style="font-family:'Courier New';">set</span>&nbsp;commands.&nbsp;The&nbsp;last&nbsp;<span style="font-family:'Courier New';">set</span>&nbsp;command&nbsp;above&nbsp;can&nbsp;be&nbsp;written&nbsp;as&nbsp;follows:<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:'Courier New';">set&nbsp;[set&nbsp;name]</span><br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>=&gt;&nbsp;the&nbsp;value&nbsp;of&nbsp;var</i></p>
+<ul>
+<li>
+        The <span style="font-family:'Courier New';">unset </span>command&nbsp;
+      </li>
+</ul>
+<p>    &nbsp;&nbsp; &nbsp;You can&nbsp;delete&nbsp;a&nbsp;variable&nbsp;with&nbsp;the&nbsp;unset&nbsp;command:<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:'Courier New';">unset <i>varName varName2 ...</i></span></p>
+<ul>
+<li>
+        Using info to find out about variables
+      </li>
+</ul>
+<p>    &nbsp;&nbsp; &nbsp;The existence&nbsp;of&nbsp;a&nbsp;variable&nbsp;can&nbsp;be&nbsp;tested&nbsp;with&nbsp;the&nbsp;info&nbsp;exists&nbsp;command.<br />
+    e.g.&nbsp;<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if ![info&nbsp;exists&nbsp;foobar]{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;set&nbsp;foobar&nbsp;0<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}&nbsp;else&nbsp;{<br />
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;incr&nbsp;foobar }<br />
+<h3><a id="2_Tcl_Lists_16283892709607128_38510692397444923" name="2_Tcl_Lists_16283892709607128_38510692397444923"></a>2 Tcl Lists</h3>
+<p>&nbsp;&nbsp; &nbsp;The Tcl list has the same structure as a Tcl command. That is, a<br />
+list is simply a string with list elements separated by white<br />
+space.Braces or quotes can be used to group words with whitespace into<br />
+a single list element.
+<div id="p_lk" style="padding:1em 0;text-align:left;"><font size="2"><img style="width:585px;height:506px;" src="http://docs.google.com/File?id=dd6nw3mt_1272k4p4qgs_b" /><br /></font><br />
+<h3><a id="3_Constructing_Lists_list_lapp_6067784235213389" name="3_Constructing_Lists_list_lapp_6067784235213389"></a><font size="2"><a id="3_Constructing_Lists_list_lapp_064013552814696" name="3_Constructing_Lists_list_lapp_064013552814696"></a><a id="3_Constructing_Lists_list_lapp_48234938647299075" name="3_Constructing_Lists_list_lapp_48234938647299075"></a><a id="3_Constructing_Lists_list_lapp" name="3_Constructing_Lists_list_lapp"></a>3 Constructing Lists: <span style="font-family:Courier New;">list</span>, <span style="font-family:Courier New;">lappend</span> and <span style="font-family:Courier New;">concat</span></font></h3>
+<p><font size="2">&nbsp;&nbsp; &nbsp;The <span style="font-family:Courier New;">list</span><br />
+command constructs a list out of its arguments such that there is one<br />
+list element for each argument. if any of the arguments contain special<br />
+characters, the list command adds some quoting to ensure they are<br />
+parsed as a single element of the resulting list.<br /></font></div>
+<p><font size="2">e.g. <i><span style="font-family:Times New Roman;">Constructing a list with the<span style="font-family:Courier New;"> list </span>command</span></i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set x {1 2}</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">set x</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">list $x /$ foo</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; {1 2} {$} foo</i><br /><span style="color:rgb(0,0,255);">[Note]: The braces used to group the list value into one argument to the set command are not part of the list value.</span></p>
+<p>&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">lappend</span> command is used to append elements to the end of a list. You can call <span style="font-family:Courier New;">lappend</span> with the name of an undefined variable and the variable will be created.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lappend new 1 2</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;"></span><span style="font-family:Courier New;">lappend new 3 "4 5"</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; =&gt; 1 2 3 {4 5}<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set new</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2 3 {4 5}</i></p>
+<p>&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">concat</span><br />
+command is useful for splicing together lists. It works by<br />
+concatenating its arguments together, separating them with spaces. This<br />
+multiple lists into one where the top-level list elements in each input<br />
+list are also top-level list elements in the resulting list.<br />e.g. <i>Using <span style="font-family:Courier New;">concat </span>to splice together lists.</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">concat 1 {2 3} {4 5 6}</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; 1 2 3 4 5 6</i><br />&nbsp;&nbsp;&nbsp; It turns out that double quotes behave much like the <span style="font-family:Courier New;">concat</span> command.<br />e.g. <i><span style="font-family:Times New Roman;">Double quotes compared to the <span style="font-family:Courier New;">list </span>command.</span></i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set x {1 2}</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<i>&nbsp; </i><i>=&gt; 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set y "$x 3"</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1 2 3</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">set y [concat $x 3]</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; 1 2 3</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span><span style="font-family:Courier New;">set z [list $x 3]</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt;{1 2} 3</i><br />&nbsp;&nbsp;&nbsp; The basic rule is that <span style="font-family:Courier New;">list </span>and<span style="font-family:Courier New;"> lappend</span> preserve preserve list structure, while <span style="font-family:Courier New;">concat</span>(or double-quotes)eliminate one level of list structure.<br /></font><br />
+<h3><a id="4_Getting_List_Elements_llengt" name="4_Getting_List_Elements_llengt"></a><font size="2">4 Getting List Elements:<span style="font-family:Courier New;"> llength, lindex, <span style="font-family:Verdana;">and</span> lrange</span></font></h3>
+<p><font size="2">&nbsp;&nbsp; &nbsp;The <span style="font-family:Courier New;">llength</span> command returns the number of elements in a list. <br />&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">lindex</span> command returns a particular element of a list. It takes an index. List indices count from zero. The keyword <i>end</i> means the last element, and it can be used with <span style="font-family:Courier New;">lindex, linsert, lrange </span>and <span style="font-family:Courier New;">lreplace</span>.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">lindex {1 2 3} 0</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 1</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</font><font size="2"><span style="font-family:Courier New;">lindex {1 2 3} 2</span><br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 3</i></font><font size="2"><br /> &nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">lrange</span> command returns a range of list elements. It takes a list and two indices as arguments.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lrange {1 2 3 {4 5}} 2 end</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; 3 {4 5}</i><br /></font><br />
+<h3><a id="5_Modifying_Lists_linsert_and_" name="5_Modifying_Lists_linsert_and_"></a><font size="2">5 Modifying Lists: <span style="font-family:Courier New;">linsert</span> and <span style="font-family:Courier New;">lreplace</span></font></h3>
+<p><font size="2">&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">linsert</span><br />
+command inserts elements into a list value at a specified index. If the<br />
+index is 0 or less, then elements are added to the front. If the index<br />
+is equal to or greater than the length of the list, then the elements<br />
+are appended to the end. Otherwise, the elements are inserted before<br />
+the element that is currentl as position index.<br />&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lreplace</span><br />
+is used to replace a range of list elements with new elements. If you<br />
+don't specify any new elements, you effectively delete elements from a<br />
+list.<br />e.g.<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">linsert {1 2} 0 new stuff</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; new stuff 1 2</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">set x [list a {b c} e d]</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; a {b c} e d</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lreplace $x 1 2 B C</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<i> </i><i>=&gt; a B C d</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">lreplace $x 0 0</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <i>=&gt; {b c} e d</i><br /></font><br />
+<h3><a id="6_Searching_Lists_lsearch" name="6_Searching_Lists_lsearch"></a><font size="2">6 Searching Lists: <span style="font-family:Courier New;">lsearch</span></font></h3>
+<p><font size="2"><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">lsearch</span> returns the index of a value in the list, or -1 if it is not present. <span style="font-family:Courier New;">lsearch</span> supports pattern matching in its search. Glob-style pattern matching is default, and this canbe disabled with the <span style="font-family:Courier New;">-exact</span> flag.<br /><span>&nbsp;&nbsp;&nbsp; </span>The example below uses<span style="font-family:Courier New;"> lreplace</span> to delete elements by not specifying any replacement list elements.<br />e.g.<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;</span><span><span style="font-family:Courier New;">&nbsp;&nbsp;&nbsp; proc delete {list value} {</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; set ix [lsearch -exact $list $value]</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; if {$ix&gt;=0} {</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; return [lreplace $list $ix $ix]</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; } else {</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; return $list</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; }</span><br />&nbsp;<br /></span></font><br />
+<h3><font size="2">7 Sorting List: <span style="font-family:Courier New;">lsort</span></font></h3>
+<p><font size="2"><span>&nbsp;&nbsp;&nbsp; </span>The three basic types of sorts are specified with the <span style="font-family:Courier New;">-ascii, -integer</span>, or <span style="font-family:Courier New;">-real</span> options. The <span style="font-family:Courier New;">-increasing</span> or <span style="font-family:Courier New;">-decreasing</span> option indicate the sirting order. The default option set is <span style="font-family:Courier New;">-ascii -increasing</span>.
+<div id="y4i8" style="padding:1em 0;text-align:left;"><img style="width:700px;height:341px;" src="http://docs.google.com/File?id=dd6nw3mt_12843xpw3gx_b" /></p>
+<h3>8 The split And join Commands</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The <span style="font-family:Courier New;">split </span>command<br />
+takes a string and turns it into a list by breaking it at specified<br />
+characters. Stray double-quotes or curly braces in the input can result<br />
+in invalid list structures and errors in your script. However, the<br />
+split command provides a robust way to turn input lines into proper Tcl<br />
+lists.
+<div id="nj_b" style="padding:1em 0;text-align:left;"><img style="width:659px;height:134px;" src="http://docs.google.com/File?id=dd6nw3mt_129dnrj74dp_b" /></div>
+<div id="s61w" style="padding:1em 0;text-align:left;"><img style="width:672px;height:134px;" src="http://docs.google.com/File?id=dd6nw3mt_130f2ksvcpn_b" /></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>The<br />
+default split character is white space. If there are multiple separator<br />
+characters in a row, these result in empty list elements- the<br />
+separators are not collapsed. The following command splits on commas,<br />
+periods, spaces and tabs:
+<div id="i_2y" style="padding:1em 0;text-align:left;"><img style="width:299px;height:78px;" src="http://docs.google.com/File?id=dd6nw3mt_131fm4hj3gx_b" /></div>
+<p><span>&nbsp;&nbsp; &nbsp;</span>The<span style="font-family:Courier New;"> join </span>command<br />
+is the inverse of split. It takes a list value and reformats it with<br />
+specified characters separating the list elements. In doing so, it will<br />
+remove any curly braces from the string representation of the list that<br />
+are used to group the top-level elements.
+<div id="z1an" style="padding:1em 0;text-align:left;"><img style="width:269px;height:55px;" src="http://docs.google.com/File?id=dd6nw3mt_132gxv9m5gb_b" /></div>
+<h3>9 Arrays</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The index of an array is delimited by parentheses. The<br />
+index can have any string value, and it canbe the result of variable or<br />
+command substitution.<br /><span>e.g.<span> &nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">set arra(</span><i>index</i><span style="font-family:Courier New;">) value</span><br /><span>&nbsp;&nbsp;&nbsp; </span>The value of an array element is obtained with $ substitution:<br /><span></span><span></span><span>e.g.<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set foo $arr(</span><i>index</i><span style="font-family:Courier New;">)</span>
+<div id="rrr0" style="padding:1em 0;text-align:left;"><img style="width:551px;height:145px;" src="http://docs.google.com/File?id=dd6nw3mt_133dvtqdmcr_b" /></div>
+<p><span>&nbsp;&nbsp;&nbsp; </span>If<br />
+you have complex indices, use a comma to separate different parts of<br />
+the index. Avoid putting a pace after the comma. It is legal, but a<br />
+space in an index value will cause problems because parenthesis are not<br />
+used as a grouping mechanism. The space in the index needs to be quoted<br />
+with a backslash, or hte whole variable reference needs to be grouped:<br /><span></span><span>e.g.<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set {arr(I'm asking for trouble)} {I told you so.}</span><br /><span></span><span><span>&nbsp;&nbsp;&nbsp; </span>If<br />
+the array index is stored in a variable, then there is no problem with<br />
+spaces in the variable's value. The following works fine:<span><br />e.g.<span>&nbsp;&nbsp; &nbsp;</span><br /><span>&nbsp;&nbsp; &nbsp;<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set index {</span></span></span></span></span></span></span><font><font size="2"><span><span><span>I'm asking for trouble</span></span></span></font></font><span><span><span><span><span><span><span style="font-family:Courier New;">}</span><br /><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">set arr($index) {</span></span></span></span></span></span></span><font><font size="2"><span><span><span>I told you so.</span></span></span></font></font><span><span><span><span><span><span><span><span style="font-family:Courier New;">}</span><br /><span>&nbsp;&nbsp;&nbsp; </span>The<br />
+name of the array can be the result of a substitution. If the name of<br />
+the array is stored in another variable, then you must use set as shown<br />
+in the last command below to reference the array elements. 
+<div id="v86g" style="padding:1em 0;text-align:left;"><img style="width:622px;height:266px;" src="http://docs.google.com/File?id=dd6nw3mt_134ckqvbpf3_b" /></div>
+<p></span></span></span></span></span></span></span></p>
+<h3><span><span><span><span><span><span><span>10 The Array Command</span></span></span></span></span></span></span></h3>
+<h3><span><span><span><span><span><span><span></span></span></span></span></span></span></span></h3>
+<p><span><span><span><span><span><span><span>
+<div id="uxsm" style="padding:1em 0;text-align:left;"><img style="width:722px;height:215px;" src="http://docs.google.com/File?id=dd6nw3mt_135g7rtd4rd_b" /></div>
+<div style="padding:1em 0;">
+<div id="j5ji" style="padding:1em 0;text-align:left;"><img style="width:722px;height:215px;" src="http://docs.google.com/File?id=dd6nw3mt_137gkb3k889_b" /></div>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The array names command is perhaps the most useful because it allows easy iteration through an array with a foreach loop:<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">foreach index [array names arr] {command body}</span><br />
+<span>&nbsp;&nbsp;&nbsp; </span>The order of the names returned by array names is<br />
+arbitrary. It is essentially determined by the hash table<br />
+implementation of the array.<br />
+<span>&nbsp;&nbsp;&nbsp; </span>The <span style="font-family:Courier New;">array get</span> and <span style="font-family:Courier New;">array set</span> operations are used to convert between an array and a list. The list returned by <span style="font-family:Courier New;">array get</span><br />
+has an even number of elements.The first element is an index, and the<br />
+next is the corresponding array value. The ordering of the indexes is<br />
+arbitrary. The list argument to <span style="font-family:Courier New;">array se</span>t must have the same structure.</p>
+<div id="h3:o" style="padding:1em 0;text-align:left;"><img style="width:467px;height:159px;" src="http://docs.google.com/File?id=dd6nw3mt_138fgwktmcn_b" /></p>
+<h3>11 Environment Variables</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>In UNIX, the process environment variables are available through the global array <span style="font-family:Courier New;">env</span>.<br />
+The name of the environment variable is the index,e.g. env(PATH), and<br />
+the array element contains the current value of the environment<br />
+variable.</p>
+<h3>12 Tracing Variable Values</h3>
+<p><span>&nbsp;&nbsp;&nbsp; </span>The trace command lets you register a command to be called whenever a variable is accessed, modified or unset. The form is:<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">trace <i>variable name ops command</i></span><br />
+<span>&nbsp;&nbsp;&nbsp; </span>The name is a Tcl variable name, which can be a simple<br />
+variable, an array or a element.If a whole array is traced, then the<br />
+trace is invoked when any element is used according to ops. The ops<br />
+argument is one or more of the letters: r for read traces, w for write<br />
+traces, and u for unset traces. The command is executed when one of<br />
+these events occurs. It is invoked as:<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><span style="font-family:Courier New;">command name1 name2 op</span></p>
+<div id="gbxa" style="padding:1em 0;text-align:left;"><img style="width:631px;height:266px;" src="http://docs.google.com/File?id=dd6nw3mt_139f4brdcdj_b" /></p>
+<div id="fq6s" style="padding:1em 0;text-align:left;"><img style="width:565px;height:249px;" src="http://docs.google.com/File?id=dd6nw3mt_140c4szdzcj_b" /></div>
+<p><span>&nbsp;&nbsp;&nbsp; </span>Information about traces on a varible is returned with the vinfo option.<br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp;<span style="font-family:Courier New;"> </span></span><span style="font-family:Courier New;">trace vinfo dynamic</span><br />
+<span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span><i>=&gt; {r FixDynamic}</i><br />
+<span>&nbsp;&nbsp;&nbsp; </span>A trace is deleted with the <span style="font-family:Courier New;">vdelete <span style="font-family:Verdana;">trace</span></span> option, which has the same form as the <span style="font-family:Courier New;">varible</span> option.</div>
+</div>
+</div>
+<p></span></span></span></span></span></span></span></div>
+<p></font></div>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -941,192 +1133,6 @@ The following table summarizes the options:
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/09/14/beginning-linux-programming-2">《Beginning Linux Programming》读书笔记（二）</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-09-14</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-    &nbsp;<font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
-"&gt;", by default, if the file already exists, then it will be<br />
-overwritten. If you want to change the default behavior, you can use<br />
-the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
-<p>&nbsp;&nbsp;&nbsp;<br />
-File descriptor 0 is the standard input to a program, file descriptor 1<br />
-is the standard output, and file descriptor 2 is the standard error<br />
-output. It’s unusual to want to redirect any other than the standard<br />
-ones: 0, 1, and 2.</p>
-<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
-standard error output, preface the &gt; operator with the number of the<br />
-file descriptor you wish to redirect. Because the standard error is on<br />
-file descriptor 2, use the 2&gt; operator. This is often useful to<br />
-discard error information and prevent it from appearing on the screen.</p>
-<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
-<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
-put both the output and error outputs into the same file. Notice the<br />
-order of the operators. This reads as “redirect standard output to the<br />
-file killouterr.txt, and then direct standard error to the same place<br />
-as the standard output.” If you get the order wrong, the redirect won’t<br />
-work as you expect.</p>
-<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
-<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
-<p>3.4 <span style="color:rgb(0,0,255);"><i>file</i></span> command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
-<p>3.5 <span style="color:rgb(0,0,255);"><i>read</i></span> command
-<div>&nbsp;&nbsp; &nbsp;You can assign user input to a variable by using the <span style="color:rgb(0,0,255);"><i>read</i></span> command.The read normally&nbsp;completes when the user presses Enter.</div>
-<div></div>
-<div>3.6 <span style="color:rgb(0,0,255);"><i>which</i></span></div>
-<p><span>&nbsp;&nbsp; &nbsp;</span>Check which command is used, e.g. <i>which test</i>.</p>
-<p>3.7 <i>touch</i> filename<br /><span>&nbsp;&nbsp;&nbsp; </span>Check whether it exists and create it if it doesn’t.
-<div><font size="4">4 Shell Scripts</font></div>
-<div>4.1 Quoting</div>
-<div>&nbsp;&nbsp;<br />
-&nbsp;If you&nbsp;enclose a $ variable expression in double quotes, then it’s<br />
-replaced with its value when the line is executed.&nbsp;If you enclose it in<br />
-single quotes, then no substitution takes place. You can also remove<br />
-the special&nbsp;meaning of the $ symbol by prefacing it with a /.</div>
-<div></div>
-<div>&nbsp;&nbsp;<br />
-&nbsp;Usually, strings are enclosed in double quotes, which protects<br />
-variables from being separated by whitespace but allows $ expansion to<br />
-take place.</div>
-<div></div>
-<div>4.2 Environment Variables</div>
-<div style="padding:1em 0;text-align:center;" id="tfjq"><img src="http://docs.google.com/File?id=dd6nw3mt_59g32fh2hs_b" style="width:830px;height:522px;" /></div>
-<div style="padding:1em 0;text-align:left;" id="tfjq">&nbsp;&nbsp; &nbsp;If you want to check out how the program works in a different environment by running&nbsp;the <span style="color:rgb(0,0,255);"><i>env &lt;command&gt;</i></span>, try looking at the env manual pages.</div>
-<p>4.3 Parameter&nbsp;Variables<br />&nbsp;&nbsp;<br />
-&nbsp;If<br />
-your&nbsp;script&nbsp;is&nbsp;invoked&nbsp;with&nbsp;parameters,&nbsp;some&nbsp;additional&nbsp;variables&nbsp;are&nbsp;created.&nbsp;If&nbsp;no&nbsp;parameters&nbsp;are&nbsp;passed,&nbsp;the&nbsp;environment&nbsp;variable&nbsp;<span style="color:rgb(0,0,255);">$#</span>&nbsp;still&nbsp;exists&nbsp;but&nbsp;has&nbsp;a&nbsp;value&nbsp;of&nbsp;0.
-<div style="padding:1em 0;text-align:center;" id="mmzl"><img src="http://docs.google.com/File?id=dd6nw3mt_60d6q52vkg_b" style="width:822px;height:231px;" /></div>
-<div>&nbsp;&nbsp;&nbsp;<br />
-As&nbsp;you&nbsp;can&nbsp;see,&nbsp;within&nbsp;double&nbsp;quotes,&nbsp;$@&nbsp;expands&nbsp;the&nbsp;positional&nbsp;parameters&nbsp;as&nbsp;separate&nbsp;fields,&nbsp;regardless&nbsp;of&nbsp;the&nbsp;IFS&nbsp;value.&nbsp;In&nbsp;general,&nbsp;if&nbsp;you&nbsp;want&nbsp;access&nbsp;to&nbsp;the&nbsp;parameters,&nbsp;$@&nbsp;is&nbsp;the&nbsp;sensible&nbsp;choice.</p>
-</div>
-<div>4.4 A Problem With Variables<br />&nbsp;&nbsp;&nbsp; &nbsp;For a script<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);font-family:Courier New;">if [ $timeofday = “yes” ]</span><br />, if just press "Enter",rather than answer anything.When the variable <span style="background-color:rgb(204,204,204);"><span style="font-family:Courier New;">timeofday </span><span style="background-color:rgb(255,255,255);">was tested,</span></span> it consisted of a blank string. Therefore, the <span style="background-color:rgb(204,204,204);">if</span> clause looks like<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ = “yes” ]</span><br />which isn't a valid condition. To avoid this, you must use quotes around the variable:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “$timeofday” = “yes” ]</span><br />An empty variable then gives the valid test:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">if [ “” = “yes” ]</span></p>
-<p>&nbsp;&nbsp; &nbsp;<span style="color:rgb(0,0,255);">Remember<br />
-that adding the quotes tells the shell to consider everything between<br />
-them as a single string. This is one way of getting spaces to be stored<br />
-in a variable.</span></p>
-<p>4.5 The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> Command</div>
-<div>&nbsp;&nbsp; &nbsp;The <span style="color:rgb(0,0,255);"><i>[</i></span> and <span style="color:rgb(0,0,255);"><i>test</i></span> commands are synonymous, except that when the <span style="color:rgb(0,0,255);"><i>[</i></span> command is used, a trailing <span style="color:rgb(0,0,255);"><i>]</i></span> is also used. The <span style="color:rgb(0,0,255);"><i>test</i></span> or <span style="color:rgb(0,0,255);"><i>[</i></span> can be used to check to see whether a file exists.</div>
-<div>e.g.&nbsp;&nbsp; &nbsp;<i>test -f &lt;filename&gt; </i>or<i> [ -f &lt;filename&gt; ]</i></div>
-<div>&nbsp;&nbsp; &nbsp;(<span style="color:rgb(255,0,0);">Note: You must put spaces between the [ braces and the condition being checked.</span>)</div>
-<div></div>
-<div>&nbsp;&nbsp; &nbsp;Conditions that you can use <span style="color:rgb(0,0,255);"><i>test</i></span> command are:</div>
-<div style="padding:1em 0;text-align:center;" id="p1.x"><img src="http://docs.google.com/File?id=dd6nw3mt_61fhn45rcs_b" style="width:546px;height:645px;" /></div>
-<div>4.6 Control Structures</div>
-<div>(1)<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">if</span> <i>condition</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">then</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">elif</span> <i>condition</i><span style="font-family:Courier New;">; then</span> <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">else</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">fi</p>
-<p></span>(2)</div>
-<p>&nbsp;&nbsp;&nbsp; <span style="font-family:Courier New;">for</span> <i><span style="font-family:Arial;">variable</span></i> <span style="font-family:Courier New;">in</span> <i>values</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
-<p>Note: <br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="background-color:rgb(204,204,204);">for file in $(ls f*.sh); do</span><br />In this example,&nbsp; the parameter list for the for command is provided by the output of the command enclosed in the $() sequence.</p>
-<p>(3) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">while</span> <i>condition</i> <span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
-<p>(4) <br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">until </span><i>condition</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">do</span><br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<i>statements</i><br />&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">done</span></p>
-<p><font size="3"><span style="background-color:rgb(255,229,153);font-family:Arial;">Note:&nbsp;&nbsp;&nbsp; In general, if a loop should always execute at least once, use a <span style="font-family:Courier New;">while</span> loop; if it may not need to execute at all, use an <span style="font-family:Courier New;">until</span> loop.</span></font></p>
-<p>(5)</p>
-<p>&nbsp;&nbsp; &nbsp;case variable in<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pattern [ | pattern] ...) statements;;<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;...<br />&nbsp;&nbsp; &nbsp;esac</p>
-<p>&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(255,229,153);">Note:<br /><span></span></span>
-<ul>
-<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp;&nbsp; </span>Notice<br />
-that each pattern line is terminated with double semicolons (;;). You<br />
-can put multiple statements between each pattern and the next, so a<br />
-double semicolon is needed to mark where one statement ends and the<br />
-next pattern begins.</span></span></li>
-</ul>
-<p><span style="background-color:rgb(255,229,153);"><br /><span> </span></span>
-<ul>
-<li><span style="background-color:rgb(255,229,153);"><span><span>&nbsp;&nbsp; &nbsp;</span></span>Be<br />
-careful with the case construct if you are using wildcards such as ‘*‘<br />
-in the pattern. The problem is that the first matching pattern will be<br />
-taken, even if a later pattern matches more exactly.</span></li>
-</ul>
-<p>(6) Lists
-<ul>
-<li><span>&nbsp;&nbsp;&nbsp; </span><b>AND</b><br />
-List: The AND list construct enables you to execute a series of<br />
-commands, executing the next command only if all the previous commands<br />
-have succeeded. The syntax is<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 &amp;&amp; statement2 &amp;&amp; statement3 &amp;&amp; ...</span></li>
-</ul>
-<ul>
-<li><span>&nbsp;&nbsp;&nbsp; </span><b>OR</b><br />
-List: The OR list construct enables us to execute a series of commands<br />
-until one succeeds, and then not execute any more. The syntax is as<br />
-follows:<br />&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">statement1 || statement2 || statement3 || ...</span></p>
-</li>
-</ul>
-<p>(7) Statement Blocks<br />
-<span>&nbsp;&nbsp; &nbsp;</span>If you want to use multiple statements in a place<br />
-where only one is allowed, such as in an AND or OR list, you can do so<br />
-by enclosing them in braces {} to make a statement block.</p>
-<p>(8) Shell Function<br />
-<span>&nbsp;&nbsp;&nbsp; </span><span style="background-color:rgb(204,204,204);">function_name () {</span><br style="background-color:rgb(204,204,204);" /><br />
-<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;statements</span><br style="background-color:rgb(204,204,204);" /><br />
-<span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;}</span></p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/09/11/linux-program-design-1">《Linux程序设计》读书笔记（一）</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-09-11</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
-    &nbsp;
-<div id="xrgo" style="text-align:center;"><font size="5"><span id="y5c80" style="font-family:SimHei, 黑体, MS Hei, sans-serif;">《Linux程序设计》读书笔记</span></font></div>
-<p><b><br /><font size="4">1、编译C程序的技巧</font></b><br />&nbsp;&nbsp;&nbsp;&nbsp;在调用C语言编译器的时候可以通过给出“-I”标志来引用保存在下级子目录或者非标准目录下的头文件，如：<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;$ gcc -I /usr/openwin/include fred.c<br />它会使编译器在/usr/openwin/include的子目录和标准目录两个地方去查找fred.c程序里所包含的头文件。</p>
-<p>&nbsp;&nbsp;&nbsp; 用grep查找含有某些特定定义与函数生命的头文件是很方便的。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ grep EXIT_ *.h<br />grep命令会在该子目录下的所有名字以.h结尾的文件里查找字符串“EXIT_”。</p>
-<p><font size="4"><b>2、库文件</b></font><br />&nbsp;&nbsp;&nbsp;<br />
-标准的系统库文件一般保存在/lib或/usr/lib子目录中。库文件的名字永远以“lib”这几个字母打头，随后便是函数库说明的部分（比如用c表示<br />
-这是一个C语言函数库，用m表示一个数学运算库），文件名的最后部分以一个“.”开始，然后给出这个库文件的类型：静态函数库.a;共享函数库.so<br />
-或.sa。<br />&nbsp;&nbsp;&nbsp; 在通知编译器查找某个库文件的时候，既可以给出其完整的路径名，也可以使用“-l”标志，。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c /usr/lib/libm.a<br />或<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o fred fred.c -lm<br />-lm代表标准目录库中名为libm.a的函数库。 更详细的解释参见下面的例子。<br />&nbsp;&nbsp;&nbsp;&nbsp;虽然库文件与头文件相似，都是被保存在某个标准位置，但我们仍然可以通过“-L”标志给编译器增加搜索子目录库。如：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o x11fred -L/usr/openwin/lib x11fred.c -lX11<br />该命令在编译和链接程序x11fred时将使用在子目录/usr/openwin/lib中找到的libX11函数库版本。</p>
-<p>&nbsp;&nbsp;&nbsp; 2.1 静态库(archive)<br />&nbsp;&nbsp;&nbsp; 假设现有源文件bill.c和fred.c，则建立静态库的方法：<br />&nbsp;&nbsp;&nbsp; （1）编译源文件生成二进制目标文件，需要在调用C编译器时加上“-c”选项以防止生成最终应用程序。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -c bill.c fred.c<br />&nbsp;&nbsp;&nbsp; （2）为函数库建立一个头文件（lib.h），它的作用是在我们的函数库里对这两个函数进行声明；如果有程序要使用这个函数库，就必须使用include引用。<br />&nbsp;&nbsp;&nbsp; <img alt="" /><img alt="" />（3）调用程序（program.c）引用库函数头文件并调用其中的函数。<br />&nbsp;&nbsp;&nbsp; （4）使用ar工具简历档案并把目标代码加入其中。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ar crv</b> libfoo.a bill.o fred.o<br />&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;另外，某些系统（尤其是Berkley&nbsp;UNIX操作系统发展而来的系统）上，要想成功是用函数库，必须先为这个函数库建立一个内容表：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ <b>ranlib</b> libfoo.a</p>
-<p>&nbsp;&nbsp;&nbsp; 可以通过使用“-L”选项告诉编译器静态库的位置：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ cc -o program program.o -L. -lfoo<br />“-L.”告诉编译器在当前子目录中查找函数库。“-lfoo”选项告诉编译器使用那个名为libfoo.a的函数库（或者一个名为libfoo.so的共享库，如果有的话）。</p>
-<p>&nbsp;&nbsp;&nbsp; 可以使用nm命令查看某个目标代码文件、函数库或者可执行程序里都包含那些函数。</p>
-<p>&nbsp;&nbsp;&nbsp; 2.2 共享库<br />&nbsp;&nbsp;&nbsp;<br />
-如果一个程序使用了共享库，它的连接方式是这样的：它本身不再保存函数的代码，而只保存共享代码的调用线索，共享代码是在运行的时候才加入其中的。对<br />
-Linux系统而言，负责加载共享库并解析客户程序中函数调用线索的程序（即共享库动态加载器）是ld.so或ld-linux.so.2；查找共享库的<br />
-其他地点是在/etc/ld.so.conf文件里配置的；如果这个文件进行了修改，就需要用ldconfig命令进行处理。<br />&nbsp;&nbsp;&nbsp; 可以使用<b>ldd</b>程序查看某个程序要求使用的是哪一个共享库：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $ ldd program</p>
-<p>&nbsp;&nbsp;&nbsp; .so类似于Windows中的.DLL文件，是运行时加入程序的；.sa类似于Windows中的.LIB文件，是加入到可执行文件里面的。</p>
-<p><font size="4"><b>3 基本的Shell命令</b></font><br />3.1 Redirecting Output<br />&nbsp;&nbsp;&nbsp; 管道重定向：&gt;<br />&nbsp;&nbsp;&nbsp; 对文件追加：&gt;&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;For<br />
-"&gt;", by default, if the file already exists, then it will be<br />
-overwritten. If you want to change the default behavior, you can use<br />
-the command <i>set -o noclobber</i> (or <i>set -C</i>), which sets the noclobber option to prevent a file from being overwritten using redirection. You can cancel this option using <i>set +o noclobber</i>. <br />&nbsp;&nbsp;&nbsp; For "&gt;&gt;", outputs are appended to the end of the file.</p>
-<p>&nbsp;&nbsp;&nbsp;<br />
-File descriptor 0 is the standard input to a program, file descriptor 1<br />
-is the standard output, and file descriptor 2 is the standard error<br />
-output. It’s unusual to want to redirect any other than the standard<br />
-ones: 0, 1, and 2.</p>
-<p>&nbsp;&nbsp;&nbsp; To redirect the<br />
-standard error output, preface the &gt; operator with the number of the<br />
-file descriptor you wish to redirect. Because the standard error is on<br />
-file descriptor 2, use the 2&gt; operator. This is often useful to<br />
-discard error information and prevent it from appearing on the screen.</p>
-<p>&nbsp;&nbsp;&nbsp; The command<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -HUP 1234 &gt;killout.txt 2&gt;killerr.txt<br />will put the output and error information into separate files.</p>
-<p>&nbsp;&nbsp;&nbsp; If you prefer to capture both sets of output into a single file, you can use the <i><span id="mtpf0" style="color:rgb(0,0,255);">&gt;&amp;</span></i> operator to combine the two outputs. Therefore,<br />&nbsp;&nbsp;&nbsp;&nbsp; $ kill -1 1234 &gt;killouterr.txt 2&gt;&amp;1<br />will<br />
-put both the output and error outputs into the same file. Notice the<br />
-order of the operators. This reads as “redirect standard output to the<br />
-file killouterr.txt, and then direct standard error to the same place<br />
-as the standard output.” If you get the order wrong, the redirect won’t<br />
-work as you expect.</p>
-<p>3.2 Redirecting Input<br />&nbsp;&nbsp;&nbsp; &lt;</p>
-<p>3.3 Pipes<br />&nbsp;&nbsp;&nbsp; Processes connected by pipes can run simultaneously and are automatically rescheduled as data flows between them.</p>
-<p>3.4 file command<br />&nbsp;&nbsp;&nbsp; The best way to check if a file is a script or not is to use the <i>file</i> command — for example, <i><span id="rbhf0" style="color:rgb(0,0,255);">file first</span></i> or <i>file /bin/bash</i>. </p>
-<p><font size="4">4 Shell Scripts</font></p>
-<p>P60, to be continued...</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -1264,7 +1270,7 @@ work as you expect.</p>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -1322,7 +1328,7 @@ work as you expect.</p>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -1419,6 +1425,12 @@ work as you expect.</p>
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -1442,12 +1454,6 @@ work as you expect.</p>
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         

@@ -7,7 +7,7 @@
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <!--
-  <link href="http://libs.baidu.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   -->
 
   <!-- Bootstrap -->
@@ -72,6 +72,99 @@
 <div class="row-fluid page-body">
 
   <div class="span11 left">
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/18/merge-split-pdf-files">Merge/Split PDF files in Linux</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-12-18</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+First install pdftk (pdf toolkit). Pdftk runs from the command line which means you should unpack the software into a directory that you can access easily. I put the file into c: for&nbsp;<a href="http://www.ghacks.net/2007/10/02/merge-pdf-files/#" class="kLink" id="KonaLink0" style="border-style:initial;border-color:initial;outline-width:initial;outline-style:none;outline-color:initial;background-color:transparent!important;vertical-align:baseline;color:rgb(0,114,188);font-family:inherit!important;display:inline!important;top:0;right:0;bottom:0;left:0;position:static;font-size:inherit!important;border-width:0!important;margin:0;padding:0;"><span style="color:#0072bc;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0;margin:0;padding:0;"><span class="kLink" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;width:auto!important;float:none!important;display:inline!important;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0 0 1px!important;margin:0;padding:0 0 1px!important;">testing</span></span></a>&nbsp;purposes<br />
+ along with two pdfs called 123.pdf and 456.pdf.</p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+If you run pdftk without parameters you get a quick output that details the most important parameters. Lets take a look at the possible operations:</p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span id="more-2012" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;"></span><span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Merge<br />
+ pdf files:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ 123.pdf 456.pdf output 123456.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+This tells pdftk to merge the two pdf files 123.pdf and 456.pdf into a new pdf called 123456.pdf. If you want to merge more than two pdf files at once you simply add them between pdftk and output. You could also use wildcards to merge many or all pdfs with<br />
+ a certain name.</p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ *.pdf output 123456.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Split<br />
+ pages from one or more pdfs:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ A=123.pdf B=456.pdf cat A1-2 B4-5 output 1245.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Repair<br />
+ a pdf:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ 123.pdf output 123fixed.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Merge<br />
+ encrypted pdfs:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
+ A=123.pdf 456.pdf input_pw A=password cat output 123456.pdf</code></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+Pdftk offers several more possibilities which are worth a look if you want to do something that I did not describe on this website. A version for Linux and Windows is available.</p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Read<br />
+ More:</span></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+<a href="http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;text-decoration:none;color:rgb(0,0,255);border-width:0;margin:0;padding:0;">Pdftk<br />
+ Homepage</a></p>
+<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
+原文：<a href="http://www.ghacks.net/2007/10/02/merge-pdf-files/">http://www.ghacks.net/2007/10/02/merge-pdf-files/</a></p>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    
+    <div class="main-container shadow">
+      <div class="mainbody">
+        <h2><a href="/2011/12/16/tcl-send">Tk send</a></h2>
+        <p>
+          Posted by <strong>Bo Yang</strong> at <strong>2011-12-16</strong> with tags <a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
+        </p>
+        
+        <div class="post_at_index thepost">
+        <p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+<code>send</code>&nbsp;is a Tk command&nbsp;used to execute a command in a different application. This send communication mechanism is limited to applications&nbsp;running on one display. Multiple screens on one workstation still count as the same display on X.</p>
+<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+In order to use&nbsp;<code>send</code>&nbsp;in your program, you should</p>
+<ol style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+<ol>
+<li>use command&nbsp;<tt>winfo interps</tt>&nbsp;to find out all the names of Tk applications reachable with send.</li>
+<li>to get the real name of a spplicaiton, using&nbsp;<tt>tk appname &lt;application&gt;.</tt></li>
+<li><tt>run tcl command remotely by send [tk appname &lt;application&gt;] &lt;command&gt;.</tt></li>
+</ol>
+</ol>
+<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+------------------<br />
+Reference:</p>
+<ol style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
+<li>send manual page:&nbsp;<a href="http://www.tcl.tk/man/tcl8.4/TkCmd/send.htm">http://www.tcl.tk/man/tcl8.4/TkCmd/send.htm</a></li>
+<li><a href="http://www.amazon.com/exec/obidos/ISBN=0130385603/brentwelchA/">Practical Programming in Tcl and Tk(4th edition)</a></li>
+</ol>
+
+        </div>
+        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
     
     <div class="main-container shadow">
       <div class="mainbody">
@@ -434,105 +527,6 @@ Plainly, virtualization provides more servers on the same hardware and cloud com
       </div>
     </div>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/09/28/structure-sctp_event_subscribe-differs-between-rhel5-rhel6">Struct sctp_event_subscribe Differs Between RHEL5 and RHEL6</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-09-28</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <a href="/tags.html#RHEL6.1-ref" rel="nofollow">RHEL6.1</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>Recently meet an SCTP issue: one product application running on MontaVista(kernel version 2.6.21) can't run on RedHat Enterprise Linux 5.5. After hours investion between millions lines  of  log file and source code, I finally noticed following error showed up:<br />
-[sourcecode language="text"]<br />
-^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566]<br />
- ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt()<br />
- setsockopt - Invalid argument<br />
-^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566]<br />
-../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts():<br />
- failed to set SCTP_EVENTS for socket 6<br />
-[/sourcecode]<br />
-C function ammsSetSockOpt() was a function used in that product application, which eventually calls Linux system API setsockopt().</p>
-<p>The product developers told me that they updated libsctp.so shared library in MV, so I copied that library directly to RHEL5.5(usually this way will work). However, that shared library didn't work this time.</p>
-<p>Then I noticed that the kernel of RHEL5.5 was 2.6.18-194.el5, which means Linux kernel 2.6.18 was used. I also found some webpages about RHEL kernel, and all of them claimed that Red Hat would backport new-developed Linux kernel(community) features to RHEL5 kernels, which means that the older kernel version of RHEL may also contains some features in higher Linux kernel.  Since SCTP codes were largely changed in 2.6.21, I decided to upgrade RHEL kernel to 2.6.18-238.9.1.el5(the default version in RHEL5.7).</p>
-<p>After 4.5 hours compiling and installing, RHEL kernel upgraded to the latest one. Unfortunately, the SCTP issue still existed.</p>
-<p>I wen to back to reading source code, and tried to change the last parameter of setsockopt() from sizeof(events) to 8, and it worked!  Where, events is defined as<br />
-[sourcecode language="cpp"]struct sctp_event_subscribe events;[/sourcecode]<br />
-Then I began to check the definition of struct sctp_event_subscribe in both RHEL5.5 and RHEL6.0 - they were different:</p>
-<p>In <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">RHEL 6</a>,</p>
-<pre><a id="L402" name="L402" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L402"></a> 402/*
-<a id="L403" name="L403" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L403"></a> 403 * Described in Section 7.3
-<a id="L404" name="L404" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L404"></a> 404 *   Ancillary Data and Notification Interest Options
-<a id="L405" name="L405" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L405"></a> 405 */
-<a id="L406" name="L406" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406"></a> 406struct <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_event_subscribe">sctp_event_subscribe</a> {
-<a id="L407" name="L407" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L407"></a> 407        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_data_io_event">sctp_data_io_event</a>;
-<a id="L408" name="L408" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L408"></a> 408        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_association_event">sctp_association_event</a>;
-<a id="L409" name="L409" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L409"></a> 409        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_address_event">sctp_address_event</a>;
-<a id="L410" name="L410" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L410"></a> 410        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_send_failure_event">sctp_send_failure_event</a>;
-<a id="L411" name="L411" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L411"></a> 411        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_peer_error_event">sctp_peer_error_event</a>;
-<a id="L412" name="L412" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L412"></a> 412        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_shutdown_event">sctp_shutdown_event</a>;
-<a id="L413" name="L413" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L413"></a> 413        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_partial_delivery_event">sctp_partial_delivery_event</a>;
-<a id="L414" name="L414" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L414"></a> 414        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_adaptation_layer_event">sctp_adaptation_layer_event</a>;
-<a id="L415" name="L415" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L415"></a> 415        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_authentication_event">sctp_authentication_event</a>;
-<a id="L416" name="L416" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L416"></a> 416};</pre>
-<p>While in <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">RHEL5</a>,</p>
-<pre><a id="L363" name="L363" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L363"></a> 363/*
-<a id="L364" name="L364" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L364"></a> 364 * Described in Section 7.3
-<a id="L365" name="L365" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L365"></a> 365 *   Ancillary Data and Notification Interest Options
-<a id="L366" name="L366" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L366"></a> 366 */
-<a id="L367" name="L367" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367"></a> 367struct <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_event_subscribe">sctp_event_subscribe</a> {
-<a id="L368" name="L368" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L368"></a> 368        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_data_io_event">sctp_data_io_event</a>;
-<a id="L369" name="L369" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L369"></a> 369        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_association_event">sctp_association_event</a>;
-<a id="L370" name="L370" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L370"></a> 370        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_address_event">sctp_address_event</a>;
-<a id="L371" name="L371" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L371"></a> 371        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_send_failure_event">sctp_send_failure_event</a>;
-<a id="L372" name="L372" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L372"></a> 372        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_peer_error_event">sctp_peer_error_event</a>;
-<a id="L373" name="L373" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L373"></a> 373        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_shutdown_event">sctp_shutdown_event</a>;
-<a id="L374" name="L374" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L374"></a> 374        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_partial_delivery_event">sctp_partial_delivery_event</a>;
-<a id="L375" name="L375" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L375"></a> 375        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_adaption_layer_event">sctp_adaption_layer_event</a>;
-<a id="L376" name="L376" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L376"></a> 376};</pre>
-<p id="b9/7a/901cb22644e92e629902da22bf3d62baf0cc_3/0">It seems upgrading RHEL5.5 to RHEL6 is the final choice!</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/09/21/dot-flag-in-rhel">Dot(.) after the file permission flags in Redhat</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-09-21</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>Phenomenon:</p>
-<p>
-<pre>$ rsh coolnjmcl033 'ls -l /opt/cool/tools/lib/COOLvirtenv'
-ls: cannot access /opt/cool/tools/lib/COOLvirtenv: Permission denied</pre></p>
-<p>
-<pre>[root@coolnjmcl033 etc]# ls -l /opt/cool/tools/lib/COOLvirtenv
--rwxr-xr-x. 1 cool cool 29852 Jul 22 03:16 /opt/cool/tools/lib/COOLvirtenv</pre>
-<p>
-According to&nbsp;<a href="http://www.redhat.com/archives/rhelv6-list/2010-December/msg00076.html">http://www.redhat.com/archives/rhelv6-list/2010-December/msg00076.html</a>,</p>
-<p><span style="font-family:'Times New Roman';font-size:16px;">From &quot;info ls&quot;:</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Following the file mode bits is a single character that specifies<br />
-&nbsp;&nbsp;&nbsp;&nbsp; whether an alternate access method such as an access control list<br />
-&nbsp;&nbsp;&nbsp;&nbsp; applies to the file.&nbsp; When the character following the file mode<br />
-&nbsp;&nbsp;&nbsp;&nbsp; bits is a space, there is no alternate access method.&nbsp; When it is<br />
-&nbsp;&nbsp;&nbsp;&nbsp; a printing character, then there is such a method.</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; GNU `ls' uses a `.' character to indicate a file with an SELinux<br />
-&nbsp;&nbsp;&nbsp;&nbsp; security context, but no other alternate access method.</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; A file with any other combination of alternate access methods is<br />
-&nbsp;&nbsp;&nbsp;&nbsp; marked with a `&#043;' character.<br />
-</span></p>
-<p>In order to make files located on one server can be accessied by other servers, SELinux should be disabled. In order to disable SELinux, &nbsp;refer to<a href="http://www.crypt.gen.nz/selinux/disable_selinux.html"> How to Disable SELinux</a>.</p>
-
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
-    </div>
-    
 
     <div class="main-container shadow">
       <div class="mainbody">
@@ -670,7 +664,7 @@ According to&nbsp;<a href="http://www.redhat.com/archives/rhelv6-list/2010-Decem
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>13</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
     
@@ -728,7 +722,7 @@ According to&nbsp;<a href="http://www.redhat.com/archives/rhelv6-list/2010-Decem
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>12</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
     
@@ -825,6 +819,12 @@ According to&nbsp;<a href="http://www.redhat.com/archives/rhelv6-list/2010-Decem
         <h3>Recent Posts</h3>
         <ul>
         
+          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
+            N-Queens Problem</a></li>
+        
+          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
+            Combination Sum Problem - A Non-recursive Method</a></li>
+        
           <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
             Coin Change Problem</a></li>
         
@@ -848,12 +848,6 @@ According to&nbsp;<a href="http://www.redhat.com/archives/rhelv6-list/2010-Decem
         
           <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
             How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-          <li><span>2014-03-26</span> &raquo; <a href="/2014/03/26/c-code-to-print-pascal-triangle">
-            C++ Code to Print Pascal Triangle</a></li>
-        
-          <li><span>2014-01-22</span> &raquo; <a href="/2014/01/22/baci-simple-install-and-compile-guide">
-            BACI Simple Install and Compile Guide</a></li>
         
         </ul>
         
