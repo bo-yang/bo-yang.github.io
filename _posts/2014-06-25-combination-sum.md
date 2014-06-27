@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Combination Sum Problem
+title: Combination Sum Problem: A Non-recursive Method
 categories: 
 - Algorithm
 - C/C++ 
