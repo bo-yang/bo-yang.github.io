@@ -2,6 +2,8 @@
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bo Yang | Bo's Blog</title>
   
   <meta name="author" content="Bo Yang" />
@@ -11,55 +13,71 @@
   -->
 
   <!-- Bootstrap -->
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 
   <!-- font-awesome -->
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
 
   <!-- Google Prettify -->
-  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
   
-  
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
 <body>
 
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="brand" href="/">bo-yang</a>
-        <ul class="nav">
-          <li><a href="/archive.html">Archive</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/messages.html">Messages</a></li>
-        </ul>
-        <ul class="pull-right">
-          <li>
-            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
-              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
-              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
-              <input type="hidden" name="ie" value="UTF-8" />
-              <input type="hidden" name="oe" value="UTF-8" />
-              <input type="hidden" name="hl" value="en-US" />
-              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
-              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
-            </form>
-          </li>
-        </ul>
-        <ul class="nav pull-right">
-          <li><a href="/atom.xml">RSS</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
+   <!-- navigation bar -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Home</a>
+            </div>
 
-  <div class="container page-container">
-    <div class="content">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/archive.html">Archive</a>
+                    </li>
+                    <li><a href="/about.html">About</a>
+                    </li>
+                    <li><a href="/messages.html">Messages</a>
+                    </li>
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+		          <li>
+		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+		              <input type="hidden" name="ie" value="UTF-8" />
+		              <input type="hidden" name="oe" value="UTF-8" />
+		              <input type="hidden" name="hl" value="en-US" />
+		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
+		            </form>
+		          </li>
+		        </ul>
+            </div>
+			<!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+  <div class="container">
+    <div class="row">
       
 <div class="page-header">
   <h1>Bo Yang  <small>Beginner's mind.</small></h1>
@@ -67,21 +85,17 @@
 
 <div class="row-fluid page-body">
   <div class="span12">
+    <div class="col-lg-8">
+	<!-- blog entry -->
     
-
-<div class="row-fluid page-body">
-
-  <div class="span11 left">
+    <h2><a href="/2010/07/22/expect-send-data-in-expect_out">expect_out(buffer)中包含send的数据</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/07/22/expect-send-data-in-expect_out">expect_out(buffer)中包含send的数据</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-07-22</strong> with tags <a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
 <div>
 <h1 id="zw-129f916d484wZwN43916c">expect_out(buffer)中包含send的数据</h1>
 <p id="zw-129f9095e02SqGVnn3916c"><span id="zw-129f9081eab6rVFjl3916c">我一直以为在Expect中一旦执行send之后，</span><span id="zw-129f9081eab0LvB_n3916c">expect_out(buffer)就会被清空，直到有新的数据被填入，而恰恰就是这些数据被用在expect语句中。而今天在调试时发现的问题却令我大吃一惊，原来expect_out(buffer)不会被自动清空，而expect到的数据很可能不是你真正想要的，非常有可能是历史数据。</span><span id="zw-129f9095dc2QusTdp3916c"><a id="zw-129f9081f1cN6cQM93916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378">"expect_out(buffer) has the content of the previous send"</a>&nbsp;</span><span id="zw-129f9099e0e7RHXvZ3916c">一文</span><span id="zw-129f908ec42SOcAlE3916c">也指出了这个问题。</span></p>
@@ -174,21 +188,18 @@ expect {
 </div>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/07/20/here-document">Here Document</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-07-20</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        </p>
+    <h2><a href="/2010/07/20/here-document">Here Document</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	</p>
 <p id="zw-129ed8c28af2dvqtt15bea0" class="MsoNormal">
 <h1>Here Document</h1></p>
 <p>Syntax:</p>
@@ -205,21 +216,18 @@ expect {
 <p class="MsoNormal">&nbsp;</p>
 <p class="MsoNormal"><span>原文：&nbsp;</span><a href="http://snap.nlc.dcccd.edu/reference/scarlatos/cis2.50/note6.html">http://snap.nlc.dcccd.edu/reference/scarlatos/cis2.50/note6.html</a></p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/07/18/iphone4-antena-gate">浅析Apple iPhone4天线问题的危机公关</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-07-18</strong> with tags <a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>, <a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
+    <h2><a href="/2010/07/18/iphone4-antena-gate">浅析Apple iPhone4天线问题的危机公关</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-18</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
 <div>
 <h1 id="zw-129e3d10a83QJWE-15bea0" style="text-align:center;">浅析A<span id="zw-129e3ac83d3_bPs9e15bea0">pple iPhone4天线问题的危机公关</span></h1>
 <p id="zw-129e3ac83d3CFDfYy15bea0">&nbsp;</p>
@@ -258,21 +266,18 @@ expect {
 </div>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/07/17/use-shell-var-in-awk">awk正则表达式中调用ksh变量</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-07-17</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        </p>
+    <h2><a href="/2010/07/17/use-shell-var-in-awk">awk正则表达式中调用ksh变量</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	</p>
 <p>如果ksh中定义了变量pcname,而在嵌入ksh中的awk程序中又要使用这个环境变量，并且用它在正则表达式中，该如何用它呢？</p>
 <p>最简单的方法就是：</p>
 <p>
@@ -330,21 +335,18 @@ IN AWK : system() : PID=17468
 AA BB CC</pre>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/07/17/ifs-in-kshell">Korn Shell中IFS的妙用</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-07-17</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>IFS是internal field separator的缩写，shell的特殊环境变量。ksh根据IFS存储的值，可以是空格、tab、换行符或者其他自定义符号，来解析输入和输出的变量值。</p>
+    <h2><a href="/2010/07/17/ifs-in-kshell">Korn Shell中IFS的妙用</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>IFS是internal field separator的缩写，shell的特殊环境变量。ksh根据IFS存储的值，可以是空格、tab、换行符或者其他自定义符号，来解析输入和输出的变量值。</p>
 <p>&nbsp;</p>
 <p>如果有一IP地址220.112.253.111, 欲将这个IP地址颠倒顺序，你可以定义IFS为"."，然后直接echo这个地址即可得到此IP的4个数值，然后c重新把IFS设为空格，重新组合四个IP地址的数值即可。</p>
 <p>
@@ -410,21 +412,18 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/06/24/apache-subversion-config">Apache and Subversion配置</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-06-24</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
+    <h2><a href="/2010/06/24/apache-subversion-config">Apache and Subversion配置</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-06-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
 <h2>I.&nbsp;<span style="color:#000000;"><a href="http://xuebingnanmm.javaeye.com/blog/629810">CentOS Apache配置详解</a></span></h2>
 <p><span style="color:#000000;">(</span><a href="http://xuebingnanmm.javaeye.com/blog/629810">http://xuebingnanmm.javaeye.com/blog/629810</a>)</p>
 <p>&nbsp;</p>
@@ -462,21 +461,18 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
 <div>Command to stop SELinux: &nbsp;<span style="font-family:'courier new';"><span style="font-size:x-small;">setenforce 0</span></span></div>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/06/13/batch-process-with-excel-vba">利用Excel VBA处理文档</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-06-13</strong> with tags <a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>遇到如下格式的一篇WORD文档，格式混乱，不适合打印：</p>
+    <h2><a href="/2010/06/13/batch-process-with-excel-vba">利用Excel VBA处理文档</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-06-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>遇到如下格式的一篇WORD文档，格式混乱，不适合打印：</p>
 <p>&nbsp;</p>
 <p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;"><img src="http://bonny95.files.wordpress.com/2010/06/64_1276413753mmbm.jpg" alt="" width="232" height="614" /></span></span></p>
 <p>&nbsp;</p>
@@ -490,21 +486,18 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
 <p>&nbsp;</p>
 <p><img src="http://bonny95.files.wordpress.com/2010/06/64_12764139792ekk.jpg" alt="" width="464" height="523" /></p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/06/11/cpu-speed-and-memory-size-in-solaris">Find CPU Speed and Memory Size on Solaris</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-06-11</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p><h2>Find CPU Speed and Memory Size on Solaris</h2>
+    <h2><a href="/2010/06/11/cpu-speed-and-memory-size-in-solaris">Find CPU Speed and Memory Size on Solaris</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-06-11</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><h2>Find CPU Speed and Memory Size on Solaris</h2>
 <div class="entry">
 <p>As I&rsquo;m writing my thesis I&rsquo;m running tests on an old SMP Solaris machine. Obviously, I need to provide the specs of this machine in the paper so that the readers can see my results in context (ie why everything is taking forever. On linux I would just use&nbsp;<kbd>lshw</kbd>&nbsp;which is your ultimate hardware information goldmine. If you don&rsquo;t have it on your system, go install it now. You will thank me later.</p>
 <p>The ancient Solaris machine I was working with did not have it, so I was forced to find other ways of finding information such as CPU speed and memory size.</p>
@@ -517,21 +510,18 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
 <p>There might be better ways to do this, but these worked for me. Craig will probably be able to add to this list or correct me.&nbsp;<img class="wp-smiley" src="http://www.terminally-incoherent.com/blog/wp-includes/images/smilies/icon_smile.gif" alt=":)" /></p>
 </div>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/05/22/how-to-fix-DB_RUNRECOVERY">Fixing The Error: DB_RUNRECOVERY: Fatal error, run database recovery</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-05-22</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        </p>
+    <h2><a href="/2010/05/22/how-to-fix-DB_RUNRECOVERY">Fixing The Error: DB_RUNRECOVERY: Fatal error, run database recovery</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-05-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	</p>
 <p><strong>If you get a message similar to this:</strong></p>
 <p><code>[username@localhost ~]$ sudo yum update<br />rpmdb: Thread/process 2402/139688794072832 failed: Thread died in Berkeley DB library<br />error: db4 error(-30974) from dbenv-&gt;failchk: DB_RUNRECOVERY: Fatal error, run database recovery<br />error: cannot open Packages index using db3 - (-30974)<br />error: cannot open Packages database in /var/lib/rpm<br />CRITICAL:yum.main:</code></p>
 <p>Error: rpmdb open failed</p>
@@ -539,21 +529,18 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
 <p><strong>You can fix it by running the following 3 commands:</strong></p>
 <p><code>[username@localhost ~]$ sudo rm -f /var/lib/rpm/__db*<br />[username@localhost ~]$ sudo db_verify /var/lib/rpm/Packages<br />[username@localhost ~]$ sudo rpm --rebuilddb</code></p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/04/21/Enter-password-for-default-keyring-to-unlock">绕过“Enter password for default keyring to unlock”的方法</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-04-21</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>当你在Gnome下使用无线网络时，很有可能会遇到如下窗口：</p>
+    <h2><a href="/2010/04/21/Enter-password-for-default-keyring-to-unlock">绕过“Enter password for default keyring to unlock”的方法</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-04-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>当你在Gnome下使用无线网络时，很有可能会遇到如下窗口：</p>
 <p>&nbsp;</p>
 <p><img src="http://lifehacker.com/assets/resources/2007/07/nmapplet.png" alt="" width="478" height="233" /></p>
 <p>&nbsp;</p>
@@ -564,341 +551,220 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
 <p>其他更完美的解决方案请Google。</p>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
 
-    <div class="main-container shadow">
-      <div class="mainbody">
-        
-<div class="pagination">
-    <ul>
-    
-        <li class="prev">
-        <a href="/page10">&larr; Previous</a>
-        
-        </li>
-    
-
-    
-        <li><a href="/">1</a></li>
-        
-
-        
-            <li><a href="/page2">2</a></li>
-            
-        
-            <li><a href="/page3">3</a></li>
-            
-        
-            <li><a href="/page4">4</a></li>
-            
-        
-            <li><a href="/page5">5</a></li>
-            
-        
-            <li><a href="/page6">6</a></li>
-            
-        
-            <li><a href="/page7">7</a></li>
-            
-        
-            <li><a href="/page8">8</a></li>
-            
-        
-            <li><a href="/page9">9</a></li>
-            
-        
-            <li><a href="/page10">10</a></li>
-            
-        
-            <li class="disabled"><a>11</a></li>
-            
-        
-            <li><a href="/page12">12</a></li>
-            
-        
-            <li><a href="/page13">13</a></li>
-            
-        
-            <li><a href="/page14">14</a></li>
-            
-        
-            <li><a href="/page15">15</a></li>
-            
-        
-            <li><a href="/page16">16</a></li>
-            
-        
-            <li><a href="/page17">17</a></li>
-            
-        
-            <li><a href="/page18">18</a></li>
-            
-        
-            <li><a href="/page19">19</a></li>
-            
-        
-            <li><a href="/page20">20</a></li>
-            
-        
-            <li><a href="/page21">21</a></li>
-            
-        
-    
-
-    
-        <li class="next"><a href="/page12">Next &rarr;</a></li>
-    
-    </ul>
+	<!-- Pagination links -->
+	
+	<ul class="pager">
+	    
+	    <li class="previous"><a href="/page12">&larr; Older</a></li>
+	    
+	
+	    
+	    <li class="next"><a href="/page10">Newer &rarr;</a></li>
+	    
+	</ul>
+	
+	<!-- content -->	
 </div>
 
-
-      </div>
-    </div>
-
-  </div>
-
-  <div class="span3 right">
-
-	<div class="side-container shadow">
-	  <div class="sidebar">
-		<h3>Links</h3>
-        <a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a>
-		<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a>
-		<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a>
-        <a href="https://plus.google.com/" target="_blank"> <i class="fa fa-google-plus-square fa-3x"></i> </a>
-        <a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a> 
-
-      </div>
-    </div>
-
-	<!--
-	<div class="side-container shadow">
-      <div class="sidebar">
-        
-        <h3>Links</h3>
-        <ul>
-        
-        
-    <li><a href=https://github.com/bo-yang title="My GitHub Channel">My GitHub Channel</a></li>
-
-    <li><a href=https://www.linkedin.com/pub/bo-yang/21/a3/893 title="My Linkedin Page">My Linkedin Page</a></li>
-
-    <li><a href=http://blog.csdn.net/bonny95 title="My Chinese Blog(obsolete)">My Chinese Blog(obsolete)</a></li>
-
-        </ul>
-        
-      </div>
-  </div>
-  -->
-
-	<div class="side-container shadow">
-      <div class="sidebar">
-        
-        <h3>Tags</h3>
-        <div class="tag_box">
-        
-        
-  
-    
-        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
-    
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
-    
-        <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
-    
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
-    
-        <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
-    
-        <a href="/tags.html#EMI-ref" class="btn btn-mini">EMI <span>1</span></a>
-    
-        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span>3</span></a>
-    
-        <a href="/tags.html#CBR-ref" class="btn btn-mini">CBR <span>1</span></a>
-    
-        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>5</span></a>
-    
-        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
-    
-        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
-    
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
-    
-        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
-    
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
-    
-        <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
-    
-        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span>6</span></a>
-    
-        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>12</span></a>
-    
-        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span>3</span></a>
-    
-        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span>14</span></a>
-    
-        <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span>12</span></a>
-    
-        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span>6</span></a>
-    
-        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span>2</span></a>
-    
-        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span>2</span></a>
-    
-        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span>4</span></a>
-    
-        <a href="/tags.html#ESXi-ref" class="btn btn-mini">ESXi <span>1</span></a>
-    
-        <a href="/tags.html#Virtual Machine-ref" class="btn btn-mini">Virtual Machine <span>2</span></a>
-    
-        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span>2</span></a>
-    
-        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span>9</span></a>
-    
-        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>3</span></a>
-    
-        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
-    
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
-    
-        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
-    
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
-    
-        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
-    
-        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span>1</span></a>
-    
-        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span>1</span></a>
-    
-        <a href="/tags.html#Ubuntu-ref" class="btn btn-mini">Ubuntu <span>1</span></a>
-    
-        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span>1</span></a>
-    
-        <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
-    
-        <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
-    
-        <a href="/tags.html#Genetic Algorihtm-ref" class="btn btn-mini">Genetic Algorihtm <span>1</span></a>
-    
-        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span>1</span></a>
-    
-        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span>1</span></a>
-    
-        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span>1</span></a>
-    
-        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span>1</span></a>
-    
-        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span>1</span></a>
-    
-        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span>1</span></a>
-    
-        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span>1</span></a>
-    
-        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span>1</span></a>
-    
-        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span>1</span></a>
-    
-        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span>1</span></a>
-    
-        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span>3</span></a>
-    
-        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span>1</span></a>
-    
-        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span>1</span></a>
-    
-        <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
-    
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
-    
-        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
-    
-        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span>1</span></a>
-    
-        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
-    
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
-    
-        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
-    
-        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span>1</span></a>
-    
-        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span>1</span></a>
-    
-        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
-    
-        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
-    
-        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span>1</span></a>
-    
-        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
-    
-        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
-    
-        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
-    
-  
-
-
-
+<div class="col-lg-4">
+		<div class="well">
+            <h4>Links</h4>
+            <a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://plus.google.com/" target="_blank"> <i class="fa fa-google-plus-square fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> &nbsp;&nbsp;
+        	<a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a>	
         </div>
-        
-      </div>
-    </div>
+        <!-- /well -->
+        <div class="well">
+			<h4>Tags</h4>
+			<div class="tag_box">
+		    	
+				
+  
+    
+        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
+    
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">15</span></a>
+    
+        <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
+    
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span class="badge">9</span></a>
+    
+        <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span class="badge">2</span></a>
+    
+        <a href="/tags.html#EMI-ref" class="btn btn-mini">EMI <span class="badge">1</span></a>
+    
+        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span class="badge">3</span></a>
+    
+        <a href="/tags.html#CBR-ref" class="btn btn-mini">CBR <span class="badge">1</span></a>
+    
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span class="badge">5</span></a>
+    
+        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span class="badge">10</span></a>
+    
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span class="badge">93</span></a>
+    
+        <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span class="badge">6</span></a>
+    
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span class="badge">12</span></a>
+    
+        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
+    
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">14</span></a>
+    
+        <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
+    
+        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span class="badge">6</span></a>
+    
+        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span class="badge">2</span></a>
+    
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span class="badge">4</span></a>
+    
+        <a href="/tags.html#ESXi-ref" class="btn btn-mini">ESXi <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Virtual Machine-ref" class="btn btn-mini">Virtual Machine <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span class="badge">9</span></a>
+    
+        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span class="badge">3</span></a>
+    
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
+    
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">14</span></a>
+    
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span class="badge">5</span></a>
+    
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span class="badge">1</span></a>
+    
+        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span class="badge">1</span></a>
+    
+        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span class="badge">1</span></a>
+    
+        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Ubuntu-ref" class="btn btn-mini">Ubuntu <span class="badge">1</span></a>
+    
+        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Genetic Algorihtm-ref" class="btn btn-mini">Genetic Algorihtm <span class="badge">1</span></a>
+    
+        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span class="badge">1</span></a>
+    
+        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span class="badge">1</span></a>
+    
+        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span class="badge">1</span></a>
+    
+        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span class="badge">1</span></a>
+    
+        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span class="badge">1</span></a>
+    
+        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span class="badge">1</span></a>
+    
+        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span class="badge">1</span></a>
+    
+        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span class="badge">3</span></a>
+    
+        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span class="badge">4</span></a>
+    
+        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span class="badge">2</span></a>
+    
+        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span class="badge">1</span></a>
+    
+        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span class="badge">2</span></a>
+    
+        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span class="badge">1</span></a>
+    
+        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
+    
+        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
+    
+  
 
-    <div class="side-container shadow">
-      <div class="sidebar">
-        
-        <h3>Recent Posts</h3>
-        <ul>
-        
-          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
-            N-Queens Problem</a></li>
-        
-          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
-            Combination Sum Problem - A Non-recursive Method</a></li>
-        
-          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
-            Coin Change Problem</a></li>
-        
-          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
-            Text Justification</a></li>
-        
-          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
-            Sort Colors</a></li>
-        
-          <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
-            Check Soduku Solution</a></li>
-        
-          <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
-            Least Recently Used(LRU) Cache</a></li>
-        
-          <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
-            Binary Tree Operations</a></li>
-        
-          <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
-            Action Recognition with Fisher Vectors</a></li>
-        
-          <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
-            How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-        </ul>
-        
-      </div>
-    </div>
 
-   </div>
 
+			</div>
+        </div>
+        <!-- /well -->
+        <div class="well">
+            <h3>Recent Posts</h3>
+	        <ul>
+			
+  			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
+			
+  			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
+			
+  			<li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">Coin Change Problem</a></li>
+			
+  			<li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">Text Justification</a></li>
+			
+  			<li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">Sort Colors</a></li>
+			
+  			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
+			
+  			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
+			
+  			<li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></li>
+			
+  			<li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></li>
+			
+  			<li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></li>
+			
+			</ul>
+        </div>
+        <!-- /well -->
 </div>
 
   </div>
@@ -915,11 +781,11 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
               $('#now_year').html('- ' + now_year);
           }
 	    </script>
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 
-  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
+  <script src="/assets/run_prettify.js"></script>
   <script type="text/javascript">
     $(function() {
 
@@ -966,6 +832,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
       });
     });
   </script>
+  
   
 
 </body>

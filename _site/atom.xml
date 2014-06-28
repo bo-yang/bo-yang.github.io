@@ -4,7 +4,7 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-06-27T16:32:03-07:00</updated>
+ <updated>2014-06-28T00:40:44-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
@@ -213,10 +213,13 @@ public:
 
 &lt;p&gt;The popular solution is to recursively scan all elements in the cadidate set, such as &lt;a href=&quot;http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html&quot;&gt;http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;However, I don’t want to use recursion. My solution to this problem is to build trees level by level for each number in the candidate set, where the nodes are candidate set number. The sum of the sequence from root to current node is compared to the target:
-* if the sum equals to the target, then we find one solution;
-* if the sum is less than the target, then subnodes could be added to this node; 
-* if the sum is larger than the target, then this node is a leaf node.&lt;/p&gt;
+&lt;p&gt;However, I don’t want to use recursion. My solution to this problem is to build trees level by level for each number in the candidate set, where the nodes are candidate set number. The sum of the sequence from root to current node is compared to the target:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;if the sum equals to the target, then we find one solution;&lt;/li&gt;
+  &lt;li&gt;if the sum is less than the target, then subnodes could be added to this node; &lt;/li&gt;
+  &lt;li&gt;if the sum is larger than the target, then this node is a leaf node.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;Only numbers equal to or larger than current node can be used as the children of current node. When there is no child could be added, this tree stops growing.&lt;/p&gt;
 
@@ -1389,13 +1392,8 @@ private:
 &lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;https://oj.leetcode.com/problems/binary-tree-inorder-traversal/&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html&quot;&gt;Binary tree traversal: Preorder, Inorder, and Postorder&lt;/a&gt;
-«««&amp;lt; HEAD&lt;/li&gt;
-  &lt;li&gt;
-    &lt;h1 id=&quot;tree-traversalhttpenwikipediaorgwikitreetraversal&quot;&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal&quot;&gt;Tree Traversal&lt;/a&gt;&lt;/h1&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal&quot;&gt;Tree Traversal&lt;/a&gt;
-»»»&amp;gt; FETCH_HEAD&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html&quot;&gt;Binary tree traversal: Preorder, Inorder, and Postorder&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Tree_traversal&quot;&gt;Tree Traversal&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </content>
  </entry>

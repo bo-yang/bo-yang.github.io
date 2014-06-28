@@ -2,6 +2,8 @@
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bo Yang | Bo's Blog</title>
   
   <meta name="author" content="Bo Yang" />
@@ -11,55 +13,71 @@
   -->
 
   <!-- Bootstrap -->
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 
   <!-- font-awesome -->
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
 
   <!-- Google Prettify -->
-  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
   
-  
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
 <body>
 
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="brand" href="/">bo-yang</a>
-        <ul class="nav">
-          <li><a href="/archive.html">Archive</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/messages.html">Messages</a></li>
-        </ul>
-        <ul class="pull-right">
-          <li>
-            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
-              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
-              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
-              <input type="hidden" name="ie" value="UTF-8" />
-              <input type="hidden" name="oe" value="UTF-8" />
-              <input type="hidden" name="hl" value="en-US" />
-              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
-              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
-            </form>
-          </li>
-        </ul>
-        <ul class="nav pull-right">
-          <li><a href="/atom.xml">RSS</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
+   <!-- navigation bar -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Home</a>
+            </div>
 
-  <div class="container page-container">
-    <div class="content">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/archive.html">Archive</a>
+                    </li>
+                    <li><a href="/about.html">About</a>
+                    </li>
+                    <li><a href="/messages.html">Messages</a>
+                    </li>
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+		          <li>
+		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+		              <input type="hidden" name="ie" value="UTF-8" />
+		              <input type="hidden" name="oe" value="UTF-8" />
+		              <input type="hidden" name="hl" value="en-US" />
+		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
+		            </form>
+		          </li>
+		        </ul>
+            </div>
+			<!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+  <div class="container">
+    <div class="row">
       
 <div class="page-header">
   <h1>Bo Yang  <small>Beginner's mind.</small></h1>
@@ -67,21 +85,17 @@
 
 <div class="row-fluid page-body">
   <div class="span12">
+    <div class="col-lg-8">
+	<!-- blog entry -->
     
-
-<div class="row-fluid page-body">
-
-  <div class="span11 left">
+    <h2><a href="/2008/06/27/open-source-license">开源授权协议</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-06-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/06/27/open-source-license">开源授权协议</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-06-27</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p style="margin-bottom:0;"><font face="Times New Roman, serif">［说明］：本文摘自《程序员》2008年06月刊许洪波教授的《开源授权协议（License）初探》一文，版权归原作者所有。</font></p>
+    <div class="post_at_index thepost">
+    	<p style="margin-bottom:0;"><font face="Times New Roman, serif">［说明］：本文摘自《程序员》2008年06月刊许洪波教授的《开源授权协议（License）初探》一文，版权归原作者所有。</font></p>
 <p style="margin-bottom:0;"><font face="Times New Roman, serif"><br />
 </font></p>
 <p style="margin-bottom:0;"><font face="Times New Roman, serif">1</font>、<font face="Times New Roman, serif">OSI(<a href="http://www.opensource.org/">www.opensource.org</a>)</font>是目前世界上针对开源软件授权进行认证的唯一机构。 </p>
@@ -106,21 +120,18 @@
 <p style="margin-bottom:0;">  （<font face="Times New Roman, serif">3</font>）无开源约束授权&mdash;&mdash;<font face="Times New Roman, serif">BSD</font>授权协议。<font face="Times New Roman, serif">BSD</font>几乎允许用户做任何他们想要想要在<font face="Times New Roman, serif">BSD</font>的授权代码上做的事情；他们也可以将软件用于免费或商业目的；他们也可以发布或不发布变更后的源代码。<font face="Times New Roman, serif">BSD</font>的唯一要求就是软件使用者声明他们使用了软件原作者的著作权。</p>
 <p style="margin-bottom:0;">（4）其他开源授权。</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/06/06/fedora9-hard-disk">硬盘安装Fedora 9时死机？</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-06-06</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
+    <h2><a href="/2008/06/06/fedora9-hard-disk">硬盘安装Fedora 9时死机？</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-06-06</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>
     前天晚上在Fedora9下装完ATI显卡的驱动以后，升级系统，昨天早晨起来一看，我的本本过热休眠了（发现Fedora下经常出现这种情况，而Windows下很少出现，可见Linux的电源管理确实还有问题），当时没有管它。</p>
 <p>昨天晚上到了半夜，决定切换到Fedora下玩一玩，结果发现进不了图形界面了，字符界面也还闪来闪去的，实在没办法，重装。非常不幸的是，重装到一半的时候，CPU过热又歇菜了。</p>
 <p>这时重启发现只能进grub控制台，无法进Windows了。顿时傻了。</p>
@@ -129,21 +140,18 @@
 <pre>kernel (hd0,6)/isolinux/vmlinuz &lt;br  /&gt;initrd (hd0,6)/isolinux/initrd.img &lt;br  /&gt;boot</pre>
 <p>成功了，终于可以进入继续安装Fedora 9的界面了！<br />只要能够进入一个操作系统就好说了，不管它是Windows还是Linux！</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/06/05/emc-cbr-4">EMC-CBR故障诊断研究（四）</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-06-05</strong> with tags <a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p><font size="3"><span><span style="font-size:12pt;line-height:173%;font-family:宋体;">1、系统组成</span></span><span></span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;"><br />&nbsp;&nbsp; 本系统是由</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">组成的混合系统。系统结构如下图</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;">所示。系统的核心是推理机，推理机根据用户输入的故障描述，既可以将故障描述转化为新的案例，从而进行对案例库进行操作；又可以将故障描述转化为事实，对规则库进行操作。但</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的地位并不是等同的，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起主导作用，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">对</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起监督作用，二者的推理结果由综合机制进行综合。本系统采用友好的人机界面，普通用户输入故障描述后，系统经推理后给出诊断建议，并对给出的建议进行解释。另外，为了便于对系统知识（案例库、知识库和事实库）进行管理，系统可以由知识工程师进行修改。</span></font></p>
+    <h2><a href="/2008/06/05/emc-cbr-4">EMC-CBR故障诊断研究（四）</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-06-05</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><font size="3"><span><span style="font-size:12pt;line-height:173%;font-family:宋体;">1、系统组成</span></span><span></span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;"><br />&nbsp;&nbsp; 本系统是由</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">组成的混合系统。系统结构如下图</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;">所示。系统的核心是推理机，推理机根据用户输入的故障描述，既可以将故障描述转化为新的案例，从而进行对案例库进行操作；又可以将故障描述转化为事实，对规则库进行操作。但</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的地位并不是等同的，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起主导作用，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">对</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起监督作用，二者的推理结果由综合机制进行综合。本系统采用友好的人机界面，普通用户输入故障描述后，系统经推理后给出诊断建议，并对给出的建议进行解释。另外，为了便于对系统知识（案例库、知识库和事实库）进行管理，系统可以由知识工程师进行修改。</span></font></p>
 <p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/系统结构.JPG" alt="" /></font></p>
 <p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">2、案例表示与存储</font></p>
 <p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">参见博文&ldquo;EMC-CBR故障诊断研究（一、二）&rdquo;</font></p>
@@ -193,21 +201,18 @@
 <p><font size="3"><span style="font-size:12pt;font-family:宋体;"></span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/05/27/logic-parser-result">逻辑表达式词法分析器分析结果的显示</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-05-27</strong> with tags <a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
+    <h2><a href="/2008/05/27/logic-parser-result">逻辑表达式词法分析器分析结果的显示</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-05-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>
 <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 上篇博客文章《<a href="void(0);/*1211894183336*/"><span style="font-family:宋体;">简易逻辑表达式词法分析器</span></a>》讲到设计了一个逻辑表达式词法分析器，这次以那个词法分析器作为后端，利用VC搭建前端界面，展示一下分析效果。</p>
 <p><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/词法分析器结果.JPG" alt="" /></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 分析结果以树的形式表示：同一级节点表示具有相同的等级，参数比它的谓词的等级要高，比如Missile(x)中Missile等级为0级，x为1级。分析之后各个节点存储在Parser.list中，可以根据该链表的节点的level属性将各节点插入树种的相应位置。<br />&nbsp;&nbsp;&nbsp;&nbsp; 分析以上逻辑表达式可知，各个节点的等级如下：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Missile&nbsp; x&nbsp; AND&nbsp; Owns&nbsp; Nono&nbsp; Sub&nbsp; x&nbsp; =&gt;&nbsp; Sells&nbsp; West&nbsp; x&nbsp; Nono<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; 2&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1<br />&nbsp;&nbsp;&nbsp;&nbsp; 可见，利用堆栈来辅助将节点插入树中是最理想的方法。思路如下：将树的TVI_ROOT压栈；若当前节点的等级大于其前一个节点，将前一个节点压栈；若当前节点等级小于前一个节点，出栈前一节点等级 和&nbsp; 当前节点等级之差次；若当前节点等级等于前一节点等级，既不压栈也不出栈。每个当前节点的父节点为栈顶元素。</p>
@@ -217,21 +222,18 @@
 </div>
 <p>&nbsp;&nbsp; PS1:&nbsp; 当初考虑到中文的支持，利用wstring定义节点内容，现在发现是个错误，在字符转换的过程中很是麻烦，耽误了不少时间，走了不少弯路。<br />&nbsp; PS2: 也许因为我对STL不是很熟悉，感觉比较麻烦，不知道如何被C++标准委员会接纳的？</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/05/24/vc-logic-parser">利用VC设计简易逻辑表达式词法分析器</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-05-24</strong> with tags <a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <a href="/tags.html#C-ref" rel="nofollow">C</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p class="MsoNormal" style="text-align:center;" align="center"><span style="font-family:宋体;">简易逻辑表达式词法分析器</span></p>
+    <h2><a href="/2008/05/24/vc-logic-parser">利用VC设计简易逻辑表达式词法分析器</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-05-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p class="MsoNormal" style="text-align:center;" align="center"><span style="font-family:宋体;">简易逻辑表达式词法分析器</span></p>
 <p class="MsoNormal" style="text-align:center;" align="center"><span style="font-family:宋体;"></span></p>
 <p class="MsoNormal" style="text-indent:21pt;"><span style="font-family:宋体;">待分析的逻辑表达式如下：</span></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-size:9pt;font-family:新宋体;color:rgb(163,21,21);" lang="EN-US">EXISTS(x)(Missile(x) AND Owns(Father(Nono),Part_of(x))) =&gt; Sells(West,x,Nono)</span></p>
@@ -276,21 +278,18 @@
 <p>&nbsp;</p>
 <p></p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/05/23/draw-emc-test-curve">线性坐标系到对数坐标系的变换——EMC测试曲线的绘制</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-05-23</strong> with tags <a href="/tags.html#C-ref" rel="nofollow">C</a>, <a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>        <span style="font-size:10.5pt;font-family:宋体;"><br />&nbsp;&nbsp;&nbsp; 绘制测试曲线的核心函数为</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>CEMCView::DrawFrameCurve()</span><span style="font-size:10.5pt;font-family:宋体;">函数。该函数可以根据测试的频段和该频段的测试数据在对数坐标系的对应位置绘制测试曲线。</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>DrawFrameCurve()</span><span style="font-size:10.5pt;font-family:宋体;">函数绘制曲线的流程图如图</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>1</span><span style="font-size:10.5pt;font-family:宋体;">所示：</p>
+    <h2><a href="/2008/05/23/draw-emc-test-curve">线性坐标系到对数坐标系的变换——EMC测试曲线的绘制</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-05-23</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>        <span style="font-size:10.5pt;font-family:宋体;"><br />&nbsp;&nbsp;&nbsp; 绘制测试曲线的核心函数为</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>CEMCView::DrawFrameCurve()</span><span style="font-size:10.5pt;font-family:宋体;">函数。该函数可以根据测试的频段和该频段的测试数据在对数坐标系的对应位置绘制测试曲线。</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>DrawFrameCurve()</span><span style="font-size:10.5pt;font-family:宋体;">函数绘制曲线的流程图如图</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>1</span><span style="font-size:10.5pt;font-family:宋体;">所示：</p>
 <p></span></p>
 <div style="text-align:center;"><span style="font-size:10.5pt;font-family:宋体;"><img alt="" src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/测试流程图.JPG" /><br />图1 测试流程图</p>
 <p></span><span style="font-size:10.5pt;font-family:宋体;"></span></div>
@@ -329,21 +328,18 @@
 <p align="left" class="MsoNormal" style="text-align:left;">PS:</p>
 <p align="left" class="MsoNormal" style="text-align:left;">&nbsp;&nbsp;&nbsp; <font size="4"><span style="color:rgb(255,0,0);">CSDN不支持把Word中的公式自动保存为图片实在是太难用了，每次都要自己先把公式转化为图片然后再插入到文章里，麻烦！</span></font><span style="font-family:宋体;"></span><span lang="EN-US"></span></p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/05/22/emc-cbr-3">案例检索——EMC-CBR故障诊断研究（三）</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-05-22</strong> with tags <a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p style="text-indent:18pt;" class="MsoListParagraph"><span style="font-family:宋体;"><br /></span></p>
+    <h2><a href="/2008/05/22/emc-cbr-3">案例检索——EMC-CBR故障诊断研究（三）</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-05-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p style="text-indent:18pt;" class="MsoListParagraph"><span style="font-family:宋体;"><br /></span></p>
 <p style="text-indent:18pt;" class="MsoListParagraph"><font size="3"><span style="font-family:宋体;">案例检索的核心任务就是计算新案例和案例库中的案例的相似度，而相似度要由案例的故障特征和系统结构确定。</span></font></p>
 <p style="text-indent:18pt;" class="MsoListParagraph"><font size="3"><span style="font-family:宋体;"></span><span lang="EN-US"></span></font></p>
 <p style="text-indent:18pt;" class="MsoListParagraph"><font size="3"><span style="font-family:宋体;">（</span><span lang="EN-US">1</span><span style="font-family:宋体;">）案例属性之间的距离</span><span lang="EN-US"></span></font></p>
@@ -362,21 +358,18 @@
 <p align="center" style="text-align:center;text-indent:0;" class="MsoListParagraph"><font size="3"><span lang="EN-US"><span style="position:relative;top:6pt;"><!--[if !vml]--><!--[endif]--></span></span><span style="font-family:宋体;"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/SIMi.JPG" alt="" />，</span><span lang="EN-US"><span style="position:relative;top:5pt;"><!--[if !vml]-->i=1,2<!--[endif]--></span></span></font></p>
 <p align="left" style="text-align:left;" class="MsoNormal"><font size="3"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:宋体;">案例库中和目标案例相似度最大的案例，就是最佳匹配案例。当然，有可能出现即便是最佳匹配案例和目标案例的相似度也比较小的情况。可以为了保证最终结果的正确性，设定一个相似度的阈值，低于该阈值的相似度的案例不能作为最终结果使用，必须利用专家系统对结果进行修正。</span></font><span lang="EN-US"></span></p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/05/19/wenchuan-earthquake">半旗.默哀.国歌</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-05-19</strong> with tags <a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>	    document.domain="qq.com";<br />
+    <h2><a href="/2008/05/19/wenchuan-earthquake">半旗.默哀.国歌</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-05-19</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>	    document.domain="qq.com";<br />
 	    //parent.qZEditor.callback();<br />
 	   function init(){<br />
 		    var key = location.hash.substr(1);<br />
@@ -392,40 +385,34 @@
 <div><font size="4">&nbsp;</font></div>
 <div><font size="4">&nbsp;&nbsp;&nbsp; 路过几家宾馆和国营机构，鲜艳的五星红旗都在旗杆的半空中摇晃着，向路人诉说着这个国家正在经历的苦难&hellip;&hellip;</font></div>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/05/14/fedora9-install-hard-disk">硬盘安装Fedora 9成功</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-05-14</strong> with tags <a href="/tags.html#Unix-ref" rel="nofollow">Unix</a>, <a href="/tags.html#Linux-ref" rel="nofollow">Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>
+    <h2><a href="/2008/05/14/fedora9-install-hard-disk">硬盘安装Fedora 9成功</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-05-14</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix-ref" rel="nofollow">Unix</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Linux-ref" rel="nofollow">Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 昨天晚上半夜（5月13日晚23：56分）我登陆到fedora项目的主页一看，My God，Fedora 9已经可以下载了！我立马开始下载。由于速度只有几百K/S，只好先睡觉。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 今天早上6：30就起来了，第一件事就是准备将Fedora 9刻录到光盘，然后准备安装。几天前就已经将光盘买好了，Nero也装好了，就等着刻呢。非常恶心的是，我一连试了三张白盘，一次也没刻录成功！气得我七窍生烟！还不到两年，破本本的刻录光驱就不能刻录了！Shit！<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8点多感到实验室，半路上就决定了要从硬盘安装Fedora 9。上网查资料，N多，感觉还蛮简单的。照做。下载Grub for Linux，设置好，设置menu.lst。问题来了，将Fedora的iso映像放到哪里呢？还有就是我的Windows分区是NTFS格式的，留出来的空闲分区才15G，太小了，怎么改变分区大小呢？<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 有人说DVD版的Fedora要解压缩，有人说不用，但都要放到Fat或fat32分区里。上网，下载了Partition Manager，结果安装时说不能用于Windows Server 2003下面。Shit@！只好重新搜到了一个可以用于Server 2003下调整分区的软件。调好之后，重启进入grub安装。结果进不去Fedora安装界面！<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 找遍了所有原因，才发现自己在menu.lst中的initrd写成了intrid！唉！改正后终于进入了安装界面。这时却又找不到Fedora映像了。哦，原来我直接将iso给解压缩了。shit！不得不重新将Fedora的iso映像拷到fat32分区，重新装，一切OK！<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 大二的时候就装过Red Hat Linux9，当时装了玩了几次，感觉很不好用，就给删了。大四毕业又玩了一段时间Fedora core3，感觉好多了。后来在实验室电脑上装了Fedora 7，感觉很好。前几天用Wubi在笔记本上装Ubuntu8.04，结果不成功，很是郁闷。在实验室台式机上却成功了。进到Ubuntu后完了几次，感觉很不爽&mdash;&mdash;界面不怎么好看，桌面版自带的软件少得可怜，要通过网络安装，可我们平时很难上外网（拜教育网所赐）。总的说来，还是比较喜欢Red Hat 的产品，毕竟人家定位在企业级应用。而且听说Linus用的Linux版本就是Fedora哦。<br />&nbsp;&nbsp;&nbsp;&nbsp; 最近一年来逐渐对Linux情有独钟，也越来越不喜欢用Windows了。毕竟这是两种不同的模式，两种不同的文化。现在对知识产权的意识越来越强烈了，以前一直用盗版，现在不想用了，但又没钱买正版Windows下的软件，因此还是转到Linux的好。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 向开源进军！</p>
 <p>PS：硬盘安装Linux的详细设置请参阅</p>
 <h1 class="title"><a href="void(0);/*1210765405981*/">以WinGrub 引导安装Fedora 4.0 为例，详述用WinGrub来引导Linux的安装</a></h1>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2008/05/10/emc-curve-zoom">EMC测试曲线选择缩放功能的实现</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2008-05-10</strong> with tags <a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p align="center" class="MsoNormal" style="text-align:center;"><span lang="EN-US">EMC</span><span style="font-family:宋体;">测试曲线选择缩放功能的实现</span></p>
+    <h2><a href="/2008/05/10/emc-curve-zoom">EMC测试曲线选择缩放功能的实现</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-05-10</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p align="center" class="MsoNormal" style="text-align:center;"><span lang="EN-US">EMC</span><span style="font-family:宋体;">测试曲线选择缩放功能的实现</span></p>
 <p align="center" class="MsoNormal" style="text-align:center;"><span lang="EN-US">&nbsp;</span></p>
 <p class="MsoNormal" style="text-indent:21pt;"><span lang="EN-US">EMC</span><span style="font-family:宋体;">测试完成后，一般以曲线的形式显示在对数坐标系中。由于测试数据非常多，而对数坐标常常使得大量的数据分布不均，经常在一些地方使得测试曲线叠加在一起，看不清楚具体的数值和趋势。一幅</span><span lang="EN-US">CE102</span><span style="font-family:宋体;">测试曲线如图</span><span lang="EN-US">1</span><span style="font-family:宋体;">所示：</span></p>
 <p class="MsoNormal" style="text-indent:21pt;"><span lang="EN-US"><!--[if !vml]--><img height="430" width="800" alt="" src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/CE102-全频段--2008-05-08.jpg" /><!--[endif]--></span></p>
@@ -457,341 +444,220 @@
 <p align="left" class="MsoNormal" style="margin-left:21pt;text-align:left;text-indent:21pt;"><span style="font-family:宋体;">由于测试是分成多段进行的，测试曲线的绘制也是分成多段来进行，因此选择放大时也要考虑到所选择区域是否包含关键点（频率段与频率段之间的边界点）。因此选择放大频段的显示也分为三种情况进行考虑：选择的起始点和终止点在同一分段内、在两相邻频段内、在不相邻的不同频段内。</span></p>
 <p align="left" class="MsoNormal" style="margin-left:21pt;text-align:left;text-indent:21pt;"><span style="font-family:宋体;">由于选择放大显示的代码较多，只介绍编程思路吧。首先根据鼠标左键选择的起始点和终止点的</span><span lang="EN-US">X</span><span style="font-family:宋体;">坐标确定起始频率和终止频率，然后确定起始点和终止点的相对位置（即上段所说的三种情况），接下来重绘坐标系，针对三种不同情况分段绘制曲线，最后重绘军标线。</span></p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
 
-    <div class="main-container shadow">
-      <div class="mainbody">
-        
-<div class="pagination">
-    <ul>
-    
-        <li class="prev">
-        <a href="/page18">&larr; Previous</a>
-        
-        </li>
-    
-
-    
-        <li><a href="/">1</a></li>
-        
-
-        
-            <li><a href="/page2">2</a></li>
-            
-        
-            <li><a href="/page3">3</a></li>
-            
-        
-            <li><a href="/page4">4</a></li>
-            
-        
-            <li><a href="/page5">5</a></li>
-            
-        
-            <li><a href="/page6">6</a></li>
-            
-        
-            <li><a href="/page7">7</a></li>
-            
-        
-            <li><a href="/page8">8</a></li>
-            
-        
-            <li><a href="/page9">9</a></li>
-            
-        
-            <li><a href="/page10">10</a></li>
-            
-        
-            <li><a href="/page11">11</a></li>
-            
-        
-            <li><a href="/page12">12</a></li>
-            
-        
-            <li><a href="/page13">13</a></li>
-            
-        
-            <li><a href="/page14">14</a></li>
-            
-        
-            <li><a href="/page15">15</a></li>
-            
-        
-            <li><a href="/page16">16</a></li>
-            
-        
-            <li><a href="/page17">17</a></li>
-            
-        
-            <li><a href="/page18">18</a></li>
-            
-        
-            <li class="disabled"><a>19</a></li>
-            
-        
-            <li><a href="/page20">20</a></li>
-            
-        
-            <li><a href="/page21">21</a></li>
-            
-        
-    
-
-    
-        <li class="next"><a href="/page20">Next &rarr;</a></li>
-    
-    </ul>
+	<!-- Pagination links -->
+	
+	<ul class="pager">
+	    
+	    <li class="previous"><a href="/page20">&larr; Older</a></li>
+	    
+	
+	    
+	    <li class="next"><a href="/page18">Newer &rarr;</a></li>
+	    
+	</ul>
+	
+	<!-- content -->	
 </div>
 
-
-      </div>
-    </div>
-
-  </div>
-
-  <div class="span3 right">
-
-	<div class="side-container shadow">
-	  <div class="sidebar">
-		<h3>Links</h3>
-        <a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a>
-		<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a>
-		<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a>
-        <a href="https://plus.google.com/" target="_blank"> <i class="fa fa-google-plus-square fa-3x"></i> </a>
-        <a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a> 
-
-      </div>
-    </div>
-
-	<!--
-	<div class="side-container shadow">
-      <div class="sidebar">
-        
-        <h3>Links</h3>
-        <ul>
-        
-        
-    <li><a href=https://github.com/bo-yang title="My GitHub Channel">My GitHub Channel</a></li>
-
-    <li><a href=https://www.linkedin.com/pub/bo-yang/21/a3/893 title="My Linkedin Page">My Linkedin Page</a></li>
-
-    <li><a href=http://blog.csdn.net/bonny95 title="My Chinese Blog(obsolete)">My Chinese Blog(obsolete)</a></li>
-
-        </ul>
-        
-      </div>
-  </div>
-  -->
-
-	<div class="side-container shadow">
-      <div class="sidebar">
-        
-        <h3>Tags</h3>
-        <div class="tag_box">
-        
-        
-  
-    
-        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
-    
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
-    
-        <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
-    
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
-    
-        <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
-    
-        <a href="/tags.html#EMI-ref" class="btn btn-mini">EMI <span>1</span></a>
-    
-        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span>3</span></a>
-    
-        <a href="/tags.html#CBR-ref" class="btn btn-mini">CBR <span>1</span></a>
-    
-        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>5</span></a>
-    
-        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
-    
-        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
-    
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
-    
-        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
-    
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
-    
-        <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
-    
-        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span>6</span></a>
-    
-        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>12</span></a>
-    
-        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span>3</span></a>
-    
-        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span>14</span></a>
-    
-        <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span>12</span></a>
-    
-        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span>6</span></a>
-    
-        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span>2</span></a>
-    
-        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span>2</span></a>
-    
-        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span>4</span></a>
-    
-        <a href="/tags.html#ESXi-ref" class="btn btn-mini">ESXi <span>1</span></a>
-    
-        <a href="/tags.html#Virtual Machine-ref" class="btn btn-mini">Virtual Machine <span>2</span></a>
-    
-        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span>2</span></a>
-    
-        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span>9</span></a>
-    
-        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>3</span></a>
-    
-        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
-    
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
-    
-        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
-    
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
-    
-        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
-    
-        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span>1</span></a>
-    
-        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span>1</span></a>
-    
-        <a href="/tags.html#Ubuntu-ref" class="btn btn-mini">Ubuntu <span>1</span></a>
-    
-        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span>1</span></a>
-    
-        <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
-    
-        <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
-    
-        <a href="/tags.html#Genetic Algorihtm-ref" class="btn btn-mini">Genetic Algorihtm <span>1</span></a>
-    
-        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span>1</span></a>
-    
-        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span>1</span></a>
-    
-        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span>1</span></a>
-    
-        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span>1</span></a>
-    
-        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span>1</span></a>
-    
-        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span>1</span></a>
-    
-        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span>1</span></a>
-    
-        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span>1</span></a>
-    
-        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span>1</span></a>
-    
-        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span>1</span></a>
-    
-        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span>3</span></a>
-    
-        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span>1</span></a>
-    
-        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span>1</span></a>
-    
-        <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
-    
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
-    
-        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
-    
-        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span>1</span></a>
-    
-        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
-    
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
-    
-        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
-    
-        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span>1</span></a>
-    
-        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span>1</span></a>
-    
-        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
-    
-        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
-    
-        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span>1</span></a>
-    
-        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
-    
-        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
-    
-        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
-    
-  
-
-
-
+<div class="col-lg-4">
+		<div class="well">
+            <h4>Links</h4>
+            <a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://plus.google.com/" target="_blank"> <i class="fa fa-google-plus-square fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> &nbsp;&nbsp;
+        	<a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a>	
         </div>
-        
-      </div>
-    </div>
+        <!-- /well -->
+        <div class="well">
+			<h4>Tags</h4>
+			<div class="tag_box">
+		    	
+				
+  
+    
+        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
+    
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">15</span></a>
+    
+        <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
+    
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span class="badge">9</span></a>
+    
+        <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span class="badge">2</span></a>
+    
+        <a href="/tags.html#EMI-ref" class="btn btn-mini">EMI <span class="badge">1</span></a>
+    
+        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span class="badge">3</span></a>
+    
+        <a href="/tags.html#CBR-ref" class="btn btn-mini">CBR <span class="badge">1</span></a>
+    
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span class="badge">5</span></a>
+    
+        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span class="badge">10</span></a>
+    
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span class="badge">93</span></a>
+    
+        <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span class="badge">6</span></a>
+    
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span class="badge">12</span></a>
+    
+        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
+    
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">14</span></a>
+    
+        <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
+    
+        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span class="badge">6</span></a>
+    
+        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span class="badge">2</span></a>
+    
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span class="badge">4</span></a>
+    
+        <a href="/tags.html#ESXi-ref" class="btn btn-mini">ESXi <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Virtual Machine-ref" class="btn btn-mini">Virtual Machine <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span class="badge">9</span></a>
+    
+        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span class="badge">3</span></a>
+    
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
+    
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">14</span></a>
+    
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span class="badge">5</span></a>
+    
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span class="badge">1</span></a>
+    
+        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span class="badge">1</span></a>
+    
+        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span class="badge">1</span></a>
+    
+        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Ubuntu-ref" class="btn btn-mini">Ubuntu <span class="badge">1</span></a>
+    
+        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Genetic Algorihtm-ref" class="btn btn-mini">Genetic Algorihtm <span class="badge">1</span></a>
+    
+        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span class="badge">1</span></a>
+    
+        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span class="badge">1</span></a>
+    
+        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span class="badge">1</span></a>
+    
+        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span class="badge">1</span></a>
+    
+        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span class="badge">1</span></a>
+    
+        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span class="badge">1</span></a>
+    
+        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span class="badge">1</span></a>
+    
+        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span class="badge">3</span></a>
+    
+        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span class="badge">4</span></a>
+    
+        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span class="badge">2</span></a>
+    
+        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span class="badge">1</span></a>
+    
+        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span class="badge">2</span></a>
+    
+        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span class="badge">1</span></a>
+    
+        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
+    
+        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
+    
+  
 
-    <div class="side-container shadow">
-      <div class="sidebar">
-        
-        <h3>Recent Posts</h3>
-        <ul>
-        
-          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
-            N-Queens Problem</a></li>
-        
-          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
-            Combination Sum Problem - A Non-recursive Method</a></li>
-        
-          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
-            Coin Change Problem</a></li>
-        
-          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
-            Text Justification</a></li>
-        
-          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
-            Sort Colors</a></li>
-        
-          <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
-            Check Soduku Solution</a></li>
-        
-          <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
-            Least Recently Used(LRU) Cache</a></li>
-        
-          <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
-            Binary Tree Operations</a></li>
-        
-          <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
-            Action Recognition with Fisher Vectors</a></li>
-        
-          <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
-            How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-        </ul>
-        
-      </div>
-    </div>
 
-   </div>
 
+			</div>
+        </div>
+        <!-- /well -->
+        <div class="well">
+            <h3>Recent Posts</h3>
+	        <ul>
+			
+  			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
+			
+  			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
+			
+  			<li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">Coin Change Problem</a></li>
+			
+  			<li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">Text Justification</a></li>
+			
+  			<li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">Sort Colors</a></li>
+			
+  			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
+			
+  			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
+			
+  			<li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></li>
+			
+  			<li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></li>
+			
+  			<li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></li>
+			
+			</ul>
+        </div>
+        <!-- /well -->
 </div>
 
   </div>
@@ -808,11 +674,11 @@
               $('#now_year').html('- ' + now_year);
           }
 	    </script>
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 
-  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
+  <script src="/assets/run_prettify.js"></script>
   <script type="text/javascript">
     $(function() {
 
@@ -859,6 +725,7 @@
       });
     });
   </script>
+  
   
 
 </body>

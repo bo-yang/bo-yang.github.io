@@ -2,6 +2,8 @@
 <!DOCTYPE HTML>
 <html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bo Yang | Bo's Blog</title>
   
   <meta name="author" content="Bo Yang" />
@@ -11,55 +13,71 @@
   -->
 
   <!-- Bootstrap -->
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 
   <!-- font-awesome -->
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
 
   <!-- Google Prettify -->
-  <link href="/assets/themes/clear/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/themes/clear/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
   
-  
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 
 <body>
 
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="brand" href="/">bo-yang</a>
-        <ul class="nav">
-          <li><a href="/archive.html">Archive</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/messages.html">Messages</a></li>
-        </ul>
-        <ul class="pull-right">
-          <li>
-            <form class="navbar-search" method="get" action="http://www.google.com/search" target="google_window">
-              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
-              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
-              <input type="hidden" name="ie" value="UTF-8" />
-              <input type="hidden" name="oe" value="UTF-8" />
-              <input type="hidden" name="hl" value="en-US" />
-              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
-              <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
-            </form>
-          </li>
-        </ul>
-        <ul class="nav pull-right">
-          <li><a href="/atom.xml">RSS</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
+   <!-- navigation bar -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Home</a>
+            </div>
 
-  <div class="container page-container">
-    <div class="content">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/archive.html">Archive</a>
+                    </li>
+                    <li><a href="/about.html">About</a>
+                    </li>
+                    <li><a href="/messages.html">Messages</a>
+                    </li>
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+		          <li>
+		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+		              <input type="hidden" name="ie" value="UTF-8" />
+		              <input type="hidden" name="oe" value="UTF-8" />
+		              <input type="hidden" name="hl" value="en-US" />
+		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
+		            </form>
+		          </li>
+		        </ul>
+            </div>
+			<!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+  <div class="container">
+    <div class="row">
       
 <div class="page-header">
   <h1>Bo Yang  <small>Beginner's mind.</small></h1>
@@ -67,21 +85,17 @@
 
 <div class="row-fluid page-body">
   <div class="span12">
+    <div class="col-lg-8">
+	<!-- blog entry -->
     
-
-<div class="row-fluid page-body">
-
-  <div class="span11 left">
+    <h2><a href="/2011/02/16/pvx-tutorial">9vx tutorial: running a cpu server from kfs (RFC)</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-02-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
+	</p>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/02/16/pvx-tutorial">9vx tutorial: running a cpu server from kfs (RFC)</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-02-16</strong> with tags <a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>原文：<a href="http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd">&nbsp;http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd</a></p>
+    <div class="post_at_index thepost">
+    	<p>原文：<a href="http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd">&nbsp;http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd</a></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <div>
@@ -169,21 +183,18 @@ Would you like to ream it (y/n)? y
 <p id="zw-12e2e7c1e4d8qBIi3916c">&nbsp;</p>
 </div>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/01/19/tools-for-manipulate-object-files">Tools for Manipulating Object Files</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-01-19</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
+    <h2><a href="/2011/01/19/tools-for-manipulate-object-files">Tools for Manipulating Object Files</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-01-19</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
 <p>There are a number of tools available on Unix systems to help you understand and manipulate object files.&nbsp;In particular, the GNU binutils package is especially helpful and runs on every Unix platform.</p>
 <p>&nbsp;</p>
 <ol>
@@ -205,21 +216,18 @@ Would you like to ream it (y/n)? y
 <li>Program Library HOWTO:&nbsp;<a href="http://tldp.org/HOWTO/Program-Library-HOWTO/index.html">http://tldp.org/HOWTO/Program-Library-HOWTO/index.html</a></li>
 </ol>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/01/18/multi-line-operations-in-vim">Commenting out a range of lines in VIM</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-01-18</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>Reference:&nbsp;<a href="http://vim.wikia.com/wiki/Commenting_out_a_range_of_lines">http://vim.wikia.com/wiki/Commenting_out_a_range_of_lines</a></p>
+    <h2><a href="/2011/01/18/multi-line-operations-in-vim">Commenting out a range of lines in VIM</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-01-18</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Reference:&nbsp;<a href="http://vim.wikia.com/wiki/Commenting_out_a_range_of_lines">http://vim.wikia.com/wiki/Commenting_out_a_range_of_lines</a></p>
 <p>&nbsp;</p>
 <p><span class="goog_qs-tidbit goog_qs-tidbit-0 goog_qs-tidbit-hilite">A -VISUAL BLOCK- can also be used to comment out lines.</span>&nbsp;</p>
 <p>&nbsp;</p>
@@ -227,21 +235,18 @@ Would you like to ream it (y/n)? y
 <p>&nbsp;</p>
 <p>After that, type capital "I" to insert for all highlighted lines. Type the comment, in this case "#&lt;Space&gt;". Then hit "Esc".</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/01/17/ksh-version">如何查看Ksh Version</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-01-17</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <ol>
+    <h2><a href="/2011/01/17/ksh-version">如何查看Ksh Version</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-01-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<ol>
 <li>echo $KSH_VERSION. 若没有输出，<span>echo ${.sh.version}，Ksh93有效</span></li>
 <li><span><span>/bin/ksh --version 应该只在Linux下有效</span></span></li>
 <li><span><span><span>strings /bin/ksh | grep -i version，直接到二进制文件里查找</span></span></span></li>
@@ -249,21 +254,18 @@ Would you like to ream it (y/n)? y
 </ol>
 <p>对于KSH88，估计只有3、4有效。</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2011/01/02/translate-words-in-batch">利用在线词典批量查询英语单词</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2011-01-02</strong> with tags <a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>进来遇到很多英语生词，工具书上给的解释错误百出，而很多在线词典不但可以给出某个单词的解释，而且有大量的示例，因此猜想利用在线词典批量查询这些单词。怎么实现呢？</p>
+    <h2><a href="/2011/01/02/translate-words-in-batch">利用在线词典批量查询英语单词</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-01-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>进来遇到很多英语生词，工具书上给的解释错误百出，而很多在线词典不但可以给出某个单词的解释，而且有大量的示例，因此猜想利用在线词典批量查询这些单词。怎么实现呢？</p>
 <p>首要问题是如何自动获取某个单词的解释。搜索之后，发现可以用curl实现，如</p>
 <p>
 <pre>curl -s "http://www.google.com/dictionary?aq=f&amp;langpair=en|en&amp;q="$1"&amp;hl=en" | html2text -nobs | sed '1,/^ *Dictionary/]/d' | head -n -5 | less</pre>
@@ -1281,21 +1283,18 @@ while (my $nextline=&lt;EXP&gt;) {
 close(EXP);</pre>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/12/31/linux-shared-memory">Linux Shared Memory的查看与设置</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-12-31</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
+    <h2><a href="/2010/12/31/linux-shared-memory">Linux Shared Memory的查看与设置</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-12-31</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
 <h1 class="entry-title">1.&nbsp;<a href="http://www.cyberciti.biz/faq/linux-check-memory-usage/">Linux Check Memory Usage</a></h1>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -1587,21 +1586,18 @@ sysctl -w kern.sysv.shmall=131072
 <p>&nbsp;</p>
 </div>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/12/02/kshell-tips">Ksh的几点小技巧</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-12-02</strong> with tags <a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <ol>
+    <h2><a href="/2010/12/02/kshell-tips">Ksh的几点小技巧</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-12-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<ol>
 <li>在一个函数(function)中，如果不希望局部变量影响到全局变量或环境变量，可以用typeset来定义。</li>
 <li>对于多个参数的函数或脚本，对多个输入参数的处理有两种办法：</li>
 </ol>
@@ -1635,21 +1631,18 @@ done
 shift OPTIND-1</pre>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/11/28/plan9-intro-note-1">Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(I)</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-11-28</strong> with tags <a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>&nbsp;</p>
+    <h2><a href="/2010/11/28/plan9-intro-note-1">Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(I)</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-11-28</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
 <h3 id="zw-1290949398860sDJ1ah"><span id="zw-1290949398861ePu1_6">1. Loaded Programs</span></h3>
 <h4 id="zw-1290949398861DeKRaD"><span id="zw-1290949398861A4v4rA">1.1 Command&nbsp;</span><span id="zw-1290949398861w1u2Ml">nm</span></h4>
 <p id="zw-1290949398861M8Fq2q"><span id="zw-1290949398861Bp3Ccc">Command&nbsp;</span><span id="zw-1290949398861G3bweg">nm</span><span id="zw-1290949398861scTbjG">&nbsp;can be used to display symbol information in both objects and binary files, because it looks at the symbol table stored in the binary for debugging purposes. Command&nbsp;</span><span id="zw-1290949398861vCM8Bc">strip</span><span id="zw-1290949398862uxpNeZ">&nbsp;can be used to remove the symbol table.</span></p>
@@ -1804,21 +1797,18 @@ void main()
 <p id="zw-1290949398925BOhqJ0"><span id="zw-1290949398925hOxtFT">acid</span><span id="zw-1290949398925xmeTc4">&nbsp;is the debugger can be used to dump the stack (function stk()), memory (function mem()) and so on.</span></p>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/11/22/install-plan9">Plan 9安装初体验</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-11-22</strong> with tags <a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>不知道什么是Plan 9? 请参见<a href="http://plan9.bell-labs.com/plan9/about.html">http://plan9.bell-labs.com/plan9/about.html</a>&nbsp;和&nbsp;<a href="http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs">http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs</a>。</p>
+    <h2><a href="/2010/11/22/install-plan9">Plan 9安装初体验</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-11-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>不知道什么是Plan 9? 请参见<a href="http://plan9.bell-labs.com/plan9/about.html">http://plan9.bell-labs.com/plan9/about.html</a>&nbsp;和&nbsp;<a href="http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs">http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs</a>。</p>
 <p>&nbsp;</p>
 <p>有5种方式可以安装或体验Plan 9：</p>
 <ol>
@@ -1830,21 +1820,18 @@ void main()
 </ol>
 <p>另外，推荐一篇非常好的Plan9使用入门的文章：<a href="http://www.quanstro.net/newbie-guide.pdf">A Plan9 Newbie's Guide</a>。更多Plan9的资源可以在<a href="http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs">http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs</a>的下面的连接处找到。</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
-    <div class="main-container shadow">
-      <div class="mainbody">
-        <h2><a href="/2010/11/22/Your-browser-will-not-accept-this-data-because-of-its-Content-Encoding">Your browser will not accept this data because of its Content-Encoding</a></h2>
-        <p>
-          Posted by <strong>Bo Yang</strong> at <strong>2010-11-22</strong> with tags <a href="/tags.html#Browser-ref" rel="nofollow">Browser</a>
-        </p>
-        
-        <div class="post_at_index thepost">
-        <p>今天打算在某个网站下载一个.bz2的文件时，遇到这样一个问题：</p>
+    <h2><a href="/2010/11/22/Your-browser-will-not-accept-this-data-because-of-its-Content-Encoding">Your browser will not accept this data because of its Content-Encoding</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-11-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Browser-ref" rel="nofollow">Browser</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>今天打算在某个网站下载一个.bz2的文件时，遇到这样一个问题：</p>
 <p><span>Your browser will not accept this data, /mirror.9grid.fr/plan9-1290391203/plan9.iso.bz2, because of its Content-Encoding.</span><span><br /></span><span>Its Content-Type is application/octet-stream, and Content-Encoding is bzip2.</span><span><br /></span><span>Your browser accepts Content-Type: */*, image/png, text/plain, text/html, application/xhtml+xml, application/xml.</span><span><br /></span><span>Your browser accepts Content-Encoding: sdch, deflate, gzip.</span></p>
 <p>我的浏览器是Chrome9 beta。</p>
 <p>&nbsp;</p>
@@ -1862,341 +1849,220 @@ void main()
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
-        </div>
-        <a href="javascript:void(0);" style="float:right" onclick="window.scrollTo(0, 0);">Top</a>
-        <div style="clear: both;"></div>
-      </div>
     </div>
+	<div style="clear: both;"></div>
+	<hr>
     
 
-    <div class="main-container shadow">
-      <div class="mainbody">
-        
-<div class="pagination">
-    <ul>
-    
-        <li class="prev">
-        <a href="/page8">&larr; Previous</a>
-        
-        </li>
-    
-
-    
-        <li><a href="/">1</a></li>
-        
-
-        
-            <li><a href="/page2">2</a></li>
-            
-        
-            <li><a href="/page3">3</a></li>
-            
-        
-            <li><a href="/page4">4</a></li>
-            
-        
-            <li><a href="/page5">5</a></li>
-            
-        
-            <li><a href="/page6">6</a></li>
-            
-        
-            <li><a href="/page7">7</a></li>
-            
-        
-            <li><a href="/page8">8</a></li>
-            
-        
-            <li class="disabled"><a>9</a></li>
-            
-        
-            <li><a href="/page10">10</a></li>
-            
-        
-            <li><a href="/page11">11</a></li>
-            
-        
-            <li><a href="/page12">12</a></li>
-            
-        
-            <li><a href="/page13">13</a></li>
-            
-        
-            <li><a href="/page14">14</a></li>
-            
-        
-            <li><a href="/page15">15</a></li>
-            
-        
-            <li><a href="/page16">16</a></li>
-            
-        
-            <li><a href="/page17">17</a></li>
-            
-        
-            <li><a href="/page18">18</a></li>
-            
-        
-            <li><a href="/page19">19</a></li>
-            
-        
-            <li><a href="/page20">20</a></li>
-            
-        
-            <li><a href="/page21">21</a></li>
-            
-        
-    
-
-    
-        <li class="next"><a href="/page10">Next &rarr;</a></li>
-    
-    </ul>
+	<!-- Pagination links -->
+	
+	<ul class="pager">
+	    
+	    <li class="previous"><a href="/page10">&larr; Older</a></li>
+	    
+	
+	    
+	    <li class="next"><a href="/page8">Newer &rarr;</a></li>
+	    
+	</ul>
+	
+	<!-- content -->	
 </div>
 
-
-      </div>
-    </div>
-
-  </div>
-
-  <div class="span3 right">
-
-	<div class="side-container shadow">
-	  <div class="sidebar">
-		<h3>Links</h3>
-        <a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a>
-		<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a>
-		<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a>
-        <a href="https://plus.google.com/" target="_blank"> <i class="fa fa-google-plus-square fa-3x"></i> </a>
-        <a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a> 
-
-      </div>
-    </div>
-
-	<!--
-	<div class="side-container shadow">
-      <div class="sidebar">
-        
-        <h3>Links</h3>
-        <ul>
-        
-        
-    <li><a href=https://github.com/bo-yang title="My GitHub Channel">My GitHub Channel</a></li>
-
-    <li><a href=https://www.linkedin.com/pub/bo-yang/21/a3/893 title="My Linkedin Page">My Linkedin Page</a></li>
-
-    <li><a href=http://blog.csdn.net/bonny95 title="My Chinese Blog(obsolete)">My Chinese Blog(obsolete)</a></li>
-
-        </ul>
-        
-      </div>
-  </div>
-  -->
-
-	<div class="side-container shadow">
-      <div class="sidebar">
-        
-        <h3>Tags</h3>
-        <div class="tag_box">
-        
-        
-  
-    
-        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span>10</span></a>
-    
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span>15</span></a>
-    
-        <a href="/tags.html#C-ref" class="btn btn-mini">C <span>16</span></a>
-    
-        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span>9</span></a>
-    
-        <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span>2</span></a>
-    
-        <a href="/tags.html#EMI-ref" class="btn btn-mini">EMI <span>1</span></a>
-    
-        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span>3</span></a>
-    
-        <a href="/tags.html#CBR-ref" class="btn btn-mini">CBR <span>1</span></a>
-    
-        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span>5</span></a>
-    
-        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span>1</span></a>
-    
-        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span>1</span></a>
-    
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span>1</span></a>
-    
-        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span>10</span></a>
-    
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span>93</span></a>
-    
-        <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span>1</span></a>
-    
-        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span>6</span></a>
-    
-        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span>12</span></a>
-    
-        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span>3</span></a>
-    
-        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span>14</span></a>
-    
-        <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span>12</span></a>
-    
-        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span>6</span></a>
-    
-        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span>2</span></a>
-    
-        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span>2</span></a>
-    
-        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span>4</span></a>
-    
-        <a href="/tags.html#ESXi-ref" class="btn btn-mini">ESXi <span>1</span></a>
-    
-        <a href="/tags.html#Virtual Machine-ref" class="btn btn-mini">Virtual Machine <span>2</span></a>
-    
-        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span>2</span></a>
-    
-        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span>9</span></a>
-    
-        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span>3</span></a>
-    
-        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span>2</span></a>
-    
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span>14</span></a>
-    
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span>2</span></a>
-    
-        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span>5</span></a>
-    
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span>1</span></a>
-    
-        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span>1</span></a>
-    
-        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span>1</span></a>
-    
-        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span>1</span></a>
-    
-        <a href="/tags.html#Ubuntu-ref" class="btn btn-mini">Ubuntu <span>1</span></a>
-    
-        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span>1</span></a>
-    
-        <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span>1</span></a>
-    
-        <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span>1</span></a>
-    
-        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span>1</span></a>
-    
-        <a href="/tags.html#Genetic Algorihtm-ref" class="btn btn-mini">Genetic Algorihtm <span>1</span></a>
-    
-        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span>1</span></a>
-    
-        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span>1</span></a>
-    
-        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span>1</span></a>
-    
-        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span>1</span></a>
-    
-        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span>1</span></a>
-    
-        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span>1</span></a>
-    
-        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span>1</span></a>
-    
-        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span>1</span></a>
-    
-        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span>1</span></a>
-    
-        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span>1</span></a>
-    
-        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span>3</span></a>
-    
-        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span>1</span></a>
-    
-        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span>1</span></a>
-    
-        <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span>1</span></a>
-    
-        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span>4</span></a>
-    
-        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span>2</span></a>
-    
-        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span>1</span></a>
-    
-        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span>1</span></a>
-    
-        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span>2</span></a>
-    
-        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span>1</span></a>
-    
-        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span>1</span></a>
-    
-        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span>1</span></a>
-    
-        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span>1</span></a>
-    
-        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span>1</span></a>
-    
-        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span>1</span></a>
-    
-        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span>1</span></a>
-    
-        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span>1</span></a>
-    
-        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span>1</span></a>
-    
-  
-
-
-
+<div class="col-lg-4">
+		<div class="well">
+            <h4>Links</h4>
+            <a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://plus.google.com/" target="_blank"> <i class="fa fa-google-plus-square fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> &nbsp;&nbsp;
+        	<a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a>	
         </div>
-        
-      </div>
-    </div>
+        <!-- /well -->
+        <div class="well">
+			<h4>Tags</h4>
+			<div class="tag_box">
+		    	
+				
+  
+    
+        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
+    
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">15</span></a>
+    
+        <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
+    
+        <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span class="badge">9</span></a>
+    
+        <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span class="badge">2</span></a>
+    
+        <a href="/tags.html#EMI-ref" class="btn btn-mini">EMI <span class="badge">1</span></a>
+    
+        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span class="badge">3</span></a>
+    
+        <a href="/tags.html#CBR-ref" class="btn btn-mini">CBR <span class="badge">1</span></a>
+    
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span class="badge">5</span></a>
+    
+        <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span class="badge">10</span></a>
+    
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span class="badge">93</span></a>
+    
+        <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span class="badge">6</span></a>
+    
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span class="badge">12</span></a>
+    
+        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
+    
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">14</span></a>
+    
+        <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
+    
+        <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span class="badge">6</span></a>
+    
+        <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span class="badge">2</span></a>
+    
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span class="badge">4</span></a>
+    
+        <a href="/tags.html#ESXi-ref" class="btn btn-mini">ESXi <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Virtual Machine-ref" class="btn btn-mini">Virtual Machine <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Plan 9-ref" class="btn btn-mini">Plan 9 <span class="badge">9</span></a>
+    
+        <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span class="badge">3</span></a>
+    
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
+    
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">14</span></a>
+    
+        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
+    
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span class="badge">5</span></a>
+    
+        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span class="badge">1</span></a>
+    
+        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span class="badge">1</span></a>
+    
+        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span class="badge">1</span></a>
+    
+        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Ubuntu-ref" class="btn btn-mini">Ubuntu <span class="badge">1</span></a>
+    
+        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Genetic Algorihtm-ref" class="btn btn-mini">Genetic Algorihtm <span class="badge">1</span></a>
+    
+        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span class="badge">1</span></a>
+    
+        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span class="badge">1</span></a>
+    
+        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span class="badge">1</span></a>
+    
+        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span class="badge">1</span></a>
+    
+        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span class="badge">1</span></a>
+    
+        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span class="badge">1</span></a>
+    
+        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span class="badge">1</span></a>
+    
+        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span class="badge">3</span></a>
+    
+        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span class="badge">4</span></a>
+    
+        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span class="badge">2</span></a>
+    
+        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span class="badge">1</span></a>
+    
+        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span class="badge">2</span></a>
+    
+        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span class="badge">1</span></a>
+    
+        <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
+    
+        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
+    
+  
 
-    <div class="side-container shadow">
-      <div class="sidebar">
-        
-        <h3>Recent Posts</h3>
-        <ul>
-        
-          <li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">
-            N-Queens Problem</a></li>
-        
-          <li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">
-            Combination Sum Problem - A Non-recursive Method</a></li>
-        
-          <li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">
-            Coin Change Problem</a></li>
-        
-          <li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">
-            Text Justification</a></li>
-        
-          <li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">
-            Sort Colors</a></li>
-        
-          <li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">
-            Check Soduku Solution</a></li>
-        
-          <li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">
-            Least Recently Used(LRU) Cache</a></li>
-        
-          <li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">
-            Binary Tree Operations</a></li>
-        
-          <li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">
-            Action Recognition with Fisher Vectors</a></li>
-        
-          <li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">
-            How To Install Jekyll in Mac OSX Mavericks</a></li>
-        
-        </ul>
-        
-      </div>
-    </div>
 
-   </div>
 
+			</div>
+        </div>
+        <!-- /well -->
+        <div class="well">
+            <h3>Recent Posts</h3>
+	        <ul>
+			
+  			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
+			
+  			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
+			
+  			<li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">Coin Change Problem</a></li>
+			
+  			<li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">Text Justification</a></li>
+			
+  			<li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">Sort Colors</a></li>
+			
+  			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
+			
+  			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
+			
+  			<li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></li>
+			
+  			<li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></li>
+			
+  			<li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></li>
+			
+			</ul>
+        </div>
+        <!-- /well -->
 </div>
 
   </div>
@@ -2213,11 +2079,11 @@ void main()
               $('#now_year').html('- ' + now_year);
           }
 	    </script>
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       </footer>
   </div>
 
-  <script type="text/javascript" src="/assets/themes/clear/google-code-prettify/prettify.js"></script>
+  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
+  <script src="/assets/run_prettify.js"></script>
   <script type="text/javascript">
     $(function() {
 
@@ -2264,6 +2130,7 @@ void main()
       });
     });
   </script>
+  
   
 
 </body>
