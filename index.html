@@ -13,7 +13,7 @@ links:
 
 <div class="col-lg-8">
 	<!-- blog entry -->
-    {% for post in paginator.posts %}
+	{% for post in paginator.posts %}
     <h2><a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>{{ site.author.name }}</strong> at <strong>{{ post.date | date: "%Y-%m-%d" }}</strong> with tags {% for tag in post.tags %}<span class="glyphicon glyphicon-tag"></span><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag }}-ref" rel="nofollow">{{ tag }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}
@@ -23,10 +23,9 @@ links:
     <div class="post_at_index thepost">
     	{{ post.content }}
     </div>
-	<div style="clear: both;"></div>
 	<hr>
     {% endfor %}
-
+	
 	<!-- Pagination links -->
 	{% if paginator.total_pages > 1 %}
 	<ul class="pager">
