@@ -88,6 +88,149 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2014/06/29/top-n-numbers">Top N Numbers</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The problem is:</p>
+
+<blockquote>
+  <p>Given an arbitrarily large file and a number, \(N\), containing individual numbers on each line (e.g. 200Gb file), will output the largest \(N\) numbers, highest first. Analyse the run time/space complexity of your approach.</p>
+</blockquote>
+
+<p>The intuitive method for the top-\(N\) is to sort all numbers first, and then return the first/last \(N\) numbers. However, the time complexity of sorting is usually \(O(n \log n)\), and when the data are very big, it is impossible to do the sorting in memory directly.</p>
+
+<p>Finding the top \(N\) items can be done in \(O(n \log N) \) time, which is approximate to \( O(n) \). The key is to use a heap(in C++, it is <em>priority_queue</em>) to store the top \(N\) items during reading the huge data. <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">Heap</a> is a specialized (binary) tree-based data structure that satisfies the <em>heap property</em>: either the keys of parent nodes are always greater than or equal to those of the children and the highest key is in the root node (this kind of heap is called max heap) or the keys of parent nodes are less than or equal to those of the children and the lowest key is in the root node (min heap).</p>
+
+<p>The strategy is:</p>
+
+<ul>
+  <li>maintain an \(N\)-item long heap, and read all items iteratively.</li>
+  <li>after reading a new item from the huge data, compare it with the smallest number in heap.</li>
+  <li>if the number is greater than the smallest number in heap, then pop the top number in heap(also is the smallest one) and push this data into heap.</li>
+  <li>otherwise, continue and read a new data.</li>
+  <li>finally, dump the \(N\) items in the heap.</li>
+</ul>
+
+<p>Since the heap could mantain the <em>heap property</em> by iteself, inserting a new item won’t disorder the heap. As inserting a new item to heap requires \( O(\log N) \) time, the worst case of processing \(n\) data costs \(O(n \log N) \) time.</p>
+
+<p>Following is my C++ solution. The <em>push</em> function of <em>priority_queue</em> will invoke <a href="http://www.cplusplus.com/reference/queue/priority_queue/push/">two functions</a>: one call to push_back on the underlying container and one call to push_heap on the range that includes all the elements of the underlying container.</p>
+
+<pre><code>class Numbers {
+	public:
+		Numbers(){}
+		Numbers(long len){ genNums(len); }
+		Numbers(string file){ readNums(file); }
+
+		vector&lt;int&gt;&amp; topN(vector&lt;int&gt;&amp; nums, int N);
+		vector&lt;int&gt;&amp; topNbySort(vector&lt;int&gt;&amp; nums, int N);
+		vector&lt;int&gt;&amp; genNums(long len);
+		vector&lt;int&gt;&amp; readNums(string file);
+		void printNums();
+		void printTopN(vector&lt;int&gt;&amp; top_num);
+
+	private:
+		vector&lt;int&gt; nums;
+		vector&lt;int&gt; top_nums;
+};
+
+// Find the top N numbers by heap.
+vector&lt;int&gt;&amp; Numbers::topN(vector&lt;int&gt;&amp; nums, int N) {
+	priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt; pq; // top element is the minimum
+	pq.push(nums.front());
+	for(vector&lt;int&gt;::iterator it=nums.begin()+1;it!=nums.end();++it) {
+		if(pq.top()&lt;*it) {
+			if(pq.size()&lt;N) {
+				pq.push(*it);
+			} else {
+				pq.pop();
+				pq.push(*it);
+			}
+		}
+	}
+	while(!pq.empty()) {
+		top_nums.push_back(pq.top());
+		pq.pop();
+	}
+
+	return top_nums;
+}
+
+// Find the top N numbers using sort.
+vector&lt;int&gt;&amp; Numbers::topNbySort(vector&lt;int&gt;&amp; nums, int N) {
+	sort(nums.begin(),nums.end()-1);
+	auto rit=nums.crbegin();
+	for(int i=0;i&lt;N;++i) {
+		top_nums.push_back(*rit);
+		rit++;
+	}
+	return top_nums;
+}
+
+void Numbers::printTopN(vector&lt;int&gt;&amp; top_num) {
+	cout&lt;&lt;"The top "&lt;&lt;top_num.size()&lt;&lt;" numbers are:"&lt;&lt;endl;
+	for(auto&amp; x:top_num)
+		cout&lt;&lt;x&lt;&lt;" ";
+	cout&lt;&lt;endl;
+}
+
+vector&lt;int&gt;&amp; Numbers::genNums(long len) {
+	for(int i=0;i&lt;len;++i)
+		nums.push_back(rand()%len+1);
+
+	return nums;
+}
+
+vector&lt;int&gt;&amp; Numbers::readNums(string file) {
+	fstream fs(file,std::fstream::in);
+	if (fs.is_open()) {
+		while(!fs.eof()) {
+			int tmp;
+			fs&gt;&gt;tmp;
+			nums.push_back(tmp);
+		}
+	} else {
+		cerr&lt;&lt;"Failed to open file "&lt;&lt;file&lt;&lt;endl;
+	}
+	fs.close();
+	nums.pop_back(); // delete the last number, because it was read two times.
+	return nums;
+}
+
+void Numbers::printNums() {
+	for(auto&amp; x:nums)
+		cout&lt;&lt;x&lt;&lt;" ";
+	cout&lt;&lt;endl;
+}
+</code></pre>
+
+<p>I tested the time costs of sorting and heap when handling 10,000,000 integers respectively. Obviously the heap method is 5 times faster than sort method.</p>
+
+<pre>
+macmini:TopNumbers boyang$ time ./top_nums_sort 
+The top 10 numbers are:
+8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
+
+real	0m6.646s
+user	0m6.589s
+sys	0m0.052s
+
+macmini:TopNumbers boyang$ time ./top_nums_heap 
+The top 10 numbers are:
+9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
+
+real	0m1.182s
+user	0m1.130s
+sys	0m0.043s
+</pre>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2014/06/27/nqueens">N-Queens Problem</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
@@ -1630,86 +1773,6 @@ using above pipeline. And the confusion matrix is shown in Figure 3.</p>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-03-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#notes-ref" rel="nofollow">notes</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Jekyll-ref" rel="nofollow">Jekyll</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Github-ref" rel="nofollow">Github</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<ol>
-<li>
-<p dir="ltr"><a href="http://xthinking.com/github/2014/03/17/github_install_jekyll_mavericks.html">Procedure of installing Jekyll in Mac OS X</a></p>
-</li>
-<li>
-<p dir="ltr">Install Xcode Command line tools: <a href="http://stackoverflow.com/questions/9329243/xcode-4-4-and-later-install-command-line-tools">http://stackoverflow.com/questions/9329243/xcode-4-4-and-later-install-command-line-tools</a></p>
-</li>
-<li>
-<p dir="ltr">Clang error during install Jekyll</p>
-</li>
-</ol>
-<div dir="ltr">
-<table>
-<col width="*" />
-<tbody>
-<tr>
-<td>
-<pre>
-clang: error: unknown argument: '-multiply_definedsuppress' [-Wunused-command-line-argument-hard-error-in-future]
-clang: note: this will be a hard error (cannot be downgraded to a warning) in the future
-make: *** [redcarpet.bundle] Error 1
-
-make failed, exit code 2 </pre>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p> </p>
-<p dir="ltr">Solution:</p>
-<p> </p>
-<div dir="ltr">
-<table>
-<col width="*" />
-<tbody>
-<tr>
-	<td>
-		<pre class="cpp">
-export ARCHFLAGS="-Wno-error=unused-command-line-argument-hard-error-in-future"
-export CFLAGS=-Wunused-command-line-argument-hard-error-in-future
-export CPPFLAGS=-Qunused-arguments
-sudo -E gem install jekyll </pre>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p dir="ltr"><i>[Note]: Above is only a temporary workaround for Xcode 5.1.</i></p>
-<p> </p>
-<p dir="ltr"><b>References</b>:</p>
-<ol>
-<li>
-<p dir="ltr"><a href="http://xthinking.com/github/2014/03/17/github_install_jekyll_mavericks.html">http://xthinking.com/github/2014/03/17/github_install_jekyll_mavericks.html</a></p>
-</li>
-<li>
-<p dir="ltr"><a href="http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa">http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa</a></p>
-</li>
-<li>
-<p dir="ltr"><a href="http://forums.getpebble.com/discussion/11862/installation-error-perhaps-due-to-xcode-5-1">http://forums.getpebble.com/discussion/11862/installation-error-perhaps-due-to-xcode-5-1</a></p>
-</li>
-<li>
-<p dir="ltr"><a href="https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/">https://langui.sh/2014/03/10/wunused-command-line-argument-hard-error-in-future-is-a-harsh-mistress/</a></p>
-</li>
-<li>
-<p dir="ltr"><a href="http://stackoverflow.com/questions/9329243/xcode-4-4-and-later-install-command-line-tools">http://stackoverflow.com/questions/9329243/xcode-4-4-and-later-install-command-line-tools</a></p>
-</li>
-</ol>
-<p> </p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1746,7 +1809,7 @@ sudo -E gem install jekyll </pre>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">15</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">16</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -1804,7 +1867,7 @@ sudo -E gem install jekyll </pre>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">14</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">15</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -1897,6 +1960,8 @@ sudo -E gem install jekyll </pre>
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
+			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
 			
   			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
@@ -1914,8 +1979,6 @@ sudo -E gem install jekyll </pre>
   			<li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></li>
 			
   			<li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></li>
-			
-  			<li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></li>
 			
 			</ul>
         </div>

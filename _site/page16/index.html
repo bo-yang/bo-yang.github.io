@@ -88,6 +88,24 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2009/01/12/perl-parameters">Shell向Perl脚本中传递变量的方法</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-01-12</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><span style="border-collapse:collapse;color:#000000;font-family:song;font-size:13px;"></p>
+<div><span style="font-family:Arial;">方法一：</span></div>
+<p><span style="font-family:Arial;">In shell using export&nbsp;&nbsp;to output a variable, and&nbsp;in perl using special variable %ENV to get shell's variables.<br />i.e.:<br />--- shell box---<br />$ /bin/ksh<br /># export x=Foo<br /># perl -e 'print $ENV{"x"}'<br />-------------</span></span></p>
+<div><span style="border-collapse:collapse;color:#000000;font-size:13px;"><span style="font-family:Arial;"><br /></span></span></div>
+<div><span style="border-collapse:collapse;color:#000000;font-size:13px;"><span style="font-family:Arial;">方法二：</span></span></div>
+<div><span style="border-collapse:collapse;color:#000000;font-family:song;font-size:13px;"><span style="border-collapse:separate;font-size:12px;letter-spacing:2px;line-height:18px;"><span style="font-family:Arial;">象C一样，PERL也有存储命令行参数的数组@ARGV，可以用来分别处理各个命令行参数；与C不同的是，$ARGV[0]是第一个参数，而不是程序名本身。<br />&nbsp;&nbsp;&nbsp;&nbsp;$var = $ARGV[0]; # 第一个参数<br />&nbsp;&nbsp;&nbsp;&nbsp;$numargs = @ARGV; # 参数的个数<br />&nbsp;&nbsp;PERL中，&lt;&gt;操作符实际上是对数组@ARGV的隐含的引用，其工作原理为：<br />1、当PERL解释器第一次看到&lt;&gt;时，打开以$ARGV[0]为文件名的文件；<br />2、执行动作shift(@ARGV); 即把数组@ARGV的元素向前移动一个，其元素数量即减少了一个。<br />3、&lt;&gt;操作符读取在第一步打开的文件中的所有行。<br />4、读完后，解释器回到第一步重复。<br />&nbsp;&nbsp;例：<br />&nbsp;&nbsp;&nbsp;&nbsp;@ARGV = ("myfile1", "myfile2"); #实际上由命令行参数赋值<br />&nbsp;&nbsp;&nbsp;&nbsp;while ($line = &lt;&gt;) {<br />&nbsp;&nbsp;&nbsp;&nbsp;print ($line);<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br />&nbsp;&nbsp;将把文件myfile1和myfile2的内容打印出来。</span></span><br /></span></div>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2009/01/06/special-variable-in-perl">Perl中的特殊变量</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-01-06</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
@@ -1936,63 +1954,6 @@ by a slash, it is replaced with the value of the <b>HOME</b> variable.</p>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2008/11/20/kshell-note-1">Korn Shell(K Shell) Notes (I)</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-11-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<br />
-<h1 style="text-align:center;"><a id="_korn_Shell_Mannual_" name="_korn_Shell_Mannual_"></a> Korn Shell Notes</h1>
-<div>
-<h3><a id="1_Useful_Cmds" name="1_Useful_Cmds"></a>1 Useful Cmds</h3>
-<p><b>wc</b> - display a count of lines, words and characters in a file.<br />
-&nbsp;&nbsp; &nbsp;It can be used to count the numbers together with other commands, such as ls, who and so on.</p>
-<p><b>cut</b> - cut out selected fields of each line of a file.<br />
-&nbsp;&nbsp;&nbsp; The name of each unique user that is logged on is displayed using this command:<br />
-<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ who | cut —f1 —d' ' | sort —u</span><br style="font-family:Courier New;" /><br />
-<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;anatole</span><br style="font-family:Courier New;" /><br />
-<span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;root</p>
-<p></span><b>print</b> is a Korn shell&nbsp;specialized&nbsp;command which is similar to <span style="font-family:Courier New;">echo</span>.</p>
-<p><b>nl</b> - line numbering filter.</div>
-<div>
-<h3><a id="2_Conditional_Execution" name="2_Conditional_Execution"></a><span style="font-family:Courier New;"><span style="font-family:Verdana;">2 Conditional Execution</span></span></h3>
-<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">You can implement a simple if command by using the &amp;&amp; and || operators together like this:<br />
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;">command1 &amp;&amp; command2 || command3</span><br />
-If command1 returns true, then command2 is executed, which causes<br />
-command3 to not be executed. If command1 does not return true, then<br />
-command2 is not executed, which causes command3 to be executed.<br />
-</span></span></div>
-<div>
-<h3><a id="3_Grouping_Commands" name="3_Grouping_Commands"></a>3 Grouping Commands</h3>
-<p>Commands enclosed in {} are executed in current shell. If</div>
-<div><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ echo "This is file temp:" ; cat temp | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 falls mainly on the plain</span></div>
-<div>
-<div style="padding:1em 0;text-align:center;" id="ozct">
-<div style="text-align:left;">then by using {}s, the output will be:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$ { echo "This is file temp:"; cat temp ; } | nl</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;1 This is file temp:</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;2 The rain in Spain</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;3 falls mainly on the plain</span><br />There must be whitespace after the opening {, and commands within the {}'s must be terminated with a semi-colon.</p>
-<p>Commands<br />
-enclosed in () are executed in a subshell. Subshells are generated<br />
-whenever you enclose commands in ()'s, perform command substitution,<br />
-for background processes, and for coprocesses.A subshell is a separate<br />
-copy of the parent shell, so variables, functions, and aliases from the<br />
-parent shell are available to the subshell. However, subshells cannot<br />
-change the value of parent shell variables, functions, or aliases.</div>
-<p><img src="http://docs.google.com/File?id=dd6nw3mt_104f3ccnmc3_b" style="width:501px;height:609px;" /></div>
-</div>
-<h3><a id="4_Redirecting_Standard_Output" name="4_Redirecting_Standard_Output"></a><span style="font-family:Courier New;"></span><span style="font-family:Courier New;"><span style="font-family:Verdana;">4 Redirecting Standard Output</span></span></h3>
-<h3><span style="font-family:Courier New;"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:Courier New;"><span style="font-family:Verdana;">By using the &gt; symbol, the standard output of a command can be redirected to a file, instead of your terminal.</p>
-<p>You can also use the &gt; command to create an empty file:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ &gt; tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ ls —s tmp</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;0 tmp</span><br />This is equivalent to <span style="font-family:Courier New;">touch tmp</span>.</p>
-<p>Standard output can be appended to a file by using the <b>&gt;&gt;</b> redirect operator.</p>
-<p>Standard output is closed with the <b><span style="font-family:Courier New;">&gt;&amp;-</span></b> redirect operator:<br /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$ echo "This is going nowhere" &gt;&amp;-</span><br style="font-family:Courier New;" /><span style="font-family:Courier New;">&nbsp;&nbsp; &nbsp;$</span></p>
-<p></span></span></p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -2029,7 +1990,7 @@ change the value of parent shell variables, functions, or aliases.</div>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">15</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">16</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -2087,7 +2048,7 @@ change the value of parent shell variables, functions, or aliases.</div>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">14</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">15</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -2180,6 +2141,8 @@ change the value of parent shell variables, functions, or aliases.</div>
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
+			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
 			
   			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
@@ -2197,8 +2160,6 @@ change the value of parent shell variables, functions, or aliases.</div>
   			<li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></li>
 			
   			<li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></li>
-			
-  			<li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></li>
 			
 			</ul>
         </div>

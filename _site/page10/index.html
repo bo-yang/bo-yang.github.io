@@ -88,6 +88,35 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2010/11/22/Your-browser-will-not-accept-this-data-because-of-its-Content-Encoding">Your browser will not accept this data because of its Content-Encoding</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-11-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Browser-ref" rel="nofollow">Browser</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>今天打算在某个网站下载一个.bz2的文件时，遇到这样一个问题：</p>
+<p><span>Your browser will not accept this data, /mirror.9grid.fr/plan9-1290391203/plan9.iso.bz2, because of its Content-Encoding.</span><span><br /></span><span>Its Content-Type is application/octet-stream, and Content-Encoding is bzip2.</span><span><br /></span><span>Your browser accepts Content-Type: */*, image/png, text/plain, text/html, application/xhtml+xml, application/xml.</span><span><br /></span><span>Your browser accepts Content-Encoding: sdch, deflate, gzip.</span></p>
+<p>我的浏览器是Chrome9 beta。</p>
+<p>&nbsp;</p>
+<p>Google之后看到这样一个Firefox的解决方法：（原文&nbsp;<a href="http://blog.1911census.co.uk/2009/01/content-encoding-error/">http://blog.1911census.co.uk/2009/01/content-encoding-error/</a>）</p>
+<p>&nbsp;</p>
+<p id="zw-12c71de42d3UCbog3916c">&nbsp;</p>
+<p>&nbsp;</p>
+<p>1) In the address bar type &ldquo;about:config&rdquo; (but without the inverted commas)<br />2) Tell it that you will be careful, Promise!!<br />3) In the filter type encoding<br />4) There should be one option reading &ldquo;network.http.accept-encoding&rdquo;<br />5) Click in the value column and type &ldquo;true&rdquo; (again without the inverted commas)<br />6) This should fix it and you can search to your hearts content.</p>
+<p>&nbsp;</p>
+<p>试了一下，果然可行。</p>
+<p>&nbsp;</p>
+<p>然后又搜索针对Chrome的类似的解决方案，半小时之后仍然无果 &mdash;&mdash; Chrome里没有&ldquo;about:config&rdquo;的支持。好在在&nbsp;<a href="http://www.surfchen.org/archives/582">http://www.surfchen.org/archives/582</a>&nbsp;看到这样一句话：&ldquo;chrome支持sdch压缩，另外不再支持bzip2压缩&rdquo;，很是郁闷。</p>
+<p>&nbsp;</p>
+<p>期待Chrome能早日支持&ldquo;about:config&rdquo;。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2010/11/16/debugging-perl">Debugging Perl</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-11-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
@@ -622,42 +651,6 @@ rm -rf $realplayer
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/08/03/use-pipe-in-expect">Tcl/Expect中利用exec调用管道"|"和awk的注意事项</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-08-03</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Tcl/Expect中利用exec调用稍微复杂的shell命令时，经常会遇到一些小问题，常见的就是pipeline(|)和awk。</p>
-<p>&nbsp;</p>
-<p>Tcl/Expect调用多个shell命令并使用|将其串接在一起时，需要注意的是必须在"|"前后加上空格" "，否则tcl/Expect会报奇怪的错。</p>
-<p>&nbsp;</p>
-<p>Tcl/Expect调用awk命令时，需要把awk的' '中的命令改为用" "，并把$1, $2之类的变量改为/$1, /$2。</p>
-<p>&nbsp;</p>
-<p>下面的ksh命令判断test_process是否在运行：</p>
-<p>
-<pre>ps -fu bonny|grep -v ps|grep MMCAP|grep -v grep|awk '{print $2}'</pre>
-<p>&nbsp;</p>
-<p>改为Tcl/Expect后，为：</p>
-<p>
-<pre>exec ps -fu $myname | grep -v ps | grep COOLrunMMCAP | grep -v grep | awk "{print /$2}"</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>另外，&nbsp;<a href="http://www.linuxquestions.org/questions/linux-software-2/ksh-tcl-173092/">http://www.linuxquestions.org/questions/linux-software-2/ksh-tcl-173092/</a>&nbsp;列出了一些ksh命令转换为tcl语句时经常遇到的问题（本人未曾验证过，请谨慎使用）。</p>
-<p>&nbsp;</p>
-<p>Here's some conversion rules that I have proven, if anyone has any more info ( in any fashion ) , please advise.</p>
-<p>-----------------------------------------------------------------<br />Rule: Remove "<br />-----------------------------------------------------------------<br />ksh: cat *.passwd 2&gt;/dev/null | cut -d":" -f1 | sort | uniq<br />tcl: exec cat *.passwd 2&gt;/dev/null | cut -d: -f1 | sort | uniq<br />-----------------------------------------------------------------</p>
-<p>-----------------------------------------------------------------<br />Rule: Replace '(..$1..)' with "{../$1..}"<br />-----------------------------------------------------------------<br />ksh: ps -eaf | awk '(print $1}' | grep $1 2&gt;&amp;1<br />tcl: exec ps -eaf | awk "{print /$1}" | grep $user_login_to_test<br />-----------------------------------------------------------------</p>
-<p>-----------------------------------------------------------------<br />Rule: Replace "..." with {...}<br />-----------------------------------------------------------------<br />ksh: grep "^$(user_login:" /etc/passwd /etc/shadow 2&gt;&amp;1<br />tcl: exec grep {^$user_login:} /etc/passwd /etc/shadow<br />-----------------------------------------------------------------</p>
-<p>-----------------------------------------------------------------<br />Rule: Replace '...' with "..." or {...}<br />-----------------------------------------------------------------<br />ksh: grep 'Version' user.tcl<br />tcl: exec grep {Version} user.tcl<br />tcl: exec grep "Version" user.tcl<br />-----------------------------------------------------------------</p>
-<p>&nbsp;</p>
-<p>还有就是<a href="http://wiki.tcl.tk/1039">http://wiki.tcl.tk/1039</a>列出了使用exec的一些常见问题。</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -694,7 +687,7 @@ rm -rf $realplayer
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">15</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">16</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -752,7 +745,7 @@ rm -rf $realplayer
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">14</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">15</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -845,6 +838,8 @@ rm -rf $realplayer
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
+			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
 			
   			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
@@ -862,8 +857,6 @@ rm -rf $realplayer
   			<li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></li>
 			
   			<li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></li>
-			
-  			<li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></li>
 			
 			</ul>
         </div>

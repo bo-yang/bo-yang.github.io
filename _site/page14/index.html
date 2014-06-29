@@ -88,6 +88,58 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2009/08/09/fedora-10-mp3-support">Fedora 10 MP3 Support</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-08-09</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><a title="Fedora 10 MP3 Support"><br />
+</a></p>
+<p><a title="Fedora 10 MP3 Support"></p>
+<h2>Fedora 10 MP3 Support</h2>
+<p></a></p>
+<div id="node-92" class="node">
+<div class="content">
+<p>Fedora 10 does not come with built-in MP3 support. To get MP3 support with Fedora, you can use RPM Fusion's YUM repositories to download MP3 enabled RPMs.</p>
+<p>&nbsp;</p>
+<p><strong>Enable RPM Fusion</strong></p>
+<p>First, install RPM Fusion's free and nonfree YUM repositories. For detailed information about installing RPM Fusion, see:&nbsp;<a title="http://rpmfusion.org/Configuration" href="http://rpmfusion.org/Configuration">http://rpmfusion.org/Configuration</a></p>
+<p><code>su -c "rpm -Uvh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm"</code></p>
+<p><code>su -c "rpm -Uvh http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm"</code></p>
+<p>&nbsp;</p>
+<p><strong>Install GStreamer</strong></p>
+<p>Next, run this command to get the&nbsp;<a title="GStreamer" href="http://www.gstreamer.net/">gstreamer</a>&nbsp;plugins.</p>
+<p><code>su -c "yum install gstreamer gstreamer-plugins-bad gstreamer-plugins-ugly"</code></p>
+<p>&nbsp;</p>
+<p><strong>Install Applications and Libraries</strong></p>
+<p>For&nbsp;<a title="Amarok" href="http://amarok.kde.org/">Amarok</a>&nbsp;with MP3 support, install these packages:</p>
+<p><code>su -c "yum install amarok phonon-backend-gstreamer"</code></p>
+<p>For&nbsp;<a title="MPlayer" href="http://www.mplayerhq.hu">MPlayer</a>&nbsp;with MP3 support, install these RPMs:</p>
+<p><code>su -c "yum install mplayer gnome-mplayer gnome-mplayer-common mencoder"</code></p>
+<p>For&nbsp;<a title="XMMS" href="http://sourceforge.net/projects/xmms/">XMMS</a>&nbsp;with MP3 support, install the following:</p>
+<p><code>su -c "yum install xmms xmms-mp3"</code></p>
+<p>For&nbsp;<a title="Xine" href="http://xinehq.de/">xine</a>&nbsp;with MP3 support, install these RPMs:</p>
+<p><code>su -c "yum install xine xine-lib-extras-nonfree"</code></p>
+<p>To create MP3s with&nbsp;<a href="http://lame.sourceforge.net">LAME</a>, install lame and lame-mp3x.</p>
+<p><code>su -c "yum install lame lame-mp3x"</code></p>
+<p>&nbsp;</p>
+<p>Alternatively, run this command to install everything:</p>
+<p><code>su -c "yum install xmms xine mplayer amarok xmms-mp3 gstreamer phonon-backend-gstreamer gstreamer-plugins-bad gstreamer-plugins-ugly xine-lib-extras-nonfree mplayer gnome-mplayer-common mencoder gnome-mplayer lame lame-mp3x"</code></p>
+<p>&nbsp;</p>
+<p>[http://hacktux.com/fedora/mp3]</p>
+<p>&nbsp;</p>
+<p>PS: To install VLC media player:</p>
+<p>su -c "yum install vlc"</p>
+</div>
+</div>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2009/07/27/trip-in-us">车·行·记</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-07-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
@@ -524,74 +576,6 @@ opposed to its value, into a procedure.</span></pre>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/03/05/print-socket-msg">PERL打印收到的Socket消息</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-03-05</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>&nbsp;</p>
-<div>
-<h1>PERL打印收到的Socket消息</h1>
-<div>利用Perl的Select(),sysread()和syswrite()收到的消息将以二进制的形式存储到$buffer中，因此如果直接打印$buffer的内容将得到乱码。要将二进制内容转换为十六进制数串，则必须使用unpack()函数，即：</div>
-<div>my $hexstr=unpack("H*",$buffer);</div>
-<div>而此时如果打印$hexstr将得到一系列的十六进制数串（数串的长度是接收到的字节数的两倍），仍然难以阅读。因此，有必要将十六进制数串每两个数字进行拆分并加前缀&ldquo;0x&rdquo;以便阅读。此时需要借助正则表达式进行模式匹配，方法为:</div>
-<div>my @msg=($hexstr =~ m/../g);</div>
-<div>其中.用以匹配一个字符。</div>
-<div></div>
-<div>示例代码如下：</div>
-<div>
-<pre>##################################################################
-#               DumpMsg
-#
-# Dump received message in hex mode.
-#
-# Format: DumpMsg($type, $msglen, $msg);
-#
-# input:        $type= 'MSC' | 'BSC'
-#               $msglen= msg length
-#               $msg= received msg
-#
-# output:       Print received msg to stderr and log in hex type
-##################################################################
-sub DumpMsg {
-    my $type=$_[0];
-    my $msglen=$_[1];
-    CoolMisc::coolprint("Received message from $type: $msglen bytes/n" );
-    LogPrint("Received message from $type: $msglen bytes/n");
-    # change the received message from bin to hex string.
-    # my @msg=split(/../,unpack("H*", $_[2]),$msglen);
-    my $tmp = unpack("H*", $_[2]);
-    my @msg = ( $tmp =~ m/../g );
-    # print the message to stdout and log file.
-    for(my $i=0;$i&lt;$msglen;$i++) {
-        print "0x$msg[$i] ";
-        syswrite($ROUTELOG,"0x$msg[$i] ");
-        if ($i%8 ==7) {
-            print "/n";
-            syswrite($ROUTELOG,"/n");
-        }
-    }
-    print "/n";
-    syswrite($ROUTELOG,"/n");
-}
-</pre>
-<p>&nbsp;</p></div>
-<div></div>
-<div></div>
-<div>参考文献：</div>
-<div>1. Perl Doc-Data::Numbers&nbsp;<a href="http://perl.active-venture.com/pod/perlfaq4-datanumber.html">http://perl.active-venture.com/pod/perlfaq4-datanumber.html</a></div>
-<div>2. Perl函数pack/unpack:<a href="http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html">http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html</a>&nbsp;</div>
-<div>3.&nbsp;<span><strong><a href="http://stackoverflow.com/questions/372370/how-can-i-split-a-string-into-chunks-of-two-characters-each-in-perl">How can I split a string into chunks of two characters each in Perl?</a></strong></span></div>
-<div><strong><br /></strong></div>
-</div>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -628,7 +612,7 @@ sub DumpMsg {
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">15</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">16</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -686,7 +670,7 @@ sub DumpMsg {
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">14</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">15</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -779,6 +763,8 @@ sub DumpMsg {
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
+			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
 			
   			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
@@ -796,8 +782,6 @@ sub DumpMsg {
   			<li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></li>
 			
   			<li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></li>
-			
-  			<li><span>2014-03-29</span> &raquo; <a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></li>
 			
 			</ul>
         </div>
