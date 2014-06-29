@@ -15,7 +15,7 @@ author: Bo Yang
 
 The problem is:
 
-> Given an arbitrarily large file and a number, \\(N\\), containing individual numbers on each line (e.g. 200Gb file), will output the largest N numbers, highest first. Analyse the run time/space complexity of your approach.
+> Given an arbitrarily large file and a number, \\(N\\), containing individual numbers on each line (e.g. 200Gb file), will output the largest \\(N\\) numbers, highest first. Analyse the run time/space complexity of your approach.
 
 The intuitive method for the top-\\(N\\) is to sort all numbers first, and then return the first/last \\(N\\) numbers. However, the time complexity of sorting is usually \\(O(n \log n)\\), and when the data are very big, it is impossible to do the sorting in memory directly.
 
@@ -125,20 +125,20 @@ void Numbers::printNums() {
 
 I tested the time costs of sorting and heap when handling 10,000,000 integers respectively. Obviously the heap method is 5 times faster than sort method.
 
-<pre>
-macmini:TopNumbers boyang$ time ./top_nums_sort 
-The top 10 numbers are:
-8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
 
-real	0m6.646s
-user	0m6.589s
-sys	0m0.052s
+    macmini:TopNumbers boyang$ time ./top_nums_sort 
+    The top 10 numbers are:
+    8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
 
-macmini:TopNumbers boyang$ time ./top_nums_heap 
-The top 10 numbers are:
-9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
+    real	0m6.646s
+    user	0m6.589s
+    sys	0m0.052s
 
-real	0m1.182s
-user	0m1.130s
-sys	0m0.043s
-</pre>
+    macmini:TopNumbers boyang$ time ./top_nums_heap 
+    The top 10 numbers are:
+    9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
+
+    real	0m1.182s
+    user	0m1.130s
+    sys	0m0.043s
+
