@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>How to change the character case in ksh?</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-12-16 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-12-16 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>1. To change lower case characters to upper case, you can</p></p>
+	<div class="post paper">
+		<p>1. To change lower case characters to upper case, you can</p></p>
 <pre>echo abc | tr &quot;[a-z]&quot; &quot;[A-Z]&quot;</pre>
 <p>
 or&nbsp;</p></p>
@@ -103,6 +101,7 @@ or&nbsp;</p></p>
 <p><span style="font-family:monospace;"><span style="white-space:pre;"></span></span>
 <pre>echo ABC | tr '[:upper:]' '[:lower:]'</pre></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Error "ldd:  execution failed due to signal 9"</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2012-06-04 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#ldd-ref" rel="nofollow">ldd</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#signal-ref" rel="nofollow">signal</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#swap-ref" rel="nofollow">swap</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2012-06-04 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#ldd-ref" rel="nofollow">ldd</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#signal-ref" rel="nofollow">signal</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#swap-ref" rel="nofollow">swap</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Today, one of my folks met a very weird problem and finally he asked me for help. The issue was, when running command "ldd CDNap" on a Solaris 9 server(AP11), following error would show up:</p>
+	<div class="post paper">
+		<p>Today, one of my folks met a very weird problem and finally he asked me for help. The issue was, when running command "ldd CDNap" on a Solaris 9 server(AP11), following error would show up:</p>
 <p><code>AP11: ldd CDNap<br />
 ldd: CDNap: execution failed due to signal 9</code></p>
 <p>However, when running this command on another Solaris 9 server(ap15), it worked well.</p>
@@ -120,6 +118,7 @@ ap15:root &gt; uname -a
 SunOS coolap10n 5.9 Generic_122300-61 sun4u sparc SUNW,UltraAX-i2</pre>
 <p>It seems it's time for such old Solaris servers to retire.</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

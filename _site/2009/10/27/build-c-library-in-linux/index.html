@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2009-10-27 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2009-10-27 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>本文根据<a href="http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487">http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487</a>的回复总结而成。</p>
+	<div class="post paper">
+		<p>本文根据<a href="http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487">http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487</a>的回复总结而成。</p>
 <p>&nbsp;</p>
 <p>1. 共享库</p>
 <p>&nbsp;</p>
@@ -105,6 +103,7 @@
 <p>3. 动态库 </p>
 <p>创建就是 gcc -fPIC -share -o mylib.so lib.c&nbsp;<br />调用也分两种方法&nbsp;<br />一种方法是 gcc -o test test.c ./libmylib.so (注意这里跟的是动态库的路径 )<br />第二种方法是使用动态库的函数 你man dlopen看下那几个函数看下就知道了就不多说了</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

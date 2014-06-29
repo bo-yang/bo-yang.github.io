@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>如何判断一个(压缩)文件的类型，以及zcat/gzcat</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-05-20 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-05-20 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>恰似&ldquo;一师是个好学校&rdquo;，dd是个好工具&mdash;&mdash;只消用它逐字copy出某个文件第一个block的内容，就可以判断出该文件的类型！！！</p>
+	<div class="post paper">
+		<p>恰似&ldquo;一师是个好学校&rdquo;，dd是个好工具&mdash;&mdash;只消用它逐字copy出某个文件第一个block的内容，就可以判断出该文件的类型！！！</p>
 <p>&nbsp;</p>
 <p>
 <pre>bjbldd&gt;1&gt; dd if=MMEgolden.tar bs=512 count=1 &gt; dd_tmp
@@ -126,6 +124,7 @@ ${ZCAT} ${TMPDIR}/ngn_platform.cpio.Z | /bin/cpio -idmvu  -H odc ${SAT_CPIO_FLAG
 <p>&nbsp;</p>
 <p>貌似cpio的用法也很强大哦～</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

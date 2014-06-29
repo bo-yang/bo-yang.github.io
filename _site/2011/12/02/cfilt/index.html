@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>C++filt</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-12-02 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-12-02 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>c++flit decodes(demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
+	<div class="post paper">
+		<p>c++flit decodes(demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
 <p>You may use c++filt to demangle the symbols.<br />
 [sourcecode language="text"]<br />
 $ c++filt _ZNSt8ios_base4InitD1Ev<br />
@@ -98,6 +96,7 @@ std::ios_base::Init::~Init()<br />
 <p>You may try adding-lstdc++ to your link command to resolve the issue.</p>
 <p><a href="http://sourceware.org/binutils/docs-2.16/binutils/c_002b_002bfilt.html"><strong>c++filt manual</strong></a> </p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

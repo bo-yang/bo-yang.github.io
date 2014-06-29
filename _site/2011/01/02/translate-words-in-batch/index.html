@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>利用在线词典批量查询英语单词</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-01-02 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-01-02 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>进来遇到很多英语生词，工具书上给的解释错误百出，而很多在线词典不但可以给出某个单词的解释，而且有大量的示例，因此猜想利用在线词典批量查询这些单词。怎么实现呢？</p>
+	<div class="post paper">
+		<p>进来遇到很多英语生词，工具书上给的解释错误百出，而很多在线词典不但可以给出某个单词的解释，而且有大量的示例，因此猜想利用在线词典批量查询这些单词。怎么实现呢？</p>
 <p>首要问题是如何自动获取某个单词的解释。搜索之后，发现可以用curl实现，如</p>
 <p>
 <pre>curl -s "http://www.google.com/dictionary?aq=f&amp;langpair=en|en&amp;q="$1"&amp;hl=en" | html2text -nobs | sed '1,/^ *Dictionary/]/d' | head -n -5 | less</pre>
@@ -1107,6 +1105,7 @@ while (my $nextline=&lt;EXP&gt;) {
 close(EXP);</pre>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

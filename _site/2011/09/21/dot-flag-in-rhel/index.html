@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Dot(.) after the file permission flags in Redhat</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-09-21 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-09-21 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Phenomenon:</p>
+	<div class="post paper">
+		<p>Phenomenon:</p>
 <p>
 <pre>$ rsh coolnjmcl033 'ls -l /opt/cool/tools/lib/COOLvirtenv'
 ls: cannot access /opt/cool/tools/lib/COOLvirtenv: Permission denied</pre></p>
@@ -111,6 +109,7 @@ According to&nbsp;<a href="http://www.redhat.com/archives/rhelv6-list/2010-Decem
 </span></p>
 <p>In order to make files located on one server can be accessied by other servers, SELinux should be disabled. In order to disable SELinux, &nbsp;refer to<a href="http://www.crypt.gen.nz/selinux/disable_selinux.html"> How to Disable SELinux</a>.</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

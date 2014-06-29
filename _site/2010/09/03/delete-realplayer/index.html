@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Linux下如何删除已安装的realplayer</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2010-09-03 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2010-09-03 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>由于realplayer在Linux下只能通过realplay*.bin来安装，装好后不能通过yum或rpm卸载。现在的realplayer已然成为名副其实的垃圾软件，Linux下尤其如此。</p>
+	<div class="post paper">
+		<p>由于realplayer在Linux下只能通过realplay*.bin来安装，装好后不能通过yum或rpm卸载。现在的realplayer已然成为名副其实的垃圾软件，Linux下尤其如此。</p>
 <p>&nbsp;</p>
 <p>卸载它的办法就是通过locate realplay命令找到所有realplay相关的文件，然后统统删除之！</p>
 <p>&nbsp;</p>
@@ -100,6 +98,7 @@ rm -rf $realplayer
 </pre>
 <p> </span></span></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

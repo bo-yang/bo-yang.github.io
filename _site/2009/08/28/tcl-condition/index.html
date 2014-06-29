@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>TCL判断条件</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2009-08-28 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2009-08-28 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>编写TCL代码时遇要写一个if判断条件，很简单的一个语句，结果却费了很大力气才搞定。要判断的是，如果执行info exists成功而且某全局数组C的某个成员大于0，正确的语句为：</p>
+	<div class="post paper">
+		<p>编写TCL代码时遇要写一个if判断条件，很简单的一个语句，结果却费了很大力气才搞定。要判断的是，如果执行info exists成功而且某全局数组C的某个成员大于0，正确的语句为：</p>
 <p>&nbsp;</p>
 <p>if { [info exists C(AP${AP}cdnnoperap)] &amp;&amp; $C(AP${AP}cdnnoperap &gt; 0 } { }</p>
 <p>&nbsp;</p>
@@ -106,6 +104,7 @@
 <p>看来TCL的语法确实还是很有自己的特点的。往后要多加注意。</p>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

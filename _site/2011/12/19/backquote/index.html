@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Backquotes in Ksh here document</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-12-19 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#ksh-ref" rel="nofollow">ksh</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-12-19 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#ksh-ref" rel="nofollow">ksh</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>When the shell encounters a string between backquotes</p>
+	<div class="post paper">
+		<p>When the shell encounters a string between backquotes</p>
 <pre>     `cmd`</pre>
 <p>it executes cmd and replaces the backquoted string with the standard output of cmd, with any trailing newlines deleted. Quoting inside backquoted commands is somewhat complicated, mainy because the same token is used to start and to end a backquoted command. As a consequence, to nest backquoted commands, the backquotes of the inner one have to be escaped using backslashes, e.g.<br />
 <code><br />
@@ -105,6 +103,7 @@ IOTA</code></p>
 <li> <a href="http://www.mpi-inf.mpg.de/~uwe/lehre/unixffb/quoting-guide.html#para:sh-backquotes">A Guide to Unix Shell Quoting</a></li>
 </ol>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

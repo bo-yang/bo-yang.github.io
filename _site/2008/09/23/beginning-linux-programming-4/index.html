@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>《Beiginning Linux programming || Linux 程序设计》读书笔记(四)</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-09-23 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-09-23 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <div>(21) Trap</div>
+	<div class="post paper">
+		<div>(21) Trap</div>
 <p>&nbsp;&nbsp; &nbsp;The trap command is used to specify the<br />
 actions to take on receipt of signals.&nbsp;A common use is to tidy up a<br />
 script when it is interrupted.<br />&nbsp;&nbsp; &nbsp;The trap command is passed the action to take, followed by the signal name (or names) to trap on:
@@ -161,6 +159,7 @@ The following table summarizes the options:
 <p>Example1:<br /><span style="background-color:rgb(204,204,204);">#!/bin/sh</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);"># Ask some questions and collect the answer</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --title "Questionnaire" --msgbox "Welcome to my simple survey" 9 18</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --title "Confirm" --yesno "Are you willing to take part?" 9 18</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">if [ "$?" != 0 ]; then</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; dialog --infobox "Thank you anyway" 5 20</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; sleep 2</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; dialog --clear</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; exit 0</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">fi</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --title "Questionnaire" --inputbox "Please enter your name" 9 30 2&gt;_1.txt</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">Q_NAME=$(cat _1.txt)</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --menu "$Q_NAME, what music do you like best?" 15 30 4 1 "Classical" 2 "Jazz" 3 "Country" 4 "Other" 2&gt;_1.txt</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">Q_MUSIC=$(cat _1.txt)</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">if [ "$Q_MUSIC" = "1" ]; then</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; dialog --title "Likes Classical" --msgbox "Good choice!" 12 25</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">else</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; dialog --title "Doesn’t like Classical" --msgbox "Shame" 12 25</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">fi</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">sleep 2</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --clear</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">exit 0</span></p>
 <p>Explanation:<br />&nbsp;&nbsp; &nbsp;You start with a simple welcome screen, before asking the user if he will take part using the simple <span style="font-family:Courier New;">--yesno</span> option of dialog. You use the <b><span style="font-family:Courier New;color:rgb(0,0,255);">$?</span></b> variable to check the reply. If he agreed, you then get his name, store it in a variable <span style="font-family:Courier New;">Q_NAME</span>, and ask what sort of music he likes, using the --menu option of dialog. By storing the numerical output in the variable <span style="font-family:Courier New;">Q_MUSIC</span>, you can see what he answered, and give an appropriate response.</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

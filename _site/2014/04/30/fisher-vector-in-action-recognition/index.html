@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Action Recognition with Fisher Vectors</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2014-04-30 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Machine Learning-ref" rel="nofollow">Machine Learning</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Fisher Vector-ref" rel="nofollow">Fisher Vector</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#SVM-ref" rel="nofollow">SVM</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2014-04-30 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Machine Learning-ref" rel="nofollow">Machine Learning</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Fisher Vector-ref" rel="nofollow">Fisher Vector</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#SVM-ref" rel="nofollow">SVM</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(<a href="http://crcv.ucf.edu/data/UCF101.php">http://crcv.ucf.edu/data/UCF101.php</a>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. </p>
+	<div class="post paper">
+		<p>This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(<a href="http://crcv.ucf.edu/data/UCF101.php">http://crcv.ucf.edu/data/UCF101.php</a>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. </p>
 
 <p>You can find my Matlab code from <a href="https://github.com/bo-yang">my GitHub Channel</a>:</p>
 
@@ -203,6 +201,7 @@ using above pipeline. And the confusion matrix is shown in Figure 3.</p>
 </ol>
 
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

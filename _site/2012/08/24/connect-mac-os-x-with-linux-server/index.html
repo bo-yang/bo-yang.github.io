@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Connect Mac OS X with Linux Server</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2012-08-24 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Mac OS-ref" rel="nofollow">Mac OS</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#VNC-ref" rel="nofollow">VNC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#X11-ref" rel="nofollow">X11</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2012-08-24 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Mac OS-ref" rel="nofollow">Mac OS</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#VNC-ref" rel="nofollow">VNC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#X11-ref" rel="nofollow">X11</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>There are many ways to connect Mac OS X with Linux by command line. However, connecting them with GUI is not so easy. I tried two ways, but none of them work perfectly and each of them has both advantages and disadvantages.</p>
+	<div class="post paper">
+		<p>There are many ways to connect Mac OS X with Linux by command line. However, connecting them with GUI is not so easy. I tried two ways, but none of them work perfectly and each of them has both advantages and disadvantages.</p>
 <p>The first way I tried was VNC. <a href="http://sourceforge.net/projects/cotvnc/">Chicken of the VNC</a> was said to be the best VNC client under Mac OS X, unfortunately, I haven't make it work, even follow the tips of webpage <a id="using_vnc_on_mac_os_x" name="using_vnc_on_mac_os_x"></a><a href="http://www.cs.vassar.edu/sysnews/vnc/osx">Using VNC on Mac OS X</a>. I used realvnc. The first step is to configure ssh. I followed the tips on webpage <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>.  In the Linux server, after installing openssh, edit the file <code>/etc/ssh/ssh_config</code> and make sure</p>
 <pre>ForwardAgent yes
 ForwardX11 yes
@@ -102,6 +100,7 @@ ForwardX11Trusted yes</pre>
 <p>The other method is also based on ssh, therefore the ssh should also be configured in the Linux side. The only difference is X11 should be installed in Mac OS X. The above<br />
 ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&gt;". After login to Linux in terminal, run command "<code>gnome-session</code>"(this requires Gnome be installed in Linux server). In this way, remote Linux programs runs as local Mac applications. For more info, please refer to <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>. The disadvantage of using this way is, X11 is not reliable in Mac OS X and it may crash at any time.</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

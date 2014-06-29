@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Tips about Regular Expression</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2012-11-17 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2012-11-17 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <ol>
+	<div class="post paper">
+		<ol>
 <li>In Vim, greedy matching is used by default. In order to use non-greedy matching, you can use \{-}, or \{-n,m}, such as: :/Q.\{-0,200}[IL].\{-0,2000}FF.</li>
 <li>In Perl, default matching is also greedy. To use non-greedy matching, please change <code>*</code> , <code>+</code> , <code>?</code> , and<code>{}</code> into <code>*?</code> , <code>+?</code> , <code>??</code> , and <code>{}?</code> , respectively.</li>
 <li>To count the number of matching in Vim, you can use command ":%s/&lt;pattern&gt;//g". After get the number of matches, then execute ":u" to undo the changes.</li>
@@ -105,6 +103,7 @@
 </ol>
 <p> </p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

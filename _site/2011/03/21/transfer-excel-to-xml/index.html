@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Excel文件转换为XML以及Linux文件编码格式转换</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-03-21 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-03-21 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>今天需要将多个Excel文档转换为XML&#26684;式，本打算用MS Office自带的另存为XML文件的功能，结果转换成MS Office2003 XML之后的文件就是一坨屎！Office 2007自带的XML文档转换的功能也TMD超级繁琐，根据帮助手册自己建了.xsd文件导入到Excel之后也无法导出XML数据，白白浪费了时间。</p>
+	<div class="post paper">
+		<p>今天需要将多个Excel文档转换为XML&#26684;式，本打算用MS Office自带的另存为XML文件的功能，结果转换成MS Office2003 XML之后的文件就是一坨屎！Office 2007自带的XML文档转换的功能也TMD超级繁琐，根据帮助手册自己建了.xsd文件导入到Excel之后也无法导出XML数据，白白浪费了时间。</p>
 <p>后来Google到了<a href="http://www.meadinkent.co.uk/xl_xml1.htm">这篇文章</a>。文中提供了现成的VBA源代码，稍微修改一下即可拿来使用（中文注释为本人所加）：</p>
 <p>
 <pre>'Attribute VB_Name = &quot;XL_to_XML&quot;
@@ -253,6 +251,7 @@ End Function
 <p>　　iconv -f GBK -t UTF-8 file1 -o file2</p>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

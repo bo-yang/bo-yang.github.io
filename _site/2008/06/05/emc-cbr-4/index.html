@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>EMC-CBR故障诊断研究（四）</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-06-05 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-06-05 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p><font size="3"><span><span style="font-size:12pt;line-height:173%;font-family:宋体;">1、系统组成</span></span><span></span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;"><br />&nbsp;&nbsp; 本系统是由</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">组成的混合系统。系统结构如下图</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;">所示。系统的核心是推理机，推理机根据用户输入的故障描述，既可以将故障描述转化为新的案例，从而进行对案例库进行操作；又可以将故障描述转化为事实，对规则库进行操作。但</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的地位并不是等同的，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起主导作用，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">对</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起监督作用，二者的推理结果由综合机制进行综合。本系统采用友好的人机界面，普通用户输入故障描述后，系统经推理后给出诊断建议，并对给出的建议进行解释。另外，为了便于对系统知识（案例库、知识库和事实库）进行管理，系统可以由知识工程师进行修改。</span></font></p>
+	<div class="post paper">
+		<p><font size="3"><span><span style="font-size:12pt;line-height:173%;font-family:宋体;">1、系统组成</span></span><span></span><span lang="EN-US" style='font-size:12pt;line-height:173%;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;"><br />&nbsp;&nbsp; 本系统是由</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">组成的混合系统。系统结构如下图</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span><span style="font-size:12pt;font-family:宋体;">所示。系统的核心是推理机，推理机根据用户输入的故障描述，既可以将故障描述转化为新的案例，从而进行对案例库进行操作；又可以将故障描述转化为事实，对规则库进行操作。但</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">和</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">的地位并不是等同的，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起主导作用，</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>RBR</span><span style="font-size:12pt;font-family:宋体;">对</span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'>CBR</span><span style="font-size:12pt;font-family:宋体;">起监督作用，二者的推理结果由综合机制进行综合。本系统采用友好的人机界面，普通用户输入故障描述后，系统经推理后给出诊断建议，并对给出的建议进行解释。另外，为了便于对系统知识（案例库、知识库和事实库）进行管理，系统可以由知识工程师进行修改。</span></font></p>
 <p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3"><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/系统结构.JPG" alt="" /></font></p>
 <p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">2、案例表示与存储</font></p>
 <p align="left" style="text-align:left;text-indent:22.7pt;line-height:22pt;" class="MsoNormal"><font size="3">参见博文&ldquo;EMC-CBR故障诊断研究（一、二）&rdquo;</font></p>
@@ -139,6 +137,7 @@
 <p><font size="3"><span style="font-size:12pt;font-family:宋体;"></span><span lang="EN-US" style='font-size:12pt;font-family:"Times New Roman", "serif";'></span></font></p>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Fedora 12升级Chromium遇到的问题及解决方法</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2009-12-23 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2009-12-23 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>自打装好Fedora 12之后就发现chromium不能用rpm安装了，安装时总是缺这少那，很是费劲，于是按照网上的方法，在/etc/yum.repos.d/下创建一个chromium.repo，内容如下：</p>
+	<div class="post paper">
+		<p>自打装好Fedora 12之后就发现chromium不能用rpm安装了，安装时总是缺这少那，很是费劲，于是按照网上的方法，在/etc/yum.repos.d/下创建一个chromium.repo，内容如下：</p>
 <p>
 <pre>[chromium]
 name=Chromium Test Packages
@@ -187,6 +185,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
 <p>&nbsp;</p>
 <p>实在是太粗心了，当时竟然没有仔细看&hellip;&hellip; 谨记这一教训！</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

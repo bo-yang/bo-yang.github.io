@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>SOCK_RAW Issue with setuid and chroot-ed login on Linux Servers(Still Unresolved)</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2012-06-14 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2012-06-14 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Problem:</p>
+	<div class="post paper">
+		<p>Problem:</p>
 <blockquote><p>when using function socket(AF_INET,<strong>SOCK_RAW</strong>,IPPROTO_TCP...) with setuid&amp;chroot-ed fake root on Linux servers, it would always fail. However, the real root can work well. Usually the fake root can do most things that root login required.
 </p></blockquote>
 <p>After investigation, got following hints:</p>
@@ -109,6 +107,7 @@
 </ul>
 <p>Since we can't provide root login to all users, we must either find a way to let raw sockets work with setuid&amp;chroot-ed login, or substitute raw sockets with other options.</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

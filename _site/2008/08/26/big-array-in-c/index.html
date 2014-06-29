@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>C语言函数中定义大数组耗尽堆栈的问题</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-08-26 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-08-26 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>
+	<div class="post paper">
+		<p>
     今晚上一同学请我帮忙看一个C程序，GCC编译时一直抱错，说是段错误。<br />程序本身写的比较差，但编译能通过，只是有几十个警告。<br />两个小时过去了，在Eclipse+GCC下没有找到问题（这个环境还不熟悉），换到了VC下面，逐步调试，才发现问题出在被main调用的一个叫做readmctal()的函数的前面几行中。该函数如下：
 <div class="highlighter">
 <ol class="highlighter-c" start="1">
@@ -172,6 +170,7 @@ calloc和malloc基本一样，不同的是有两点，一是calloc分配的空�
 基本就这些了，这些都是比较基础的话题，高级话题和细节问题还有很多，这里就不进行说明了，有机会我会继续总结一番的</div>
 <p></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

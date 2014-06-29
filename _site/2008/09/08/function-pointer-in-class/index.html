@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>类成员函数指针浅析</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-09-08 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-09-08 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>
+	<div class="post paper">
+		<p>
     今天看某软件的源代码时，发现有这样一行
 <div class="highlighter">
 <ol class="highlighter-c" start="1">
@@ -332,6 +330,7 @@ object）,又名仿函数（functor),是重载了operator（）的一个类，�
 less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么引入仿函数？&nbsp;  <br /> &nbsp; 原因：&nbsp;  <br /> &nbsp; １．仿函数有具体型别，可用在模板参数，而函数不行&nbsp;  <br /> &nbsp; ２．同类仿函数可有不同植，可代表不同状态，比函数灵活（须定义多个）&nbsp;  <br /> &nbsp; ３．仿函数可能比普通函数快&nbsp;  <br /> &nbsp; ．．．．．．．．可能还有，不过凭印象就这些了</span> </p>
 <p></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

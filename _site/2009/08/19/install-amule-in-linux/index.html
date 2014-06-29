@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Linux下安装aMule</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2009-08-19 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2009-08-19 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>今晚打算在Fedora 10下安装aMule，以便电驴下载。本打算yum安装，结果发现无法yum安装，于是只好下载了aMule的源代码（无Linux下的二进制安装文件）。解压之后，./configure，却出现了&quot;wxWindows&quot;的错误。</p>
+	<div class="post paper">
+		<p>今晚打算在Fedora 10下安装aMule，以便电驴下载。本打算yum安装，结果发现无法yum安装，于是只好下载了aMule的源代码（无Linux下的二进制安装文件）。解压之后，./configure，却出现了&quot;wxWindows&quot;的错误。</p>
 <p>&nbsp;</p>
 <p>在网上搜了半天之后，发现除了系统已经装好的wxGTK之外，还要安装wxGTK-devel，于是我便yum install wxGTK-devel,成功。</p>
 <p>&nbsp;</p>
@@ -119,6 +117,7 @@ I) ldconfig</p>
 <p>&nbsp;</p>
 <p>aMule终于可以用了！</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

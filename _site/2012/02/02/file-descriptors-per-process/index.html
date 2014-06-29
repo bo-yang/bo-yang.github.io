@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>File Descriptors per Process</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2012-02-02 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#file descriptor-ref" rel="nofollow">file descriptor</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2012-02-02 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#file descriptor-ref" rel="nofollow">file descriptor</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:</p>
+	<div class="post paper">
+		<p>A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:</p>
 <ol>
 <li><code>ulimit -a # all limitations</code></li>
 <li><code>ulimit -Sn # soft limit</code></li>
@@ -115,6 +113,7 @@ References:</p>
 <li><a href="http://compute.cnr.berkeley.edu/cgi-bin/man-cgi?plimit+1">plimit</a></li>
 </ol>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

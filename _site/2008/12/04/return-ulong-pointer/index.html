@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>return (((ulong*)(x))[-1])</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-12-04 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-12-04 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>
+	<div class="post paper">
+		<p>
 <span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">看到一个函数，定义如下： </span>
 <div>
 <div class="highlighter">
@@ -117,6 +115,7 @@
 <div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:������;">ulong getcallerpc(void *x) <br />{ <br />    return (((ulong*)(x))[-1]); <br />} </p>
 <p>在((ulong*)(x))[-1] 中： <br />x是一个指针 <br />（ulong*)(x)：将x转换为ulong型的指针，我们假设（ulong*)(x)转换后指针为y，则 <br />((ulong*)(x))[-1]为：y[-1]，而y[-1]就指向y首地址前面的那个地址。这种情况只有 <br />当你自己知道前面那个地址是什么了，也就是楼上所说的特殊用法了。~_~<br /></span></div>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

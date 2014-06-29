@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>逻辑表达式词法分析器分析结果的显示</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-05-27 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-05-27 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#AI-ref" rel="nofollow">AI</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>
+	<div class="post paper">
+		<p>
 <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 上篇博客文章《<a href="void(0);/*1211894183336*/"><span style="font-family:宋体;">简易逻辑表达式词法分析器</span></a>》讲到设计了一个逻辑表达式词法分析器，这次以那个词法分析器作为后端，利用VC搭建前端界面，展示一下分析效果。</p>
 <p><img src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/词法分析器结果.JPG" alt="" /></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 分析结果以树的形式表示：同一级节点表示具有相同的等级，参数比它的谓词的等级要高，比如Missile(x)中Missile等级为0级，x为1级。分析之后各个节点存储在Parser.list中，可以根据该链表的节点的level属性将各节点插入树种的相应位置。<br />&nbsp;&nbsp;&nbsp;&nbsp; 分析以上逻辑表达式可知，各个节点的等级如下：<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Missile&nbsp; x&nbsp; AND&nbsp; Owns&nbsp; Nono&nbsp; Sub&nbsp; x&nbsp; =&gt;&nbsp; Sells&nbsp; West&nbsp; x&nbsp; Nono<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp; 2&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1<br />&nbsp;&nbsp;&nbsp;&nbsp; 可见，利用堆栈来辅助将节点插入树中是最理想的方法。思路如下：将树的TVI_ROOT压栈；若当前节点的等级大于其前一个节点，将前一个节点压栈；若当前节点等级小于前一个节点，出栈前一节点等级 和&nbsp; 当前节点等级之差次；若当前节点等级等于前一节点等级，既不压栈也不出栈。每个当前节点的父节点为栈顶元素。</p>
@@ -99,6 +97,7 @@
 </div>
 <p>&nbsp;&nbsp; PS1:&nbsp; 当初考虑到中文的支持，利用wstring定义节点内容，现在发现是个错误，在字符转换的过程中很是麻烦，耽误了不少时间，走了不少弯路。<br />&nbsp; PS2: 也许因为我对STL不是很熟悉，感觉比较麻烦，不知道如何被C++标准委员会接纳的？</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Importing Multi-Excel Files/Worksheets Into An Excel Workbook</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-07-13 &nbsp; &nbsp;  
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-07-13 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; 
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Two days ago, my wife asked me to write an Excel VBA script to automatically import multi-Excel worksheets stored in different workbooks into an already opened Excel workbook.  Her requirements were:</p>
+	<div class="post paper">
+		<p>Two days ago, my wife asked me to write an Excel VBA script to automatically import multi-Excel worksheets stored in different workbooks into an already opened Excel workbook.  Her requirements were:</p>
 <ol>
 <li>Select a range in a worksheet, which stores the names of worksheets to be imported. After executing the macro, worksheets will be created if it doesn't exist, or it will be updated according to the specified  Excel worksheet in another Excel workbook. Table 1 is the range selected in the worksheet, in which the first column is the serial number of worksheet, the second column denotes department name and the worksheet name should be like "01 Department A".</li>
 <li>The imported/created worksheets should be sorted by the serial number of Table 1.</li>
@@ -363,6 +361,7 @@ End Sub<br />
 <span style="font-size:small;"><span class="Apple-style-span" style="line-height:normal;"><br />
 </span></span></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

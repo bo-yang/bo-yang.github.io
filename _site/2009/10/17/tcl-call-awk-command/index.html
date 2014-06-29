@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Tcl中调用Awk命令</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2009-10-17 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2009-10-17 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>由于' '不是Tcl所能识别的操作符，因此在Tcl中使用Awk命令时不能用exec awk '/pattern/ {do_something}' file这种命令，即使在''前面加上/也不行。' &rsquo; 可以被Bource Shell和其它shell识别，但是由于exec awk命令是在Tcl中解释的。</p>
+	<div class="post paper">
+		<p>由于' '不是Tcl所能识别的操作符，因此在Tcl中使用Awk命令时不能用exec awk '/pattern/ {do_something}' file这种命令，即使在''前面加上/也不行。' &rsquo; 可以被Bource Shell和其它shell识别，但是由于exec awk命令是在Tcl中解释的。</p>
 <p>&nbsp;</p>
 <p>如果要在Tcl中执行awk命令，方法有两种：一是用&ldquo;&rdquo;代替' '，但是要考虑到需要把某些Tcl的特殊字符用/转义；二是用{}代替' '。比如语句</p>
 <p>
@@ -104,6 +102,7 @@
 <pre>exec awk {/somePattern/ {print $0}}  someFile </pre>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

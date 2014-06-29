@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Counting Unique k-mers -- My First Go Program</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2013-05-16 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Go-ref" rel="nofollow">Go</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Bioinformatics-ref" rel="nofollow">Bioinformatics</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2013-05-16 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Go-ref" rel="nofollow">Go</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Bioinformatics-ref" rel="nofollow">Bioinformatics</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Previously, I wrote a Perl program to count the number of unique k-mers. It is very convenient to implement it in Perl, because Perl supports hash-of-hashes(which could dynamically count distinct k-mers) and sorting hashes by value(which can easily list the occurrences of unique k-mers in descending order).</p>
+	<div class="post paper">
+		<p>Previously, I wrote a Perl program to count the number of unique k-mers. It is very convenient to implement it in Perl, because Perl supports hash-of-hashes(which could dynamically count distinct k-mers) and sorting hashes by value(which can easily list the occurrences of unique k-mers in descending order).</p>
 <p>Unfortunately, comparing to C++, Perl program usually costs more memory and longer time. This is not a big issue when the FASTA files are not large(smaller than 400MB). However, when handling larger FASTA files, my Perl program would require more than 8GB memory, which exceeds the limits of my computer. Therefore, I decided to rewrite the program by Go, a system language that supports concurrent features and can has C/C++-comparable speed.</p>
 <p>The syntax of Go is very different from C/C++, which takes me a whole day familiarize. Some operations that can be implemented easily in Perl can only be done in complicated way, such as calling system command, reading file line-by-line, writing file and sorting map by value. Since this small tool doesn't involve network and concurrency, I cannot compare the difficulty of writing Go program to implement such work. </p>
 <p>Although the experience of the first Go program is not happy, I still think it is necessary to continue learning Go language, because Go program really runs very fast and saves memory(comparing to Perl script). And you don't need to worry about the tricky part of C++. </p>
@@ -227,6 +225,7 @@ func main() {
 </pre>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

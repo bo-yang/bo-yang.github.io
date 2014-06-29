@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>由服务器名字(Host name)获得IP地址</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-12-24 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-12-24 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>
+	<div class="post paper">
+		<p>
     一下代码可以根据host name获得IP地址：
 <div>
 <div class="highlighter">
@@ -155,6 +153,7 @@
 <p style="text-indent:2em;line-height:22px;font-size:14px;margin:1em 0 .5em;padding:0;"><span class="Apple-style-span" style="font-size:18px;">编译时要加上-lsocket选项，否则编译器将会报出invalid reference的错误。如： gcc -o name2addr name2addr.c -lsocket.</span></p>
 </div>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

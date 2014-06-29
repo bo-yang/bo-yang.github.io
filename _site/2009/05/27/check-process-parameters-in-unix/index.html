@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>在UNIX/Linux下查看某个进程的详细参数</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2009-05-27 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2009-05-27 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>如果要在UNIX/Linux下查看某个进程的详细参数， 可以用命令：</p>
+	<div class="post paper">
+		<p>如果要在UNIX/Linux下查看某个进程的详细参数， 可以用命令：</p>
 <p>&nbsp;</p>
 <pre>          <strong><span style="color:#ff0000;"> </span><span style="font-family:mceinline;"><span style="font-family:mceinline;">ps -axuww|grep &lt;process&gt;</span></span></strong></pre>
 <p>但需要注意的是，在Solaris下，存在两个版本的ps:一是/usr/bin/ps；一是/usr/bin/ps。只有/usr/bin/ps可以用于上述命令。</p>
@@ -97,6 +95,7 @@
 </pre>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

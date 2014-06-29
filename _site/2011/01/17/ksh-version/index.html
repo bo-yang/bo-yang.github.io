@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>如何查看Ksh Version</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-01-17 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-01-17 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <ol>
+	<div class="post paper">
+		<ol>
 <li>echo $KSH_VERSION. 若没有输出，<span>echo ${.sh.version}，Ksh93有效</span></li>
 <li><span><span>/bin/ksh --version 应该只在Linux下有效</span></span></li>
 <li><span><span><span>strings /bin/ksh | grep -i version，直接到二进制文件里查找</span></span></span></li>
@@ -97,6 +95,7 @@
 </ol>
 <p>对于KSH88，估计只有3、4有效。</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

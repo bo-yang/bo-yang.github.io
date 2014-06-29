@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>An Implementation of Merge Sort in C</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2012-11-04 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Merge sort-ref" rel="nofollow">Merge sort</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2012-11-04 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Merge sort-ref" rel="nofollow">Merge sort</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. </p>
+	<div class="post paper">
+		<p>Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. </p>
 <p>The merge sort below was found in Internet. Sorry that I forgot to record the hyperlink of the webpage. Only a few changes were made by me. </p>
 <p> </p>
 <p><code>void Merge(int* input, long p, long r)<br />
@@ -132,6 +130,7 @@ void Merge_sort(int* input, long p, long r)<br />
 }<br />
 </code></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

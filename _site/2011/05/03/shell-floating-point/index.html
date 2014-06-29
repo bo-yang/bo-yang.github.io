@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Shell浮点数运算</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-05-03 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-05-03 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Shell本身不支持浮点数运算，(())之类的数学运算符只能进行整数运算。要想在shell中运算浮点数，只能借助于bc, Awk或者Perl。 如</p>
+	<div class="post paper">
+		<p>Shell本身不支持浮点数运算，(())之类的数学运算符只能进行整数运算。要想在shell中运算浮点数，只能借助于bc, Awk或者Perl。 如</p>
 <p>
 <pre>a=0.1
 b=0.2
@@ -111,6 +109,7 @@ c=$(echo "$a+$b" | bc -l)</pre>
 </pre>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

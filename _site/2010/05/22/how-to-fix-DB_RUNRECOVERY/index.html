@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Fixing The Error: DB_RUNRECOVERY: Fatal error, run database recovery</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2010-05-22 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2010-05-22 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    </p>
+	<div class="post paper">
+		</p>
 <p><strong>If you get a message similar to this:</strong></p>
 <p><code>[username@localhost ~]$ sudo yum update<br />rpmdb: Thread/process 2402/139688794072832 failed: Thread died in Berkeley DB library<br />error: db4 error(-30974) from dbenv-&gt;failchk: DB_RUNRECOVERY: Fatal error, run database recovery<br />error: cannot open Packages index using db3 - (-30974)<br />error: cannot open Packages database in /var/lib/rpm<br />CRITICAL:yum.main:</code></p>
 <p>Error: rpmdb open failed</p>
@@ -97,6 +95,7 @@
 <p><strong>You can fix it by running the following 3 commands:</strong></p>
 <p><code>[username@localhost ~]$ sudo rm -f /var/lib/rpm/__db*<br />[username@localhost ~]$ sudo db_verify /var/lib/rpm/Packages<br />[username@localhost ~]$ sudo rpm --rebuilddb</code></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

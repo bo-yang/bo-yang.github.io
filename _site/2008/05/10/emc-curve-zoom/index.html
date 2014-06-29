@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>EMC测试曲线选择缩放功能的实现</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-05-10 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-05-10 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p align="center" class="MsoNormal" style="text-align:center;"><span lang="EN-US">EMC</span><span style="font-family:宋体;">测试曲线选择缩放功能的实现</span></p>
+	<div class="post paper">
+		<p align="center" class="MsoNormal" style="text-align:center;"><span lang="EN-US">EMC</span><span style="font-family:宋体;">测试曲线选择缩放功能的实现</span></p>
 <p align="center" class="MsoNormal" style="text-align:center;"><span lang="EN-US">&nbsp;</span></p>
 <p class="MsoNormal" style="text-indent:21pt;"><span lang="EN-US">EMC</span><span style="font-family:宋体;">测试完成后，一般以曲线的形式显示在对数坐标系中。由于测试数据非常多，而对数坐标常常使得大量的数据分布不均，经常在一些地方使得测试曲线叠加在一起，看不清楚具体的数值和趋势。一幅</span><span lang="EN-US">CE102</span><span style="font-family:宋体;">测试曲线如图</span><span lang="EN-US">1</span><span style="font-family:宋体;">所示：</span></p>
 <p class="MsoNormal" style="text-indent:21pt;"><span lang="EN-US"><!--[if !vml]--><img height="430" width="800" alt="" src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/CE102-全频段--2008-05-08.jpg" /><!--[endif]--></span></p>
@@ -121,6 +119,7 @@
 <p align="left" class="MsoNormal" style="margin-left:21pt;text-align:left;text-indent:21pt;"><span style="font-family:宋体;">由于测试是分成多段进行的，测试曲线的绘制也是分成多段来进行，因此选择放大时也要考虑到所选择区域是否包含关键点（频率段与频率段之间的边界点）。因此选择放大频段的显示也分为三种情况进行考虑：选择的起始点和终止点在同一分段内、在两相邻频段内、在不相邻的不同频段内。</span></p>
 <p align="left" class="MsoNormal" style="margin-left:21pt;text-align:left;text-indent:21pt;"><span style="font-family:宋体;">由于选择放大显示的代码较多，只介绍编程思路吧。首先根据鼠标左键选择的起始点和终止点的</span><span lang="EN-US">X</span><span style="font-family:宋体;">坐标确定起始频率和终止频率，然后确定起始点和终止点的相对位置（即上段所说的三种情况），接下来重绘坐标系，针对三种不同情况分段绘制曲线，最后重绘军标线。</span></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

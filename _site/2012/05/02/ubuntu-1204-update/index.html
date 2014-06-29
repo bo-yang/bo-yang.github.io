@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>升级Ubuntu 12.04所遇到的一些问题</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2012-05-02 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2012-05-02 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>升级Ubuntu 11.10到12.04后，开机报错“<em>no partition found</em>”,进入Grub后，输入&quot;ls&quot;命令，也报错“no partition found”。可见Grub已经崩溃了。</p>
+	<div class="post paper">
+		<p>升级Ubuntu 11.10到12.04后，开机报错“<em>no partition found</em>”,进入Grub后，输入&quot;ls&quot;命令，也报错“no partition found”。可见Grub已经崩溃了。</p>
 <p>于是我下载了<a href="http://unetbootin.sourceforge.net/">UNetbootin</a>，然后利用它在Win 7下制作Ubuntu自启动U盘。制作好之后，结果发现不会自动引导启动，需要在开机之后出现Thinkpad欢迎界面时按F12，然后选择U盘启动。然后选择U盘启动Ubuntu，进入Ubuntu后按照&nbsp;<a href="http://www.webupd8.org/2009/12/how-to-recover-grub2-linux.html">How to<br />
  Fix Grub 2</a>&nbsp;中的方法安装Grub 2到硬盘。</p></p>
 <div style="color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;margin:0;padding:0;">
@@ -125,6 +123,7 @@ boot</pre>
 <p>虽然不想，但此时我已别无选择，只能重新安装Ubuntu 12.04了。可惜我电脑里那些尚未备份的文件和电影啊……</p>
 <p></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

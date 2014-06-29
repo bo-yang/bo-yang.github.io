@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Calculate the CDF of Poisson Distribution with Boost C++ Library</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2012-11-05 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#boost-ref" rel="nofollow">boost</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#CDF-ref" rel="nofollow">CDF</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2012-11-05 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#boost-ref" rel="nofollow">boost</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#CDF-ref" rel="nofollow">CDF</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>The Cumulative Distribution Function(CDF) of Poisson distribution can be easily calculated by R function ppois() or octave/Matlab function poisspdf(). However, it is not a easy thing to deal with statistics with C++ from scratch.</p>
+	<div class="post paper">
+		<p>The Cumulative Distribution Function(CDF) of Poisson distribution can be easily calculated by R function ppois() or octave/Matlab function poisspdf(). However, it is not a easy thing to deal with statistics with C++ from scratch.</p>
 <p>Today I found a very powerful C++ mathematical library(actually not limited to math), boost. Unfortunately, it is hard to figure out the API of boost library from the code if you are not familiar with generalization programming(just like me). Besides, there is no useful "hello world" examples on the Internet to show the boost library handling statistics(examples on webpage <a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a> is a bit complicated and the header files are not included).</p>
 <p>Therefore, I made up following example to show how to get the cdf of Poisson distribution with boost C++ library:<br />
 <code><br />
@@ -110,6 +108,7 @@ cout&lt;&lt;"cdf: ppois(1,2.9)="&lt;&lt;cdf(p,1)&lt;&lt;endl;</p>
 <li><a href="http://www.datasimfinancial.com/forum/viewtopic.php?t=111">http://www.datasimfinancial.com/forum/viewtopic.php?t=111</a></li>
 </ol>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

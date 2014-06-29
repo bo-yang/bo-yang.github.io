@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>线性坐标系到对数坐标系的变换——EMC测试曲线的绘制</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-05-23 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-05-23 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>        <span style="font-size:10.5pt;font-family:宋体;"><br />&nbsp;&nbsp;&nbsp; 绘制测试曲线的核心函数为</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>CEMCView::DrawFrameCurve()</span><span style="font-size:10.5pt;font-family:宋体;">函数。该函数可以根据测试的频段和该频段的测试数据在对数坐标系的对应位置绘制测试曲线。</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>DrawFrameCurve()</span><span style="font-size:10.5pt;font-family:宋体;">函数绘制曲线的流程图如图</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>1</span><span style="font-size:10.5pt;font-family:宋体;">所示：</p>
+	<div class="post paper">
+		<p>        <span style="font-size:10.5pt;font-family:宋体;"><br />&nbsp;&nbsp;&nbsp; 绘制测试曲线的核心函数为</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>CEMCView::DrawFrameCurve()</span><span style="font-size:10.5pt;font-family:宋体;">函数。该函数可以根据测试的频段和该频段的测试数据在对数坐标系的对应位置绘制测试曲线。</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>DrawFrameCurve()</span><span style="font-size:10.5pt;font-family:宋体;">函数绘制曲线的流程图如图</span><span lang="EN-US" style='font-size:10.5pt;font-family:"Calibri", "sans-serif";'>1</span><span style="font-size:10.5pt;font-family:宋体;">所示：</p>
 <p></span></p>
 <div style="text-align:center;"><span style="font-size:10.5pt;font-family:宋体;"><img alt="" src="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/测试流程图.JPG" /><br />图1 测试流程图</p>
 <p></span><span style="font-size:10.5pt;font-family:宋体;"></span></div>
@@ -128,6 +126,7 @@
 <p align="left" class="MsoNormal" style="text-align:left;">PS:</p>
 <p align="left" class="MsoNormal" style="text-align:left;">&nbsp;&nbsp;&nbsp; <font size="4"><span style="color:rgb(255,0,0);">CSDN不支持把Word中的公式自动保存为图片实在是太难用了，每次都要自己先把公式转化为图片然后再插入到文章里，麻烦！</span></font><span style="font-family:宋体;"></span><span lang="EN-US"></span></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

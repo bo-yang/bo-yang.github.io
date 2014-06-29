@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>硬盘安装Fedora 9时死机？</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-06-06 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-06-06 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>
+	<div class="post paper">
+		<p>
     前天晚上在Fedora9下装完ATI显卡的驱动以后，升级系统，昨天早晨起来一看，我的本本过热休眠了（发现Fedora下经常出现这种情况，而Windows下很少出现，可见Linux的电源管理确实还有问题），当时没有管它。</p>
 <p>昨天晚上到了半夜，决定切换到Fedora下玩一玩，结果发现进不了图形界面了，字符界面也还闪来闪去的，实在没办法，重装。非常不幸的是，重装到一半的时候，CPU过热又歇菜了。</p>
 <p>这时重启发现只能进grub控制台，无法进Windows了。顿时傻了。</p>
@@ -98,6 +96,7 @@
 <pre>kernel (hd0,6)/isolinux/vmlinuz &lt;br  /&gt;initrd (hd0,6)/isolinux/initrd.img &lt;br  /&gt;boot</pre>
 <p>成功了，终于可以进入继续安装Fedora 9的界面了！<br />只要能够进入一个操作系统就好说了，不管它是Windows还是Linux！</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

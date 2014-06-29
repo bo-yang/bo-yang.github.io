@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>UNIX下大小为1byte的文件——都是换行符(EOL)惹得祸</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2009-08-26 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2009-08-26 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>某同事用tcl和ksh写了一个程序，利用进行某项操作，如有错误就将错误信息写入某个文件中，写入方法是 2&gt;$stderr，然后判断该文件的大小，如果大于0，则认为有错误发生，报错。</p>
+	<div class="post paper">
+		<p>某同事用tcl和ksh写了一个程序，利用进行某项操作，如有错误就将错误信息写入某个文件中，写入方法是 2&gt;$stderr，然后判断该文件的大小，如果大于0，则认为有错误发生，报错。</p>
 <p>&nbsp;</p>
 <p>奇怪的是该程序一直不能成功执行，一直报错。同事逐行追踪他的代码，结果发现文件$stderr刚创建时大小为0，可过一会之后自己就会变成1byte. 然而打开查看时，该文件内容却是空的。后来用vi按照16进制打开(:%!xxd)，发现了0a。</p>
 <p>&nbsp;</p>
@@ -102,6 +100,7 @@
 <p>可是如果是用C语言编写一个文件操作的函数，却能得到一个大小为0而打开后也有0a的文件。很是奇怪&hellip;&hellip;</p>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

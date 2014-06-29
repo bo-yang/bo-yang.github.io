@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Parallelize mex file in Matlab</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2013-10-20 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#parfor-ref" rel="nofollow">parfor</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2013-10-20 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#parfor-ref" rel="nofollow">parfor</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>By default mex file cannot be executed in parallel in Matlab, which will be a major bottleneck for Matlab program. Fortunately, there is a way to execute loop operations in parallel -- <a href="http://www.mathworks.com/help/distcomp/parfor.html">parfor</a>. Matlab provides a good tutorial on parfor: <a href="http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html">Getting Started with parfor</a>.</p>
+	<div class="post paper">
+		<p>By default mex file cannot be executed in parallel in Matlab, which will be a major bottleneck for Matlab program. Fortunately, there is a way to execute loop operations in parallel -- <a href="http://www.mathworks.com/help/distcomp/parfor.html">parfor</a>. Matlab provides a good tutorial on parfor: <a href="http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html">Getting Started with parfor</a>.</p>
 <p>One tricky problem with parfor is dealing with reduction assignments, which means the value of some variables are updated by each iteration, such as assignment to an array/matrix indexed by loop index.  My suggestion is to separate the loop into two parts: one part deal with non-reduction assignment with <code>parfor</code>, and the other part do the reduction assignment with traditional <code>for</code> loop.</p>
 <p>If you cannot save all the <code>parfor</code>-assigned variables in memory, then you must save them into mat file and load them in the next for-loop. In the <code>parfor</code>-loop, command "<code>save</code>" cannot  be used directly because it violates the transparency(God knows what does it mean!). As an alternative, you can create a wrapper function of <code>save</code> and call that function instead. FOr example:</p>
 <p>Save the following as "parsave.m":<br />
@@ -110,6 +108,7 @@ end</code></p>
 <li>How do I use SAVE with a PARFOR loop: http://www.mathworks.com/support/solutions/en/data/1-D8103H/?product=DM&amp;solution=1-D8103H</li>
 </ol>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

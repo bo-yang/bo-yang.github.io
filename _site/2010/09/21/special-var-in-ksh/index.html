@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,24 +76,24 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Ksh中的$*和$@</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2010-09-21 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2010-09-21 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>The meaning of $* and $@ is identical when not quoted or when used as a<br />
+	<div class="post paper">
+		<p>The meaning of $* and $@ is identical when not quoted or when used as a<br />
 parameter assignment value or as a file name.</p>
 <p>&nbsp;</p>
 <p>However, when used as a command argument, "$*" is equivalent to "$1<span class="docEmphasis">d</span>$2<span class="docEmphasis">d</span>..." , where <span class="docEmphasis">d</span> is the first character of the <span class="docEmphStrong">IFS</span> parameter, whereas "$@" is equivalent to "$1"<br />
 "$2" ....</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

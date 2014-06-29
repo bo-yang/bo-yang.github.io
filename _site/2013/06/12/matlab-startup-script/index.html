@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,23 +76,23 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Matlab Startup Script</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2013-06-12 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2013-06-12 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>You can create a script named <code>startup.m</code> under <em>userpath</em>(in Windows and Mac OSX, default path is <tt><code>Documents/MATLAB</code></tt>). You can add whatever Matlab commands you want into <code>startup.m</code>. For example, to add <code>/usr/local/bin</code> into PATH, you can add command</p>
+	<div class="post paper">
+		<p>You can create a script named <code>startup.m</code> under <em>userpath</em>(in Windows and Mac OSX, default path is <tt><code>Documents/MATLAB</code></tt>). You can add whatever Matlab commands you want into <code>startup.m</code>. For example, to add <code>/usr/local/bin</code> into PATH, you can add command</p>
 <p><code>setenv('PATH', [getenv('PATH') ':/usr/local/bin']);</code></p>
 <p>into <code>startup.m</code>.</p>
 <p>BTW, every time Matlab starts, configure file <code>$MATLABROOT/toolbox/local/matlabrc.m</code> will be executed.</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

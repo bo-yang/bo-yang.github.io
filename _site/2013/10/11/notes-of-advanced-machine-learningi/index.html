@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Notes of Advanced Machine Learning(I)</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2013-10-11 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Machine Learning-ref" rel="nofollow">Machine Learning</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2013-10-11 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Machine Learning-ref" rel="nofollow">Machine Learning</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <ol>
+	<div class="post paper">
+		<ol>
 <li>Two different ways represent a distribution over several random variables: (1) product of conditional probabilities: \(p(x_1,x_2,x_3,x_4)=p(x_4)p(x_3|x_4)p(x_2|x_3,x_4)p(x_1|x_2,x_3,x_4)\) and (2) global energy function: \(p(x_1,x_2,x_3,x_4)=\frac{1}{Z}e^{-E(x_1,x_2,x_3,x_4)}\), where \(Z\) is the partition function.</li>
 <li>Directed graphical models use conditional probabilities, which undirected graphical models use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</li>
 <li>
@@ -172,6 +170,7 @@
 <li>U Toronto CSC2535: <a href="http://www.cs.toronto.edu/~hinton/csc2535/lectures.html">http://www.cs.toronto.edu/~hinton/csc2535/lectures.html</a></li>
 </ol>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

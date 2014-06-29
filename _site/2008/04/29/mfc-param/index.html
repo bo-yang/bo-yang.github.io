@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>利用自定义消息处理函数的WPARAM或LPARAM参数传递指针</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-04-29 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-04-29 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>
+	<div class="post paper">
+		<p>
     有自定义消息：</p>
 <div style="border:.5pt solid windowtext;padding:4px 5.4pt;background:rgb(230,230,230) none repeat scroll 0 0;-moz-background-clip:-moz-initial;-moz-background-origin:-moz-initial;width:95%;">
 <div><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /><span style="color:rgb(0,0,255);">#define</span><span style="color:rgb(0,0,0);">&nbsp;WM_TEST&nbsp;WM_USER+121</span><span style="color:rgb(0,0,0);"><br /><img align="top" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" alt="" /></span></div>
@@ -106,6 +104,7 @@
 <p>同样的，在</span></span><span style="color:rgb(0,0,0);">OnTest中，必须先将</span><span style="color:rgb(0,0,0);">wParam强制转换为</span>void * ，然后进一步转换为其他类型。</p>
 <p>PS：网上有高手指出，局部指针变量最好不要作为<span style="color:rgb(0,0,0);"></span><span style="color:rgb(0,0,0);">wParam或</span><span style="color:rgb(0,0,0);"> lParam传递，因为当消息响应时改变量</span>可能已经不在了。</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

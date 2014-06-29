@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Implementation of Strassen's Algorithm for Matrix Multiplication</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2013-03-20 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2013-03-20 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Strassen's algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen's algorithm on <a href="http://en.wikipedia.org/wiki/Strassen_algorithm">Wikipedia</a>.</p>
+	<div class="post paper">
+		<p>Strassen's algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen's algorithm on <a href="http://en.wikipedia.org/wiki/Strassen_algorithm">Wikipedia</a>.</p>
 <p>However, the implementation of Strassen's algorithm cannot be used directly, because it  just sets the base case of the divide-and-conquer to be 1x1 matrix, which would consume huge time cost for iteration. If set the base case to 2x2 matrix, which means 2x2 matrix and 1x1 matrix will be multiplied by naive algorithm, then the Strassen's algorithm will be more efficient for matrices larger than 512x512.</p>
 <p>[caption id="attachment_521" align="alignnone" width="529"]<a href="http://bonny95.files.wordpress.com/2013/03/local_double_41.png"><img class="size-full wp-image-521" alt="When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512." src="http://bonny95.files.wordpress.com/2013/03/local_double_41.png" width="529" height="395" /></a> When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512.[/caption]</p>
 <p>[caption id="attachment_520" align="alignnone" width="529"]<a href="http://bonny95.files.wordpress.com/2013/03/local_int_36.png"><img class=" wp-image-520  " alt="When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128. " src="http://bonny95.files.wordpress.com/2013/03/local_int_36.png" width="529" height="396" /></a> When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128.[/caption]</p>
@@ -420,6 +418,7 @@ free_matrix(C,mdim);
 return 0;
 }</code></pre>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

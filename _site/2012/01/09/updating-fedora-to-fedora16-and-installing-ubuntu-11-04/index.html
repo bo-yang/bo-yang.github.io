@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Updating Fedora to Fedora16 and Installing Ubuntu 11.04</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2012-01-09 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Ubuntu-ref" rel="nofollow">Ubuntu</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2012-01-09 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Ubuntu-ref" rel="nofollow">Ubuntu</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>2.5years ago I installed Fedora11 on my Thinkpad R61,and then updated it to Fedora 12 and then Fedora 14. A bunch of software were installed, and as a result, the system went slower and slower... 固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。<br />
+	<div class="post paper">
+		<p>2.5years ago I installed Fedora11 on my Thinkpad R61,and then updated it to Fedora 12 and then Fedora 14. A bunch of software were installed, and as a result, the system went slower and slower... 固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。<br />
 基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。<br />
 Ubuntu很快就下完。首先在Fedora下创建启动U盘，参照 How to create and use Live USB：<br />
 Check the size of your USB stick<br />
@@ -185,6 +183,7 @@ sudo grub-install /dev/sda<br />
 7. 重启测试是否已经恢复了grub的启动菜单？ 恭喜你恢复成功！</p>
 <p>Grub恢复成功后，开始安装常用软件。Ubuntu新的界面不像以前想象中那么难用，而且他们终于部分放弃了以前屎黄色的界面风格，最难得的是在我那破本本上速度还是很快滴！期待Ubuntu12.04早日发布，到时直接升级之。</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

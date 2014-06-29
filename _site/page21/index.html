@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,18 +76,19 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
-  <h1>Bo Yang  <small>Beginner's mind.</small></h1>
+  <h1>Bo Yang  <small style="margin-left:20px;">Beginner's mind.</small></h1>
 </div>
 
-<div class="row-fluid page-body">
-  <div class="span12">
-    <div class="col-lg-8">
+<div class="container">
+    <div class="row" id="content-row">
+		<div class="col-md-8">
 	<!-- blog entry -->
-    
-    <h2><a href="/2008/02/29/interpolation-ez-17">关于ROHDE SCHWARZ公司电流探头EZ-17系数修正的说明</a></h2>
+	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2008/02/29/interpolation-ez-17">关于ROHDE SCHWARZ公司电流探头EZ-17系数修正的说明</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-02-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>
 	</p>
@@ -102,11 +102,11 @@
 <div><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;参数freq为频率，单位MHz。<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;</span><span style="color:#008000;"><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#0000ff;">double</span><span style="color:#000000;">&nbsp;CEMCView::EZ17CorrectionFactor(</span><span style="color:#0000ff;">double</span><span style="color:#000000;">&nbsp;freq)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBlockStart.gif" /><img style="display:none;" align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ContractedBlock.gif" /></span><span id="_75_600_Closed_Text" style="border-right:#808080 1px solid;border-top:#808080 1px solid;display:none;border-left:#808080 1px solid;border-bottom:#808080 1px solid;background-color:#ffffff;">...</span><span id="_75_600_Open_Text"><span style="color:#000000;">{<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">double</span><span style="color:#000000;">&nbsp;factor;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;=</span><span style="color:#000000;">0.000020</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;=</span><span style="color:#000000;">0.5</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=-</span><span style="color:#000000;">19.1838</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">8.1953</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">else</span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;</span><span style="color:#000000;">0.5</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;</span><span style="color:#000000;">10</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=</span><span style="color:#000000;">18.2253</span><span style="color:#000000;">*</span><span style="color:#000000;">pow(log10(freq),</span><span style="color:#000000;">4</span><span style="color:#000000;">)</span><span style="color:#000000;">-</span><span style="color:#000000;">31.3557</span><span style="color:#000000;">*</span><span style="color:#000000;">pow(log10(freq),</span><span style="color:#000000;">3</span><span style="color:#000000;">)</span><span style="color:#000000;">+</span><span style="color:#000000;">16.5565</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">6.6261</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">6.8</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">else</span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;=</span><span style="color:#000000;">10</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;=</span><span style="color:#000000;">20</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=-</span><span style="color:#000000;">10.0</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">else</span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;</span><span style="color:#000000;">20</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;=</span><span style="color:#000000;">100</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=</span><span style="color:#000000;">0.1157</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">0.0959</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">10.0711</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">else</span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">if</span><span style="color:#000000;">(freq</span><span style="color:#000000;">&gt;</span><span style="color:#000000;">100</span><span style="color:#000000;">&nbsp;</span><span style="color:#000000;">&amp;&amp;</span><span style="color:#000000;">&nbsp;freq</span><span style="color:#000000;">&lt;=</span><span style="color:#000000;">200</span><span style="color:#000000;">)<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factor</span><span style="color:#000000;">=</span><span style="color:#000000;">175.6</span><span style="color:#000000;">*</span><span style="color:#000000;">pow(log10(freq),</span><span style="color:#000000;">3</span><span style="color:#000000;">)</span><span style="color:#000000;">-</span><span style="color:#000000;">1044.5</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">+</span><span style="color:#000000;">2067.7</span><span style="color:#000000;">*</span><span style="color:#000000;">log10(freq)</span><span style="color:#000000;">-</span><span style="color:#000000;">1371.9</span><span style="color:#000000;">;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" /><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/InBlock.gif" />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color:#0000ff;">return</span><span style="color:#000000;">&nbsp;factor;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/ExpandedBlockEnd.gif" />}</span></span></div>
 </div>
 
-    </div>
-	<div style="clear: both;"></div>
-	<hr>
+	</div>
+	</div>
     
-    <h2><a href="/2008/02/21/draw-log-coordination">利用VC绘制对数坐标系</a></h2>
+	<div class="post paper">	
+    <h2 class="header"><a href="/2008/02/21/draw-log-coordination">利用VC绘制对数坐标系</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-02-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>
 	</p>
@@ -231,11 +231,11 @@
 <div></div>
 <div>PS:&nbsp;你可以参见<a href="http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/%E5%B7%A5%E7%A8%8B%E4%BF%A1%E6%81%AF%E6%8F%90%E7%A4%BA%E6%A0%8F.JPG" target="_blank">http://p.blog.csdn.net/images/p_blog_csdn_net/bonny95/工程信息提示栏.JPG</a>，这是我自己绘制的对数坐标系。</div>
 
-    </div>
-	<div style="clear: both;"></div>
-	<hr>
+	</div>
+	</div>
     
-    <h2><a href="/2008/02/16/mfc-propertypage">关于属性页和属性单的应用总结</a></h2>
+	<div class="post paper">	
+    <h2 class="header"><a href="/2008/02/16/mfc-propertypage">关于属性页和属性单的应用总结</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-02-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
 	</p>
@@ -252,11 +252,10 @@
 <div><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /><span style="color:#000000;">CPropertyPage</span><span style="color:#000000;">*</span><span style="color:#000000;">&nbsp;pPage;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pPage</span><span style="color:#000000;">=</span><span style="color:#0000ff;">this</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">GetPage(</span><span style="color:#000000;">0</span><span style="color:#000000;">);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;CRect&nbsp;rectPage;</span><span style="color:#008000;"><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#000000;">&nbsp;pPage</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">GetWindowRect(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectPage);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;CWnd</span><span style="color:#000000;">*</span><span style="color:#000000;">&nbsp;pWndOK</span><span style="color:#000000;">=</span><span style="color:#000000;">GetDlgItem(IDOK);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;CWnd</span><span style="color:#000000;">*</span><span style="color:#000000;">&nbsp;pWndCancel</span><span style="color:#000000;">=</span><span style="color:#000000;">GetDlgItem(IDCANCEL);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;CRect&nbsp;rectOK,rectCancel;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pWndOK</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">GetWindowRect(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectOK);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pWndCancel</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">GetWindowRect(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectCancel);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;</span><span style="color:#0000ff;">int</span><span style="color:#000000;">&nbsp;BtnCenter</span><span style="color:#000000;">=</span><span style="color:#000000;">(rectCancel.right</span><span style="color:#000000;">-</span><span style="color:#000000;">rectOK.left)</span><span style="color:#000000;">/</span><span style="color:#000000;">2</span><span style="color:#000000;">;&nbsp;</span><span style="color:#008000;">//</span><span style="color:#008000;">&nbsp;OK和CANCEL按钮中轴线</span><span style="color:#008000;"><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">int</span><span style="color:#000000;">&nbsp;PageCenter</span><span style="color:#000000;">=</span><span style="color:#000000;">(rectPage.right</span><span style="color:#000000;">-</span><span style="color:#000000;">rectPage.left)</span><span style="color:#000000;">/</span><span style="color:#000000;">2</span><span style="color:#000000;">;&nbsp;</span><span style="color:#008000;">//</span><span style="color:#008000;">属性单的中轴线</span><span style="color:#008000;"><br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span><span style="color:#000000;">&nbsp;</span><span style="color:#0000ff;">int</span><span style="color:#000000;">&nbsp;dist</span><span style="color:#000000;">=</span><span style="color:#000000;">PageCenter</span><span style="color:#000000;">-</span><span style="color:#000000;">BtnCenter;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;rectOK.left</span><span style="color:#000000;">+=</span><span style="color:#000000;">dist;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;rectOK.right</span><span style="color:#000000;">+=</span><span style="color:#000000;">dist;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;rectCancel.left</span><span style="color:#000000;">+=</span><span style="color:#000000;">dist;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;rectCancel.right</span><span style="color:#000000;">+=</span><span style="color:#000000;">dist;&nbsp;<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;ScreenToClient(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectOK);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;ScreenToClient(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectCancel);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pWndOK</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">MoveWindow(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectOK);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" />&nbsp;pWndCancel</span><span style="color:#000000;">-&gt;</span><span style="color:#000000;">MoveWindow(</span><span style="color:#000000;">&amp;</span><span style="color:#000000;">rectCancel);<br /><img align="top" alt="" src="http://images.csdn.net/syntaxhighlighting/OutliningIndicators/None.gif" /></span></div>
 </div>
 
-    </div>
-	<div style="clear: both;"></div>
-	<hr>
+	</div>
+	</div>
     
-
+	
 	<!-- Pagination links -->
 	
 	<ul class="pager">
@@ -269,7 +268,7 @@
 	    
 	</ul>
 	
-	<!-- content -->	
+	<!-- content -->
 </div>
 
 <div class="col-lg-4">
@@ -468,7 +467,7 @@
         <!-- /well -->
 </div>
 
-  </div>
+	</div>
 </div>
 
 

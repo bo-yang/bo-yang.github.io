@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>关于EMI多线程分段测试方法的说明</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-05-03 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-05-03 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#EMC-ref" rel="nofollow">EMC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#MFC-ref" rel="nofollow">MFC</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>
+	<div class="post paper">
+		<p>
     2008年5月15日修正版</p>
 <p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">利用频谱仪进行电磁干扰测试时，考虑到显示效果，点击测试对话框的&ldquo;开始&rdquo;按钮之后视图应该立刻切换到对数坐标系而不是等待测试完成后才切换，因此，必须采用多线程测试方式，也即，需要增加一个测试线程用来向频谱仪发送测试指令。该测试线程定义为</span><span lang="EN-US">CTestThread</span><span style="font-family:宋体;">，由</span><span lang="EN-US">MFC</span><span style="font-family:宋体;">类</span><span lang="EN-US">CWinThread</span><span style="font-family:宋体;">派生而来。主线程（在本程序中为</span><span lang="EN-US">CChildFrame</span><span style="font-family:宋体;">类）和辅助线程（</span><span lang="EN-US">CTestThread</span><span style="font-family:宋体;">）之间利用消息进行通信，消息处理函数的参数用来传递测试工程设置数据的指针。</span></p>
 <p align="left" style="text-align:left;text-indent:21pt;" class="MsoNormal"><span style="font-family:宋体;">另一方面，根据</span><span lang="EN-US">GJB152A-97</span><span style="font-family:宋体;">《军用设备和分系统电磁发射和敏感度测量》规定，在不同的测试频段，接收机的</span><span lang="EN-US">6dB</span><span style="font-family:宋体;">带宽</span><span lang="EN-US">(RBW)</span><span style="font-family:宋体;">必须采用不同的数值，如下表所示：</span></p>
@@ -164,6 +162,7 @@
 <p><img alt="" src="http://www.best4c.com/Best4cUserFiles/20080503/17143_1209816609220.jpg" /><br />&nbsp;&nbsp; file="/Best4cUserFiles/20080503/17143_1209816609220";showImage();&nbsp;&nbsp;&nbsp; 如需源代码，请联系本人。</p>
 <p>PS：今天本人第一次使用CSDN的Best4c画流程图，很是惊异于网络编程的强大，难怪微软深刻感到Google等公司的在线Office的压力，也要推出自己的Live Office呢。（貌似Best4c采用了Adobe的Flex技术？请求达人指教）但是必须指出的是，Best4c在很多方面还不够理想，仍需努力&hellip;&hellip;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

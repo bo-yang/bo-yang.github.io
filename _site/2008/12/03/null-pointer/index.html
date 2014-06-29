@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>NULL Pointer Bugs</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2008-12-03 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2008-12-03 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <div style="min-height:1100px;font-family:Verdana;font-size:10pt;line-height:1;background-color:rgb(255,255,255);width:648px!important;border-color:rgb(204,204,204) rgb(187,187,187) rgb(187,187,187) rgb(204,204,204);border-style:solid;border-width:1px 2px 2px 1px;margin:15px auto 25px;padding:40px 50px;">
+	<div class="post paper">
+		<div style="min-height:1100px;font-family:Verdana;font-size:10pt;line-height:1;background-color:rgb(255,255,255);width:648px!important;border-color:rgb(204,204,204) rgb(187,187,187) rgb(187,187,187) rgb(204,204,204);border-style:solid;border-width:1px 2px 2px 1px;margin:15px auto 25px;padding:40px 50px;">
 <h1 style="text-align:center;font-size:18pt;">NULL Pointer Bugs<br /></h1>
 <div style="margin-top:0;margin-bottom:0;"></div>
 <div style="margin-top:0;margin-bottom:0;"><span style="font-family:Charter;"><font size="3">A NULL character pointer is </font><b>NOT</b><font size="3"> the same as a pointer to a NULL string. In Solaris, the following program will lead to a "</font><span style="color:rgb(51,0,0);font-family:'courier new';white-space:pre;"><font size="2">Segmentation Fault</font><span style="color:rgb(0,0,0);font-family:Charter;white-space:normal;"><font size="3">".</font></span></span></span></div>
@@ -116,6 +114,7 @@
 </div>
 </div>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

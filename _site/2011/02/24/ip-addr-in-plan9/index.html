@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Plan9自动获取IP地址</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-02-24 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-02-24 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Plan 9的Manual和Wiki上面关于网络配置的介绍，都是以server为原型，前提条件是这些server都会有固定的IP地址，集成DHCP、DNS乃至自己的子网。可我的Plan 9是在VirtualBox4.0的虚拟机上装的，Host是Fedora 14，通过家用无线路由器上网，IP地址动态获取，不可能有固定IP和固定的DNS、Gateway等等。因此<a href="http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html">http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html</a>和<a href="http://plan9.escet.urjc.es/magic/man2html/8/ipconfig">http://plan9.escet.urjc.es/magic/man2html/8/ipconfig</a>的方法根本无效。</p>
+	<div class="post paper">
+		<p>Plan 9的Manual和Wiki上面关于网络配置的介绍，都是以server为原型，前提条件是这些server都会有固定的IP地址，集成DHCP、DNS乃至自己的子网。可我的Plan 9是在VirtualBox4.0的虚拟机上装的，Host是Fedora 14，通过家用无线路由器上网，IP地址动态获取，不可能有固定IP和固定的DNS、Gateway等等。因此<a href="http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html">http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html</a>和<a href="http://plan9.escet.urjc.es/magic/man2html/8/ipconfig">http://plan9.escet.urjc.es/magic/man2html/8/ipconfig</a>的方法根本无效。</p>
 <p>VirtualBox4.0安装Plan9时，由于没有选择正确的网卡，Plan9使用了默认的Am79C970A网卡，而Plan 9自身并没有该网卡的驱动。要使用plan9自带的网卡驱动而无须自己编译内核的方法就是在plan9.ini中更改默认网卡的类型，可以参考&nbsp;<a href="http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini">http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini</a>。plan9.ini存储在9fat中，默认不挂载到fossil，因此需要在Rio的窗口中输入命令&ldquo;<span style="font-family:mceinline;">9fat:</span>&rdquo;挂载9fat，然后<span style="font-family:mceinline;">cd /n/9fat/</span>，编辑plan9.ini，加入一行&ldquo;<span style="font-family:mceinline;">ether0=type=igbe</span>&rdquo;。同时VirtualBox的网卡也要选择NAT --&gt; Intel Pro1000系列。重启Plan9之后，可以通过ip/ipconfig检查网卡是否能正常工作&mdash;&mdash;如果不报错，证明网卡正常。</p>
 <p>网卡正常工作后，我曾经尝试使用下列命令配置网络，DHCP可以正常工作，但DNS一直无法解析域名：</p>
 <p>
@@ -120,6 +118,7 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

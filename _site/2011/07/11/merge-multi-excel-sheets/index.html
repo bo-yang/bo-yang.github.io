@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>将多个Excel文件批量导入某个Excel文件中</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-07-11 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-07-11 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。</p>
+	<div class="post paper">
+		<p>这是我老婆提出的一个需求：(1)选中Excel表格中的某些行或列，运行某个Macro，自动根据选中的cells创建新的worksheets，worksheets的名字就是选中的cells的名字。(2)创建新的worksheet的同时，要把某指定目录下与新的worksheet同名的Excel文件的内容copy到新的worksheet中去。</p>
 <p>下面是搜索了半天之后搞出来的Macro，没有异常处理，而且使用了copy/paste，文件太多时效率肯定不高。其实完全可以参照<span style="font-family:Arial, Helvetica, sans-serif;"></span></p>
 <p><a href="http://www.exceltip.com/st/Copy_a_sheet_from_each_workbook_into_your_workbook_in_a_folder_using_VBA_in_Microsoft_Excel/560.html">Copy a sheet from each workbook into your workbook in a folder using VBA in Microsoft Excel</a>&nbsp;和 <a href="http://www.ozgrid.com/VBA/SpeedingUpVBACode.htm">Optimize Slow VBA Code</a> 中的方法来优化。</p></p>
 <pre>Sub LoadSheets()
@@ -159,6 +157,7 @@ End Function
 
 </pre></p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

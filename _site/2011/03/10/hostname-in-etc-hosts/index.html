@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>在/etc/hosts中定义Linux的hostname</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-03-10 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-03-10 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Network/Telecom-ref" rel="nofollow">Network/Telecom</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>今天碰到这样一个问题：一个程序在刚刚装好的Linux server上获取IP地址时永远都是0x7f000001。一开始没有注意，后来仔细一想，0x7f000001不正好就是127.0.0.1嘛！有同事查了一下/etc/hosts，发现在该文件中有这样一行：</p>
+	<div class="post paper">
+		<p>今天碰到这样一个问题：一个程序在刚刚装好的Linux server上获取IP地址时永远都是0x7f000001。一开始没有注意，后来仔细一想，0x7f000001不正好就是127.0.0.1嘛！有同事查了一下/etc/hosts，发现在该文件中有这样一行：</p>
 <p>
 <pre>127.0.0.1     mylinuxsvr localhost.localhost.localdomain localhost
 </pre>
@@ -147,6 +145,7 @@ rtt min/avg/max/mdev = 0.034/0.092/0.197/0.074 ms, pipe 2
 <p>Note:&nbsp;You must always have a localhost and localhost.localdomain entry mapping to 127.0.0.1 for Linux to work properly and securely.</p>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

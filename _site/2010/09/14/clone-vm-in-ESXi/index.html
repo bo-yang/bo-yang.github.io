@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>How to Clone VMs in ESXi</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2010-09-14 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#ESXi-ref" rel="nofollow">ESXi</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Virtual Machine-ref" rel="nofollow">Virtual Machine</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2010-09-14 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#ESXi-ref" rel="nofollow">ESXi</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Virtual Machine-ref" rel="nofollow">Virtual Machine</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>&nbsp;</p>
+	<div class="post paper">
+		<p>&nbsp;</p>
 <p class="MsoNormal"><span lang="EN-US">1. Create a new VM (clone2) without a disk equipped.</span></p>
 <p class="MsoNormal"><span lang="EN-US">2. Use the VM tool to clone the disk from<br />
 the existing VM to the new VM. Usually, you can find all the VMs in the /vmfs/volumes/datastore1/.</span></p>
@@ -110,6 +108,7 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
 <li>The cloned VM is identical to the original one, including the physical address(MAC) of the network card, the network configuration and so on. So, please change such config after clone.&nbsp;</li>
 </ul>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

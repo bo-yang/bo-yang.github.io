@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>expect_out(buffer)中包含send的数据</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2010-07-22 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2010-07-22 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>&nbsp;</p>
+	<div class="post paper">
+		<p>&nbsp;</p>
 <div>
 <h1 id="zw-129f916d484wZwN43916c">expect_out(buffer)中包含send的数据</h1>
 <p id="zw-129f9095e02SqGVnn3916c"><span id="zw-129f9081eab6rVFjl3916c">我一直以为在Expect中一旦执行send之后，</span><span id="zw-129f9081eab0LvB_n3916c">expect_out(buffer)就会被清空，直到有新的数据被填入，而恰恰就是这些数据被用在expect语句中。而今天在调试时发现的问题却令我大吃一惊，原来expect_out(buffer)不会被自动清空，而expect到的数据很可能不是你真正想要的，非常有可能是历史数据。</span><span id="zw-129f9095dc2QusTdp3916c"><a id="zw-129f9081f1cN6cQM93916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378">"expect_out(buffer) has the content of the previous send"</a>&nbsp;</span><span id="zw-129f9099e0e7RHXvZ3916c">一文</span><span id="zw-129f908ec42SOcAlE3916c">也指出了这个问题。</span></p>
@@ -182,6 +180,7 @@ expect {
 </div>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Plan9 Files -- Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(IV)</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-03-07 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-03-07 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>&nbsp;</p>
+	<div class="post paper">
+		<p>&nbsp;</p>
 <div>
 <h4 id="internal-source-marker_0.12957935757003725"><span>2.1 Input/Output</span></h4>
 <p><span>Most of the times, standard input, standard output, and standard error go to </span><span>/dev/cons</span><span>. This file represents the console for your program.It is the interface to use the device that is known as the console, which corresponds to your terminal.</span><span>The file interface provided for each process in Plan 9 has a file that provides the list of open file descriptors for the process. For example, to know which file descriptors are open in the shell we are using we can do this.</span>
@@ -154,6 +152,7 @@ main(int argc, char* argv[])
 <p>&nbsp;</p></div>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

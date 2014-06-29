@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Perl的library设置</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-05-16 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-05-16 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>参考链接：</p>
+	<div class="post paper">
+		<p>参考链接：</p>
 <ol>
 <li><a href="http://stackoverflow.com/questions/841785/how-do-i-include-a-perl-module-thats-in-a-different-directory">http://stackoverflow.com/questions/841785/how-do-i-include-a-perl-module-thats-in-a-different-directory</a></li>
 <li><a href="http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc">http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc</a></li>
@@ -113,6 +111,7 @@
 <pre class="lang-perl prettyprint"><code><span class="kwd">BEGIN</span><span class="pln"> </span><span class="pun">{</span><span class="pln">push </span><span class="lit">@INC</span><span class="pun">,</span><span class="pln"> </span><span class="str">'..'</span><span class="pun">}</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> yourlib</span><span class="pun">;</span></code></pre>
 <p>&nbsp;</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">

@@ -23,8 +23,7 @@
   <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
   <!-- Google Pretty end -->
 
-  <link href="/assets/bootstrap/css/blog-home.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/blog-post.css" rel="stylesheet">
+  <link href="/assets/style/blog.css" rel="stylesheet">
   
   <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
   <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
@@ -77,19 +76,18 @@
     </nav>
 
   <div class="container">
-    <div class="row">
+    <div class="row" id="content-row">
       
 <div class="page-header">
 	<h1>Struct sctp_event_subscribe Differs Between RHEL5 and RHEL6</h1>
-	<p class="lead">by  <a href="/about.html"><strong>Bo Yang</strong></a></p>
-	<hr>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at 2011-09-28 &nbsp; &nbsp;  <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#RHEL6.1-ref" rel="nofollow">RHEL6.1</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2011-09-28 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#RHEL6.1-ref" rel="nofollow">RHEL6.1</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
-    <p>Recently meet an SCTP issue: one product application running on MontaVista(kernel version 2.6.21) can't run on RedHat Enterprise Linux 5.5. After hours investion between millions lines  of  log file and source code, I finally noticed following error showed up:<br />
+	<div class="post paper">
+		<p>Recently meet an SCTP issue: one product application running on MontaVista(kernel version 2.6.21) can't run on RedHat Enterprise Linux 5.5. After hours investion between millions lines  of  log file and source code, I finally noticed following error showed up:<br />
 [sourcecode language="text"]<br />
 ^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566]<br />
  ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt()<br />
@@ -138,6 +136,7 @@ Then I began to check the definition of struct sctp_event_subscribe in both RH
 <a id="L376" name="L376" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L376"></a> 376};</pre>
 <p id="b9/7a/901cb22644e92e629902da22bf3d62baf0cc_3/0">It seems upgrading RHEL5.5 to RHEL6 is the final choice!</p>
 
+	</div>
 
 	<div align="right">
         <div class="bshare-custom">
