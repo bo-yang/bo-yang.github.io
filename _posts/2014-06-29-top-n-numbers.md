@@ -33,112 +33,111 @@ Since the heap could mantain the *heap property* by iteself, inserting a new ite
 
 Following is my C++ solution. The *push* function of *priority_queue* will invoke [two functions](http://www.cplusplus.com/reference/queue/priority_queue/push/): one call to push_back on the underlying container and one call to push_heap on the range that includes all the elements of the underlying container.
 
-<pre>
-class Numbers {
-	public:
-		Numbers(){}
-		Numbers(long len){ genNums(len); }
-		Numbers(string file){ readNums(file); }
+    class Numbers {
+    	public:
+    		Numbers(){}
+    		Numbers(long len){ genNums(len); }
+    		Numbers(string file){ readNums(file); }
+    
+    		vector<int>& topN(vector<int>& nums, int N);
+    		vector<int>& topNbySort(vector<int>& nums, int N);
+    		vector<int>& genNums(long len);
+    		vector<int>& readNums(string file);
+    		void printNums();
+    		void printTopN(vector<int>& top_num);
+    
+    	private:
+    		vector<int> nums;
+    		vector<int> top_nums;
+    };
+    
+    // Find the top N numbers by heap.
+    vector<int>& Numbers::topN(vector<int>& nums, int N) {
+    	priority_queue<int,vector<int>,greater<int> > pq; // top element is the minimum
+    	pq.push(nums.front());
+    	for(vector<int>::iterator it=nums.begin()+1;it!=nums.end();++it) {
+    		if(pq.top()<*it) {
+    			if(pq.size()<N) {
+    				pq.push(*it);
+    			} else {
+    				pq.pop();
+    				pq.push(*it);
+    			}
+    		}
+    	}
+    	while(!pq.empty()) {
+    		top_nums.push_back(pq.top());
+    		pq.pop();
+    	}
+    
+    	return top_nums;
+    }
+    
+    // Find the top N numbers using sort.
+    vector<int>& Numbers::topNbySort(vector<int>& nums, int N) {
+    	sort(nums.begin(),nums.end()-1);
+    	auto rit=nums.crbegin();
+    	for(int i=0;i<N;++i) {
+    		top_nums.push_back(*rit);
+    		rit++;
+    	}
+    	return top_nums;
+    }
+    
+    void Numbers::printTopN(vector<int>& top_num) {
+    	cout<<"The top "<<top_num.size()<<" numbers are:"<<endl;
+    	for(auto& x:top_num)
+    		cout<<x<<" ";
+    	cout<<endl;
+    }
+    
+    vector<int>& Numbers::genNums(long len) {
+    	for(int i=0;i<len;++i)
+    		nums.push_back(rand()%len+1);
+    
+    	return nums;
+    }
+    
+    vector<int>& Numbers::readNums(string file) {
+    	fstream fs(file,std::fstream::in);
+    	if (fs.is_open()) {
+    		while(!fs.eof()) {
+    			int tmp;
+    			fs>>tmp;
+    			nums.push_back(tmp);
+    		}
+    	} else {
+    		cerr<<"Failed to open file "<<file<<endl;
+    	}
+    	fs.close();
+    	nums.pop_back(); // delete the last number, because it was read two times.
+    	return nums;
+    }
+    
+    void Numbers::printNums() {
+    	for(auto& x:nums)
+    		cout<<x<<" ";
+    	cout<<endl;
+    }
 
-		vector<int>& topN(vector<int>& nums, int N);
-		vector<int>& topNbySort(vector<int>& nums, int N);
-		vector<int>& genNums(long len);
-		vector<int>& readNums(string file);
-		void printNums();
-		void printTopN(vector<int>& top_num);
-
-	private:
-		vector<int> nums;
-		vector<int> top_nums;
-};
-
-// Find the top N numbers by heap.
-vector<int>& Numbers::topN(vector<int>& nums, int N) {
-	priority_queue<int,vector<int>,greater<int> > pq; // top element is the minimum
-	pq.push(nums.front());
-	for(vector<int>::iterator it=nums.begin()+1;it!=nums.end();++it) {
-		if(pq.top()<*it) {
-			if(pq.size()<N) {
-				pq.push(*it);
-			} else {
-				pq.pop();
-				pq.push(*it);
-			}
-		}
-	}
-	while(!pq.empty()) {
-		top_nums.push_back(pq.top());
-		pq.pop();
-	}
-
-	return top_nums;
-}
-
-// Find the top N numbers using sort.
-vector<int>& Numbers::topNbySort(vector<int>& nums, int N) {
-	sort(nums.begin(),nums.end()-1);
-	auto rit=nums.crbegin();
-	for(int i=0;i<N;++i) {
-		top_nums.push_back(*rit);
-		rit++;
-	}
-	return top_nums;
-}
-
-void Numbers::printTopN(vector<int>& top_num) {
-	cout<<"The top "<<top_num.size()<<" numbers are:"<<endl;
-	for(auto& x:top_num)
-		cout<<x<<" ";
-	cout<<endl;
-}
-
-vector<int>& Numbers::genNums(long len) {
-	for(int i=0;i<len;++i)
-		nums.push_back(rand()%len+1);
-
-	return nums;
-}
-
-vector<int>& Numbers::readNums(string file) {
-	fstream fs(file,std::fstream::in);
-	if (fs.is_open()) {
-		while(!fs.eof()) {
-			int tmp;
-			fs>>tmp;
-			nums.push_back(tmp);
-		}
-	} else {
-		cerr<<"Failed to open file "<<file<<endl;
-	}
-	fs.close();
-	nums.pop_back(); // delete the last number, because it was read two times.
-	return nums;
-}
-
-void Numbers::printNums() {
-	for(auto& x:nums)
-		cout<<x<<" ";
-	cout<<endl;
-}
-</pre>
 
 
 I tested the time costs of sorting and heap when handling 10,000,000 integers respectively. Obviously the heap method is 5 times faster than sort method.
 
+<pre>
+macmini:TopNumbers boyang$ time ./top_nums_sort 
+The top 10 numbers are:
+8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
 
-    macmini:TopNumbers boyang$ time ./top_nums_sort 
-    The top 10 numbers are:
-    8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
+real	0m6.646s
+user	0m6.589s
+sys	0m0.052s
 
-    real	0m6.646s
-    user	0m6.589s
-    sys	0m0.052s
+macmini:TopNumbers boyang$ time ./top_nums_heap 
+The top 10 numbers are:
+9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
 
-    macmini:TopNumbers boyang$ time ./top_nums_heap 
-    The top 10 numbers are:
-    9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
-
-    real	0m1.182s
-    user	0m1.130s
-    sys	0m0.043s
-
+real	0m1.182s
+user	0m1.130s
+sys	0m0.043s
+<pre>
