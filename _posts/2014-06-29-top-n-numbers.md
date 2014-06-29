@@ -34,23 +34,6 @@ Since the heap could mantain the *heap property* by iteself, inserting a new ite
 Following is my C++ solution. The *push* function of *priority_queue* will invoke [two functions](http://www.cplusplus.com/reference/queue/priority_queue/push/): one call to push_back on the underlying container and one call to push_heap on the range that includes all the elements of the underlying container.
 
 <pre>
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <queue>
-#include <string>
-#include <cstdlib>
-#include <algorithm>
-
-using std::cout;
-using std::cerr;
-using std::endl;
-using std::priority_queue;
-using std::vector;
-using std::fstream;
-using std::greater;
-using std::string;
-
 class Numbers {
 	public:
 		Numbers(){}
@@ -138,6 +121,7 @@ void Numbers::printNums() {
 	cout<<endl;
 }
 </pre>
+
 
 I tested the time costs of sorting and heap when handling 10,000,000 integers respectively. Obviously the heap method is 5 times faster than sort method.
 
