@@ -4,13 +4,223 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-06-29T15:05:55-07:00</updated>
+ <updated>2014-07-02T17:50:51-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>The First Occurrence of Needle In Haystack</title>
+   <link href="http://bo-yang.github.com//2014/07/01/strstr"/>
+   <updated>2014-07-01T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/01/strstr</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://oj.leetcode.com/problems/implement-strstr/&quot;&gt;The problem&lt;/a&gt; is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Implement strStr().&lt;/p&gt;
+
+  &lt;p&gt;Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;A naive method: (1) find the the first letter of &lt;code&gt;needle&lt;/code&gt; in &lt;code&gt;haystack&lt;/code&gt;, (2)comparing other consecutive characters of needle and haystack, (3) if all letters in &lt;code&gt;needle&lt;/code&gt; can be found in &lt;code&gt;haystack&lt;/code&gt; consecutively, then return the position in &lt;code&gt;haystack&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    char *strStr(char *haystack, char *needle) {
+		if(haystack==NULL || needle==NULL)
+			return NULL;
+
+		if(needle[0]==&#39;\0&#39;)
+			return haystack;
+
+		// Find the first character of needle in haystack
+		int hay_len=strlen(haystack);
+		int need_len=strlen(needle);
+		int pos=0;
+		bool found=false;
+		while(hay_len-pos&amp;gt;=need_len &amp;amp;&amp;amp; haystack[pos]!=&#39;\0&#39;) {
+			if(haystack[pos] == needle[0]){
+				int th=pos+1;
+				int tn=1;
+				while(haystack[th] == needle[tn]) {
+					if(needle[tn]==&#39;\0&#39;)
+						break;
+					th++;
+					tn++;
+				}
+				if(tn == need_len) {
+					found=true;
+					break;
+				}
+			}
+			pos++;
+		}
+
+		if(found)
+			return haystack+pos;
+		else
+			return NULL;
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A better solution is to use the famous KMP algorithm(&lt;a href=&quot;http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/&quot;&gt;http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/&lt;/a&gt;).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    char *strStr(char *haystack, char *needle) {
+		if(haystack==NULL || needle==NULL)
+	 		return NULL;
+	 	if(needle[0]==&#39;\0&#39;)
+	 		return haystack;
+
+		int n=strlen(haystack);
+		int m=strlen(needle);
+		vector&amp;lt;int&amp;gt; pi(m); // the longest proper prefix which is also suffix
+		computePrefix(needle,pi);
+		//printPrefix(pi); // TEST ONLY
+
+		int q=0; // index for needle
+		int i=0; // index for haystack
+		while(i&amp;lt;n) {
+			//cout&amp;lt;&amp;lt;&quot;needle[&quot;&amp;lt;&amp;lt;q&amp;lt;&amp;lt;&quot;]=&quot;&amp;lt;&amp;lt;needle[q]&amp;lt;&amp;lt;&quot;, haystack[&quot;&amp;lt;&amp;lt;i&amp;lt;&amp;lt;&quot;]=&quot;&amp;lt;&amp;lt;haystack[i]&amp;lt;&amp;lt;endl; // TEST ONLY
+			if(needle[q]==haystack[i]) {
+				q++;
+				i++;
+			}
+			if(q==m) {
+				//cout&amp;lt;&amp;lt;&quot;Pattern occurs with shift &quot;&amp;lt;&amp;lt;i-m&amp;lt;&amp;lt;endl; // TEST ONLY
+				return haystack+i-m;
+			} else if(needle[q]!=haystack[i]) {
+				if(q!=0)
+					q=pi[q-1];
+				else
+					i++;
+			}
+		}
+		return NULL;
+	}
+
+	// Calculate the longest proper prefix which is also suffix.
+	// Examples:
+	// 	For the pattern “AABAACAABAA”, lps[] is [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
+	//	For the pattern “ABCDE”, lps[] is [0, 0, 0, 0, 0]
+	//	For the pattern “AAAAA”, lps[] is [0, 1, 2, 3, 4]
+	//	For the pattern “AAABAAA”, lps[] is [0, 1, 2, 0, 1, 2, 3]
+	//	For the pattern “AAACAAAAAC”, lps[] is [0, 1, 2, 0, 1, 2, 3, 3, 3, 4]
+	void computePrefix(char* P, vector&amp;lt;int&amp;gt;&amp;amp; pi) {
+		int m=strlen(P);
+		pi[0]=0; // lps[0] is always 0
+		int k=0; // length of the previous prefix suffix
+		int i=1;
+		while(i&amp;lt;m) {
+			if(P[k]==P[i]) {
+				k++;
+				pi[i]=k;
+				i++;
+			} else {
+				if(k!=0) {
+					k=pi[k-1];
+				} else {
+					pi[i]=0;
+					i++;
+				}
+			}
+		}
+	}
+
+	void printPrefix(vector&amp;lt;int&amp;gt;&amp;amp; pi) {
+		cout&amp;lt;&amp;lt;&quot;pi={ &quot;;
+		for(auto&amp;amp; x:pi)
+			cout&amp;lt;&amp;lt;x&amp;lt;&amp;lt;&quot; &quot;;
+		cout&amp;lt;&amp;lt;&quot;}&quot;&amp;lt;&amp;lt;endl;
+	}
+};
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Longest Consecutive Sequence</title>
+   <link href="http://bo-yang.github.com//2014/07/01/longest-consecutive-sequence"/>
+   <updated>2014-07-01T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/01/longest-consecutive-sequence</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://oj.leetcode.com/problems/longest-consecutive-sequence/&quot;&gt;The problem&lt;/a&gt; is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given an unsorted array of integers, find the length of the longest consecutive elements sequence.&lt;/p&gt;
+
+  &lt;p&gt;For example,&lt;/p&gt;
+
+  &lt;p&gt;Given &lt;code&gt;[100, 4, 200, 1, 3, 2]&lt;/code&gt;,the longest consecutive elements sequence is &lt;code&gt;[1, 2, 3, 4]&lt;/code&gt;. Return its length: &lt;code&gt;4&lt;/code&gt;.&lt;/p&gt;
+
+  &lt;p&gt;Your algorithm should run in \( O(n) \) complexity.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The most intuitive solution to this problem is sorting the array first, and then go through the sorted array and record the length of the longest consecutive sequence. However, the time complexity of this method is \(O(n \log n)\). &lt;/p&gt;
+
+&lt;p&gt;In order to get the \( O(n) \) complexity, we can pick up the first element in array(say &lt;code&gt;num[0]&lt;/code&gt;), and then check if &lt;code&gt;num[0]-1&lt;/code&gt; and &lt;code&gt;num[0]+1&lt;/code&gt; are in the array. If yes, iteratively check the upper/lower boundary of this sequence. Until the upper/lower boundaries never change, find a new element in the array that has not been accessed and start a new search. &lt;/p&gt;
+
+&lt;p&gt;In this solution, a hash table(&lt;code&gt;unordered_map&lt;/code&gt; in C++) is needed to record the accessibility of each element in the array. The keys to the hash table are the integeres in the array, and the values are bool - if the key has been accessed, then set to &lt;code&gt;false&lt;/code&gt;; otherwise set to &lt;code&gt;true&lt;/code&gt;. In average, checking the existence(in C++, the &lt;code&gt;find()&lt;/code&gt; of &lt;code&gt;unordered_map&lt;/code&gt;) of a key in the hash table costs constant time. Since we only access every element in the array(or hash table) for only one time, and the operations for each element only cost \(O(1)\) time, the time complexity of this method is \( O(n) \). And the space complexity is also \( O(n) \) due to the hash table.&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation.&lt;/p&gt;
+
+&lt;pre&gt;
+class Solution {
+public:
+    int longestConsecutive(vector&lt;int&gt; &amp;amp;num) {
+        unordered_map&amp;lt;int,bool&amp;gt; map;
+		for(auto&amp;amp; x:num)
+			map[x]=true;
+		
+		int start=num[0];
+		int end=num[0];
+		int max_len=1;
+		int cnt=1; // items have been accessed
+		int idx=1;
+		while(cnt&amp;lt;=num.size()) {
+			//cout&amp;lt;&amp;lt;&quot;start=&quot;&amp;lt;&amp;lt;start&amp;lt;&amp;lt;&quot;, end=&quot;&amp;lt;&amp;lt;end&amp;lt;&amp;lt;endl; // TEST ONLY
+			map[start]=false;
+			map[end]=false;
+			// Find the lower boundary
+			unordered_map&amp;lt;int,bool&amp;gt;::iterator got=map.find(start-1);
+			if(got!=map.end() &amp;amp;&amp;amp; got-&amp;gt;second) { 
+				start--;
+				cnt++;
+			}
+			
+			// Find the upper boundary
+			got=map.find(end+1);
+			if(got!=map.end() &amp;amp;&amp;amp; got-&amp;gt;second) { 
+				end++;
+				cnt++;
+			}
+
+			if(max_len&amp;lt;end-start+1)
+				max_len=end-start+1;
+
+			if(!(map[start]||map[end])) { 
+				// If both start and end rich the boundaries, 
+				// find a new entry for them.
+				while(idx&amp;lt;num.size() &amp;amp;&amp;amp; map[num[idx]]==false)
+					idx++;
+				start=num[idx];
+				end=num[idx];
+				map[start]=false;
+				cnt++;
+			}
+		}
+
+		return max_len;
+    }
+};
+
+&lt;/int&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Top N Numbers</title>

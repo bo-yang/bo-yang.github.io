@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top N Numbers | Bo's Blog</title>
+  <title>The First Occurrence of Needle In Haystack | Bo's Blog</title>
   
   <meta name="author" content="Bo Yang" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -79,145 +79,137 @@
     <div class="row" id="content-row">
       
 <div class="page-header">
-	<h1>Top N Numbers</h1>
+	<h1>The First Occurrence of Needle In Haystack</h1>
 	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2014-06-29 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2014-07-01 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
 	</p>
 </div>
 
 <div class="col-lg-10">
 	<div class="post paper">
-		<p>The problem is:</p>
+		<p><a href="https://oj.leetcode.com/problems/implement-strstr/">The problem</a> is:</p>
 
 <blockquote>
-  <p>Given an arbitrarily large file and a number, \(N\), containing individual numbers on each line (e.g. 200Gb file), will output the largest \(N\) numbers, highest first. Analyse the run time/space complexity of your approach.</p>
+  <p>Implement strStr().</p>
+
+  <p>Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.</p>
 </blockquote>
 
-<p>The intuitive method for the top-\(N\) is to sort all numbers first, and then return the first/last \(N\) numbers. However, the time complexity of sorting is usually \(O(n \log n)\), and when the data are very big, it is impossible to do the sorting in memory directly.</p>
+<p>A naive method: (1) find the the first letter of <code>needle</code> in <code>haystack</code>, (2)comparing other consecutive characters of needle and haystack, (3) if all letters in <code>needle</code> can be found in <code>haystack</code> consecutively, then return the position in <code>haystack</code>.</p>
 
-<p>Finding the top \(N\) items can be done in \(O(n \log N) \) time, which is approximate to \( O(n) \). The key is to use a heap(in C++, it is <em>priority_queue</em>) to store the top \(N\) items during reading the huge data. <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">Heap</a> is a specialized (binary) tree-based data structure that satisfies the <em>heap property</em>: either the keys of parent nodes are always greater than or equal to those of the children and the highest key is in the root node (this kind of heap is called max heap) or the keys of parent nodes are less than or equal to those of the children and the lowest key is in the root node (min heap).</p>
+<pre><code>class Solution {
+public:
+    char *strStr(char *haystack, char *needle) {
+		if(haystack==NULL || needle==NULL)
+			return NULL;
 
-<p>The strategy is:</p>
+		if(needle[0]=='\0')
+			return haystack;
 
-<ul>
-  <li>maintain an \(N\)-item long heap, and read all items iteratively.</li>
-  <li>after reading a new item from the huge data, compare it with the smallest number in heap.</li>
-  <li>if the number is greater than the smallest number in heap, then pop the top number in heap(also is the smallest one) and push this data into heap.</li>
-  <li>otherwise, continue and read a new data.</li>
-  <li>finally, dump the \(N\) items in the heap.</li>
-</ul>
+		// Find the first character of needle in haystack
+		int hay_len=strlen(haystack);
+		int need_len=strlen(needle);
+		int pos=0;
+		bool found=false;
+		while(hay_len-pos&gt;=need_len &amp;&amp; haystack[pos]!='\0') {
+			if(haystack[pos] == needle[0]){
+				int th=pos+1;
+				int tn=1;
+				while(haystack[th] == needle[tn]) {
+					if(needle[tn]=='\0')
+						break;
+					th++;
+					tn++;
+				}
+				if(tn == need_len) {
+					found=true;
+					break;
+				}
+			}
+			pos++;
+		}
 
-<p>Since the heap could mantain the <em>heap property</em> by iteself, inserting a new item won’t disorder the heap. As inserting a new item to heap requires \( O(\log N) \) time, the worst case of processing \(n\) data costs \(O(n \log N) \) time.</p>
-
-<p>Following is my C++ solution. The <em>push</em> function of <em>priority_queue</em> will invoke <a href="http://www.cplusplus.com/reference/queue/priority_queue/push/">two functions</a>: one call to push_back on the underlying container and one call to push_heap on the range that includes all the elements of the underlying container.</p>
-
-<pre><code>class Numbers {
-	public:
-		Numbers(){}
-		Numbers(long len){ genNums(len); }
-		Numbers(string file){ readNums(file); }
-
-		vector&lt;int&gt;&amp; topN(vector&lt;int&gt;&amp; nums, int N);
-		vector&lt;int&gt;&amp; topNbySort(vector&lt;int&gt;&amp; nums, int N);
-		vector&lt;int&gt;&amp; genNums(long len);
-		vector&lt;int&gt;&amp; readNums(string file);
-		void printNums();
-		void printTopN(vector&lt;int&gt;&amp; top_num);
-
-	private:
-		vector&lt;int&gt; nums;
-		vector&lt;int&gt; top_nums;
+		if(found)
+			return haystack+pos;
+		else
+			return NULL;
+    }
 };
+</code></pre>
 
-// Find the top N numbers by heap.
-vector&lt;int&gt;&amp; Numbers::topN(vector&lt;int&gt;&amp; nums, int N) {
-	priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt; pq; // top element is the minimum
-	pq.push(nums.front());
-	for(vector&lt;int&gt;::iterator it=nums.begin()+1;it!=nums.end();++it) {
-		if(pq.top()&lt;*it) {
-			if(pq.size()&lt;N) {
-				pq.push(*it);
+<p>A better solution is to use the famous KMP algorithm(<a href="http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/">http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/</a>).</p>
+
+<pre><code>class Solution {
+public:
+    char *strStr(char *haystack, char *needle) {
+		if(haystack==NULL || needle==NULL)
+	 		return NULL;
+	 	if(needle[0]=='\0')
+	 		return haystack;
+
+		int n=strlen(haystack);
+		int m=strlen(needle);
+		vector&lt;int&gt; pi(m); // the longest proper prefix which is also suffix
+		computePrefix(needle,pi);
+		//printPrefix(pi); // TEST ONLY
+
+		int q=0; // index for needle
+		int i=0; // index for haystack
+		while(i&lt;n) {
+			//cout&lt;&lt;"needle["&lt;&lt;q&lt;&lt;"]="&lt;&lt;needle[q]&lt;&lt;", haystack["&lt;&lt;i&lt;&lt;"]="&lt;&lt;haystack[i]&lt;&lt;endl; // TEST ONLY
+			if(needle[q]==haystack[i]) {
+				q++;
+				i++;
+			}
+			if(q==m) {
+				//cout&lt;&lt;"Pattern occurs with shift "&lt;&lt;i-m&lt;&lt;endl; // TEST ONLY
+				return haystack+i-m;
+			} else if(needle[q]!=haystack[i]) {
+				if(q!=0)
+					q=pi[q-1];
+				else
+					i++;
+			}
+		}
+		return NULL;
+	}
+
+	// Calculate the longest proper prefix which is also suffix.
+	// Examples:
+	// 	For the pattern “AABAACAABAA”, lps[] is [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
+	//	For the pattern “ABCDE”, lps[] is [0, 0, 0, 0, 0]
+	//	For the pattern “AAAAA”, lps[] is [0, 1, 2, 3, 4]
+	//	For the pattern “AAABAAA”, lps[] is [0, 1, 2, 0, 1, 2, 3]
+	//	For the pattern “AAACAAAAAC”, lps[] is [0, 1, 2, 0, 1, 2, 3, 3, 3, 4]
+	void computePrefix(char* P, vector&lt;int&gt;&amp; pi) {
+		int m=strlen(P);
+		pi[0]=0; // lps[0] is always 0
+		int k=0; // length of the previous prefix suffix
+		int i=1;
+		while(i&lt;m) {
+			if(P[k]==P[i]) {
+				k++;
+				pi[i]=k;
+				i++;
 			} else {
-				pq.pop();
-				pq.push(*it);
+				if(k!=0) {
+					k=pi[k-1];
+				} else {
+					pi[i]=0;
+					i++;
+				}
 			}
 		}
 	}
-	while(!pq.empty()) {
-		top_nums.push_back(pq.top());
-		pq.pop();
+
+	void printPrefix(vector&lt;int&gt;&amp; pi) {
+		cout&lt;&lt;"pi={ ";
+		for(auto&amp; x:pi)
+			cout&lt;&lt;x&lt;&lt;" ";
+		cout&lt;&lt;"}"&lt;&lt;endl;
 	}
-
-	return top_nums;
-}
-
-// Find the top N numbers using sort.
-vector&lt;int&gt;&amp; Numbers::topNbySort(vector&lt;int&gt;&amp; nums, int N) {
-	sort(nums.begin(),nums.end()-1);
-	auto rit=nums.crbegin();
-	for(int i=0;i&lt;N;++i) {
-		top_nums.push_back(*rit);
-		rit++;
-	}
-	return top_nums;
-}
-
-void Numbers::printTopN(vector&lt;int&gt;&amp; top_num) {
-	cout&lt;&lt;"The top "&lt;&lt;top_num.size()&lt;&lt;" numbers are:"&lt;&lt;endl;
-	for(auto&amp; x:top_num)
-		cout&lt;&lt;x&lt;&lt;" ";
-	cout&lt;&lt;endl;
-}
-
-vector&lt;int&gt;&amp; Numbers::genNums(long len) {
-	for(int i=0;i&lt;len;++i)
-		nums.push_back(rand()%len+1);
-
-	return nums;
-}
-
-vector&lt;int&gt;&amp; Numbers::readNums(string file) {
-	fstream fs(file,std::fstream::in);
-	if (fs.is_open()) {
-		while(!fs.eof()) {
-			int tmp;
-			fs&gt;&gt;tmp;
-			nums.push_back(tmp);
-		}
-	} else {
-		cerr&lt;&lt;"Failed to open file "&lt;&lt;file&lt;&lt;endl;
-	}
-	fs.close();
-	nums.pop_back(); // delete the last number, because it was read two times.
-	return nums;
-}
-
-void Numbers::printNums() {
-	for(auto&amp; x:nums)
-		cout&lt;&lt;x&lt;&lt;" ";
-	cout&lt;&lt;endl;
-}
+};
 </code></pre>
-
-<p>I tested the time costs of sorting and heap when handling 10,000,000 integers respectively. Obviously the heap method is 5 times faster than sort method.</p>
-
-<pre>
-macmini:TopNumbers boyang$ time ./top_nums_sort 
-The top 10 numbers are:
-8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
-
-real	0m6.646s
-user	0m6.589s
-sys	0m0.052s
-
-macmini:TopNumbers boyang$ time ./top_nums_heap 
-The top 10 numbers are:
-9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
-
-real	0m1.182s
-user	0m1.130s
-sys	0m0.043s
-</pre>
 
 	</div>
 
@@ -243,11 +235,11 @@ sys	0m0.043s
     <div class="pager">
       <ul>
       
-        <li class="previous"><a href="/2014/06/27/nqueens" title="N-Queens Problem">&larr; Previous</a></li>
+        <li class="previous"><a href="/2014/07/01/longest-consecutive-sequence" title="Longest Consecutive Sequence">&larr; Previous</a></li>
       
 
       
-        <li class="next"><a href="/2014/07/01/longest-consecutive-sequence" title="Longest Consecutive Sequence">Next &rarr;</a></li>
+        <li class="next disabled"><a>Next &rarr;</a>
       
       </ul>
     </div>
@@ -270,8 +262,8 @@ var linkwithin_site_id = 2140443;
 <script type="text/javascript">
     var disqus_developer = 1;
     var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
-     var disqus_identifier = '/2014/06/29/top-n-numbers';
-    var disqus_url = 'http://bo-yang.github.com//2014/06/29/top-n-numbers';
+     var disqus_identifier = '/2014/07/01/strstr';
+    var disqus_url = 'http://bo-yang.github.com//2014/07/01/strstr';
     
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {

@@ -88,6 +88,49 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2010/06/11/cpu-speed-and-memory-size-in-solaris">Find CPU Speed and Memory Size on Solaris</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-06-11</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><h2>Find CPU Speed and Memory Size on Solaris</h2>
+<div class="entry">
+<p>As I&rsquo;m writing my thesis I&rsquo;m running tests on an old SMP Solaris machine. Obviously, I need to provide the specs of this machine in the paper so that the readers can see my results in context (ie why everything is taking forever. On linux I would just use&nbsp;<kbd>lshw</kbd>&nbsp;which is your ultimate hardware information goldmine. If you don&rsquo;t have it on your system, go install it now. You will thank me later.</p>
+<p>The ancient Solaris machine I was working with did not have it, so I was forced to find other ways of finding information such as CPU speed and memory size.</p>
+<p>First you can try&nbsp;<kbd>prtdiag</kbd>&nbsp;&ndash; it will tell you detailed information about all your CPU&rsquo;s and memory banks. Unfortunately it is in a weird directory that is not in your $path so you will need to run it with the absolute path:</p>
+<p><code>/usr/platform/sun4u/sbin/prtdiag -v</code></p>
+<p>If you just want information on the CPU&rsquo;s you can also try:</p>
+<p><code>psrinfo -v</code></p>
+<p>Finally, to just get your total memory size do:</p>
+<p><code>prtconf | grep Memory</code></p>
+<p>There might be better ways to do this, but these worked for me. Craig will probably be able to add to this list or correct me.&nbsp;<img class="wp-smiley" src="http://www.terminally-incoherent.com/blog/wp-includes/images/smilies/icon_smile.gif" alt=":)" /></p>
+</div>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/05/22/how-to-fix-DB_RUNRECOVERY">Fixing The Error: DB_RUNRECOVERY: Fatal error, run database recovery</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-05-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	</p>
+<p><strong>If you get a message similar to this:</strong></p>
+<p><code>[username@localhost ~]$ sudo yum update<br />rpmdb: Thread/process 2402/139688794072832 failed: Thread died in Berkeley DB library<br />error: db4 error(-30974) from dbenv-&gt;failchk: DB_RUNRECOVERY: Fatal error, run database recovery<br />error: cannot open Packages index using db3 - (-30974)<br />error: cannot open Packages database in /var/lib/rpm<br />CRITICAL:yum.main:</code></p>
+<p>Error: rpmdb open failed</p>
+<p>&nbsp;</p>
+<p><strong>You can fix it by running the following 3 commands:</strong></p>
+<p><code>[username@localhost ~]$ sudo rm -f /var/lib/rpm/__db*<br />[username@localhost ~]$ sudo db_verify /var/lib/rpm/Packages<br />[username@localhost ~]$ sudo rpm --rebuilddb</code></p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2010/04/21/Enter-password-for-default-keyring-to-unlock">绕过“Enter password for default keyring to unlock”的方法</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-04-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
@@ -985,220 +1028,6 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/10/27/build-c-library-in-linux">【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-10-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>本文根据<a href="http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487">http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487</a>的回复总结而成。</p>
-<p>&nbsp;</p>
-<p>1. 共享库</p>
-<p>&nbsp;</p>
-<p>通常做成共享库的话，在编绎时加上-shared参数，并把链接生成的文件名命名libxxx.so，可以放在/usr/lib下&nbsp;</p>
-<p>其他程序引用这个库时，在链接的时候加上-lxxx就可以了。</p>
-<p>&nbsp;</p>
-<p>编辑好代码以后,编译时采用类似下面的命令可生成"共享库"(假如源文件是myfun.c):&nbsp;<br />gcc -shared -fPIC -Wmyfun.c -0 libmy.so&nbsp;<br />解释: -shared 生成共享库;&nbsp;<br />&nbsp; &nbsp; &nbsp; -fIPC 表示&ldquo;位置无关代码&rdquo;（Position Independent Code),可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; -W 表示输出警告信息,可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; 库文件的命名要按照libxxxx.so的格式;&nbsp;</p>
-<p>要引用这个库时:&nbsp;<br />&nbsp; &nbsp; &nbsp; gcc xxx.c -0 xxx.out -lmy&nbsp;<br />&nbsp; &nbsp; -l 表示设定要连接的库(libmy.so,输my便可)&nbsp;</p>
-<p>&nbsp;</p>
-<p>2.&nbsp;静态库&nbsp;</p>
-<p>文件名：lib.c&nbsp;<br />先编译成目标文件 gcc -o mylib.o -c lib.c&nbsp;<br />然后创建静态库,将mylib.o放到libmylib.a中 ar rcs libmylib.a mylib.o&nbsp;<br />最后copy到库目录下/usr/lib&nbsp; cp libmylib.a /usr/lib/libmylib.a&nbsp;</p>
-<p>在编写的时候直接调用其中的函数就是了，只不过在编译的时候要加入-l选项后面跟上库名&nbsp;<br />如 gcc -o test test.c -lmylib&nbsp; //mylib是前面创建的库的名称&nbsp;</p>
-<p>3. 动态库 </p>
-<p>创建就是 gcc -fPIC -share -o mylib.so lib.c&nbsp;<br />调用也分两种方法&nbsp;<br />一种方法是 gcc -o test test.c ./libmylib.so (注意这里跟的是动态库的路径 )<br />第二种方法是使用动态库的函数 你man dlopen看下那几个函数看下就知道了就不多说了</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/10/22/call-perl-in-shell">Shell中直接调用perl命令</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-10-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The &nbsp;<em>-e</em> option is handy for quick Perl operations<br />
-from the command line. Want to change all instances of "oldstring" in<br />
-Wiffle.bat to "newstrong"? Try</p>
-<p>&nbsp;</p>
-<p>
-<pre>perl -i.old -p -e "s/ oldstring/ newstrong/g" wiffle.bat</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>This says: "Take each line of &nbsp;Wiffle.bat (-p); store the original in Wiffle.old (-i); substitute all instances of &nbsp;oldstring with newstrong (-e); write the result (-p) to the<br />
-original file (-i)."</p>
-<p>&nbsp;</p>
-<p>Other PERL command line options are:</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;<strong>Perl 5 Command-Line Switches</strong></p>
-<p>&nbsp;</p>
-<table style="width:80%;" border="1">
-<tbody>
-<tr valign="top">
-<td width="109">
-<em>Option</em></td>
-<td width="150"><em>Arguments</em> </td>
-<td width="168"><em>Purpose</em></td>
-<td width="163"><em>Notes</em> </td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-0</tt></td>
-<td width="150">octal character code</td>
-<td width="168">Specify record separator </td>
-<td width="163">Default is newline (<tt>/n</tt>) </td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-a</tt></td>
-<td width="150">none</td>
-<td width="168">Automatically spli recordst </td>
-<td width="163">Used with <tt>-n</tt> or or <tt>-p</tt> </td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-c</tt></td>
-<td width="150">none</td>
-<td width="168">Check syntax only</td>
-<td width="163">Do not execute</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-d</tt></td>
-<td width="150">none</td>
-<td width="168">Run script using Perl debugger </td>
-<td width="163">If Perl debugging option was included when Perl was installed
-</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-D</tt></td>
-<td width="150">flags</td>
-<td width="168">Specify debugging behavior </td>
-<td width="163">See table 2</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-e</tt></td>
-<td width="150">command</td>
-<td width="168">Pass a command to Perl from the command line </td>
-<td width="163">Useful for quick operations</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-F</tt></td>
-<td width="150">regular expression</td>
-<td width="168">If <tt>-a</tt> used </td>
-<td width="163">Expression to split by default is white space </td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-i</tt></td>
-<td width="150">extension</td>
-<td width="168">Replace original file with results </td>
-<td width="163">Useful for modifying contents of files</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-I</tt></td>
-<td width="150">directory</td>
-<td width="168">Specify location of <tt>include</tt> files </td>
-<td width="163">&nbsp;</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-l</tt></td>
-<td width="150">octal character code</td>
-<td width="168">Drop newlines when used </td>
-<td width="163">With <tt>-n</tt> and <tt>-p</tt> and use designated character as<br />
-line- termination character </td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-n</tt></td>
-<td width="150">none</td>
-<td width="168">Process the script using each specified file as an argument </td>
-<td width="163">Used for performing the same set of actions on a set of files
-</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-p</tt></td>
-<td width="150">none</td>
-<td width="168">Same as <tt>-n</tt> but each line is printed </td>
-<td width="163">&nbsp;</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-P</tt></td>
-<td width="150">none</td>
-<td width="168">Run the script through the C preprocessor before Perl compiles it
-</td>
-<td width="163">&nbsp;</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-s</tt></td>
-<td width="150">none</td>
-<td width="168">Enable passing of arbitrary switches to Perl </td>
-<td width="163">Use <tt>-s -what -ever </tt>to have the Perl variables <tt>$what<br />
-</tt>and <tt>$ever </tt>defined within your script </td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-S</tt></td>
-<td width="150">none</td>
-<td width="168">Tell Perl to look along the path for the script </td>
-<td width="163">&nbsp;</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-T</tt></td>
-<td width="150">none</td>
-<td width="168">Use taint checking; don't evaluate expressions supplied on the<br />
-command line </td>
-<td width="163">&nbsp;</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-u</tt></td>
-<td width="150">none</td>
-<td width="168">Make Perl dump core after compiling your script; intended to allow<br />
-for generation of Perl executables </td>
-<td width="163">Very messy; wait for the Perl compiler</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-U</tt></td>
-<td width="150">none</td>
-<td width="168">Unsafe mode; overrides Perl's natural caution </td>
-<td width="163">Don't use this!</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-v</tt></td>
-<td width="150">none</td>
-<td width="168">Print Perl version number </td>
-<td width="163">&nbsp;</td>
-</tr>
-<tr valign="top">
-<td width="109">
-<tt>-w</tt></td>
-<td width="150">none</td>
-<td width="168">Print warnings about script syntax </td>
-<td width="163">Extremely useful, especially during development &nbsp;</td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1235,7 +1064,7 @@ for generation of Perl executables </td>
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">16</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">18</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -1293,7 +1122,7 @@ for generation of Perl executables </td>
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">15</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">17</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -1386,6 +1215,10 @@ for generation of Perl executables </td>
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
+			
+  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></li>
+			
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
@@ -1401,10 +1234,6 @@ for generation of Perl executables </td>
   			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
 			
   			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
-			
-  			<li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></li>
-			
-  			<li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></li>
 			
 			</ul>
         </div>

@@ -88,6 +88,616 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-05-26</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and Breadth First Search(BFS). Depth First Search visits the tree by proceeding deeper and deeper until it reaches the leaf nodes, including pre-order, in-order, post-order tree traversal. DFS uses a data structure called Stack.</p>
+
+<p>Breadth First Search is the most natural solution for level-order traversal, since it visits the nodes level by level. BFS requires the use of a data structure called Queue, which is a First In First Out (FIFO) structure.</p>
+
+<p>For the complete C++ source code used in this article, please refer to: <a href="https://github.com/bo-yang/BinaryTree">https://github.com/bo-yang/BinaryTree</a>.</p>
+
+<ol>
+  <li><a href="#data_structure">Data Structure</a></li>
+  <li><a href="#build_tree">Build Binary Tree</a></li>
+  <li><a href="#preorder">Preorder Traversal</a></li>
+  <li><a href="#inorder">Inorder Traversal</a></li>
+  <li><a href="#postorder">Postorder Traversal</a></li>
+  <li><a href="#bft">Breadth First Traversal</a></li>
+  <li><a href="#zigzag">Zigzag Traversal</a></li>
+  <li><a href="#comparison">Binary Tree Comparison</a></li>
+</ol>
+
+<h3 id="a-namedatastructuredata-structurea"><a name="data_structure">Data Structure</a></h3>
+
+<p>The data structure used for the tree node is very simple, which is adopted from <a href="https://oj.leetcode.com/problems/binary-tree-inorder-traversal/">LeetCode OJ</a>:</p>
+
+<pre><code>struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+</code></pre>
+
+<strike>The constructing function TreeNode() is added to purely because it is easier to dynamically allocate TreeNode array by `new TreeNode[size]`. C++98 doesn't support specifying default arguments for objects allocated by `new`. However, the TreeNode array can simplify the process of building binary trees.</strike>
+
+<p>The data structure for the binary tree is:</p>
+
+<pre><code>class BinaryTree {
+public:
+	BinaryTree() { root=NULL;layers=0; }
+	BinaryTree(vector&lt;string&gt;&amp; t) { BuildTree(t); }
+	~BinaryTree();
+	TreeNode* GetRoot() { return root; }
+	vector&lt;int&gt; PreorderTraversal(TreeNode *root);
+	vector&lt;int&gt; InorderTraversal(TreeNode *root);
+	vector&lt;int&gt; PostorderTraversal(TreeNode *root);
+	vector&lt;vector&lt;int&gt; &gt; ZigzagLevelOrder(TreeNode *root);
+	void PrintTraversal(vector&lt;int&gt;&amp; vec, string type);
+	void PrintTraversal(vector&lt;vector&lt;int&gt; &gt;&amp; vec, string type);
+	TreeNode* BuildTree(vector&lt;string&gt;&amp; t);
+	void PrintTree(TreeNode *root);
+	bool IsSameTree(TreeNode *p, TreeNode *q);
+
+private:
+	TreeNode* root;
+	int layers;	// number of layers
+};
+</code></pre>
+
+<h3 id="a-namebuildtreebuild-binary-treea"><a name="build_tree">Build Binary Tree</a></h3>
+
+<p>In my implementation, binary trees are built from a vector of strings. For example, given sequence {1,2,3,#,#,4,#,#,5}, the following binary tree can be built:</p>
+
+<pre>
+	  1
+	 / \
+	2   3
+	   /
+	  4
+	 / \
+	5   6
+</pre>
+
+<p>The tree is built layer by layer, where the first element in sequence is viewed as the root node. Here the “#” is used as terminator. </p>
+
+<p>For each node other than the last layer, there are two children in the next layer, either a number(or string) or a “#”(invalid node). When parsing nodes in current layer, count the number of elements in next layer. The exception is for “#”s - they have no child nodes. In this way, we can parse the dependency of nodes layer by layer. </p>
+
+<p>Following is the C++ code for building binary trees:</p>
+
+<pre><code>TreeNode* BuildTree(vector&lt;string&gt;&amp; t) {
+	if(t.empty())
+		return NULL;
+
+	root=new TreeNode(-1);
+	TreeNode* tree=root;
+	queue&lt;TreeNode*&gt; q; // store nodes of next layer
+	q.push(tree);
+
+	// Build binary tree from vector of strings, where # denotes an invalid node.
+	// The main idea is to parse vector of strings(nodes) layer by layer. 
+	// The first item in the vector should be the root node, and the number of
+	// first layer is one. When parsing the first layer, count the nodes of the
+	// second layer, and so on.
+	int idx=0;
+	int nodes_cur_layer=1;
+	vector&lt;string&gt;::iterator it=t.begin(); 
+	while(idx&lt;t.size()){
+		int nodes_next_layer=0; // all nodes, including #s
+		int vi=0;	// index of valid nodes in next layer
+		for(int i=0;i&lt;nodes_cur_layer;++i) {
+			if(idx+i&lt;t.size() &amp;&amp; *(it+i)=="#") { // Skip #s
+				continue;
+			}
+
+			tree=q.front();
+			q.pop();
+
+			int left=nodes_cur_layer+nodes_next_layer;
+			int right=nodes_cur_layer+nodes_next_layer+1;
+			if(idx+left&lt;t.size()) { // in case of out-of-boundary access
+				if(*(it+left)!="#" ) {
+					tree-&gt;left=new TreeNode(-1);
+					q.push(tree-&gt;left);
+					vi++;
+				} else {
+					tree-&gt;left=NULL;
+				}
+				nodes_next_layer++;
+			}
+			if(idx+right&lt;t.size()) { // in case of out-of-boundary access
+				if(*(it+right)!="#") {
+					tree-&gt;right=new TreeNode(-1);
+					q.push(tree-&gt;right);
+					vi++;
+				} else {
+					tree-&gt;right=NULL;
+				}
+				nodes_next_layer++;
+			}
+
+			tree-&gt;val=atoi((it+i)-&gt;c_str());
+		}
+
+		idx+=nodes_cur_layer;
+		it+=nodes_cur_layer;
+		nodes_cur_layer=nodes_next_layer;
+		layers++;
+	}
+
+	return root;	// root of the tree
+}
+</code></pre>
+
+<p>In order to delete the memroy dynamically allocated in function BuildTree(), in the desctructor, every node in the tree should be traversed and deleted. For simplicity, layer-by-layer traversal is used.</p>
+
+<pre><code>~BinaryTree() {
+	if(root!=NULL) {
+		// delete allocated nodes iteratively
+		queue&lt;TreeNode*&gt; q;
+		TreeNode* tmp=root;
+		q.push(tmp);
+		int nodes_cur_layer=1; // # of nodes in current layer
+		int nodes_next_layer=0;	// # of nodes in next layer
+		while(nodes_cur_layer&gt;0) {
+			for(int i=0;i&lt;nodes_cur_layer;++i) {
+				tmp=q.front();
+				q.pop();
+
+				if(tmp-&gt;left!=NULL) {
+					q.push(tmp-&gt;left);
+					nodes_next_layer++;
+				}
+				if(tmp-&gt;right!=NULL) {
+					q.push(tmp-&gt;right);
+					nodes_next_layer++;
+				}
+
+				delete tmp;
+			}
+			nodes_cur_layer=nodes_next_layer;
+			nodes_next_layer=0;
+		}
+	}
+}
+</code></pre>
+
+<h3 id="a-namepreorderpreorder-traversala"><a name="preorder">Preorder Traversal</a></h3>
+
+<p>To traverse a binary tree in Preorder, following operations are carried-out 
+1. Visit the root, 
+2. Traverse the left subtree, and 
+3. Traverse the right subtree. </p>
+
+<p>For the example binary tree {1,2,3,#,#,4,#,5,6}, the preorder traversal is:</p>
+
+<p><code>
+1,2,3,4,5,6
+</code></p>
+
+<p>Following is my C++ implementation of preorder traversal(<a href="http://en.wikipedia.org/wiki/Tree_traversal#Implementations">Pseudo Code</a>):</p>
+
+<pre><code>vector&lt;int&gt; PreorderTraversal(TreeNode *root) {
+	vector&lt;int&gt; trace;
+	stack&lt;TreeNode*&gt; st;
+	while(root!=NULL) {
+		trace.push_back(root-&gt;val); // Visit the root
+		if(root-&gt;left!=NULL) {	// Traverse the left subtree
+			TreeNode* tmp=root;
+			root=root-&gt;left;
+			if(tmp-&gt;right!=NULL)
+				st.push(tmp-&gt;right);	// store the root of the right subtree
+		} else if(root-&gt;right!=NULL) {
+			root=root-&gt;right;
+		} else {
+			if(st.empty()) {
+				root=NULL;
+			} else {
+				root=st.top();
+				st.pop();
+			}
+		}
+	} // end of while
+	return trace;
+}
+</code></pre>
+
+<h3 id="a-nameinorderinorder-traversala"><a name="inorder">Inorder Traversal</a></h3>
+
+<p>To traverse a binary tree in Inorder, following operations are carried-out:
+1. Traverse the leftmost subtree starting at the left external node,
+2. Visit the root, and 
+3. Traverse the right subtree starting at the left external node.</p>
+
+<p>For the example binary tree {1,2,3,#,#,4,#,5,6}, the inorder traversal is:</p>
+
+<p><code>
+2,1,5,4,6,3
+</code></p>
+
+<p>Following is my C++ implementation of inorder traversal(<a href="http://en.wikipedia.org/wiki/Tree_traversal#Implementations">Pseudo Code</a>):</p>
+
+<pre><code>vector&lt;int&gt; InorderTraversal(TreeNode *root) {
+	vector&lt;int&gt; trace;
+	stack&lt;TreeNode&gt; st;
+    while(root!=NULL) {
+		// Find the left-most node
+		if(root-&gt;left!=NULL) {
+			TreeNode tmp=*root;
+			root=root-&gt;left;
+			tmp.left=NULL;
+			st.push(tmp);	// store the root of the right subtree
+		} else if(root-&gt;right!=NULL) {
+			// Handle the right subtree
+			trace.push_back(root-&gt;val); // Visit leftmost node
+			root=root-&gt;right;
+		} else {
+			trace.push_back(root-&gt;val); // Visit leaf/root node
+			if(st.empty()) {
+				root=NULL;
+			} else {
+				root=&amp;(st.top());
+				st.pop();
+			}
+		}
+	}
+	return trace;
+}
+</code></pre>
+
+<h3 id="a-namepostorderpostorder-traversala"><a name="postorder">Postorder Traversal</a></h3>
+
+<p>To traverse a binary tree in Postorder, following operations are carried-out: 
+1. Traverse all the left external nodes starting with the leftmost subtree which is then followed by bubble-up all the internal nodes, 
+2. Traverse the right subtree starting at the left external node which is then followed by bubble-up all the internal nodes, and 
+3. Visit the root.</p>
+
+<p>For the example binary tree {1,2,3,#,#,4,#,5,6}, the postorder traversal is:</p>
+
+<p><code>
+2,5,6,4,3,1
+</code></p>
+
+<p>Following is my C++ implementation of postorder traversal(<a href="http://en.wikipedia.org/wiki/Tree_traversal#Implementations">Pseudo Code</a>):</p>
+
+<pre><code>vector&lt;int&gt; PostorderTraversal(TreeNode *root) {
+	vector&lt;int&gt; trace;
+	stack&lt;TreeNode&gt; st;
+    while(root!=NULL) {
+		// Find the left-most node
+		if(root-&gt;left!=NULL) {
+			TreeNode tmp=*root;
+			root=root-&gt;left;
+			tmp.left=NULL;
+			st.push(tmp);	// store the root of the right subtree
+		} else if(root-&gt;right!=NULL) {
+			TreeNode tmp=*root;
+			root=root-&gt;right;
+			tmp.left=NULL;
+			tmp.right=NULL;
+			st.push(tmp);	// store the root
+		} else {
+			trace.push_back(root-&gt;val);	// Print root at last
+			if(st.empty()) {
+				root=NULL;
+			} else {
+				root=&amp;(st.top());
+				st.pop();
+			}
+		}
+	}
+	return trace;
+}
+</code></pre>
+
+<h3 id="a-namebftbreadth-first-traversalbfta"><a name="bft">Breadth First Traversal(BFT)</a></h3>
+
+<p>Breadth first traversal is used for printing the binary tree in my code. The key of for BFT is to use a queue(s) to store nodes in current and/or next layers. The simplest way to use two queues: one to store nodes of current layer and the other for next layer. </p>
+
+<p>However, a single queue also can work well. For the first layer, there is only one node - the root. When accessing this node, count the number of nodes in the second layer and push them into queue. When accessing the second layer, pop items in FIFO sequence and remove them from queue, and push the nodes in third layer into queue, and so on. Two inteher variables can be used to count the numbers of nodes in current layer and the next layer, respectively.</p>
+
+<p>Following is my C++ impementation of traversing binary tree in level order:</p>
+
+<pre><code>void PrintTree(TreeNode *root) {
+	queue&lt;TreeNode*&gt; q;
+	TreeNode* tmp=root;
+	q.push(tmp);
+	int nodes_cur_layer=1; // # of nodes in current layer
+	int nodes_next_layer=0;	// # of nodes in next layer
+	while(nodes_cur_layer&gt;0) {
+		for(int i=0;i&lt;nodes_cur_layer;++i) {
+			tmp=q.front();
+			q.pop();
+
+			cout&lt;&lt;tmp-&gt;val&lt;&lt;" ";
+
+			if(tmp-&gt;left!=NULL) {
+				q.push(tmp-&gt;left);
+				nodes_next_layer++;
+			}
+			if(tmp-&gt;right!=NULL) {
+				q.push(tmp-&gt;right);
+				nodes_next_layer++;
+			}
+		}
+		cout&lt;&lt;endl;
+		nodes_cur_layer=nodes_next_layer;
+		nodes_next_layer=0;
+	}
+}
+</code></pre>
+
+<h3 id="a-namezigzagzigzag-traversala"><a name="zigzag">Zigzag Traversal</a></h3>
+
+<p>Zigzag level order traversal is a Breadth First Traversal(BFT). The procedure  of this traversal is (i) from left to right, (ii) then right to left for the next level, (iii) and alternate between). </p>
+
+<p>For the example binary tree {1,2,3,#,#,4,#,5,6}, the postorder traversal is:</p>
+
+<p><code>
+[[1],[3,2],[4],[6,5]]
+</code></p>
+
+<p>Although zigzag traversal is kind of BFT, it is not easy to use one or two queues to implement it, because you need to traverse every layer from left to right, and print nodes from right to left for some layers. Since I don’t want to use three queues(one to store the nodes of current layer, the other two store the left-to-right traversal of next layer, but one of them should be used for left-to-right traveral in next iteration and the other used for right-to-left printing), I implemented the zigzag traversal with two lists: one list to store the left-to-right traversal of current layer, and the other list for storing left-to-right traversal of next layer. During printing, the same list can be controlled to output nodes either from left to right or right to left without loosing any information(unlike queue, quque is not iterable).</p>
+
+<p>Following is my code for zigzag traversal. Note that the output is a vector of vectors.</p>
+
+<pre><code>vector&lt;vector&lt;int&gt; &gt; ZigzagLevelOrder(TreeNode *root) {
+    vector&lt;vector&lt;int&gt; &gt; trace;
+	list&lt;TreeNode*&gt; lst_cur;
+	int next_layer_nodes=0;
+	int cur_layer_nodes;
+	bool l2r=true;
+	if(root!=NULL) {
+		cur_layer_nodes=1;
+		lst_cur.push_back(root);
+	}else{
+		return trace;
+	}
+
+	// Use two lists for left to right traversal and vice versa: 
+	// one list used for storing nodes of current layer, and the 
+	// other used for storing nodes layer below.
+	//
+	// The binary tree will always be traversed from left to right 
+	// for each layer, however, for every other layer, the nodes will
+	// be printed from right to left.
+	while(cur_layer_nodes&gt;0) {
+		vector&lt;int&gt; subtr;
+		list&lt;TreeNode*&gt; lst_next;
+		list&lt;TreeNode*&gt;::iterator lr=lst_cur.begin();
+		list&lt;TreeNode*&gt;::iterator rl=lst_cur.end();
+		for(int i=0;i&lt;cur_layer_nodes;++i) {
+			TreeNode* tn = *(lr);
+			if(l2r) {
+				subtr.push_back((*(lr))-&gt;val);
+			} else {
+				rl--; // lst_cur.end() points to undefined memory
+				subtr.push_back((*(rl))-&gt;val);
+			}
+			
+			if(tn-&gt;left!=NULL) {
+				next_layer_nodes++;
+				lst_next.push_back(tn-&gt;left);
+			}
+
+			if(tn-&gt;right!=NULL) {
+				next_layer_nodes++;
+				lst_next.push_back(tn-&gt;right);
+			}
+
+			lr++;
+		} // end for
+		trace.push_back(subtr);
+		cur_layer_nodes=next_layer_nodes;
+		next_layer_nodes=0;
+		lst_cur=lst_next;
+		l2r=!l2r;
+	} // end while
+
+	return trace;
+}
+</code></pre>
+
+<h3 id="a-namecomparisonbinary-tree-comparisona"><a name="comparison">Binary Tree Comparison</a></h3>
+
+<p>As for the comparison of two binary trees, only equality is considered. Two binary trees are considered equal if they are structurally identical and the nodes have the same value. To implement this, two trees should be traversed at the same time using same traverse method. If for every pair of nodes, the values are equal, and both of them have left child and right child, then the two nodes are considered equal.</p>
+
+<p>For simplicity, Breadth First Traversal is used in my implementation:</p>
+
+<pre><code>bool IsSameTree(TreeNode *p, TreeNode *q) {
+	bool same_tree=true;
+    queue&lt;TreeNode*&gt; qp;
+	queue&lt;TreeNode*&gt; qq;
+	int cur_layer_nodes;
+	int next_layer_nodes=0;
+	if(p!=NULL &amp;&amp; q!=NULL) {
+		cur_layer_nodes=1;
+		qp.push(p);
+		qq.push(q);
+	} else if(p==NULL &amp;&amp; q==NULL) {
+		return true;
+	} else {
+		return false;
+	}
+
+	// Traverse trees layer by layer
+	while(cur_layer_nodes&gt;0) {
+		next_layer_nodes=0;
+		for(int i=0;i&lt;cur_layer_nodes;++i) {
+			TreeNode* tp=qp.front();
+			qp.pop();
+			TreeNode* tq=qq.front();
+			qq.pop();
+
+			if((tp-&gt;val!=tq-&gt;val) || (tp-&gt;left==NULL) &amp;&amp; (tq-&gt;left!=NULL) || (tp-&gt;left!=NULL) &amp;&amp; (tq-&gt;left==NULL) || (tp-&gt;right==NULL) &amp;&amp; (tq-&gt;right!=NULL) || (tp-&gt;right!=NULL) &amp;&amp; (tq-&gt;right==NULL)) {
+				same_tree=false;
+				break;
+			}
+
+			if(tp-&gt;left!=NULL) {
+				qp.push(tp-&gt;left);
+				qq.push(tq-&gt;left);
+				next_layer_nodes++;
+			}
+
+			if(tp-&gt;right!=NULL) {
+				qp.push(tp-&gt;right);
+				qq.push(tq-&gt;right);
+				next_layer_nodes++;
+			}
+		} // end for
+		cur_layer_nodes=next_layer_nodes;
+		if(!same_tree)
+			break;
+	} // end while
+
+	return same_tree;
+}
+</code></pre>
+
+<p><em>[Updated 05/30/2014]</em></p>
+
+<h3 id="references">References</h3>
+<ol>
+  <li>https://oj.leetcode.com/problems/binary-tree-inorder-traversal/</li>
+  <li><a href="http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html">Binary tree traversal: Preorder, Inorder, and Postorder</a></li>
+  <li><a href="http://en.wikipedia.org/wiki/Tree_traversal">Tree Traversal</a></li>
+</ol>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-04-30</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Machine Learning-ref" rel="nofollow">Machine Learning</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Fisher Vector-ref" rel="nofollow">Fisher Vector</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#SVM-ref" rel="nofollow">SVM</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(<a href="http://crcv.ucf.edu/data/UCF101.php">http://crcv.ucf.edu/data/UCF101.php</a>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. </p>
+
+<p>You can find my Matlab code from <a href="https://github.com/bo-yang">my GitHub Channel</a>:</p>
+
+<ul>
+  <li><a href="https://github.com/bo-yang/dtf_fisher">DTF + Fisher Vector code</a></li>
+  <li><a href="https://github.com/bo-yang/stip_fisher">STIP + Fisher Vector code</a></li>
+</ul>
+
+<h3 id="dense-trajectory-features">Dense Trajectory Features</h3>
+
+<p>For some details of DTF, please refer to <a href="http://bo-yang.github.io/2014/01/10/dense-trajectory-notes/">my previous post</a>.</p>
+
+<h3 id="pipeline">Pipeline</h3>
+
+<p>The pipeline of integrating DTF/STIP features and Fisher vectors is shown in Figure 1. The first step is subsampling a fixed number of STIP/DTF features(in my implementation, 1000) from each
+video clip in training list, which will be used to do PCA and train
+Gaussian Mixture Models(GMMs).</p>
+
+<p>After getting the PCA coefficients and GMM parameters, treat UCF 101 video clips
+action by action. For each action, first load all train videos in this
+action(positive videos), and then randomly load the same number of video
+clips not in this action(negative videos). All of the loaded videos are
+multiplied with the saved PCA coefficients in order to reduce dimensions
+and rotate matrices. Fisher vectors are computed for each loaded video
+clip. Finally a binary SVM model is trained with both the positive and negative
+Fisher vectors.</p>
+
+<p>When dealing with the test videos, similar process is adopted. The only
+difference is that the Fisher vectors are used for SVM classification,
+which is based on the SVM model trained with training videos.</p>
+
+<p><img src="/assets/images/fisher_pipeline.png" alt="Figure 1. Pipeline of UCF101 action recognition using Fisher
+vector." />.</p>
+
+<p>To well utilize the STIP or DTF features, features(HOG, HOF, MBH, etc.) are treated
+separately and they are only combined(simple concatenation) after computing Fisher
+vectors before linear SVM classification.</p>
+
+<h3 id="pre-processing">Pre-processing</h3>
+
+<h4 id="stip-features">STIP Features</h4>
+
+<p>The offcial STIP features are stored in class, which means that all the STIP
+info of all video clips in each class are mixed together in a file. To
+extract STIP features for each video, I wrote a script(mk_stip_data)
+to separate STIP features for each video clip. And all the following
+operations are based on each video clip.</p>
+
+<h4 id="dtf-features">DTF Features</h4>
+
+<p>Since the DTF features are “dense”(which means a lot of data), it took me 4~5 days to exact the (improved) DTF features of UCF 101 clips with the dedault parameters on a modern Linux desktop(I used 10 threads for extraction in paralle). The installation of DTF tools was also a very tricky task.</p>
+
+<p>To save space, all the DTF features were compressed. For UCF101, it would cost about 500GB after zip compression. And the required space would doubled if not compressing. If you don’t want to save the DTF features, you can call the DTF tools in Matlab and discard the extracted features.</p>
+
+<h3 id="fisher-vector">Fisher Vector</h3>
+
+<p>The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.  </p>
+
+<p>Following is the algorithm of computing Fisher vectors from features(actually I implemented this algorithm in Matlab, and if you are interested, please refer <a href="https://github.com/bo-yang/stip_fisher/blob/master/fisher_encode.m">here</a>):
+<img src="/assets/images/fisher_vector_algorithm.png" alt="Figure 2. Algorithm of computing Fisher vectors." />.</p>
+
+<p>During the subsampling of STIP features, I randomly chose 1000 HOG or
+HOF features from each training video clip. For some videos, if the
+total number of features were less than 1000, I would use all of their
+features. All the subsampled features are square rooted after L1
+normalization.</p>
+
+<p>After that, the dimensions of the subsampled features were reduced to
+half of their original dimensions by doing PCA. At this step, the
+coefficients of PCA were recorded, which would be used in later. The
+GMMs were trained with the half-sized features, and the parameters of
+GMMs(i.e. weight, mean and covariance) were stored for the following
+process. In my program, the GMM code implemented by Oxford Visual
+Geometry
+Group(VGG, http://www.robots.ox.ac.uk/~vgg/software/enceval_toolkit/)
+is used, which eventually call VLFeat(http://www.vlfeat.org/). In my
+code, 256 Gaussians were used.</p>
+
+<h3 id="svm-classification">SVM Classification</h3>
+
+<p>Binary SVM classification(<a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a>) is used in my implementation.
+For each action, positive video clips are labeled as 1 while negative
+videos are as labeled -1 during training and test. In my code, SVM cost
+is set to 100. The option of SVM training is:</p>
+
+<blockquote>
+  <p>-t 0 -s 0 -q -c 100 -b 1.</p>
+</blockquote>
+
+<h3 id="results">Results</h3>
+
+<p>The action recognition accuracy of all the 101 actions was 77.95% when
+using above pipeline. And the confusion matrix is shown in Figure 3.</p>
+
+<p><img src="/assets/images/confusionmat_101.png" alt="Figure 3. Confusion matrix of all the 101 actions with STIP features." /></p>
+
+<p>The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was around 85%, about 8% higher than using BOV representation(internal test). And the best result I got with the ISA network on UCF 101 was only 58% last year.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>It is obvious that Fisher vector can lead to better results than Bag-of-visual words in action recognition. Compared to other low-level visual features, DTF features have more advantages in action recognition. However, in the long run I still believe deep learning methods - when deep neural networks could be trained with millions of vidios[5], they would learn more info from scratch and achieve state-of-the-art accuracy.</p>
+
+<h3 id="references">References</h3>
+
+<ol>
+  <li>Gabriela Csurka, Florent Perronnin, <em>Fisher Vectors: Beyond Bag-of-Visual-Words Image Representations</em> , Communications in Computer and Information Science Volume 229, 2011, pp 28-42.</li>
+  <li>Chih-Chung Chang and Chih-Jen Lin. <em>Libsvm: A library for support vector machines</em>. ACM Trans. Intell. Syst. Technol., 2(3):27:1–27:27, May 2011.</li>
+  <li>Heng Wang and Cordelia Schmid. <em>Action Recognition with Improved Trajectories</em>. In ICCV 2013 - IEEE International Conference on Computer Vision, Sydney, Australia, December 2013. IEEE.</li>
+  <li>Jorge Sanchez, Florent Perronnin, Thomas Mensink, and Jakob Verbeek. <em>Image Classification with the Fisher Vector: Theory and Practice</em>. International Journal of Computer Vision, 105(3):222–245, December 2013.</li>
+  <li>Andrej Karpathy, George Toderici, Sanketh Shetty, Thomas Leung, Rahul Sukthankar, and Li Fei-Fei. <em>Large-scale video classification with convolutional neural networks</em>. In CVPR, 2014.</li>
+</ol>
+
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2014/03/29/how-to-install-jekyll-in-mac-osx-mavericks">How To Install Jekyll in Mac OSX Mavericks</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-03-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#notes-ref" rel="nofollow">notes</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Jekyll-ref" rel="nofollow">Jekyll</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Github-ref" rel="nofollow">Github</a>
@@ -617,171 +1227,6 @@ make: *** [all] Error 2</pre>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2013/06/12/matlab-startup-script">Matlab Startup Script</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-06-12</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>You can create a script named <code>startup.m</code> under <em>userpath</em>(in Windows and Mac OSX, default path is <tt><code>Documents/MATLAB</code></tt>). You can add whatever Matlab commands you want into <code>startup.m</code>. For example, to add <code>/usr/local/bin</code> into PATH, you can add command</p>
-<p><code>setenv('PATH', [getenv('PATH') ':/usr/local/bin']);</code></p>
-<p>into <code>startup.m</code>.</p>
-<p>BTW, every time Matlab starts, configure file <code>$MATLABROOT/toolbox/local/matlabrc.m</code> will be executed.</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2013/05/16/counting-unique-k-mers-my-first-go-program">Counting Unique k-mers -- My First Go Program</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-05-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Go-ref" rel="nofollow">Go</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Bioinformatics-ref" rel="nofollow">Bioinformatics</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Previously, I wrote a Perl program to count the number of unique k-mers. It is very convenient to implement it in Perl, because Perl supports hash-of-hashes(which could dynamically count distinct k-mers) and sorting hashes by value(which can easily list the occurrences of unique k-mers in descending order).</p>
-<p>Unfortunately, comparing to C++, Perl program usually costs more memory and longer time. This is not a big issue when the FASTA files are not large(smaller than 400MB). However, when handling larger FASTA files, my Perl program would require more than 8GB memory, which exceeds the limits of my computer. Therefore, I decided to rewrite the program by Go, a system language that supports concurrent features and can has C/C++-comparable speed.</p>
-<p>The syntax of Go is very different from C/C++, which takes me a whole day familiarize. Some operations that can be implemented easily in Perl can only be done in complicated way, such as calling system command, reading file line-by-line, writing file and sorting map by value. Since this small tool doesn't involve network and concurrency, I cannot compare the difficulty of writing Go program to implement such work. </p>
-<p>Although the experience of the first Go program is not happy, I still think it is necessary to continue learning Go language, because Go program really runs very fast and saves memory(comparing to Perl script). And you don't need to worry about the tricky part of C++. </p>
-
-<pre>
-// kmerfreq - count unique k-mers from a fasta file.
-
-package main
-
-import (
-	"bufio"
-	"bytes"
-	"flag"
-	"fmt"
-	"io"
-	"os"
-	"os/exec"
-	"strings"
-	"strconv"
-)
-
-// Readln returns a single line (without the ending \n)
-// from the input buffered reader.
-// An error is returned iff there is an error with the
-// buffered reader.
-func Readln(r *bufio.Reader) (string, error) {
-	var (
-		isPrefix bool  = true
-		err      error = nil
-		line, ln []byte
-	)
-	for isPrefix &amp;&amp; err == nil {
-		line, isPrefix, err = r.ReadLine()
-		ln = append(ln, line...)
-	}
-	return string(ln), err
-}
-
-func main() {
-	// Get options
-	var input = flag.String("i", "", "input fasta file")
-	var kmer = flag.Int("k", 16, "length of k-mer")
-	flag.Parse()
-
-	// Dynamically parse the input file name
-	cmd := exec.Command("basename", *input)
-	cmd.Stdin = strings.NewReader("some input")
-	var name bytes.Buffer
-	cmd.Stdout = &amp;name
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	var output = flag.String("o", fmt.Sprintf("%s.%d-mer", strings.TrimSpace(name.String()), *kmer), "output file")
-	flag.Parse()
-
-	// open input file
-	fi, err := os.Open(*input)
-	if err != nil {
-		panic(err)
-	}
-	// close fi on exit and check for its returned error
-	defer func() {
-		if err := fi.Close(); err != nil {
-			panic(err)
-		}
-	}()
-
-	// open output file
-	fo, err := os.Create(*output)
-	if err != nil {
-		panic(err)
-	}
-	// close fo on exit and check for its returned error
-	defer func() {
-		if err := fo.Close(); err != nil {
-			panic(err)
-		}
-	}()
-
-	// Read and count unique k-mers
-	var read string = ""
-	var km map[string]int  // k-mer counts
-	km = make(map[string]int)
-
-	r := bufio.NewReader(fi)
-	for {
-		line, err := Readln(r)
-		if err == io.EOF {
-			if !strings.HasPrefix(line, "&gt;") {
-				read += line
-			}
-			break // done
-		} else if err != nil {
-			panic(err) // error happens
-		}
-		if strings.HasPrefix(line, "&gt;") {
-			// Header of the read
-			if len(read) != 0 {
-				// count k-mers
-				for i := 0; i &lt; len(read)-*kmer+1; i++ {
-					if km[read[i:i+*kmer]] != 0 {
-						km[read[i:i+*kmer]]++
-					} else {
-						km[read[i:i+*kmer]] = 1
-					}
-				}
-				read = &quot;&quot;
-			}
-		} else {
-			// Read
-			read += line
-		}
-	} // end of for
-
-	// don&#039;t forget the last read
-	if len(read) != 0 {
-		// count k-mers
-		for i := 0; i &lt; len(read)-*kmer+1; i++ {
-			if km[read[i:i+*kmer]] != 0 {
-				km[read[i:i+*kmer]]++
-			} else {
-				km[read[i:i+*kmer]] = 1
-			}
-		}
-	}
-
-	// Write results
-	for k, v := range km {
-		fo.WriteString(k + &quot;\t&quot; + strconv.Itoa(v) + &quot;\n&quot;)
-	}
-}
-
-</pre>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -818,7 +1263,7 @@ func main() {
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">16</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">18</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -876,7 +1321,7 @@ func main() {
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">15</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">17</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -969,6 +1414,10 @@ func main() {
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
+			
+  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></li>
+			
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
@@ -984,10 +1433,6 @@ func main() {
   			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
 			
   			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
-			
-  			<li><span>2014-05-26</span> &raquo; <a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></li>
-			
-  			<li><span>2014-04-30</span> &raquo; <a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></li>
 			
 			</ul>
         </div>
