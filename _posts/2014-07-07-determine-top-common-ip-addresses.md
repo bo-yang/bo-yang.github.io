@@ -43,7 +43,7 @@ Assumptions are:
 	* `DateTime` - used to determine if the logs are older than 1 hour.
 	* `Parallel::ForkManager` - check multiple logs in concurrently.
 
-Following is my Perl implementation. For more information, please refer to [https://github.com/bo-yang/CommonSourceIPs](https://github.com/bo-yang/CommonSourceIPs).
+Following is my Perl implementation. For more information and the source file, please refer to [https://github.com/bo-yang/CommonSourceIPs](https://github.com/bo-yang/CommonSourceIPs).
 
 	use strict;
 	use warnings;
