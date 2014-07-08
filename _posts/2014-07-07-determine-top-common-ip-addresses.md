@@ -18,7 +18,9 @@ author: Bo Yang
 The problem is:
 
 > Determines the top 10 most common source IP addresses, and their hit rates, for a fleet of 1000 web servers within the last hour.
+>
 > The following assumptions may be used...
+>
 > * web servers are locally writing access logs in the [Apache Combined Log Format](http://httpd.apache.org/docs/current/logs.html#combined).
 > * web servers are accessible by `ssh`.
 
@@ -38,10 +40,10 @@ Assumptions are:
 3. The report of the top 10 most common IPs and hit rates will be stored in current directory.
 4. The SSH keys to remote servers have been generated and synced, so that there is no need to manually enter the passwords. 
 3. Following Perl modules should be installed:
-	* DateTime - used to determine if the logs are older than 1 hour.
-	* Parallel::ForkManager - check multiple logs in concurrently.
+	* `DateTime` - used to determine if the logs are older than 1 hour.
+	* `Parallel::ForkManager` - check multiple logs in concurrently.
 
-Following is my Perl implementation:
+Following is my Perl implementation. For more information, please refer to https://github.com/bo-yang/CommonSourceIPs.
 
 	use strict;
 	use warnings;
