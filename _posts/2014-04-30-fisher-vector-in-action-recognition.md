@@ -76,6 +76,7 @@ To save space, all the DTF features were compressed. For UCF101, it would cost a
 The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.  
 
 Following is the algorithm of computing Fisher vectors from features(actually I implemented this algorithm in Matlab, and if you are interested, please refer [here](https://github.com/bo-yang/stip_fisher/blob/master/fisher_encode.m)):
+
 ![Figure 2. Algorithm of computing Fisher vectors.]({{ site.url }}/assets/images/fisher_vector_algorithm.png).
 
 During the subsampling of STIP features, I randomly chose 1000 HOG or
