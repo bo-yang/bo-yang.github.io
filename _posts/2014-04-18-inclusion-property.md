@@ -14,7 +14,12 @@ published: true
 author: Bo Yang
 ---
 
-### 1. Inclusion Property
+1. [Inclusion Property](#inclusion_property)
+2. [Code Change](#code_change)
+3. [Experiments](#experiments)
+4. [Conclusion](#conclusion)
+
+### 1. <a name="inclusion_property">Inclusion Property</a>
 
 If the two-level cache system satisfies the inclusion property, it means everything in the primary cache is also in the secondary cache and all snooping can be done by the secondary cache. To implement the inclusion property, two requirements must be met:
 
@@ -25,7 +30,7 @@ _SimpleScalar_ already implemented the first requirement. When there is a cache 
 
 However, the second requirement is not supported by the official SimpleScalar. To implement this feature, the data block must be checked every time L2 cache encounter a cache miss. Since all cache read/write operations are done in function cache_access(), the action of checking and removing data blocks from L1 cache should also be added into that function with the condition of accessing L2 cache.
 
-### 2. Code Change 
+### 2. <a name="code_change">Code Change</a> 
 
 Since there is no existing way in cache_t to find the upper level cache(DL1) of the DL2 cache, a new structure element 
 
@@ -149,7 +154,7 @@ The code segment for calling cache_inclusion() in cache_access() is:
 	  /* return latency of the operation */
 	  return lat;
 
-### 3. Experiments
+### 3. <a name="experiments">Experiments</a>
 
 In my experiment, three benchmarks are used: gcc, mcf and vpr. For each benchmark, three different configurations are tested, which are the same as the three commands listed in the project requirement. Compared to the SimpleScalar without inclusion property, it took 2 times longer time after implementing the inclusion property. 
 
@@ -163,6 +168,6 @@ Figure 1. Miss rate of DL1, with(red) and without(blue) inclusion.
 
 Figure 2. Miss rate of DL2, with(red) and without(blue) inclusion.
 
-### 4. Conclusion
+### 4. <a name="conclusion">Conclusion</a>
 
 In this project I implemented the inclusion property with SimpleScalar. I tested my change with three different benchmarks in three different configurations. Experiments show proves the correctness of my change. Inclusion property cannot guarantee the overall performance the cache, although it seems like a promising technique.
