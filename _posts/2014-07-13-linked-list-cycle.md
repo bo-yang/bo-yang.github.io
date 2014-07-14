@@ -27,7 +27,7 @@ The first problem can be solved by the **[Floyd’s Cycle-Finding Algorithm](htt
 
 As for the second problem, it is also based on the **Floyd’s Cycle-Finding Algorithm**. However, after detecting loop, we need to find the starting point of the cycle. **The most convinient way is to use two pointers, one points to the head node, and the other points to the node that pointers meet when detecting loop. Then move both the two pointers by one respectively in each iteration, until they meet. The node they meet is the starting point of the cycle.**
 
-Here is the detailed explanation of above trick(reference: http://www.cnblogs.com/TenosDoIt/p/3416702.html). 
+Here is the detailed explanation of above trick(reference: [http://www.cnblogs.com/TenosDoIt/p/3416702.html](http://www.cnblogs.com/TenosDoIt/p/3416702.html)). 
 
 1. Assume the length(number of nodes, the same below) of the list is `l`, the distance(number of nodes, the same below) between `head` and the starting point of cycle is `a`, the distance between the cycle-starting point and the point where the slow/fast pointers meet is `b`, and the length of the cycle is `r`.
 2. Assume when the fast/slow pointers meet, the slow pointer has accessed `s` nodes. Then the fast pointer has moved `2s`, and `s=a+b`.
