@@ -15,12 +15,14 @@ author:
 ---
 <p>Recently meet an SCTP issue: one product application running on MontaVista(kernel version 2.6.21) can't run on RedHat Enterprise Linux 5.5. After hours investion between millions lines  of  log file and source code, I finally noticed following error showed up:<br />
 
+<pre>
 	^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566]<br />
 	 ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt()<br />
 	 setsockopt - Invalid argument<br />
 	^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566]<br />
 	../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts():<br />
 	 failed to set SCTP_EVENTS for socket 6<br />
+</pre>
 
 C function ammsSetSockOpt() was a function used in that product application, which eventually calls Linux system API setsockopt().</p>
 
@@ -32,9 +34,11 @@ C function ammsSetSockOpt() was a function used in that product application, wh
 
 <p>I wen to back to reading source code, and tried to change the last parameter of setsockopt() from sizeof(events) to 8, and it worked!  Where, events is defined as<br />
 
+<pre>
 	struct sctp_event_subscribe events;
+</pre>
 
-	Then I began to check the definition of struct sctp_event_subscribe in both RHEL5.5 and RHEL6.0 - they were different:</p>
+Then I began to check the definition of struct sctp_event_subscribe in both RHEL5.5 and RHEL6.0 - they were different:</p>
 
 <p>In <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">RHEL 6</a>,</p>
 <pre><a id="L402" name="L402" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L402"></a> 402/*
