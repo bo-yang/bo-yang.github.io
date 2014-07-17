@@ -4,13 +4,771 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-07-02T17:50:51-07:00</updated>
+ <updated>2014-07-17T11:20:01-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Insertion Sort List</title>
+   <link href="http://bo-yang.github.com//2014/07/14/insertion-sort-list"/>
+   <updated>2014-07-14T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/14/insertion-sort-list</id>
+   <content type="html">&lt;p&gt;The &lt;a href=&quot;https://oj.leetcode.com/problems/insertion-sort-list/&quot;&gt;Insertion Sort List problem&lt;/a&gt; is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Sort a linked list using insertion sort.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;There is a very simple insertion sort method for arrays in Wikipedia.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for i ← 1 to length(A)
+    j ← i
+    while j &amp;gt; 0 and A[j-1] &amp;gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The core of this algorithm is to find the position where to insert an smaller element. Compared to array, the list nodes cannot access nodes before them - they only know the nodes behind them. Therefore, instead of looking for insert positions decreasingly from current position down to the beginning, we can search the position from the head instead.&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation. Swapping two nodes is a little tricky, because you need to take care of four links.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+ 
+class Solution {
+public:
+    ListNode *insertionSortList(ListNode *head) {
+        if(head==NULL||head-&amp;gt;next==NULL)
+			return head;
+
+		ListNode* pre_head=new ListNode(-1); // to manipulate the head
+		pre_head-&amp;gt;next=head;
+		ListNode* cur=head;
+		while(cur-&amp;gt;next!=NULL) {
+			if(cur-&amp;gt;val &amp;gt; cur-&amp;gt;next-&amp;gt;val) {
+				ListNode* node=pre_head;
+
+				// find position to insert
+				while(node-&amp;gt;next-&amp;gt;val &amp;lt; cur-&amp;gt;next-&amp;gt;val)
+					node=node-&amp;gt;next;
+
+				// swap nodes
+				ListNode* tmp1=node-&amp;gt;next;
+				ListNode* tmp2=cur-&amp;gt;next-&amp;gt;next;
+				node-&amp;gt;next=cur-&amp;gt;next;
+				cur-&amp;gt;next-&amp;gt;next=tmp1;
+				cur-&amp;gt;next=tmp2;
+			} else {
+				cur=cur-&amp;gt;next;
+			}
+		}
+		
+		head=pre_head-&amp;gt;next;
+		delete pre_head;
+
+		return head;
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In addition to above insertion sort, which moves smaller elements forward, we also can move the larger elments backward. The following code is more like bubble sort.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ListNode *insertionSortList(ListNode *head) {
+    if(head==NULL||head-&amp;gt;next==NULL)
+		return head;
+
+	// find the length of the list
+	int len=0;
+	ListNode* node=head;
+	while(node!=NULL) {
+		node=node-&amp;gt;next;
+		len++;
+	}
+
+	// iteratively insert the largest number to the end
+	for(int i=len-1;i&amp;gt;=0;i--) {
+		int j=0;
+		node=head;
+		ListNode* prev=NULL; // previous of node
+		while(j&amp;lt;i &amp;amp;&amp;amp; node!=NULL &amp;amp;&amp;amp; node-&amp;gt;next!=NULL) {
+			if(node-&amp;gt;val &amp;gt; node-&amp;gt;next-&amp;gt;val) {
+				// swap nodes
+				ListNode* tmp=node-&amp;gt;next;
+				node-&amp;gt;next=node-&amp;gt;next-&amp;gt;next;
+				tmp-&amp;gt;next=node;
+				if(j==0||prev==NULL) {
+					head=tmp;
+				} else {
+					prev-&amp;gt;next=tmp;
+				}
+				prev=tmp;
+			} else {
+				prev=node;
+				node=node-&amp;gt;next;
+			}
+			j++;
+		}
+	} // end for
+
+	return head;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Linked List Cycle Problems</title>
+   <link href="http://bo-yang.github.com//2014/07/13/linked-list-cycle"/>
+   <updated>2014-07-13T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/13/linked-list-cycle</id>
+   <content type="html">&lt;p&gt;The &lt;a href=&quot;https://oj.leetcode.com/problems/linked-list-cycle/&quot;&gt;Linked List Cycle problem&lt;/a&gt; is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a linked list, determine if it has a cycle in it. Can you solve it without using extra space?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;A &lt;a href=&quot;https://oj.leetcode.com/problems/linked-list-cycle-ii/&quot;&gt;follow up problem&lt;/a&gt; is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a linked list, return the node where the cycle begins. If there is no cycle, return &lt;code&gt;null&lt;/code&gt;.Can you solve it without using extra space? &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The first problem can be solved by the &lt;strong&gt;&lt;a href=&quot;http://www.geeksforgeeks.org/write-a-c-function-to-detect-loop-in-a-linked-list/&quot;&gt;Floyd’s Cycle-Finding Algorithm&lt;/a&gt;&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Traverse linked list using two pointers: move one pointer by &lt;em&gt;one&lt;/em&gt; and other pointer by &lt;em&gt;two&lt;/em&gt;.  If these pointers meet at some node then there is a loop.  If pointers do not meet then linked list doesn’t have loop.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As for the second problem, it is also based on the &lt;strong&gt;Floyd’s Cycle-Finding Algorithm&lt;/strong&gt;. However, after detecting loop, we need to find the starting point of the cycle. &lt;strong&gt;The most convinient way is to use two pointers, one points to the head node, and the other points to the node that pointers meet when detecting loop. Then move both the two pointers by one respectively in each iteration, until they meet. The node they meet is the starting point of the cycle.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Here is the detailed explanation of above trick(reference: &lt;a href=&quot;http://www.cnblogs.com/TenosDoIt/p/3416702.html&quot;&gt;http://www.cnblogs.com/TenosDoIt/p/3416702.html&lt;/a&gt;). &lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Assume the length(number of nodes, the same below) of the list is &lt;code&gt;l&lt;/code&gt;, the distance(number of nodes, the same below) between &lt;code&gt;head&lt;/code&gt; and the starting point of cycle is &lt;code&gt;a&lt;/code&gt;, the distance between the cycle-starting point and the point where the slow/fast pointers meet is &lt;code&gt;b&lt;/code&gt;, and the length of the cycle is &lt;code&gt;r&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Assume when the fast/slow pointers meet, the slow pointer has accessed &lt;code&gt;s&lt;/code&gt; nodes. Then the fast pointer has moved &lt;code&gt;2s&lt;/code&gt;, and &lt;code&gt;s=a+b&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Since the nodes accessed by the fast pointer also calculated as &lt;code&gt;kr+s&lt;/code&gt;, where &lt;code&gt;k&lt;/code&gt; is the number of cycles and \( k \ge 1 \). We have &lt;code&gt;2s=kr+s&lt;/code&gt;, i.e. &lt;code&gt;s=kr&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Since &lt;code&gt;s=a+b&lt;/code&gt; and &lt;code&gt;s=kr&lt;/code&gt;, we have &lt;code&gt;a+b=kr=(k-1)r+r&lt;/code&gt;. Since &lt;code&gt;r=l-a&lt;/code&gt;, we have &lt;code&gt;a+b=(k-1)+l-a&lt;/code&gt;, i.e. &lt;code&gt;a=(k-1)+l-a-b&lt;/code&gt;. Notice that &lt;code&gt;l-a-b&lt;/code&gt; is the distance from the point where slow/fast pointers meet to the starting point of cycle(note: we only can go through the cycle of the linked list in one direction).&lt;/li&gt;
+  &lt;li&gt;Since &lt;code&gt;a&lt;/code&gt; is the distance between &lt;code&gt;head&lt;/code&gt; node and the starting point of cycle, &lt;code&gt;a=(k-1)+l-a-b&lt;/code&gt; means that the distance between &lt;code&gt;head&lt;/code&gt; node and the starting point of cycle(&lt;code&gt;a&lt;/code&gt;) &lt;em&gt;equals&lt;/em&gt; to the distance from the point where slow/fast pointers meet to the starting point of cycle(&lt;code&gt;l-a-b&lt;/code&gt;) plus several loops of the cycle.&lt;/li&gt;
+  &lt;li&gt;Therefore, when we use two pointers to find the starting point of cycle, one pointer moves to the start point from the head of the list, while the other pointer winds aroung the cycle at the same pace. When the two pointers meet, one pointer must have moved &lt;code&gt;a&lt;/code&gt; and the other moved &lt;code&gt;(k-1)+l-a-b&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Following is my C++ implmentation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+	ListNode *detectCycle(ListNode *head) {
+		if(head==NULL || head-&amp;gt;next==NULL)
+			return NULL;
+
+		ListNode* first=head;
+		ListNode* second=head;
+        while(first!=NULL &amp;amp;&amp;amp; second!=NULL &amp;amp;&amp;amp; second-&amp;gt;next!=NULL) {
+			first=first-&amp;gt;next;
+			second=second-&amp;gt;next-&amp;gt;next;
+
+			if(first==second)
+				break;
+		}
+
+		if(first==second) {
+			// Continue walking X steps
+			first = head;
+			while(first!=second)
+			{
+	            first = first-&amp;gt;next;
+	            second = second-&amp;gt;next;
+	        }
+	
+			return second;
+		} else {
+			return NULL;
+		}
+    }
+
+	// Create list with cycle using given vector of integers.
+	// 	lb - the beginning index(in vec) of the cycle.
+	ListNode* createList(vector&amp;lt;int&amp;gt;&amp;amp; vec, int lb) {
+		head=new ListNode(vec[0]);
+		ListNode* node=head;
+		ListNode* begin=NULL;
+		for(int i=1;i&amp;lt;vec.size();++i) {
+			node-&amp;gt;next=new ListNode(vec[i]);
+			node=node-&amp;gt;next;
+			if(i==lb)
+				begin=node;
+		}
+		if(lb&amp;gt;0 &amp;amp;&amp;amp; lb&amp;lt;vec.size())
+			node-&amp;gt;next=begin;
+		else if(lb&amp;gt;=vec.size()) // index out of upper bound, set to NULL
+			node-&amp;gt;next=NULL;
+		else
+			node-&amp;gt;next=head; // index out of lower bound, linked to the head
+
+		return head;
+	}
+
+	void printList(ListNode *head) {
+		ListNode* node=head;
+		while(node!=NULL) {
+			cout&amp;lt;&amp;lt;node-&amp;gt;val&amp;lt;&amp;lt;&quot; &quot;;
+			node=node-&amp;gt;next;
+		}
+		cout&amp;lt;&amp;lt;endl;
+	}
+
+	Solution() {head=NULL;}
+
+	~Solution() {
+		ListNode* node=head;
+		while(head!=NULL){
+			head=head-&amp;gt;next;
+			delete node;
+			node=head;
+		}
+	}
+
+private:
+	ListNode* head;
+
+};
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Sort List</title>
+   <link href="http://bo-yang.github.com//2014/07/08/sort-list"/>
+   <updated>2014-07-08T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/08/sort-list</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://oj.leetcode.com/problems/sort-list/&quot;&gt;The Sort List problem&lt;/a&gt; is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Sort a linked list in \( O(n log n) \) time using constant space complexity.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The solution to this problem is modifying the array/vector based merge sort and make it work for lists. The key is finding the middle node of each list to be sorted. This can be achieved by two pointers: one points to the head of list(&lt;code&gt;mid&lt;/code&gt;), and the other point to the next node of head(&lt;code&gt;end&lt;/code&gt;). Then iteratively go through elements in the list - the &lt;code&gt;mid&lt;/code&gt; pointer increase one position in each iteration, while the &lt;code&gt;end&lt;/code&gt; pointer increased two positions. Thus when &lt;code&gt;end&lt;/code&gt; pointer reached the end of the list, the &lt;code&gt;mid&lt;/code&gt; pointer arrives at the middle of the list.&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation, which contains methods of creating list, printing list, sorting list and deleting allocated memory.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+ 
+class Solution {
+public:
+    ListNode *sortList(ListNode *head) {
+	   //cout&amp;lt;&amp;lt;&quot;sorting list: &quot;; // TEST ONLY
+	   //printList(head); // TEST ONLY
+
+       if(head==NULL || head-&amp;gt;next==NULL) 
+		   return head;
+
+	   // Find the middle node of the list
+	   ListNode* mid=head;
+	   ListNode* end=head-&amp;gt;next;
+	   while(end!=NULL &amp;amp;&amp;amp; end-&amp;gt;next!=NULL) {
+		   mid=mid-&amp;gt;next;
+		   end=end-&amp;gt;next-&amp;gt;next;
+	   }
+
+	   ListNode* head_right=mid-&amp;gt;next;
+	   mid-&amp;gt;next=NULL;
+	   ListNode* head_left=sortList(head);
+	   head_right=sortList(head_right);
+	   head=mergeList(head_left,head_right);
+
+	   //cout&amp;lt;&amp;lt;&quot;merged lists: &quot;; // TEST ONLY
+	   //printList(head); // TEST ONLY
+
+	   return head;
+    }
+
+	ListNode* mergeList(ListNode *head_left, ListNode *head_right) {
+		if(head_left==NULL &amp;amp;&amp;amp; head_right==NULL)
+			return NULL;
+
+		// Determine the head
+		ListNode* head=NULL;
+		if(head_left==NULL || head_left-&amp;gt;val &amp;gt; head_right-&amp;gt;val) {
+			head=head_right; 
+			head_right=head_right-&amp;gt;next;
+		} else {
+			head=head_left;
+			head_left=head_left-&amp;gt;next;
+		}
+
+		// Merge lists in ascending order
+		ListNode* node=head;
+		while(head_left!=NULL &amp;amp;&amp;amp; head_right!=NULL) {
+			if(head_left-&amp;gt;val &amp;lt; head_right-&amp;gt;val) {
+				node-&amp;gt;next=head_left;
+				head_left=head_left-&amp;gt;next;
+			} else {
+				node-&amp;gt;next=head_right;
+				head_right=head_right-&amp;gt;next;
+			}
+			node=node-&amp;gt;next;
+		}
+		while(head_left!=NULL) {
+			node-&amp;gt;next=head_left;
+			node=node-&amp;gt;next;
+			head_left=head_left-&amp;gt;next;
+		}
+		while(head_right!=NULL) {
+			node-&amp;gt;next=head_right;
+			node=node-&amp;gt;next;
+			head_right=head_right-&amp;gt;next;
+		}
+
+		return head;
+	}
+
+	// Create list using given vector of integers
+	ListNode* createList(vector&amp;lt;int&amp;gt;&amp;amp; vec) {
+		head=new ListNode(vec[0]);
+		ListNode* node=head;
+		for(int i=1;i&amp;lt;vec.size();++i) {
+			node-&amp;gt;next=new ListNode(vec[i]);
+			node=node-&amp;gt;next;
+		}
+
+		return head;
+	}
+
+	void printList(ListNode *head) {
+		ListNode* node=head;
+		while(node!=NULL) {
+			cout&amp;lt;&amp;lt;node-&amp;gt;val&amp;lt;&amp;lt;&quot; &quot;;
+			node=node-&amp;gt;next;
+		}
+		cout&amp;lt;&amp;lt;endl;
+	}
+
+	Solution() {head=NULL;}
+
+	~Solution() {
+		ListNode* node=head;
+		while(head!=NULL){
+			head=head-&amp;gt;next;
+			delete node;
+			node=head;
+		}
+	}
+
+private:
+	ListNode* head;
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Following code can be used for testing the above solution:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int main() {
+	vector&amp;lt;int&amp;gt; vec={3,6,2,-1,4,7,4,11,9,20,8,-3,0};
+	Solution sol;
+	ListNode* head=sol.createList(vec);
+	cout&amp;lt;&amp;lt;&quot;Before sorting:&quot;&amp;lt;&amp;lt;endl;
+	sol.printList(head);
+	
+	head=sol.sortList(head);
+	cout&amp;lt;&amp;lt;&quot;After sorting:&quot;&amp;lt;&amp;lt;endl;
+	sol.printList(head);
+}
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Subset Sum Problem</title>
+   <link href="http://bo-yang.github.com//2014/07/07/subset-sum"/>
+   <updated>2014-07-07T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/07/subset-sum</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;https://oj.leetcode.com/problems/3sum/&quot;&gt;The 3Sum problem&lt;/a&gt; is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given an array &lt;code&gt;S&lt;/code&gt; of n integers, are there elements &lt;code&gt;a, b, c&lt;/code&gt; in &lt;code&gt;S&lt;/code&gt; such that &lt;code&gt;a + b + c = 0&lt;/code&gt;? Find all unique triplets in the array which gives the sum of zero.&lt;/p&gt;
+
+  &lt;p&gt;Note:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;Elements in a triplet &lt;code&gt;(a,b,c)&lt;/code&gt; must be in non-descending order. (ie, &lt;code&gt;a ≤ b ≤ c&lt;/code&gt;)&lt;/li&gt;
+    &lt;li&gt;The solution set must not contain duplicate triplets.&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Inspired by the &lt;a href=&quot;http://en.wikipedia.org/wiki/3SUM&quot;&gt;Wikipedia solution&lt;/a&gt;, I implemented following solution. The first step is sorting the array &lt;code&gt;S&lt;/code&gt; in ascending order, so that we can guarantee the front elements in the array are not less than the elemts at the end of the array. Then for every number in array, we can use the two variables to go through the whole array to find the triplets summed to 0. &lt;/p&gt;
+
+&lt;p&gt;In order to guarantee there are no duplicate triplets, a hash table is used to record the triplets that have been found. Before inserting the newly found triplet into the solution matrix(&lt;code&gt;vector&amp;lt;vector&amp;lt;int&amp;gt; &amp;gt;&lt;/code&gt;), try to look for the triplet in the hash table first. Since C++ doesn’t support &lt;code&gt;vector&amp;lt;int&amp;gt;&lt;/code&gt; keys, I formulate string keys using the integer triplets in the following code.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    vector&amp;lt;vector&amp;lt;int&amp;gt; &amp;gt; threeSum(vector&amp;lt;int&amp;gt; &amp;amp;num) {
+		// Sort the vector
+		std::sort(num.begin(), num.end());
+		
+		// Find triplets
+		unordered_map&amp;lt;string,bool&amp;gt; map; // store found triplets
+		char* buf=new char[100];
+		for(int i=0;i&amp;lt;num.size();++i) {
+			vector&amp;lt;int&amp;gt; triplet;
+			int hi=num.size()-1;
+			int lo=0;
+			while(hi&amp;gt;i &amp;amp;&amp;amp; lo&amp;lt;i) {
+				if(num[i]+num[hi]+num[lo]==0) { // found a triplet
+					sprintf(buf,&quot;%d%d%d&quot;,num[i],num[hi],num[lo]);
+					string str(buf);
+					unordered_map&amp;lt;string,bool&amp;gt;::const_iterator got=map.find(str);
+					if(got==map.end()) { // a brand new triplet
+						triplet.push_back(num[lo]);
+						triplet.push_back(num[i]);
+						triplet.push_back(num[hi]);
+						map[str]=true;
+						sol.push_back(triplet);
+					}
+					triplet.clear();
+					hi--;lo++;
+				} else if(num[i]+num[hi]+num[lo]&amp;gt;0) {
+					hi--;
+				} else { // &amp;lt;0
+					lo++;
+				}
+			}
+		}
+		delete [] buf;
+
+		return sol;
+    }
+	
+private:
+	vector&amp;lt;vector&amp;lt;int&amp;gt; &amp;gt; sol;
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Find Top Source IP Addresses in Distributed Systems</title>
+   <link href="http://bo-yang.github.com//2014/07/07/determine-top-common-ip-addresses"/>
+   <updated>2014-07-07T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/07/determine-top-common-ip-addresses</id>
+   <content type="html">&lt;p&gt;The problem is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Determines the top 10 most common source IP addresses, and their hit rates, for a fleet of 1000 web servers within the last hour.&lt;/p&gt;
+
+  &lt;p&gt;The following assumptions may be used…&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;web servers are locally writing access logs in the &lt;a href=&quot;http://httpd.apache.org/docs/current/logs.html#combined&quot;&gt;Apache Combined Log Format&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;web servers are accessible by &lt;code&gt;ssh&lt;/code&gt;.&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;My solution is:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;For each server in the fleet, copy the &lt;code&gt;/var/log/httpd/access_log&lt;/code&gt; to local directory by &lt;code&gt;ssh&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Given a access_log, for each line in the log, extract the IP address, time/time zone and status code. &lt;/li&gt;
+  &lt;li&gt;For lines written in the past hour, count the occurrences of each IP address(number of requests) and numbers of sucessful operations(status code 1xx,2xx and 3xx in my implementation).&lt;/li&gt;
+  &lt;li&gt;After counting logs of all servers, sort the IP addresses by their occurrences.&lt;/li&gt;
+  &lt;li&gt;For the top 10 IP addresses, calculate their hit rates using equation:
+ &lt;code&gt;hit rate = (# of successful operations) / (# of all requests)&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Assumptions are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The names of servers in the fleet are stored in a file, such as ‘fleet_servers’. The servers can be geographically distributed in different cities/countries.&lt;/li&gt;
+  &lt;li&gt;This script will be executed in a directory that can be read &amp;amp; written by the user. &lt;/li&gt;
+  &lt;li&gt;The report of the top 10 most common IPs and hit rates will be stored in current directory.&lt;/li&gt;
+  &lt;li&gt;The SSH keys to remote servers have been generated and synced, so that there is no need to manually enter the passwords. &lt;/li&gt;
+  &lt;li&gt;Following Perl modules should be installed:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code&gt;DateTime&lt;/code&gt; - used to determine if the logs are older than 1 hour.&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;Parallel::ForkManager&lt;/code&gt; - check multiple logs in concurrently.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Following is my Perl implementation. For more information and the source file, please refer to &lt;a href=&quot;https://github.com/bo-yang/CommonSourceIPs&quot;&gt;https://github.com/bo-yang/CommonSourceIPs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;use strict;
+use warnings;
+use POSIX qw(strftime);
+use DateTime;
+use Parallel::ForkManager;
+use Getopt::Long;
+use FindBin qw($Bin);
+use Cwd &#39;abs_path&#39;;
+
+my $ldt=DateTime-&amp;gt;now(); # Get UTC date time
+my $input=&#39;fleet_servers&#39;; # default file to store server list
+my $output=&quot;report_&quot;.strftime(&quot;%Y%d%m_%H%M%S&quot;,localtime()); # default file t ostore report
+my $login=`whoami`;
+my $access_log=&#39;/var/log/httpd/access_log&#39;; # the default location of the access log
+my $time_range=1; # 1 hour by default
+my $num_ips=10;	# number of the most common source IP addresses
+my $num_process=30; # Max number of processes for parallel processing
+
+GetOptions(
+	&#39;input|i=s&#39;  =&amp;gt; \$input,
+	&#39;output|o=s&#39; =&amp;gt; \$output,
+	&#39;login|l=s&#39;  =&amp;gt; \$login,
+	&#39;alog|a=s&#39;   =&amp;gt; \$access_log,
+	&#39;trange|t=i&#39; =&amp;gt; \$time_range,
+	&#39;num_ip|n=i&#39; =&amp;gt; \$num_ips,
+	&#39;process|p=i&#39;=&amp;gt; \$num_process,
+	&#39;help|?&#39;	 =&amp;gt; \&amp;amp;ShowUsage
+   ) or ShowUsage();
+
+
+die(&quot;ERROR: no input reads specied!\n&quot;) if (!$input);
+
+# Handle signals
+my $CleanupDone   = 0;
+$SIG{&#39;ABRT&#39;} = &#39;doCleanup&#39;;
+$SIG{&#39;HUP&#39;}  = &#39;doCleanup&#39;;
+$SIG{&#39;INT&#39;}  = &#39;doCleanup&#39;;
+$SIG{&#39;QUIT&#39;} = &#39;doCleanup&#39;;
+
+open IN, &quot;&amp;lt;$input&quot; or die(&quot;ERROR: cannot open file $input!&quot;);
+
+# Iteratively access each server. Assume that each line of the input file is 
+# a server name or IP address.
+my $clients={};
+my $pm = new Parallel::ForkManager($num_process);
+while (my $server = &amp;lt;IN&amp;gt;) {
+	$pm-&amp;gt;start and next; # do the fork
+
+	chomp $server;
+	my $tmplog=&quot;.${server}.access_log.tmp&quot;;
+	`ssh ${login}@${server} &quot;cat ${access_log}&quot; &amp;gt; $tmplog`;
+
+	open LOG, &quot;&amp;lt;$tmplog&quot; or die(&quot;ERROR: cannot open file $tmplog!&quot;);
+	# Parse the access_log of this server
+	while (my $line = &amp;lt;LOG&amp;gt;) {
+		if($line =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/) {
+			my $ip=$1;
+			my ($rdt, $stat_code)=($line =~ m/\[(.*)\].*&quot; (\d{3})/);
+	
+			# Calculate time differece between local and remote servers(in seconds)
+			my $time_diff=CompareTime($ldt,$rdt);
+			# Skip messages older than specified time range
+			next if($time_diff &amp;gt; $time_range*3600);
+	
+			# Count requests and successful oprations
+			if(not $clients-&amp;gt;{$ip}){
+				$clients-&amp;gt;{$ip}-&amp;gt;{&#39;request&#39;}=1;
+				$clients-&amp;gt;{$ip}-&amp;gt;{&#39;success&#39;}=0;
+			} else {
+				$clients-&amp;gt;{$ip}-&amp;gt;{&#39;request&#39;}++;
+			}
+			# Only status code that begins with 1, 2 or 3 will be counted
+			$clients-&amp;gt;{$ip}-&amp;gt;{&#39;success&#39;}++ if($stat_code =~ /[1-3]\d{2}/);
+		} else {
+			warn &quot;No IP address found in ${tmplog}.&quot;;
+		}
+	}
+	close LOG;
+	unlink $tmplog; # remove temporary files
+
+	$pm-&amp;gt;finish;
+}
+$pm-&amp;gt;wait_all_children; # wait for forked-processes
+
+close IN;
+
+# Find the most common IP addresses and calculate their hit rates
+open OUT, &quot;&amp;gt;$output&quot; or die(&quot;ERROR: cannot write file $output!&quot;);
+print OUT &quot;IP Address \t Hit Rate \t # Req \t # Succ\n&quot;;
+print STDOUT &quot;IP Address \t Hit Rate \t # Req \t # Succ\n&quot;;
+my $cnt=0;
+# Sort source IP addresses in descending order of requests
+foreach my $ip (sort {$clients-&amp;gt;{$b}-&amp;gt;{&#39;request&#39;} &amp;lt;=&amp;gt; $clients-&amp;gt;{$a}-&amp;gt;{&#39;request&#39;}} keys %{$clients}) {
+	# Calculate hit rate
+	$clients-&amp;gt;{$ip}-&amp;gt;{&#39;hit rate&#39;}=$clients-&amp;gt;{$ip}-&amp;gt;{&#39;success&#39;}/$clients-&amp;gt;{$ip}-&amp;gt;{&#39;request&#39;};
+	my $hit_rate=sprintf(&quot;%.4f&quot;,$clients-&amp;gt;{$ip}-&amp;gt;{&#39;hit rate&#39;});
+	print OUT &quot;$ip \t $hit_rate \t $clients-&amp;gt;{$ip}-&amp;gt;{&#39;request&#39;} \t $clients-&amp;gt;{$ip}-&amp;gt;{&#39;success&#39;}\n&quot;;
+	print STDOUT &quot;$ip \t $hit_rate \t $clients-&amp;gt;{$ip}-&amp;gt;{&#39;request&#39;} \t $clients-&amp;gt;{$ip}-&amp;gt;{&#39;success&#39;}\n&quot;;
+
+	$cnt++;
+	last if($cnt&amp;gt;=$num_ips); # break out
+}
+
+close OUT;
+
+
+#
+# Compare two time and return the differences in seconds.
+# 
+# Inputs: 
+# 	local time(array), remote time(string)
+# Output: 
+# 	time difference(in seconds)
+#
+sub CompareTime {
+	my $ldt=$_[0]; # local time, array
+	my $remote_dt=$_[1]; # remote time, string
+	
+	my %month_map = (
+		&#39;Jan&#39; =&amp;gt; 1, &#39;Feb&#39; =&amp;gt; 2, &#39;Mar&#39; =&amp;gt; 3,
+		&#39;Apr&#39; =&amp;gt; 4, &#39;May&#39; =&amp;gt; 5, &#39;Jun&#39; =&amp;gt; 6,
+		&#39;Jul&#39; =&amp;gt; 7, &#39;Aug&#39; =&amp;gt; 8, &#39;Sep&#39; =&amp;gt; 9,
+		&#39;Oct&#39; =&amp;gt; 10,&#39;Sep&#39; =&amp;gt; 11,&#39;Dec&#39; =&amp;gt; 12
+	);
+
+	my ($rday,$rmonth,$ryear,$rhour,$rmin,$rsec,$rtz)=($remote_dt =~ m/(\d+)\/(\S+)\/(\d+):(\d+):(\d+):(\d+) ([+-]\d+)/);
+	my $rdt = DateTime-&amp;gt;new(
+		year	=&amp;gt; $ryear,
+		month	=&amp;gt; $month_map{$rmonth},
+		day		=&amp;gt; $rday,
+		hour	=&amp;gt; $rhour,
+		minute	=&amp;gt; $rmin,
+		second	=&amp;gt; $rsec,
+		time_zone =&amp;gt; $ldt-&amp;gt;time_zone,
+	);
+
+	# Convert the remote time into UTC time zone.
+	my $ltz=&#39;+0000&#39;;
+	if($ltz ne $rtz) {
+		my $abs_rtz=$rtz;
+		if($abs_rtz =~ m/[+-].*/) {
+			$abs_rtz=substr $abs_rtz, 1; # remove the leading +/-
+		}
+		# The ISO 8601 offset from UTC in timezone linke +0700 (1 minute=1, 1 hour=100)
+		my $tz_diff=$abs_rtz/100*3600; # time zone diff in seconds
+		my $dur = DateTime::Duration-&amp;gt;new(
+			years       =&amp;gt; 0,
+	      	months      =&amp;gt; 0,
+	      	weeks       =&amp;gt; 0,
+	      	days        =&amp;gt; 0,
+	      	hours       =&amp;gt; 0,
+	      	minutes     =&amp;gt; 0,
+	      	seconds     =&amp;gt; $tz_diff,
+	      	nanoseconds =&amp;gt; 0
+		);
+		# Add/subtract time zone influence
+		if($rtz =~ /\-\d+/) {
+			$rdt-&amp;gt;add_duration($dur);
+		} else {
+			$rdt-&amp;gt;subtract_duration($dur);
+		}
+	}
+	
+	# Calculate the absolute time differences in seconds
+	my $time_diff=$ldt-&amp;gt;subtract_datetime_absolute($rdt);
+	return $time_diff-&amp;gt;in_units(&#39;seconds&#39;);
+}
+
+#
+# Show usgage
+# 
+sub ShowUsage {
+	my $proc=`basename $0`;
+	chomp($proc);
+
+	print STDOUT &quot;Usage: $proc [-i server_list] [-o report] [-l login] [-a access_log] [-t time_range] [-n ip_num] [-p process_num]\n&quot;;
+	print STDOUT &quot;where:\n&quot;;
+	print STDOUT &quot;  server_list\t - list of servers in the pool, optional\n&quot;;
+	print STDOUT &quot;  report\t - report file, optional \n&quot;;
+	print STDOUT &quot;  login\t\t - login to admin servers, optional\n&quot;;
+	print STDOUT &quot;  access_log\t - path of Apache access_log, optional\n&quot;;
+	print STDOUT &quot;  time_range\t - range of time to be analysed(unit: hour), optional\n&quot;;
+	print STDOUT &quot;  ip_num\t - number of the top source IPs, optional\n&quot;;
+	print STDOUT &quot;  process_num\t - number of concurrent processes, optional\n&quot;;
+	
+	exit;
+}
+
+#
+# Clean up before exit
+#
+sub doCleanup {
+	if($CleanupDone == 1) {
+		exit;
+	}
+
+	`rm .*.access_log.tmp`; # remove temp files
+	$CleanupDone = 1;
+	exit 0;
+} ## end sub doCleanup
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Longest Palindromic Substring</title>
+   <link href="http://bo-yang.github.com//2014/07/06/longest-palindromic-substring"/>
+   <updated>2014-07-06T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/06/longest-palindromic-substring</id>
+   <content type="html">&lt;p&gt;The &lt;a href=&quot;https://oj.leetcode.com/problems/longest-palindromic-substring/&quot;&gt;Longest Palindromic Substring problem&lt;/a&gt; is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring. &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;To solve this problem, first investigate following examples:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;abcdefedchz&lt;/code&gt;: the longest palindrome is &lt;code&gt;cdefedc&lt;/code&gt;, the left and right parts are symmetric to letter &lt;code&gt;f&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;acbbcae&lt;/code&gt;: the longest palindrome &lt;code&gt;acbbca&lt;/code&gt;, which is symmetric to the (virtual) postion between &lt;code&gt;bb&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;a&lt;/code&gt;: the longest palindrome is the letter &lt;code&gt;a&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Based on above investigations, we could summarize the solution as: &lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;For every letter in the string, find the longest repetitive characters to current letter, record the &lt;code&gt;start&lt;/code&gt; and &lt;code&gt;end&lt;/code&gt; position;&lt;/li&gt;
+  &lt;li&gt;Minus &lt;code&gt;start&lt;/code&gt; position by one and see if &lt;code&gt;s[start]&lt;/code&gt; is still identical to &lt;code&gt;s[end]&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;If yes, iteratively compare &lt;code&gt;s[start--]&lt;/code&gt; and &lt;code&gt;s[end--]&lt;/code&gt; until they are not equal.&lt;/li&gt;
+  &lt;li&gt;The possible longest palindrome for current letter is &lt;code&gt;end-start-1&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Following is my C++ implementation. This algorithm could be enhanced by not checking every letters, however, the time complexity will still be \( O(N^2) \). A better method is &lt;a href=&quot;http://en.wikipedia.org/wiki/Longest_palindromic_substring&quot;&gt;Manacher’s Algorithm&lt;/a&gt;, which has  \( O(N) \) time complexity.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    string longestPalindrome(string s) {
+		if(s.empty())
+			return &quot;&quot;;
+
+        int pd_start=0; // the start position of the palindrome
+		int pd_len=0; // the length of the palindrome
+		for(int i=0;i&amp;lt;s.length();++i) {
+			int start=i;
+			int end=i;
+			while(end&amp;lt;s.length() &amp;amp;&amp;amp; s[start]==s[end])
+				end++;
+
+			start--;
+			while(start&amp;gt;=0 &amp;amp;&amp;amp; end&amp;lt;s.length() &amp;amp;&amp;amp; s[start]==s[end]) {
+				start--;
+				end++;
+			}
+			
+			if(pd_len&amp;lt;end-start-1) {
+				pd_len=end-start-1;
+				pd_start=start+1;	
+			}
+		}
+
+		return s.substr(pd_start,pd_len);		
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>The First Occurrence of Needle In Haystack</title>
@@ -1811,8 +2569,9 @@ operations are based on each video clip.&lt;/p&gt;
 
 &lt;p&gt;The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.  &lt;/p&gt;
 
-&lt;p&gt;Following is the algorithm of computing Fisher vectors from features(actually I implemented this algorithm in Matlab, and if you are interested, please refer &lt;a href=&quot;https://github.com/bo-yang/stip_fisher/blob/master/fisher_encode.m&quot;&gt;here&lt;/a&gt;):
-&lt;img src=&quot;/assets/images/fisher_vector_algorithm.png&quot; alt=&quot;Figure 2. Algorithm of computing Fisher vectors.&quot; /&gt;.&lt;/p&gt;
+&lt;p&gt;Following is the algorithm of computing Fisher vectors from features(actually I implemented this algorithm in Matlab, and if you are interested, please refer &lt;a href=&quot;https://github.com/bo-yang/stip_fisher/blob/master/fisher_encode.m&quot;&gt;here&lt;/a&gt;):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/fisher_vector_algorithm.png&quot; alt=&quot;Figure 2. Algorithm of computing Fisher vectors.&quot; /&gt;.&lt;/p&gt;
 
 &lt;p&gt;During the subsampling of STIP features, I randomly chose 1000 HOG or
 HOF features from each training video clip. For some videos, if the
@@ -1865,6 +2624,179 @@ using above pipeline. And the confusion matrix is shown in Figure 3.&lt;/p&gt;
   &lt;li&gt;Andrej Karpathy, George Toderici, Sanketh Shetty, Thomas Leung, Rahul Sukthankar, and Li Fei-Fei. &lt;em&gt;Large-scale video classification with convolutional neural networks&lt;/em&gt;. In CVPR, 2014.&lt;/li&gt;
 &lt;/ol&gt;
 
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Implementing Inclusion Property with SimpleScalar</title>
+   <link href="http://bo-yang.github.com//2014/04/18/inclusion-property"/>
+   <updated>2014-04-18T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/04/18/inclusion-property</id>
+   <content type="html">&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;#inclusion_property&quot;&gt;Inclusion Property&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#code_change&quot;&gt;Code Change&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#experiments&quot;&gt;Experiments&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;a-nameinclusionpropertyinclusion-propertya&quot;&gt;1. &lt;a name=&quot;inclusion_property&quot;&gt;Inclusion Property&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;If the two-level cache system satisfies the inclusion property, it means everything in the primary cache is also in the secondary cache and all snooping can be done by the secondary cache. To implement the inclusion property, two requirements must be met:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Whenever a new block of data are loaded into(or removed from) L1 cache, they also should be loaded into(or removed from) the L2 cache.&lt;/li&gt;
+  &lt;li&gt;Whenever a block of data are loaded into(or removed from) L2 cache, they also should be loaded into(or removed from) the L1 cache.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;SimpleScalar&lt;/em&gt; already implemented the first requirement. When there is a cache miss in L1 cache, L2 cache will be accessed for the block. If the block are also cannot be found in the L2 cache, they will be loaded from the memory. The data consistency is kept in this way.&lt;/p&gt;
+
+&lt;p&gt;However, the second requirement is not supported by the official SimpleScalar. To implement this feature, the data block must be checked every time L2 cache encounter a cache miss. Since all cache read/write operations are done in function cache_access(), the action of checking and removing data blocks from L1 cache should also be added into that function with the condition of accessing L2 cache.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-namecodechangecode-changea&quot;&gt;2. &lt;a name=&quot;code_change&quot;&gt;Code Change&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Since there is no existing way in cache_t to find the upper level cache(DL1) of the DL2 cache, a new structure element &lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;struct cache_t *ucp;		/* upper level cache */&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;should be added into struct cache_t. This pointer should be set to NULL in function cache_create() if the cache name is not “dl2”. Otherwise the pointer to DL1 cache should be assigned.&lt;/p&gt;
+
+&lt;p&gt;To support the new added struct element, a new parameter &lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;struct cache_t *ucp;		/* upper level cache */&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;should also be added into function cache_create(), which is called in sim-cache.c and sim-outorder.c. The new interface of this function becomes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/* create and initialize a general cache structure */
+struct cache_t *			/* pointer to cache created */
+cache_create(char *name,		/* name of the cache */
+	     int nsets,			/* total number of sets in cache */
+	     int bsize,			/* block (line) size of cache */
+	     int balloc,		/* allocate data space for blocks? */
+	     int usize,			/* size of user data to alloc w/blks */
+	     int assoc,			/* associativity of cache */
+	     enum cache_policy policy,	/* replacement policy w/in sets */
+	     /* block access function, see description w/in struct cache def */
+	     unsigned int (*blk_access_fn)(enum mem_cmd cmd,
+					   md_addr_t baddr, int bsize,
+					   struct cache_blk_t *blk,
+					   tick_t now),
+	     unsigned int hit_latency,/* latency in cycles for a hit */
+	     struct cache_t *ucp);	/* upper level cache */
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For DL2 cache, the pointer ucp is set to cache_dl1 in sim-cache.c in function cache_create(). For other cache, NULL is set. For example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cache_dl2 = cache_create(name, nsets, bsize, /* balloc */FALSE,
+				   /* usize */0, assoc, cache_char2policy(c),
+				   dl2_access_fn, /* hit latency */1,cache_dl1);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As checking and removing blocks from DL1 only involves DL1 and DL2 cache, all the operations can be encapsulated in a function cache_inclusion(). This function is called after blocks moved out from DL2 in the case of cache miss. Then check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*
+ * Inclusion Property:
+ * 	Make sure data leave DL2 also leave DL1 
+ * */
+int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
+		struct cache_t *cp_l2, /* L2 cache */
+		tick_t now)		/* time of access */
+{
+
+	/* Loop through each set and each block in the L1 cache, 
+	 * probe the L2 cache to guaranttee the inclusion */
+	int num_l1_sets = cp_l1-&amp;gt;set_mask + 1;
+	int set;
+  	struct cache_blk_t *blk;
+	md_addr_t addr;
+	int hindex;
+	int num_hash_buckets = cp_l1-&amp;gt;hsize;
+	int there; /* indicates if the L1 line is in L2 */
+	int lat=0;
+
+	/* for each set */
+	for(set=0; set&amp;lt;num_l1_sets; set++){
+		/* for each block in a higly-associativity cache*/
+  		if (num_hash_buckets){
+			/* for each hash bucket */
+			for(hindex=0; hindex&amp;lt;num_hash_buckets; hindex++){
+			    /* for each block in a hash bucket */
+			    for (blk=cp_l1-&amp;gt;sets[set].hash[hindex];
+				 blk;
+				 blk=blk-&amp;gt;hash_next)
+				{	
+					/* Probe the L2 cache for this block */
+					addr = CACHE_MK_BADDR(cp_l1, blk-&amp;gt;tag, set);
+					there = cache_probe(cp_l2, addr);
+					if(!there){ // line in DL1 but not in DL2
+						lat += cache_flush_addr(cp_l1,addr,now);
+						//fprintf(stderr, &quot;\nEvict address %x from DL1!\n&quot;, addr);
+					}
+		   		}/* end for block in a bucket */
+			}/* end for each bucket */
+  		}/* end if highly associative cache*/
+
+		/* for each block in a low-associativity cache*/
+		else {
+			for (blk=cp_l1-&amp;gt;sets[set].way_head;
+			 blk;
+			 blk=blk-&amp;gt;way_next)
+    		{
+				/* Probe the L2 cache for this block */
+				addr = CACHE_MK_BADDR(cp_l1, blk-&amp;gt;tag, set);
+				there = cache_probe(cp_l2, addr);
+				if(!there){ // line in DL1 but not in DL2
+					lat += cache_flush_addr(cp_l1,addr,now);
+					//fprintf(stderr, &quot;\nEvict address %x from DL1!\n&quot;, addr);
+				}
+		    }/* end for */
+  		}/* end for each block */
+	}/* end for each set */
+	
+	return lat;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This function should be called in cache_access() after removing blocks from DL2. The basic idea of the above function is to  check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.&lt;/p&gt;
+
+&lt;p&gt;The code segment for calling cache_inclusion() in cache_access() is:
+	/* cache block not found */&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; /* **MISS** */
+ cp-&amp;gt;misses++;
+…...
+
+/* link this entry back into the hash table */
+  if (cp-&amp;gt;hsize)
+    link_htab_ent(cp, &amp;amp;cp-&amp;gt;sets[set], repl);
+
+  /* Inclusion property:
+   * 	Make sure data leave DL2 also leave DL1, or vice versa */
+  if(!mystricmp(cp-&amp;gt;name,&quot;dl2&quot;) &amp;amp;&amp;amp; cp-&amp;gt;ucp != NULL) 
+  {
+  	lat += cache_inclusion(cp-&amp;gt;ucp,cp,now);
+  }
+
+  /* return latency of the operation */
+  return lat;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;a-nameexperimentsexperimentsa&quot;&gt;3. &lt;a name=&quot;experiments&quot;&gt;Experiments&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;In my experiment, three benchmarks are used: gcc, mcf and vpr. For each benchmark, three different configurations are tested, which are the same as the three commands listed in the project requirement. Compared to the SimpleScalar without inclusion property, it took 2 times longer time after implementing the inclusion property. &lt;/p&gt;
+
+&lt;p&gt;After implementing inclusion property, the miss rates of DL1 generally increase a little, while the miss rates of DL2 decrease or keep the same. This is consistent with the code change, because due to inclusion property, statistically fewer data can be stored in DL1, but more valid data can be stored in DL2 cache. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2014-04-18-inclusion-property/dl1.jpg&quot; alt=&quot;Miss rate of DL1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Figure 1. Miss rate of DL1, with(red) and without(blue) inclusion.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2014-04-18-inclusion-property/dl2.jpg&quot; alt=&quot;Miss rate of DL2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Figure 2. Miss rate of DL2, with(red) and without(blue) inclusion.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-nameconclusionconclusiona&quot;&gt;4. &lt;a name=&quot;conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;In this project I implemented the inclusion property with SimpleScalar. I tested my change with three different benchmarks in three different configurations. Experiments show proves the correctness of my change. Inclusion property cannot guarantee the overall performance the cache, although it seems like a promising technique.&lt;/p&gt;
 </content>
  </entry>
  
@@ -5441,21 +6373,32 @@ Plainly, virtualization provides more servers on the same hardware and cloud com
    <updated>2011-09-28T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2011/09/28/structure-sctp_event_subscribe-differs-between-rhel5-rhel6</id>
    <content type="html">&lt;p&gt;Recently meet an SCTP issue: one product application running on MontaVista(kernel version 2.6.21) can&#39;t run on RedHat Enterprise Linux 5.5. After hours investion between millions lines  of  log file and source code, I finally noticed following error showed up:&lt;br /&gt;
-[sourcecode language=&quot;text&quot;]&lt;br /&gt;
-^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566]&lt;br /&gt;
- ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt()&lt;br /&gt;
- setsockopt - Invalid argument&lt;br /&gt;
-^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566]&lt;br /&gt;
-../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts():&lt;br /&gt;
- failed to set SCTP_EVENTS for socket 6&lt;br /&gt;
-[/sourcecode]&lt;br /&gt;
+
+&lt;pre&gt;
+	^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566]&lt;br /&gt;
+	 ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt()&lt;br /&gt;
+	 setsockopt - Invalid argument&lt;br /&gt;
+	^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566]&lt;br /&gt;
+	../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts():&lt;br /&gt;
+	 failed to set SCTP_EVENTS for socket 6&lt;br /&gt;
+&lt;/pre&gt;
+
 C function ammsSetSockOpt() was a function used in that product application, which eventually calls Linux system API setsockopt().&lt;/p&gt;
+
 &lt;p&gt;The product developers told me that they updated libsctp.so shared library in MV, so I copied that library directly to RHEL5.5(usually this way will work). However, that shared library didn&#39;t work this time.&lt;/p&gt;
+
 &lt;p&gt;Then I noticed that the kernel of RHEL5.5 was 2.6.18-194.el5, which means Linux kernel 2.6.18 was used. I also found some webpages about RHEL kernel, and all of them claimed that Red Hat would backport new-developed Linux kernel(community) features to RHEL5 kernels, which means that the older kernel version of RHEL may also contains some features in higher Linux kernel.  Since SCTP codes were largely changed in 2.6.21, I decided to upgrade RHEL kernel to 2.6.18-238.9.1.el5(the default version in RHEL5.7).&lt;/p&gt;
+
 &lt;p&gt;After 4.5 hours compiling and installing, RHEL kernel upgraded to the latest one. Unfortunately, the SCTP issue still existed.&lt;/p&gt;
+
 &lt;p&gt;I wen to back to reading source code, and tried to change the last parameter of setsockopt() from sizeof(events) to 8, and it worked!  Where, events is defined as&lt;br /&gt;
-[sourcecode language=&quot;cpp&quot;]struct sctp_event_subscribe events;[/sourcecode]&lt;br /&gt;
+
+&lt;pre&gt;
+	struct sctp_event_subscribe events;
+&lt;/pre&gt;
+
 Then I began to check the definition of struct sctp_event_subscribe in both RHEL5.5 and RHEL6.0 - they were different:&lt;/p&gt;
+
 &lt;p&gt;In &lt;a href=&quot;http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406&quot;&gt;RHEL 6&lt;/a&gt;,&lt;/p&gt;
 &lt;pre&gt;&lt;a id=&quot;L402&quot; name=&quot;L402&quot; href=&quot;http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L402&quot;&gt;&lt;/a&gt; 402/*
 &lt;a id=&quot;L403&quot; name=&quot;L403&quot; href=&quot;http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L403&quot;&gt;&lt;/a&gt; 403 * Described in Section 7.3

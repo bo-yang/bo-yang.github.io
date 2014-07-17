@@ -42,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand" href="/">bo-yang</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -87,6 +87,622 @@
 		<div class="col-md-8">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/09/28/structure-sctp_event_subscribe-differs-between-rhel5-rhel6">Struct sctp_event_subscribe Differs Between RHEL5 and RHEL6</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-09-28</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#RHEL6.1-ref" rel="nofollow">RHEL6.1</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Recently meet an SCTP issue: one product application running on MontaVista(kernel version 2.6.21) can't run on RedHat Enterprise Linux 5.5. After hours investion between millions lines  of  log file and source code, I finally noticed following error showed up:<br />
+
+<pre>
+	^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566]<br />
+	 ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt()<br />
+	 setsockopt - Invalid argument<br />
+	^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566]<br />
+	../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts():<br />
+	 failed to set SCTP_EVENTS for socket 6<br />
+</pre>
+
+C function ammsSetSockOpt() was a function used in that product application, which eventually calls Linux system API setsockopt().</p>
+
+<p>The product developers told me that they updated libsctp.so shared library in MV, so I copied that library directly to RHEL5.5(usually this way will work). However, that shared library didn't work this time.</p>
+
+<p>Then I noticed that the kernel of RHEL5.5 was 2.6.18-194.el5, which means Linux kernel 2.6.18 was used. I also found some webpages about RHEL kernel, and all of them claimed that Red Hat would backport new-developed Linux kernel(community) features to RHEL5 kernels, which means that the older kernel version of RHEL may also contains some features in higher Linux kernel.  Since SCTP codes were largely changed in 2.6.21, I decided to upgrade RHEL kernel to 2.6.18-238.9.1.el5(the default version in RHEL5.7).</p>
+
+<p>After 4.5 hours compiling and installing, RHEL kernel upgraded to the latest one. Unfortunately, the SCTP issue still existed.</p>
+
+<p>I wen to back to reading source code, and tried to change the last parameter of setsockopt() from sizeof(events) to 8, and it worked!  Where, events is defined as<br />
+
+<pre>
+	struct sctp_event_subscribe events;
+</pre>
+
+Then I began to check the definition of struct sctp_event_subscribe in both RHEL5.5 and RHEL6.0 - they were different:</p>
+
+<p>In <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">RHEL 6</a>,</p>
+<pre><a id="L402" name="L402" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L402"></a> 402/*
+<a id="L403" name="L403" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L403"></a> 403 * Described in Section 7.3
+<a id="L404" name="L404" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L404"></a> 404 *   Ancillary Data and Notification Interest Options
+<a id="L405" name="L405" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L405"></a> 405 */
+<a id="L406" name="L406" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406"></a> 406struct <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_event_subscribe">sctp_event_subscribe</a> {
+<a id="L407" name="L407" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L407"></a> 407        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_data_io_event">sctp_data_io_event</a>;
+<a id="L408" name="L408" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L408"></a> 408        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_association_event">sctp_association_event</a>;
+<a id="L409" name="L409" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L409"></a> 409        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_address_event">sctp_address_event</a>;
+<a id="L410" name="L410" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L410"></a> 410        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_send_failure_event">sctp_send_failure_event</a>;
+<a id="L411" name="L411" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L411"></a> 411        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_peer_error_event">sctp_peer_error_event</a>;
+<a id="L412" name="L412" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L412"></a> 412        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_shutdown_event">sctp_shutdown_event</a>;
+<a id="L413" name="L413" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L413"></a> 413        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_partial_delivery_event">sctp_partial_delivery_event</a>;
+<a id="L414" name="L414" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L414"></a> 414        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_adaptation_layer_event">sctp_adaptation_layer_event</a>;
+<a id="L415" name="L415" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L415"></a> 415        <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/+code=sctp_authentication_event">sctp_authentication_event</a>;
+<a id="L416" name="L416" href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L416"></a> 416};</pre>
+<p>While in <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">RHEL5</a>,</p>
+<pre><a id="L363" name="L363" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L363"></a> 363/*
+<a id="L364" name="L364" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L364"></a> 364 * Described in Section 7.3
+<a id="L365" name="L365" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L365"></a> 365 *   Ancillary Data and Notification Interest Options
+<a id="L366" name="L366" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L366"></a> 366 */
+<a id="L367" name="L367" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367"></a> 367struct <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_event_subscribe">sctp_event_subscribe</a> {
+<a id="L368" name="L368" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L368"></a> 368        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_data_io_event">sctp_data_io_event</a>;
+<a id="L369" name="L369" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L369"></a> 369        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_association_event">sctp_association_event</a>;
+<a id="L370" name="L370" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L370"></a> 370        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_address_event">sctp_address_event</a>;
+<a id="L371" name="L371" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L371"></a> 371        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_send_failure_event">sctp_send_failure_event</a>;
+<a id="L372" name="L372" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L372"></a> 372        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_peer_error_event">sctp_peer_error_event</a>;
+<a id="L373" name="L373" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L373"></a> 373        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_shutdown_event">sctp_shutdown_event</a>;
+<a id="L374" name="L374" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L374"></a> 374        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_partial_delivery_event">sctp_partial_delivery_event</a>;
+<a id="L375" name="L375" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L375"></a> 375        <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=__u8">__u8</a> <a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/+code=sctp_adaption_layer_event">sctp_adaption_layer_event</a>;
+<a id="L376" name="L376" href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L376"></a> 376};</pre>
+<p id="b9/7a/901cb22644e92e629902da22bf3d62baf0cc_3/0">It seems upgrading RHEL5.5 to RHEL6 is the final choice!</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/09/21/dot-flag-in-rhel">Dot(.) after the file permission flags in Redhat</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-09-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Phenomenon:</p>
+<p>
+<pre>$ rsh coolnjmcl033 'ls -l /opt/cool/tools/lib/COOLvirtenv'
+ls: cannot access /opt/cool/tools/lib/COOLvirtenv: Permission denied</pre></p>
+<p>
+<pre>[root@coolnjmcl033 etc]# ls -l /opt/cool/tools/lib/COOLvirtenv
+-rwxr-xr-x. 1 cool cool 29852 Jul 22 03:16 /opt/cool/tools/lib/COOLvirtenv</pre>
+<p>
+According to&nbsp;<a href="http://www.redhat.com/archives/rhelv6-list/2010-December/msg00076.html">http://www.redhat.com/archives/rhelv6-list/2010-December/msg00076.html</a>,</p>
+<p><span style="font-family:'Times New Roman';font-size:16px;">From &quot;info ls&quot;:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Following the file mode bits is a single character that specifies<br />
+&nbsp;&nbsp;&nbsp;&nbsp; whether an alternate access method such as an access control list<br />
+&nbsp;&nbsp;&nbsp;&nbsp; applies to the file.&nbsp; When the character following the file mode<br />
+&nbsp;&nbsp;&nbsp;&nbsp; bits is a space, there is no alternate access method.&nbsp; When it is<br />
+&nbsp;&nbsp;&nbsp;&nbsp; a printing character, then there is such a method.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; GNU `ls' uses a `.' character to indicate a file with an SELinux<br />
+&nbsp;&nbsp;&nbsp;&nbsp; security context, but no other alternate access method.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; A file with any other combination of alternate access methods is<br />
+&nbsp;&nbsp;&nbsp;&nbsp; marked with a `&#043;' character.<br />
+</span></p>
+<p>In order to make files located on one server can be accessied by other servers, SELinux should be disabled. In order to disable SELinux, &nbsp;refer to<a href="http://www.crypt.gen.nz/selinux/disable_selinux.html"> How to Disable SELinux</a>.</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/09/20/rpc-error-in-rhel6">RPC - Program not registered in RHEL6.1</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-09-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>I just installed Redhat Enterprise Linux 6.1 on one HP server. Following error met when rup it on other servers:</p>
+<p>
+<pre>$rup coolnjmcl033
+rup:coolnjmcl033: RPC: Program not registered</pre>
+<p>
+SOLUTION:</p>
+<p>1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check if all nfs related services are working: </p>
+<p>
+<pre>[root@coolnjmcl033init.d]# rpcinfo -p
+   program vers proto   port  service
+    100000   4   tcp    111 portmapper
+    100000   3   tcp    111 portmapper
+    100000   2   tcp    111 portmapper
+    100000   4   udp    111 portmapper
+    100000   3   udp    111 portmapper
+    100000   2   udp    111 portmapper
+    100011   1   udp    875 rquotad
+    100011   2   udp    875 rquotad
+    100011   1   tcp    875 rquotad
+    100011   2   tcp    875 rquotad
+    100003   2   tcp   2049 nfs
+    100003   3   tcp   2049 nfs
+    100003   4   tcp   2049 nfs
+    100227   2   tcp   2049 nfs_acl
+    100227   3   tcp   2049 nfs_acl
+    100003   2   udp   2049 nfs
+    100003   3   udp   2049 nfs
+    100003   4   udp   2049 nfs
+    100227   2   udp   2049 nfs_acl
+    100227   3   udp   2049 nfs_acl
+    100005    1  udp  51310  mountd
+    100005    1  tcp  60605  mountd
+   100005    2   udp 42799  mountd
+   100005    2   tcp 44201  mountd
+   100005    3   udp 49544  mountd
+   100005    3   tcp 49098  mountd
+   100024    1   udp 37035  status
+   100024    1   tcp 60898  status
+   100001    3   udp  1008  rstatd
+   100001    2   udp  1008  rstatd
+   100001    1   udp  1008  rstatd</pre>
+<p></p>
+<p>If there is no running&nbsp;<a href="http://man.sourcentral.org/RHEL6/8+rpc.rstatd">rstatd</a>service , start it by<br />
+<strong>service rstatd start</strong>.&nbsp;</p>
+<p>Accordingto <a href="http://man.sourcentral.org/RHEL6/1+rup">RHEL 6 RUP manual</a>:</p>
+<p>&nbsp;&nbsp;&nbsp; <span style="font-family:'Courier New';">rup: RPC: Program not registered</span></p>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tbody>
+<tr>
+<td valign="top">
+<p><span style="font-family:'Courier New';">&nbsp;</span></p>
+</td>
+<td valign="top">
+<p><span style="font-family:'Courier New';">The&nbsp;<a href="http://man.sourcentral.org/RHEL6/8+rpc.rstatd">rpc.rstatd(8)</a>&nbsp;daemon has not been started on the remote host.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>2) &nbsp;check if package <strong>rusers-server-*</strong>and <strong>rusers-* </strong><br />
+are installed: rpm –qa|greprusers. If not, install it and then restart service rstatd.</p>
+<p>&nbsp;</p>
+<p><em>PS: </em></p>
+<p>Other userful commands:</p></p>
+<ol>
+<li>rup localhost</li>
+<li>service rstatd status</li>
+</ol>
+<p>According to <a href="http://pnaplinux.blogspot.com/2011/02/new-features-in-rhel6.html"><br />
+New Featuresin RHEL6</a>, </p>
+<p>1.ext4 file system is introduced.<br />
+2. xen is&nbsp;removed and kernel&nbsp;virtualization&nbsp;machine&nbsp;(KVM) is introduced.<br />
+3. neat&nbsp;command&nbsp;is removed.<br />
+4. portmap service is removed.<br />
+5. iscsi is introduced, which&nbsp;supports&nbsp;forSAN.<br />
+6. rpmbuild is available, which is used to create our own rpms.<br />
+7. File encyption is added.<br />
+8. palimpsest is available for&nbsp;disk&nbsp;management.<br />
+9.&nbsp;Virtual&nbsp;machine will&nbsp;run&nbsp;only on 64bit processors.<br />
+10. postfix service is&nbsp;recommended&nbsp;insteadof sendmail service.</p>
+<p>&nbsp;</p>
+<p>Accordingto <a href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Storage_Administration_Guide/ch-nfs.html"><br />
+Chapter&nbsp;12.&nbsp;Network File System (NFS)</a><strong>, </strong></p>
+<p>The&nbsp;<strong>portmap</strong>&nbsp;service wasused to map RPC program numbers to IP address port number combinations inearlier versions of Red Hat Enterprise Linux. This service is now replaced by&nbsp;<strong>rpcbind</strong>&nbsp;inRed Hat Enterprise Linux 6 to enable<br />
+ IPv6 support. For more information aboutthis change, refer to the following links:</p>
+<ul type="circle">
+<li><em>TI-RPC / rpcbind support</em>:&nbsp;<a href="http://nfsv4.bullopensource.org/doc/tirpc_rpcbind.php">http://nfsv4.bullopensource.org/doc/tirpc_rpcbind.php</a>
+</li>
+<li><em>IPv6 support in NFS</em>:&nbsp;<a href="http://nfsv4.bullopensource.org/doc/nfs_ipv6.php">http://nfsv4.bullopensource.org/doc/nfs_ipv6.php</a></li>
+</ul>
+<p><span style="font-family:'liberation sans', 'Myriad ', 'Bitstream Vera Sans', 'Lucida Grande', 'Luxi Sans', 'Trebuchet MS', helvetica, verdana, arial, sans-serif;line-height:15px;"></span></p>
+<div class="variablelist" style="line-height:1.29em;padding-top:0;">
+<dl>
+<dt class="varlistentry">
+<span class="term"><span style="font-family:'liberation sans', 'Myriad ', 'Bitstream Vera Sans', 'Lucida Grande', 'Luxi Sans', 'Trebuchet MS', helvetica, verdana, arial, sans-serif;line-height:15px;"></span></span></p>
+<h3 class="title" id="s2-nfs-how-daemons" style="line-height:1.29em;color:rgb(167,0,0);margin-top:0;margin-bottom:0;background-color:transparent;font-size:1.3em;padding-top:0;padding-bottom:0;">
+Required Services</h3>
+</dt>
+<dt class="varlistentry">
+<span class="term">nfs</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">service nfs start</code>&nbsp;starts the NFS server and the appropriate RPC processes to service requests for shared NFS<br />
+ file systems.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">nfslock</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">service nfslock start</code>&nbsp;activates a mandatory service that starts the appropriate RPC processes which allow<br />
+ NFS clients to lock files on the server.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpcbind</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpcbind</code>&nbsp;accepts port reservations from local RPC services. These ports are then made available (or advertised)<br />
+ so the corresponding remote RPC services can access them.&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpcbind</code>&nbsp;responds to requests for RPC services and<br />
+ sets up connections to the requested RPC service. This is not used with NFSv4.</div>
+</dd>
+</dl>
+</div>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+The following RPC processes facilitate NFS services:</div>
+<div class="variablelist" style="line-height:1.29em;padding-top:0;">
+<dl>
+<dt class="varlistentry">
+<span class="term">rpc.mountd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+This process receives mount requests from NFS clients and verifies that the requested file system is currently exported. This process is started automatically by the&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">nfs</code>&nbsp;service<br />
+ and does not require user configuration.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpc.nfsd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpc.nfsd</code>&nbsp;allows explicit NFS versions and protocols the server advertises to be defined. It works with the<br />
+ Linux kernel to meet the dynamic demands of NFS clients, such as providing server threads each time an NFS client connects. This process corresponds to the&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">nfs</code>&nbsp;service.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">lockd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">lockd</code>&nbsp;is a kernel thread which runs on both clients and servers. It implements the&nbsp;<span class="firstterm" style="font-style:italic;">Network<br />
+ Lock Manager</span>&nbsp;(NLM) protocol, which allows NFSv2 and NFSv3 clients to lock files on the server. It is started automatically whenever the NFS server is run and whenever an NFS filesystem is mounted.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpc.statd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+This process implements the&nbsp;<span class="firstterm" style="font-style:italic;">Network Status Monitor</span>&nbsp;(NSM) RPC protocol, which notifies NFS clients when an NFS server is restarted without being gracefully brought down.&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpc.statd</code>&nbsp;is<br />
+ started automatically by the&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">nfslock</code>service, and does not require user configuration. This is not used with<br />
+ NFSv4.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpc.rquotad</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+This process provides user quota information for remote users.&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpc.rquotad</code>&nbsp;is started automatically by the&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">nfs</code>service<br />
+ and does not require user configuration.</div>
+</dd>
+<dt class="varlistentry">
+<span class="term">rpc.idmapd</span></dt>
+<dd>
+<div class="para" style="line-height:1.29em;padding-top:0;margin-top:.3em;padding-bottom:0;margin-bottom:1em;">
+<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">rpc.idmapd</code>&nbsp;provides NFSv4 client and server upcalls, which map between on-the-wire NFSv4 names (which are<br />
+ strings in the form of&nbsp;<code class="computeroutput" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;"><span class="replaceable" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;font-style:italic;"></span></code><code style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">user</code>@<span class="replaceable" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;font-style:italic;"><code style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">domain</code></span>)<br />
+ and local UIDs and GIDs. For&nbsp;<code class="command" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">idmapd</code>&nbsp;to function with NFSv4, the<code class="filename" style="font-family:'liberation mono', 'bitstream vera mono', 'dejavu mono', monospace;white-space:nowrap;font-weight:bold;">/etc/idmapd.conf</code>&nbsp;must<br />
+ be configured. This service is required for use with NFSv4, although not when all hosts share the same DNS domain name.</div>
+</dd>
+</dl>
+</div>
+<p></p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/09/14/cpp-filt">c++filt</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-09-14</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>
+<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
+<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><strong>c&#043;&#043;filt<br />
+<span style="font-family:Arial;font-size:15px;white-space:pre-wrap;">decodes (demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</span></strong></span></div>
+<div style="background-color:transparent;"><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><br />
+</span></div>
+<div style="background-color:transparent;"><span id="internal-source-marker_0.33872447651810944" style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You<br />
+ may use </span><strong>c&#043;&#043;filt </strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">to demangle<br />
+ the symbols.</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">$ c&#043;&#043;filt _ZNSt8ios_base4InitD1Ev</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(238,238,238);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">std::ios_base::Init::~Init()</span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">You may try adding<br />
+</span><strong>-lstdc&#043;&#043;</strong><span style="font-size:9pt;font-family:Arial;color:rgb(0,0,0);background-color:rgb(255,255,255);font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"> to your link command<br />
+ to resolve the issue.</span><br />
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span><br />
+<strong><a href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#c++filt">c&#043;&#043;filt</a></strong><br />
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;">&nbsp;&nbsp;</span></p>
+<pre class="smallexample" style="font-size:undefined;">     c&#043;&#043;filt [<code>-_</code>|<code>--strip-underscores</code>]
+             [<code>-j</code>|<code>--java</code>]
+             [<code>-n</code>|<code>--no-strip-underscores</code>]
+             [<code>-p</code>|<code>--no-params</code>]
+             [<code>-s</code> <var>format</var>|<code>--format=</code><var>format</var>]
+             [<code>--help</code>]  [<code>--version</code>]  [<var>symbol</var>...]
+     </pre>
+<p>The C&#043;&#043; and Java languages provides function overloading, which means that you can write many functions with the same name (providing each takes parameters of different types). All C&#043;&#043; and Java function names are encoded into a low-level assembly label (this<br />
+ process is known as&nbsp;mangling). The&nbsp;<code>c&#043;&#043;filt</code>&nbsp;<a rel="footnote" href="http://sources.redhat.com/binutils/docs-2.15/binutils/c--filt.html#fn-1"><sup>1</sup></a>&nbsp;program does the inverse mapping: it decodes (demangles) low-level<br />
+ names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
+<p>Every alphanumeric word (consisting of letters, digits, underscores, dollars, or periods) seen in the input is a potential label. If the label decodes into a C&#043;&#043; name, the C&#043;&#043; name replaces the low-level name in the output.</p>
+<p>You can use&nbsp;<code>c&#043;&#043;filt</code>&nbsp;to decipher individual symbols:</p>
+<pre class="example">     c&#043;&#043;filt <var>symbol</var>
+     </pre>
+<p>If no&nbsp;<var>symbol</var>&nbsp;arguments are given,&nbsp;<code>c&#043;&#043;filt</code>&nbsp;reads symbol names from the standard input and writes the demangled names to the standard output. All results are printed on the standard output.</p>
+<dl>
+<dt><code>-_</code></dt>
+<dd></dd>
+<dt><code>--strip-underscores</code></dt>
+<dd>On some systems, both the C and C&#043;&#043; compilers put an underscore in front of every name. For example, the C name&nbsp;<code>foo</code>&nbsp;gets the low-level name&nbsp;<code>_foo</code>. This option removes the initial underscore. Whether&nbsp;<code>c&#043;&#043;filt</code>&nbsp;removes<br />
+ the underscore by default is target dependent.&nbsp;
+</dd>
+<dt><code>-j</code></dt>
+<dd></dd>
+<dt><code>--java</code></dt>
+<dd>Prints demangled names using Java syntax. The default is to use C&#043;&#043; syntax.&nbsp;
+</dd>
+<dt><code>-n</code></dt>
+<dd></dd>
+<dt><code>--no-strip-underscores</code></dt>
+<dd>Do not remove the initial underscore.&nbsp;
+</dd>
+<dt><code>-p</code></dt>
+<dd></dd>
+<dt><code>--no-params</code></dt>
+<dd>When demangling the name of a function, do not display the types of the function's parameters.&nbsp;
+</dd>
+<dt><code>-s&nbsp;</code><var>format</var><code></code></dt>
+<dd></dd>
+<dt><code>--format=</code><var>format</var><code></code></dt>
+<dd><code>c&#043;&#043;filt</code>&nbsp;can decode various methods of mangling, used by different compilers. The argument to this option selects which method it uses:</p>
+<dl>
+<dt><code>auto</code></dt>
+<dd>Automatic selection based on executable (the default method)&nbsp;
+</dd>
+<dt><code>gnu</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;)&nbsp;
+</dd>
+<dt><code>lucid</code></dt>
+<dd>the one used by the Lucid compiler (lcc)&nbsp;
+</dd>
+<dt><code>arm</code></dt>
+<dd>the one specified by the C&#043;&#043; Annotated Reference Manual&nbsp;
+</dd>
+<dt><code>hp</code></dt>
+<dd>the one used by the HP compiler (aCC)&nbsp;
+</dd>
+<dt><code>edg</code></dt>
+<dd>the one used by the EDG compiler&nbsp;
+</dd>
+<dt><code>gnu-v3</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;C&#043;&#043; compiler (g&#043;&#043;) with the V3 ABI.&nbsp;
+</dd>
+<dt><code>java</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Java compiler (gcj)&nbsp;
+</dd>
+<dt><code>gnat</code></dt>
+<dd>the one used by the&nbsp;<small>GNU</small>&nbsp;Ada compiler (GNAT).</dd>
+</dl>
+<p>
+</dd>
+<dt><code>--help</code></dt>
+<dd>Print a summary of the options to&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.&nbsp;
+</dd>
+<dt><code>--version</code></dt>
+<dd>Print the version number of&nbsp;<code>c&#043;&#043;filt</code>&nbsp;and exit.</dd>
+</dl>
+<blockquote><p><em>Warning:</em>&nbsp;<code>c&#043;&#043;filt</code>&nbsp;is a new utility, and the details of its user interface are subject to change in future releases. In particular, a command-line option may be required in the the future to decode a name passed as an argument<br />
+ on the command line; in other words,</p>
+<pre class="example">          c&#043;&#043;filt <var>symbol</var>
+          </pre>
+<p>may in a future release become</p>
+<pre class="example">          c&#043;&#043;filt <var>option</var> <var>symbol</var>
+          </pre>
+</blockquote>
+<div class="footnote">
+<hr />
+<h4>Footnotes</h4>
+<ol type="1">
+<li><a name="fn-1"></a>
+<p>MS-DOS does not allow&nbsp;<kbd>&#043;</kbd>&nbsp;characters in file names, so on MS-DOS this program is named&nbsp;<code>cxxfilt</code>.</p>
+<div>
+</div>
+</li>
+</ol>
+</div>
+<p>
+<span style="font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"></span></div>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/08/24/sctp_event_subscribe-in-RHEL">RHEL5和RHEL6中的sctp_event_subscribe定义大不同</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-08-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	</p>
+<p>近来碰到一个关于SCTP的问题：某个产品跑在Monta Vista上，其内核版本号为2.6.21；可每次该产品泡在我们的Red Hat Enterprise Linux 5.5上时，都会报错错误信息如下：
+<pre>^?0 2011-08-16 09:11:57.316267 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSSctpLib.cc,369 [EAMMS1315] AMMSSctpLib::ammsSetSockOpt() setsockopt - Invalid argument
+^?1 2011-08-16 09:11:57.316326 coolnjmcl018 AMMServ 26555[26566] ../com/AMMSAccessServer.cc,779 [EAMMS1036] AMMSAccessServer::setSocketOpts(): failed to set SCTP_EVENTS for socket 6</pre></p>
+<p>ammsSetSockOpt()调用了Linux API setsockopt()。产品的同事告诉我们他们升级过libsctp.so，于是我们copy了MV中的这个shared lib到RHEL中，问题依旧。后来我们以为是RHEL5.5的内核和Monta Vista的内核不一致，于是我把RHEL的内核从2.6.18-194.el5升级到2.6.18-238.9.1.el5，问题还在。当我们还在考虑要不要把我们的server替换为Monta Vista时，一位同事受<a href="http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500">http://centos.org/modules/newbb/viewtopic.php?viewmode=threaded&amp;order=ASC&amp;topic_id=18994&amp;forum=37&amp;move=next&amp;topic_time=1236769500</a><br />
+ 的启发，把setsockopt()最后一个参数由sizeof(events)改为8，竟然成功了！ events定义如下。
+<pre>struct sctp_event_subscribe events; </pre></p>
+<pre></pre>
+<p>最终，发现RHEL5和RHEL6中struct<span style="font-family:'Times New Roman';font-size:13px;">&nbsp;</span><span style="font-family:monospace;white-space:pre;background-color:rgb(240,240,240);">sctp_event_subscribe</span>的定义竟然完全不同！要想根本解决上面的问题，只能升级操作系统到RHEL6了。</p></p>
+<p>RHEL5中的定义：<a href="http://rhkernel.org/RHEL5+2.6.18-194.el5/include/net/sctp/user.h#L367">http://rhkernel.org/RHEL5&#043;2.6.18-194.el5/include/net/sctp/user.h#L367</a></p></p>
+<pre>/*
+ 364 * Described in Section 7.3
+ 365 *   Ancillary Data and Notification Interest Options
+ 366 */
+ 367struct sctp_event_subscribe {
+ 368        __u8 sctp_data_io_event;
+ 369        __u8 sctp_association_event;
+ 370        __u8 sctp_address_event;
+ 371        __u8 sctp_send_failure_event;
+ 372        __u8 sctp_peer_error_event;
+ 373        __u8 sctp_shutdown_event;
+ 374        __u8 sctp_partial_delivery_event;
+ 375        __u8 sctp_adaption_layer_event;
+ 376};</pre></p>
+<p>RHEL 6中的定义：<a href="http://rhkernel.org/RHEL6+2.6.32-71.18.2.el6/include/net/sctp/user.h#L406">http://rhkernel.org/RHEL6&#043;2.6.32-71.18.2.el6/include/net/sctp/user.h#L406</a></p></p>
+<pre>/*
+ 403 * Described in Section 7.3
+ 404 *   Ancillary Data and Notification Interest Options
+ 405 */
+ 406struct sctp_event_subscribe {
+ 407        __u8 sctp_data_io_event;
+ 408        __u8 sctp_association_event;
+ 409        __u8 sctp_address_event;
+ 410        __u8 sctp_send_failure_event;
+ 411        __u8 sctp_peer_error_event;
+ 412        __u8 sctp_shutdown_event;
+ 413        __u8 sctp_partial_delivery_event;
+ 414        __u8 sctp_adaptation_layer_event;
+ 415        __u8 sctp_authentication_event;
+ 416};
+ 417</pre></p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/08/02/displacement-activity">Displacement Activity</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-08-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>
+<span style="font-family:'Times New Roman';font-size:16px;"></span></p>
+<div style="font-family:Arial;background-color:rgb(255,255,255);overflow-y:scroll;word-wrap:break-word;word-break:break-all;line-height:1.6;font-size:14px;margin:1px 4px 2px 2px;">
+<p style="margin-top:0;margin-bottom:.5em;">你是否有过这样的经历：&#30524;看考试或某个任务、活动的大限将至，自己很是担心，可你却不是在努力准备，而是看电影、玩游戏或者和朋友聊天？ 至少对于我，这样的矛盾行为并不罕见。今天才知道，这种行为叫做Displacement Activity，是人和动物身上的一种普遍存在的行为。</p>
+<p style="margin-top:0;margin-bottom:.5em;">Displacement Activity貌&#20284;还没有确切的中文翻译，有在线词典译作“替换行为”，个人认为翻译不准确，不予采纳。根据我的理解，<span style="font-family:楷体_GB2312;color:#ff0000;line-height:1.3em;"><strong>Displacement Activity就是当你不得不去做某件事情的时候，你担心会失败于是产生一种不去做的消极心态，当你无法做出一个做还是不做的决定时，纠结中你下意识得选择逃避——不由自主的做一些让自己感觉舒服（但很明显不在状态）的事情，比如吃饭、看电影、睡觉、玩游戏、逛街等等。恰恰由于你的逃避，往往会使事情办的更糟，所以等到下一个你不得不面对的抉择时，你的这种表现会更严重，由此造成恶性的循环往复……</strong></span></p>
+<p style="margin-top:0;margin-bottom:.5em;">个人感觉Displacement Activity还是心理不够强大的表现。真的强者不会有这种表现的。悲哀的是这种状态已伴随我十几年，至少在高中时就有这种表现，目前看来已经越来越严重了。我能想到的解决这种现象的根本方法就是：1. 深入研究你要做的事情，搞清楚你要做什么，想清楚怎么做，多看一些别人成功的经验（以及别人失败的教训，当然这种东西比较少了）；2. 制定一个达到目标所需要的可行的计划；3. 每天坚持执行你的计划；4.<br />
+ 尽量不要调整你的计划。这只是一个设想，目前本人还没有真正实践过。</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">下面是搜集的相关解释。</p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement Activities are behaviors that animals(including human beings) have conflicting drives. Such behaviors are completely out of place.</strong></p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement behavior is usually thought of as self-grooming, touching, or scratching, which is displayed when an animal has a conflict between two drives, such as the desire to approach an object, while<br />
+ at the same time being fearful of that object.&nbsp;</strong>With the fall of drive theory into disfavor, animal behaviorists paid little attention to displacement behavior until Maestripieri et al. (1992) pointed out that displacement behavior might be a good<br />
+ measure of anxiety levels.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">------------------------------</p>
+<p style="margin-top:0;margin-bottom:.5em;">From Wiki:&nbsp;<a href="http://en.wikipedia.org/wiki/Displacement_activity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://en.wikipedia.org/wiki/Displacement_activity</a></p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>A displacement activity is the result of two contradicting instincts in a particular situation.&nbsp;</strong>Birds, for example, may peck at grass when uncertain whether to attack or flee from an opponent;<br />
+ similarly, a human may scratch his or her head when they do not know which of two options to choose.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities often involve actions to bring comfort such as scratching, drinking or feeding.</strong></p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">The first description of a displacement activity (though not the use of the term) is probably by Julian Huxley in 1914. The subsequent development of research on displacement activities was a direct consequence<br />
+ of Konrad Lorenz's works on instincts. However, the first mentions of the phenomenon came in 1940 by the two Dutch researchers Nikolaas Tinbergen and Adriaan Kortlandt.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">---------------------------</p>
+<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://c2.com/cgi/wiki?DisplacementActivity" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://c2.com/cgi/wiki?DisplacementActivity</a></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Activity undertaken when some more important task's deadline is looming.</strong></p>
+<p style="margin-top:0;margin-bottom:.5em;">When I was studying for my final degree examinations I played more bridge than ever before. That was pretty much a pure DisplacementActivity.</p>
+<p style="margin-top:0;margin-bottom:.5em;">I'm wondering how much other authors and programmers suffer from this weakness -- SteveHolden</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">----------------------------</p>
+<p style="margin-top:0;margin-bottom:.5em;">From&nbsp;<a href="http://baillement.com/displacement-delius.html" target="_blank" style="border-color:rgb(255,255,255);border-style:solid;border-width:0;">http://baillement.com/displacement-delius.html</a></p>
+<p style="margin-top:0;margin-bottom:.5em;">In 1940 Tinbergen and Kortlandt independently drew attention to a behavioural phenomenon which has since been called displacement activity and has received a good deal of attention. Although no binding rules exist<br />
+ by which displacement behaviour can be recognized, the term is applied to behaviour patterns which appear to be out of context with the behaviour which closely precedes or follows them either in the sense that they do not seem functionally integrated with<br />
+ the preceding or following behaviour or that they occur in situations in which causal factors usually responsible for them appear to be absent or at least weak compared with those determining the behavioural envelope.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;"><strong>Displacement activities occur in three situations: motivational, conflict, frustration of consummatory acts and physical thwarting of performance.</strong>&nbsp;Several theories have been put forward to explain<br />
+ the causal mechanism involved. A variety of behaviour patterns have been reported as displacement activities, even in a single species, but this variety needs revision.</p>
+<p style="margin-top:0;margin-bottom:.5em;"></p>
+<p style="margin-top:0;margin-bottom:.5em;">Monographie treatments of the behaviour of any one species usually indicate only two or three activities which according te the judgment of the observer occur commonly as displacement. None of the theories on displacement<br />
+ activities gives cogent reasons why particular behaviour patterns should be more common than others as displacement activities, apart from stating that the causal agents which usually elicit them in non-displacement situations can also be presumed te be present,<br />
+ if only weakly, in the displacement context, or remarking that those patterns are prepotent in the repertoire of the animal.</p>
+<div>
+</div>
+</div>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/07/26/immaneul-kants-philosophy-of-morality">Immaneul Kant's Philosophy of Morality</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-07-26</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Following are part of my notes of the famous Harvard open course <strong><em>Justice</em></strong>. Kant's theory is too hard to be understood in a shot time. I think the best way is to record his main idea and try to digest in the future.</p>
+<p>===============================================================================================</p>
+<p><strong>Part 1  Kant's Conception of Freedom</p>
+<p></strong>Kant thinks that the individual person, all human beings, have a certain dignity that commands our respect.</p>
+<p>The reason the individual is sacred or the bearer of rights, doesn't stem from the idea that we own ourselves, but instead from the we are all rational beings, which means we are beings who are capable of reason.</p>
+<p>We are also autonomous beings, which is to say that we are beings capable of acting and choosing freely.</p>
+<p>The capacity of reason and freedom, isn't the only capacity we have. It is our rational capacity that makes our distinctive.</p>
+<p>Freedom is the opposite of necessity.</p>
+<p>Kant's Conception of Freedom<br />
+Autonomy:<br />
+To act freely (= to act autonomously =)<br />
+To act according to a law I give myself<br />
+Heteronomy:<br />
+To act according to desires I haven't chosen myself</p>
+<p>To act freely is not to choose the best means to a given end; it's choose the end itself for its own sake. In so far we act on inclination or pursue pleasure, we act as means to the realization of ends given outside of us. We are instruments rather than  authors of the purposes we pursue, that's the heteronymous determination of the will.<br />
+On the other hand, in so fas as we act autonomously, according to a law we give ourselves, we do something for its own sake as an end in itself. When we act autonomously, wee seems to be instruments to purposes given outside us, we become as ends in ourselves. This capacity to act freely, is what gives human life its special dignity.<br />
+Respecting human dignity means regarding persons not just as means, but also as ends in themselves. This is why it is wrong to use people for the sake of other people's well-being or happiness. This is the real reason that utilitarianism goes wrong.</p>
+<p>------------------------------------<br />
+<strong>Part 2. Kant's Conception of Morality</p>
+<p></strong>Kant's Conception of Morality<br />
+*moral worth of an action depends on motive (do the right thing for the right reason, or for the sake of duty)</p>
+<p>What makes an action morally worthy, consists not in the consequences or in the results that flow from it, what makes an action morally worthy has to do with the motive, with the quality of the will, with the Intention for which the act is done. What matters is the motive, and the motive must be of a certain kind.</p>
+<p>A good will isn't good because of what it effects or accomplishes, it's good in itself. Even if by utmost effort the good will accomplishes nothing it would still shine like a jewel for it's own sake as something which has it's full value in itself. -- Immanuel Kant<br />
+The idea is that the motive confers the moral worth on an action and the only kind of motive that can confer moral worth on an action is the motive of duty.<br />
+The opposite of acting out of duty, is all of the motives having to do with our inclinations. Inclinations refer to all of our desires, all of our contingently given wants, preferences, impulses, and the like.<br />
+Only actions done for the sake of the moral law, for the sake of duty, only these actions have moral duty.</p>
+<p>-------------------------------<br />
+<strong>Part 3. Kant's Conception of Supreme Morality</p>
+<p></strong>What's the supreme principle of morality?<br />
+Only one kind of motive is consistent with morality, the motive of duty, doing the right thing for the right reason. Other motives are summed up by Kant in the category of inclination.<br />
+Every thine the motive for what we do is to satisfy a desire or a preference that we may have, to pursue some interest, we are acting of inclination.<br />
+It's fine to have sentiments and feelings that support the right thing provided they don't provide the reason for acting. One may have more than one motive, but it doesn't mean that the action is devoid of moral worth, just because he has one other motive -- the motive which involves duty is what gives the moral worth.</p>
+<p>Kant's Three Contrasts:<br />
+(MORALITY) Motives:                         Duty vs. Inclination<br />
+(FREEDOM)  Determination of will :   autonomous  vs. Heteronomous<br />
+(REASON) Imperatives:                      Categorical vs. Hypothetical</p>
+<p>If reason determines my will, then the will becomes a power to choose indecent of the dictates of nature, or inclination or circumstance. So, connected with Kant's demanding notions of morality and freedom, is a specially demanding notion of reason.</p>
+<p>How can reason determine the will?<br />
+There are two ways. There are two different commands of reason. One is an imperative. An imperative is an *ought*.<br />
+One kind of imperative, perhaps the most familiar kind, is a *hypothetical* imperative. Hypothetical imperatives use instrumental reason. If want X then do y. It's means-ends reason.<br />
+If the action would be good solely as a means to something else, the imperative is hypothetical; if the action is represented as good in itself and therefore as necessary... for a will which of itself accords with reason, then the imperative is *categorical*.</p>
+<p>What is the categorical imperative? What is the supreme principle of morality? What does it command of us?<br />
+THE CATEGORICAL IMPERATIVE<br />
+(1) The Formula of Universal Law<br />
+Act only on that maxim whereby you can at the same time will that is should become a universal law. "the maxim", he means a rule that explains the reason for what you are doing, a principle. For example, promise keeping.<br />
+And the test, the way we can determine that the false promise is at odds with the categorical imperative, is try to universalize it, universalize the maxim upon which you are about to act. If the maxim universalized would undermine itself, then it's not categorical.</p>
+<p>(2) The Formula of Humanity as End<br />
+We can't base the categorical imperative on any particular interests, purposes, or ends, because then it would be only relative to the person whose ends they were. But suppose, however, there were something whose existence has in itself an absolute value.... an end in itself.... then in it, and in it alone, would there be the ground of a possible categorical imperative.<br />
+"I say that man, and in general every rational being, exists as an end in himself, not merely as a means for arbitrary used by this or that will." -- Kant</p>
+<p>Act in such a way that you always treat humanity, whether in your own person or in the person of any other, never simply as a means, but always at the same time, as an end.</p>
+<p>Respect is respect for humanity which is universal, for a rational capacity which is universal, and that's why violating it, in my own case, is as objectionable as violating it in the case of any other.</p>
+<p>-------------------------------<br />
+<strong>Part 4. The Application of Kant' Categorical Imperative on Lying</p>
+<p></strong>How is a categorical imperative possible? How is morality possible?</p>
+<p>"when we think of ourselves as free, we transfer ourselves into the intelligible world as members and recognize the autonomy of the will." --immanuel Kant<br />
+Only because the idea of freedom makes me a member of an intelligible world, the categorical imperative is possible.</p>
+<p>Since we inhabits simultaneously the two standpoints, the two realms, the realm of freedom and the realm of necessity, there is always potentially a gap between what we do and what we ought to to, between is and ought.<br />
+Morality is not empirical. Whatever you see in the world, whatever you discover through science, can't decide moral questions. Morality stands at a certain distance from the world, from the empirical world. That's why no science could deliver moral truth.</p>
+<p>From Kant's point of view, there actually is a world of difference between a lie and a misleading truth.</p>
+<p>White lie 善意的谎言<br />
+Kant preferred leading truth(误导的真相) to a white lie.<br />
+Unlike a falsehood, unlike a lie, a misleading truth pays a certain homage to duty.</p>
+<p>-----------------------------------<br />
+<strong>Part 5  The Application of Kant's Categorical Imperative On Contract</p>
+<p></strong>Just laws arise from a certain kind of social contract, which is of an exceptional nature. What makes the contract exceptional is that it is not an actual contract, that happens when people come together and try to figure out what the constitution should be. That the contract generates justice is an idea of reason.</p>
+<p>A contract that generates principles of right is merely an idea of reason, but it has undoubted practical reality, because it can oblige every legislator to frame his laws in such a way that they could have been produced by the united will of the whole nation.</p>
+<p>"Each person possesses an inviolability founded on justice that even the welfare of society as a whole cannot override... The rights secured by justice are not subject to political bargaining or to the calculus of social interests." -- John Rawls</p>
+<p>Moral Force of Actual Contracts<br />
+1. How do they bind or obligate?<br />
+(1) consent-based -&gt; AUTONOMY(自律)<br />
+(2) benefit- based -&gt; RECIPROCITY(互惠) : contracts sometimes bind us in so far as they are instruments of mutual benefit.</p>
+<p>2. How do they justify the terms they produce?<br />
+Actual contracts are not self-sufficient moral instruments of any actual contract or agreement. The fact of the agreement never guarantees the fairness of the agreement.</p>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2011/07/13/merge-excel-sheets-2">选中Excel单元格自动导入多个Excel worksheets</a></h2>
     <p>
@@ -855,312 +1471,6 @@ End Function
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/06/22/solaris-shared-lib-error">Solaris下/usr/lib/secure/0@0.so.1的错误</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-06-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>&nbsp;</p>
-<p>这两天一直被下面的错误所困扰：</p>
-<p>
-<pre>AP13: lb -m ccmscell uptime 
-ld.so.1: uname: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
-ksh[216]: 4412 Killed
-ld.so.1: uptime: fatal: /usr/lib/secure/0@0.so.1: open failed: No such file or directory
-</pre>
-<p>&nbsp;&nbsp;</p>
-<p>lb是一个调用rsh的脚本，ccmscell是一个server pool，uname是在lb中被调用的。</p>
-<p>&nbsp;</p>
-<p>仔细研究了N遍相关的脚本，Google了N次相关的错误信息，都没有找到有价&#20540;的线索。后来问了一位做过IT的同事，她说以前遇见过类&#20284;的问题，可她的解决方案最终被证明无效。</p>
-<p>&nbsp;</p>
-<p>最终发现不是所有的server上执行这条命令都有问题，有些是可以执行的。对比了之后发现，如果/usr/lib/secure/0@0.so.1的group设置为bin，owner设为root，就不会出现上面的问题。出问题的server上/usr/lib/secure/0@0.so.1的group为other。</p>
-<p>&nbsp;</p>
-<p>进一步调查后发现，/usr/lib/secure/0@0.so.1是在Solaris 5.8上被设为LD_PRELOAD_32的，因为很多程序要被setuid&#043;chroot的伪root调用。当且仅当上面的命令被该伪root执行时，才会出现上面的错误！</p>
-<p>&nbsp;</p>
-<p>幸亏Solaris 5.8已经开始走进坟墓了，即使在落后如我们公司的地方！</p>
-<p>&nbsp;</p>
-<p><strong><span style="font-family:mceinline;">【update2011-06-23】：</span></strong></p>
-<p><strong><span style="font-family:mceinline;">今天发现root cause 不是由于/usr/lib/secure/0@0.so.1的group不对，而是因为remote server（比如pool&nbsp;ccmscell中的server）上没有/usr/lib/secure/0@0.so.1 —— 执行rsh命令的login是setuid&#043;chroot实现的伪root，因此远程的server就需要/usr/lib/secure/0@0.so.1了。</span></strong></p>
-<p><span style="font-family:mceinline;font-weight:bold;">【update 2012-03-12】</span></p>
-<p><strong><span style="font-family:mceinline;">今天在Solaris 9上遇到了这样一个错误：</span></strong></p>
-<p><span style="font-family:mceinline;">&nbsp; &nbsp; ld.so.1: pt_chmod: warning: /lib/0@0.so.1: open failed: illegal insecure pathname<br />
-</span></p>
-<p><strong><span style="font-family:mceinline;">查了很久才想起来有可能是</span></strong><strong>/usr/lib/secure/0@0.so.1造成的。一检查</strong><strong>/usr/lib/secure/0@0.so.1，果然不存在。</strong></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在一个正常工作的server上，</strong></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
-<pre>AP31: echo $LD_PRELOAD_32
-/usr/lib/secure/0@0.so.1</pre></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>在不能工作的server上，</strong></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong></strong>
-<pre>AP13: echo $LD_PRELOAD_32
-/lib/0@0.so.1</pre></p>
-<p><strong><span style="font-family:mceinline;"></span></strong><strong></strong><strong>——仅仅升级了一个软件就又把这个library搞丢了，某些同志们啊，唉……</strong></p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/06/03/ksh-IPCSCMD-variable">ksh中包含变量的命令调用</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-06-03</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>当一个含有变量a的命令存储在某个变量b中时, 利用$($b)时有可能会报错。如下面的代码，有时可以成功执行，有时会发生&ldquo;ipcs|grep xxx can not be found"的错误。&nbsp;</p>
-<p>
-<pre>IFS="
-"
-if isLinux
-then
-	IPCSCMD="ipcs"
-else
-	IPCSCMD="ipcs|grep $LOGNAME"
-fi
-for Eachline in $($IPCSCMD)
-do
-	IFS=" " # Space
-	# Handle IPCs
-	...
-done</pre>
-<p>&nbsp;</p>
-<p>究其根源，应该是对IPCSCMD的解析出了问题。将代码改为下面的形式，就可以正确执行了。注意IFS的变化&mdash;&mdash;改成下面的形式后必须将循环内的IFS改为Space和Tab。</p>
-<p>
-<pre>IFS="
-"
-if isLinux
-then
-	ipcs
-else
-	ipcs|grep $LOGNAME
-fi | while read Eachline
-do
-	IFS=" 	" # Space and tab
-	# Handle IPCs
-	...
-done
-</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/06/02/chroot-setuid-setgid">chroot, setuid() and set gid</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-06-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>这篇文章搜集整理了网上chroot, setuid() &amp; set gid相关的文章。</p>
-<ol>
-<li><a href="http://www.unixwiz.net/techtips/chroot-practices.html">Best Practices for UNIX chroot() Operations</a></li>
-<li><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">How to break out of a&nbsp;<tt>chroot()</tt></a></strong><strong><a href="http://www.bpfh.net/simes/computing/chroot-break.html">&nbsp;jail</a></strong></li>
-<li><strong><a href="http://www.cs.berkeley.edu/~daw/papers/setuid-usenix02.pdf">Setuid Demystifid</a></strong></li>
-<li><strong><a href="http://oldfield.wattle.id.au/luv/permissions.html">Introduction to Unix file permissions</a></strong></li>
-</ol>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/05/20/zcat-gzcat">如何判断一个(压缩)文件的类型，以及zcat/gzcat</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-05-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>恰似&ldquo;一师是个好学校&rdquo;，dd是个好工具&mdash;&mdash;只消用它逐字copy出某个文件第一个block的内容，就可以判断出该文件的类型！！！</p>
-<p>&nbsp;</p>
-<p>
-<pre>bjbldd&gt;1&gt; dd if=MMEgolden.tar bs=512 count=1 &gt; dd_tmp
-1+0 records in
-1+0 records out
-bjbldd&gt;&gt; file dd_tmp
-dd_tmp:         USTAR tar archive
-bjbldd&gt;&gt; dd if=varofvar bs=512 count=1 &gt; dd_tmp
-0+1 records in
-0+1 records out
-bjbldd&gt;&gt; file dd_tmp
-dd_tmp:         executable /bin/ksh script
-bjbldd&gt;&gt; dd if=Tk-804.029.tar.gz bs=512 count=1 &gt; dd_tmp
-1+0 records in
-1+0 records out
-bjbldd&gt;&gt; file dd_tmp
-dd_tmp:         gzip compressed data - deflate method , original file name , max compression
-</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>另外，zcat或者gzcat是用于cat gzip压缩文件的工具，只是在不同的平台有些差异：/bin/zcat在Linux上work的很好，可是当它在Solaris上cat gzip文件的内容时，就会报错。Solaris上cat gzip文件只能用/bin/gzcat. &mdash;&mdash;就是这个小小的差异，浪费了我一天的时间！</p>
-<p>&nbsp;</p>
-<p>跨平台的cat gzip文件的代码如下：</p>
-<p>
-<pre>OS="`/bin/uname`"
-if [ "${OS}" != "Linux" ]
-then
-	ZCAT="/bin/zcat"
-else
-	ZCAT="/bin/gzcat"
-fi
-.......
-${ZCAT} ${TMPDIR}/ngn_platform.cpio.Z | /bin/cpio -idmvu  -H odc ${SAT_CPIO_FLAG}</pre>
-<p>&nbsp;</p>
-<p>貌似cpio的用法也很强大哦～</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/05/16/yum-proxy">yum的proxy设置</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-05-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>方法一：</p>
-<p>
-<pre>export http_proxy="proxy:portnum"</pre>
-<p>&nbsp;</p>
-<p>方法二：（<a href="http://www.fedoraforum.org/forum/showthread.php?t=742">http://www.fedoraforum.org/forum/showthread.php?t=742</a>）</p>
-<table id="post4089" class="tborder" style="width:100%;" border="0" cellspacing="1" cellpadding="6" align="center">
-<tbody>
-<tr>
-<td class="alt1">
-<div id="post_message_4089">create the following files in /etc/profile.d, and then this will work in *any* shell for *any* user of the system</p>
-<pre>#proxy.sh
-export http_proxy=http://host.com:port/
-export ftp_proxy=http://host.com:port/
-export no_proxy=.domain.com
-export HTTP_PROXY=http://host.com:port/
-export FTP_PROXY=http://host.com:port/
-#proxy.csh
-setenv http_proxy http://host.com:port/
-setenv ftp_proxy http://host.com:port/
-setenv no_proxy .domain.com
-setenv HTTP_PROXY http://host.com:port/
-setenv FTP_PROXY http://host.com:port/</pre>
-<p>&nbsp;</p></div>
-<div>方法三：(<a href="http://linux.die.net/man/5/yum.conf">http://linux.die.net/man/5/yum.conf</a>)</div>
-<div>在/etc/yum.conf中设置proxy，prox_username和proxy_password选项。</div>
-</td>
-</tr>
-</tbody>
-</table>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/05/16/perl-library">Perl的library设置</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-05-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>参考链接：</p>
-<ol>
-<li><a href="http://stackoverflow.com/questions/841785/how-do-i-include-a-perl-module-thats-in-a-different-directory">http://stackoverflow.com/questions/841785/how-do-i-include-a-perl-module-thats-in-a-different-directory</a></li>
-<li><a href="http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc">http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc</a></li>
-</ol>
-<p>&nbsp;</p>
-<p>在Fedora/RHEL/CentOS中，perl 的library默认安装路径为：</p>
-<p>
-<pre>@INC (@INC contains: /usr/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi /usr/lib/perl5/site_perl/5.8.8 /usr/lib/perl5/site_perl /usr/lib64/perl5/vendor_perl/5.8.8/x86_64-linux-thread-multi /usr/lib/perl5/vendor_perl/5.8.8 /usr/lib/perl5/vendor_perl /usr/lib64/perl5/5.8.8/x86_64-linux-thread-multi /usr/lib/perl5/5.8.8 .)</pre>
-<p>&nbsp;</p>
-<p>如果要使用自定义的perllib，就需要参考以下的设置了。</p>
-<p>&nbsp;</p>
-<p>EDIT: Putting the right solution first, originally from&nbsp;<a href="http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc">this question</a>. It's the only one that searches relative to the&nbsp;<strong>module</strong>&nbsp;directory:</p>
-<pre class="lang-perl prettyprint"><code><span class="kwd">use</span><span class="pln"> </span><span class="typ">FindBin</span><span class="pun">;</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="com"># locate this script</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> lib </span><span class="str">"$FindBin::Bin/.."</span><span class="pun">;</span><span class="pln"> &nbsp;</span><span class="com"># use the parent directory</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> yourlib</span><span class="pun">;</span><span class="pln"><br /></span></code></pre>
-<p>There's many other ways that search for libraries relative to the&nbsp;<strong>current</strong>&nbsp;directory. You can invoke perl with the -I argument, passing the directory of the other module:</p>
-<pre class="lang-perl prettyprint"><code><span class="pln">perl </span><span class="pun">-</span><span class="pln">I</span><span class="pun">..</span><span class="pln"> yourscript</span><span class="pun">.</span><span class="pln">pl<br /></span></code></pre>
-<p><span class="goog_qs-tidbit goog_qs-tidbit-0">You can include a line near the top of your perl script:</span></p>
-<pre class="lang-perl prettyprint"><code><span class="kwd"><span class="goog_qs-tidbit goog_qs-tidbit-0">use</span></span><span class="pln"><span class="goog_qs-tidbit goog_qs-tidbit-0"> lib </span></span><span class="str"><span class="goog_qs-tidbit goog_qs-tidbit-0">'..'</span></span><span class="pun"><span class="goog_qs-tidbit goog_qs-tidbit-0">;</span></span><span class="pln"><br /></span></code></pre>
-<p><span class="goog_qs-tidbit goog_qs-tidbit-0">You can modify the environment variable PERL5LIB before you run the</span>&nbsp;script:</p>
-<pre class="lang-perl prettyprint"><code><span class="pln">export PERL5LIB</span><span class="pun">=</span><span class="pln">$PERL5LIB</span><span class="pun">:..</span><span class="pln"><br /></span></code></pre>
-<p>The push(@INC) strategy can also work, but it has to be wrapped in BEGIN{} to make sure that the push is run before the module search:</p>
-<pre class="lang-perl prettyprint"><code><span class="kwd">BEGIN</span><span class="pln"> </span><span class="pun">{</span><span class="pln">push </span><span class="lit">@INC</span><span class="pun">,</span><span class="pln"> </span><span class="str">'..'</span><span class="pun">}</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> yourlib</span><span class="pun">;</span></code></pre>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/05/13/process-attached-to-shared-memory">How to list processes attached to a shared memory segment in linux?</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-05-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>本文整理自网络，参考网页(references):</p>
-<ol>
-<li><a href="http://stackoverflow.com/questions/5658568/how-to-list-processes-attached-to-a-shared-memory-segment-in-linux">http://stackoverflow.com/questions/5658568/how-to-list-processes-attached-to-a-shared-memory-segment-in-linux</a></li>
-<li><a href="http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Frzahz%2Fipcs.htm">http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Frzahz%2Fipcs.htm</a></li>
-</ol>
-<p>[Question]:</p>
-<p><span><br />
-</span></p>
-<p>How do I determine what process is attached to a shared memory segment?</p>
-<pre><code>awagner@tree:/home/awagner$ ipcs -m
-
------- Shared Memory Segments --------
-key        shmid      owner      perms      bytes      nattch     status      
-0x00000000 0          root       777        102400     1                       
-0x00000000 32769      root       774        96         1          dest         
-0x00000000 98306      awagner    600        393216     2          dest         
-0x00000000 131075     awagner    600        393216     2          dest    
-</code></pre>
-<p>i.e. how do I figure out which two processes are attached to segment 98305?</p>
-<p>&nbsp;</p>
-<p>[Answer]:</p>
-<p>
-<span><br />
-</span></p>
-<p>I don't think you can do this with the standard tools. You can use&nbsp;<code>ipcs -mp</code>&nbsp;to get the process ID of the<em>last</em>&nbsp;process to attach/detach but I'm not aware of how to get&nbsp;<em>all</em>&nbsp;attached processes with&nbsp;<code>ipcs</code>.</p>
-<p>With a two-process-attached segment, assuming they both&nbsp;<em>stayed</em>&nbsp;attached, you can possibly figure out from the creator PID&nbsp;<code>cpid</code>&nbsp;and last-attached PID&nbsp;<code>lpid</code>&nbsp;which are the two processes but that won't scale to more than two processes so its usefulness is limited.</p>
-<p>The&nbsp;<code>cat /proc/sysvipc/shm</code>&nbsp;method seems similarly limited but I believe there's a way to do it with other parts of the&nbsp;<code>/proc</code>&nbsp;filesystem, as shown below:</p>
-<p>When I do a&nbsp;<code>grep</code>&nbsp;on the&nbsp;<code>procfs</code>&nbsp;maps for all processes, I get entries containing lines for the&nbsp;<code>cpid</code>and&nbsp;<code>lpid</code>&nbsp;processes.</p>
-<p>For example, I get the following shared memory segment from&nbsp;<code>ipcs -m</code>:</p>
-<pre><code>------ Shared Memory Segments --------
-key        shmid      owner      perms      bytes      nattch     status      
-0x00000000 123456     pax        600        1024       2          dest
-</code></pre>
-<p><span class="goog_qs-tidbit goog_qs-tidbit-0">and, from&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">ipcs -mp</span></code><span class="goog_qs-tidbit goog_qs-tidbit-0">, the&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">cpid</span></code><span class="goog_qs-tidbit goog_qs-tidbit-0">&nbsp;is 3956 and the&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">lpid</span></code><span class="goog_qs-tidbit goog_qs-tidbit-0">&nbsp;is 9999 for that given shared memory segment (123456).</span></p>
-<p><span class="goog_qs-tidbit goog_qs-tidbit-0">Then, with the command&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">grep 123456</span>&nbsp;/proc/*/maps</code>, I see:</p>
-<pre><code>/proc/3956/maps: blah blah blah 123456 /SYSV000000 (deleted)
-/proc/9999/maps: blah blah blah 123456 /SYSV000000 (deleted)
-</code></pre>
-<p>So there&nbsp;<em>is</em>&nbsp;a way to get the processes that attached to it. I'm pretty certain that the&nbsp;<code>dest</code>&nbsp;status and<code>(deleted)</code>&nbsp;indicator are because the creator has marked the segment for destruction once the final detach occurs, not that it's already been destroyed.</p>
-<p>So, by scanning of the&nbsp;<code>/proc/*/maps</code>&nbsp;"files", you should be able to discover which PIDs are currently attached to a given segment.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<hr />
-<p>&nbsp;</p>
-<p>
-<span>
-<dt><strong>CPID</strong>&nbsp;(-p, -a)</dt>
-<dd>The process ID of the job that created the shared memory segment.</dd>
-<p></span><span><br />
-</span></p>
-<p>&nbsp;</p>
-<p><span>
-<dt><strong>LPID</strong>&nbsp;(-p, -a)</dt>
-<dd>The process ID of the last job to attach or detach from the shared memory segment or change the semaphore value.</dd>
-<p></span></p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1197,7 +1507,7 @@ key        shmid      owner      perms      bytes      nattch     status
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">18</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">23</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -1231,7 +1541,7 @@ key        shmid      owner      perms      bytes      nattch     status
     
         <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
     
-        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">14</span></a>
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">15</span></a>
     
         <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
     
@@ -1255,7 +1565,7 @@ key        shmid      owner      perms      bytes      nattch     status
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">17</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">23</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -1329,6 +1639,10 @@ key        shmid      owner      perms      bytes      nattch     status
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
     
+        <a href="/tags.html#Architecture-ref" class="btn btn-mini">Architecture <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Cache-ref" class="btn btn-mini">Cache <span class="badge">1</span></a>
+    
         <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
@@ -1337,16 +1651,40 @@ key        shmid      owner      perms      bytes      nattch     status
     
         <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
     
+        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">1</span></a>
+    
   
 
 
 
+			</div>
+		</div>
+		<!-- /well -->
+        <div class="well">
+			<h4>Visitors</h4>
+			<div class="tag_box">
+				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4nm24yds2ph&amp;s=300&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
+	
 			</div>
         </div>
         <!-- /well -->
         <div class="well">
             <h3>Recent Posts</h3>
 	        <ul>
+			
+  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
+			
+  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
+			
+  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
+			
+  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
@@ -1355,18 +1693,6 @@ key        shmid      owner      perms      bytes      nattch     status
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
-			
-  			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
-			
-  			<li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">Coin Change Problem</a></li>
-			
-  			<li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">Text Justification</a></li>
-			
-  			<li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">Sort Colors</a></li>
-			
-  			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
-			
-  			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
 			
 			</ul>
         </div>

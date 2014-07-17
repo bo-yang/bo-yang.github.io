@@ -42,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand" href="/">bo-yang</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -87,6 +87,1553 @@
 		<div class="col-md-8">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/02/16/pvx-tutorial">9vx tutorial: running a cpu server from kfs (RFC)</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-02-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>原文：<a href="http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd">&nbsp;http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div>
+<p><span>【说明】</span></p>
+<p><span>本文是yiyus发布在9fans上的一篇教程。文中用到的9vx是yiyus维护的分支：</span><a href="http://bytebucket.org/yiyus/vx32/overview">http://bytebucket.org/yiyus/vx32/overview</a>。根据yiyus在9fans中的说明，他的9vx分支是从ron的分支上更改的。vx32/9vx的创始人Russ Cox最近在9fans中声明他本人已经放弃了对9vx的维护，准备将所有权限转交给ron minnich（八卦一下：Russ Cox现在是Google Go语言的核心成员之一，正与Rob Pike，Ken Tompson等原plan9的元老一起维护Go&hellip;&hellip;）。</p>
+</div>
+<div>&nbsp;-------------------------------------------------------</div>
+<p>&nbsp;</p>
+<div>
+<h1 id="zw-12e2e7c010cc6H2Tp3916c"><span id="zw-12e2ede98aavnmvgj3916c">9vx tutorial:</span><span id="zw-12e2edec946BgJF9J3916c">&nbsp;</span><span id="zw-12e2ede99882FtZgu3916c">running a cpu server from kfs (RFC)</span><span id="zw-12e2ede9988SM7byw3916c">&nbsp;&nbsp;</span></h1>
+<p id="zw-12e2e7c3536WlOKdt3916c"><span id="zw-12e2e7c3537XVH5MS3916c">This tutorial is a work in progress (it will eventually be added to&nbsp;</span><span id="zw-12e2e7c3537arcii83916c">the 9vx documentation and probably to the Plan 9 wiki). Please let me&nbsp;</span><span id="zw-12e2e7c3537TL8RB33916c">know if you see anything I'm doing wrong (unfortunately I don't have&nbsp;</span><span id="zw-12e2e7c3537whmwf43916c">too much experience&nbsp;with real Plan 9 systems of more than one&nbsp;</span><span id="zw-12e2e7c3537XtRCA3916c">machine). In particular, I don't know why I could not use mkfs instead&nbsp;</span><span id="zw-12e2e7c3537gPJh1d3916c">of dircp. The line&nbsp;</span></p>
+<p id="zw-12e2e94864bSyqBpZ3916c"><span id="zw-12e2e94864bEE4NC33916c">&nbsp;&nbsp;
+<pre> % disk/mkfs -s /n/9660 /sys/lib/sysconfig/proto/allproto </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e3eEKEBu13916c"><span id="zw-12e2e95854a9D-czm3916c">gave me this error:&nbsp;</span><span id="zw-12e2edec95bhi6LFZ3916c">&nbsp;</span></p>
+<p id="zw-12e2e7c1df8QFHSYZ3916c"><span id="zw-12e2e7c1df9E8SbsK3916c">&nbsp; &nbsp;</span><span id="zw-12e2e960dcaLCGKRy3916c">&nbsp;</span><span style="font-family:mceinline;"><span id="zw-12e2edf46e0GLLVZ3916c">mkfs: /sys/lib/sysconfig/proto/allproto:1: can't move tmp file to&nbsp;</span><span id="zw-12e2e95e07btk4zLw3916c">/n/kfs/dist/replica/plan9.compressed.db: wstat -- unknown type/mode&nbsp;</span></span></p>
+<p id="zw-12e2e7c1dfaWgaIQN3916c"><span id="zw-12e2e7c1dfbpYEmbw3916c">Anyway, these instructions are working here. Please, let me know if&nbsp;</span><span id="zw-12e2e965525WjSCTn3916c">they work for you too.&nbsp;</span></p>
+<p id="zw-12e2e7c1dfcHzaUAw3916c"><span id="zw-12e2e7c1dfdxBy3T73916c">By the way, this tutorial is only the first one, but I'd like to have&nbsp;</span><span id="zw-12e2e967f47zy0X-O3916c">some more. For example, to run several 9vx instances in a private&nbsp;</span><span id="zw-12e2e9686a5ISlVW83916c">network using the tap device and to run 9vx from fossil backed up by&nbsp;</span><span id="zw-12e2e968f83cjlZom3916c">p9p's venti. Contributions are welcomed ;-)&nbsp;</span></p>
+<p id="zw-12e2e7c1e00sZ2bi3916c"><span id="zw-12e2e7c1e01DWUEbQ3916c">----------------------------------------------------------------------</span><span id="zw-12e2edec95cu_sRsD3916c">​</span></p>
+<p id="zw-12e2e7c1e02ZfffOa3916c"><span id="zw-12e2e7c1e03rCtzas3916c">This is a brief tutorial on how to run a 9vx cpu server from a kfs&nbsp;</span><span id="zw-12e2e970b10h9TSbm3916c">file system. You will need 9vx, a plan9.iso and some free disk space.&nbsp;</span></p>
+<p id="zw-12e2e7c1e04R1Jx63916c"><span id="zw-12e2e7c1e05bbvaaI3916c">First, go to the destination directory and install 9vx:&nbsp;</span></p>
+<p id="zw-12e2e7c1e05svn39h3916c"><span id="zw-12e2eefeb87mcWL1O3916c">&nbsp;&nbsp;
+<pre>$ hg clone http://bitbucket.org/yiyus/vx32/ 
+$ cd vx32/src/ 
+$ make 9vx/9vx &amp;&amp; sudo make 9vx/install </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e09V3a83916c"><span id="zw-12e2e7c1e09GQZ4fp3916c">(<strong>Commands run on the host are preceded by $, commands run from inside&nbsp;</strong></span><span id="zw-12e2e988e4bNr603d3916c"><strong>9vx are preceded with %</strong>)&nbsp;</span></p>
+<p id="zw-12e2e7c1e0aSQCEmh3916c"><span id="zw-12e2e7c1e0b-b3A9E3916c">You can check that 9vx is working running the minimal system embedded&nbsp;</span><span id="zw-12e2e98ab92nzZNTv3916c">in the executable. The rcvx script should take you to a vx32% rc&nbsp;</span><span id="zw-12e2e98b4ffnklqHV3916c">prompt in the current directory. Once you have played a bit with a&nbsp;</span><span id="zw-12e2e98c1bbOW6Z2h3916c">rootless 9vx type exit to go back to your host system.&nbsp;</span></p>
+<p id="zw-12e2e7c1e0d_O1Dd3916c"><span id="zw-12e2e7c1e0eZiwMVZ3916c">rcvx is cool but you will want a full Plan 9 tree to have real fun.&nbsp;</span><span id="zw-12e2edec95f8uPmz3916c">&nbsp;</span></p>
+<p id="zw-12e2e7c1e41YAeJd_3916c"><span id="zw-12e2e7c1e0ezorRNc3916c">Let's boot from the iso file:&nbsp;</span></p>
+<p id="zw-12e2e7c1e0f5rF-Fj3916c"><span id="zw-12e2e7c1e0fW1F1Cf3916c">&nbsp;&nbsp;
+<pre> $ 9vx -r plan9.iso -u glenda "CWD=#Z`pwd`" "nvram=#Z`pwd`/plan9.nvr" </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e41-SWd8A3916c"><span id="zw-12e2e99b018PJMlg63916c">You should be in rio now, have an acme and a rio window, stats,&nbsp;</span><span id="zw-12e2e9a8581RJi33V3916c">faces... This is the live system in the iso that you probably already&nbsp;</span><span id="zw-12e2e9a93b7IDfw_43916c">know. The CWD=... and nvram=... arguments are interpreted as plan9.ini&nbsp;</span><span id="zw-12e2e9a9a949Ka7In3916c">lines and passed as environment variables, we will use them later.&nbsp;</span></p>
+<p id="zw-12e2e7c1e13HHsmwG3916c"><span id="zw-12e2e7c1e14E_-xFU3916c">Open a new rio window:&nbsp;</span></p>
+<p id="zw-12e2e7c1e14r-aZU3916c"><span id="zw-12e2ef48ddf7wmF-E3916c">&nbsp;&nbsp; &nbsp;
+<pre>% cd $CWD 
+% dd -if /dev/random -of plan9.nvr -bs 512 -count 1 
+% dd -if /dev/zero -of plan9.kfs -bs 1024 -count 320000 </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e16Q2tDoO3916c"><span id="zw-12e2e7c1e178Xvjp33916c">Those files will be our nvram and kfs partitions (check the size of&nbsp;</span><span id="zw-12e2ebb332fVCtHPl3916c">your kfs file, 320Mb is not too much, but will be enough). Nvram needs&nbsp;</span><span id="zw-12e2ebb437bvlQGlr3916c">to be initialized:&nbsp;</span></p>
+<p id="zw-12e2e7c1e18-UPMoz3916c">
+<pre>    % auth/wrkey 
+    authid: bootes 
+    authdom: 9vx 
+    secstore key: 
+    password: </pre>
+<p>&nbsp;</p>
+<p id="zw-12e2e7c1e1cJK0W053916c"><span id="zw-12e2e7c1e1cHkXjtz3916c">We can populate the file system now:&nbsp;</span></p>
+<p id="zw-12e2e7c1e43SMA8A3916c"><span style="font-family:monospace;font-size:x-small;"><span style="white-space:pre-wrap;">
+<pre>% 9660srv -f plan9.iso 
+% 9fs 9660 
+% disk/kfs -f plan9.kfs 
+File system main inconsistent 
+Would you like to ream it (y/n)? y 
+% 9fs kfs 
+% dircp /n/9660 /n/kfs </pre>
+<p> </span></span></p>
+<p id="zw-12e2e7c1e21S6igCx3916c"><span id="zw-12e2e7c1e22xV5I8q3916c">The system is now installed. You should be able to open a new 9vx&nbsp;</span><span id="zw-12e2e9d16dcxMQUuw3916c">instance from your new root:&nbsp;</span></p>
+<p id="zw-12e2e7c1e22cfR4fL3916c"><span id="zw-12e2ef4e62b1b7gn83916c">&nbsp;&nbsp; &nbsp;
+<pre>$ 9vx "nvram=#Z`pwd`/plan9.nvr" -r plan9.kfs -u glenda </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e43i5zhP3916c"><span id="zw-12e2e9d829dcizCED3916c">You can also boot a cpu server. We will use the canopenpath option, so&nbsp;</span><span id="zw-12e2e9d8d67pWo5o3916c">that only the files which begin with `pwd`/plan9 can be opened from&nbsp;</span><span id="zw-12e2e9d940dlOmSsY3916c">9vx, the -ic flags tell 9vx to pass -c to /386/init:&nbsp;</span></p>
+<p id="zw-12e2e7c1e252kexP-3916c"><span id="zw-12e2ef4fea6GrOSQ3916c">&nbsp;</span><span id="zw-12e2e9db9feHedRAA3916c">&nbsp;
+<pre>$ 9vx -gic -r plan9.kfs "nvram=#Z`pwd`/plan9.nvr" "canopenpath=`pwd`/plan9" -u bootes </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e27kMzC7K3916c"><span id="zw-12e2e7c1e27aKeSLj3916c">When you see the vx32# prompt add a key so that you can cpu as glenda:&nbsp;</span></p>
+<p id="zw-12e2e7c1e44wabKIv3916c"><span id="zw-12e2ef51c08DQfrMq3916c">&nbsp;&nbsp; &nbsp;
+<pre>vx32# echo 'key proto=p9sk1 dom=9vx user=glenda !password=password' &gt;/mnt/factotum/ctl </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e29dHLgZ3916c"><span id="zw-12e2e7c1e2a_uAPXD3916c">Now you can cpu to your new server. From another 9vx instance (for&nbsp;</span><span id="zw-12e2ea171ccTkGuT3916c">example, booted from the iso):&nbsp;</span></p>
+<p id="zw-12e2e7c1e2aM_7KT83916c"><span id="zw-12e2e7c1e2bZTc5Ep3916c">&nbsp;&nbsp; &nbsp;
+<pre>% cpu -h 127.0.0.1 </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e44vK_Dc3916c">&nbsp;</p>
+<p id="zw-12e2e7c1e2bmcFPV3916c"><span id="zw-12e2e7c1e2dErEswl3916c">If it worked we are done.&nbsp;</span></p>
+<p id="zw-12e2e7c1e44N-mz8b3916c">&nbsp;</p>
+<p id="zw-12e2e7c1e2dlCMKe73916c"><span id="zw-12e2e7c1e2dz_k0Ct3916c">Now you will probably want to adjust to your needs the 9vxc script to&nbsp;</span><span id="zw-12e2ef0574aISfLe3916c">launch cpu servers (also, think about adding a /cfg/vx32/cpurc file).&nbsp;</span></p>
+<p id="zw-12e2e7c1e451b74Pj3916c"><span id="zw-12e2e7c1e2eN3pQF3916c">You could be interested in the options localroot, canopenpath,&nbsp;</span><span id="zw-12e2e7c1e2fXsSTFb3916c">cpulimit and memsize. Or maybe you want to setup a virtual ethernet&nbsp;</span><span id="zw-12e2e7c1e2fCMPtOk3916c">device (have a look at the tap script and the 9vx man page).&nbsp;</span></p>
+<p id="zw-12e2e7c1e2frKWNh93916c"><span id="zw-12e2e7c1e30E_qQB83916c">Have fun! (and please, report bugs)&nbsp;</span></p>
+<p id="zw-12e2e7c1e45ChSS03916c">&nbsp;</p>
+<p id="zw-12e2e7c1e31k8xSAq3916c"><span id="zw-12e2e7c1e32ahNphh3916c">--&nbsp;</span></p>
+<p id="zw-12e2e7c1e45mXjHMA3916c"></p>
+<p id="zw-12e2e7c1e45WjjzbV3916c"><span id="zw-12e2e7c1e33mjLvWi3916c">- yiyus || JGL . 4l77.com&nbsp;</span><span id="zw-12e2e7c1e330DFFyj3916c">&nbsp;&nbsp;</span></p>
+<p id="zw-12e2e7c1e4d8qBIi3916c">&nbsp;</p>
+</div>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/01/19/tools-for-manipulate-object-files">Tools for Manipulating Object Files</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-01-19</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
+<p>There are a number of tools available on Unix systems to help you understand and manipulate object files.&nbsp;In particular, the GNU binutils package is especially helpful and runs on every Unix platform.</p>
+<p>&nbsp;</p>
+<ol>
+<li><strong>AR</strong> :&nbsp;Creates static libraries, and inserts, deletes, lists, and extracts members.</li>
+<li><strong>STRINGS</strong>: Lists all of the printable strings contained in an object file.</li>
+<li><strong>STRIP</strong>:&nbsp;Deletes symbol table information from an object file.</li>
+<li><strong>NM </strong>:&nbsp;Lists the symbols defined in the symbol table of an object file.</li>
+<li><strong>SIZE</strong>:&nbsp;Lists the names and sizes of the sections in an object file.</li>
+<li><strong>READELF</strong>:&nbsp;Displays the complete structure of an object file, including all of the information encoded in the&nbsp;ELF header. Subsumes the functionality of SIZE and NM.</li>
+<li><strong>OBJDUMP</strong>:&nbsp;The mother of all binary tools. Can display all of the information in an object file. Its most&nbsp;useful function is disassembling the binary instructions in the .text section.</li>
+<li><strong>LDD </strong>:&nbsp;Lists the shared libraries that an executable needs at run time.</li>
+</ol>
+<div>--- From <em>Computer Systems: A Programmer's Perspective</em>.</div>
+<div></div>
+<p>PS: </p>
+<ol>
+<li>A very good webpage introducing Linux libraries:&nbsp;<a href="http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html">Static, Shared Dynamic and Loadable Linux Libraries</a></li>
+<li><a href="http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html"></a>How to Write Shared Libraries?&nbsp;<a href="http://www.akkadia.org/drepper/dsohowto.pdf">http://www.akkadia.org/drepper/dsohowto.pdf</a></li>
+<li>Program Library HOWTO:&nbsp;<a href="http://tldp.org/HOWTO/Program-Library-HOWTO/index.html">http://tldp.org/HOWTO/Program-Library-HOWTO/index.html</a></li>
+</ol>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/01/18/multi-line-operations-in-vim">Commenting out a range of lines in VIM</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-01-18</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Reference:&nbsp;<a href="http://vim.wikia.com/wiki/Commenting_out_a_range_of_lines">http://vim.wikia.com/wiki/Commenting_out_a_range_of_lines</a></p>
+<p>&nbsp;</p>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0 goog_qs-tidbit-hilite">A -VISUAL BLOCK- can also be used to comment out lines.</span>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Start by typing "Ctrl-V" and then highlight a strip downwards by hitting "down/j".</p>
+<p>&nbsp;</p>
+<p>After that, type capital "I" to insert for all highlighted lines. Type the comment, in this case "#&lt;Space&gt;". Then hit "Esc".</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/01/17/ksh-version">如何查看Ksh Version</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-01-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<ol>
+<li>echo $KSH_VERSION. 若没有输出，<span>echo ${.sh.version}，Ksh93有效</span></li>
+<li><span><span>/bin/ksh --version 应该只在Linux下有效</span></span></li>
+<li><span><span><span>strings /bin/ksh | grep -i version，直接到二进制文件里查找</span></span></span></li>
+<li>set -o vi ；ESC；Ctrl+V，详见<a href="http://unix.ittoolbox.com/groups/technical-functional/shellscript-l/command-to-find-the-version-of-ksh-1490264">http://unix.ittoolbox.com/groups/technical-functional/shellscript-l/command-to-find-the-version-of-ksh-1490264</a>。</li>
+</ol>
+<p>对于KSH88，估计只有3、4有效。</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/01/02/translate-words-in-batch">利用在线词典批量查询英语单词</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-01-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>进来遇到很多英语生词，工具书上给的解释错误百出，而很多在线词典不但可以给出某个单词的解释，而且有大量的示例，因此猜想利用在线词典批量查询这些单词。怎么实现呢？</p>
+<p>首要问题是如何自动获取某个单词的解释。搜索之后，发现可以用curl实现，如</p>
+<p>
+<pre>curl -s "http://www.google.com/dictionary?aq=f&amp;langpair=en|en&amp;q="$1"&amp;hl=en" | html2text -nobs | sed '1,/^ *Dictionary/]/d' | head -n -5 | less</pre>
+<p>&nbsp;</p>
+<p>请参见<a href="http://ubuntuforums.org/showthread.php?t=1591389">http://ubuntuforums.org/showthread.php?t=1591389</a>&nbsp;和&nbsp;<a href="http://stackoverflow.com/questions/1617152/using-google-as-a-dictionary-lookup-via-bash-how-can-one-grab-the-first-definiti">http://stackoverflow.com/questions/1617152/using-google-as-a-dictionary-lookup-via-bash-how-can-one-grab-the-first-definiti</a>。</p>
+<p>&nbsp;</p>
+<p>试过Google Dictionary之后发现， curl下来的网页用html2text转换时会报错：Input recoding failed due to invalid input sequence. 尝试了Python版的html2text之后，依然有大量的javascript和HTML代码残留。于是转而求助于百度词典&mdash;&mdash;因为百度词典的搜索结果中没有Javascript语句，html2text一般可以完美转换。</p>
+<p>&nbsp;</p>
+<p>转换完之后的文件如下，编码为UTF-8.</p>
+<p>
+<pre>�新闻   网页   贴吧   知道   MP3   图片   视频   词典   
+            [antiseptic                                ] 设置 | 帮助
+               [查百度词典]   
+                                     把百度设为首页
+语法标注解释 antiseptic英音：[,&aelig;nti'septik]美音：[,&aelig;ntə'sɛptɪk]
+ 
+*****   *****
+**** 以下结果由[bddict/source/img/logo.gif]译典通提供词典解释 ****
+形容词 a.
+1.
+抗菌的,防腐的
+2.
+使用抗菌剂的,使用防腐剂的
+antiseptic treatment
+防腐处理
+3.
+未受感染的,无菌的,消过毒的
+The technician had on an antiseptic white jacket.
+那个技术员穿着消毒白色夹克。
+4.
+非常整洁的
+5.
+冷淡的,缺乏热情的
+He nodded an antiseptic greeting.
+他冷冷地点头打了个招呼。
+名词 n.
+1.
+抗菌剂,防腐剂[C]
+**** 以下结果来自互联网网络释义 ****
+antiseptic
+1.
+防腐剂/消毒药
+大学英语相似词辨析(13):ante-,a...
+antiseptic 防腐剂/消毒药
+http://www.english-ex...
+2.
+防霉剂
+北京译邦达翻译公司-2008 Januar...
+防霉剂 antiseptic
+http://www.t-bond.com...
+3.
+防腐的；防腐剂
+石油英语|能源动力行业英语第1521页
+antiseptic防腐的；防腐剂
+http://www.b2b99.com/...
+4.
+抗菌剂， 防腐剂
+SAT化学词汇表Chapter 6_SAT...
+antiseptic抗菌剂， 防腐剂
+http://www.24en.com/s...
+Antiseptic
+1.
+防腐剂
+词博英语社区(生物词汇 A-F (1)[c...
+Antiseptic 防腐剂
+http://www.cibo.biz/f...
+ 显示更多网络释义结果
+&copy;2011 Baidu 此内容系百度根据您的指令自动搜索的结果，不代表百度赞成被搜索网站的内容或立场
+[http://c.baidu.com/c.gif?t=0&amp;q=antiseptic&amp;p=0&amp;pn=0]
+      [wd                  ] [s]
+**** 搜索框提示 ****
+*** 是否希望搜索汉字和英语时显示搜索框提示 ***
+ #显示 o不显示
+[Unknown INPUT type]
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>显然上面的内容是不便于阅读的。为了提取有用信息，需要对上面的内容进行处理&mdash;&mdash;下面的脚本参考了<a href="http://blog.csdn.net/jallin2001/archive/2009/11/13/4808618.aspx">http://blog.csdn.net/jallin2001/archive/2009/11/13/4808618.aspx</a>。</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:x-small;"><span style="white-space:pre-wrap;">
+<pre>#!/usr/bin/perl -w
+############### censor.pl #################
+# Handle the explanations got from online dictionary.
+# Inputs:
+#	ARGV[0] -- temparory file containning the explanations
+#	ARGV[1] -- keyword
+############################################
+use strict;
+use Encode;
+my $syntax = Encode::decode('utf8', '语法标注解释 ');
+my $internet = Encode::decode('utf8', '以下结果来自互联网网络释义');
+my $yingyin = Encode::decode('utf8', '英音');
+my $meiyin = Encode::decode('utf8', '美音');
+my $write_flag=0;
+open(EXP,$ARGV[0]);
+while (my $nextline=&lt;EXP&gt;) {
+	chomp($nextline);
+	$nextline = Encode::decode('utf8', $nextline);
+	if ($nextline =~ m/.*$syntax.*/) {
+		$write_flag=1;
+		$nextline =~ s/$syntax//;
+	} elsif ($nextline =~ m/.*$internet.*/) {
+		$write_flag=0;
+	}
+			
+	if ($write_flag eq 1) {
+		if ($nextline !~ m/.*/*/*/*/*.*/) { # Excluse lines containning ****
+			# Add a space between the keyword and 英音/美音
+			$nextline =~ s/$ARGV[1]([$yingyin|$meiyin])/$ARGV[1] $1/; 
+			print encode("utf8",$nextline),"/r/n"; # In perl, /r/n is needed to add a new line
+		}
+	}
+}</pre>
+<p> </span></span></p>
+<p><span style="font-family:mceinline;font-size:xx-small;"><span style="white-space:pre-wrap;">运行上面的脚本后，可以得到如下的输出：</span></span></p>
+<p><span style="font-family:monospace;font-size:xx-small;"><span style="white-space:pre-wrap;">
+<pre>antiseptic 英音：[,&aelig;nti'septik]美音：[,&aelig;ntə'sɛptɪk]
+&nbsp;
+形容词 a.
+1.
+抗菌的,防腐的
+2.
+使用抗菌剂的,使用防腐剂的
+antiseptic treatment
+防腐处理
+3.
+未受感染的,无菌的,消过毒的
+The technician had on an antiseptic white jacket.
+那个技术员穿着消毒白色夹克。
+4.
+非常整洁的
+5.
+冷淡的,缺乏热情的
+He nodded an antiseptic greeting.
+他冷冷地点头打了个招呼。
+名词 n.
+1.
+抗菌剂,防腐剂[C]
+</pre>
+<p> </span></span></p>
+<p>&nbsp;</p>
+<p>另外，如果要自动化查询一批英文单词，可以把它们写到一个文件中，然后用下面的脚本进行自动查询</p>
+<p><span style="font-family:monospace;font-size:x-small;"><span style="white-space:pre-wrap;">
+<pre>#!/bin/bash
+# Command line look up using Google's define feature - command line dictionary
+WORDS=$(cat ./words)
+for word in $WORDS
+do
+#	word=$1
+	#curl -s -A 'Mozilla/4.0'  'http://www.google.com/dictionary?langpair=zh-CN|en&amp;hl=en&amp;aq=f&amp;q='$word &gt;&gt; test.html
+	curl -s -A 'Mozilla/4.0' "http://dict.baidu.com/s?tn=dict&amp;wd="$word | html2text &gt; tmp 2&gt;/dev/null
+	echo "------------------ $word -------------------" &gt;&gt; mywords
+	./censor.pl tmp $word &gt;&gt; mywords
+	rm -f tmp
+done</pre>
+<p> </span></span></p>
+<p>&nbsp;</p>
+<p>Update 2011-01-02:</p>
+<p>&nbsp;</p>
+<p>终于找到了查询Google Dictionary的一种方法。</p>
+<p>Google Dictionary对于单词abandon的解释可以利用URL：<a href="http://www.google.com/dictionary?langpair=en|zh-CN&amp;q=abandon&amp;hl=en&amp;aq=f">http://www.google.com/dictionary?langpair=en|zh-CN&amp;q=abandon&amp;hl=en&amp;aq=f</a>&nbsp;得到，而网页的信息如下：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:x-small;"><span style="white-space:pre-wrap;">
+<pre> 
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt; 
+&lt;html&gt; 
+&lt;head&gt; 
+&lt;mce:script type="text/javascript"&gt;&lt;!--
+ 
+(function(){function a(d){this.t={};this.tick=function(e,f,b){b=b?b:(new Date).getTime();this.t[e]=[b,f]};this.tick("start",null,d)}var c=new a;window.jstiming={Timer:a,load:c};try{var g=null;if(window.chrome&amp;&amp;window.chrome.csi)g=Math.floor(window.chrome.csi().pageT);if(g==null)if(window.gtbExternal)g=window.gtbExternal.pageT();if(g==null)if(window.external)g=window.external.pageT;if(g)window.jstiming.pt=g}catch(h){};})();
+// --&gt;&lt;/mce:script&gt; 
+&lt;meta http-equiv="content-type" content="text/html; charset=UTF-8"&gt; 
+&lt;meta name="keywords" content="dictionary, dict, language, translate, translation, define, definition, glossary, online dictionary, language tool, multilingual dictionary of abandon , Arabic, Bengali, Bulgarian, Chinese (Simplified), Chinese (Traditional), Croatian, Czech, Dutch, English, Finnish, French, German, Greek, Gujarati, Hebrew, Hindi, Italian, Kannada, Korean, Malayalam, Marathi, Portuguese, Russian, Serbian, Spanish, Tamil, Telugu, Thai"&gt; 
+&lt;meta name="description" content="abandon : （不顾责任、义务等）离弃，遗弃，抛弃, 不得已而放弃；舍弃, 停止（支持或帮助）；放弃（信念）, 中止；放弃；不再有, 陷入，沉湎于（某种情感）, 放任；放纵 - Google's free online dictionary service."&gt; 
+&lt;meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"&gt; 
+&lt;link rel="canonical" href="/dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=abandon" mce_href="dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=abandon"&gt; 
+&lt;title&gt; 
+abandon in Chinese (Simplified) - Google Dictionary
+&lt;/title&gt; 
+&lt;link rel="stylesheet" href="/dictionary/css/google-common_post20090706.css" mce_href="dictionary/css/google-common_post20090706.css" type="text/css"&gt; 
+&lt;mce:style type="text/css"&gt;&lt;!--
+  
+  #gbar,#guser{font-size:13px;padding-right:1px;padding-top:2px !important}#gbar{padding-left:1px;float:left;height:22px}#guser{padding-bottom:7px !important;text-align:right}.gbh,.gbd{border-top:1px solid #c9d7f1;font-size:1px}.gbh{height:0;position:absolute;top:24px;width:100%}#gbs,.gbm{background:#fff;left:0;position:absolute;text-align:left;visibility:hidden;z-index:1000}.gbm{border:1px solid;border-color:#c9d7f1 #36c #36c #a2bae7;z-index:1001}.gb1{margin-right:.5em}#gbar .gbsup{color:#c00;font-size:9px;font-weight:normal;line-height:9px;margin-left:-.5em;margin-right:.5em;*margin-left:-.5em;*margin-right:.5em}.gb1,.gb3{zoom:1}.gb2{display:block;padding:.2em .5em}.gb2,.gb3{text-decoration:none;border-bottom:none}a.gb1,a.gb2,a.gb3,a.gb4{color:#00c !important}.gbi .gb3,.gbi .gb2,.gbi .gb4{color:#dd8e27 !important}.gbf .gb3,.gbf .gb2,.gbf .gb4{color:#900 !important}a.gb2:hover{background:#36c;color:#fff !important}
+--&gt;&lt;/mce:style&gt;&lt;style type="text/css" mce_bogus="1"&gt;  
+  #gbar,#guser{font-size:13px;padding-right:1px;padding-top:2px !important}#gbar{padding-left:1px;float:left;height:22px}#guser{padding-bottom:7px !important;text-align:right}.gbh,.gbd{border-top:1px solid #c9d7f1;font-size:1px}.gbh{height:0;position:absolute;top:24px;width:100%}#gbs,.gbm{background:#fff;left:0;position:absolute;text-align:left;visibility:hidden;z-index:1000}.gbm{border:1px solid;border-color:#c9d7f1 #36c #36c #a2bae7;z-index:1001}.gb1{margin-right:.5em}#gbar .gbsup{color:#c00;font-size:9px;font-weight:normal;line-height:9px;margin-left:-.5em;margin-right:.5em;*margin-left:-.5em;*margin-right:.5em}.gb1,.gb3{zoom:1}.gb2{display:block;padding:.2em .5em}.gb2,.gb3{text-decoration:none;border-bottom:none}a.gb1,a.gb2,a.gb3,a.gb4{color:#00c !important}.gbi .gb3,.gbi .gb2,.gbi .gb4{color:#dd8e27 !important}.gbf .gb3,.gbf .gb2,.gbf .gb4{color:#900 !important}a.gb2:hover{background:#36c;color:#fff !important}&lt;/style&gt; 
+&lt;link rel="stylesheet" href="/dictionary/css/dictionary-search_post20100310.css" mce_href="dictionary/css/dictionary-search_post20100310.css" type="text/css"&gt; 
+&lt;link rel="stylesheet" href="/dictionary/css/gselectbox_post20090113.css" mce_href="dictionary/css/gselectbox_post20090113.css" type="text/css"&gt; 
+&lt;mce:script type="text/javascript" src="/dictionary/js/dictionary_compiled_post20091026.js" mce_src="dictionary/js/dictionary_compiled_post20091026.js"&gt;&lt;!--
+ 
+// --&gt;&lt;/mce:script&gt; 
+&lt;mce:script type="text/javascript"&gt;&lt;!--
+ 
+(function(){function i(a,b,c){var d="on"+b;if(a.addEventListener)a.addEventListener(b,c,false);else if(a.attachEvent)a.attachEvent(d,c);else{var h=a[d];a[d]=function(){var g=h.apply(this,arguments),e=c.apply(this,arguments);return g==undefined?e:e==undefined?g:e&amp;&amp;g}}};var j,k,l,m=window.gbar={};function _tvs(a,b){return a||b}function _tvn(a,b){var c=parseInt(a,10);return isNaN(c)?b:c}function _tvf(a,b){var c=parseFloat(a);return isNaN(c)?b:c}function _tvb(a,b){return a=="true"?true:a=="false"?false:b}var n,o,p;function q(a){var b=window.a&amp;&amp;(document.forms[0].b||"").value;if(b)a.href=a.href.replace(/([?&amp;])q=[^&amp;]*|$/,function(c,d){return(d||"&amp;")+"q="+encodeURIComponent(b)})}l=q;
+function r(a,b,c,d,h,g){var e=document.getElementById(a);if(e){var f=e.style;f.left=d?"auto":b+"px";f.right=d?b+"px":"auto";f.top=c+"px";f.visibility=o?"hidden":"visible";if(h&amp;&amp;g){f.width=h+"px";f.height=g+"px"}else{r(n,b,c,d,e.offsetWidth,e.offsetHeight);o=o?"":a}}}
+var s=[],v=function(a){a=a||window.event;var b=a.target||a.srcElement;a.cancelBubble=true;if(n==null){a=document.createElement(Array.every||window.createPopup?"iframe":"div");a.frameBorder="0";n=a.id="gbs";a.src="javascript:''";b.parentNode.appendChild(a);i(document,"click",t)}var c=b;b=0;if(c.className!="gb3")c=c.parentNode;a=c.getAttribute("aria-owns")||"gbi";var d=c.offsetWidth,h=c.offsetTop&gt;20?46:24;if(document.getElementById("tphdr"))h-=3;var g=false;do b+=c.offsetLeft||0;while(c=c.offsetParent);
+c=(document.documentElement.clientWidth||document.body.clientWidth)-b-d;var e;d=document.body;var f=document.defaultView;if(f&amp;&amp;f.getComputedStyle){if(d=f.getComputedStyle(d,""))e=d.direction}else e=d.currentStyle?d.currentStyle.direction:d.style.direction;e=e=="rtl";if(a=="gbi"){for(d=0;f=s[d++];)f();u(null,window.navExtra);if(e){b=c;g=true}}else if(!e){b=c;g=true}o!=a&amp;&amp;t();r(a,b,h,g)},t=function(){o&amp;&amp;r(o,0,0)},u=function(a,b){var c,d=document.getElementById("gbi"),h=a;if(!h)h=d.firstChild;for(;b&amp;&amp;
+(c=b.pop());){var g=d,e=c,f=h;p||(p="gb2");g.insertBefore(e,f).className=p}},w=function(a,b,c){if((b=document.getElementById(b))&amp;&amp;a){a.className="gb4";var d=document.createElement("span");d.appendChild(a);d.appendChild(document.createTextNode(" | "));d.id=c;b.appendChild(d)}};m.qs=l;m.setContinueCb=k;m.pc=j;m.tg=v;m.close=t;m.addLink=w;m.almm=u;})();
+// --&gt;&lt;/mce:script&gt; 
+&lt;mce:script type="text/javascript" src="/dictionary/js/autocomplete_compiled_post20090416.js" mce_src="dictionary/js/autocomplete_compiled_post20090416.js"&gt;&lt;!--
+ 
+// --&gt;&lt;/mce:script&gt; 
+&lt;/head&gt; 
+&lt;body onload="document.f.q.select();tickBodyLoadAndReport();" bgcolor="#ffffff" &gt; 
+&lt;div id=gbar&gt;&lt;nobr&gt;&lt;a href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Dw" mce_href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Dw" onclick=gbar.qs(this) class=gb1&gt;Web&lt;/a&gt; &lt;a href="http://www.google.com/images?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;source=og&amp;sa=N&amp;tab=Di" mce_href="http://www.google.com/images?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;source=og&amp;sa=N&amp;tab=Di" onclick=gbar.qs(this) class=gb1&gt;Images&lt;/a&gt; &lt;a href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=vid:1&amp;source=og&amp;sa=N&amp;tab=Dv" mce_href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=vid:1&amp;source=og&amp;sa=N&amp;tab=Dv" onclick=gbar.qs(this) class=gb1&gt;Videos&lt;/a&gt; &lt;a href="http://maps.google.com/maps?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Dl" mce_href="http://maps.google.com/maps?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Dl" onclick=gbar.qs(this) class=gb1&gt;Maps&lt;/a&gt; &lt;a href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=nws:1&amp;source=og&amp;sa=N&amp;tab=Dn" mce_href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=nws:1&amp;source=og&amp;sa=N&amp;tab=Dn" onclick=gbar.qs(this) class=gb1&gt;News&lt;/a&gt; &lt;a href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=shop:1&amp;source=og&amp;sa=N&amp;tab=Df" mce_href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=shop:1&amp;source=og&amp;sa=N&amp;tab=Df" onclick=gbar.qs(this) class=gb1&gt;Shopping&lt;/a&gt; &lt;a href="http://mail.google.com/mail/?hl=en&amp;tab=Dm" mce_href="http://mail.google.com/mail/?hl=en&amp;tab=Dm" class=gb1&gt;Gmail&lt;/a&gt; &lt;a href="http://www.google.com/intl/en/options/" mce_href="http://www.google.com/intl/en/options/" onclick="this.blur();gbar.tg(event);return !1" aria-haspopup=true class=gb3&gt;&lt;u&gt;more&lt;/u&gt; &lt;small&gt;▼&lt;/small&gt;&lt;/a&gt;&lt;div class=gbm id=gbi&gt;&lt;a href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=bks:1&amp;source=og&amp;sa=N&amp;tab=Dp" mce_href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=bks:1&amp;source=og&amp;sa=N&amp;tab=Dp" onclick=gbar.qs(this) class=gb2&gt;Books&lt;/a&gt; &lt;a href="http://www.google.com/finance?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=De" mce_href="http://www.google.com/finance?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=De" onclick=gbar.qs(this) class=gb2&gt;Finance&lt;/a&gt; &lt;a href="http://translate.google.com/translate_t?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=DT" mce_href="http://translate.google.com/translate_t?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=DT" onclick=gbar.qs(this) class=gb2&gt;Translate&lt;/a&gt; &lt;a href="http://scholar.google.com/scholar?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Ds" mce_href="http://scholar.google.com/scholar?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Ds" onclick=gbar.qs(this) class=gb2&gt;Scholar&lt;/a&gt; &lt;a href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=blg:1&amp;source=og&amp;sa=N&amp;tab=Db" mce_href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=blg:1&amp;source=og&amp;sa=N&amp;tab=Db" onclick=gbar.qs(this) class=gb2&gt;Blogs&lt;/a&gt; &lt;a href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=mbl:1&amp;source=og&amp;sa=N&amp;tab=DY" mce_href="http://www.google.com/search?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;tbo=u&amp;tbs=mbl:1&amp;source=og&amp;sa=N&amp;tab=DY" onclick=gbar.qs(this) class=gb2&gt;Realtime&lt;/a&gt; &lt;div class=gb2&gt;&lt;div class=gbd&gt;&lt;/div&gt;&lt;/div&gt;&lt;a href="http://www.youtube.com/results?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=D1" mce_href="http://www.youtube.com/results?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=D1" onclick=gbar.qs(this) class=gb2&gt;YouTube&lt;/a&gt; &lt;a href="http://www.google.com/calendar/render?hl=en&amp;tab=Dc" mce_href="http://www.google.com/calendar/render?hl=en&amp;tab=Dc" class=gb2&gt;Calendar&lt;/a&gt; &lt;a href="http://picasaweb.google.com/lh/view?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Dq" mce_href="http://picasaweb.google.com/lh/view?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Dq" onclick=gbar.qs(this) class=gb2&gt;Photos&lt;/a&gt; &lt;a href="http://docs.google.com/?hl=en&amp;tab=Do&amp;authuser=0" mce_href="http://docs.google.com/?hl=en&amp;tab=Do&amp;authuser=0" class=gb2&gt;Documents&lt;/a&gt; &lt;a href="http://www.google.com/reader/view/?hl=en&amp;tab=Dy" mce_href="http://www.google.com/reader/view/?hl=en&amp;tab=Dy" class=gb2&gt;Reader&lt;/a&gt; &lt;a href="http://sites.google.com/?hl=en&amp;tab=D3" mce_href="http://sites.google.com/?hl=en&amp;tab=D3" class=gb2&gt;Sites&lt;/a&gt; &lt;a href="http://groups.google.com/groups?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Dg" mce_href="http://groups.google.com/groups?langpair=en%7Czh-CN&amp;q=abandon&amp;hl=en&amp;sa=N&amp;tab=Dg" onclick=gbar.qs(this) class=gb2&gt;Groups&lt;/a&gt; &lt;div class=gb2&gt;&lt;div class=gbd&gt;&lt;/div&gt;&lt;/div&gt;&lt;a href="http://www.google.com/intl/en/options/" mce_href="http://www.google.com/intl/en/options/" class=gb2&gt;even more &raquo;&lt;/a&gt; &lt;/div&gt;&lt;/nobr&gt;&lt;/div&gt;&lt;div id=guser width=100%&gt;&lt;nobr&gt;&lt;span id=gbn class=gbi&gt;&lt;/span&gt;&lt;span id=gbf class=gbf&gt;&lt;/span&gt;&lt;b class=gb4&gt;bonny95@gmail.com&lt;/b&gt; | &lt;span id=gbe&gt;&lt;/span&gt;&lt;a id="gb_67" href="http://www.google.com/history/?hl=en" mce_href="http://www.google.com/history/?hl=en" class=gb4&gt;Web History&lt;/a&gt; | &lt;a id="gb_97" href="https://www.google.com/accounts/ManageAccount?hl=en" mce_href="https://www.google.com/accounts/ManageAccount?hl=en" class=gb4&gt;My Account&lt;/a&gt; | &lt;a id="gb_71" href="http://www.google.com/accounts/Logout?continue=http://www.google.com/dictionary%3Flangpair%3Den%257Czh-CN%26q%3Dabandon%26hl%3Den%26aq%3Df" mce_href="http://www.google.com/accounts/Logout?continue=http://www.google.com/dictionary%3Flangpair%3Den%257Czh-CN%26q%3Dabandon%26hl%3Den%26aq%3Df" class=gb4&gt;Sign out&lt;/a&gt;&lt;/nobr&gt;&lt;/div&gt;&lt;div class=gbh style=left:0&gt;&lt;/div&gt;&lt;div class=gbh style=right:0&gt;&lt;/div&gt; 
+&lt;div id=cnt&gt; 
+&lt;table class="tb" style="clear:both" mce_style="clear:both" width="100%"&gt; 
+&lt;tr&gt; 
+&lt;form name="f" action="/dictionary"&gt; 
+&lt;td class="tc" valign="top"&gt; 
+&lt;a id="logo" href="http://www.google.com/webhp?hl=en" mce_href="http://www.google.com/webhp?hl=en" title="Go to Google Home"&gt; 
+Go to Google Home&lt;span&gt;&lt;/span&gt; 
+&lt;/a&gt; 
+&lt;/td&gt; 
+&lt;td style="padding:25px 0 7px 8px;position:relative;" mce_style="padding:25px 0 7px 8px;position:relative;" valign="top" width="100%"&gt; 
+&lt;select id="dct-slc" name="langpair" onchange="onUpdateLangpair(this)"&gt; 
+&lt;option value="ar|en"&gt;Arabic &lt;&gt; English&lt;/option&gt; 
+&lt;option value="bn|en"&gt;Bengali &lt;&gt; English&lt;/option&gt; 
+&lt;option value="bg|en"&gt;Bulgarian &lt;&gt; English&lt;/option&gt; 
+&lt;option value="zh-CN|zh-CN"&gt;Chinese (Simplified) dictionary&lt;/option&gt; 
+&lt;option value="zh-CN|en"&gt;Chinese (Simplified) &lt;&gt; English&lt;/option&gt; 
+&lt;option value="zh-TW|zh-TW"&gt;Chinese (Traditional) dictionary&lt;/option&gt; 
+&lt;option value="zh-TW|en"&gt;Chinese (Traditional) &lt;&gt; English&lt;/option&gt; 
+&lt;option value="hr|en"&gt;Croatian &lt;&gt; English&lt;/option&gt; 
+&lt;option value="cs|cs"&gt;Czech dictionary&lt;/option&gt; 
+&lt;option value="cs|en"&gt;Czech &lt;&gt; English&lt;/option&gt; 
+&lt;option value="nl|nl"&gt;Dutch dictionary&lt;/option&gt; 
+&lt;option value="en|ar"&gt;English &lt;&gt; Arabic&lt;/option&gt; 
+&lt;option value="en|bn"&gt;English &lt;&gt; Bengali&lt;/option&gt; 
+&lt;option value="en|bg"&gt;English &lt;&gt; Bulgarian&lt;/option&gt; 
+&lt;option selected  value="en|zh-CN"&gt;English &lt;&gt; Chinese (Simplified)&lt;/option&gt; 
+&lt;option value="en|zh-TW"&gt;English &lt;&gt; Chinese (Traditional)&lt;/option&gt; 
+&lt;option value="en|hr"&gt;English &lt;&gt; Croatian&lt;/option&gt; 
+&lt;option value="en|cs"&gt;English &lt;&gt; Czech&lt;/option&gt; 
+&lt;option value="en|en"&gt;English dictionary&lt;/option&gt; 
+&lt;option value="en|fi"&gt;English &lt;&gt; Finnish&lt;/option&gt; 
+&lt;option value="en|fr"&gt;English &lt;&gt; French&lt;/option&gt; 
+&lt;option value="en|de"&gt;English &lt;&gt; German&lt;/option&gt; 
+&lt;option value="en|el"&gt;English &lt;&gt; Greek&lt;/option&gt; 
+&lt;option value="en|gu"&gt;English &lt;&gt; Gujarati&lt;/option&gt; 
+&lt;option value="en|iw"&gt;English &lt;&gt; Hebrew&lt;/option&gt; 
+&lt;option value="en|hi"&gt;English &lt;&gt; Hindi&lt;/option&gt; 
+&lt;option value="en|it"&gt;English &lt;&gt; Italian&lt;/option&gt; 
+&lt;option value="en|kn"&gt;English &lt;&gt; Kannada&lt;/option&gt; 
+&lt;option value="en|ko"&gt;English &lt;&gt; Korean&lt;/option&gt; 
+&lt;option value="en|ml"&gt;English &lt;&gt; Malayalam&lt;/option&gt; 
+&lt;option value="en|mr"&gt;English &lt;&gt; Marathi&lt;/option&gt; 
+&lt;option value="en|pt"&gt;English &lt;&gt; Portuguese&lt;/option&gt; 
+&lt;option value="en|ru"&gt;English &lt;&gt; Russian&lt;/option&gt; 
+&lt;option value="en|sr"&gt;English &lt;&gt; Serbian&lt;/option&gt; 
+&lt;option value="en|es"&gt;English &lt;&gt; Spanish&lt;/option&gt; 
+&lt;option value="en|ta"&gt;English &lt;&gt; Tamil&lt;/option&gt; 
+&lt;option value="en|te"&gt;English &lt;&gt; Telugu&lt;/option&gt; 
+&lt;option value="en|th"&gt;English &lt;&gt; Thai&lt;/option&gt; 
+&lt;option value="fi|en"&gt;Finnish &lt;&gt; English&lt;/option&gt; 
+&lt;option value="fr|en"&gt;French &lt;&gt; English&lt;/option&gt; 
+&lt;option value="fr|fr"&gt;French dictionary&lt;/option&gt; 
+&lt;option value="de|en"&gt;German &lt;&gt; English&lt;/option&gt; 
+&lt;option value="de|de"&gt;German dictionary&lt;/option&gt; 
+&lt;option value="el|en"&gt;Greek &lt;&gt; English&lt;/option&gt; 
+&lt;option value="gu|en"&gt;Gujarati &lt;&gt; English&lt;/option&gt; 
+&lt;option value="iw|en"&gt;Hebrew &lt;&gt; English&lt;/option&gt; 
+&lt;option value="hi|en"&gt;Hindi &lt;&gt; English&lt;/option&gt; 
+&lt;option value="it|en"&gt;Italian &lt;&gt; English&lt;/option&gt; 
+&lt;option value="it|it"&gt;Italian dictionary&lt;/option&gt; 
+&lt;option value="kn|en"&gt;Kannada &lt;&gt; English&lt;/option&gt; 
+&lt;option value="ko|en"&gt;Korean &lt;&gt; English&lt;/option&gt; 
+&lt;option value="ko|ko"&gt;Korean dictionary&lt;/option&gt; 
+&lt;option value="ml|en"&gt;Malayalam &lt;&gt; English&lt;/option&gt; 
+&lt;option value="mr|en"&gt;Marathi &lt;&gt; English&lt;/option&gt; 
+&lt;option value="pt|en"&gt;Portuguese &lt;&gt; English&lt;/option&gt; 
+&lt;option value="pt|pt"&gt;Portuguese dictionary&lt;/option&gt; 
+&lt;option value="ru|en"&gt;Russian &lt;&gt; English&lt;/option&gt; 
+&lt;option value="ru|ru"&gt;Russian dictionary&lt;/option&gt; 
+&lt;option value="sr|en"&gt;Serbian &lt;&gt; English&lt;/option&gt; 
+&lt;option value="es|en"&gt;Spanish &lt;&gt; English&lt;/option&gt; 
+&lt;option value="es|es"&gt;Spanish dictionary&lt;/option&gt; 
+&lt;option value="ta|en"&gt;Tamil &lt;&gt; English&lt;/option&gt; 
+&lt;option value="te|en"&gt;Telugu &lt;&gt; English&lt;/option&gt; 
+&lt;option value="th|en"&gt;Thai &lt;&gt; English&lt;/option&gt; 
+&lt;/select&gt; 
+&lt;mce:script type="text/javascript"&gt;&lt;!--
+ 
+if (!window.google) { window.google = {}; }
+var installLanguageSelection = function() {
+var language_code = {
+'ar':'Arabic',
+'bn':'Bengali',
+'bg':'Bulgarian',
+'zh-CN':'Chinese (Simplified)',
+'zh-TW':'Chinese (Traditional)',
+'hr':'Croatian',
+'cs':'Czech',
+'nl':'Dutch',
+'en':'English',
+'fi':'Finnish',
+'fr':'French',
+'de':'German',
+'el':'Greek',
+'gu':'Gujarati',
+'iw':'Hebrew',
+'hi':'Hindi',
+'it':'Italian',
+'kn':'Kannada',
+'ko':'Korean',
+'ml':'Malayalam',
+'mr':'Marathi',
+'pt':'Portuguese',
+'ru':'Russian',
+'sr':'Serbian',
+'es':'Spanish',
+'ta':'Tamil',
+'te':'Telugu',
+'th':'Thai'
+};
+window.google.installLanguageSelect('dct-slc', language_code);
+};
+window.setTimeout(installLanguageSelection, 10);
+// --&gt;&lt;/mce:script&gt; 
+&lt;input autocomplete="off" type="text" name="q" size="40" maxlength="2048"
+             value="abandon"
+         title="Search Dictionary"&gt; 
+&lt;input type="hidden" name="hl"
+             value="en"&gt; 
+&lt;input type="submit" value="Search Dictionary"
+         style="padding:0 .25em 0 .25em; width:auto; overflow:visible"&gt; 
+&lt;/td&gt; 
+&lt;/form&gt; 
+&lt;/tr&gt; 
+&lt;/table&gt; 
+&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" class="t bt"&gt; 
+&lt;tbody&gt; 
+&lt;tr&gt; 
+&lt;td style="white-space:nowrap" mce_style="white-space:nowrap"&gt; 
+&lt;span id="sd" style="float:left" mce_style="float:left"&gt;Dictionary&lt;/span&gt; 
+&lt;a id="dct-clk-a"&gt; 
+&lt;div id="dct-clk-im"&gt;&lt;!- ie6 doesn't allow empty div. -&gt;&lt;/div&gt; 
+&lt;span id="dct-clk-show"&gt;Show examples&lt;/span&gt; 
+&lt;span id="dct-clk-hide"&gt;Hide examples&lt;/span&gt; 
+&lt;/a&gt; 
+&lt;/td&gt; 
+&lt;td style="white-space:nowrap" mce_style="white-space:nowrap" align="right"&gt; 
+&lt;/td&gt; 
+&lt;/tr&gt; 
+&lt;/tbody&gt; 
+&lt;/table&gt; 
+&lt;div class="dct-srch-otr"&gt; 
+&lt;div class="dct-srch-inr rt-sct-exst"&gt; 
+&lt;div class="dct-srch-rslt"&gt; 
+&lt;p&gt;Found in dictionary: &lt;b&gt;English &gt; Chinese (Simplified)&lt;/b&gt;.
+&lt;/p&gt; 
+&lt;ul class="dct-e2" id="pr-root" &gt; 
+&lt;li class="dct-eh"
+             &gt; 
+&lt;div  class="dct-eh"&gt; 
+&lt;span class="wl-st" id="wl-st-number1"
+      onclick="window.google.addWord('abandon','en|zh-CN','number1');"&gt;&lt;img alt="Add star"
+    src="/dictionary/image/unstarred.gif" mce_src="dictionary/image/unstarred.gif"&gt;&lt;/span&gt;&lt;span class="wl-ust"
+  id="wl-ust-number1" onclick="window.google.removeWord('abandon','en|zh-CN','number1');"&gt;&lt;img alt="Remove star"
+    src="/dictionary/image/starred.gif" mce_src="dictionary/image/starred.gif"&gt;&lt;/span&gt; 
+&lt;mce:script type="text/javascript"&gt;&lt;!--
+window.google.lookupWord('abandon','en|zh-CN','number1');
+// --&gt;&lt;/mce:script&gt; 
+&lt;span class="dct-tt"&gt;abandon&lt;/span&gt;&lt;span class="dct-tp"&gt;&nbsp;&nbsp;&nbsp;&lt;/span&gt;&lt;span class="dct-tp"&gt;/əˈb&aelig;ndən/
+&lt;span class="dct-tlb" title="Phonetic"&gt;DJ&lt;/span&gt;&lt;/span&gt;&lt;span class="prn-btn"&gt;<a href="/dictionary/flash/SpeakerApp16.swf">/dictionary/flash/SpeakerApp16.swf</a>&lt;/span&gt;&lt;span class="dct-tp"&gt;&nbsp;&nbsp;&nbsp;&lt;/span&gt;&lt;span class="dct-tp"&gt;/ə'b&aelig;ndən/
+&lt;span class="dct-tlb" title="Phonetic"&gt;KK&lt;/span&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-ec"
+               &gt; 
+&lt;div  class="dct-ec"&gt; 
+&lt;span class="dct-elb" title="Part-of-Speech"&gt;verb&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-em"
+               &gt; 
+&lt;div  class="dct-em"&gt; 
+&lt;span class="dct-tt"&gt;to leave somebody, especially somebody you are responsible for, with no intention of returning&lt;/span&gt; &lt;span class="dct-tt"&gt;（不顾责任、义务等）离弃，遗弃，抛弃
+&lt;span class="dct-tlb" title="Complement"&gt;~ sb (to sth)&lt;/span&gt; 
+&lt;span class="dct-tlb" title="Grammar"&gt;VN&lt;/span&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;The baby had been abandoned by its mother.&lt;/span&gt; &lt;span class="dct-tt"&gt;这个婴儿被母亲遗弃了。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;People often simply abandon their pets when they go abroad.&lt;/span&gt; &lt;span class="dct-tt"&gt;人们出国时常常丢下宠物不管，一走了之。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;The study showed a deep fear among the elderly of being abandoned to the care of strangers.&lt;/span&gt; &lt;span class="dct-tt"&gt;研究表明，老人十分害怕被丢给陌生人照管。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-em"
+               &gt; 
+&lt;div  class="dct-em"&gt; 
+&lt;span class="dct-tt"&gt;to leave a thing or place, especially because it is impossible or dangerous to stay&lt;/span&gt; &lt;span class="dct-tt"&gt;不得已而放弃；舍弃
+&lt;span class="dct-tlb" title="Complement"&gt;~ sth (to sb/sth)&lt;/span&gt; 
+&lt;span class="dct-tlb" title="Grammar"&gt;VN&lt;/span&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;Snow forced many drivers to abandon their vehicles.&lt;/span&gt; &lt;span class="dct-tt"&gt;大雪迫使许多驾驶者弃车步行。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;They had to abandon their lands and property to the invading forces.&lt;/span&gt; &lt;span class="dct-tt"&gt;他们不得不放弃土地和财产，让侵略军占领。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;He gave the order to abandon ship(= to leave the ship because it was sinking).&lt;/span&gt; &lt;span class="dct-tt"&gt;他下令弃船（因船快要沉没）。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-em"
+               &gt; 
+&lt;div  class="dct-em"&gt; 
+&lt;span class="dct-tt"&gt;to stop supporting or helping somebody; to stop believing in something&lt;/span&gt; &lt;span class="dct-tt"&gt;停止（支持或帮助）；放弃（信念）
+&lt;span class="dct-tlb" title="Grammar"&gt;VN&lt;/span&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;The country abandoned its political leaders after the war.&lt;/span&gt; &lt;span class="dct-tt"&gt;战后该国人民不再拥护他们的政治领袖。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;By 1930 he had abandoned his Marxist principles.&lt;/span&gt; &lt;span class="dct-tt"&gt;1930 年时他已放弃了马克思主义信念。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-em"
+               &gt; 
+&lt;div  class="dct-em"&gt; 
+&lt;span class="dct-tt"&gt;to stop doing something, especially before it is finished; to stop having something&lt;/span&gt; &lt;span class="dct-tt"&gt;中止；放弃；不再有
+&lt;span class="dct-tlb" title="Grammar"&gt;VN&lt;/span&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;They had to abandon the match because of rain.&lt;/span&gt; &lt;span class="dct-tt"&gt;因为下雨，他们只好中止比赛。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;I have abandoned hope of any reconciliation.&lt;/span&gt; &lt;span class="dct-tt"&gt;我已对任何和解都不再抱希望。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-em"
+               &gt; 
+&lt;div  class="dct-em"&gt; 
+&lt;span class="dct-tt"&gt;to feel an emotion so strongly that you can feel nothing else&lt;/span&gt; &lt;span class="dct-tt"&gt;陷入，沉湎于（某种情感）
+&lt;span class="dct-tlb" title="Complement"&gt;~ yourself to sth&lt;/span&gt; 
+&lt;span class="dct-tlb" title="Register"&gt;literary&lt;/span&gt; 
+&lt;span class="dct-tlb" title="Grammar"&gt;VN&lt;/span&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;He abandoned himself to despair.&lt;/span&gt; &lt;span class="dct-tt"&gt;他陷入绝望。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;li class="dct-ec"
+               &gt; 
+&lt;div  class="dct-ec"&gt; 
+&lt;span class="dct-elb" title="Part-of-Speech"&gt;noun&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-em"
+               &gt; 
+&lt;div  class="dct-em"&gt; 
+&lt;span class="dct-tt"&gt;an uncontrolled way of behaving that shows that somebody does not care what other people think&lt;/span&gt; &lt;span class="dct-tt"&gt;放任；放纵
+&lt;span class="dct-tlb" title="Grammar"&gt;uncountable&lt;/span&gt; 
+&lt;span class="dct-tlb" title="Register"&gt;written&lt;/span&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-ee"
+              style="display:none" mce_style="display:none" &gt; 
+&lt;div  class="dct-ee"&gt; 
+&lt;span class="dct-tt"&gt;He signed cheques with careless abandon.&lt;/span&gt; &lt;span class="dct-tt"&gt;他无所顾忌地乱开支票。&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-er"
+               &gt; 
+&lt;div  class="dct-er"&gt; 
+&lt;span class="dct-elb" title="Word"&gt;See also:&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;div  class="dct-er"&gt; 
+&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=with+gay+abandon&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=with+gay+abandon&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;with gay abandon&lt;/a&gt;&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3&gt;English dictionary&lt;/h3&gt; 
+&lt;ul class="dct-e2"  &gt; 
+&lt;li class="dct-eh"
+             &gt; 
+&lt;div  class="dct-eh"&gt; 
+&lt;span class="dct-tt"&gt;a&middot;ban&middot;don&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;ul&gt; 
+&lt;li class="dct-em"
+               &gt; 
+&lt;div  class="dct-em"&gt; 
+&lt;span class="dct-tt"&gt;Complete lack of inhibition or restraint&lt;/span&gt; 
+&lt;/div&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;div class="mr-wds"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=abandon&amp;sl=en&amp;tl=en&amp;oi=dict_mo" mce_href="dictionary?hl=en&amp;q=abandon&amp;sl=en&amp;tl=en&amp;oi=dict_mo"&gt; 
+More English dictionary results &raquo;&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;h3&gt;Related phrases&lt;/h3&gt; 
+&lt;ul class="rlt-snt"&gt; 
+&lt;li&gt; 
+&lt;div&gt; 
+&lt;b&gt;&lt;a href=" 
+  /dictionary?q=abandon+oneself+to&amp;hl=en&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_re
+" mce_href=" 
+  /dictionary?q=abandon+oneself+to&amp;hl=en&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_re
+"&gt;abandon oneself to&lt;/a&gt;&lt;/b&gt; 
+&lt;/div&gt; 
+沉溺于
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;div&gt; 
+&lt;b&gt;&lt;a href=" 
+  /dictionary?q=with+gay+abandon&amp;hl=en&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_re
+" mce_href=" 
+  /dictionary?q=with+gay+abandon&amp;hl=en&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_re
+"&gt;with gay abandon&lt;/a&gt;&lt;/b&gt; 
+&lt;/div&gt; 
+不考虑后果；轻率
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3&gt;Related languages&lt;/h3&gt; 
+&lt;ul&gt; 
+&lt;li&gt; 
+&lt;strong&gt;abandon&lt;/strong&gt; is also a word in:
+&lt;a href="/dictionary?q=abandon&amp;hl=en&amp;sl=fr&amp;tl=en
+" mce_href="dictionary?q=abandon&amp;hl=en&amp;sl=fr&amp;tl=en
+"&gt;fran&ccedil;ais&lt;/a&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3&gt;Synonyms&lt;/h3&gt; 
+&lt;ul&gt; 
+&lt;li&gt; 
+&lt;span class="dct-elb" title="Part-of-speech"&gt;verb&lt;/span&gt;:&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=leave&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=leave&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;leave&lt;/a&gt;&lt;/span&gt;,&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=relinquish&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=relinquish&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;relinquish&lt;/a&gt;&lt;/span&gt;,&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=forsake&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=forsake&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;forsake&lt;/a&gt;&lt;/span&gt;,&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=quit&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=quit&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;quit&lt;/a&gt;&lt;/span&gt;,&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=give+up&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=give+up&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;give up&lt;/a&gt;&lt;/span&gt;,&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=desert&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=desert&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;desert&lt;/a&gt;&lt;/span&gt;,&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=renounce&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=renounce&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;renounce&lt;/a&gt;&lt;/span&gt;,&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=drop&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=drop&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;drop&lt;/a&gt;&lt;/span&gt;,&lt;span class="dct-tt"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=vacate&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk" mce_href="dictionary?hl=en&amp;q=vacate&amp;sl=en&amp;tl=zh-CN&amp;oi=dict_lk"&gt;vacate&lt;/a&gt;&lt;/span&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3&gt;Web translations&lt;/h3&gt; 
+&lt;div&gt; 
+&lt;h2 class="wd"&gt;abandon&lt;/h2&gt; 
+&lt;div class="wbtr_cnt"&gt; 
+&lt;ol&gt; 
+&lt;li&gt; 
+&lt;span class="wbtr_mn"&gt;放弃&lt;/span&gt; 
+&lt;span class="wbtr_snp"&gt;&lt;b&gt;abandon放弃&lt;/b&gt;离弃遗弃They were accused of abandoning their own principles &lt;/span&gt; 
+&lt;span class="wbtr_url"&gt; 
+&lt;a href="http://www.google.com/url?q=http://i.eol.cn/gchat.php%3Fid%3D5402&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNFpn25cb8sXwZ7B4vxhy9Rzg2Q33Q" mce_href="http://www.google.com/url?q=http://i.eol.cn/gchat.php%3Fid%3D5402&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNFpn25cb8sXwZ7B4vxhy9Rzg2Q33Q" target="_blank"&gt;i.eol.cn&lt;/a&gt; 
+&lt;/span&gt; -
+&lt;span class="wbtr_rs"&gt; 
+&lt;a href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E6%94%BE%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" mce_href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E6%94%BE%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" target="_blank"&gt; 
+Related search
+&lt;/a&gt; 
+&lt;/span&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;span class="wbtr_mn"&gt;抛弃&lt;/span&gt; 
+&lt;span class="wbtr_snp"&gt;&lt;b&gt;抛弃&lt;/b&gt;放弃 &lt;b&gt;abandon&lt;/b&gt; 阿巴诺喹 Abanoquil 减轻减少消除 abate. 在线英语学习. 阿贝氏&lt;/span&gt; 
+&lt;span class="wbtr_url"&gt; 
+&lt;a href="http://www.google.com/url?q=http://www.scientrans.com/vocabulary/pages/20080202134324_34_65_1.html&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNHP7exeD0Iw8ck0Ps1yqu1yyu52SQ" mce_href="http://www.google.com/url?q=http://www.scientrans.com/vocabulary/pages/20080202134324_34_65_1.html&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNHP7exeD0Iw8ck0Ps1yqu1yyu52SQ" target="_blank"&gt;www.scientrans.com&lt;/a&gt; 
+&lt;/span&gt; -
+&lt;span class="wbtr_rs"&gt; 
+&lt;a href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E6%8A%9B%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" mce_href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E6%8A%9B%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" target="_blank"&gt; 
+Related search
+&lt;/a&gt; 
+&lt;/span&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;span class="wbtr_mn"&gt;遗弃&lt;/span&gt; 
+&lt;span class="wbtr_snp"&gt;&lt;b&gt;abandon&lt;/b&gt;放弃离弃&lt;b&gt;遗弃&lt;/b&gt;They were accused of abandoning their own principles &lt;/span&gt; 
+&lt;span class="wbtr_url"&gt; 
+&lt;a href="http://www.google.com/url?q=http://i.eol.cn/gchat.php%3Fid%3D5402&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNFpn25cb8sXwZ7B4vxhy9Rzg2Q33Q" mce_href="http://www.google.com/url?q=http://i.eol.cn/gchat.php%3Fid%3D5402&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNFpn25cb8sXwZ7B4vxhy9Rzg2Q33Q" target="_blank"&gt;i.eol.cn&lt;/a&gt; 
+&lt;/span&gt; -
+&lt;span class="wbtr_rs"&gt; 
+&lt;a href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E9%81%97%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" mce_href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E9%81%97%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" target="_blank"&gt; 
+Related search
+&lt;/a&gt; 
+&lt;/span&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;span class="wbtr_mn"&gt;舍弃&lt;/span&gt; 
+&lt;span class="wbtr_snp"&gt;&lt;b&gt;舍弃 abandon&lt;/b&gt; 缩写地址呼号 abbreviated address calling 异常终止倾印 abend dump &lt;/span&gt; 
+&lt;span class="wbtr_url"&gt; 
+&lt;a href="http://www.google.com/url?q=http://www.scientrans.com/vocabulary/pages/20080317172247_106_65_1.html&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNExbMe6li2ZJzqgDvGM23Qdt1smpw" mce_href="http://www.google.com/url?q=http://www.scientrans.com/vocabulary/pages/20080317172247_106_65_1.html&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNExbMe6li2ZJzqgDvGM23Qdt1smpw" target="_blank"&gt;www.scientrans.com&lt;/a&gt; 
+&lt;/span&gt; -
+&lt;span class="wbtr_rs"&gt; 
+&lt;a href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E8%88%8D%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" mce_href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E8%88%8D%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" target="_blank"&gt; 
+Related search
+&lt;/a&gt; 
+&lt;/span&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;span class="wbtr_mn"&gt;丢弃&lt;/span&gt; 
+&lt;span class="wbtr_snp"&gt;&lt;b&gt;abandon&lt;/b&gt; vt&lt;b&gt;丢弃&lt;/b&gt;放弃抛弃 ability n能力能耐本领 able a有能力的出色的 abnormal a不&lt;/span&gt; 
+&lt;span class="wbtr_url"&gt; 
+&lt;a href="http://www.google.com/url?q=http://www.51jnjj.cn/news_info.asp%3Fid%3D1602&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNGk60J0xWH-ue-l_HZKfm3O1PNfgQ" mce_href="http://www.google.com/url?q=http://www.51jnjj.cn/news_info.asp%3Fid%3D1602&amp;source=dictionary&amp;type=we&amp;usg=AFQjCNGk60J0xWH-ue-l_HZKfm3O1PNfgQ" target="_blank"&gt;www.51jnjj.cn&lt;/a&gt; 
+&lt;/span&gt; -
+&lt;span class="wbtr_rs"&gt; 
+&lt;a href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E4%B8%A2%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" mce_href="http://www.google.com/search?hl=en&amp;q=%22abandon%22+%22%E4%B8%A2%E5%BC%83%22&amp;ie=UTF-8&amp;oi=dict_we" target="_blank"&gt; 
+Related search
+&lt;/a&gt; 
+&lt;/span&gt; 
+&lt;/li&gt; 
+&lt;/ol&gt; 
+&lt;/div&gt; 
+&lt;/div&gt; 
+&lt;h3&gt;Usage examples&lt;/h3&gt; 
+&lt;ul class="rlt-snt"&gt; 
+&lt;li&gt;&lt;div&gt;"People died for this tournament, others were injured. We can't &lt;b&gt;abandon&lt;/b&gt; them and leave like cowards," Alaixys Romao told French sports agency L'Equipe. "If we stay here, it's for them. But also so as not to give satisfaction to the rebels....&lt;/div&gt;&lt;div&gt;&lt;span class="grey"&gt;Jan 10, 2010&lt;/span&gt;&nbsp;-&nbsp;&lt;span&gt; 
+&lt;a class="lightblue" href="http://www.google.com/url?q=http://en.wikipedia.org/wiki/Alaixys_Romao&amp;source=dictionary&amp;usg=AFQjCNG0zCsZW1KyoHGeZnumG5E2-qMhSg" mce_href="http://www.google.com/url?q=http://en.wikipedia.org/wiki/Alaixys_Romao&amp;source=dictionary&amp;usg=AFQjCNG0zCsZW1KyoHGeZnumG5E2-qMhSg"&gt;Alaixys Romao&lt;/a&gt;&lt;/span&gt;&nbsp;-&nbsp;&lt;span&gt; 
+&lt;a class="green" href="http://www.google.com/url?q=http://www.bbc.co.uk/blogs/piersedwards/2010/01/gun_attack_overshadows_africa.html&amp;source=dictionary&amp;usg=AFQjCNFXePJzwrZ-RG_9bgFB4QdVuCMbhg" mce_href="http://www.google.com/url?q=http://www.bbc.co.uk/blogs/piersedwards/2010/01/gun_attack_overshadows_africa.html&amp;source=dictionary&amp;usg=AFQjCNFXePJzwrZ-RG_9bgFB4QdVuCMbhg"&gt;BBC Sport (blog)&lt;/a&gt;&lt;/span&gt;&lt;/div&gt;&lt;/li&gt; 
+&lt;li&gt;&lt;div&gt;"The president would have us believe there are two choices: keep all of our troops in Iraq or &lt;b&gt;abandon&lt;/b&gt; these Iraqis," Obama said. "I reject this choice."&lt;/div&gt;&lt;div&gt;&lt;span class="grey"&gt;Sep 12, 2007&lt;/span&gt;&nbsp;-&nbsp;&lt;span&gt; 
+&lt;a class="lightblue" href="http://www.google.com/url?q=http://en.wikipedia.org/wiki/Barack_Obama&amp;source=dictionary&amp;usg=AFQjCNHQ0yfPaaXFGqLKymRgcres0I2nuA" mce_href="http://www.google.com/url?q=http://en.wikipedia.org/wiki/Barack_Obama&amp;source=dictionary&amp;usg=AFQjCNHQ0yfPaaXFGqLKymRgcres0I2nuA"&gt;Barack Obama&lt;/a&gt;&lt;/span&gt;&nbsp;-&nbsp;&lt;span&gt; 
+&lt;a class="green" href="http://www.google.com/url?q=http://www.forbes.com/feeds/ap/2007/09/12/ap4108235.html&amp;source=dictionary&amp;usg=AFQjCNE9DqEquDtHBRoJSv9cfvjUPrgevg" mce_href="http://www.google.com/url?q=http://www.forbes.com/feeds/ap/2007/09/12/ap4108235.html&amp;source=dictionary&amp;usg=AFQjCNE9DqEquDtHBRoJSv9cfvjUPrgevg"&gt;Forbes&lt;/a&gt;&lt;/span&gt;&lt;/div&gt;&lt;/li&gt; 
+&lt;li&gt;&lt;div&gt;"I am deeply disappointed that the governor has decided to &lt;b&gt;abandon&lt;/b&gt; the state and her constituents before her term has concluded," Murkowski said.&lt;/div&gt;&lt;div&gt;&lt;span class="grey"&gt;Jul 3, 2009&lt;/span&gt;&nbsp;-&nbsp;&lt;span&gt; 
+&lt;a class="lightblue" href="http://www.google.com/url?q=http://en.wikipedia.org/wiki/Lisa_Murkowski&amp;source=dictionary&amp;usg=AFQjCNGfUU0pjzbEuDwnY81jySj6rKn9pA" mce_href="http://www.google.com/url?q=http://en.wikipedia.org/wiki/Lisa_Murkowski&amp;source=dictionary&amp;usg=AFQjCNGfUU0pjzbEuDwnY81jySj6rKn9pA"&gt;Lisa Murkowski&lt;/a&gt;&lt;/span&gt;&nbsp;-&nbsp;&lt;span&gt; 
+&lt;a class="green" href="http://www.google.com/url?q=http://www.politico.com/blogs/bensmith/0709/L_Murkowski_Deeply_disappointed_Palin_has_decided_to_abandon_the_state_.html&amp;source=dictionary&amp;usg=AFQjCNGtnwsoPi3e6Y5XTizOkg87g-_AsQ" mce_href="http://www.google.com/url?q=http://www.politico.com/blogs/bensmith/0709/L_Murkowski_Deeply_disappointed_Palin_has_decided_to_abandon_the_state_.html&amp;source=dictionary&amp;usg=AFQjCNGtnwsoPi3e6Y5XTizOkg87g-_AsQ"&gt;Politico&lt;/a&gt;&lt;/span&gt;&lt;/div&gt;&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;h3&gt;Web definitions&lt;/h3&gt; 
+&lt;ul class="gls"&gt; 
+&lt;li&gt; 
+&lt;ul&gt; 
+&lt;li&gt; 
+forsake, leave behind; "We abandoned the old car in the empty parking lot" &lt;br&gt; 
+&lt;/li&gt; 
+&lt;div&gt; 
+&lt;a href="http://www.google.com/url?q=http://wordnetweb.princeton.edu/perl/webwn%3Fs%3Dabandon&amp;source=dictionary&amp;type=de&amp;usg=AFQjCNHqLML70dHqzi04RiOEhnZ9Jvl71g" mce_href="http://www.google.com/url?q=http://wordnetweb.princeton.edu/perl/webwn%3Fs%3Dabandon&amp;source=dictionary&amp;type=de&amp;usg=AFQjCNHqLML70dHqzi04RiOEhnZ9Jvl71g"&gt; 
+wordnetweb.princeton.edu/perl/webwn
+&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;ul&gt; 
+&lt;li&gt; 
+give up with the intent of never claiming again; "Abandon your life to God"; "She gave up her children to her ex-husband when she moved to Tahiti"; "We gave the drowning victim up for dead" &lt;br&gt; 
+&lt;/li&gt; 
+&lt;div&gt; 
+&lt;a href="http://www.google.com/url?q=http://wordnetweb.princeton.edu/perl/webwn%3Fs%3Dabandon&amp;source=dictionary&amp;type=de&amp;usg=AFQjCNHqLML70dHqzi04RiOEhnZ9Jvl71g" mce_href="http://www.google.com/url?q=http://wordnetweb.princeton.edu/perl/webwn%3Fs%3Dabandon&amp;source=dictionary&amp;type=de&amp;usg=AFQjCNHqLML70dHqzi04RiOEhnZ9Jvl71g"&gt; 
+wordnetweb.princeton.edu/perl/webwn
+&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;ul&gt; 
+&lt;li&gt; 
+vacate: leave behind empty; move out of; "You must vacate your office by tonight" &lt;br&gt; 
+&lt;/li&gt; 
+&lt;div&gt; 
+&lt;a href="http://www.google.com/url?q=http://wordnetweb.princeton.edu/perl/webwn%3Fs%3Dabandon&amp;source=dictionary&amp;type=de&amp;usg=AFQjCNHqLML70dHqzi04RiOEhnZ9Jvl71g" mce_href="http://www.google.com/url?q=http://wordnetweb.princeton.edu/perl/webwn%3Fs%3Dabandon&amp;source=dictionary&amp;type=de&amp;usg=AFQjCNHqLML70dHqzi04RiOEhnZ9Jvl71g"&gt; 
+wordnetweb.princeton.edu/perl/webwn
+&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;/ul&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;div class="mr-wds"&gt; 
+&lt;a href="/dictionary?hl=en&amp;q=abandon&amp;sl=en&amp;tl=en" mce_href="dictionary?hl=en&amp;q=abandon&amp;sl=en&amp;tl=en"&gt; 
+Show more Web definitions &raquo;&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;/div&gt; 
+&lt;/div&gt; 
+&lt;div class="dct-rt-sct"&gt; 
+&lt;div class="wl-hd"&gt; 
+&lt;img src="/dictionary/image/starred.png" mce_src="dictionary/image/starred.png"&gt; 
+&lt;a href="/dictionary/wordlist?hl=en" mce_href="dictionary/wordlist?hl=en"&gt;Starred words &raquo;&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;div id="dict-hist" class="rt-sct-blk"&gt; 
+&lt;h4&gt;Recent searches&lt;/h4&gt; 
+&lt;div&gt; 
+&lt;ul&gt; 
+&lt;li&gt; 
+&lt;a href="/dictionary?hl=en&amp;sl=en&amp;tl=en&amp;q=abeyance" mce_href="dictionary?hl=en&amp;sl=en&amp;tl=en&amp;q=abeyance"&gt;abeyance&lt;/a&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;a href="/dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=abeyance" mce_href="dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=abeyance"&gt;abeyance&lt;/a&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;a href="/dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=abandon" mce_href="dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=abandon"&gt;abandon&lt;/a&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;a href="/dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=abet" mce_href="dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=abet"&gt;abet&lt;/a&gt; 
+&lt;/li&gt; 
+&lt;li&gt; 
+&lt;a href="/dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=Phonetic" mce_href="dictionary?hl=en&amp;sl=en&amp;tl=zh-CN&amp;q=Phonetic"&gt;Phonetic&lt;/a&gt; 
+&lt;/li&gt; 
+&lt;/ul&gt; 
+&lt;div class="mrhist"&gt; 
+&lt;a href="http://www.google.com/history/lookup?hl=en&amp;st=dict" mce_href="http://www.google.com/history/lookup?hl=en&amp;st=dict"&gt; 
+All recent searches &raquo;&lt;/a&gt; 
+&lt;/div&gt; 
+&lt;/div&gt; 
+&lt;/div&gt; 
+&lt;/div&gt; 
+&lt;br class="clear"&gt; 
+&lt;/div&gt; 
+&lt;div class="dscl-dct"&gt;&lt;p&gt; 
+Results partly provided by &lt;a href="http://www.dreye.com.cn" mce_href="http://www.dreye.com.cn"&gt;Dr.eye&lt;/a&gt;.
+&lt;/p&gt;&lt;/div&gt; 
+&lt;div class="dscl-glb"&gt; 
+The usage examples, images and web definitions on this page were selected automatically by a computer program. They do not necessarily reflect the views of Google Inc. or its employees.
+&lt;/div&gt; 
+&lt;center&gt; 
+&lt;p/&gt; 
+&lt;hr class="z"&gt; 
+&lt;div class="" style="border-top: 1px solid rgb(204, 204, 240); padding: 15px 2px 2px;" mce_style="border-top: 1px solid #ccccf0; padding: 15px 2px 2px;"&gt; 
+&lt;font size="-1"&gt; 
+&lt;span &gt;&copy;2009 Google&lt;/span&gt; 
+-
+&lt;a href="http://www.google.com/webhp?hl=en" mce_href="http://www.google.com/webhp?hl=en"&gt;Google&nbsp;Home&lt;/a&gt; 
+-
+&lt;a href="http://www.google.com/intl/en/about.html" mce_href="http://www.google.com/intl/en/about.html"&gt;All About Google&lt;/a&gt; 
+&lt;/font&gt; 
+&lt;/div&gt; 
+&lt;/center&gt; 
+&lt;/div&gt; 
+&lt;/body&gt; 
+&lt;mce:script type="text/javascript"&gt;&lt;!--
+ 
+(function() {
+})();
+if (!window.google) { window.google = {}; }
+(function(){if(window.jstiming){window.jstiming.a={};window.jstiming.c=1;var j=function(a,c,e){var b=a.t[c],g=a.t.start;if(b&amp;&amp;(g||e)){b=a.t[c][0];g=e!=undefined?e:g[0];return b-g}},n=function(a,c,e){var b="";if(window.jstiming.pt){b+="&amp;srt="+window.jstiming.pt;delete window.jstiming.pt}try{if(window.external&amp;&amp;window.external.tran)b+="&amp;tran="+window.external.tran;else if(window.gtbExternal&amp;&amp;window.gtbExternal.tran)b+="&amp;tran="+window.gtbExternal.tran();else if(window.chrome&amp;&amp;window.chrome.csi)b+="&amp;tran="+window.chrome.csi().tran}catch(g){}var d=
+window.chrome;if(d)if(d=d.loadTimes){if(d().wasFetchedViaSpdy)b+="&amp;p=s";if(d().wasNpnNegotiated)b+="&amp;npn=1";if(d().wasAlternateProtocolAvailable)b+="&amp;apa=1"}if(a.b)b+="&amp;"+a.b;d=a.t;var m=d.start,k=[],h=[];for(var f in d)if(f!="start")if(f.indexOf("_")!=0){var i=d[f][1];if(i)d[i]&amp;&amp;h.push(f+"."+j(a,f,d[i][0]));else m&amp;&amp;k.push(f+"."+j(a,f))}delete d.start;if(c)for(var l in c)b+="&amp;"+l+"="+c[l];return a=[e?e:"http://csi.gstatic.com/csi","?v=3","&amp;s="+(window.jstiming.sn||"dictionary")+"&amp;action=",a.name,
+h.length?"&amp;it="+h.join(","):"","",b,"&amp;rt=",k.join(",")].join("")};window.jstiming.report=function(a,c,e){a=n(a,c,e);if(!a)return"";c=new Image;var b=window.jstiming.c++;window.jstiming.a[b]=c;c.onload=c.onerror=function(){delete window.jstiming.a[b]};c.src=a;c=null;return a}};})();
+(function(){var b=true,g=null,h=h||{};h.global=this;h.v=b;h.w="en";h.d=g;h.Z=function(a){h.g(a)};h.g=function(a,c,d){a=a.split(".");d=d||h.global;!(a[0]in d)&amp;&amp;d.execScript&amp;&amp;d.execScript("var "+a[0]);for(var e;a.length&amp;&amp;(e=a.shift());)if(!a.length&amp;&amp;h.p(c))d[e]=c;else d=d[e]?d[e]:d[e]={}};h.K=function(a,c){for(var d=a.split("."),e=c||h.global,f;f=d.shift();)if(e[f])e=e[f];else return g;return e};h.M=function(a,c){var d=c||h.global;for(var e in a)d[e]=a[e]};h.A=function(){};h.da=false;h.aa=function(){};h.D="";
+h.X=function(){};h.N=function(){return arguments[0]};h.z=function(){throw Error("unimplemented abstract method");};h.B=function(a){a.I=function(){return a.o||(a.o=new a)}};
+h.a=function(a){var c=typeof a;if(c=="object")if(a){if(a instanceof Array||!(a instanceof Object)&amp;&amp;Object.prototype.toString.call(a)=="[object Array]"||typeof a.length=="number"&amp;&amp;typeof a.splice!="undefined"&amp;&amp;typeof a.propertyIsEnumerable!="undefined"&amp;&amp;!a.propertyIsEnumerable("splice"))return"array";if(!(a instanceof Object)&amp;&amp;(Object.prototype.toString.call(a)=="[object Function]"||typeof a.call!="undefined"&amp;&amp;typeof a.propertyIsEnumerable!="undefined"&amp;&amp;!a.propertyIsEnumerable("call")))return"function"}else return"null";
+else if(c=="function"&amp;&amp;typeof a.call=="undefined")return"object";return c};h.s=function(a,c){if(c in a)for(var d in a)if(d==c&amp;&amp;Object.prototype.hasOwnProperty.call(a,c))return b;return false};h.Y=function(a,c){return a instanceof Object?Object.prototype.propertyIsEnumerable.call(a,c):h.s(a,c)};h.p=function(a){return a!==undefined};h.U=function(a){return a===g};h.S=function(a){return a!=g};h.O=function(a){return h.a(a)=="array"};
+h.P=function(a){var c=h.a(a);return c=="array"||c=="object"&amp;&amp;typeof a.length=="number"};h.R=function(a){return h.q(a)&amp;&amp;typeof a.getFullYear=="function"};h.W=function(a){return typeof a=="string"};h.Q=function(a){return typeof a=="boolean"};h.V=function(a){return typeof a=="number"};h.T=function(a){return h.a(a)=="function"};h.q=function(a){a=h.a(a);return a=="object"||a=="array"||a=="function"};h.n=function(a){return a[h.b]||(a[h.b]=++h.u)};
+h.t=function(a){"removeAttribute"in a&amp;&amp;a.removeAttribute(h.b);try{delete a[h.b]}catch(c){}};h.b="closure_uid_"+Math.floor(Math.random()*2147483648).toString(36);h.u=0;h.H=h.n;h.$=h.t;h.l=function(a){var c=h.a(a);if(c=="object"||c=="array"){if(a.k)return a.k();c=c=="array"?[]:{};for(var d in a)c[d]=h.l(a[d]);return c}return a};
+h.c=function(a,c){var d=c||h.global;if(arguments.length&gt;2){var e=Array.prototype.slice.call(arguments,2);return function(){var f=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(f,e);return a.apply(d,f)}}else return function(){return a.apply(d,arguments)}};h.r=function(a){var c=Array.prototype.slice.call(arguments,1);return function(){var d=Array.prototype.slice.call(arguments);d.unshift.apply(d,c);return a.apply(this,d)}};h.i=function(a,c){for(var d in c)a[d]=c[d]};
+h.now=Date.now||function(){return+new Date};
+h.L=function(a){if(h.global.execScript)h.global.execScript(a,"JavaScript");else if(h.global.eval){if(h.d==g){h.global.eval("var _et_ = 1;");if(typeof h.global._et_!="undefined"){delete h.global._et_;h.d=b}else h.d=false}if(h.d)h.global.eval(a);else{var c=h.global.document,d=c.createElement("script");d.type="text/javascript";d.defer=false;d.appendChild(c.createTextNode(a));c.body.appendChild(d);c.body.removeChild(d)}}else throw Error("goog.globalEval not available");};h.ca=b;
+h.G=function(a,c){var d=a+(c?"-"+c:"");return h.f&amp;&amp;d in h.f?h.f[d]:d};h.ba=function(a){h.f=a};h.J=function(a,c){var d=c||{};for(var e in d){var f=(""+d[e]).replace(//$/g,"$$");a=a.replace(RegExp("//{//$"+e+"//}","gi"),f)}return a};h.m=function(a,c,d){h.g(a,c,d)};h.F=function(a,c,d){a[c]=d};h.h=function(a,c){function d(){}d.prototype=c.prototype;a.e=c.prototype;a.prototype=new d;a.prototype.constructor=a};
+h.C=function(a,c){var d=arguments.callee.caller;if(d.e)return d.e.constructor.apply(a,Array.prototype.slice.call(arguments,1));for(var e=Array.prototype.slice.call(arguments,2),f=false,i=a.constructor;i;i=i.e&amp;&amp;i.e.constructor)if(i.prototype[c]===d)f=b;else if(f)return i.prototype[c].apply(a,e);if(a[c]===d)return a.constructor.prototype[c].apply(a,e);else throw Error("goog.base called from a method of one name to a method of a different name");};h.scope=function(a){a.call(h.global)};h.j=b;
+if(h.j){Function.prototype.c=function(a){if(arguments.length&gt;1){var c=Array.prototype.slice.call(arguments,1);c.unshift(this,a);return h.c.apply(g,c)}else return h.c(this,a)};Function.prototype.r=function(){var a=Array.prototype.slice.call(arguments);a.unshift(this,g);return h.c.apply(g,a)};Function.prototype.h=function(a){h.h(this,a)};Function.prototype.i=function(a){h.i(this.prototype,a)}};function j(){var a=window.jstiming.load;a.tick("ol");window.jstiming.report(a)}h.m("tickBodyLoadAndReport",j);})();
+var installFunctions = function() {
+window.google.ac.install(document.f,document.f.q,"d",true,
+"close",true,"","","");
+onUpdateLangpair(document.f['dct-slc']);
+};
+var hideShowEl = document.getElementById('dct-clk-a');
+if (hideShowEl) {
+hideShowEl.href = 'javascript:google.toggleDictionaryExample()';
+}
+function onUpdateLangpair(sel) {
+langpair = sel.options[sel.selectedIndex].value;
+window.google.ac.update(langpair);
+};
+window.setTimeout(installFunctions, 10);
+// --&gt;&lt;/mce:script&gt; 
+&lt;/html&gt; </pre>
+<p> </span></span></p>
+<p>注意到有一行信息：</p>
+<p>
+<pre>&lt;meta name="description" content="abandon : （不顾责任、义务等）离弃，遗弃，抛弃, 不得已而放弃；舍弃, 停止（支持或帮助）；放弃（信念）, 中止；放弃；不再有, 陷入，沉湎于（某种情感）, 放任；放纵 - Google's free online dictionary service."&gt; </pre>
+<p>&nbsp;</p>
+<p>&nbsp;包含单词abandon的中文释义。于是可以利用curl获取到Google Dictionary的翻译网页，然后直接在获取的网页中查找上面那一行信息。</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:x-small;"><span style="white-space:pre-wrap;">
+<pre>#!/bin/bash
+# Command line look up using Google's define feature - command line dictionary
+# gd -i &lt;input_file&gt; -o &lt;output_file&gt; [-w &lt;word&gt;]
+function query
+{
+	typeset wd=$1
+	typeset TMPFILE=tmp.$wd
+	typeset i=0
+	while ((i&lt;5))
+	do
+		curl -s -A 'Mozilla/4.0' "http://www.google.com/dictionary?langpair=zh-CN|en&amp;hl=en&amp;aq=f&amp;q=$wd" &gt;$TMPFILE 2&gt;/dev/null
+		if [ -s $TMPFILE ]; then
+			break
+		elif ((i=4)); then
+			echo $wd &gt;&gt; failed.gd.$input
+		fi
+		((i=i+1))
+		sleep 1
+	done
+	perl -i -p -e "print STDOUT /$1,/"/r/n/" if (m/($wd.*:.*)- Google.*/);" $TMPFILE
+	rm -f $TMPFILE
+}
+##############################################
+#	MAIN LINE START HERE
+##############################################
+typeset input=
+typeset output=
+typeset word=
+typeset -i flag=0
+while getopts 'i:o:w:' OPT
+do
+        case $OPT in
+        i)	input=${OPTARG};;
+        o)	output=${OPTARG};;
+        w)	word=${OPTARG};flag=1;;
+        *)      echo -u2 "ERROR: Invalid argument [$OPT]"
+                ;;
+        esac
+done
+shift `expr $OPTIND - 1`
+if ((flag==0)); then
+	perl -i.bk -p -e "s/^(/w+).*[/[//].*[/]//]//$1/;" $input # Eliminate the phonetic symbol
+	WORDS=$(cat $input)
+	for word in $WORDS
+	do
+		word_exp=$(query $word)
+		if [ ${#word_exp} != 0 ]; then
+			echo $word_exp &gt;&gt; $output
+		else
+			echo "$word:" &gt;&gt; $output
+		fi
+	done
+else
+	word_exp=$(query $word)
+	if [ ${#word_exp} != 0 ]; then
+		echo $word_exp
+	else
+		echo "$word:"
+	fi
+fi
+</pre>
+<p> </span></span></p>
+<p>&nbsp;</p>
+<p>2011-01-03 Update:</p>
+<p>奉上完整版的程序：</p>
+<p>
+<pre>#!/bin/bash
+# Command line look up using Google's define feature - command line dictionary
+# od [-b] [-g]-i &lt;input_file&gt; -o &lt;output_file&gt; [-w &lt;word&gt;]
+# gd - Query words using Google Dictionary
+function gd
+{
+	typeset wd=$1
+	typeset TMPFILE=tmp.gd.$wd
+	typeset -i i=0
+	while ((i&lt;5))
+	do
+		curl -s -A 'Mozilla/4.0' "http://www.google.com/dictionary?langpair=zh-CN|en&amp;hl=en&amp;aq=f&amp;q=$wd" &gt;$TMPFILE 2&gt;/dev/null
+		if [ -s $TMPFILE ]; then
+			break
+		elif ((i=4)); then
+			echo $wd &gt;&gt; failed.gd.$input
+		fi
+		((i=i+1))
+		sleep 1
+	done
+	perl -i -p -e "print STDOUT /$1,/"/r/n/" if (m/($wd.*:.*)- Google.*/);" $TMPFILE
+	rm -f $TMPFILE
+}
+# bd - Query words using Baidu Dictionary
+#
+function bd
+{
+	typeset wd=$1
+	typeset TMPFILE=tmp.bd.$wd
+	typeset -i i=0
+	while ((i&lt;5))
+	do
+		curl -s -A 'Mozilla/4.0' "http://dict.baidu.com/s?tn=dict&amp;wd="$word | html2text &gt; $TMPFILE 2&gt;/dev/null
+		if [ -s $TMPFILE ]; then
+			break
+		elif ((i=4)); then
+			echo $wd &gt;&gt; failed.bd.$input
+		fi
+		((i=i+1))
+		sleep 1
+	done
+	./censor.pl $TMPFILE $wd
+	rm -f $TMPFILE
+}
+##############################################
+#	MAIN LINE START HERE
+##############################################
+typeset input=
+typeset output=
+typeset word=
+typeset dict=z"gd bd"
+typeset -i word_flag=0
+while getopts 'agbi:o:w:' OPT
+do
+        case $OPT in
+        g)	dict=gd;;
+        b)	dict=bd;;
+        i)	input=${OPTARG};;
+        o)	output=${OPTARG};;
+        w)	word=${OPTARG};word_flag=1;;
+        *)      echo -u2 "ERROR: Invalid argument [$OPT]"
+                ;;
+        esac
+done
+shift `expr $OPTIND - 1`
+if ((word_flag==0)); then
+#	perl -i.bk -p -e "s/^(/w+).*[/[//].*[/]//]//$1/;" $input # Eliminate the phonetic symbols
+	WORDS=$(cat $input)
+	for word in $WORDS
+	do
+		case $dict in
+		*bd*)	echo "------------------ $word -------------------" &gt;&gt; $output;;
+		esac
+		
+		for d in $dict
+		do
+			word_exp=$($d $word)
+			if [ ${#word_exp} != 0 ]; then
+				echo $word_exp &gt;&gt; $output
+			else
+				echo "$word:" &gt;&gt; $output
+			fi
+		done
+	done
+else
+	for d in $dict
+	do
+		$d $word
+	done
+fi</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>
+<pre>#!/usr/bin/perl -w
+############### censor.pl #################
+# Handle the explanations got from online dictionary.
+# Inputs:
+#	ARGV[0] -- temparory file containning the explanations
+#	ARGV[1] -- keyword
+############################################
+use strict;
+use Encode;
+my $syntax = Encode::decode('utf8', '语法标注解释 ');
+my $internet = Encode::decode('utf8', '以下结果来自互联网网络释义');
+my $yingyin = Encode::decode('utf8', '英音');
+my $meiyin = Encode::decode('utf8', '美音');
+my $baidu = Encode::decode('utf8', '此内容系百度根据您的指令自动搜索的结果');
+my $write_flag=0;
+open(EXP,$ARGV[0]);
+while (my $nextline=&lt;EXP&gt;) {
+	chomp($nextline);
+	$nextline = Encode::decode('utf8', $nextline);
+	if ($nextline =~ m/.*$syntax.*/) {
+		$write_flag=1;
+		$nextline =~ s/$syntax//;
+	} elsif ($nextline =~ m/.*$internet.*/ || $nextline =~ m/.*$baidu.*/) {
+		$write_flag=0;
+	}
+			
+	if ($write_flag eq 1) {
+		if ($nextline !~ m/.*/*/*/*/*.*/) { # Excluse lines containning ****
+			# Add a space between the keyword and 英音/美音
+			$nextline =~ s/$ARGV[1]([$yingyin|$meiyin])/$ARGV[1] $1/; 
+			print encode("utf8",$nextline),"/r/n"; # In perl, /r/n is needed to add a new line
+		}
+	}
+}
+close(EXP);</pre>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/12/31/linux-shared-memory">Linux Shared Memory的查看与设置</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-12-31</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
+<h1 class="entry-title">1.&nbsp;<a href="http://www.cyberciti.biz/faq/linux-check-memory-usage/">Linux Check Memory Usage</a></h1>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1 id="nointelliTXT" class="Heading1a">2.&nbsp;<a href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html">How to Check Shared Memory on Linux</a></h1>
+<p>&nbsp;</p>
+<h1>3.&nbsp;<a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html">Shared Memory Configuration</a></h1>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span>共享内存就是进程之间可以共享的一段内存，通过一个唯一的KEY值绑定<br />shmget()创建或获取<br />shmat()连接<br />shmdt()断连</p>
+<p>共享内存的访问涉及同步措施，通常与信号灯一起使用<br />用ipcs -m命令可以查看系统中已有的共享内存段</span></p>
+<p><span><span>/proc/sys/kernel/shm开头的几个文件是共享内存的参数</span></span></p>
+<p><span><br />共享内存的访问涉及同步措施，通常与信号灯一起使用<br />用ipcs -m命令可以查看系统中已有的共享内存段</span></p>
+<p><span><span>ipcs&nbsp;</span></span>-m 看Shared Memory 共享内存</p>
+<p><span><span>ipcs -q 看Message Queues 消息队列<br />ipcs -s 看Semaphore Arrays 信号量</span></span></p>
+<p>&nbsp;</p>
+<p><span><span><span>使用命令：ipcs -al</p>
+<p>------ Shared Memory Limits --------<br />max number of segments = 4096<br />max seg size (kbytes) = 4091826<br />max total shared memory (pages) = 2097152<br />min seg size (bytes) = 1<br /></span></span></span></p>
+<p><span><br />
+</span></p>
+<div class="headline_area">
+<h1 class="entry-title">1.&nbsp;<a href="http://www.cyberciti.biz/faq/linux-check-memory-usage/">Linux Check Memory Usage</a></h1>
+<p class="headline_meta">by&nbsp;<span class="author vcard fn">VIVEK GITE</span>&nbsp;on&nbsp;<abbr class="published" title="2006-04-06">APRIL 6, 2006</abbr>&nbsp;&middot;&nbsp;<span><a rel="nofollow" href="http://www.cyberciti.biz/faq/linux-check-memory-usage/#comments">36 COMMENTS</a></span></p>
+</div>
+<div class="format_text entry-content">
+<p><span class="drop_cap">H</span>ow do I check used and free RAM memory usage under Linux operating systems using command line and GUI tools?</p>
+<p>Linux comes with different set of commands to check memory usage. The free command displays  the  total amount of free and used physical and swap memory in the system, as well as the buffers used by the kernel. The  vmstat command reports information about processes, memory, paging, block IO, traps, and cpu activity. Finally, you can use the top command which provides a dynamic real-time view of a running system.  It can display system summary information as well as a list of tasks currently being managed by the Linux kernel.</p>
+<h2>free command </h2>
+<p>Display free memory size in MB:</p>
+<p><code>$ free -m</code>Output:</p>
+<pre>             total       used       free     shared    buffers     cached
+Mem:           750        625        125          0         35        335
+-/+ buffers/cache:        254        496
+Swap:          956          0        956</pre>
+<p>Displays a line containing the totals memory in MB:<br />
+<code>$ free -t -m</code><br /> <br />
+Output:</p>
+<pre>       total       used       free     shared    buffers     cached
+Mem:           750        625        125          0         35        335
+-/+ buffers/cache:        253        496
+Swap:          956          0        956
+Total:        1707        625       1082</pre>
+<h2>vmstat command</h2>
+<p>Type vmstat command at shell prompt:</p>
+<p><code>$ vmstat</code><br /> <br />
+Output:</p>
+<pre>procs -----------memory---------- ---swap-- -----io---- --system-- ----cpu----
+r  b   swpd   free   buff  cache   si   so    bi    bo   in    cs us sy id wa
+1  0      0 131620  35432 341496    0    0    42    82  737  1364 15  3 81  1</pre>
+<h2>top command</h2>
+<p>Type top command at the shell prompt:<br />
+<code>$ top</code><br /> <br />
+Sample outputs:</p>
+<div id="attachment_8468" class="wp-caption alignnone" style="width:599px;">
+<a rel="attachment wp-att-8468" href="http://www.cyberciti.biz/faq/linux-check-memory-usage/linux-memory-usage-monitor-top-command/"><img class="size-full wp-image-8468" title="Find: Linux process memory usage command" src="http://files.cyberciti.biz/uploads/faq/2006/04/Linux-memory-usage-monitor-top-command.png" alt="Fig.01: top command displaying used memory" width="599" height="397" /></a></p>
+<p class="wp-caption-text">Fig.01: top command displaying used memory</p>
+</div>
+<p> <br />
+To exit from top command type q key. Read man page of free, vmstat, top command for more information.</p>
+<p>&nbsp;</p>
+<h2>GNOME Desktop: GUI Tool</h2>
+<p>The Gnome System Monitor application enables you to display basic system information and monitor system processes, usage of system resources, and file systems. You can also use System Monitor to modify the behavior of your system. You can start System Monitor by visiting <span style="color:#996633;">System</span> menu &gt; Choose <span style="color:#996633;">Administration</span> &gt; <span style="color:#996633;">System Monitor</span> option. Or type the following command at the shell prompt:</p>
+<pre class="bash">&nbsp;
+gnome-system-monitor
+&nbsp;</pre>
+<p>Sample outputs:</p>
+<div id="attachment_8471" class="wp-caption alignnone" style="width:599px;">
+<a rel="attachment wp-att-8471" href="http://www.cyberciti.biz/faq/linux-check-memory-usage/screenshot-system-monitor/"><img class="size-full wp-image-8471" title="Linux See Memory Usage With GUI System Monitor Tool" src="http://files.cyberciti.biz/uploads/faq/2006/04/Screenshot-System-Monitor.png" alt="Fig.02: Linux See Memory Usage With GUI System Monitor Tool" width="599" height="468" /></a></p>
+<p class="wp-caption-text">Fig.02: Linux See Memory Usage With GUI System Monitor Tool</p>
+</div>
+<p>&nbsp;</p>
+<p>----------------------------------------------------------------------------------------</p>
+<div class="intro FLC">
+<h1 id="nointelliTXT" class="Heading1a">2. <a href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html">How to Check Shared Memory on Linux</a></h1>
+<div class="info">
+<div class="byLine">
+<div class="author"><cite><span>By</span>&nbsp;<a class="jsNoFollow" rel="http://www.ehow.com/members/ds_8351f73d-556e-44c4-8811-e5f67070c254.html" href="http://www.ehow.com/members/ds_8351f73d-556e-44c4-8811-e5f67070c254.html">Garrett Genet</a>,&nbsp;<span>eHow Contributor</span></cite></div>
+<div class="dateUpdated"><span>updated: August 11, 2010</span></div>
+</div>
+<div class="Details">
+<p id="intelliTxt">Shared memory is responsible for the smooth operation of your system; it acts as a space that multiple programs can access at once. This enables those programs to communicate in sync, while avoiding file redundancy. Shared memory can exist in the system's physical RAM or the swap file (which is virtual memory). In&nbsp;<a class="iAs" href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html" target="_blank">Linux</a>&nbsp;operating systems, check the details of shared memory by typing in a few simple commands.</p>
+</div>
+</div>
+</div>
+<div class="article FLC">
+<div class="sectionTitle FLC">
+<div class="difficulty"><span>Difficulty:</span>&nbsp;Moderately Easy</div>
+<h2 class="Heading1a Underline header"><span>Instructions</span></h2>
+</div>
+<ol id="intelliTxt">
+<li id="jsArticleStep1">
+<div class="stepNumber">1</div>
+<p>Power on your&nbsp;<a class="iAs" href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html" target="_blank">system</a>&nbsp;and log in.</p>
+</li>
+<li id="jsArticleStep2">
+<div class="stepNumber">2</div>
+<p>Open a "Terminal" window.</p>
+</li>
+<li id="jsArticleStep3">
+<div class="stepNumber">3</div>
+<p>Type in "cat /proc/sys/kernel/shmall" and press "Enter." You'll see the total amount of shared memory available displayed in bytes.&nbsp;<span class="goog_qs-tidbit goog_qs-tidbit-0">The max size of a shared memory segment is displayed with "cat</span>&nbsp;/proc/sys/kernel/shmmax", and the total number of segments in the system is displayed with "cat /proc/sys/kernel/shmmni".</p>
+</li>
+</ol>
+</div>
+<p>&nbsp;</p>
+<p><span></p>
+<p>Read more:&nbsp;<a href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html#ixzz19eUg5rtL">How to Check Shared Memory on Linux | eHow.com</a>&nbsp;<a href="http://www.ehow.com/how_6849046_check-shared-memory-linux.html#ixzz19eUg5rtL">http://www.ehow.com/how_6849046_check-shared-memory-linux.html#ixzz19eUg5rtL</a></span></p>
+<p>&nbsp;</p>
+<p>-------------------------------------------------------------------------------------------</p>
+<p><span><br />
+</span></p>
+<h1>3. <a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html">Shared Memory Configuration</a></h1>
+<p>
+<span><img src="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/images/blueline.gif" alt="" /></span></p>
+<p>McIDAS-X 200<em>x</em>&nbsp;uses shared memory for a variety of tasks including frame allocation. By default, the shared memory facility is activated and should have sufficient maximum segment size on HP, IBM and SGI systems. However, this is not true for Sun systems running Solaris 2.<em>x</em>&nbsp;or Digital systems running True64.&nbsp;<span class="goog_qs-tidbit goog_qs-tidbit-0">On Linux systems, the amount of available shared memory appears is equivalent to</span>&nbsp;the combination of physical RAM and swap.</p>
+<p class="Body-Text">The system administrator should complete the steps below the first time McIDAS-X 200<em>x</em>&nbsp;is installed on Sun Solaris or Digital True64 workstations or if they desire to increase shared memory defaults on HP, IBM, or SGI systems.</p>
+<p>
+<span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#solaris">Sun Solaris 2.X</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#irix">SGI IRIX 6.x</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#hpux10">HP HP-UX 10, 11</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#aix">IBM AIX</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#osf1">Compaq Tru64 UNIX</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#linux">RedHat Linux</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#freebsd">FreeBSD 4.[789]</a></span><span><br /></span><span><a href="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/workstation.html#macos">MacOS-X 7.4.0</a></span></p>
+<p>&nbsp;</p>
+<h2 class="D-Head"><a name="solaris"></a>Sun Solaris 2.x</h2>
+<p class="Body-Text"><a name="pgfId=31995"></a>The system administrator must complete the steps below the first time McIDAS-X is installed on a Sun workstation running Solaris 2.<em>&nbsp;x</em>&nbsp;.</p>
+<ol>
+<li>&nbsp;
+<ul>
+<p class="Type/Press"><a name="pgfId=28226"></a>Type:&nbsp;<strong>/usr/sbin/sysdef | grep SHMMAX</strong></p>
+<table border="1">
+<tbody>
+<tr>
+<td valign="TOP">
+<pre class="Screen"><a name="pgfId=124517"></a>
+536870912 max shared memory segment size (SHMMAX)</pre>
+</td>
+</tr>
+</tbody>
+</table>
+</ul>
+</li>
+<p class="firstnum"><a name="pgfId=28222"></a>1.	Force the kernel to activate the shared memory system at boot time by adding the line below to the appropriate location in the file&nbsp;<br /><strong>/etc/system</strong>&nbsp;.</p>
+<table border="1">
+<tbody>
+<tr>
+<td valign="TOP">
+<pre class="Screen"><a name="pgfId=28466"></a>
+forceload: sys/shmsys</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="Numbers"><a name="pgfId=28225"></a>2.	Check the maximum size of a shared memory segment using the command below. The value is indicated in bytes; the example lists a 512 MB maximum shared memory segment.</p>
+<p class="Numbers-Text"><a name="pgfId=28228"></a>If your value is less than 512 MB, go to step 3. If your value is 512 MB or greater, go to step 4.</p>
+<p class="Numbers"><a name="pgfId=28230"></a>3.	<span class="goog_qs-tidbit goog_qs-tidbit-1 goog_qs-tidbit-hilite">Set the shared memory size to 512 MB by adding the line below to the</span>&nbsp;appropriate location in the file&nbsp;<strong>/etc/system</strong>&nbsp;.</p>
+<table border="1">
+<tbody>
+<tr>
+<td valign="TOP">
+<pre class="Screen"><a name="pgfId=28496"></a>
+set shmsys:shminfo_shmmax = 536870912</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="Numbers"><a name="pgfId=28233"></a>4.	Reboot the system so the forceload entry and 512 MB maximum shared memory size take effect.</p>
+</ol>
+<p><span><a name="irix"></a></span></p>
+<h2 class="D-Head">SGI IRIX 6.x</h2>
+<p class="Body-Text">On Irix, SHMMAX defaults to 512 MB (0x20000000 bytes), so tuning this parameter is unlikely to be needed. SHMMAX is found in&nbsp;<strong>/var/sysgen/mtune/shm</strong>.</p>
+<p>
+<span><a name="hpux10"></a></span></p>
+<h2>HP HP-UX 10, 11</h2>
+<p>On HP-UX 10 and 11, the maximum value for SHMMAX is 1024 MB (0x40000000; the default value for 64 MB (0x04000000). SHMMAX is found in&nbsp;<strong>/etc/conf/master.d/core-hpux</strong>.</p>
+<p>The procedure for changing the parameter is similar, if not identical, to the one described for HP-UX 9.</p>
+<p>One way to check the current value of SHMMAX is to enter the following command:</p>
+<p class="Type/Press">Type:&nbsp;<strong>grep SHMMAX /etc/master</strong></p>
+<p>If the grep does not print anything, you are using the default value of 64 MB. If the grep prints something, the output might look like this:</p>
+<table border="1">
+<tbody>
+<tr>
+<td valign="TOP">
+<pre class="Screen"> shmmax          SHMMAX              0X20000000 </pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The value is&nbsp;<em>bytes</em>, so here the maximum segment size has been set to 512 MB.</p>
+<p>
+<span><a name="aix"></a></span></p>
+<h2>IBM AIX 4.x</h2>
+<p>The shmget(2) man page says that the maximum shared-memory segment size is 256 MB (0x10000000); this limit does not appear to be tunable.</p>
+<p>
+<span><a name="osf1"></a></span></p>
+<h2>Compaq Tru64 UNIX</h2>
+<p>The easiest way to increase shared-memory allocation on True64 is to use the GUI called&nbsp;<strong>dxkerneltuner</strong>, but one can also use the&nbsp;<strong>sysconfigdb</strong>&nbsp;command-line interface.</p>
+<p>Running&nbsp;<strong>dxkerneltuner</strong>&nbsp;and increasing the shared-memory size to 64 MB will result in the following entry in the file /etc/sysconfigtab:</p>
+<p>
+<span><br />
+</span></p>
+<pre> ipc:
+       shm-max=67108864
+</pre>
+<p>
+<span>The following are the out-of-the-box defaults for the ipc subsystem for OSF/1 Version 4.0. They may be helpful for True64:</span><span><br />
+</span></p>
+<pre>% sysconfig -q ipc
+ipc:
+msg-max = 8192
+msg-mnb = 16384
+msg-mni = 64
+msg-tql = 40
+shm-max = 4194304
+shm-min = 1
+shm-mni = 128
+shm-seg = 32
+sem-mni = 16
+sem-msl = 25
+sem-opm = 10
+sem-ume = 10
+sem-vmx = 32767
+sem-aem = 16384
+num-of-sems = 60
+max-kernel-ports = 22487
+port-hash-max-num = 1124350
+port-reserved-max-num = 22487
+set-max-num = 1029
+ssm-threshold = 8388608
+ssm-enable-core-dump = 1
+</pre>
+<p>
+<span><a name="linux"></a></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>RedHat Linux</h2>
+<p>There appears to be two ways of (re)defining the amount of shared memory in your system (tips thanks to Dave Glowacki of SSEC):</p>
+<ul>
+<li>add this line to your /etc/rc.d/rc.local file:
+<p><tt>echo</tt>&nbsp;<em>shared_memory_size</em>&nbsp;<tt>&gt; /proc/sys/kernel/shmmax</tt></p>
+<p>(where&nbsp;<em>shared_memory_size</em>&nbsp;is the amount of shared memory you want to declare in bytes) and reboot.</p>
+<p><strong>Note:</strong>&nbsp;since this will be the last thing run before your system comes up, your McIDAS session won't get a larger shared memory segment if it's started during the boot process).</p>
+<p>&nbsp;</p>
+</li>
+<li>a more permanent solution would be to change the value of SHMMAX in&nbsp;<tt>/usr/src/linux/include/asm/shmparam.h</tt>&nbsp;and rebuild your kernel</li>
+</ul>
+<p><a name="freebsd"></a></p>
+<h2>FreeBSD 4.[789]</h2>
+<p>Shared memory parameters are only read when the system goes from single user to multi user mode.</p>
+<p>Add setting of shared memory max to&nbsp;<strong>/etc/sysctl.conf</strong></p>
+<p>
+<span><br />
+</span></p>
+<pre># $FreeBSD: src/etc/sysctl.conf,v 1.1.2.3 2002/04/15 00:44:13 dougb Exp $
+#
+#  This file is read when going to multi-user and its contents piped thru
+#  ``sysctl'' to adjust kernel values.  ``man 5 sysctl.conf'' for details.
+#
+kern.ipc.shmmax=536870912
+</pre>
+<p>
+<span>and then reboot.</span></p>
+<p>&nbsp;</p>
+<p><a name="macos"></a></p>
+<h2>MacOS-X 7.4.0 (Panther)</h2>
+<p>In the Panther release of MacOS-X, shared memory is set in the file&nbsp;<strong>/etc/rc</strong>. The default settings will look something like:</p>
+<p>
+<span><br />
+</span></p>
+<pre># System tuning
+sysctl -w kern.maxvnodes=$(echo $(sysctl -n hw.physmem) '33554432 / 512 * 1024 +p'|dc)
+sysctl -w kern.sysv.shmmax=4194304
+sysctl -w kern.sysv.shmmin=1
+sysctl -w kern.sysv.shmmni=32
+sysctl -w kern.sysv.shmseg=8
+sysctl -w kern.sysv.shmall=1024
+</pre>
+<p>&nbsp;</p>
+<p>We recommend changing this to:</p>
+<p>
+<span><br />
+</span></p>
+<pre># System tuning
+sysctl -w kern.maxvnodes=$(echo $(sysctl -n hw.physmem) '33554432 / 512 * 1024 +p'|dc)
+sysctl -w kern.sysv.shmmax=536870912
+sysctl -w kern.sysv.shmmin=1
+sysctl -w kern.sysv.shmmni=4096
+sysctl -w kern.sysv.shmseg=4096
+sysctl -w kern.sysv.shmall=131072
+</pre>
+<p>&nbsp;</p>
+<p>After making these changes, the system will need to be rebooted for the changes to take effect.</p>
+<p><img src="http://www.unidata.ucar.edu/software/mcidas/2004/users_guide/images/blueline.gif" alt="" /></p>
+<p>&nbsp;</p>
+</div>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/12/02/kshell-tips">Ksh的几点小技巧</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-12-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<ol>
+<li>在一个函数(function)中，如果不希望局部变量影响到全局变量或环境变量，可以用typeset来定义。</li>
+<li>对于多个参数的函数或脚本，对多个输入参数的处理有两种办法：</li>
+</ol>
+<ul>
+<li>一是利用如下方式：</li>
+</ul>
+<p>
+<pre>while (($# != 0)) 
+do 
+      # process $1 
+      shift 
+done </pre>
+<p>&nbsp;</p>
+<ul>
+<li>另一种方法是利用如下方式：</li>
+</ul>
+<p>
+<pre>while getopts :A:B:c:d:e:E:C:i:G:L:M:R:hD:V OPT; do
+	case $OPT in
+	A)	export E_CONFIG=${OPTARG}
+		;;
+	B)	Banner=$(echo "$OPTARG" | tr '%' ' ');;
+	C)	Mach="-m $OPTARG"; MachName=$OPTARG;;
+	D)	DBDir=$OPTARG;;
+	G)	TRCellGen=$OPTARG;;
+	i)	iconic='-iconic';;
+	L)  Lab3BEM=$OPTARG;;
+	M)  NumMobileSub=$OPTARG;;
+	esac
+done
+shift OPTIND-1</pre>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2010/11/28/plan9-intro-note-1">Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(I)</a></h2>
     <p>
@@ -305,487 +1852,6 @@ void main()
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/11/16/debugging-perl">Debugging Perl</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-11-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><strong>&nbsp;How to Debug Perl Library and Scripts?</strong></p>
-<p>&nbsp;</p>
-<p><span style="font-family:Arial, sans-serif;"><span style="font-size:small;"><span lang="ru-RU"><strong>1.&nbsp;Changing<br />
-@INC - where Perl loads its modules<br />
-</strong></span></span></span><span style="color:#bb0000;"><span style="font-family:'Arial Narrow', sans-serif;"><span style="font-size:medium;">(</span></span></span><a href="http://www.wellho.net/mouth/588_Changing-INC-where-Perl-loads-its-modules.html"><span style="color:#0000ff;"><span style="text-decoration:underline;">http://www.wellho.net/mouth/588_Changing-INC-where-Perl-loads-its-modules.html</span></span></a><span style="color:#bb0000;"><span style="font-family:'Arial Narrow', sans-serif;"><span style="font-size:medium;">)</span></span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;">&nbsp;</span></span></p>
-<p><span style="font-family:Arial, sans-serif;"><span style="font-size:small;">The<br />
-@</span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:small;"><strong>INC</strong></span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:small;">&nbsp;array<br />
-is a list of directories&nbsp;</span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:small;"><strong>Perl</strong></span></span><span style="font-family:Arial, sans-serif;"><span style="font-size:small;">&nbsp;searches<br />
-when attempting to load modules.&nbsp;</span></span></p>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>Where<br />
-does Perl load modules from in its&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>use</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;and&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>require</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;statements?<br />
-It loads them from directorys in a special list called&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>@INC</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>,<br />
-from files with a .pm extension in those directorys.&nbsp;<br />&nbsp;<br />When<br />
-Perl's installed, @INC is set to a list of directorys that includes<br />
-generic locations for its standard modules, some release specific<br />
-directories, and "." the current directory, which are<br />
-checked in order each time you do a&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>use</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;or&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>require</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>.&nbsp;<br />&nbsp;<br /></span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span style="text-decoration:underline;"><span>Some<br />
-ways to modify @INC</span></span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;</span></span></span></span></p>
-<ul>
-<li>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>**<br />
-	You can add to the list in @INC by using the -I command line option:</span></span></span></span></p>
-</li>
-</ul>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>perl<br />
--I /Users/grahamellis/jan06 i2</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;<br />says<br />
-"run the perl program i2, additionally checking the jan06<br />
-directory for modules"&nbsp;</span></span></span></span></p>
-<ul>
-<li>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>**<br />
-	You can add to the list within your program by doing so in a BEGIN<br />
-	block prior to the&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>use</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;statements:</span></span></span></span></p>
-</li>
-</ul>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>BEGIN<br />
-{&nbsp;<br />push @INC,"/Users/grahamellis/jan06";&nbsp;<br />}&nbsp;<br />use<br />
-demo;&nbsp;<br />print "hello world";&nbsp;</span></span></span></span></p>
-<p>
-<span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>Rather<br />
-curiously,&nbsp;</span></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>use</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;calls<br />
-are run at compile time not at run time ... but then so are BEGIN<br />
-blocks ... so you put your manipulation of @INC into one of those to<br />
-get it to happen early enough.&nbsp;</span></span></span></span></p>
-<ul>
-<li>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>**<br />
-	You can add to the beginning of the list by setting the PERL5LIB<br />
-	environment variable prior to running your program:</span></span></span></span></p>
-</li>
-</ul>
-<p>
-<span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><strong><span>export<br />
-PERL5LIB=/Users/grahamellis/jan06</span></strong></span></span></span><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>&nbsp;</span></span></span></span></p>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>and<br />
-you can use a colon separated list for that if you want to pre-pend<br />
-more than one directory.</span></span></span></span></p>
-<ul>
-<li>
-<p><span style="color:#000000;"><span style="font-family:Arial, sans-serif;"><span style="font-size:x-small;"><span>**There<br />
-	is also the "use lib" pragma - this is probably the most<br />
-	common approach. And $PERL5LIB can also be called just $PERLLIB.</span></span></span></span></p>
-</li>
-</ul>
-<h3 class="western">2.<br />
-Debugging Perl&nbsp;<a href="http://ralphie.perlmonk.org/mosix/debug.html"><span style="color:#0000ff;"><span style="font-family:Verdana, sans-serif;"><span style="font-size:x-small;"><span style="text-decoration:underline;"><span>http://ralphie.perlmonk.org/mosix/debug.html</span></span></span></span></span></a></h3>
-<p><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><span>To<br />
-check the syntax of your scripts, type "</span></span></span><span style="color:#ff0000;"><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><strong><span>perl<br />
--c&nbsp;</span></strong></span></span></span><span style="color:#ff0000;"><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><em><strong><span>scriptname</span></strong></em></span></span></span><span style="color:#ff0000;"><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><strong><span>.pl<br />
-</span></strong></span></span></span><span style="font-family:'Times New Roman', serif;"><span style="font-size:x-small;"><span>"<br />
-. It is also worthwhile to add the -w switch ("perl -cw ..."),<br />
-to turn on warning mode. If you were wise enough to "use strict"<br />
-in the body of the code, the syntax check will also specify<br />
-inappropriate scalar scoping, which goes a little beyond the normal<br />
-syntactical problems that are identified. Once your script will pass<br />
-through the syntax check with a "syntax ok" message, you<br />
-will have a legal perl script from the standpoint that all of the<br />
-statements are legal perl statements. That doesn't mean that the<br />
-manner in which any given statement is expressed will return the<br />
-result that you are looking for, that the functions that are used in<br />
-the code are the right ones for the job, or that the overall<br />
-structure of the script does anything like what you think it supposed<br />
-to do. It just means that all of the perl i's are dotted and t's are<br />
-crossed. (On the other hand, this is not such a minor thing, either.)</span></span></span></p>
-<p><span style="font-family:Arial, sans-serif;"><span style="font-size:small;"><span lang="ru-RU"><strong>3.<br />
-perldebug</strong></span></span></span><span style="font-size:x-small;"><br />
-(</span><span style="color:#000080;"><span lang="zxx"><span style="text-decoration:underline;"><a href="http://perldoc.perl.org/perldebug.html">http://perldoc.perl.org/perldebug.html</a></span></span></span><span style="font-size:x-small;">)</span></p>
-<p lang="en-US"><span style="font-size:x-small;">Calling<br />
-the debugger</span></p>
-<p lang="en-US"><span style="font-size:x-small;">There<br />
-are several ways to call the debugger:</span></p>
-<ul>
-<li>
-<p lang="en-US"><a name="perl--d-program_name"></a><br />
-<span style="font-size:x-small;"><strong>perl -d program_name</strong></span></p>
-</li>
-</ul>
-<p lang="en-US"><span style="font-size:x-small;">On<br />
-the given program identified by&nbsp;program_name&nbsp;.</span></p>
-<ul>
-<li>
-<p lang="en-US"><a name="perl--d--e-0"></a><br />
-<span style="font-size:x-small;"><strong>perl -d -e 0</strong></span></p>
-</li>
-</ul>
-<p lang="en-US"><span style="font-size:x-small;">Interactively<br />
-supply an arbitrary&nbsp;expression&nbsp;using&nbsp;-e&nbsp;.</span></p>
-<ul>
-<li>
-<p lang="en-US"><a name="perl--d%3APtkdb-program_name"></a><br />
-<span style="font-size:x-small;"><strong>perl -d:Ptkdb program_name</strong></span></p>
-</li>
-</ul>
-<p lang="en-US"><span style="font-size:x-small;">Debug<br />
-a given program via the&nbsp;Devel::Ptkdb&nbsp;GUI.</span></p>
-<ul>
-<li>
-<p lang="en-US"><a name="perl--dt-threaded_program_name"></a><br />
-<span style="font-size:x-small;"><strong>perl -dt<br />
-	threaded_program_name</strong></span></p>
-</li>
-</ul>
-<p lang="en-US"><span style="font-size:x-small;">Debug<br />
-a given program using threads (experimental).</span></p>
-<h3 class="western"><span lang="en-US">4. </span><span lang="en-US">Summary<br />
-of Subprocess Operations</span></h3>
-<table style="width:590px;" border="1" cellspacing="3" cellpadding="3">
-<col width="191" />
-<col width="90" />
-<col width="91" />
-<col width="87" />
-<col width="84" />
-<thead>
-<tr>
-<td colspan="5" width="578">
-<p lang="en-US" align="CENTER"><a name="ch14-pgfId-121"></a><span style="font-size:x-small;">Table<br />
-				14.1: Summary of Subprocess Operations</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Operation</strong></span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Standard<br />
-				Input</strong></span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Standard<br />
-				Output</strong></span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Standard<br />
-				Error</strong></span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;"><strong>Waited<br />
-				for?</strong></span></p>
-</td>
-</tr>
-</thead>
-<tbody>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">system()</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">Yes</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">Backquoted<br />
-				string</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">Captured as<br />
-				string value</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">Yes</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">open()&nbsp;command<br />
-				as filehandle for output</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">Connected to<br />
-				filehandle</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">Only at time<br />
-				of&nbsp;close()</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">open()&nbsp;command<br />
-				as filehandle for input</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">Connected to<br />
-				filehandle</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">Inherited<br />
-				from program</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">Only at time<br />
-				of&nbsp;close()</span></p>
-</td>
-</tr>
-<tr valign="TOP">
-<td width="191">
-<p lang="en-US"><span style="font-size:x-small;">fork,&nbsp;exec,&nbsp;wait,&nbsp;waitpid</span></p>
-</td>
-<td width="90">
-<p lang="en-US"><span style="font-size:x-small;">User<br />
-				selected</span></p>
-</td>
-<td width="91">
-<p lang="en-US"><span style="font-size:x-small;">User<br />
-				selected</span></p>
-</td>
-<td width="87">
-<p lang="en-US"><span style="font-size:x-small;">User<br />
-				selected</span></p>
-</td>
-<td width="84">
-<p lang="en-US"><span style="font-size:x-small;">User<br />
-				selected</span></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p lang="en-US">&nbsp;</p>
-<p><span style="font-size:x-small;"><span lang="en-US">Above<br />
-table is from the book </span></span><span style="font-size:x-small;"><span lang="en-US"><em><strong>Learning<br />
-Perl</strong></em></span></span><span style="font-size:x-small;"><span lang="en-US">.</span></span></p>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/11/05/update-fedora12-to-fedora14">升级Fedora 12到最新的Fedora 14</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-11-05</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Fedora 14于11月2号正式发布了，而我的Fedora 12已经用了1年多了，尽管仍然十分稳定，但还是想着赶赶潮流。</p>
-<p>&nbsp;</p>
-<p>完全重装当然是舍不得的，于是Google了一下，发现了preupgrade这个Tool可以用来升级系统，详情参见：<a href="http://fedoraproject.org/wiki/PreUpgrade">http://fedoraproject.org/wiki/PreUpgrade</a>。</p>
-<p>&nbsp;</p>
-<p>升级还是很傻瓜话的，惟一的问题就是由于我家网络不太好，下载升级包的过程中找不到mirror而终端过一次。重新开始之后，正好是凌晨5~6点，以平均600K的速度疯狂下载，很快就把1917个升级包下好了，然后就是安装，没什么好说的。</p>
-<p>&nbsp;</p>
-<p>升级完之后检查了一下软件的兼容性，发现除极个别的软件之外，如aMule和Vim (vi可以)，其它都可以正常工作。aMule又得重新编译了。</p>
-<p>&nbsp;</p>
-<p>升级之后，用package-cleanup --orphans查了一下垃圾软件包，不是很多。看见这些垃圾我就很不爽，于是就准备手动删除它们。第一个要删的就是ModemManager，用的命令是yum remove XXX，由于没仔细看它的dependency，结果直接输入y之后把所有depend on它的NetworkManager们都给删了，于是乎我的网络中断了&hellip;&hellip;</p>
-<p>&nbsp;</p>
-<p>好在我为防不测，已经下好了Fedora14的DVD ISO文件，于是挂载上ISO之后到它的Packages里面找到ModemManager和NetworkManager们，统统装上，重启，网络又OK了！</p>
-<p>&nbsp;</p>
-<p>由此可见，升级有风险，删包需谨慎。</p>
-<p>&nbsp;</p>
-<p>总体而言，Fedora14和以前版本Gnome界面上变化不是很大，感觉稳定性资源利用率有所提高，某些软件的易用性有所增强&mdash;&mdash;每次进步一点点，这就够了！</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/10/29/tianhe-1a">国外网友对我天河-1A成为世界最快计算机的评论</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-10-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>&nbsp;</p>
-<div>
-<h1 id="zw-12bf62e940fsmdD0S3916c"><span style="font-weight:normal;font-size:12px;"><span id="zw-12bf62e9410QREo_V3916c">某国外的网友贴出了这样一则消息（</span><a id="zw-12bf62e94101SduHA3916c" href="http://tech.slashdot.org/story/10/10/28/1220247/China-Makes-Worlds-Fastest-Supercomputer"><span id="zw-12bf62e9411wRz5o03916c">http://tech.slashdot.org/story/10/10/28/1220247/China-Makes-Worlds-Fastest-Supercomputer</span></a><span id="zw-12bf62e9411p82gF3916c">）：</span></span></h1>
-<p><span><br /></span></p>
-<p id="zw-12bf62e9412uHrXcI3916c"><span id="zw-12bf62e94125hqCV3916c">"China has replaced the United States&nbsp;<span><a id="zw-12bf62e9413YB7FOJ3916c" href="http://www.ibtimes.com/articles/76731/20101028/tianhe-1a-tianhe-supercomputer-fastest-supercomputer-china-us-nvidia-amd-gpum-cpu-chip-semiconductor.htm"><span id="zw-12bf62e9414fTBghw3916c">as the maker of the world's fastest supercomputer</span></a></span></span><span id="zw-12bf62e9415ocXyUJ3916c">. A Chinese research center has made the world's faster super computer &mdash; named as Tianhe-1A, which was released at a national conference on high-performance computers (HPC) in China. Made at a cost of over $88 million, Tianhe-1A is theoretically able to do more than 1 quadrillion calculations per second (one petaflop) at peak speed. Tianhe-1A 's peak performance reaches 1.206 petaflops, and it runs at 563.1 teraflops (1,000 teraflops is equal to one petaflop) on the Linpack benchmark."</span></p>
-<p><span><br /></span></p>
-<p id="zw-12bf62e9415QPOGpp3916c"><span id="zw-12bf62e9415P43W2W3916c">其他外国网友们的回复，很有意思（【】中是我的点评）：</span></p>
-<p id="zw-12bf62e9416YWL68b3916c">&nbsp;</p>
-<ol id="zw-12bf62e941d86XE0C3916c">
-<li id="zw-12bf62e9417PYFRGZ3916c"><span id="zw-12bf62e9417fts3P3916c">But does it run (Red Flag) Linux? 【虽然我也不知道是不是跑得红旗&ldquo;国产操作系统&rdquo;，但这位哥们竟然知道Red Flag Linux的存在，&ldquo;核高基&rdquo;的那群砖家叫兽们还不得内牛满面？】</span></li>
-<li id="zw-12bf62e94179SBbA83916c"><span id="zw-12bf62e9418Xp5a6T3916c">China: "We made the fastest super-computer!!!" &nbsp;&nbsp;</span><span id="zw-12bf62e9419c_cWLp3916c">Intel and NVidia: "Uh - no you didn't, We are own all your processors!!!" &nbsp;</span><span id="zw-12bf62e9419cB-0FM3916c">【我也这么认为】</span></li>
-<li id="zw-12bf62e9419YPcv_43916c"><span id="zw-12bf6313cd4XEdq1-3916c">Yeah, lets borrow more money from the Chinese Government so we can build a useless supercomputer to outdo them - just to say we did it! Thanks, grandkids! 【</span><span id="zw-12bf6313d3aDEFzy3916c">看来景德镇政府这个土大款声名远播了</span><span id="zw-12bf6313cd55X9Zc43916c">】</span></li>
-<li id="zw-12bf62e941aPDMvMg3916c"><span id="zw-12bf62e941a_tcYVd3916c">Sadly, China needed to build this computer simply to calculate the interest on the US debt in realtime. 【这哥们肯定是美国人】</span></li>
-<li id="zw-12bf62e941bEOGmUt3916c"><span id="zw-12bf62e941bMP5pKv3916c">Competitive in what, exactly? We have many supercomputers in the USA; we have no idea what to do with them, though, and many of them are spending a lot of time idle. Some supercomputers are now being rented out to investors, because the people the computers were built for -- the scientists -- are not using enough computer time. 【美国的HPC真的多的用不了了？貌似不是吧&hellip;&hellip;模拟一次军事演习或者核爆，就需要N多HPC。不过这哥们的评论要是把USA改成景德镇，那倒是无可争辩的事实&mdash;&mdash;想想研究生期间实验室里闲置了好几年的好几台IBM服务器，买了之后就没人动过它们&hellip;&hellip;】</span></li>
-<p id="zw-12bf62e941buEYRKn3916c"><span id="zw-12bf62e941cV0pU83916c">What we really need to do is look at the state of research in this country.【这句话说到点子上了。】 Also, maybe if we had a more solid economic base, one in which we solve the trade imbalance by exporting real goods rather than copyrights, we could spend more money on science and supercomputing. Oh well, in your words, "who am I kidding?" 【这句话就说明上段评论是酸葡萄心理了。】</span></p>
-<p id="zw-12bf62e941buEYRKn3916c">&nbsp;</p>
-<li>Oh my. When have I heard this before? Oh yes, back in the 1980s when there was panic and hyperbole over Japan, Inc. overtaking the USA in everything. How did that pan out exactly? I don't see how the current situation with China is any different. 【严重同意这位美国哥们的观点】</li>
-<li id="zw-12bf62e941eAb7jw_3916c"><span id="zw-12bf62e941eLorx_13916c">另一哥们对上条评论的回复：</span></li>
-<p id="zw-12bf62e941f6PKvln3916c"><span id="zw-12bf62e941fx2ST93916c">China is way different from Japan. For starters, it has resources, and it can play the game any way it wants to. Japan could only play hardball (</span><span id="zw-12bf62e941fqbYpPj3916c">采取强硬态度</span><span id="zw-12bf62e941fbe67lL3916c">)&nbsp;economically. China can at any time choose to overrun Korea and Taiwan at any time if they choose to, and the only recourse would either be a hard fought conventional war, or a nuclear exchange.&nbsp;</span></p>
-<p id="zw-12bf62e941flTXoAn3916c"><span id="zw-12bf62e9420RngW13916c">China can fight dirty(下黑手). Japan cannot. And China is good at fighting dirty, because they "won" two wars (Korea and Vietnam) by proxy, sending in men and materials to do what the native population couldn't. If China chose to, they could easily turn up the heat in other areas hostile to the US by sending in troops and munitions. China could hand Iran the tools to seize control of the Strait of Hormuz and there would be nothing the US could do about it except engage in another theater of war which would be unwinnable. 【看来这哥们对景德镇政府的成见很深啊】</span></p>
-<p id="zw-12bf62e9420RTqSrt3916c">&nbsp;</p>
-<li id="zw-12bf62e9420D6Zrn13916c"><span id="zw-12bf62e9420eUz3ug3916c">一哥们回复说把这世界上&ldquo;最牛逼&rdquo;的超级电脑装在世界上&ldquo;最牛逼&rdquo;的和谐号上会如何？</span></li>
-<blockquote id="zw-12bf62e9420CqmsNq3916c">
-<div id="zw-12bf62e94201g9eHG3916c">
-<p id="zw-12bf62e9420VDT7uw3916c"><span id="zw-12bf62e9421vPYLjP3916c">Would there be a benefit to putting the fastest computer in the fastest train?</span></p>
-</div>
-</blockquote>
-<p id="zw-12bf62e9421z2nvB_3916c"><span id="zw-12bf62e94224Mjie13916c">Hmmm.... if the train was going fast enough for relativistic effects to kick in, then this would make the computer *even faster*. You, sir / ma'am, are brilliant! 【这哥们的回答很无厘头】</span></p>
-<p id="zw-12bf62e942209Bsf3916c">&nbsp;</p>
-<li id="zw-12bf62e94221i1hyD3916c"><span id="zw-12bf62e9422qTdofz3916c">Finally they will be able to computerize the national census procedures.【直接怀疑这哥们是间谍，竟然连我景德镇人口普查的具体方式都了若指掌&mdash;&mdash;在2010年的今天，还让街道大妈挨家挨户拿着表格手工填&hellip;&hellip; 不过这哥们应该还是不了解我景德镇的镇情，如此一来解决了多少社会闲散人员的就业，拉动了多少内需，满足了多少文革遗老遗少（街道的那些人）的虚荣心，加强了多少社会的和谐啊！】</span></li>
-<li id="zw-12bf62e9423twMN0K3916c"><span id="zw-12bf62e94237NMxnQ3916c">Supercomputing is largely a solved problem...do a regression analysis on the variables on the Top 500 sometime. Primarily it's a function of the number of cores. I've told people in my own workplace - you want a machine on the Top 500 then write me a cheque - making a supercomputer isn't the feat of skill or engineering that it was in the days of Cray. This doesn't even touch on what the hell you use these things for the problem space for parallel processing is clearly smaller than that of serial processing. Add to that the assertion that the number of useful applications drops off steeply as you add more cores (at some point you are left with only the "embarrassingly parallel" ones) and creating the largest supercomputer in the world is akin to saying you are creating the least useful computer in the world. Not to mention probably one of the least power efficient, highest maintenance costs, etc.. 【我相信这哥们说的是事实】</span></li>
-<p id="zw-12bf62e9423YX7CJm3916c"><span id="zw-12bf62e9424WWb2zt3916c">we went to the moon during a period of nationalist chest thumping, and when the nationalist chest thumping subsided, we haven't been back. countries that are interested in nationalist chest thumping: china, india, etc, are still pumping up their space programs</span></p>
-<p id="zw-12bf62e9424-vH37l3916c"><span id="zw-12bf62e94243UGizb3916c">what i am saying is, for all the evils of nationalism, scientific advancement in the realm of large projects seems to be a positive byproduct</span><span id="zw-12bf62e9425jUYNDl3916c">【至理名言啊！自建镇以来，我景德镇的所有的重大科技成果，那个不是副产品？记得大学期间，一位东南大学的老教授去给我们做讲座，回忆起当年许世友主政南京军区时，逼着他们在极端恶劣的环境下没日没夜的搞永动机，老教授唏嘘不已&hellip;&hellip;】</span></p>
-<p id="zw-12bf62e9425qg4frQ3916c"><span id="zw-12bf62e94255-YaJ3916c">for example, if we were still in a cold war with the ussr in the 1990s, i will bet you anything that this would have been completed and would be producing amazing science at this point in time:</span><a id="zw-12bf62e9426mtxNZb3916c" title="wikipedia.org" href="http://en.wikipedia.org/wiki/Superconducting_Super_Collider"><span id="zw-12bf62e9426te9YNw3916c">http://en.wikipedia.org/wiki/Superconducting_Super_Collider</span></a><span id="zw-12bf62e9427NGYjD3916c">&nbsp;[wikipedia.org] 【在我景德镇，这种例子俯拾皆是】</span></p>
-<p id="zw-12bf62e9427o4aFfF3916c">&nbsp;</p>
-<li id="zw-12bf62e9427aQydKt3916c"><span id="zw-12bf62e9427VE2g9k3916c">There is absolutely no consistency in numbers in this story. Some measurements show this computer to be about 45% slower than the Cray XT5 and some show it to be faster.&nbsp;</span><span id="zw-12bf62e94288iUhtS3916c">Given China's history of arbitrarily throwing out numbers to try to prop themselves up in the international community I cannot accept this as fact without some sort of independent verification.</span><span id="zw-12bf62e9428Sa1hdi3916c">&nbsp;If China has in fact created the worlds fastest supercomputer, I congratulate them on a job well done. But I am still skeptical about this story. Sounds like my government (US) is just looking for an excuse to spend billions more on a new supercomputer. 【兄弟，别说你一老美，连我一景德镇居民都不信！老外都知道我景德镇的浮夸之风了。】</span></li>
-</ol>
-</div>
-<p><span id="zw-12bf6545f50fkLGSD3916c">对于天河-1A是否是世界上最快的计算机，我不敢妄下结论，但可以肯定的是，</span><span id="zw-12bf6545f9as0ImxV3916c">天河-1A肯定是比上一代取得不小进步的，因此向工作在这个项目上的最底层的同志们致敬，道一声&ldquo;你们辛苦了！&rdquo; 活永远是你们这些基层人的来干，油水永远是领导们捞，功劳和荣耀永远是属于领导的，出了问题责任永远是你们的&mdash;&mdash;这是景德镇的传统。</span></p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/10/15/chrome8-processes">Chrome 8 进程的疑惑</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-10-15</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Browser-ref" rel="nofollow">Browser</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>最近一直习惯用Chrome打开多个网页，时间一长，就发现硬盘一直在高速旋转。一开始以为是公司的监控软件的原因，就忍了。知道今天早上，电脑持续很长时间的没反应之后，弹出对话框说某个plug-in一直在运行&hellip;&hellip;当时只有Chrome浏览器在工作，这个plugin只可能是Chrome的&hellip;&hellip; 关掉chrome后，硬盘还是高速旋转，打开任务管理器，发现还是有很多chrome进程在运行，很明显这些是跑飞了的chrome进程了。</p>
-<p>&nbsp;</p>
-<p>杀死所有chrome残留进程之后，我重新打开chrome浏览器，打开几个tab，对比Windows任务管理器、chrome任务管理器，发现了一些有趣的现象：</p>
-<p>&nbsp;</p>
-<p style="text-align:center;"><img src="http://bonny95.files.wordpress.com/2010/10/0_128711145593hi.gif" alt="" /></p>
-<p style="text-align:center;">Chrome运行时截图</p>
-<p>&nbsp;</p>
-<p style="text-align:center;"><img src="http://bonny95.files.wordpress.com/2010/10/0_1287111468b1zv.gif" alt="" /></p>
-<p style="text-align:center;">Windows任务管理器中的Chrome进程</p>
-<p>&nbsp;</p>
-<p style="text-align:center;"><img src="http://bonny95.files.wordpress.com/2010/10/0_1287111476mcts.gif" alt="" /></p>
-<p style="text-align:center;">Chrome任务管理器中的Chrome进程</p>
-<p style="text-align:left;">&nbsp;</p>
-<p style="text-align:left;">可以看出：</p>
-<ol>
-<li>Chrome任务管理器中所耗内存的数值比Windows任务管理器中显示的要小很多；</li>
-<li>实际打开了8个Tab，在Chrome任务管理器中却有12个；</li>
-<li>Chrome任务管理器显示有17个Chrome进程，而Windows任务管理器却显示有18个Chrome进程。</li>
-</ol>
-<p>等将来有时间时，好好研究一下这些问题。</p>
-<p>-----------------------------------------------------------------------------------------------------------</p>
-<p>Update: 2010-100-26</p>
-<p>&nbsp;</p>
-<p>Chrome 8 dev升级到8.0.552.11已经有一段时间了，虽说该升级版本已经修复了一些Chrome进程僵死的bug,但运行时间一长，该问题还是会出现的。</p>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/09/28/sick-in-phone">手机引发的思维定势</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-09-28</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<div>
-<p id="zw-12b55e53d82WN4si15bea0">早晨你一睁眼，发现早已天光大亮，不禁疑惑为什么手机的闹钟没有响。爬起来打开手机一看，满屏八糟<span id="zw-12b56bc5cc4JOP35J15bea0">​</span><span id="zw-12b56bc5c44td-05U15bea0">​</span><span id="zw-12b56bc5bc56RLN-15bea0">​</span><span id="zw-12b56bc5b1c2zjOFn15bea0">​</span>的英文字母&mdash;&mdash;Oh, my god<span id="zw-12b56bca6ebdi8_mo15bea0">​</span><span id="zw-12b56bca5dbFHNez15bea0">​</span><span id="zw-12b56bca49bDmE0mg15bea0">​</span><span id="zw-12b56bca3cbUr433S15bea0">​</span><span id="zw-12b56bca22b5msouI15bea0">​</span><span id="zw-12b56bca12bDtMNIv15bea0">​</span><span id="zw-12b56bc9fccz4uS7i15bea0">​</span><span id="zw-12b56bc9f1b86HFJf15bea0">​</span><span id="zw-12b56bc923bsvbK7515bea0">​</span><span id="zw-12b56bc913beknohb15bea0">​</span><span id="zw-12b56bc8e2bQsDmYr15bea0">​</span><span id="zw-12b56bc8d3c_T9wHh15bea0">​</span>，你的手机怎么了?!凭着自己几年程序员的经验，匆匆瞥一眼最后一行的提示，按下&lt;Home&gt;键，满屏的英文字母变成了一个巨大的惊叹号，然后就无论你怎么操作都不再有反应了&hellip;&hellip;病毒？系统崩溃？还是硬件错误？</p>
-<p id="zw-12b56be971c0FstCk15bea0">你略加思索，然后打开手机后盖，拆掉电池然后重新装上，开机，终于等来了久违的&ldquo;HTC&rdquo;这三个字母。你沾沾自喜，大多数软件问题都可以通过重启系统解决&hellip;&hellip;&ldquo;HTC&rdquo;这三个字母很快就变成了Sprint的开机动画&mdash;&mdash;你的手机是水货，Sprint定制的HTC的EVDO Android手机<span id="zw-12b56c1b795s3FbOQ15bea0">​</span><span id="zw-12b56c11a883NK-S15bea0">​</span><span id="zw-12b56c11a48yZcw9-15bea0">​</span><span id="zw-12b56c119a8hmriSA15bea0">​</span><span id="zw-12b56c11918JgGv0415bea0">​</span><span id="zw-12b56c11858cKktT15bea0">​&mdash;&mdash;当你的信息更加坚定之时，突然手机左上角的提示等闪了两下，整个屏幕黑暗了&hellip;&hellip;</span></p>
-<p id="zw-12b56c2d25aTuBKvr15bea0"><span id="zw-12b56c2d25ayqbo6J15bea0">你重新开机，重新看到HTC，重新看到Sprint，这次还看到了Android的小机器人，你开始紧张，左上角的红灯又闪了两下，屏幕再次变暗&hellip;&hellip;反复几次，重启并没有解决问题&hellip;&hellip;OMG，花几千块钱刚买了不到一年的手机竟然无法开机！你抓狂了&hellip;&hellip;</span></p>
-<p id="zw-12b56c5afa4q-idaS15bea0"><span id="zw-12b56c5afa4DlbViG15bea0">中秋那天你陪你老婆去天安门看巨型牡丹，拍照时你那素有&ldquo;破坏之王&rdquo;美誉的老婆把你的手机摔了一下&mdash;&mdash;一下摔倒了手机的右下角和右上角&mdash;&mdash;感谢毛爷爷，你的手机捡起来还能继续用。是的，是能用的，因为昨天晚上你还用它给你妈妈打电话。但会不会是因为摔了那一下把某个芯片的焊点摔松了，尽管当时能work，时间一长就脱焊了？很有可能。</span></p>
-<p id="zw-12b56c9da83ERlIP015bea0"><span id="zw-12b56c9da83EYncvR15bea0">不管是不是硬件的问题，你都得先试试通过软件能不能修复&mdash;&mdash;这也是你唯一有可能控制的东西。你想按一下&lt;Reset&gt;回复到出厂设置，但你又担心这样一来不仅删除了所有已经保存的信息，而且由于中美CDMA手机之间的差异，这手机必须得破解、写号之后才能用，而这，是非常恐怖的事情&hellip;&hellip;好在你终于还是无法找到那个&lt;Reset&gt;小孔，否则你很难保证能战胜心中按下它的欲望。</span></p>
-<p id="zw-12b56cd9ffelZfZud15bea0"><span id="zw-12b56cd9ffeSWSW8I15bea0">看来这手机只能慢慢修了。可是你最近又非常忙，忙工作，忙自己的事情，根本没时间也没心情去搞一部坏了的手机。即使有了时间有了心情，你对于Android只有一个肤浅的认识，怎么进入debug模式都不知道，又谈何修复？于是你的头越来越大&hellip;&hellip;</span></p>
-<p id="zw-12b56e282f9Xrr-3G15bea0"><span id="zw-12b56e282f9s_0vC615bea0">好在还有去年的一部旧手机可以用，虽说破了点，但能打电话，将就一下吧。你翻箱倒柜把它找出来，插上卡，开机，果然还能用。</span></p>
-<p id="zw-12b56cff0269jLnoH15bea0"><span id="zw-12b56cff026KlJynG15bea0">你稍稍冷静了一下，边洗脸刷牙边考虑接下买什么手机&hellip;&hellip;HTC的？算了，坏了的这个就是HTC质量的写照，本来去年就是本着支持国产（虽说HTC是台湾的企业，但你坚信台湾是中国不可分割的一部分，因此你对所有的台资企业和大陆企业一视同仁）品牌和Google去买的这款手机。Moto？高端的贵了点，低端的差了点。Nokia、三星直流不予考虑。iPhone?贵了点，还得换运营商，而且那两家运营商的资费都很不靠谱，还三天两头骗我们，算了&hellip;&hellip;要不就还是先用这个能用破手机，然后等iPad2出来买个iPad吧，反正买智能机也不过就是为了能在漫长的等待的过程中看电子书，比如等班车的时候，等着下车的时候，等着上菜的时候&hellip;&hellip;</span></p>
-<p id="zw-12b56d6cb17wO1bRk15bea0"><span id="zw-12b56d6cb17wGBnSB15bea0">吃早饭的时候，你决定边吃饭边再做一下最后的努力来看看那个HTC的手机能不能修复。你又重启了两次，还是那个样子。突然，你意识到，左上角红灯闪的时候，都是电池没电的征兆&hellip;&hellip;可这手机是昨天晚上才充好电的啊&hellip;&hellip;你试着插上电源，开机，你成功了！</span></p>
-<p id="zw-12b56d95b67Auy9ZA15bea0"><span id="zw-12b56d95b67_ig0eT15bea0">于是你终于搞清楚了问题的所在：昨晚睡觉前，你的手机还可以正常工作，可是在夜里不知道某个时候，手机的某个程序崩溃了，这就是你今早第一次开机时看到的满屏英文字母要说的事情&hellip;&hellip;这个问题应该是可以通过重启系统解决的，可由于昨夜系统崩溃后，手机的电源控制模块不能正常工作，很快就把手机电池的电耗光了，于是今天早晨你每次开机的时候，都只能开到一半，因为系统检测到剩余电量不足，就强行关机了。</span></p>
-<p id="zw-12b56dcaf74HRJ_B515bea0">本来是个非常简单的问题，而你的惯性思维斗了一个大大的圈子，才发现其本质所在。你应该庆幸，你也有了经验，不再是乳臭未干的小子。你应该悲哀，因为不知道什么时候，你就会为你的思维定势所累。</p>
-</div>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/09/21/special-var-in-ksh">Ksh中的$*和$@</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-09-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The meaning of $* and $@ is identical when not quoted or when used as a<br />
-parameter assignment value or as a file name.</p>
-<p>&nbsp;</p>
-<p>However, when used as a command argument, "$*" is equivalent to "$1<span class="docEmphasis">d</span>$2<span class="docEmphasis">d</span>..." , where <span class="docEmphasis">d</span> is the first character of the <span class="docEmphStrong">IFS</span> parameter, whereas "$@" is equivalent to "$1"<br />
-"$2" ....</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/09/14/clone-vm-in-ESXi">How to Clone VMs in ESXi</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-09-14</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#ESXi-ref" rel="nofollow">ESXi</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Virtual Machine-ref" rel="nofollow">Virtual Machine</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>&nbsp;</p>
-<p class="MsoNormal"><span lang="EN-US">1. Create a new VM (clone2) without a disk equipped.</span></p>
-<p class="MsoNormal"><span lang="EN-US">2. Use the VM tool to clone the disk from<br />
-the existing VM to the new VM. Usually, you can find all the VMs in the /vmfs/volumes/datastore1/.</span></p>
-<p class="MsoNormal">
-<pre>vmkfstools -i /vmfs/volumes/4c3b50b8-d57dc2fc-d2b7-00241d1852fa/Test_wjh/Test_wjh.vmdk /vmfs/volumes/4c3b50b8-d57dc2fc-d2b7-00241d1852fa/clone2/disk1.vmdk</pre>
-<p>&nbsp;</p>
-<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
-<p class="MsoNormal"><span lang="EN-US">3. On the client add the cloned disk to the<br />
-VM clone2</span></p>
-<p class="MsoNormal"><span lang="EN-US"><span>&nbsp;</span>&ldquo;edit settings&hellip; -&gt;<span>&nbsp; </span>Harware -&gt; add &ldquo;hard disk&rdquo; -&gt; &ldquo;using<br />
-existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose it.</span></p>
-<p class="MsoNormal"><span lang="EN-US">&nbsp;</span></p>
-<p class="MsoNormal"><span lang="EN-US">4. Power on the VM.</span></p>
-<p>&nbsp;</p>
-<p>[Warning]:</p>
-<ul>
-<li>You must shutdown the VM which you want to clone.</li>
-<li>The cloned VM is identical to the original one, including the physical address(MAC) of the network card, the network configuration and so on. So, please change such config after clone.&nbsp;</li>
-</ul>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -822,7 +1888,7 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">18</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">23</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -856,7 +1922,7 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
     
         <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
     
-        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">14</span></a>
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">15</span></a>
     
         <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
     
@@ -880,7 +1946,7 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">17</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">23</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -954,6 +2020,10 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
     
+        <a href="/tags.html#Architecture-ref" class="btn btn-mini">Architecture <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Cache-ref" class="btn btn-mini">Cache <span class="badge">1</span></a>
+    
         <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
@@ -962,16 +2032,40 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
     
         <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
     
+        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">1</span></a>
+    
   
 
 
 
+			</div>
+		</div>
+		<!-- /well -->
+        <div class="well">
+			<h4>Visitors</h4>
+			<div class="tag_box">
+				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4nm24yds2ph&amp;s=300&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
+	
 			</div>
         </div>
         <!-- /well -->
         <div class="well">
             <h3>Recent Posts</h3>
 	        <ul>
+			
+  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
+			
+  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
+			
+  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
+			
+  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
@@ -980,18 +2074,6 @@ existing virtual disk&rdquo; -&gt; find the &ldquo;disk1.vmdk&rdquo; and choose 
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
-			
-  			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
-			
-  			<li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">Coin Change Problem</a></li>
-			
-  			<li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">Text Justification</a></li>
-			
-  			<li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">Sort Colors</a></li>
-			
-  			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
-			
-  			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
 			
 			</ul>
         </div>

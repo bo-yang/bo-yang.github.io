@@ -42,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand" href="/">bo-yang</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -87,6 +87,456 @@
 		<div class="col-md-8">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/03/26/c-code-to-print-pascal-triangle">C++ Code to Print Pascal Triangle</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-03-26</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Alogrithm-ref" rel="nofollow">Alogrithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>
+	Printing Pascal Triangle seems like an easy problem, however, it is not that easy to print a good-looking Pascal Triangle.&nbsp;</p>
+<p>
+	To print the Pascal Triangle, for each line, first print spaces to the left of numbers, and then print digit numbers.</p>
+<p>
+	To calculate Pascal numbers, two assays can be used: one array to store numbers of above line, the other array to store numbers of this line. The first line has 1 number(1), the second lien has 2 numbers(1 1), the third line has three numbers(1 2 1) and so on.</p>
+<p>
+	To make the Pascal Triangle more readable, print spaces between two neighbor &nbsp;numbers in the same line.</p></p>
+<pre class="cpp">// Pascal triangle
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+const int WIDTH=7;
+int main()
+{
+	int* oldarr=new int[WIDTH]; // store numbers of above row
+	int* newarr=new int[WIDTH]; // store numbers of current row
+
+	for(int i=0;i&lt;WIDTH;++i) // cntrol row counting
+	{
+		for(int j=0;j&lt;WIDTH-i-1;++j) // left space
+			cout&lt;&lt;setw(2)&lt;&lt;&quot; &quot;;
+
+		// set default boundary numbers
+		newarr[0]=1;
+		if(i&gt;=1)
+			newarr[i]=1;
+
+		if(i&gt;=2)
+		{
+			for(int k=1;k&lt;i;++k)
+				newarr[k]=oldarr[k-1]+oldarr[k];
+		}
+		memcpy(oldarr,newarr,sizeof(int)*WIDTH);
+
+		// Print the middle part
+		int idx=0;
+		int flag=(WIDTH-i-1)%2;
+		for(int j=WIDTH-i-1;j&lt;WIDTH+i;++j)
+		{
+			if(j%2==flag)
+			{
+				cout&lt;&lt;setw(2)&lt;&lt;newarr[idx++];
+			} else {
+				cout&lt;&lt;setw(2)&lt;&lt;&quot; &quot;;
+			}
+		}
+		
+		//for(int j=WIDTH+i;j&lt;WIDTH;++j) // Print right space, if you like
+		//	cout&lt;&lt;setw(4)&lt;&lt;&quot; &quot;;
+
+		cout&lt;&lt;endl;
+	}
+
+	delete [] oldarr;
+	delete [] newarr;
+
+	return 0;
+}
+</pre>
+<p>
+The output looks like:</p></p>
+<pre class="plain">             1
+           1   1
+         1   2   1
+       1   3   3   1
+     1   4   6   4   1
+   1   5  10  10   5   1
+ 1   6  15  20  15   6   1</pre></p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/01/22/baci-simple-install-and-compile-guide">BACI Simple Install and Compile Guide</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-01-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#BACI-ref" rel="nofollow">BACI</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>This is a guideline for a course of this semester, for which I am serving as a teaching assistant. I publish it here in hope that it can also help someone else who want to use BACI.</p>
+<h2>Install BACI</h2>
+<ol>
+<li>
+<p dir="ltr">Go to <a href="http://inside.mines.edu/~tcamp/baci/baci_index.html#Obtain">http://inside.mines.edu/~tcamp/baci/baci_index.html#Obtain</a> and download BACI executables:</p>
+<ul>
+<li>
+<p dir="ltr"><a href="http://inside.mines.edu/~tcamp/baci/badosxe-2005Nov09.zip">BACI DOS executables</a> for Windows,</p>
+</li>
+<li>
+<p dir="ltr"><a href="http://inside.mines.edu/~tcamp/baci/balnxxe32-2007Nov25.tar.gz">BACI LINUX executables (32 bit)</a> and <a href="http://inside.mines.edu/~tcamp/baci/balnxxe64-2012Oct01.tar.gz">BACI LINUX executables (64 bit)</a> for Linux.</p>
+</li>
+</ul>
+</li>
+<li>
+<p dir="ltr">For windows user, after download and unzip the BACI DOS executables, please put the folder called badosxe directly under the C:\ drive so it’s easy to find it. You can do all your BACI work inside this directory.</p>
+<ul>
+<li>
+<p dir="ltr">If your badosxe folder is C:\badosxe, then in your command prompt (cmd) your path should be C:\badosxe&gt; bacc &lt;file_name&gt; .</p>
+</li>
+</ul>
+</li>
+<li>
+<p dir="ltr">For Linux user, after download and gunzip the BACI executables, please make sure to add balnxxe into your PATH: export PATH=$PATH:/path/to/your/balnxxe (You also can add this line into $HOME/.profile, so that this command will be executed every time you login).</p>
+</li>
+<li>
+<p dir="ltr">If you want to use jBACI(BACI with a graphical IDE), please go to <a href="https://code.google.com/p/jbaci/downloads/list">https://code.google.com/p/jbaci/downloads/list</a>, and choose the <a href="https://code.google.com/p/jbaci/downloads/detail?name=jbaci-1.4.6.binaries.zip&amp;can=2&amp;q=">jbaci-1.4.6.binaries.zip</a>. Unfortunately, currently jBACI is only available for Windows.</p>
+</li>
+<li>
+<p dir="ltr">If you want to use BACI on the Eustis server, please download Linux version BACI first, gunzip it and then upload them into your home folder of Eustis server. Please remember to add BACI executables into your PATH(as step 3).</p>
+</li>
+<li>
+<p dir="ltr">NetBeans + BACI plugin is the best choice for people who prefer a modern IDE or MAC users. You need to install NetBeans first, and then follow the <a href="http://www.cslab.pepperdine.edu/warford/cosc450/cosc-450-Setup-for-BACI.pdf">guide of setting up BaciBeans</a>. NetBeans is a cross-platform IDE, so it can work on all operating systems that have Java JDK installed.</p>
+</li>
+</ol>
+<h2>Compile and run BACI program</h2>
+<ol>
+<li>
+<p dir="ltr">Make sure that bacc is in your PATH, or put your BACI program in the same folder of bacc. Note the .cm extension. This is the extension that identifies BACI source files to the BACI compiler.</p>
+</li>
+<li>
+<p dir="ltr">Invoke the compile command bacc your_prog.cm. This creates an object file called your_prog.pco and also a listing file called your_prog.lst.</p>
+</li>
+<li>
+<p dir="ltr">Invoke the interpreter through the command bainterp your_prog (please note, there is no suffix here) to execute your code. bainterp has an option -t that will display the order in which processes terminate within the program.</p>
+</li>
+</ol>
+<h2>Verify the installation of BACI</h2>
+<ol>
+<li>
+<p dir="ltr">Download <a href="http://www.cs.ucf.edu/courses/cop4020/spr2014/BACI/example.cm">example.cm</a>.</p>
+</li>
+<li>
+<p dir="ltr">Run command  bacc example.cm. If you see following outputs, then the example.cm is successfully compiled:</p>
+</li>
+</ol>
+<p dir="ltr">bo@HEC-2GQFTK1:~/Documents/BACI$ bacc example.cm</p>
+<p dir="ltr">Pcode and tables are stored in example.pco</p>
+<p dir="ltr">Compilation listing is stored in example.lst</p>
+<ol start="3">
+<li>
+<p dir="ltr">Execute command  bainterp -t example. If you get following message, then bainterp runs correctly.</p>
+</li>
+</ol>
+<p dir="ltr">bo@HEC-2GQFTK1:~/Documents/BACI$ bainterp -t example</p>
+<p dir="ltr">Source file: example.cm  Wed Jan 22 15:16:12 2014</p>
+<p dir="ltr">Executing PCODE ...</p>
+<p dir="ltr">before v(count) value of count is 0</p>
+<p dir="ltr">process 2 increment,  procedure increment ended</p>
+<p dir="ltr">before p(count) value of count is 1</p>
+<p dir="ltr">process 1 decrement,  procedure decrement ended</p>
+<h2><a href="http://inside.mines.edu/~tcamp/baci/baci_index.html#Using">More Options of BACI Compiler</a></h2>
+<p dir="ltr">A BACI source file using the C-- compiler should use a .cm suffix. To execute a program in BACI, there are two steps:</p>
+<p dir="ltr">1. Compile a ".cm" file to obtain a PCODE file (.pco)</p>
+<p dir="ltr">Usage: bacc [optional_flags] source_filename</p>
+<p dir="ltr">Optional_flags:</p>
+<p dir="ltr">-h show this help</p>
+<p dir="ltr">-c make a .pob object file for subsequent linkingInterpret a PCODE file (.pco) to execute the program</p>
+<p dir="ltr">2. Usage bainterp [optional_flags] pcode_filename</p>
+<p dir="ltr">Optional_flags:</p>
+<p dir="ltr">-d enter the debugger, single step, set breakpoints</p>
+<p dir="ltr">-e show the activation record (AR) on entry to each process</p>
+<p dir="ltr">-x show the AR on exit from each process</p>
+<p dir="ltr">-t announce process termination</p>
+<p dir="ltr">-h show this help</p>
+<p dir="ltr">-p show PCODE instructions as they are executed</p>
+<p dir="ltr">There is a shell script, baccint, that will call the compiler and then call the interpreter for you. It passes the options that you give it along to the interpreter. If you are using the Pascal compiler syntax, then the source file should be with a .pm suffix, and you compile the program with the bapas compiler.</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/01/10/dense-trajectory-notes">Dense Trajectory Notes</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-01-10</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#notes-ref" rel="nofollow">notes</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#DTF-ref" rel="nofollow">DTF</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><span style="font-size:12px;font-weight:bold;line-height:1em;">Notes of Dense Trajectories</span><img class="aligncenter" style="font-size:12px;font-weight:bold;line-height:1em;" alt="" src="https://lh6.googleusercontent.com/AysSQ7M6yvc5hbkBHzsEHc1c7L4ZJcIXmdSfzh9g4iBDsL_q9lZD_8fhH8TEPMwAJ12Kp_s4z1FWmX3rndc6DTFAwARyWkx-mJiixB4X7nQRV5XcB391xltefQ" width="568px;" height="178px;" /></p>
+<ul>
+<li>densely sample feature points in each frame</li>
+<li>track points in the video based on optical flow.</li>
+<li>compute multiple descriptors along the trajectories of feature points to capture shape, appearance and motion information.</li>
+</ul>
+<ul>
+<li>
+<h3>Dense Sampling</h3>
+<ul>
+<li>Sampling step size \( W=5 \) pixels</li>
+<li># spatial scales ≤ 8</li>
+<li>Spatial scale increase: \( 1 / \sqrt{2} \)</li>
+<li>Removing points in homogeneous areas: 
+$$ T=0.001 \times \max_{i \in l}\min(\lambda_{i}^{1},\lambda_{i}^{2}) $$,
+where \( (\lambda_{i}^{1},\lambda_{i}^{2}) \) are eigenvalues of point \(i\) in image \(I\) (the auto-correlation matrix).</span></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<h3>Descriptors</h3>
+<ul>
+<li>
+<p dir="ltr">Trajectory shape descriptor(TR):</p>
+</li>
+</ul>
+</li>
+</ul>
+<p dir="ltr"><img alt="" src="https://lh3.googleusercontent.com/TZG6Zx9WlI95UsEDsemdeXUHBtPrV6gJh_50zZzKJYTV45heKGfIx7xjlN079nJUZWMb93j9Vr72R0cvPQtdyVb49vDDeFpcLhcjeVq_VL8JhSh2VlZwtvNnxw" width="206px;" height="61px;" /></p>
+<p dir="ltr">where L is the length of trajectory, and the displacement vectors <img alt="" src="https://lh3.googleusercontent.com/DqC7Y6vrH4mfXOVQQ29w8S9KH4jNH6kPpmyViWd5AhXhpVebHPO5xMTIdyWVAOPMvFU379KWsBR5FjV6cER0-whR6TxlBpch33vMqEVDXwC80uon5hQJMR3cxg" width="422px;" height="27px;" /></p>
+<ul>
+<li>HOG – static appearance information</li>
+<li>HOF – local motion information</li>
+<li>MBH – motion descriptor for trajectories</li>
+</ul>
+<ul>
+<li>
+<h3>Format of DTF features</h3>
+</li>
+</ul>
+<h4>The format of the computed features</h4>
+<p dir="ltr">The features are computed one by one, and each one in a single line, with the following format:</p>
+<p dir="ltr">frameNum mean_x mean_y var_x var_y length scale x_pos y_pos t_pos Trajectory HOG HOF MBHx MBHy</p>
+<p dir="ltr">The first 10 elements are information about the trajectory:</p>
+<ul>
+<li>frameNum:     The trajectory ends on which frame</li>
+<li>mean_x:       The mean value of the x coordinates of the trajectory</li>
+<li>mean_y:       The mean value of the y coordinates of the trajectory</li>
+<li>var_x:        The variance of the x coordinates of the trajectory</li>
+<li>var_y:        The variance of the y coordinates of the trajectory</li>
+<li>length:       The length of the trajectory</li>
+<li>scale:        The trajectory is computed on which scale</li>
+<li>x_pos:        The normalized x position w.r.t. the video (0~0.999), for spatio-temporal pyramid</li>
+<li>y_pos:        The normalized y position w.r.t. the video (0~0.999), for spatio-temporal pyramid</li>
+<li>t_pos:        The normalized t position w.r.t. the video (0~0.999), for spatio-temporal pyramid</li>
+</ul>
+<p dir="ltr">The following element are five descriptors concatenated one by one:</p>
+<ul>
+<li>Trajectory:    2x[trajectory length] (default 30 dimension)</li>
+<li>HOG:           8x[spatial cells]x[spatial cells]x[temporal cells] (default 96 dimension)</li>
+<li>HOF:           9x[spatial cells]x[spatial cells]x[temporal cells] (default 108 dimension)</li>
+<li>MBHx:          8x[spatial cells]x[spatial cells]x[temporal cells] (default 96 dimension)</li>
+<li>MBHy:          8x[spatial cells]x[spatial cells]x[temporal cells] (default 96 dimension)</li>
+</ul>
+<ol start="2">
+<li>
+<h3>Improved Dense Trajectories</h3>
+</li>
+</ol>
+<ul>
+<li>Explicit camera motion estimation</li>
+<li>Assumption: two consecutive frames are related by a homography.</li>
+<li>Match feature points between frames using SURF descriptors and dense optical flow</li>
+<li>Removing inconsistent matches due to humans: use a human detector to remove matches from human regions (computation expensive)</li>
+<li>Estimate a homography with RANSAC with these matches</li>
+</ul>
+<h3>References:</h3>
+<ol>
+<li>
+<div>H Wang, C Schmid, Action recognition with improved trajectories, ICCV 2013</div>
+</li>
+<li>
+<div>H Wang, A Kläser, C Schmid, CL Liu, Dense trajectories and motion boundary descriptors for action recognition, International Journal of Computer Vision, May 2013, Volume 103, Issue 1, pp 60-79</div>
+</li>
+</ol>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2013/10/20/parallel-mex-file-in-matlab">Parallelize mex file in Matlab</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-10-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#parfor-ref" rel="nofollow">parfor</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>By default mex file cannot be executed in parallel in Matlab, which will be a major bottleneck for Matlab program. Fortunately, there is a way to execute loop operations in parallel -- <a href="http://www.mathworks.com/help/distcomp/parfor.html">parfor</a>. Matlab provides a good tutorial on parfor: <a href="http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html">Getting Started with parfor</a>.</p>
+<p>One tricky problem with parfor is dealing with reduction assignments, which means the value of some variables are updated by each iteration, such as assignment to an array/matrix indexed by loop index.  My suggestion is to separate the loop into two parts: one part deal with non-reduction assignment with <code>parfor</code>, and the other part do the reduction assignment with traditional <code>for</code> loop.</p>
+<p>If you cannot save all the <code>parfor</code>-assigned variables in memory, then you must save them into mat file and load them in the next for-loop. In the <code>parfor</code>-loop, command "<code>save</code>" cannot  be used directly because it violates the transparency(God knows what does it mean!). As an alternative, you can create a wrapper function of <code>save</code> and call that function instead. FOr example:</p>
+<p>Save the following as "parsave.m":<br />
+<code>function parsave(fname, x,y)<br />
+save(fname, 'x', 'y')<br />
+end<br />
+</code><br />
+Then run it with:<br />
+<code>parfor ii = 1:4<br />
+x = rand(10,10);<br />
+y = ones(1,3);<br />
+parsave(sprintf('output%d.mat', ii), x, y);<br />
+end</code></p>
+<p>References:</p>
+<ol>
+<li>parfor manual: http://www.mathworks.com/help/distcomp/parfor.html</li>
+<li>Getting Started with parfor: http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html</li>
+<li>How do I use SAVE with a PARFOR loop: http://www.mathworks.com/support/solutions/en/data/1-D8103H/?product=DM&amp;solution=1-D8103H</li>
+</ol>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2013/10/11/notes-of-advanced-machine-learningi">Notes of Advanced Machine Learning(I)</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-10-11</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Machine Learning-ref" rel="nofollow">Machine Learning</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<ol>
+<li>Two different ways represent a distribution over several random variables: (1) product of conditional probabilities: \(p(x_1,x_2,x_3,x_4)=p(x_4)p(x_3|x_4)p(x_2|x_3,x_4)p(x_1|x_2,x_3,x_4)\) and (2) global energy function: \(p(x_1,x_2,x_3,x_4)=\frac{1}{Z}e^{-E(x_1,x_2,x_3,x_4)}\), where \(Z\) is the partition function.</li>
+<li>Directed graphical models use conditional probabilities, which undirected graphical models use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</li>
+<li>
+<ol>
+<li>
+<h3>Probabilistic Model</h3>
+</li>
+</ol>
+<p dir="ltr">Two different ways represent a distribution over several random variables:</p>
+<ul>
+<li>
+<p dir="ltr">product of conditional probabilities: p(x1,x2,x3,x4)=p(x4)p(x3|x4)p(x2|x3,x4)p(x1|x2,x3,x4)</p>
+</li>
+<li>
+<p dir="ltr">global energy function:</p>
+</li>
+</ul>
+<p dir="ltr">p(x1,x2,x3,x4)=1Ze{-E(x1,x2,x3,x4)},</p>
+<p dir="ltr">where Zis the partition function.</p>
+<p dir="ltr">Directed graphical models use conditional probabilities(Bayesian networks), while undirected graphical models(Markov random fields, Boltzmann machines) use energy functions that are a sum of several terms. Deep belief net(DBN) is a hybrid model.</p>
+<h4>Directed Graphs</h4>
+<p dir="ltr">Directed graphs are useful for expressing causal relationships between random variables.</p>
+<ul>
+<li>
+<p dir="ltr">The joint distribution defined by the graph is given by the product of a conditional distribution for each node conditioned on its parents.</p>
+</li>
+<li>
+<p dir="ltr">For example, the joint distribution over x1,,x7 factorizes:</p>
+</li>
+</ul>
+<p dir="ltr">p(x)=p(x1)p(x2)p(x3)p(x4|x1,x2,x3)p(x5|x1,x3)p(x6|x4)p(x7|x4,x5)</p>
+<h4>Markov Random Fields</h4>
+<p dir="ltr">p(x)=1Zcc(xc)</p>
+<ul>
+<li>
+<p dir="ltr">Each potential function is a mapping from joint configurations of random variables in a clique to non-negative real numbers.</p>
+</li>
+<li>
+<p dir="ltr">The choice of potential functions is not restricted to having specific probabilistic interpretations.</p>
+</li>
+<li>
+<p dir="ltr">Potential functions are often represented as exponentials:</p>
+</li>
+</ul>
+<p dir="ltr">p(x)=1Zcc(xc)=1Z(-cE(xc))=1Z(-E(x)) (Boltzmann distribution)</p>
+<ul>
+<li>
+<p dir="ltr">Computing Z is very hard, which represents a major limitation of undirected models.</p>
+</li>
+</ul>
+<p dir="ltr">
+<hr />
+<p>&nbsp;</p>
+<ol start="2">
+<li>
+<h3>Singular Value Decomposition</h3>
+</li>
+</ol>
+<p dir="ltr">Singular Value Decomposition(SVD) is a factorization of a real or complex matrix. Formally, the singular value decomposition of an mn matrix M is a factorization of the form</p>
+<p dir="ltr">M=UV*</p>
+<p dir="ltr">where U is a mm unitary matrix,  is an mn rectangular diagonal matrix with nonnegative real numbers on the diagonal, and V*(the conjugate transpose of V: (V*)ij=Vji, for real matrix, it equals the transpose) is an nn unitary matrix.</p>
+<p dir="ltr">A complex square matrix U is unitary if U*U=UU*=I.</p>
+<p dir="ltr">The diagonal entries ij of  are known as the singular values of M, which means they are the square roots of the eigenvalues of matrix MM*. The m columns of U and n columns of V are called the left-singular vectors and right-singular vectors of M, respectively.</p>
+<p dir="ltr">The SVD and the eigendecomposition are closely related:</p>
+<ul>
+<li>
+<p dir="ltr">The left-singular vectors of M(columns of U) are eigenvectors of MM*.</p>
+</li>
+<li>
+<p dir="ltr">The right-singular vectors of M(columns of V) are eigenvectors of M*M.</p>
+</li>
+<li>
+<p dir="ltr">The non-zero singular values of M(diagonal entries of ) are the square roots of the non-zero eigenvalues of both M*M and MM*.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>References:</p>
+<ol>
+<li>U Toronto CSC2535: <a href="http://www.cs.toronto.edu/~hinton/csc2535/lectures.html">http://www.cs.toronto.edu/~hinton/csc2535/lectures.html</a></li>
+</ol>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2013/10/10/undefined-reference-error-during-installing-opencv">"undefined reference" error during installing OpenCV</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-10-10</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#ffmpeg-ref" rel="nofollow">ffmpeg</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#OpenCV-ref" rel="nofollow">OpenCV</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Many people(including me) met the infamous "undefined reference" error during installing OpenCV, such as</p>
+<pre>../../lib/libopencv_highgui.so.2.4.1: undefined reference to `avpriv_vorbis_parse_extradata’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_init’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_rc4_crypt’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_aes_crypt’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_mac’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_tree_destroy’
+../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_sha_update’
+collect2: ld returned 1 exit status
+make[2]: *** [bin/opencv_perf_imgproc] Error 1
+make[1]: *** [modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/all] Error 2
+make: *** [all] Error 2</pre>
+<p>This error was caused by lacking of or improper installation of <a href="http://www.ffmpeg.org/">ffmpeg</a>. If you are sure the ffmpeg is successfully installed, and you can find "– FFMPEG: YES" after cmake opencv, then you'd better think about adding option "<code>--enable-shared</code> " when <i>configure</i> ffmpeg. After re-installing ffmpeg, then this "undefined reference" error should disappear.</p>
+<p>PS: A very good guideline of installing OpenCV on Ubuntu: </p>
+<h1><a href="http://www.ozbotz.org/opencv-installation/">A Comprehensive Guide to Installing and Configuring OpenCV 2.4.2 on Ubuntu</a></h1>
+<p>PPS: Damn Ubuntu!!!</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">Build Dense Trajectory Codes in Ubuntu</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-10-10</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#DTF-ref" rel="nofollow">DTF</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Even when the OpenCV and ffmpeg have been successfully installed, you still may meet the error of "<strong>undefined reference to main</strong>" when building the <a href="http://lear.inrialpes.fr/people/wang/dense_trajectories">Dense Trajectory code</a>. Since the author didn't provide a solution, I share my workaround here -- just use command g++ directly:</p>
+
+<p><pre>g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp</pre></p>
+<p>The program <em>Video</em> can be built in similar way, just substitute all <em>DenseTrack</em> into Video.</p>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2013/06/12/matlab-startup-script">Matlab Startup Script</a></h2>
     <p>
@@ -866,700 +1316,6 @@ int main(int argc, char** argv)
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication">Implementation of Strassen's Algorithm for Matrix Multiplication</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-03-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Strassen's algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen's algorithm on <a href="http://en.wikipedia.org/wiki/Strassen_algorithm">Wikipedia</a>.</p>
-<p>However, the implementation of Strassen's algorithm cannot be used directly, because it  just sets the base case of the divide-and-conquer to be 1x1 matrix, which would consume huge time cost for iteration. If set the base case to 2x2 matrix, which means 2x2 matrix and 1x1 matrix will be multiplied by naive algorithm, then the Strassen's algorithm will be more efficient for matrices larger than 512x512.</p>
-<p>[caption id="attachment_521" align="alignnone" width="529"]<a href="http://bonny95.files.wordpress.com/2013/03/local_double_41.png"><img class="size-full wp-image-521" alt="When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512." src="http://bonny95.files.wordpress.com/2013/03/local_double_41.png" width="529" height="395" /></a> When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512.[/caption]</p>
-<p>[caption id="attachment_520" align="alignnone" width="529"]<a href="http://bonny95.files.wordpress.com/2013/03/local_int_36.png"><img class=" wp-image-520  " alt="When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128. " src="http://bonny95.files.wordpress.com/2013/03/local_int_36.png" width="529" height="396" /></a> When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128.[/caption]</p>
-<pre><code>
-/*------------------------------------------------------------------------------*/
-// matrix_mult.cc -- Implementation of matrix multiplication with
-// Strassen's algorithm.
-//
-// Compile this file with gcc command:
-// g++ -Wall -o matrix_mult matrix_mult.cc 
-
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;time.h&gt;
-#include &lt;ctype.h&gt;
-#include &lt;unistd.h&gt;
-#include &lt;iostream&gt;
-#include &lt;fstream&gt;
-#include &lt;cmath&gt;
-#include &lt;cstring&gt;
-
-using namespace std;
-
-// This function allocates the matrix
-inline double** allocate_matrix(int n)
-{
-double** mat=new double*[n];
-for(int i=0;i&lt;n;++i)
-{
-mat[i]=new double[n];
-memset(mat[i],0,sizeof(double)*n);
-}
-
-return (mat); // returns the pointer to the vector.
-}
-
-/*------------------------------------------------------------------------------*/
-// This function unallocates the matrix (frees memory)
-inline void free_matrix(double **M, int n)
-{
-for (int i = 0; i &lt; n; i++)
-{
-delete [] M[i];
-}
-
-delete [] M; // frees the pointer /
-M = NULL;
-}
-
-/*------------------------------------------------------------------------------*/
-// function to sum two matrices
-inline void sum(double **a, double **b, double **result, int tam) {
-
-int i, j;
-
-for (i = 0; i &lt; tam; i++) {
-for (j = 0; j &lt; tam; j++) {
-result[i][j] = a[i][j] + b[i][j];
-}
-}
-}
-
-/*------------------------------------------------------------------------------*/
-// function to subtract two matrices
-inline void subtract(double **a, double **b, double **result, int tam) {
-
-int i, j;
-
-for (i = 0; i &lt; tam; i++) {
-for (j = 0; j &lt; tam; j++) {
-result[i][j] = a[i][j] - b[i][j];
-}
-}
-}
-
-/*------------------------------------------------------------------------------*/
-// naive method
-void naive(double** A, double** B,double** C, int n)
-{
-for (int i=0;i&lt;n;i++)
-for (int j=0;j&lt;n;j++)
-for(int k=0;k&lt;n;k++)
-C[i][j] += A[i][k]*B[k][j];
-}
-
-/*------------------------------------------------------------------------------*/
-// Strassen's method
-void strassen(double **a, double **b, double **c, int tam)
-{
-// Key observation: call naive method for matrices smaller than 2 x 2
-if(tam &lt;= 4)
-{
-naive(a,b,c,tam);
-return;
-}
-
-// other cases are treated here:
-int newTam = tam/2;
-double **a11, **a12, **a21, **a22;
-double **b11, **b12, **b21, **b22;
-double **c11, **c12, **c21, **c22;
-double **p1, **p2, **p3, **p4, **p5, **p6, **p7;
-
-// memory allocation:
-a11 = allocate_matrix(newTam);
-a12 = allocate_matrix(newTam);
-a21 = allocate_matrix(newTam);
-a22 = allocate_matrix(newTam);
-
-b11 = allocate_matrix(newTam);
-b12 = allocate_matrix(newTam);
-b21 = allocate_matrix(newTam);
-b22 = allocate_matrix(newTam);
-
-c11 = allocate_matrix(newTam);
-c12 = allocate_matrix(newTam);
-c21 = allocate_matrix(newTam);
-c22 = allocate_matrix(newTam);
-
-p1 = allocate_matrix(newTam);
-p2 = allocate_matrix(newTam);
-p3 = allocate_matrix(newTam);
-p4 = allocate_matrix(newTam);
-p5 = allocate_matrix(newTam);
-p6 = allocate_matrix(newTam);
-p7 = allocate_matrix(newTam);
-
-double **aResult = allocate_matrix(newTam);
-double **bResult = allocate_matrix(newTam);
-
-//dividing the matrices in 4 sub-matrices:
-for (int i = 0; i &lt; newTam; i++) {
-for (int j = 0; j &lt; newTam; j++) {
-a11[i][j] = a[i][j];
-a12[i][j] = a[i][j + newTam];
-a21[i][j] = a[i + newTam][j];
-a22[i][j] = a[i + newTam][j + newTam];
-
-b11[i][j] = b[i][j];
-b12[i][j] = b[i][j + newTam];
-b21[i][j] = b[i + newTam][j];
-b22[i][j] = b[i + newTam][j + newTam];
-}
-}
-
-// Calculating p1 to p7:
-
-sum(a11, a22, aResult, newTam); // a11 + a22
-sum(b11, b22, bResult, newTam); // b11 + b22
-strassen(aResult, bResult, p1, newTam); // p1 = (a11+a22) * (b11+b22)
-
-sum(a21, a22, aResult, newTam); // a21 + a22
-strassen(aResult, b11, p2, newTam); // p2 = (a21+a22) * (b11)
-
-subtract(b12, b22, bResult, newTam); // b12 - b22
-strassen(a11, bResult, p3, newTam); // p3 = (a11) * (b12 - b22)
-
-subtract(b21, b11, bResult, newTam); // b21 - b11
-strassen(a22, bResult, p4, newTam); // p4 = (a22) * (b21 - b11)
-
-sum(a11, a12, aResult, newTam); // a11 + a12
-strassen(aResult, b22, p5, newTam); // p5 = (a11+a12) * (b22)
-
-subtract(a21, a11, aResult, newTam); // a21 - a11
-sum(b11, b12, bResult, newTam); // b11 + b12
-strassen(aResult, bResult, p6, newTam); // p6 = (a21-a11) * (b11+b12)
-
-subtract(a12, a22, aResult, newTam); // a12 - a22
-sum(b21, b22, bResult, newTam); // b21 + b22
-strassen(aResult, bResult, p7, newTam); // p7 = (a12-a22) * (b21+b22)
-
-// calculating c21, c21, c11 e c22:
-
-sum(p3, p5, c12, newTam); // c12 = p3 + p5
-sum(p2, p4, c21, newTam); // c21 = p2 + p4
-
-sum(p1, p4, aResult, newTam); // p1 + p4
-sum(aResult, p7, bResult, newTam); // p1 + p4 + p7
-subtract(bResult, p5, c11, newTam); // c11 = p1 + p4 - p5 + p7
-
-sum(p1, p3, aResult, newTam); // p1 + p3
-sum(aResult, p6, bResult, newTam); // p1 + p3 + p6
-subtract(bResult, p2, c22, newTam); // c22 = p1 + p3 - p2 + p6
-
-// Grouping the results obtained in a single matrix:
-for (int i = 0; i &lt; newTam ; i++) {
-for (int j = 0 ; j &lt; newTam ; j++) {
-c[i][j] = c11[i][j];
-c[i][j + newTam] = c12[i][j];
-c[i + newTam][j] = c21[i][j];
-c[i + newTam][j + newTam] = c22[i][j];
-}
-}
-
-// deallocating memory (free):
-free_matrix(a11, newTam);
-free_matrix(a12, newTam);
-free_matrix(a21, newTam);
-free_matrix(a22, newTam);
-
-free_matrix(b11, newTam);
-free_matrix(b12, newTam);
-free_matrix(b21, newTam);
-free_matrix(b22, newTam);
-
-free_matrix(c11, newTam);
-free_matrix(c12, newTam);
-free_matrix(c21, newTam);
-free_matrix(c22, newTam);
-
-free_matrix(p1, newTam);
-free_matrix(p2, newTam);
-free_matrix(p3, newTam);
-free_matrix(p4, newTam);
-free_matrix(p5, newTam);
-free_matrix(p6, newTam);
-free_matrix(p7, newTam);
-free_matrix(aResult, newTam);
-free_matrix(bResult, newTam);
-
-} // end of Strassen function
-
-/*------------------------------------------------------------------------------*/
-// Generate random matrices
-void gen_matrix(double** M,int n)
-{
-for(int i=0;i&lt;n;++i)
-{
-for(int j=0;j&lt;n;++j)
-{
-M[i][j]=rand()%100;
-//M[i][j]=1;
-}
-}
-}
-
-/*------------------------------------------------------------------------------*/
-// print matrix M using specied fstream
-void print_matrix(fstream&amp; fs, double** M, int n)
-{
-for(int i=0;i&lt;n;++i)
-{
-for(int j=0;j&lt;n;++j)
-{
-fs&lt;&lt;M[i][j]&lt;&lt;" ";
-}
-fs&lt;&lt;endl;
-}
-fs&lt;&lt;endl;
-}
-
-/*------------------------------------------------------------------------------*/
-// record the generated matrix and the final product
-void mat_mult_log(double** A, double** B,double** C,int n,char* file)
-{
-fstream fs;
-fs.open(file,fstream::out);
-
-fs&lt;&lt;"Random Matrix A:"&lt;&lt;endl;
-print_matrix(fs,A,n);
-fs&lt;&lt;"Random Matrix B:"&lt;&lt;endl;
-print_matrix(fs,B,n);
-fs&lt;&lt;"C=A * B"&lt;&lt;endl;
-print_matrix(fs,C,n);
-
-fs.close();
-}
-
-/*------------------------------------------------------------------------------*/
-
-int main(int argc, char** argv)
-{
-srand(time(NULL));
-
-int mdim=2; // matrix dimension
-char* output=NULL;
-bool is_strassen=false;
-int c;
-
-while ((c = getopt (argc, argv, "sn:o:")) != -1)
-{
-switch (c)
-{
-case 's':
-is_strassen=true;
-break;
-case 'n':
-mdim = pow((int)2,atoi(optarg)); // 2^n dimensions
-break;
-case 'o':
-output = optarg; // 2^n dimensions
-break;
-case '?':
-if (optopt == 'n')
-fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-else if (isprint (optopt))
-fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-else
-fprintf (stderr,
-"Unknown option character `\x%x'.\n",
-optopt);
-return 1;
-default:
-abort ();
-}
-}
-
-// create new matrices
-double** A=allocate_matrix(mdim);
-double** B=allocate_matrix(mdim);
-double** C=allocate_matrix(mdim);
-gen_matrix(A,mdim);
-gen_matrix(B,mdim);
-
-// matrices multiplication
-if(is_strassen)
-strassen(A,B,C,mdim);
-else
-naive(A,B,C,mdim);
-
-if(output!=NULL)
-mat_mult_log(A,B,C,mdim,output);
-
-free_matrix(A,mdim);
-free_matrix(B,mdim);
-free_matrix(C,mdim);
-
-return 0;
-}</code></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2013/01/29/basic-linux-multi-process-multi-thread-programming">Basic Linux Multi-Process and Multi-Thread Programming</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-01-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Multi-Process-ref" rel="nofollow">Multi-Process</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Multi-Threading-ref" rel="nofollow">Multi-Threading</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>
-	Today I have to make my algorithm running in parallel in order to make it faster. At first I used following way to implement multi-process:</p>
-<pre class="cpp">	unsigned int proc_num = 5;
-	pid_t* pids=new pid_t[proc_num];
-	double incr=(double)N/(double)proc_num;
-	
-	/* Start children. */
-	for (unsigned int i = 0; i &lt; proc_num; ++i) {
-		if ((pids[i] = fork()) &lt; 0) {
-	    		perror(&quot;fork&quot;);
-	    		abort();
-	 	} else if (pids[i] == 0) {
-	    		// DoWorkInChild();
-
-	    		exit(0);
-	  	}
-	}
-	
-	/* Wait for children to exit. */
-	int status;
-	pid_t pid;
-	while (proc_num &gt; 0) {
-	  	pid = wait(&amp;status);
-		if(status != 0)
-	  		printf(&quot;Child Process with PID %ld aborted with status 0x%x.\n&quot;, (long)pid, status);
-	  	--proc_num;  // TODO(pts): Remove pid from the pids array.
-	}
-</pre>
-<p>
-Above way worked well, however, there's no way to change the &quot;shared&quot; variables in child processes. Because each child process has an independent copy of all variables.</p>
-<p>
-	In order to change the same array in parallel, I implemented multi threads.</p></p>
-<pre class="cpp">struct thread_info {    /* Used as argument to thread_start() */
-	pthread_t thread_id;        /* ID returned by pthread_create() */
-	int	start;       /* Application-defined thread # */
-	int     end;      /* From command-line argument */
-	int*	gpdarr;	/* Array to store GPD number */
-	long int G;	/* genome length */
-	unsigned int L;	/* read length */
-	double l1;	// GPD parameter lambda1
-	double l2;	// GPD parameter lambda2
-	double M;	// maximum of GPD density
-};
-
-void printPt(pthread_t pt) {
-  unsigned char *ptc = (unsigned char*)(void*)(&amp;pt);
-  printf(&quot;0x&quot;);
-  for (size_t i=0; i&lt;sizeof(pt); i++) {
-    printf(&quot;%02x&quot;, (unsigned)(ptc[i]));
-  }
-}
-
-void* gen_gpd_num(void* arg)
-{
-	struct thread_info *tinfo = (struct thread_info *) arg;
-	// do something here
-
-	pthread_exit(0);
-}
-
-int main()
-{
-        unsigned int tnum = 20;
-	double incr=(double)N/(double)tnum;
-	
-	thread_info* tinfo=new thread_info[tnum];
-
-	int err;
-	void* res;
-	
-	/* Start children. */
-	for(unsigned int idx=0;idx&lt;tnum;++idx) 
-	{
-		tinfo[idx].start=incr*idx;
-		tinfo[idx].end=incr*(idx+1);
-		tinfo[idx].gpdarr=gpdnum;
-		tinfo[idx].G=G;
-		tinfo[idx].L=l;
-		tinfo[idx].l1=l1;
-		tinfo[idx].l2=l2;
-		tinfo[idx].M=M;
-
-		err = pthread_create(&amp;tinfo[idx].thread_id, NULL, &amp;gen_gpd_num, &amp;tinfo[idx]);
-
-		if(err!=0)
-			printf(&quot;can't create thread :[%s]&quot;, strerror(err));
-		else
-			pthread_join(tinfo[idx].thread_id, &amp;res);
-	}
-        delete [] tinfo;
-}</pre>
-<p>
-The potential problem of using multi-threading in Linux is -- it is hard to figure out if there really are many threads are running&nbsp;simultaneously.&nbsp;</p>
-<p>
-	When compiling multi-threading program using GCC, pthread library must be specified:</p></p>
-<pre class="cpp">g++ -o foo -Wall foo.cc -L/usr/lib -lpthread</pre>
-<p>
-References:</p></p>
-<ol>
-<li>
-		<a href="http://www.thegeekstuff.com/2012/04/create-threads-in-linux/" style="font-size:14px;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;letter-spacing:-1px;line-height:1.364em;">How to Create Threads in Linux (With a C Example Program)</a></p>
-<h1 class="entry-title" style="padding:0;margin:0;font-weight:normal;color:rgb(169,0,0);line-height:1.364em;letter-spacing:-1px;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
-		</h1>
-</li>
-<li>
-		http://www.kernel.org/doc/man-pages/online/pages/man3/pthread_create.3.html</p>
-</li>
-</ol></p>
-<p>
-	</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2012/12/06/simple-matlaboctave-commands-to-process-data">Simple Matlab/Octave Commands to Process Data</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-12-06</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>To load data in following format stored in a text file "read_pos' into Matlab/Octave, use commands<br />
-<code><br />
-    f=fopen('read_pos','r'); % open file<br />
-    a=textscan(f,'%s%d');  % read file<br />
-    y=a{2}; % a is a cell: a{1} stores read id, a{2} stores numbers.<br />
-</code><br />
-<br />
-Then data of the second column are stored in variable y.<br />
-<code><br />
-r12353.1 	2407054.5<br />
-r12361.1 	5328858.5<br />
-r12363.1 	2360272<br />
-r12368.1 	4726440.5<br />
-r12372.1 	2224001<br />
-r12373.1 	5165613.5<br />
-r12381.1 	501776<br />
-r12385.1 	3475398<br />
-r12394.1 	3376364<br />
-r12401.1 	2142875.5<br />
-r12411.1 	2191090.5<br />
-r12419.1 	1240590<br />
-r12420.1 	4903572<br />
-r12422.1 	767011.5<br />
-r12426.1 	3575915.5<br />
-r12429.1 	554956<br />
-r12433.1 	4786335<br />
-r12435.1 	3373955.5<br />
-r12442.1 	5363611.5<br />
-r12452.1 	1903660.5<br />
-r12454.1 	2784165<br />
-r12466.1 	5137479<br />
-r12470.1 	592191<br />
-</code><br />
-<br />
-If there are only numbers stored in file "read_pos", following commands should be used:<br />
-<code><br />
-    f=fopen('read_pos','r'); % open file<br />
-    a=textscan(f,'%s%d');  % read file<br />
-    y=cell2mat{a}; % convert cell a to vector<br />
-    size(y) % check the size<br />
-</code></p>
-<p>
-To plot the distribution of all the numbers, you can:<br />
-<code><br />
-    x=zeros(size(y));<br />
-    plot(y,x,'bo');<br />
-</code><br />
-<br />
-If another data set z is also loaded and you want to plot y and z in the same graph, you can:<br />
-<code><br />
-    figure<br />
-    x=zeros(size(y));<br />
-    plot(y,x,'bo');<br />
-    hold on<br />
-    x=ones(size(z));<br />
-    plot(z,x,'r+');<br />
-</code></p>
-<p>
-To annotate and scale the graph, use commands;<br />
-<code><br />
-    xlabel('AMD Data k-mer Occurrances');<br />
-    title('GPD Classification of AMD k-mers')<br />
-    legend('Bin 1','Bin 2')<br />
-    axis([-5 5 0 10000]) % scale axes<br />
-</code></p>
-<p>A matlab function to plot multiple datasets:<br />
-<code><br />
-function result=plot_distr(varargin)</p>
-<p>nVarargs=length(varargin);</p>
-<p>marker={'bo' 'r+' 'k*' 'gs' 'y^' 'md' 'cp' 'bx' 'r.' 'k&gt;' 'gh' 'y&lt;&#039;};<br />
-figure<br />
-for k=1:nVarargs<br />
-	f=fopen(varargin{k},&#039;r&#039;);<br />
-	a=textscan(f,&#039;%d&#039;);<br />
-	y=cell2mat(a);<br />
-	x=zeros(size(y))+k;<br />
-	plot(y,x,marker{k});<br />
-	hold on<br />
-end<br />
-ylim([0-5*nVarargs 6*nVarargs]); % scale y-axis<br />
-</code></p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2012/11/17/tips-about-regular-expression">Tips about Regular Expression</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-11-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<ol>
-<li>In Vim, greedy matching is used by default. In order to use non-greedy matching, you can use \{-}, or \{-n,m}, such as: :/Q.\{-0,200}[IL].\{-0,2000}FF.</li>
-<li>In Perl, default matching is also greedy. To use non-greedy matching, please change <code>*</code> , <code>+</code> , <code>?</code> , and<code>{}</code> into <code>*?</code> , <code>+?</code> , <code>??</code> , and <code>{}?</code> , respectively.</li>
-<li>To count the number of matching in Vim, you can use command ":%s/&lt;pattern&gt;//g". After get the number of matches, then execute ":u" to undo the changes.</li>
-<li>In Perl, to count the number of matching, you can use command: 
-<pre><code>my $number =()= $string =~ /\./gi;</code></pre>
-</li>
-</ol>
-<p>References:</p>
-<ol>
-<li>http://vimregex.com/</li>
-<li>http://stackoverflow.com/questions/1849329/is-there-a-perl-shortcut-to-count-the-number-of-matches-in-a-string</li>
-<li>http://docstore.mik.ua/orelly/perl/cookbook/ch06_16.htm</li>
-</ol>
-<p> </p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library">Calculate the CDF of Poisson Distribution with Boost C++ Library</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-11-05</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#boost-ref" rel="nofollow">boost</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#CDF-ref" rel="nofollow">CDF</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The Cumulative Distribution Function(CDF) of Poisson distribution can be easily calculated by R function ppois() or octave/Matlab function poisspdf(). However, it is not a easy thing to deal with statistics with C++ from scratch.</p>
-<p>Today I found a very powerful C++ mathematical library(actually not limited to math), boost. Unfortunately, it is hard to figure out the API of boost library from the code if you are not familiar with generalization programming(just like me). Besides, there is no useful "hello world" examples on the Internet to show the boost library handling statistics(examples on webpage <a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a> is a bit complicated and the header files are not included).</p>
-<p>Therefore, I made up following example to show how to get the cdf of Poisson distribution with boost C++ library:<br />
-<code><br />
-#include &lt;boost/math/distributions/poisson.hpp&gt;<br />
-#include &lt;iostream&gt;</code></p>
-<p>using namespace std;<br />
-using namespace boost::math;</p>
-<p>int main()<br />
-{<br />
-poisson_distribution&lt;&gt; p(2.9);<br />
-cout&lt;&lt;"cdf: ppois(1,2.9)="&lt;&lt;cdf(p,1)&lt;&lt;endl;</p>
-<p>return 0;<br />
-}</p>
-<p><em>References:</em></p>
-<ol>
-<li><a href="http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html">http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html</a></li>
-<li><a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a></li>
-<li><a href="http://www.datasimfinancial.com/forum/viewtopic.php?t=111">http://www.datasimfinancial.com/forum/viewtopic.php?t=111</a></li>
-</ol>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2012/11/04/an-implementation-of-merge-sort-in-c">An Implementation of Merge Sort in C</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-11-04</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Merge sort-ref" rel="nofollow">Merge sort</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. </p>
-<p>The merge sort below was found in Internet. Sorry that I forgot to record the hyperlink of the webpage. Only a few changes were made by me. </p>
-<p> </p>
-<p><code>void Merge(int* input, long p, long r)<br />
-{<br />
-	long mid = floor((p + r) / 2);<br />
-	long i1 = 0;<br />
-	long i2 = p;<br />
-	long i3 = mid + 1;</p>
-<p>	// Temp array<br />
-	int* temp=new int[r-p+1];</p>
-<p>	// Merge in sorted form the 2 arrays<br />
-	while ( i2 &lt;= mid &amp;&amp; i3 &lt;= r )<br />
-		if ( input[i2] &lt; input[i3] )<br />
-			temp[i1++] = input[i2++];<br />
-		else<br />
-			temp[i1++] = input[i3++];</p>
-<p>	// Merge the remaining elements in left array<br />
-	while ( i2 &lt;= mid )<br />
-		temp[i1++] = input[i2++];</p>
-<p>	// Merge the remaining elements in right array<br />
-	while ( i3 &lt;= r )<br />
-		temp[i1++] = input[i3++];</p>
-<p>	// Move from temp array to master array<br />
-	for ( int i = p; i &lt;= r; i++ )<br />
-		input[i] = temp[i-p];</p>
-<p>	delete [] temp;<br />
-}</p>
-<p>// inputs:<br />
-//	p - the start index of array input<br />
-//	r - the end index of array input<br />
-void Merge_sort(int* input, long p, long r)<br />
-{<br />
-	if ( p &lt; r )<br />
-	{<br />
-		long mid = floor((p + r) / 2);<br />
-		Merge_sort(input, p, mid);<br />
-		Merge_sort(input, mid + 1, r);<br />
-		Merge(input, p, r);<br />
-	}<br />
-}<br />
-</code></p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2012/08/24/connect-mac-os-x-with-linux-server">Connect Mac OS X with Linux Server</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-08-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Mac OS-ref" rel="nofollow">Mac OS</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#VNC-ref" rel="nofollow">VNC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#X11-ref" rel="nofollow">X11</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>There are many ways to connect Mac OS X with Linux by command line. However, connecting them with GUI is not so easy. I tried two ways, but none of them work perfectly and each of them has both advantages and disadvantages.</p>
-<p>The first way I tried was VNC. <a href="http://sourceforge.net/projects/cotvnc/">Chicken of the VNC</a> was said to be the best VNC client under Mac OS X, unfortunately, I haven't make it work, even follow the tips of webpage <a id="using_vnc_on_mac_os_x" name="using_vnc_on_mac_os_x"></a><a href="http://www.cs.vassar.edu/sysnews/vnc/osx">Using VNC on Mac OS X</a>. I used realvnc. The first step is to configure ssh. I followed the tips on webpage <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>.  In the Linux server, after installing openssh, edit the file <code>/etc/ssh/ssh_config</code> and make sure</p>
-<pre>ForwardAgent yes
-ForwardX11 yes
-ForwardX11Trusted yes</pre>
-<p>Then edit <code>/etc/ssh/sshd_config</code> and make sure</p>
-<pre>X11Forwarding yes</pre>
-<p>.</p>
-<p>In the terminal of Mac OS X, enter command "<code>ssh -L 5901:localhost:5900 &lt;login&gt;@&lt;LinuxServer&gt;</code>". 5901 is the port number to be used by RealVNC, and 5900 is the port number of the VNC in Linux. For details about this command, refer to <a href="http://manas.tungare.name/blog/ssh-port-forwarding-on-mac-os-x/">SSH Port Forwarding on Mac OS X</a>. Then start RealVNC, enter "<code>localhost:5901</code>" and your VNC password.</p>
-<p>RealVNC works reliably, but the quality of GUI is not good and sometimes responds slowly.</p>
-<p>The other method is also based on ssh, therefore the ssh should also be configured in the Linux side. The only difference is X11 should be installed in Mac OS X. The above<br />
-ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&gt;". After login to Linux in terminal, run command "<code>gnome-session</code>"(this requires Gnome be installed in Linux server). In this way, remote Linux programs runs as local Mac applications. For more info, please refer to <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>. The disadvantage of using this way is, X11 is not reliable in Mac OS X and it may crash at any time.</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1596,7 +1352,7 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">18</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">23</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -1630,7 +1386,7 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
     
         <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
     
-        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">14</span></a>
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">15</span></a>
     
         <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
     
@@ -1654,7 +1410,7 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">17</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">23</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -1728,6 +1484,10 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
     
+        <a href="/tags.html#Architecture-ref" class="btn btn-mini">Architecture <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Cache-ref" class="btn btn-mini">Cache <span class="badge">1</span></a>
+    
         <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
@@ -1736,16 +1496,40 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
     
         <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
     
+        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">1</span></a>
+    
   
 
 
 
+			</div>
+		</div>
+		<!-- /well -->
+        <div class="well">
+			<h4>Visitors</h4>
+			<div class="tag_box">
+				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4nm24yds2ph&amp;s=300&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
+	
 			</div>
         </div>
         <!-- /well -->
         <div class="well">
             <h3>Recent Posts</h3>
 	        <ul>
+			
+  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
+			
+  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
+			
+  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
+			
+  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
@@ -1754,18 +1538,6 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
-			
-  			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
-			
-  			<li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">Coin Change Problem</a></li>
-			
-  			<li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">Text Justification</a></li>
-			
-  			<li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">Sort Colors</a></li>
-			
-  			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
-			
-  			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
 			
 			</ul>
         </div>

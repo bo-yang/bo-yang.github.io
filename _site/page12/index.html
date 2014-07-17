@@ -42,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand" href="/">bo-yang</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -87,6 +87,408 @@
 		<div class="col-md-8">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/07/22/expect-send-data-in-expect_out">expect_out(buffer)中包含send的数据</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
+<div>
+<h1 id="zw-129f916d484wZwN43916c">expect_out(buffer)中包含send的数据</h1>
+<p id="zw-129f9095e02SqGVnn3916c"><span id="zw-129f9081eab6rVFjl3916c">我一直以为在Expect中一旦执行send之后，</span><span id="zw-129f9081eab0LvB_n3916c">expect_out(buffer)就会被清空，直到有新的数据被填入，而恰恰就是这些数据被用在expect语句中。而今天在调试时发现的问题却令我大吃一惊，原来expect_out(buffer)不会被自动清空，而expect到的数据很可能不是你真正想要的，非常有可能是历史数据。</span><span id="zw-129f9095dc2QusTdp3916c"><a id="zw-129f9081f1cN6cQM93916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378">"expect_out(buffer) has the content of the previous send"</a>&nbsp;</span><span id="zw-129f9099e0e7RHXvZ3916c">一文</span><span id="zw-129f908ec42SOcAlE3916c">也指出了这个问题。</span></p>
+<h4></h4>
+<p id="zw-129f8fe7303mkLwZ3916c">&nbsp;</p>
+<p id="zw-129f9000807KX0na03916c">&nbsp;</p>
+<div id="zw-129f900a60bRM8gME3916c"><span id="zw-129f900a60cjSAA9Y3916c">比如在我的代码中，有如下片段：</span></div>
+<div id="zw-129f90d0f92fIcFt93916c">
+<pre>set prompt "#"
+set lockfile "/root/tmp/.cool.lock" 
+send "
+if /[ -e $lockfile ]; then
+        cat $lockfile
+else 
+        echo /"COOLID: $coolid/" &gt; $lockfile
+        echo DONE!
+fi
+/r"
+sleep 1 ;# necessary
+expect {
+        timeout {
+                puts stderr "WARNING: $ME: cannot verify if the Linux AP is locked by other COOL session!";
+                exit 2;
+        }
+       -re "COOLID: (/[1-9](/[0-9])*).*$prompt" {
+                puts stdout "expect_out(buffer)=$expect_out(buffer)"
+                puts stdout "expect_out(0,string)=$expect_out(0,string)"
+                puts stdout "expect_out(1,string)=$expect_out(1,string)"
+                puts stdout "expect_out(2,string)=$expect_out(2,string)"
+                puts stdout "expect_out(3,string)=$expect_out(3,string)"
+        }
+        "DONE!"  ;# do nothing    
+}
+</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f90da827xtgjkZ3916c">无论$<span id="zw-129f90e1718nSGeGs3916c">lockfile是否存在，expect总会得到COOLID: 68，而expect_out(buffer)的出如下：</span></div>
+<div id="zw-129f90b2476dtXxBy3916c"><span id="zw-129f90b2476oxjVv3916c"><br /></span></div>
+<div id="zw-129f909c0f6KIKdhr3916c">
+<pre>[root@bjvsmcl05 ~]# expect_out(buffer)= 
+Last login: Fri Jul 23 09:32:13 2010 from bjbldd
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]# if [ -e /root/tmp/.cool.lock ]; then
+&gt;         cat /root/tmp/.cool.lock
+&gt; else 
+&gt;         echo "COOLID: 68" &gt; /root/tmp/.cool.lock
+&gt;         echo DONE!
+&gt; fi
+COOLID: 1234
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]#
+expect_out(0,string)=23 09:32:13 2010 from bjbldd
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]# if [ -e /root/tmp/.cool.lock ]; then
+&gt;         cat /root/tmp/.cool.lock
+&gt; else 
+&gt;         echo "COOLID: 68" &gt; /root/tmp/.cool.lock
+&gt;         echo DONE!
+&gt; fi
+COOLID: 1234</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f900a6154k9vr_3916c"></div>
+<div id="zw-129f9105181rk1x3916c"><span id="zw-129f910e606ulQUt93916c">由此可见，由于</span><span id="zw-129f910e6063BF84J3916c">expect_out(buffer)中含有send的</span><span id="zw-129f910e666C0g_Fp3916c">echo "COOLID: 68"</span><span id="zw-129f910e607avGslF3916c">，因此永远都能匹配到这个数据。</span></div>
+<div id="zw-129f912e050bsjfk33916c"><span id="zw-129f912e0513SIKJW3916c"><br /></span></div>
+<div id="zw-129f912eb9dtLDgK3916c"><span id="zw-129f91d3abebAfTcg3916c">由于没有找到一种可以清空</span><span id="zw-129f91d3ac0nlD1Le3916c">expect_out(buffer)的方法，无法实时地将</span><span id="zw-129f91d3b3fb8YqAR3916c">expect_out(buffer)清空。</span><span id="zw-129f91d3ac3QUsX9u3916c">我能想到的解决方法有两种：一是更改send和expect的内容或方式，避免send的内容中出现expect的模式(pattern)。比如在我的程序中把上述代码段改为：</span></div>
+<div id="zw-129f9158fb2IWSJh63916c">
+<pre>set lockfile "/root/tmp/.cool.lock"   
+send "cat $lockfile/r"
+expect {
+        -re "COOLID: (/[1-9](/[0-9])*)" {
+                puts stdout "expect_out(buffer)=$expect_out(buffer)"
+                puts stdout "expect_out(0,string)=$expect_out(0,string)"
+                puts stdout "expect_out(1,string)=$expect_out(1,string)"
+                if { [string compare $expect_out(1,string) $coolid] } {
+                        puts stdout "ERROR: $ME: $pcname has been reserverd by COOL session $expect_out(1,string), please choose another Linux PC instead./n"
+                        exit 2;
+                }
+        }
+        "cat: $lockfile: No such file or directory*" {
+                send "echo /"COOLID: $coolid/" &gt; $lockfile/r"
+        }
+}</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f9158fbfu4Bqbj3916c">就可以正常工作了。</div>
+<div id="zw-129f915d6eatVpx_B3916c"></div>
+<div id="zw-129f915ddd2JF4vnX3916c"><span id="zw-129f9193cbaAjqmW43916c">另一种方法是按照</span><a id="zw-129f9193cbcDH9aOQ3916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378"><span id="zw-129f9193cbdI49BAL3916c">"expect_out(buffer) has the content of the previous send"</span></a><span id="zw-129f9193cbfZkPuN3916c">的例子中的方法，set prompt，保持原始代码中send的内容不变，将expect的正则表达式改为&nbsp;</span><span id="zw-129f9193d30IyWK1h3916c">-re "fi(</span><span id="zw-129f9193d30nUI-eL3916c">.*)</span><span id="zw-129f9193d30LfTLJL3916c">$prompt"，如此一来希望的输出就在expect_out(1,string)中了，然后利用string或者lsearch命令对匹配到的数据进行分析。</span></div>
+<div id="zw-129f91aeeb09SBIGu3916c"><span id="zw-129f91aeeb1poW5U3916c"><br /></span></div>
+<div id="zw-129f91af02eanEEu3916c"><span id="zw-129f91af02eiHWs1G3916c">结论：今后在编写Expect脚本时，不仅要考虑每一步的send/expect，也还要考虑到这一步的expect的内容有可能出现在之前的历史数据中。</span></div>
+<div><span id="zw-129f91af02eiHWs1G3916c"><br /></span></div>
+<p id="zw-129f9158fca-kkq893916c">&nbsp;</p>
+</div>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/07/20/here-document">Here Document</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	</p>
+<p id="zw-129ed8c28af2dvqtt15bea0" class="MsoNormal">
+<h1>Here Document</h1></p>
+<p>Syntax:</p>
+<p><em>command &lt;&lt; label&nbsp;<br />input line 1&nbsp;<br />&hellip;&nbsp;<br />input line n&nbsp;<br />label</em></p>
+<p>This allows you to redirect input to a shell script from within the shell script itself.</p>
+<ul>
+<li>&lt;&lt; label indicates that label marks the end of the here document</li>
+<li>label must appear on a line by itself to end the here document</li>
+<li>&lt;&lt; 'label' prevents the shell from doing parameter and command substitution in the here document</li>
+<li>&lt;&lt;- label deletes leading tabs (but not spaces) from the here document</li>
+</ul>
+<h2>Here Document Example&nbsp;<br /><span>(from page 189 in "Learning the Korn Shell")</span></h2>
+<p>pgmname=$1&nbsp;<br />for user in $(ypcat passwd | cut -f1 -d:)&nbsp;<br />do&nbsp;<br />&nbsp;&nbsp;mail $user &lt;&lt;- EOF<br />&nbsp;&nbsp;Dear user,&nbsp;<br />&nbsp;&nbsp;A new version of $pgmname has been installed&nbsp;<br />&nbsp;&nbsp;in $(whence $pgmname).&nbsp;<br />&nbsp;&nbsp;Regards,&nbsp;<br />&nbsp;&nbsp;Your friendly sysadmin&nbsp;<br />EOF&nbsp;<br />done</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal"><span>原文：&nbsp;</span><a href="http://snap.nlc.dcccd.edu/reference/scarlatos/cis2.50/note6.html">http://snap.nlc.dcccd.edu/reference/scarlatos/cis2.50/note6.html</a></p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/07/18/iphone4-antena-gate">浅析Apple iPhone4天线问题的危机公关</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-18</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
+<div>
+<h1 id="zw-129e3d10a83QJWE-15bea0" style="text-align:center;">浅析A<span id="zw-129e3ac83d3_bPs9e15bea0">pple iPhone4天线问题的危机公关</span></h1>
+<p id="zw-129e3ac83d3CFDfYy15bea0">&nbsp;</p>
+<p id="zw-129e3ace966fegbrD15bea0"><span id="zw-129e3ace967cO2dP15bea0">iPhone4的天线问题甫一曝光，乔帮主就故态复萌了，拿出25年前打死不认亲生女儿的尽头，摆出死猪不怕开水烫的嘴脸，直言这个问题是由于用户的握手机的姿势不对引起的，言外之意就是碰到问题的这些用户太白痴，连如何正确握手机都得要别人教。很不幸的是，敝人也是习惯左手握手机，也是被乔帮主鄙视的那群人之一。</span></p>
+<p id="zw-129e3bfa69dUjg1BQ15bea0">乔帮主的言论客观上激起了媒体和更多用户的不满，一大撮人巴不得Apple出事呢，现在苦苦等待了好几年的机会终于来到了，岂有坐视的道理？于是媒体铺天盖地的报道iPhone4的天线问题，科技专栏作家不断发表自己的看法，评测公司不断发布最新的评测&hellip;&hellip;</p>
+<p id="zw-129e3c45695rq97mN15bea0">Apple深知此事不能不了了之，于是又宣称会尽快推出新的固件来修正之前iPhone的信号显示的bug&mdash;&mdash;iPhone4的信号之所以在握住某个点之后会大幅下降，主要原因是之前的信号显示是被夸大了的，也就是说之前的信号其实本来没有那么好，iPhone会故意将信号条设为满格，给用户以iPhone信号良好的假象。我相信这样做的绝不只Apple一家，其他厂家肯定也会搞这种小动作，只是程度不同而已。</p>
+<p id="zw-129e3c5287eFTOTLj15bea0">但很快就有新的分析和测试出炉，固件升级不可能解决iPhone4掉话的问题，因为这个问题是由硬件引起的，确切而言是天线的设计缺陷&mdash;&mdash;软件不可能修复这种硬件的缺陷。而直到此时，Apple还没有同意免费为用户提供可以解决掉话问题的iPhone4保护套，用户还不得不掏30美元去买保护套。</p>
+<p id="zw-129e3c8ff4erCaAr315bea0"><span id="zw-129e3d0c290zcxAbx15bea0">媒体继续穷追猛打，Apple必须得给出一个说法了。于是本周五，乔帮主专门召开了一个发布会来解释iPhone4的信号问题。一向喜欢在最后5分钟报道米国人民生活于水深火热之中的《新闻联播》当然不会放弃这样一个好机会，专门报道了这个消息&mdash;&mdash;</span><span id="zw-129e3d0c317LKBufn15bea0">迷信水果出品的一小撮不明真相的群众们，你们该醒醒了！即便牛B如iPhone4者，照样问题多多！还是赶紧买我天朝自产的XX吧！&hellip;&hellip;</span></p>
+<p id="zw-129e3b99ae6BemeBk15bea0"><span id="zw-129e3d5aac4iEW14D15bea0">感谢CCAV，在我吃饭的时候报道了这条消息，吃完饭后我赶紧上网仔细看了看相关报道。今天在新浪科技上看到了《</span><a id="zw-129e4b8ff5frYBH3215bea0" title="直播实录：苹果iPhone 4信号问题发布会" href="http://tech.sina.com.cn/t/2010-07-17/01104438749.shtml" target="_blank"><span id="zw-129e4b8ff5eyLK11U15bea0">直播实录：苹果iPhone 4信号问题发布会</span></a><span id="zw-129e4b8ff5eNw8vUx15bea0">》。看完之后，坦白讲，我被乔帮主的真诚感动了。下面简单分析一下乔帮主的思路。</span></p>
+<p id="zw-129e3d5b65dLO6jCz15bea0">&nbsp;</p>
+<div id="zw-129e490e626TplBJT15bea0"><span id="zw-129e490e627NPEeNZ15bea0">首先，在所有智能手机中iPhone4拥有最好的销量和最佳的口碑&mdash;&mdash;iPhone4天赋异禀，瑕不掩瑜&mdash;&mdash;先定好基调很重要。</span></div>
+<div id="zw-129e490f1dfAY5D2x15bea0"><span id="zw-129e490f1dfS9Qoiq15bea0"><br /></span></div>
+<div id="zw-129e490e6272R8F15bea0"><span id="zw-129e490e627t0Jes415bea0">所有的手机都不是完美的，iPhone4不是，其他手机也不是，iPhone4存在的天线问题在其他手机上照样存在&mdash;&mdash;老乔我阴沟里翻船了，你们在岸上的也休想有好日子过！空口无凭，图片为证，老乔把其他手机的信号锐减的情况逐一摆在大家面前。需要注意的是老乔在演讲中提到说类似的问题也存在在诺基亚手机中，但在presentation中却不见又诺记的图片，因此我怀疑Apple至今肯定还没有诺记信号问题的切实证据，老乔故意制造烟雾弹。也有另外一种可能是，在乔帮主眼中，就诺基亚那样低劣的工业设计，根本不配是Apple的对手，因此在presentation中放它一码。</span></div>
+<p id="zw-129e490e62eIdY0Ue15bea0">&nbsp;</p>
+<p id="zw-129e490e62eNfX3gi15bea0">&nbsp;</p>
+<div id="zw-129e49bafa92zPQZ-15bea0"><span id="zw-129e49bafaahdOOuP15bea0">接下来乔帮主介绍了Apple在手机天线上的投入&mdash;&mdash;神秘的&ldquo;black&rdquo;实验室、过硬的技术人员和大量的资金投入&mdash;&mdash;两层含义：我们很重视手机天线的设计的，尽管iPhone4的天线存在问题，但绝对不可能是大问题；我们有这么大的投入尚不能解决的问题，其他公司又怎么能彻底解决呢？</span></div>
+<div id="zw-129e49bafaaUZbLpI15bea0"></div>
+<div id="zw-129e49bafab_EUqk15bea0"><span id="zw-129e49bafabFvyYtb15bea0">然后乔帮主拿出了hard data来说明iPhone4的问题，除了掉话率iPhone4比iPhone 3GS稍高一点之外，返修率和退货率都要低很多。在这里，乔帮主的下面这张slide制作的实在是太有水平了，不仔细看怎么都不觉得他是在承认iPhone4的问题，分明是在炫耀他的成绩嘛！</span></div>
+<div id="zw-129e49bafabCPL2At15bea0"><img src="http://i0.sinaimg.cn/IT/2010/0717/201071723455.jpeg" border="0" alt="" hspace="0" vspace="0" /></div>
+<p id="zw-129e49bafb06hOzSx15bea0">&nbsp;</p>
+<p id="zw-129e4a1188ftS6F15bea0">其实iPhone4的这些数据很难说明问题，因为一是因为它上市的时间太短了，而且上市的地区有限（iPhone 3GS是在欧美多国同时上市的，而iPhone4只有少数几个国家）；再者就是天线信号显示条都可以随意更改，这数据又有何不可呢？</p>
+<div id="zw-129e4adebdb9JDl4Y15bea0"></div>
+<div id="zw-129e4adebdcVQ5Xz15bea0"><span id="zw-129e4adebdcT8Nwro15bea0">至于问题的解决方法，乔帮主终于同意了免费为用户提供手机套&mdash;&mdash;这是对他们最为有利的方案，如果接受媒体和业内人士的召回的建议，Apple的损失将是惨重的。为了进一步打消某些人仍然抱有的召回的幻想，乔帮主在Q&amp;A的环节中干脆暗示召回也很难解决问题，原因就是这是智能手机的通病，不可能在短期内有最终解决方案。</span></div>
+<div id="zw-129e4adebdcth46IY15bea0"></div>
+<div id="zw-129e4adebdcmY6Yds15bea0"><span id="zw-129e4adebddh5-O0815bea0">最后，乔帮主竟然主动爆出了正在调查iPhone4的距离感应器的问题&mdash;&mdash;如果有谁还幻想着在天线问题过去之后再炒作距离感应器的问题，还是省省吧！</span></div>
+<div id="zw-129e4adebddBfU2VJ15bea0"></div>
+<div id="zw-129e4adebdeVf30_J15bea0"><span id="zw-129e4adebdecOwZat15bea0">另外，乔帮主还深情的自我表白：&ldquo;我们这样做的原因是，我们爱自己的用户；如果我们把事情搞砸了，我们会自我检讨，并更加努力地工作。当我们取得成功时，我们所获得的奖励就是留住了用户。或许我们本应让公关人员来打发这些麻烦事，但我们没有，而是亲自来解决。所以，在过去22天时间里，我们一直都努力解决这个问题。我们认为，已经抓住了问题的核心。&rdquo;</span></div>
+<div id="zw-129e4adebdeXJLvPH15bea0"></div>
+<div id="zw-129e4adebdfA85PY215bea0"><span id="zw-129e4adebdfcUIB8Z15bea0">这是一个堪称经典的危机公关演讲！</span></div>
+<div id="zw-129e4aeace8Bm15Ac15bea0"><span id="zw-129e4aeace8bX2vv15bea0"><br /></span></div>
+<div id="zw-129e4aeaf80JHU7o15bea0"><span id="zw-129e4aeaf80v6SWKE15bea0">联想起最近国内的唐俊面对&ldquo;学历门&rdquo;的态度，汪晖教授面对&ldquo;抄袭门&rdquo;的反应，乔帮主的水平实在比他们高出一个档次&mdash;&mdash;既承认了自己的错误，又捎带打击了对手，既安抚了消费者和媒体，又能使自己的利益最大化。谢谢乔帮主又给我们上了一课！</span></div>
+<div><span id="zw-129e4aeaf80v6SWKE15bea0"><br /></span></div>
+<p id="zw-129e4adebe7O4HTKQ15bea0">PS:</p>
+<p>&nbsp;</p>
+<p>根据Apple的声明，很多人推测Apple很可能在10月份推出重新设计的iPhone4.我认为这很有可能，因Steve Jobs不可能容忍有瑕疵的产品在市场上销售太久。另外，至于有很多人质疑乔帮主在iPhone4发部前就已经知道它的天线问题，我觉得可能性也不是很大，凭着乔帮主要求Mac开发者搞半年才能拿出一个入他老人家法眼的的滚动条而最终发布时又不得不把这滚动条放弃的高要求，很难想象他会容忍有问题的iPhone流入市场&mdash;&mdash;即使事先他真的已经知道了这个问题，估计那也是离WWDC很近的时间内才知道的，箭在弦上不得不发了&hellip;&hellip;</p>
+</div>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/07/17/use-shell-var-in-awk">awk正则表达式中调用ksh变量</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	</p>
+<p>如果ksh中定义了变量pcname,而在嵌入ksh中的awk程序中又要使用这个环境变量，并且用它在正则表达式中，该如何用它呢？</p>
+<p>最简单的方法就是：</p>
+<p>
+<pre>#!/bin/ksh
+pcname="ap201"
+nawk '/'"$pcname"'/{print $2}' $FILE</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>更多方法，参见下面转载的《<strong><a href="http://www.91linux.com/html/article/shell/20090405/16355.html">AWK 使用 Shell 变量</a></strong>》一文：</p>
+<p>&nbsp;</p>
+<p>最近闲着没事，想写个Shell脚本，其中用到了 AWK。想在AWK中读取／设置Shell脚本中定义的变量，搜索些资源，总结了一些东东。</p>
+<p><span style="font-size:large;">读取变量</span></p>
+<p>在通过如下方式<span>读取</span>Shell变量<br />1&gt; awk -v varName=varValue '...' ...<br />2&gt; awk '...{print "'"${USER}"'"}' ...<br />&nbsp;&nbsp; 此种方式可以访问系统环境变量（如USER等），和自定义Shell变量。若这些变量中没有空格及其他特殊字符，则可以少写两个双引号：awk '...{print "'${USER}"}' ...<br />3&gt; awk '...{print ENVIRON["USER"]}...' ...<br />&nbsp;&nbsp; 但是这种方法只能访问系统变量</p>
+<p><span style="font-size:large;">设置变量</span></p>
+<p><span>在AWK中尚未找到设置</span>Shell变量的方法，因为像上面的读取的方法中，一旦awk开始执行，这些环境变量都是一个副本，无论处理多少条记录，不管主Shell中如何变化，所引用的这些变量值都保持不变。而且，通过下面的实验可以看出来，在AWK中执行system函数调用命令是另起一个Shell线程，所以无法依靠system来设置外部环境变量。<br />如果你的AWK只打印一条结果的话，可以使用如下方式<span>在shell环境中设置</span>变量<br />&nbsp;&nbsp; myVar="`echo | awk '{print "AA/nBB/nCC"}'`"<br />注意，这种方式在awk打印多行情况下会将回车用空格替代后赋值。</p>
+<p>实验过程如下：</p>
+<p><span style="font-size:medium;"><span>$ vi tmp.sh</span></span><br />// 编辑内容如下<br /><span><span style="font-family:新宋体;">
+<pre>#!/bin/bash
+echo
+echo "SHELL VERSION : ${SHELL} ${BASH_VERSION}"
+echo "AWK VERSION : `awk -W version | sed -n '1p'`"
+echo
+myVar="AAA BBB CCC DDD"
+echo "IN SHELL : PID=$"
+echo "IN SHELL : /${myVar}=/"${myVar}/""
+echo
+echo | awk -v var1="${myVar}" '{
+    print "IN AWK : how to print single quote : " "'"'"'" 
+    print "No." NR
+    print "IN AWK : -v : var1=/"" var1 "/""
+    print "IN AWK : get : ENVIRON[/"USER/"]=/"" ENVIRON["USER"] "/""
+    print "IN AWK : get : ENVIRON[/"myVar/"]=/"" ENVIRON["myVar"] "/""
+    print "IN AWK : get : ${USER} =/"" "'"${USER}"'" "/"" 
+    print "IN AWK : get : ${myVar}=/"" "'"${myVar}"'" "/"" 
+    print
+    system("echo /"IN AWK : system() : PID=$/"")
+}' 
+myVar="`echo | awk '{print "AA/nBB/nCC"}'`"
+#/n is replaced by space character
+echo ${myVar}</pre>
+<p></span><br /><span style="font-size:medium;"><span style="font-family:新宋体;"><span>$ . tmp.sh</span><br /></span></span></span>//输出结果如下
+<pre>
+SHELL VERSION : /bin/bash 3.2.25(1)-release
+AWK VERSION : GNU Awk 3.1.5
+IN SHELL : PID=10627
+IN SHELL : ${myVar}="AAA BBB CCC DDD"
+IN AWK : how to print single quote : ' 
+No.1
+IN AWK : -v : var1="AAA BBB CCC DDD"
+IN AWK : get : ENVIRON["USER"]="zhangll"
+IN AWK : get : ENVIRON["myVar"]=""
+IN AWK : get : ${USER} ="zhangll"
+IN AWK : get : ${myVar}="AAA BBB CCC DDD"
+IN AWK : system() : PID=17468
+AA BB CC</pre>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/07/17/ifs-in-kshell">Korn Shell中IFS的妙用</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-07-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>IFS是internal field separator的缩写，shell的特殊环境变量。ksh根据IFS存储的值，可以是空格、tab、换行符或者其他自定义符号，来解析输入和输出的变量值。</p>
+<p>&nbsp;</p>
+<p>如果有一IP地址220.112.253.111, 欲将这个IP地址颠倒顺序，你可以定义IFS为"."，然后直接echo这个地址即可得到此IP的4个数值，然后c重新把IFS设为空格，重新组合四个IP地址的数值即可。</p>
+<p>
+<pre># The following code segment will only work in ksh, 
+# and it will fail in bash
+IP=220.112.253.111
+IFS="."
+TMPIP=$(echo $IP)
+IFS=" " # space
+echo $TMPIP | read ip1 ip2 ip3 ip4
+INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>更详细的IFS的介绍参见下文：（原文地址：<a href="http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm">http://www.livefirelabs.com/unix_tip_trick_shell_script/oct_2003/10132003.htm</a>）</p>
+<p>&nbsp;</p>
+<table style="width:100%;" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Another shell variable that you should become comfortable using is the IFS, or internal field separator, variable.<span>&nbsp;&nbsp;</span>The shell uses the value stored in IFS, which is the space, tab, and newline characters by default, to delimit words for the read and set commands, when parsing output from command substitution, and when performing variable substitution.</span><span></p>
+<p><span style="text-decoration:underline;">IFS can be redefined to parse one or more lines of data whose fields are not delimited by the default white-space characters.</span><span>&nbsp;&nbsp;</span>Consider this sequence of variable assignments and for loops:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">$ line=learn:unix:at:livefire:labs<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn:unix:at:livefire:labs<br />$ OIFS=$IFS<br />$ IFS=:<br />$ for i in $line<br />&gt; do<br />&gt; echo $i<br />&gt; done<br />learn<br />unix<br />at<br />livefire<br />labs<br />$</p>
+<p></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>The first command assigns the string &ldquo;learn:unix:at:livefire:labs&rdquo; to the variable named line.<span>&nbsp;&nbsp;</span>You can see from the first for loop that the shell treats the entire string as a single field.<span>&nbsp;&nbsp;</span>This is because the string does not contain a space, tab, or newline character.&nbsp;</p>
+<p></span><span>After redefining IFS, the second for loop treats the string as four separated fields, each delimited by a colon.<span>&nbsp;&nbsp;</span>Using a colon for IFS would be appropriate when parsing the fields in a record from /etc/passwd, the user account information file:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;">livefire:x:100:1::/export/home/livefire:/bin/ksh</p>
+<p></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<p class="MsoNormal"><span style="font-family:Arial;font-size:x-small;"><span>Notice that the original value of IFS was stored in OIFS (&ldquo;O&rdquo; for original) prior to changing its value.<span>&nbsp;&nbsp;</span>After you are finished using the new definition, it would be wise to return it to its original value to avoid unexpected side effects that may surface later on in your script.&nbsp;</p>
+<p></span><span>TIP &ndash; The current value of IFS may be viewed using the following pipeline:</p>
+<p></span></span></p>
+</td>
+</tr>
+<tr>
+<td width="100%">
+<blockquote>
+<p><span style="font-family:Arial;font-size:x-small;">$ echo "$IFS" | od -b<br />0000000 040 011 012 012<br />0000004<br />$</span></p>
+</blockquote>
+</td>
+</tr>
+<tr>
+<td width="100%"><span style="font-family:Arial;font-size:x-small;"><span>The output of the echo command is piped into the octal dump command, giving you its octal equivalent.<span>&nbsp;&nbsp;</span>You can then use an ASCII table to determine what characters are stored in the variable.<span>&nbsp;&nbsp;</span>Hint: Ignore the first set of zeros and the second newline character (012), which was generated by echo.<br /></span></span></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/06/24/apache-subversion-config">Apache and Subversion配置</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-06-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
+<h2>I.&nbsp;<span style="color:#000000;"><a href="http://xuebingnanmm.javaeye.com/blog/629810">CentOS Apache配置详解</a></span></h2>
+<p><span style="color:#000000;">(</span><a href="http://xuebingnanmm.javaeye.com/blog/629810">http://xuebingnanmm.javaeye.com/blog/629810</a>)</p>
+<p>&nbsp;</p>
+<p><span style="color:#000000;"><br />
+</span></p>
+<h2>II.<span style="color:#000000;"><a id="vqhi" title="Subversion on CentOS" href="http://wiki.centos.org/HowTos/Subversion#head-63b296629e14e219beb2a4b866521947afe58d68">Subversion on CentOS</a>&nbsp;</span></h2>
+<pre><span style="color:#000000;">(</span><a href="http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9">http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9</a>)</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>III. How to customize the path of svn repository?&nbsp;</h2>
+<p>The URL of svn repository is like http://&lt;server_name&gt;/&lt;location&gt;/&lt;project&gt;. You can store the svn repository to anywhere you want.&nbsp;</p>
+<p>&nbsp;</p>
+<div>If the location is not defined in&nbsp;/etc/httpd/conf/httpd.conf, add such definition in it:</div>
+<div><span style="font-family:'Courier New';">&lt;Directory /path&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;Options FollowSymLinks<br /></span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;AllowOverride None</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Directory&gt;</span></div>
+<p>&nbsp;</p>
+<div>Then change the&nbsp;<strong>/etc/httpd/conf.d/subversion.conf</strong>, such as:</div>
+<div><span style="font-family:'Courier New';">&lt;Location /tmp&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;DAV svn</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;SVNParentPath /var/www/svn/repos</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;AuthzSVNAccessFile /etc/svn-acl-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;SVNPath /tmp/svn/project</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthType Basic</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthName "Subversion repos"</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthUserFile /etc/svn-auth-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;Require valid-user</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Location&gt;</span></div>
+<p>
+<br />However,&nbsp;<span style="font-family:'courier new';">SVNParentPath&nbsp;</span>is can not be used here and only&nbsp;<span style="font-family:'courier new';">SVNPath&nbsp;</span>is supported (<a href="http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html">http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html</a>).</p>
+<div>The &lt;Location /&gt;...&lt;/Location&gt; tags also can be added in /etc/httpd/conf/httpd.conf (<a href="http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn">http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn</a>).</div>
+<div>Command to stop SELinux: &nbsp;<span style="font-family:'courier new';"><span style="font-size:x-small;">setenforce 0</span></span></div>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/06/13/batch-process-with-excel-vba">利用Excel VBA处理文档</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-06-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#VBA-ref" rel="nofollow">VBA</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>遇到如下格式的一篇WORD文档，格式混乱，不适合打印：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;"><img src="http://bonny95.files.wordpress.com/2010/06/64_1276413753mmbm.jpg" alt="" width="232" height="614" /></span></span></p>
+<p>&nbsp;</p>
+<p>由于没有接触过Word VBA，因此决定用Excel VBA来处理这篇文档。首先全选该文档的内容，粘贴到Excel文档中。然后创建一个新的macro,修改该Macro为以下代码：</p>
+<p>&nbsp;</p>
+<p><span style="font-family:monospace;font-size:13px;"><span style="white-space:pre-wrap;">
+<pre>Sub FormatSheet()'' FormatSheet Macro' Macro recorded 6/13/2010 by Bo Yang'' Keyboard Shortcut: Ctrl+f'    Dim str As String    Dim i As Long        ' Remove blank rows    rownumber = Range(&quot;A65536&quot;).End(xlUp).Row    Do While rownumber &gt;= 1        If Cells(rownumber, 1).Value = &quot;&quot; Then            Rows(rownumber).Delete            rownumber = rownumber - 1        End If        rownumber = rownumber - 1    Loop        ' Copy the Chinese intepretation    For rownumber = 2 To 65535        Cells(rownumber, 2).Value = Cells(rownumber + 1, 1).Value    Next        ' Delete rows which contians Chinese character    ' in their first cells    For rownumber = 2 To 65535        For i = 1 To Len(Cells(rownumber, 1).Value)            str = Mid(Cells(rownumber, 1).Value, i, 1)            If str Like &quot;[Ò»£­ý›]&quot; Then                Rows(rownumber).Delete            End If        Next    Next    End Sub</pre>
+<p> </span></span></p>
+<p>&nbsp;</p>
+<p>然后按自定义快捷键Ctrl+f， 数秒钟后，文档处理完毕，秩序井然矣。</p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2010/06/64_12764139792ekk.jpg" alt="" width="464" height="523" /></p>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2010/06/11/cpu-speed-and-memory-size-in-solaris">Find CPU Speed and Memory Size on Solaris</a></h2>
     <p>
@@ -152,882 +554,6 @@
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/03/05/root-hero-200">Sprint HTC Hero(Hero 200)获取ROOT权限</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-03-05</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Android-ref" rel="nofollow">Android</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>I. 开始之前你需要完成的：</p>
-<div class="comment_count">你需要确认你能通过ADB来访问你的HERO。如果不行的话就先看看如何安装HERO的驱动（这个方法转自<span style="text-decoration:underline;"><strong>draculading</strong></span>的帖子<a href="http://www.hiapk.com/bbs/thread-13053-1-1.html" target="_blank"><span class="t_tag">HTC</span>&nbsp;HERO 取得<span class="t_tag">root</span><span class="t_tag">权限</span>完全傻瓜<span class="t_tag">教程</span>，适合<span class="t_tag">新人</span>。。。</a>其中安装驱动部分。）</div>
-<div class="comment_count"></div>
-<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><strong>1.&nbsp;<span class="t_tag">下载</span><span class="t_tag">Android</span>&nbsp;SDK</strong><br />到<span class="t_tag">Google</span>官网去下个SDK里面有root要用的工具和驱动，网址&nbsp;<span><a href="http://developer.android.com/index.html" target="_blank">http://developer.android.com/index.html</a>（<em>博主：该网页已经被墙，尝试这个网页</em><a href="http://androidappdocs.appspot.com/sdk/index.html"><em>http://androidappdocs.appspot.com/sdk/index.html</em></a><span>）</span><span>下载以后可以解压到任意位置，建议解压到C:/sdk/ ,后面的教程里说的sdk<span class="t_tag">文件</span>夹就是指的这个文件夹</span></span></span></span></div>
-<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><br /><strong>2.安装</strong><strong><span class="t_tag">USB</span></strong><strong>&nbsp;de</strong><strong><span class="t_tag">bug</span></strong><strong>ging驱动</strong><br />确定你的<span class="t_tag">手机</span>已经打开USB Debugging，在<span>Settings - Applications -Development - USB Debugging</span><br /><span>现在把手机通过usb线连到<span class="t_tag">电脑</span>上，电脑会<span class="t_tag">提示</span>你安装驱动，驱动的位置在sdk文件夹里的usb_driver, 如果是32位的<span class="t_tag">系统</span>选择x86文件夹安装驱动，如果是64位系统选择amd64文件夹（驱动可以兼容win7,我用的是64位的win7）</span><span>另外最好从始至终使用同一个usb接口，不然有可能会再次提示你安装驱动</span></span></span></div>
-<div class="comment_count"><span style="color:#4a4a4a;"><span style="font-family:Arial, Arial, sans-serif;"><span><br /></span></span></span></div>
-<div class="comment_count">【<em>博主：如果安装了HTCsync2.0.8，那么USB驱动就已经安装好了，以上第二步可以省略。</em>】</p>
-<p><strong>驱动搞定后就可以开始啦（以下部分是从</strong><a href="http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4" target="_blank">http://www.androidspin.com/index.php?option=com_content&amp;view=article&amp;id=254:how-to-root-cdma-hero&amp;catid=10:rooting&amp;Itemid=4</a><strong>翻译而来）</strong></p>
-<p>II. 获取CDMA HERO的root权限
-<ol>
-<li>下载附件中的asroot2.zip，并解压.</li>
-<li>把解压后的asroot2放到SDK的TOOLS目录里</li>
-<li>&nbsp;卸下<span class="t_tag">SD卡</span>，然后手机连接电脑</li>
-<li>打开XP的命令行工具，到SDK的TOOLS目录输入以下指令，</li>
-</ol>
-<pre>cd/
-cd AndroidSDK/Tools/ （到这里是进入SDK的TOOLS目录）
-adb devices（与手机建立连接）</pre>
-<p>请确认你手机的序列号有列出，并提示成功，否则请确认第一步是否完成（也就是说如果没有出现你HERO的序列，那就是驱动没装成功）</p>
-<p>5. 然后输入
-<pre>adb push asroot2 /data/local/ （回车）
-adb shell chmod 0755 /data/local/asroot2 （回车）
-adb shell （回车，会变成$提示符）
-/data/local/asroot2 /system/bin/sh （回车，会变成#提示符）</pre>
-<p>6. 然后输入
-<pre>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system（回车）
-cd /system/bin（回车）
-cat sh &gt; su（回车）
-chmod 4775 su（回车）</pre>
-<p>7.退出一直输入exit回车就可以了</div>
-<div class="comment_count"><strong>然后就OK了! 重启机子吧!&nbsp;</strong></div>
-<div class="comment_count"><strong><br /></strong></div>
-<p>以上步骤完成后，安装Root Explorer试验以上操作是否成功，请参考《<span style="white-space:pre;"><a href="http://www.hiapk.com/bbs/thread-7350-1-1.html">冒死体验～～～Root Explorer文件管理</a>》</span></p>
-<p><span style="white-space:pre;"><br /></span></p>
-<div class="comment_count">============================================================</div>
-<div class="comment_count">【英文原文】</div>
-<h2>HOW TO ROOT YOUR CDMA HTC HERO</h2>
-<p>Posted by&nbsp;<a href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/"></a>on 8th November 2009</p>
-<div class="entry">
-<p>This guide will walk you through gaining root access to your CDMA HTC Hero currently on the Sprint and Verizon&nbsp;<a id="KonaLink0" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Networks</span></span></a>. &nbsp;</p>
-<p>I. Before You Begin</p>
-<p>You need to be able to access the phone via ADB.</p>
-<p>Follow this procedure to get ADB setup on your Hero.</p>
-<p><a href="http://theunlockr.com/2009/10/06/how-to-set-up-adb-usb-drivers-for-android-devices/" target="_blank">How To Setup ADB/Install USB Drivers</a></p>
-<p>II. Root the CDMA Hero</p>
-<p>1. Download the following file and then&nbsp;<a id="KonaLink1" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">unzip</span></span></a>&nbsp;it.</p>
-<p><a href="http://forum.xda-developers.com/attachment.php?attachmentid=244212&amp;d=1257621154" target="_blank">AsRoot2</a></p>
-<p>2. Take the unzipped file and save it into the Tools folder of your AndroidSDK.<br />3. Plug your phone in via USB and do NOT mount the SD card.<br />4. Open the&nbsp;<a id="KonaLink2" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">Command&nbsp;</span><span class="kLink">Prompt</span></span></a>&nbsp;and type the following (hitting enter at the end of every line):</p>
-<blockquote>
-<p>cd/<br />cd AndroidSDK/Tools/<br />adb devices</p>
-</blockquote>
-<p>And make sure your phones&rsquo;s serial number&nbsp;<a id="KonaLink3" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">pops&nbsp;</span><span class="kLink">up</span></span></a><br />(if not redo section I).</p>
-<p>5. Then type:</p>
-<blockquote>
-<p>adb push asroot2 /data/local/<br />adb shell chmod 0755 /data/local/asroot2<br />adb shell<br />/data/local/asroot2 /<a id="KonaLink5" class="kLink" href="http://www.androidspin.com/2009/11/08/how-to-root-your-cdma-htc-hero/" target="undefined"><span style="color:black;"><span class="kLink">system</span></span></a>/bin/sh</p>
-</blockquote>
-<p>6. Then type:</p>
-<blockquote>
-<p>mount -o remount,rw -t yaffs2 /dev/block/mtdblock3 /system<br />cd /system/bin<br />cat sh &gt; su<br />chmod 4775 su</p>
-</blockquote>
-<p>All Done! You now have root access! Try to download a root program from the Market and see if it works&nbsp;<img class="wp-smiley" src="http://www.androidspin.com/wp-includes/images/smilies/icon_razz.gif" alt=":P" /></p>
-<p>&nbsp;</p>
-<p>-------------------------------------------------------------------------------------------------------</p>
-</div>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/03/03/cpio-params">cpio解压参数</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-03-03</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>解压cpio文件&nbsp;<br />cpio -idmv &lt; filename.cpio&nbsp;</p>
-<p>同样可以解压img文件：<br />cpio -idmv &lt; filename.img</p>
-<p>cpio 备份命令<br />备份：cpio -covB &gt; [file|device] 将数据备份到文件或设备上<br />还原：cpio -icduv &lt; [file|device} 将数据还原到系统中</p>
-<p>常用参数：<br />-o&nbsp;&nbsp; ：将数据copy到文件或设备上<br />-i&nbsp;&nbsp;&nbsp; ：将数据从文件或设备上还原到系统中<br />-t&nbsp;&nbsp;&nbsp; ：查看cpio建立的文件或设备内容<br />-c&nbsp;&nbsp; ：一种比较新的portable format方式存储<br />-v&nbsp;&nbsp; ：在屏幕上显示备份过程中的文件名<br />-B&nbsp;&nbsp; ：让预设的blocks可以增加到5120bytes，默认是512bytes，这样可以使备份速度加快<br />-d&nbsp;&nbsp; ：自动建立目录，这样还原时才不会出现找不到路径的问题<br />-u&nbsp;&nbsp; ：更新，用较新的文件覆盖旧的文件</p>
-<p>cpio常与find 配合使用</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/03/02/delete-adobe-from-linux">删除Linux版Adobe Reader的方法</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-03-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Linux版的Adobe Reader的启动速度太慢了，每次打开pdf文档的时候都不得不通过右键来选择使用Fedora自带的阅读器，有点麻烦，因此打算把它删除。我的Adobe Reader是通过AdobeReader.bin来安装的，尝试了yum remove acroread和rpm -e acroread都无效，很是郁闷。连Add/Remove Software都找不到该package，因此也不能通过这种方法删除了。</p>
-<p>&nbsp;</p>
-<p>花了很长时间在这个网页上（<a href="http://ubuntuforums.org/showthread.php?t=1409179">http://ubuntuforums.org/showthread.php?t=1409179</a>）看到的解决方法：</p>
-<p>&nbsp;</p>
-<p>/opt/Adobe/Reader9/bin下有一个UNINSTALL 脚本，只要使用root帐号执行./UNINSTALL就可以了。</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/01/12/fedora-commands-for-process-management">List of Solaris commands for process management</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-01-12</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>原文地址：<a href="http://it.toolbox.com/wiki/index.php/List_of_Solaris_commands_for_process_management">http://it.toolbox.com/wiki/index.php/List_of_Solaris_commands_for_process_management</a></p>
-<p>&nbsp;</p>
-<div id="greybox">
-<div class="top_left">
-<div class="top_right">
-<div class="bottom_left">
-<div class="bottom_right">
-<div class="content clearfix">
-<h1 class="h1-title clearfix">List of Solaris commands for process management</h1>
-<div class="spacer5"><img src="http://images.ittoolbox.com/vt/spacer.gif" alt="" width="1" height="1" /></div>
-<div class="dotSep"><img src="http://images.ittoolbox.com/vt/spacer.gif" alt="" width="1" height="1" /></div>
-<div class="spacer5"><img src="http://images.ittoolbox.com/vt/spacer.gif" alt="" width="1" height="1" /></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<h2><span class="mw-headline">Commands</span></h2></p>
-<p>apptrace &ndash; for tracing library calls<br />dtrace &ndash; debugger, new in version 10<br />pargs &ndash; get list of arguments and environment variables with which process was started<br />pfiles &ndash; list of file descriptors, associated with process<br />pgrep &ndash; get the PID's of processes by name i.e. Something like ps -efl|grep -v grep|grep process_name<br />pkill &ndash; send signal to process. For example pkill -9 init&nbsp;:-P<br />pldd &ndash; list dynamic libraries, associated with process, similar to ldd for executable<br />plockstat &ndash; see list of locked by process files. Lock can be mutex i.e. exclusive and reader/writer for shared access<br />pmap &ndash; get memory map (segments) of process<br />preap &ndash; try to kick-off zombie process<br />prstat &ndash; fullscreen view of processes sorted by different criteria, similar to Linux top command<br />prun &ndash; continue hold with pstop process<br />ps - print process information and status. In Solaris exist SYSV and BSD variants, respectively /usr/bin/ps and /usr/ucb/ps<br />psig &ndash; list signals that can be handled by process<br />pstack &ndash; get backtrace stack of process for debugging purposes<br />pstop &ndash; temporary hold process<br />ptree - print the tree of processes<br />pwait &ndash; wait till process finish<br />pwdx &ndash; list working directory for process, like pwd command<br />truss &ndash; for tracing user/library/system calls and signals</p>
-<p><a name="Examples"></a></p>
-<h2>
-<div class="editsection">[<a title="Edit section: Examples" href="http://it.toolbox.com/wiki/index.php?title=List_of_Solaris_commands_for_process_management&amp;action=edit&amp;section=2">edit</a>]</div>
-<p><span class="mw-headline">Examples</span></h2>
-<p><strong>apptrace</strong></p>
-<pre># apptrace man
--&gt; man      -&gt; libc.so.1:int atexit(int (*)() = 0xd27d6bfc)
-&lt;- man      -&gt; libc.so.1:atexit()
--&gt; man      -&gt; libc.so.1:int atexit(int (*)() = 0x8054e8c)
-&lt;- man      -&gt; libc.so.1:atexit()
--&gt; man      -&gt; libc.so.1:void __fpstart(void)
-&lt;- man      -&gt; libc.so.1:__fpstart() = 0xd251fc94
--&gt; man      -&gt; libc.so.1:access(0x8055984, 0x1, 0x8047e30) ** NR
--&gt; man      -&gt; libc.so.1:char * setlocale(int = 0x6, const char * = 0x8055980 "")
-&lt;- man      -&gt; libc.so.1:setlocale() = 0xd25002ed
--&gt; man      -&gt; libc.so.1:char * setlocale(int = 0x5, const char * = 0x0 &lt;NULL&gt;)
-&lt;- man      -&gt; libc.so.1:setlocale() = 0xd25002ed
--&gt; man      -&gt; libc.so.1:strcpy(0x80669e8, 0xd25002ed, 0x8047e30) ** NR
--&gt; man      -&gt; libc.so.1:int strcmp(const char * = 0x805597c "C", const char * = 0x80669e8 "C")
-&lt;- man      -&gt; libc.so.1:strcmp()
--&gt; man      -&gt; libc.so.1:char * textdomain(const char * = 0x8055968 "SUNW_OST_OSCMD")
-&lt;- man      -&gt; libc.so.1:textdomain() = 0x80683e0
--&gt; man      -&gt; libc.so.1:strcpy(0x80665e8, 0x8055960, 0x8047e30) ** NR
--&gt; man      -&gt; libc.so.1:char * getenv(const char * = 0x8054fc0 "MANPATH")
-&lt;- man      -&gt; libc.so.1:getenv()
--&gt; man      -&gt; libc.so.1:strrchr(0x8047e98, 0x2f, 0x8047e30) ** NR
--&gt; man      -&gt; libc.so.1:int strcmp(const char * = 0x8047e98 "man", const char * = 0x8054fb8 "apropos")
-&lt;- man      -&gt; libc.so.1:strcmp() = 0xc
--&gt; man      -&gt; libc.so.1:int strcmp(const char * = 0x8047e98 "man", const char * = 0x8055958 "whatis")
-&lt;- man      -&gt; libc.so.1:strcmp() = 0xfffffff6
--&gt; man      -&gt; libc.so.1:int strcmp(const char * = 0x8047e98 "man", const char * = 0x8055944 "catman")
-&lt;- man      -&gt; libc.so.1:strcmp() = 0xa
--&gt; man      -&gt; libc.so.1:int getopt(int = 0x1, char *const * = 0x8047de4, const char * = 0x8066420 "FfkrP:M:T:ts:lad")
-&lt;- man      -&gt; libc.so.1:getopt() = 0xffffffff
--&gt; man      -&gt; libc.so.1:char * gettext(const char * = 0x8055838 "usage:        man [-] [-adFlrt] [-M path] [-T macro-package ] [ -s  section ] name ...
-        man [-M path] -k keyword ...
-        man [-M path] -f file ...")
-&lt;- man      -&gt; libc.so.1:gettext() = 0x8055838
--&gt; man      -&gt; libc.so.1:int fprintf(FILE * = 0x8067610, const char * = 0x8054f7c "%s
-", void * = 0x8055838, ...)
-usage:  man [-] [-adFlrt] [-M path] [-T macro-package ] [ -s section ] name ...
-        man [-M path] -k keyword ...
-        man [-M path] -f file ...
-&lt;- man      -&gt; libc.so.1:fprintf() = 0x88
--&gt; man      -&gt; libc.so.1:exit(0x2, 0x8047e30, 0x8047da0) ** NR
-</pre>
-<p><em>in the above example you can clearly see library calls as fprintf(), strcmp(), getenv(), etc.</em></p>
-<hr />
-<p><strong>pargs</strong></p>
-<pre># pargs 558
-558:    /usr/lib/sendmail -Ac -q15m
-argv[0]: sendmail: Queue runner@00:15:00 for /var/spool/clientmqueue
-
-argv[1]: &lt;NULL&gt;
-argv[2]: @00:15:00 for /var/spool/clientmqueue
-</pre>
-<p><em>in above example you see the arguments for starting sendmail as a daemon</em></p>
-<hr />
-<p><strong>pfiles</strong></p>
-<pre># pfiles 558
-558:    /usr/lib/sendmail -Ac -q15m
-  Current rlimit: 1024 file descriptors
-   0: S_IFCHR mode:0666 dev:270,0 ino:6815752 uid:0 gid:3 rdev:13,2
-      O_RDONLY
-      /devices/pseudo/mm@0:null
-   1: S_IFCHR mode:0666 dev:270,0 ino:6815752 uid:0 gid:3 rdev:13,2
-      O_WRONLY
-      /devices/pseudo/mm@0:null
-   2: S_IFCHR mode:0666 dev:270,0 ino:6815752 uid:0 gid:3 rdev:13,2
-      O_WRONLY
-      /devices/pseudo/mm@0:null
-   3: S_IFDOOR mode:0444 dev:279,0 ino:53 uid:0 gid:0 size:0
-      O_RDONLY|O_LARGEFILE FD_CLOEXEC  door to nscd[366]
-      /var/run/name_service_door
-   4: S_IFCHR mode:0666 dev:270,0 ino:11010052 uid:0 gid:3 rdev:21,0
-      O_WRONLY FD_CLOEXEC
-      /devices/pseudo/log@0:conslog
-   5: S_IFREG mode:0600 dev:102,0 ino:189384 uid:25 gid:25 size:32
-      O_WRONLY|O_CREAT|O_EXCL
-      /var/spool/clientmqueue/sm-client.pid
-</pre>
-<p><em>Here you see a list of files as NULL, console log, some PID files. On the top you can see the maximum number of file handlers for this process, with info that can be helpful for troubleshooting of applications</em></p>
-<hr />
-<p><strong>pgrep</strong></p>
-<pre># pgrep named
-586
-</pre>
-<p><em>Something like ps -efl|grep -v grep|grep process_name|awk '{print $1}'</em></p>
-<pre># ps -e|grep -v grep|grep named|awk '{print $1}'
-586
-</pre>
-<hr />
-<p><strong>pkill</strong></p>
-<pre># pgrep named
-628
-# pkill named
-# pgrep named
-636
-#
-</pre>
-<p><em>As you see, the named daemon was killed and respawned (with new PID)</em></p>
-<hr />
-<p><strong>pldd</strong></p>
-<pre># pldd 636
-636:    /usr/sbin/named
-/usr/lib/dns/liblwres.so.1.1.2
-/usr/lib/dns/libdns.so.16.0.0
-/usr/lib/dns/libisccfg.so.0.0.11
-/usr/sfw/lib/libcrypto.so.0.9.7
-/usr/lib/dns/libisccc.so.0.1.0
-/usr/lib/dns/libisc.so.7.1.5
-/lib/libnsl.so.1
-/lib/libsocket.so.1
-/lib/libscf.so.1
-/lib/libpthread.so.1
-/lib/libthread.so.1
-/lib/libc.so.1
-/lib/libdoor.so.1
-/lib/libuutil.so.1
-# ldd /usr/sbin/named
-        liblwres.so.1 =&gt;         /usr/lib/dns/liblwres.so.1
-        libdns.so.16 =&gt;  /usr/lib/dns/libdns.so.16
-        libisccfg.so.0 =&gt;        /usr/lib/dns/libisccfg.so.0
-        libcrypto.so.0.9.7 =&gt;    /usr/sfw/lib/libcrypto.so.0.9.7
-        libisccc.so.0 =&gt;         /usr/lib/dns/libisccc.so.0
-        libisc.so.7 =&gt;   /usr/lib/dns/libisc.so.7
-        libnsl.so.1 =&gt;   /lib/libnsl.so.1
-        libsocket.so.1 =&gt;        /lib/libsocket.so.1
-        libscf.so.1 =&gt;   /lib/libscf.so.1
-        libpthread.so.1 =&gt;       /lib/libpthread.so.1
-        libthread.so.1 =&gt;        /lib/libthread.so.1
-        libc.so.1 =&gt;     /lib/libc.so.1
-        libmp.so.2 =&gt;    /lib/libmp.so.2
-        libmd5.so.1 =&gt;   /lib/libmd5.so.1
-        libdoor.so.1 =&gt;  /lib/libdoor.so.1
-        libuutil.so.1 =&gt;         /lib/libuutil.so.1
-        libm.so.2 =&gt;     /lib/libm.so.2
-</pre>
-<p><em>Results from both commands are almost the same&nbsp;:-) Why? Ask SUN</em></p>
-<hr />
-<p><strong>pmap</strong></p>
-<pre># pmap 636
-636:    /usr/sbin/named
-08046000       8K rw----    [ stack ]
-08050000     232K r-x--  /usr/sbin/named
-08099000      16K rwx--  /usr/sbin/named
-0809D000     544K rwx--    [ heap ]
-D21ED000       4K rw--R    [ stack tid=4 ]
-D21F0000      64K rwx--    [ anon ]
-D2218000       4K rw--R    [ stack tid=3 ]
-D221B000       4K rwxs-    [ anon ]
-D2236000      16K rw--R    [ stack tid=2 ]
-D223C000      64K rw----    [ anon ]
-D224E000      64K rw----    [ anon ]
-D2260000      24K rwx--    [ anon ]
-D2270000       4K rwx--    [ anon ]
-D2280000      24K r-x--  /lib/libuutil.so.1
-D2296000       4K rw----  /lib/libuutil.so.1
-D22A0000       4K r-x--  /lib/libdoor.so.1
-D22B1000       4K rw----  /lib/libdoor.so.1
-D22C0000       4K rwx--    [ anon ]
-D22D0000     740K r-x--  /lib/libc.so.1
-D2399000      24K rw----  /lib/libc.so.1
-D239F000       8K rw----  /lib/libc.so.1
-D23B0000      16K r-x--  /lib/libthread.so.1
-D23C0000      12K r-x--  /lib/libpthread.so.1
-D23D0000      88K r-x--  /lib/libscf.so.1
-D23F6000       4K rw----  /lib/libscf.so.1
-D2400000       4K rwx--    [ anon ]
-D2410000      44K r-x--  /lib/libsocket.so.1
-D242B000       4K rw----  /lib/libsocket.so.1
-D2430000     512K r-x--  /lib/libnsl.so.1
-D24B0000      20K rw----  /lib/libnsl.so.1
-D24B5000      32K rw----  /lib/libnsl.so.1
-D24C0000     228K r-x--  /usr/lib/dns/libisc.so.7.1.5
-D2508000       8K rwx--  /usr/lib/dns/libisc.so.7.1.5
-D2510000      24K r-x--  /usr/lib/dns/libisccc.so.0.1.0
-D2525000       4K rwx--  /usr/lib/dns/libisccc.so.0.1.0
-D2530000       4K rwx--    [ anon ]
-D2540000     924K r-x--  /usr/sfw/lib/libcrypto.so.0.9.7
-D2637000      84K rw----  /usr/sfw/lib/libcrypto.so.0.9.7
-D264C000       8K rw----  /usr/sfw/lib/libcrypto.so.0.9.7
-D2650000      48K r-x--  /usr/lib/dns/libisccfg.so.0.0.11
-D266B000      12K rwx--  /usr/lib/dns/libisccfg.so.0.0.11
-D2670000    1024K r-x--  /usr/lib/dns/libdns.so.16.0.0
-D277F000      20K rwx--  /usr/lib/dns/libdns.so.16.0.0
-D2790000       4K rwx--    [ anon ]
-D27A0000      56K r-x--  /usr/lib/dns/liblwres.so.1.1.2
-D27BD000       4K rwx--  /usr/lib/dns/liblwres.so.1.1.2
-D27CA000     132K r-x--  /lib/ld.so.1
-D27FB000       4K rwx--  /lib/ld.so.1
-D27FC000       8K rwx--  /lib/ld.so.1
- total      5192K
-</pre>
-<p><em>This command helps in the process of fine-tuning large applications, especially for resolving emory leak issues</em></p>
-<hr />
-<p><strong>preap</strong></p>
-<pre># ps -efl|grep 551
- 0 Z     root   551   550   0   0  -        -      0        -        -&nbsp;?           0:00 &lt;defunct&gt;
-# preap 551
-551: exited with status 0
-# ps -efl|grep 551
-</pre>
-<p><em>In above example, this tool successfully removes zombie process. Otherwise the only way to kill them is to reboot</em></p>
-<hr />
-<p><strong>prstat</strong></p>
-<pre># prstat
-   PID USERNAME  SIZE   RSS STATE  PRI NICE      TIME  CPU PROCESS/NLWP
-   744 root     4376K 4080K cpu0    39    0   0:00:00 0.4% prstat/1
-   560 root     6988K 1944K sleep   59    0   0:00:01 0.1% sshd/1
-   468 root       31M   13M sleep   59    0   0:00:04 0.1% Xorg/1
-   550 root     9576K 6856K sleep   59    0   0:00:01 0.0% dtgreet/1
-   577 root     1160K  892K sleep   59    0   0:00:00 0.0% ksh/1
-   366 root     3476K 2472K sleep   59    0   0:00:00 0.0% nscd/27
-   699 root     6984K 1948K sleep   59    0   0:00:00 0.0% sshd/1
-   506 root     6672K 4776K sleep   59    0   0:00:00 0.0% snmpd/1
-   476 root     2724K 1552K sleep   59    0   0:00:00 0.0% dmispd/1
-   481 root     3268K 1964K sleep   59    0   0:00:00 0.0% snmpXdmid/2
-   532 root     2492K 1928K sleep   59    0   0:00:00 0.0% vold/5
-   538 root     2352K 1564K sleep   59    0   0:00:00 0.0% devfsadm/6
-   457 root     4448K 1668K sleep   59    0   0:00:00 0.0% dtlogin/1
-   458 root     2040K 1240K sleep   59    0   0:00:00 0.0% snmpdx/1
-   466 root     1468K  724K sleep   59    0   0:00:00 0.0% fbconsole/1
-   413 root     1700K  700K sleep   59    0   0:00:00 0.0% smcboot/1
-   562 root     1076K  824K sleep   59    0   0:00:00 0.0% sh/1
-   412 root     1700K  700K sleep   59    0   0:00:00 0.0% smcboot/1
-   356 root     3336K 1176K sleep   59    0   0:00:00 0.0% sshd/1
-   533 root     7480K 2860K sleep   59    0   0:00:00 0.0% dtlogin/1
-   411 root     1704K 1032K sleep   59    0   0:00:00 0.0% smcboot/1
-   263 root     1064K  620K sleep   59    0   0:00:00 0.0% utmpd/1
-   359 root     4400K 2212K sleep   59    0   0:00:00 0.0% syslogd/16
-   261 root     3936K 3004K sleep   59    0   0:00:02 0.0% inetd/4
-   264 root     1888K 1084K sleep   59    0   0:00:00 0.0% ttymon/1
-   241 daemon   2340K 1520K sleep   59    0   0:00:00 0.0% statd/1
-   122 root     1328K  904K sleep   59    0   0:00:00 0.0% powerd/3
-   202 root     2228K  884K sleep   59    0   0:00:00 0.0% cron/1
-    96 root     2128K 1288K sleep   59    0   0:00:00 0.0% syseventd/14
-   554 root     7200K 3664K sleep   59    0   0:00:00 0.0% sshd/1
-   361 root     9272K 5640K sleep   59    0   0:00:00 0.0% fmd/14
-   244 daemon   2072K 1312K sleep   60  -20   0:00:00 0.0% lockd/2
-    55 root     1952K  924K sleep   59    0   0:00:00 0.0% dhcpagent/1
-   253 root     1700K  892K sleep   59    0   0:00:00 0.0% sac/1
-   232 daemon   2288K 1012K sleep   59    0   0:00:00 0.0% rpcbind/1
-   123 daemon   3908K 2016K sleep   59    0   0:00:00 0.0% kcfd/3
-   117 root     2468K 1544K sleep   59    0   0:00:00 0.0% picld/4
-   339 root     4252K 1592K sleep   59    0   0:00:00 0.0% automountd/3
-   175 root     1852K  952K sleep   59    0   0:00:00 0.0% in.routed/1
-     9 root     9000K 8068K sleep   59    0   0:00:11 0.0% svc.configd/18
-     7 root     8888K 7940K sleep   59    0   0:00:05 0.0% svc.startd/13
-   260 root     1948K 1168K sleep   59    0   0:00:00 0.0% ttymon/1
-</pre>
-<p><em>The program in default view is less informative that top, but can give you info for zones, projects and even for processes bind to specific processor. Use the -u option to limit display to specific users. Use the -p option to limit display to specific processes</em></p>
-<hr />
-<p><strong>prun</strong>&nbsp;- see example of pstop</p>
-<hr />
-<p><strong>ps</strong></p>
-<pre># /usr/bin/ps
-   PID TTY         TIME CMD
-   562 pts/2       0:00 sh
-   577 pts/2       0:00 ksh
-   757 pts/2       0:00 ps
-# /usr/ucb/ps
-   PID TT       S  TIME COMMAND
-   260 console  S  0:00 /usr/lib/saf/ttymon -g -d /dev/console -l console -T sun-color -m ldterm,ttcompat -h -p unknown console lo
-   562 pts/2    S  0:00 -sh
-   577 pts/2    S  0:00 ksh -o ksh
-   759 pts/2    O  0:00 /usr/ucb/ps
-   701 pts/3    S  0:00 -sh
-</pre>
-<hr />
-<p><strong>psig</strong></p>
-<pre># psig 636
-636:    /usr/sbin/named
-HUP     default
-INT     default
-QUIT    default
-ILL     default
-TRAP    default
-ABRT    default
-EMT     default
-FPE     default
-KILL    default
-BUS     default
-SEGV    default
-SYS     default
-PIPE    ignored
-ALRM    default
-TERM    default
-USR1    default
-USR2    default
-CLD     default                 NOCLDSTOP
-PWR     default
-WINCH   default
-URG     default
-POLL    default
-STOP    default
-TSTP    ignored
-CONT    default
-TTIN    ignored
-TTOU    ignored
-VTALRM  default
-PROF    default
-XCPU    default
-XFSZ    ignored
-WAITING default
-LWP     default
-FREEZE  default
-THAW    default
-CANCEL  default
-LOST    default
-XRES    default
-JVM1    default
-JVM2    default
-RTMIN   default
-RTMIN+1 default
-RTMIN+2 default
-RTMIN+3 default
-RTMAX-3 default
-RTMAX-2 default
-RTMAX-1 default
-RTMAX   default
-</pre>
-<hr />
-<p><strong>pstack</strong></p>
-<pre># pstack 636
-636:    /usr/sbin/named
-----------------------  lwp# 1 / thread# 1  --------------------------
- d23700a5 sigtimedwait (8047ce0, 8047cf0, 0)
- d23655a6 sigwait  (8047dc0) + 1c
- d235e206 __posix_sigwait (8047dc0, 8047e60) + 2e
- d24db3dd isc_app_run (8047ec8, 8047e60, d27fb840, 0, 8047e98, 805c33e) + 158
- 08066da7 main     (1, 8047ea4, 8047eac) + fe
- 0805c33e&nbsp;???????? (1, 8047f30, 0, 8047f40, 8047f47, 8047f5f)
-----------------------  lwp# 2 / thread# 2  --------------------------
- d236fc99 lwp_park (0, 0, 0)
- d236a501 cond_wait_queue (80a2a7c, 80a2a48, 0, 0) + 3b
- d236a9fa _cond_wait (80a2a7c, 80a2a48) + 66
- d236aa3c cond_wait (80a2a7c, 80a2a48) + 21
- d236aa75 pthread_cond_wait (80a2a7c, 80a2a48) + 1b
- d24d871b dispatch (80a2a40, d2239fec, d236f93e, 80a2a40, 0, 0) + a0
- d24d8ba2 run      (80a2a40) + c
- d236f93e _thr_setup (d2262400) + 4e
- d236fc20 _lwp_start (d2262400, 0, 0, d2239ff8, d236fc20, d2262400)
-----------------------  lwp# 3 / thread# 3  --------------------------
- d236fc99 lwp_park (0, d2218ec8, 0)
- d236a501 cond_wait_queue (80a2ae8, 80a2ab8, d2218ec8, 0) + 3b
- d236a8a1 cond_wait_common (80a2ae8, 80a2ab8, d2218ec8) + 1df
- d236aad5 _cond_timedwait (80a2ae8, 80a2ab8, d2218f28) + 51
- d236ab40 cond_timedwait (80a2ae8, 80a2ab8, d2218f28) + 24
- d236ab7c pthread_cond_timedwait (80a2ae8, 80a2ab8, d2218f28) + 1e
- d24e7601 isc_condition_waituntil (80a2ae8, 80a2ab8, 80a2ae0) + 81
- d24da800 run      (80a2ab0) + a2
- d236f93e _thr_setup (d21f0000) + 4e
- d236fc20 _lwp_start (d21f0000, 0, 0, d2218ff8, d236fc20, d21f0000)
-----------------------  lwp# 4 / thread# 4  --------------------------
- d2370cd5 pollsys  (d21edce0, 6, 0, 0)
- d231ecca pselect  (1c, d21ede40, d21edec0, d239a868, 0, 0) + 18e
- d231efad select   (1c, d21ede40, d21edec0, 0, 0) + 6f
- d24e355c watcher  (80a5bd0) + bd
- d236f93e _thr_setup (d21f0400) + 4e
- d236fc20 _lwp_start (d21f0400, 0, 0, d21edff8, d236fc20, d21f0400)
-</pre>
-<p><em>This command can sometimes be very helpful for debugging daemons. You can see the function call stack by thread, in real-time</em></p>
-<hr />
-<p><strong>pstop</strong></p>
-<pre># ps -efl|grep ssh
- 0 S     root   554   356   0  40 20 d419b870   1800 d4c87e72 21:03:52&nbsp;?           0:00 /usr/lib/ssh/sshd
- 0 S     root   356     1   0  40 20 d4195320    834 d49f3432 21:02:46&nbsp;?           0:00 /usr/lib/ssh/sshd
- 0 S     root   560   554   0  40 20 d41931a0   1747 d4c87ab2 21:05:03&nbsp;?           0:02 /usr/lib/ssh/sshd
- 0 S     root   812   809   0  40 20 d418a270   1746 d50402f2 22:09:00&nbsp;?           0:00 /usr/lib/ssh/sshd
- 0 S     root   809   356   0  40 20 d4189a10   1801 d4c874f2 22:08:47&nbsp;?           0:00 /usr/lib/ssh/sshd
-# pstop 356
-# ssh localhost
-<em>(here I stop with ctrl-C ssh client after 5 minutes of waiting)</em>
-# prun 356
-# ssh localhost
-The authenticity of host 'localhost (127.0.0.1)' can't be established.
-RSA key fingerprint is da:14:db:bc:2f:e0:0f:ef:f6:3f:12:0e:f4:77:0c:00.
-Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added 'localhost' (RSA) to the list of known hosts.
-Password:
-Last login: Wed Jun 13 22:09:00 2007 from gateway
-Sun Microsystems Inc.   SunOS 5.10      Generic January 2005
-#
-</pre>
-<p><em>Command is interesting, but I don't see much benefit for daily tasks</em></p>
-<hr />
-<p><strong>ptree</strong></p>
-<pre># ptree
-7     /lib/svc/bin/svc.startd
-  253   /usr/lib/saf/sac -t 300
-    264   /usr/lib/saf/ttymon
-  260   /usr/lib/saf/ttymon -g -d /dev/console -l console -T sun-color -m ldterm,ttcomp
-9     /lib/svc/bin/svc.configd
-55    /sbin/dhcpagent
-96    /usr/lib/sysevent/syseventd
-117   /usr/lib/picl/picld
-122   /usr/lib/power/powerd
-123   /usr/lib/crypto/kcfd
-175   /usr/sbin/in.routed
-202   /usr/sbin/cron
-232   /usr/sbin/rpcbind
-241   /usr/lib/nfs/statd
-244   /usr/lib/nfs/lockd
-261   /usr/lib/inet/inetd start
-263   /usr/lib/utmpd
-339   /usr/lib/autofs/automountd
-356   /usr/lib/ssh/sshd
-  554   /usr/lib/ssh/sshd
-    560   /usr/lib/ssh/sshd
-      562   -sh
-        577   ksh -o vi
-          771   ptree
-  696   /usr/lib/ssh/sshd
-    699   /usr/lib/ssh/sshd
-      701   -sh
-359   /usr/sbin/syslogd
-361   /usr/lib/fm/fmd/fmd
-366   /usr/sbin/nscd
-411   /usr/sadm/lib/smc/bin/smcboot
-  412   /usr/sadm/lib/smc/bin/smcboot
-  413   /usr/sadm/lib/smc/bin/smcboot
-457   /usr/dt/bin/dtlogin -daemon
-  466   /usr/openwin/bin/fbconsole -n -d&nbsp;:0
-  468   /usr/X11/bin/Xorg&nbsp;:0 -depth 24 -nobanner -auth /var/dt/A:0-Zgai5a
-  533   /usr/dt/bin/dtlogin -daemon
-    550   dtgreet -display&nbsp;:0
-458   /usr/lib/snmp/snmpdx -y -c /etc/snmp/conf
-476   /usr/lib/dmi/dmispd
-481   /usr/lib/dmi/snmpXdmid -s unknown
-506   /usr/sfw/sbin/snmpd
-532   /usr/sbin/vold -f /etc/vold.conf
-538   devfsadmd
-636   /usr/sbin/named
-</pre>
-<p><em>No need for comments&nbsp;:-)</em></p>
-<hr />
-<p><strong>pwait</strong></p>
-<pre># ps -efl|grep name
- 0 S     root   875     1   0  45 20 d4188950   1298 d553ab16 22:17:58&nbsp;?           0:00 /usr/sbin/named
-# pwait 875
-(in this moment from another terminal I execute svcadm disable dns/server)
-#
-</pre>
-<p><em>Maybe this command will be great in some specific scripts</em></p>
-<hr />
-<p><strong>pwdx</strong></p>
-<pre># pwdx 636
-636:    /var/named
-</pre>
-<p><em>Can be helpful in case of strange errors when unmount some filesystem</em></p>
-<hr />
-<p><strong>truss</strong></p>
-<pre># truss ls
-execve("/usr/bin/ls", 0x08047E40, 0x08047E48)  argc = 1
-resolvepath("/usr/lib/ld.so.1", "/lib/ld.so.1", 1023) = 12
-resolvepath("/usr/bin/ls", "/usr/bin/ls", 1023) = 11
-sysconfig(_CONFIG_PAGESIZE)                     = 4096
-xstat(2, "/usr/bin/ls", 0x08047C38)             = 0
-open("/var/ld/ld.config", O_RDONLY)             Err#2 ENOENT
-xstat(2, "/lib/libsec.so.1", 0x080474D0)        = 0
-resolvepath("/lib/libsec.so.1", "/lib/libsec.so.1", 1023) = 16
-open("/lib/libsec.so.1", O_RDONLY)              = 3
-mmap(0x00010000, 4096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_ALIGN, 3, 0) = 0xD27C0000
-mmap(0x00010000, 139264, PROT_NONE, MAP_PRIVATE|MAP_NORESERVE|MAP_ANON|MAP_ALIGN, -1, 0) = 0xD2790000
-mmap(0xD2790000, 49071, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_TEXT, 3, 0) = 0xD2790000
-mmap(0xD27AC000, 12169, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_INITDATA, 3, 49152) = 0xD27AC000
-mmap(0xD27AF000, 8536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANON, -1, 0) = 0xD27AF000
-munmap(0xD279C000, 65536)                       = 0
-memcntl(0xD2790000, 8776, MC_ADVISE, MADV_WILLNEED, 0, 0) = 0
-close(3)                                        = 0
-
-mmap(0x00000000, 4096, PROT_READ|PROT_WRITE|PROT_EXEC, MAP_PRIVATE|MAP_ANON, -1, 0) = 0xD2780000
-xstat(2, "/lib/libc.so.1", 0x080474D0)          = 0
-resolvepath("/lib/libc.so.1", "/lib/libc.so.1", 1023) = 14
-open("/lib/libc.so.1", O_RDONLY)                = 3
-mmap(0xD27C0000, 4096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED, 3, 0) = 0xD27C0000
-mmap(0x00010000, 856064, PROT_NONE, MAP_PRIVATE|MAP_NORESERVE|MAP_ANON|MAP_ALIGN, -1, 0) = 0xD26A0000
-mmap(0xD26A0000, 754581, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_TEXT, 3, 0) = 0xD26A0000
-mmap(0xD2769000, 24239, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_INITDATA, 3, 757760) = 0xD2769000
-mmap(0xD276F000, 5656, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANON, -1, 0) = 0xD276F000
-munmap(0xD2759000, 65536)                       = 0
-memcntl(0xD26A0000, 120300, MC_ADVISE, MADV_WILLNEED, 0, 0) = 0
-close(3)                                        = 0
-xstat(2, "/lib/libavl.so.1", 0x080474D0)        = 0
-resolvepath("/lib/libavl.so.1", "/lib/libavl.so.1", 1023) = 16
-open("/lib/libavl.so.1", O_RDONLY)              = 3
-mmap(0xD27C0000, 4096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED, 3, 0) = 0xD27C0000
-mmap(0x00010000, 73728, PROT_NONE, MAP_PRIVATE|MAP_NORESERVE|MAP_ANON|MAP_ALIGN, -1, 0) = 0xD2680000
-mmap(0xD2680000, 2788, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_TEXT, 3, 0) = 0xD2680000
-mmap(0xD2691000, 204, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_INITDATA, 3, 4096) = 0xD2691000
-munmap(0xD2681000, 65536)                       = 0
-memcntl(0xD2680000, 1056, MC_ADVISE, MADV_WILLNEED, 0, 0) = 0
-close(3)                                        = 0
-munmap(0xD27C0000, 4096)                        = 0
-mmap(0x00010000, 24576, PROT_READ|PROT_WRITE|PROT_EXEC, MAP_PRIVATE|MAP_ANON|MAP_ALIGN, -1, 0) = 0xD27C0000
-getcontext(0x080479D0)
-getrlimit(RLIMIT_STACK, 0x080479C8)             = 0
-getpid()                                        = 786 [785]
-lwp_private(0, 1, 0xD27C2000)                   = 0x000001C3
-setustack(0xD27C2060)
-sysi86(SI86FPSTART, 0xD276FCD8, 0x0000133F, 0x00001F80) = 0x00000001
-brk(0x080651E8)                                 = 0
-brk(0x080671E8)                                 = 0
-time()                                          = 1181761288
-ioctl(1, TCGETA, 0x08047B9C)                    = 0
-ioctl(1, TIOCGWINSZ, 0x08064460)                = 0
-brk(0x080671E8)                                 = 0
-brk(0x080711E8)                                 = 0
-lstat64(".", 0x08046A70)                        = 0
-openat(-3041965, ".", O_RDONLY|O_NDELAY|O_LARGEFILE) = 3
-fcntl(3, F_SETFD, 0x00000001)                   = 0
-fstat64(3, 0x08047AC0)                          = 0
-getdents64(3, 0xD27C4000, 8192)                 = 992
-getdents64(3, 0xD27C4000, 8192)                 = 0
-close(3)                                        = 0
-ioctl(1, TCGETA, 0x08045E44)                    = 0
-fstat64(1, 0x08045DB0)                          = 0
-TT_DB       cdrom       etc         kernel      mnt         platform    system      var
-write(1, " T T _ D B              ".., 88)      = 88
-bin         dev         export      lib         net         proc        tmp         vol
-write(1, " b i n                  ".., 88)      = 88
-boot        devices     home        lost+found  opt         sbin        usr
-write(1, " b o o t                ".., 76)      = 76
-_exit(0)
-</pre>
-<p><em>Shows you system calls made by a process along with parameters of the function - very good for program execution traces. Use -u a.out to see user-level function calls. Note "a.out" is typed literally as "a.out" - not replaced with the name of the program</em></p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/12/23/update-chrome-in-fedora12">Fedora 12升级Chromium遇到的问题及解决方法</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-12-23</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>自打装好Fedora 12之后就发现chromium不能用rpm安装了，安装时总是缺这少那，很是费劲，于是按照网上的方法，在/etc/yum.repos.d/下创建一个chromium.repo，内容如下：</p>
-<p>
-<pre>[chromium]
-name=Chromium Test Packages
-baseurl=http://spot.fedorapeople.org/chromium/F$releasever/
-enabled=0
-gpgcheck=0
-</pre>
-<p>&nbsp;</p>
-<p>然后通过yum安装就可以了。</p>
-<p>&nbsp;</p>
-<p>今天在Fedora People看到有新的chromium安装包出现，于是打算升级chromium。下载了所有的rpm包(忘记了最初是通过yum安装的)。安装时chromium, chromium-libs都能通过rpm -Uvh正常安装，可是升级v8时还是出了问题。想起以前的教训，打算先把v8完全卸载再安装，可是缺无法卸载，无论是通过rpm -e还是yum remove都不行。</p>
-<p>&nbsp;</p>
-<p>这时想到了用yum upodate v8-*，结果却出现了&ldquo;Package v8-devel-2.0.3-1.20091209svn3443.fc12.i686.rpm is not signed&rdquo;的错误。在网上找到一个办法，就是编辑&nbsp;<strong>/etc/yum.conf</strong><br />
-，把gpgcheck=1 改为 gpgcheck=0。不过这样做有潜在的风险，因此在安装完v8之后就立刻把gpgcheck重新设为1.</p>
-<p>&nbsp;</p>
-<p>另外一个奇怪的问题是，打开Chromium时，浏览器打不开，而且SELinux总是报错：</p>
-<p>&nbsp;</p>
-<p>
-<pre>Summary:
-SELinux is preventing /usr/lib/chromium-browser/chromium-browser from loading
-/usr/lib/chromium-browser/libmedia.so which requires text relocation.
-Detailed Description:
-The chromium-browse application attempted to load
-/usr/lib/chromium-browser/libmedia.so which requires text relocation. This is a
-potential security problem. Most libraries do not need this permission.
-Libraries are sometimes coded incorrectly and request this permission. The
-SELinux Memory Protection Tests
-(http://people.redhat.com/drepper/selinux-mem.html) web page explains how to
-remove this requirement. You can configure SELinux temporarily to allow
-/usr/lib/chromium-browser/libmedia.so to use relocation as a workaround, until
-the library is fixed. Please file a bug report.
-Allowing Access:
-If you trust /usr/lib/chromium-browser/libmedia.so to run correctly, you can
-change the file context to textrel_shlib_t. &quot;chcon -t textrel_shlib_t
-'/usr/lib/chromium-browser/libmedia.so'&quot; You must also change the default file
-context files on the system in order to preserve them even on a full relabel.
-&quot;semanage fcontext -a -t textrel_shlib_t
-'/usr/lib/chromium-browser/libmedia.so'&quot;
-Fix Command:
-chcon -t textrel_shlib_t '/usr/lib/chromium-browser/libmedia.so'
-Additional Information:
-Source Context                unconfined_u:unconfined_r:unconfined_execmem_t:s0-
-                              s0:c0.c1023
-Target Context                system_u:object_r:lib_t:s0
-Target Objects                /usr/lib/chromium-browser/libmedia.so [ file ]
-Source                        chromium-browse
-Source Path                   /usr/lib/chromium-browser/chromium-browser
-Port                          &lt;Unknown&gt;
-Host                          bonn.yang
-Source RPM Packages           chromium-4.0.273.0-0.1.20091216svn34775.fc12
-Target RPM Packages           chromium-libs-4.0.273.0-0.1.20091216svn34775.fc12
-Policy RPM                    selinux-policy-3.6.32-56.fc12
-Selinux Enabled               True
-Policy Type                   targeted
-Enforcing Mode                Enforcing
-Plugin Name                   allow_execmod
-Host Name                     bonn.yang
-Platform                      Linux bonn.yang 2.6.31.6-166.fc12.i686.PAE #1 SMP
-                              Wed Dec 9 11:00:30 EST 2009 i686 i686
-Alert Count                   11
-First Seen                    Wed 23 Dec 2009 09:38:16 PM CST
-Last Seen                     Wed 23 Dec 2009 10:28:36 PM CST
-Local ID                      b1f55f28-145d-48dd-9d71-6fb7fe6a57c8
-Line Numbers                  
-Raw Audit Messages            
-node=bonn.yang type=AVC msg=audit(1261578516.240:27332): avc:  denied  { execmod } for  pid=2946 comm=&quot;chromium-browse&quot; path=&quot;/usr/lib/chromium-browser/libmedia.so&quot; dev=sda2 ino=277322 scontext=unconfined_u:unconfined_r:unconfined_execmem_t:s0-s0:c0.c1023 tcontext=system_u:object_r:lib_t:s0 tclass=file
-node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 syscall=125 success=no exit=-13 a0=8ff8000 a1=63000 a2=5 a3=bf899bf0 items=0 ppid=1 pid=2946 auid=500 uid=500 gid=500 euid=500 suid=500 fsuid=500 egid=500 sgid=500 fsgid=500 tty=(none) ses=1 comm=&quot;chromium-browse&quot; exe=&quot;/usr/lib/chromium-browser/chromium-browser&quot; subj=unconfined_u:unconfined_r:unconfined_execmem_t:s0-s0:c0.c1023 key=(null)
-</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>试了半天也没能在SELinux中设好libmedia.so的permission（有人说只要把libmedia.so的permission设为permissive就可以）。后来在一个法语的网页上(<a href="http://tuxmaya.wordpress.com/2009/12/21/nuevos-paquetes-de-chormium-en-fedora/">http://tuxmaya.wordpress.com/2009/12/21/nuevos-paquetes-de-chormium-en-fedora/</a><br />
-)发现了这样一条命令来取消 SELinux 对 /usr/lib/chromium-browser/下的所有.so文件的permission 的检查。</p>
-<p>&nbsp;</p>
-<p>
-<pre>chcon -t texrel_shlib_t /usr/lib*/chromium-browser/*.so</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>另外，该网页(<a href="http://forums.fedoraforum.org/showthread.php?t=237029">http://forums.fedoraforum.org/showthread.php?t=237029</a><br />
-)上也提到了这种方法。</p>
-<p>&nbsp;</p>
-<p>设置之后，chromium就可以正常工作了。这篇博文就是用chromium来写的。</p>
-<p>&nbsp;</p>
-<p>PS:&nbsp;</p>
-<p>&nbsp;</p>
-<p>写完博文后在SELinux的错误信息中发现了fix的方法：</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>
-<pre>hcon -t textrel_shlib_t '/usr/lib/chromium-browser/libmedia.so'</pre>
-<p>&nbsp;</p>
-<p>
-<pre>semanage fcontext -a -t textrel_shlib_t
-'/usr/lib/chromium-browser/libmedia.so'</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>实在是太粗心了，当时竟然没有仔细看&hellip;&hellip; 谨记这一教训！</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/11/29/install-android-sdk-in-fedora">Fedora 12安装Android SDK</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-11-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Android-ref" rel="nofollow">Android</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>
-    &nbsp;</p>
-<div>
-<h1>Fedora 12安装Android SDK</h1>
-<h3>1. 下载Android SDK</h3>
-<h3><span><span style="font-size:x-small;">由于android网站国内不能直接访问， 请通过以下网址下载</span></span></h3>
-<p><span><br />
-</span>
-<p><a id="bkhs" title="http://androidappdocs.appspot.com/index.html" href="http://androidappdocs.appspot.com/index.html"><span style="font-size:x-small;">http://androidappdocs.appspot.com/index.html</span></a></p>
-<p><a title="http://dl.google.com/android/android-sdk-windows-1.6_r1.zip" href="http://dl.google.com/android/android-sdk-windows-1.6_r1.zip"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-windows-1.6_r1.zip</span></a></p>
-<p><span style="font-size:x-small;">Windows：&nbsp;</span><a href="http://dl.google.com/android/android-sdk-windows-1.6_r1.zip"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-windows-1.6_r1.zip</span></a></p>
-<p><span style="font-size:x-small;">Mac OS X (intel)：&nbsp;</span><a href="http://dl.google.com/android/android-sdk-mac_x86-1.6_r1.zip"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-mac_x86-1.6_r1.zip</span></a></p>
-<p><span style="font-size:x-small;">Linux (i386)：&nbsp;</span><a href="http://dl.google.com/android/android-sdk-linux_x86-1.6_r1.tgz"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-linux_x86-1.6_r1.tgz</span></a></p>
-<p><span style="font-size:x-small;">ADT Plugin for Eclipse 0.9.3：&nbsp;</span><a href="http://dl.google.com/android/ADT-0.9.3.zip"><span style="font-size:x-small;">http://dl.google.com/android/ADT-0.9.3.zip</span></a></p>
-<p><span style="font-size:x-small;">ophone develop ：</span><a href="http://www.ophonesdn.com/"><span style="font-size:x-small;">http://www.ophonesdn.com/</span></a></p>
-<p><span style="font-size:x-small;">&nbsp;</span><a href="http://blog.csdn.net/vagrxie/archive/2009/08/04/4409464.aspx"><span style="font-size:x-small;">http://blog.csdn.net/vagrxie/archive/2009/08/04/4409464.aspx</span></a></p>
-<p><span style="font-size:x-small;">android developer：&nbsp;</span><a href="http://www.anddev.org/"><span style="font-size:x-small;">http://www.anddev.org/</span></a></p>
-<div><span style="font-size:small;"><br /></span></div>
-<h3>2. 添加Android SDK</h3>
-<div>运行android后，在选择Available Packages时遇到错误消息：</div>
-<div>Failed to fetch URL https://dl-ssl.google.com/android/repository/repository.xml, reason: HTTPS SSL error. You might want to force download through HTTP in the settings.</div>
-<div>解决方法是：</div>
-<div>
-<ul>
-<li><span><span style="font-size:x-small;">创建配置文件： ~/.android/androidtool.cfg，在该文件中添加一行</span></span></li>
-</ul>
-<p><span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">sdkman.force.http=true&nbsp;</span></span></div>
-<div><span style="font-family:arial, sans-serif;"><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; （该方法无效）</span><span style="font-size:x-small;"><br /></span></span></p>
-<ul>
-<li><span><span style="font-size:x-small;">打开"Settings" 选项并选中misc section "force https:// ... sources to be fetched using http://..." ，重启android. (点击Save后没有反应，重启后发现该选项并没有选中，无效)</span></span></li>
-<li><span><span style="font-size:x-small;"><strong><em>export GDK_NATIVE_WINDOWS=true</em></strong>&nbsp;before running android sdk manager.&nbsp;<br />It fixes both the save button and the install button for me. （该方法可行）</span></span></li>
-</ul>
-<p><span><span style="font-size:x-small;">&nbsp;</span></span></div>
-<div><a id="p1rm" title="http://groups.google.com/group/android-developers/browse_thread/thread/63a44163a8d07cd9" href="http://groups.google.com/group/android-developers/browse_thread/thread/63a44163a8d07cd9">http://groups.google.com/group/android-developers/browse_thread/thread/63a44163a8d07cd9</a></div>
-<h3>3. 为Eclipse安装ADT插件</h3>
-<div>安装ADT的方法<span style="font-family:Arial;"><span style="font-size:x-small;">：</span></span><span><a id="f9:j" title="Installing and Updating ADT" href="http://androidappdocs.appspot.com/sdk/eclipse-adt.html"><span style="font-family:Arial;"><strong><span style="font-size:x-small;">Installing and Updating ADT</span></strong></span></a></span></div>
-<div>遇到的问题：<span><span style="font-size:x-small;">During installation, there's an error about requiring org.eclipse.wst.sse.ui.&nbsp;</span></span></div>
-<div><span><span style="font-size:x-small;">完整的解决方法参见<a id="ccnw" title="http://code.google.com/eclipse/docs/faq.html#wstinstallerror" href="http://code.google.com/eclipse/docs/faq.html#wstinstallerror">http://code.google.com/eclipse/docs/faq.html#wstinstallerror</a>。</span></span></div>
-<div><span style="font-family:Helvetica, Arial, sans-serif;"><span style="font-size:x-small;">下面是我的经验：</span></span></div>
-<div><span style="font-size:x-small;"><br />
-</span>
-<p><span style="font-size:x-small;">The Google Plugin for Eclipse depends on other specific Eclipse components, such as&nbsp;<a href="http://www.eclipse.org/webtools/wst/main.php">WST</a>. Your installation of Eclipse may not yet include all of them, but they can be easily installed by following these instructions.</span></p>
-<h4><strong><span style="font-size:small;">Eclipse 3.5 (Galileo)</span></strong></h4>
-<p>&nbsp;</p>
-<ol>
-<li><span style="font-size:x-small;">Select&nbsp;<strong>Help &gt; Install New Software...</strong></span></li>
-<li><span style="font-size:x-small;">Click the hyperlink for&nbsp;<strong>Available Software Sites</strong>.</span></li>
-<li><span style="font-size:x-small;">Ensure there is an update site named&nbsp;<strong>Galileo</strong>. If this is not present, click&nbsp;<strong>Add...</strong>&nbsp;and enter&nbsp;</span><span style="font-family:'Courier New';">http://download.eclipse.org/releases/galileo</span><span style="font-size:x-small;">&nbsp;for the Location.（在这一步，添加完Galileo之后，最好能安装一下这个site的可用的关键更新）</span></li>
-<li><span style="font-size:x-small;">Now go through the&nbsp;<a href="http://blog.csdn.net/eclipse/docs/install-eclipse-3.5.html">installation steps</a>; Eclipse should download and install the plugin's dependencies.</span></li>
-</ol>
-<p>完成上面的步骤之后，Google App Engine和 Web Toolkit插件就被安装到了Eclipse。此时你仍然需要按照<a id="gv2d" title="http://androidappdocs.appspot.com/sdk/eclipse-adt.html" href="http://androidappdocs.appspot.com/sdk/eclipse-adt.html">http://androidappdocs.appspot.com/sdk/eclipse-adt.html</a>所陈述的步骤再安装ADT并配置SDK。</div>
-<div><span style="font-size:x-small;"><br /></span></div>
-<div><span style="font-size:x-small;">如果按照上述方法仍然无法安装ADT，最好通过System-&gt;Administration-&gt;Add/Remove Software彻底删除Eclipse，删除$HOME/.eclipse文件夹，更新操作系统，然后重装Eclipse。如果选择自己下载Eclipse,运行时很可能会遇到"JVM terminated. Exit Code=-1"的问题。因此还是建议通过Add/Remove Software或者yum install eclipse安装。重新安装完eclipse,再按照上述步骤先安装GAE和GWT，然后安装ADT。</span></div>
-<div><span style="font-size:x-small;"><br /></span></div>
-<div><span style="font-size:x-small;">ADT成功安装后，在Eclipse的Window-&gt;Preferences中，可以找到Android这一项：</span></div>
-<div>
-<div id="mqrl"><img src="File?id=dd6nw3mt_346fcv5wnfh_b" alt="" /></div>
-<div id="gtqx">装完ADT之后就可以按照<a id="u3vv" title="http://androidappdocs.appspot.com/guide/tutorials/hello-world.html" href="http://androidappdocs.appspot.com/guide/tutorials/hello-world.html">http://androidappdocs.appspot.com/guide/tutorials/hello-world.html</a>的示例开始体验Android程序了！</div>
-<p><span style="font-size:x-small;"><br /></span></div>
-</div>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/10/30/install-chrome-in-fedora">Fedora升级/安装Chromium(Chrome)总结</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-10-30</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>&nbsp;尽管Linux版Chrome浏览器还没有正式发布，Fedora早已官方支持Google的Chromium了。Fedora社区会定期build最新的稳定版Chromium，可以在<a href="http://spot.fedorapeople.org/chromium/">http://spot.fedorapeople.org/chromium/</a>下载到。当然也可以下载Google 每天build的二进制版Chromium，不过就是这些都不一定稳定：<a href="http://build.chromium.org/buildbot/snapshots/">http://build.chromium.org/buildbot/snapshots/</a>。</p>
-<p>&nbsp;</p>
-<p>如果要安装Fedora社区的Chromium，需要下载v8, v8-devel和chromium，目前最新的版本是</p>
-<p>&nbsp;</p>
-<pre><a href="v8-1.3.16-1.20091027svn3152.fc11.i586.rpm">v8-1.3.16-1.20091027svn3152.fc11.i586.rpm</a> </pre>
-<pre></pre>
-<pre><a href="v8-devel-1.3.16-1.20091027svn3152.fc11.i586.rpm">v8-devel-1.3.16-1.20091027svn3152.fc11.i586.rpm</a></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<pre><a href="chromium-4.0.227.0-0.1.20091027svn30269.fc11.i586.rpm">chromium-4.0.227.0-0.1.20091027svn30269.fc11.i586.rpm</a></pre>
-<pre>安装时需要先安装v8,然后是v8-devel，最后安装chromium。如果要升级的话，最好先把老版本的删除，然后再安装新版本的chromium。</pre>
-<pre>删除的时候按照和安装时相反的顺序，先删除chromium,再删除v8-devel,最后删除v8。</pre>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1064,7 +590,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">18</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">23</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -1098,7 +624,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     
         <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
     
-        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">14</span></a>
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">15</span></a>
     
         <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
     
@@ -1122,7 +648,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">17</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">23</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -1196,6 +722,10 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
     
+        <a href="/tags.html#Architecture-ref" class="btn btn-mini">Architecture <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Cache-ref" class="btn btn-mini">Cache <span class="badge">1</span></a>
+    
         <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
@@ -1204,16 +734,40 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     
         <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
     
+        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">1</span></a>
+    
   
 
 
 
+			</div>
+		</div>
+		<!-- /well -->
+        <div class="well">
+			<h4>Visitors</h4>
+			<div class="tag_box">
+				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4nm24yds2ph&amp;s=300&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
+	
 			</div>
         </div>
         <!-- /well -->
         <div class="well">
             <h3>Recent Posts</h3>
 	        <ul>
+			
+  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
+			
+  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
+			
+  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
+			
+  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
@@ -1222,18 +776,6 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
-			
-  			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
-			
-  			<li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">Coin Change Problem</a></li>
-			
-  			<li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">Text Justification</a></li>
-			
-  			<li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">Sort Colors</a></li>
-			
-  			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
-			
-  			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
 			
 			</ul>
         </div>

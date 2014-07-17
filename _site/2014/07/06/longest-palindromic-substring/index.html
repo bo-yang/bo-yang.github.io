@@ -1,0 +1,288 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longest Palindromic Substring | Bo's Blog</title>
+  
+  <meta name="author" content="Bo Yang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <!--
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  -->
+
+  <!-- Bootstrap -->
+  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+
+  <!-- font-awesome -->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+
+  <!-- Google Prettify -->
+  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/style/blog.css" rel="stylesheet">
+  
+  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+   <!-- navigation bar -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">bo-yang</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/archive.html">Archive</a>
+                    </li>
+                    <li><a href="/about.html">About</a>
+                    </li>
+                    <li><a href="/messages.html">Messages</a>
+                    </li>
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+		          <li>
+		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+		              <input type="hidden" name="ie" value="UTF-8" />
+		              <input type="hidden" name="oe" value="UTF-8" />
+		              <input type="hidden" name="hl" value="en-US" />
+		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
+		            </form>
+		          </li>
+		        </ul>
+            </div>
+			<!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+  <div class="container">
+    <div class="row" id="content-row">
+      
+<div class="page-header">
+	<h1>Longest Palindromic Substring</h1>
+	<p>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2014-07-06 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+</div>
+
+<div class="col-lg-10">
+	<div class="post paper">
+		<p>The <a href="https://oj.leetcode.com/problems/longest-palindromic-substring/">Longest Palindromic Substring problem</a> is:</p>
+
+<blockquote>
+  <p>Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring. </p>
+</blockquote>
+
+<p>To solve this problem, first investigate following examples:</p>
+
+<ul>
+  <li><code>abcdefedchz</code>: the longest palindrome is <code>cdefedc</code>, the left and right parts are symmetric to letter <code>f</code>.</li>
+  <li><code>acbbcae</code>: the longest palindrome <code>acbbca</code>, which is symmetric to the (virtual) postion between <code>bb</code>.</li>
+  <li><code>a</code>: the longest palindrome is the letter <code>a</code>.</li>
+</ul>
+
+<p>Based on above investigations, we could summarize the solution as: </p>
+
+<ol>
+  <li>For every letter in the string, find the longest repetitive characters to current letter, record the <code>start</code> and <code>end</code> position;</li>
+  <li>Minus <code>start</code> position by one and see if <code>s[start]</code> is still identical to <code>s[end]</code>.</li>
+  <li>If yes, iteratively compare <code>s[start--]</code> and <code>s[end--]</code> until they are not equal.</li>
+  <li>The possible longest palindrome for current letter is <code>end-start-1</code>.</li>
+</ol>
+
+<p>Following is my C++ implementation. This algorithm could be enhanced by not checking every letters, however, the time complexity will still be \( O(N^2) \). A better method is <a href="http://en.wikipedia.org/wiki/Longest_palindromic_substring">Manacher’s Algorithm</a>, which has  \( O(N) \) time complexity.</p>
+
+<pre><code>class Solution {
+public:
+    string longestPalindrome(string s) {
+		if(s.empty())
+			return "";
+
+        int pd_start=0; // the start position of the palindrome
+		int pd_len=0; // the length of the palindrome
+		for(int i=0;i&lt;s.length();++i) {
+			int start=i;
+			int end=i;
+			while(end&lt;s.length() &amp;&amp; s[start]==s[end])
+				end++;
+
+			start--;
+			while(start&gt;=0 &amp;&amp; end&lt;s.length() &amp;&amp; s[start]==s[end]) {
+				start--;
+				end++;
+			}
+			
+			if(pd_len&lt;end-start-1) {
+				pd_len=end-start-1;
+				pd_start=start+1;	
+			}
+		}
+
+		return s.substr(pd_start,pd_len);		
+    }
+};
+</code></pre>
+
+
+	</div>
+
+	<div align="right">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+	</div>
+
+	<!-- page link -->
+    <div class="pager">
+      <ul>
+      
+        <li class="previous"><a href="/2014/07/01/strstr" title="The First Occurrence of Needle In Haystack">&larr; Previous</a></li>
+      
+
+      
+        <li class="next"><a href="/2014/07/07/determine-top-common-ip-addresses" title="Find Top Source IP Addresses in Distributed Systems">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+
+	<!--
+	<div class="well">
+		<script>
+var linkwithin_site_id = 2140443;
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+	</div>
+	-->
+    <div class="well">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2014/07/06/longest-palindromic-substring';
+    var disqus_url = 'http://bo-yang.github.com//2014/07/06/longest-palindromic-substring';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> Bo Yang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+	    </script>
+      </footer>
+  </div>
+
+  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
+  <script src="/assets/run_prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 400);
+        if (count > 400) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow" class="btn btn-primary" role="button">' + 'Read More &raquo;</a>');
+        }
+      });
+    });
+  </script>
+
+  
+
+</body>
+</html>
+

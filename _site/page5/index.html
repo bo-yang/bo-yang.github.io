@@ -42,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand" href="/">bo-yang</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -87,6 +87,839 @@
 		<div class="col-md-8">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2012/05/04/string-evolver">String Evolver, My First Genetic Algorithm</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-05-04</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Evolutionary Computation-ref" rel="nofollow">Evolutionary Computation</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Genetic Algorihtm-ref" rel="nofollow">Genetic Algorihtm</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>When reading <em>Evolutionary Computation for Modeling and Optimization[1]</em>, I found following problem in section 1.2.3:</p>
+<p><strong><em>A string evolver is an evolutionary algorithm that tries to match a reference string from a population of random strings. The underlying character set of the string evolver is the alphabet from which the strings are drawn.</em></strong></p>
+<p>The solution given in the context is:</p>
+<ol>
+<li>Start with a reference string and a population of random strings.</li>
+<li>The fitness of a string is the number of positions in which it has the same character as the reference string.</li>
+<li>To evolve the population, split it into small random groups called&nbsp;tournaments.</li>
+<li>Copy the most fit string(break ties by picking at random among the most fit strings) over the least fit string in each tournament.</li>
+<li>Then change one randomly chosen character in each copy(mutation).</li>
+<li>Repeat until an exact match with the reference string is obtained.</li>
+</ol>
+<p>When trying this solution, I noticed that it won't converge even after a long time. Therefore, I modified the crossover and mutation strategy.<strong>A subset of population(strings) will be selected based on fitness in a tournament, and the bottom-ranked<br />
+ 50% of each tournament will be deleted. New population is formed by crossing the remaining high 20 individuals in a tournament, while the high-ranked parents are kept unchanged[2]. Finally, a random selected string in a tournament will be mutated.</strong></p>
+<p>
+My codes are:</p></p>
+<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define POP 20 
+#define TNMT 4	    // Total number of tournaments
+#define MAXSTR 80
+char strPop[POP][MAXSTR]; // population of strings
+char* REF=&quot;Hello,world!&quot;; // Reference string
+char* mostFit[TNMT]; 	  // the most fit string of each tournament
+char* leastFit[TNMT]; 	// the least fit string of each 
+
+tournament
+
+char GenRandChar()
+{
+	return (char)(32+rand()%96);
+}
+
+char * GenRandStr(char* str, unsigned int len)
+{
+	int i;
+	for(i=0;i&lt;len-1;++i)
+	{
+		str[i]=GenRandChar();
+	}
+	str[i]='';
+	return str;
+}
+
+// Copy the most fit string(break ties by picking at 
+// random among the most fit strings) over the least 
+// fit string in each tournament.
+unsigned int CrossoverM2L(char* strMostFit, char* strLeastFit, unsigned int len)
+{
+	int i,p;
+	char tmp;
+
+	// Generate random position. Make sure the string
+	// won't be broken at the first or last character.
+	p=rand()%(len-2)+1;
+	for(i=0;i&lt;p;++i)
+	{
+		tmp=strMostFit[i];
+		strMostFit[i]=strLeastFit[i];
+		strLeastFit[i]=tmp;
+	}
+	return p;
+}
+
+// Change one randomly chosen character in each copy.
+unsigned int Mutate(char* str,unsigned int len)
+{
+	int p;
+
+	p=rand()%len;
+	str[p]=GenRandChar();
+	return p;
+}
+
+// Count the number of identical chars between ref and str.
+unsigned int GetFitness(char* str,unsigned int len)
+{
+	int i;
+	int cnt=0;
+	for(i=0;i&lt;len;++i)
+	{
+		if(REF[i]==str[i])
+			cnt++;
+	}
+	
+	return cnt;
+}
+
+// Find out the most and least fit strings in a tournament.
+// 	tourn -- the number of tourn, starting from 0.
+void GetFitOfTnmt(char* mostFit[],char* leastFit[],unsigned int tourn)
+{
+	int i,fit;
+	char* str;
+	int most_fit,least_fit;
+
+	// Make sure the most and least fit strings are different
+	mostFit[tourn]=strPop[tourn*POP/TNMT];
+	most_fit=GetFitness(mostFit[tourn],strlen(REF));
+	leastFit[tourn]=strPop[tourn*POP/TNMT+1];
+	least_fit=GetFitness(leastFit[tourn],strlen(REF));
+	for(i=1;i&lt;POP/TNMT;++i)
+	{
+		str=strPop[tourn*POP/TNMT+i];
+		fit=GetFitness(str,strlen(REF));
+		if(most_fitfit)
+		{
+			least_fit=fit;
+			leastFit[tourn]=str;
+		}
+	}
+}
+
+// Get the most fit string of the population
+char* GetMostFit(char* mostFit[])
+{
+	int i,fit;
+	char* strFit=mostFit[0];
+	int most_fit=GetFitness(strFit,strlen(REF));
+	for(i=1;i&lt;TNMT;++i)
+	{
+		fit=GetFitness(mostFit[i],strlen(REF));
+		if(most_fit&lt;fit)
+		{
+			most_fit=fit;
+			strFit=mostFit[i];
+		}
+	}
+	
+	return strFit;
+}
+
+// Sort the strings in a tournament by fitness.
+void SortTournByFit(unsigned int tourn)
+{
+	int tmpInt;
+	unsigned int fit[POP/TNMT];
+	int i,j;
+	int len=strlen(REF);
+	char tmpStr[MAXSTR];
+
+	// Get the fitness of each string in this tournament
+	for(i=0;i&lt;POP/TNMT;i++)
+	{
+		fit[i]=GetFitness(strPop[tourn*POP/TNMT+i],len);
+	}
+
+	// Sort strings by fitness
+	for(i=0;i&lt;POP/TNMT;i++)
+	{
+		for(j=i+1;j&lt;POP/TNMT;j++)
+		{
+			if(fit[i]&lt;fit[j])
+			{
+				tmpInt=fit[i];
+				fit[i]=fit[j];
+				fit[j]=tmpInt;
+
+				strcpy(tmpStr,strPop[tourn*POP/TNMT+i]);
+				strcpy(strPop[tourn*POP/TNMT+i],strPop[tourn*POP/TNMT+j]);
+				strcpy(strPop[tourn*POP/TNMT+j],tmpStr);
+			}
+		} // end of for j
+	} // end of for i
+}
+
+// Crossover the top half strings.
+// Remove the second half strings after sorting, keep the top half, 
+// and generate children by crossing over top half strings.
+void CrossoverByFit(unsigned int tourn)
+{
+	int i,j,p,len;
+	char* strTmp;
+
+	SortTournByFit(tourn);
+
+	// Generate random position. Make sure the string
+	// won't be broken at the first or last character.
+	len=strlen(REF);
+	p=rand()%(len-2)+1;
+	
+	for(i=0;i&lt;(int)POP/TNMT/2;i+=2)
+	{
+		for(j=0;j
+p;--j)
+		{
+			strPop[(tourn+1)*POP/TNMT-1-i][j]=strPop[tourn*POP/TNMT+i+1][j];
+			strPop[(tourn+1)*POP/TNMT-2-i][j]=strPop[tourn*POP/TNMT+i][j];
+		}
+	}
+}
+
+
+// Print population by tournaments.
+void DumpPop()
+{
+	int i,j;
+	char* curStr;
+	for(i=0;i&lt;TNMT;i++)
+	{
+		printf(&quot;Tournament %d:n&quot;,i);
+		for(j=0;j&lt;POP/TNMT;j++)
+		{
+			curStr=strPop[i*POP/TNMT+j];
+			printf(&quot;t%stFitness: %dn&quot;,curStr,GetFitness(curStr,strlen(curStr)));
+		}
+		printf(&quot;n&quot;);
+	}
+}
+
+//
+// MAIN START HERE
+//
+int main()
+{
+	int LEN=strlen(REF);
+
+	int i,j,p;
+	long cnt=0;
+	char * strFit=NULL;
+	
+	// Initionlization
+	for(i=0;i&lt;POP;++i)
+	{
+		GenRandStr(strPop[i],LEN);
+	}
+	
+	printf(&quot;---------------- Original Population ---------------n&quot;);
+	DumpPop();
+	
+	for(i=0;i&lt;TNMT;++i)
+		GetFitOfTnmt(mostFit,leastFit,i);
+		
+	strFit=GetMostFit(mostFit);
+	while(GetFitness(strFit,LEN) != LEN)
+	//while(GetFitness(strFit,LEN)&lt;5)
+	{
+		printf(&quot;n---------------- Generation %d ----------------n&quot;,cnt);
+		DumpPop();
+
+		printf(&quot;%stReferencen&quot;,REF);
+		printf(&quot;%stGen: %dtFitness: %dn&quot;,strFit,cnt++,GetFitness(strFit,LEN));
+		for(i=0;i&lt;TNMT;++i)
+		{
+			// Crossover
+			//CrossoverM2L(mostFit[i],leastFit[i],LEN);
+			CrossoverByFit(i);
+			
+			// Mutation
+			p=rand()%(POP/TNMT);
+			Mutate(strPop[i*POP/TNMT+p],LEN);
+
+			// Re-calculate the fitness
+			GetFitOfTnmt(mostFit,leastFit,i);
+		}
+		strFit=GetMostFit(mostFit);
+	}
+
+	strFit=GetMostFit(mostFit);
+	printf(&quot;n---------------- Generation %d ----------------n&quot;,cnt);
+	DumpPop();
+	printf(&quot;%stReferencen&quot;,REF);
+	printf(&quot;%stGen: %dtFitness: %dn&quot;,strFit,cnt++,GetFitness(strFit,LEN));
+
+	return 0;
+}</pre>
+<p>
+<span style="font-family:monospace;"><span style="white-space:pre;">And the output is:</span></span></p>
+<pre>---------------- Generation 0 ----------------
+Tournament 0:
+	F~AKK[b;tV]	Fitness: 0
+	\agA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	6s[rEA8|45/	Fitness: 0
+	W.e[:bYXlCz	Fitness: 0
+
+Tournament 1:
+	6n?y9o??VN#	Fitness: 0
+	8mmZ~f:Dfn&lt;	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	8%p%)3-j;(	Fitness: 0
+	92S2}&amp;jU&quot;f	Fitness: 0
+
+Tournament 2:
+	38IrA~lrHq|	Fitness: 0
+	RF51Vo7V9]v	Fitness: 0
+	Z(tUX&lt;w|!{m	Fitness: 1
+	qNoPy'a;OS]	Fitness: 0
+	1`]em-+SM~~	Fitness: 0
+
+Tournament 3:
+	o^f(T&amp;zQC3Q	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	%H/&gt;N)Kt_Pm	Fitness: 0
+	i&gt;Z+F0@6/'L	Fitness: 0
+
+Hello,world!	Reference
+Z(tUX&lt;w|!{m	Gen: 0	Fitness: 1
+
+---------------- Generation 1 ----------------
+Tournament 0:
+	F~AKK[b;tVx	Fitness: 0
+	\agA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	\agA_q&gt;5]	Fitness: 0
+	F~AKK[b;tCr	Fitness: 0
+
+Tournament 1:
+	6n?y9o??VN#	Fitness: 0
+	kmmZ~f:Dfn&lt;	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	8mm%9o??VN#	Fitness: 0
+	6n?2~f:Dfn&lt;	Fitness: 0
+
+Tournament 2:
+	Z(tUX&lt;w|!{m	Fitness: 1
+	RF51Vo7V9]v	Fitness: 0
+	38IrA~lrHq|	Fitness: 0
+	RFoUX&lt;w|r{m	Fitness: 2
+	Z(]1Vo7V9]v	Fitness: 0
+
+Tournament 3:
+	o^f(T&amp;zQC3Q	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	($/(T&amp;zQC3Q	Fitness: 0
+	@^Z[j@ Asi	Fitness: 0
+
+Hello,world!	Reference
+RFoUX&lt;w|r{m	Gen: 1	Fitness: 2
+
+---------------- Generation 2 ----------------
+Tournament 0:
+	F~AKK[b;tVx	Fitness: 0
+	\agA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	\agA_q&gt;v]	Fitness: 0
+	F~AeK[b;tVr	Fitness: 0
+
+Tournament 1:
+	Pn?y9o??VN#	Fitness: 0
+	kmmZ~f:Dfn&lt;	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	kmmZ~f??VN#	Fitness: 0
+	6n?y9o:Dfn&lt;	Fitness: 0
+
+Tournament 2:
+	RFoDX&lt;w|r{m	Fitness: 2
+	Z(tUX&lt;w|!{m	Fitness: 1
+	38IrA~lrHq|	Fitness: 0
+	Z(t1X&lt;w|r{m	Fitness: 2
+	RFo1X&lt;w|!{m	Fitness: 1
+
+Tournament 3:
+	o^f(T&amp;zQC3Q|	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	($f(T&amp;zQC3Q	Fitness: 0
+	o^g[j@ Asi	Fitness: 0
+
+Hello,world!	Reference
+RFoDX&lt;w|r{m	Gen: 2	Fitness: 2
+
+---------------- Generation 3 ----------------
+Tournament 0:
+	F~AKK[b;tVx	Fitness: 0
+	\agA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	\KK[b;tVx	Fitness: 0
+	F~Aag~_q&gt;vr	Fitness: 0
+
+Tournament 1:
+	Pn?y9o??VN#	Fitness: 0
+	kmmZ~f:Dfn&lt;@	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	km?y9o??VN#	Fitness: 0
+	PnmZ~f:Dfn&lt;	Fitness: 0
+
+Tournament 2:
+	RFoDX&lt;w|r{m	Fitness: 2
+	Z(t1X&lt;w|r{m	Fitness: 2
+	Z(tUX~w|!{m	Fitness: 1
+	Z(oDX&lt;w|r{m	Fitness: 2
+	RFI1X&lt;w|r{m	Fitness: 2
+
+Tournament 3:
+	o^f(T&amp;zQC3Q|	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	($g[W@ QC3Q|	Fitness: 0
+	o^f(T&amp;zAsi	Fitness: 0
+
+Hello,world!	Reference
+RFoDX&lt;w|r{m	Gen: 3	Fitness: 2
+
+---------------- Generation 4 ----------------
+Tournament 0:
+	F~AKK[b;tVx	Fitness: 0
+	\JgA_q&gt;vr	Fitness: 0
+	OGG&amp;Gy*(|yj	Fitness: 0
+	\KK[b;tVx	Fitness: 0
+	F~AagA_q&gt;vr	Fitness: 0
+
+Tournament 1:
+	Pn?y9o??VN#	Fitness: 0
+	kmmZ~f:Dfn&lt;@	Fitness: 0
+	i-nV!P`{oQ	Fitness: 0
+	kmmZ~o??VN#	Fitness: 0
+	Pnsy9f:Dfn&lt;@	Fitness: 0
+
+Tournament 2:
+	RFoDX&lt;w|r{m	Fitness: 2
+	Z(t1X&lt;w|r{m	Fitness: 2
+	Z(oDXFw|r{m	Fitness: 2
+	Z(t1X&lt;w|r{m	Fitness: 2
+	RFoDX&lt;w|r{m	Fitness: 2
+
+Tournament 3:
+	o^f(T'zQC3Q|	Fitness: 0
+	($g[j@ Asi	Fitness: 0
+	@gb#E`!QGUb	Fitness: 0
+	($g[j@ AsQ|	Fitness: 0
+	o^f(T&amp;zQC3i	Fitness: 0
+
+Hello,world!	Reference
+RFoDX&lt;w|r{m	Gen: 4	Fitness: 2
+
+      ......
+      ......
+
+---------------- Generation 2342 ----------------
+Tournament 0:
+	Hpllk,world!	Fitness: 10
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+
+Tournament 1:
+	Hello,worlF!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+
+Tournament 2:
+	Hello,worldh	Fitness: 11
+	Hello,worldJ	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,worVdJ	Fitness: 10
+
+Tournament 3:
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:2o,w4rld!	Fitness: 9
+
+Hello,world!	Reference
+Hpllo,world!	Gen: 2342	Fitness: 11
+
+---------------- Generation 2343 ----------------
+Tournament 0:
+	Hp|lo,world!	Fitness: 10
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+
+Tournament 1:
+	Hello,worlF!	Fitness: 11
+	Hello,wo&amp;lf!	Fitness: 10
+	Hello,worlf!	Fitness: 11
+	Hello,worlF!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+
+Tournament 2:
+	Hello,worldh	Fitness: 11
+	Hello,worldJ	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,wor&amp;dh	Fitness: 10
+	Hello,worldJ	Fitness: 11
+
+Tournament 3:
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:lozw4rld!	Fitness: 9
+
+Hello,world!	Reference
+Hpllo,world!	Gen: 2343	Fitness: 11
+
+---------------- Generation 2344 ----------------
+Tournament 0:
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+	Hpllo,world!	Fitness: 11
+
+Tournament 1:
+	Hello,worlF!	Fitness: 11
+	Hello,worlf!	Fitness: 11
+	Hello,world!	Fitness: 12
+	Hello,worlF!	Fitness: 11
+	Hello,wo&amp;lf!	Fitness: 10
+
+Tournament 2:
+	Hello,world 	Fitness: 11
+	Hello,worldJ	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,worldh	Fitness: 11
+	Hello,worldJ	Fitness: 11
+
+Tournament 3:
+	He:lo,w44ld!	Fitness: 9
+	He:lo,w0rld!	Fitness: 10
+	He:lo,w4rld!	Fitness: 10
+	He:lo,w0rld!	Fitness: 10
+	He:lo,w4rld!	Fitness: 10
+
+Hello,world!	Reference
+Hello,world!	Gen: 2344	Fitness: 12
+</pre>
+<p></p>
+<p>-----------------------------------------------------------------</p>
+<p><em>References:</em></p>
+<p>[1]: Daniel Ashlock, <em>Evolutionary Computation for Modeling and Optimization</em>, Springer, 2005.</p>
+<p>[2]: FORREST, S., WEIMER, W., NGUYEN, T., AND GOUES, C. L., <em>A Genetic Programming Approach to Automated Software Repair</em>, In GECCO (July 2009).</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2012/05/02/ubuntu-1204-update">升级Ubuntu 12.04所遇到的一些问题</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-05-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>升级Ubuntu 11.10到12.04后，开机报错“<em>no partition found</em>”,进入Grub后，输入&quot;ls&quot;命令，也报错“no partition found”。可见Grub已经崩溃了。</p>
+<p>于是我下载了<a href="http://unetbootin.sourceforge.net/">UNetbootin</a>，然后利用它在Win 7下制作Ubuntu自启动U盘。制作好之后，结果发现不会自动引导启动，需要在开机之后出现Thinkpad欢迎界面时按F12，然后选择U盘启动。然后选择U盘启动Ubuntu，进入Ubuntu后按照&nbsp;<a href="http://www.webupd8.org/2009/12/how-to-recover-grub2-linux.html">How to<br />
+ Fix Grub 2</a>&nbsp;中的方法安装Grub 2到硬盘。</p></p>
+<div style="color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;margin:0;padding:0;">
+<span style="margin:0;padding:0;">To fix GRUB 2, you need an Ubuntu live CD from which you need to boot.</span>&nbsp;Once you boot to the LIVE<br />
+ CD, open a terminal an and type these commands:</div>
+<p><br style="color:rgb(85,85,85);font-size:14px;line-height:20px;margin:0;padding:0;" /></p>
+<div style="color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;margin:0;padding:0;">
+<span style="font-weight:bold;margin:0;padding:0;">a) Firstly, you need to find out on which partition your Linux system is installed:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow-x:auto;overflow-y:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;padding:28px 10px 10px;"><code style="margin:0;padding:0;">sudo fdisk -l</code></pre>
+<p>(in my case, it's &quot;sda1&quot;)<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="font-weight:bold;margin:0;padding:0;">b) Now, we must mount this partition:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow-x:auto;overflow-y:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;padding:28px 10px 10px;"><code style="margin:0;padding:0;">sudo mount /dev/<span style="font-weight:bold;margin:0;padding:0;">sda1</span> /mnt</code></pre>
+<p>Where &quot;sda1&quot; is the partition where you installed Ubuntu (or any other Linux distro). It could be &quot;sda5&quot;, &quot;sda6&quot;, etc. for you.<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="font-weight:bold;margin:0;padding:0;">c) Install grub to the partition you've mounted:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow-x:auto;overflow-y:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;padding:28px 10px 10px;"><code style="margin:0;padding:0;">sudo grub-install --root-directory=/mnt/ /dev/sda</code></pre>
+<p><br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="background-color:rgb(255,255,177);border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(223,223,223);border-right-width:1px;border-right-style:solid;border-right-color:rgb(223,223,223);color:rgb(51,51,51);margin:0;padding:0 2px;">Important:</span>&nbsp;Please<br />
+ notice that it's &quot;/dev/sda&quot;, not &quot;/dev/sda1&quot;. &quot;sda&quot; is the hard disk on which your Linux distribution is installed!<br style="margin:0;padding:0;" /><br />
+<br style="margin:0;padding:0;" /><br />
+<span style="font-weight:bold;margin:0;padding:0;">d) Restart your computer. As previous Grub 2 entries are removed, run the following<br />
+ command to restore them:</span><br style="margin:0;padding:0;" /></p>
+<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow-x:auto;overflow-y:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;padding:28px 10px 10px;"><code style="margin:0;padding:0;">sudo update-grub</code></pre>
+</div>
+<p>我以前是用USB Stick安装的Ubuntu，在安装过程中有一选项是选择引导程序的安装位置，默认是/dev/sdb，也就是U盘。因为当时我没注意，所以Grub 2被安装到了U盘，尽管事后重新安装到了硬盘上，但貌&#20284;升级后还是不太正常。</p>
+<p>重启电脑进入Grub 2之后，输入命令（Grub 2中已经不再支持kernel命令，需要用<strong><em>linux</em></strong>指定kernel）：</p></p>
+<pre>linux (hd0,X)/vmlinuz-3.2......
+initrd (hd0,X)/initrd.img-3.2......
+boot</pre>
+<p>悲哀的是系统启动到一半仍然无法进入GUI或者shell。多次检查测试后确认 / 所在的分区已经崩溃，Ubuntu根本无法识别。</p>
+<p>虽然不想，但此时我已别无选择，只能重新安装Ubuntu 12.04了。可惜我电脑里那些尚未备份的文件和电影啊……</p>
+<p></p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2012/04/21/briss-intro">Briss -- Crop the Margins of Your PDF Files</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-04-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><span style="font-size:18px;">今天用iPad阅读一个PDF文档时，发现每页留白太多，字体特别小，在iBooks中每翻一页都要手动去缩放，实在是麻烦。于是搜索去掉PDF留白的方法。</span></p>
+<p><span style="font-size:18px;">先是寄希望于Linux系统自带的pdfcrop，结果尝试了各种选项后，发现PDF的size没有变，还是原来的8.5x8.9 inch。</span></p>
+<p><span style="font-size:18px;">后来搜索Ghostscript的用法，把papersize或者resolution强制改成希望的数&#20540;，仍然没有变化。郁闷！</span></p>
+<p><span style="font-size:18px;">再后来发现了网上的一个PDFcrop版本，也是用Perl写的，只是更加友好一点，尝试之后仍不奏效。自己上手用hardcode改为自己想要的结果，失败。不过在该tool中最大的发现就是<em> 1inch=28.3464567bp(dpi)</em>.</span></p>
+<p><span style="font-size:18px;">总结一晚上失败的经验就是：<strong>该PDF文档是扫描的图片转PDF&#26684;式，而不是文字直接转的，因此pdfcrop等工具无法发现并处理留白！</strong></span></p>
+<p><span style="font-size:18px;">最后在网上搜索PDF Margin Crop，无意中发现了<a href="http://sourceforge.net/projects/briss/">Briss</a>，抱着试试看的心态下载使用了一下，发现竟然能够识别图片转PDF的文字区域，拖动左上或右下脚上的蓝色正方形区域还可一手动选择保留的区域， Terrific！</span></p>
+<p><span style="font-size:18px;">使用方法就是下载<a href="http://sourceforge.net/projects/briss/">Briss</a>，解压缩，然后执行</span></p></p>
+<pre>java -jar briss-0.0.13.jar
+or
+java -jar briss-0.0.13.jar cropthis.pdf
+
+(The second line comes in handy if you want shortlinks for pdf editing) 
+</pre>
+<p>
+<span style="font-size:18px;">更详细的使用说明参见&nbsp;<a href="http://www.freewaregenius.com/2011/01/18/briss-crop-your-pdf-documents-using-a-visual-interface/" title="Briss: crop your PDF documents using a visual interface" rel="bookmark" style="font-family:'Myriad Pro', Calibri;line-height:22px;vertical-align:baseline;outline-style:none;outline-width:initial;outline-color:initial;background-color:transparent;border-width:initial;border-color:initial;color:rgb(34,34,34);border-style:none;margin:0;padding:0;">Briss:<br />
+ crop your PDF documents using a visual interface</a><span style="color:rgb(68,68,68);font-family:'Myriad Pro', Calibri;line-height:22px;">。</span></span></p>
+<p></p>
+<p></p>
+<p></p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2012/03/06/using-expect-here-document-in-shell-scripts-4">Using Expect Here Document in Shell Scripts</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-03-06</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Expect-ref" rel="nofollow">Expect</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Here Document-ref" rel="nofollow">Here Document</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Sometimes simple interactions are needed for Shell scripts. In this scenario, a here document written in Expect will work well. In following example, the output of Expect here document is assigned to KSH variable rcs_stat.<br />
+<P></p>
+<pre class="python">#!/bin/ksh
+
+autoload formatAPnum
+
+# Set the lab name, COOLLAB
+. $COOLXDIR/.netlabs
+# Get the RCS cell list
+set -A RCSs
+typeset -i nx=0
+cat $COOLXDIR/.coolcell2dcs | while read cell
+do
+	if [[ &quot;$cell&quot; = c* ]]
+	then
+		rcs=${cell%%$COOLLAB*}
+		RCSs[$nx]=${rcs#c}
+		nx=$nx+1
+	fi
+done
+
+# Check RCS status
+typeset -i loopCount=0
+rcs_cnt=${#RCSs[*]}
+B_server=$(formatAPnum $BserverAP)
+while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
+do
+	loopCount=${loopCount}+1
+
+	nx=0
+	while [ $nx -lt $rcs_cnt ]
+	do
+		rcs_stat=&quot;OOS&quot;
+		rcs_stat=$(
+expect - &lt;&lt;!
+log_user 0
+set timeout 20
+spawn $COOL_RSH ap$B_server TICLI
+send &quot;op:cell ${RCSs[$nx]}\r&quot;
+expect {
+	timeout {puts &quot;OOS\n&quot;}
+	&quot;*DL(S) DOWN&quot; {puts &quot;OOS\n&quot;}
+	&quot;*DL(S) UP&quot; {puts &quot;UP\n&quot;}
+}
+!
+		)
+
+		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
+		then
+			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
+			unset RCSs[$nx]
+		fi
+
+		nx=${nx}+1
+	done
+
+	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
+done
+
+coolprint - &quot;All RCSs are up.&quot;
+exit 0
+</pre>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2012/03/06/expect-here-doc-in-shell">Shell中使用Expect Here Document</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-03-06</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>在使用Shell写程序时，有时不得不面对交互的问题——可惜shell往往无法自动完成交互。如果交互的内容很多，自然是直接应用Expect脚本比较方便；如果交互的内容很少，而且考虑到Shell的易用性，在Shell脚本中创建一个Expect 的Here Document更加方便灵活。</p>
+<p>如下例所示，Expect&nbsp;Here Document可以直接运行并将运行结果赋给KSH变量rcs_stat。</p>
+<p>
+<pre>#!/bin/ksh
+
+autoload formatAPnum
+
+# Set the lab name, COOLLAB
+. $COOLXDIR/.netlabs
+# Get the RCS cell list
+set -A RCSs
+typeset -i nx=0
+cat $COOLXDIR/.coolcell2dcs | while read cell
+do
+	if [[ &quot;$cell&quot; = c* ]]
+	then
+		rcs=${cell%%$COOLLAB*}
+		RCSs[$nx]=${rcs#c}
+		nx=$nx+1
+	fi
+done
+
+# Check RCS status
+typeset -i loopCount=0
+rcs_cnt=${#RCSs[*]}
+B_server=$(formatAPnum $BserverAP)
+while [ &quot;${#RCSs[*]}&quot; != 0 -a $loopCount -lt 720 ]  # wait at most 2 hours
+do
+	loopCount=${loopCount}+1
+
+	nx=0
+	while [ $nx -lt $rcs_cnt ]
+	do
+		rcs_stat=&quot;OOS&quot;
+		rcs_stat=$(
+expect - &lt;&lt;!
+log_user 0
+set timeout 20
+spawn $COOL_RSH ap$B_server TICLI
+send &quot;op:cell ${RCSs[$nx]}r&quot;
+expect {
+	timeout {puts &quot;OOSn&quot;}
+	&quot;*DL(S) DOWN&quot; {puts &quot;OOSn&quot;}
+	&quot;*DL(S) UP&quot; {puts &quot;UPn&quot;}
+}
+!
+		)
+
+		if [ &quot;$rcs_stat&quot; = &quot;UP&quot; ]
+		then
+			coolprint - &quot;RCS cell ${RCSs[$nx]} is up.&quot;
+			unset RCSs[$nx]
+		fi
+
+		nx=${nx}+1
+	done
+
+	[ -n &quot;${RCSs[*]}&quot; ] &amp;&amp; sleep 10 
+done
+
+coolprint - &quot;All RCSs are up.&quot;
+exit 0
+</pre></p>
+<p></p>
+<p></p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2012/02/02/file-descriptors-per-process">File Descriptors per Process</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-02-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#file descriptor-ref" rel="nofollow">file descriptor</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:</p>
+<ol>
+<li><code>ulimit -a # all limitations</code></li>
+<li><code>ulimit -Sn # soft limit</code></li>
+<li><code>ulimit -Hn # hard limit</code></li>
+</ol>
+<p>If the file descriptor limit is exceeded for a process, you may see the error <code>Too Many Open Files</code>.</p>
+<p>And if you want to change the limit per process temporarily, you can:</p>
+<ol>
+<li><code>ulimit -n &lt;desired_#&gt; # both</code></li>
+<li><code>ulimit -Sn &lt;desired_#&gt; # soft limit</code></li>
+<li><code>ulimit -Hn &lt;desired_#&gt; # hard limit</code></li>
+</ol>
+<p>To check the open files of a process, you can use command <code>pfiles &lt;PID&gt;</code>.</p>
+<p>To check the run time limit of each process in Solaris, you can <code>plimit &lt;PID&gt;</code>(it seems this command is not supported in Linux). If you have the root permission and you want to change the limit of an process without killing or restarting the process, you can <code>plimit -n &lt;desired_#&gt;</code>.</p>
+<p>It was said that it may be dangerous to set the soft limit higher than 256 or hard limit greater than 1024 due to limitations with the stdio library.If programs require more file descriptors, they should use setrlimit directly.</p>
+<p>-------------<br />
+References:</p>
+<ol>
+<li><a href="http://www.brandonhutchinson.com/File_descriptors.html">File descriptors</a></li>
+<li><a href="http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/">Linux Increase The Maximum Number Of Open Files / File Descriptors (FD)</a></li>
+<li><a href="http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/">Linux / UNIX: List Open Files for Process</a></li>
+<li><a href="http://www.princeton.edu/~unix/Solaris/troubleshoot/filedesc.html">Princeton University Enterprise Servers and Storage, File Descriptors</a></li>
+<li><a href="http://compute.cnr.berkeley.edu/cgi-bin/man-cgi?plimit+1">plimit</a></li>
+</ol>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2012/01/13/onlive">OnLive——在iPad上使用MS Word, Excel, PowerPoint</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-01-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>昨晚睡前看到Walter Mossburg的最新文章<a href="http://allthingsd.com/20120111/working-in-word-excel-powerpoint-on-an-ipad/">Working in Word, Excel, PowerPoint on an iPad</a>：尽管iPad上已经有office软件，可以在上面编辑或创建文档，但这些软件对MS Office的兼容性并不好，而且还是收费的。<a href="http://desktop.onlive.com/">OnLive<br />
+ Desktop</a>即将推出一个免费的应用，该应用可以利用云端的MS Word, Excel, PowerPoint创建并编辑文档，文档保存在云端，可以在iPad和PC上（今后会有Android版）编辑。免费版每人2G云端存储空间，付费版$10每月每人50G空间。&nbsp;除常用的Office软件，还支持常用的Windows小程序，如计算器，画图板，记事本等。</p>
+<p>OnLive对于网络要求较高，低于1M的网络很可能无法连接到服务器。另外，文档输入时的虚拟键盘不是iPad的虚拟键盘而是Windows的键盘，编辑长文档时会很麻烦。</p>
+<p style="text-align:center;"><img src="http://online.wsj.com/public/resources/images/PJ-BE740_PTECHJ_G_20120111170747.jpg" alt="" /></p>
+<p>看过视频之后，我认为这个软件就是一个高级版的VNC应用，创新之处就在于云端的Windows服务器集群，能维护Windows环境以及自动为用户分配Windows服务器。一年多以前，在《<a href="http://blog.csdn.net/bonny95/article/details/5857256">Splashtop Remote——让你在iPad上也能用Windows下的应用</a>》一文中，我曾预言</p>
+<p><span style="background-color:rgb(204,204,204);">&quot;<span style="color:rgb(51,51,51);font-family:Arial;font-size:14px;line-height:26px;text-align:left;">试想如果将来有公司（比如这个DeviceVM）推出一项服务（可以免费，也可收费），为用户提供现成的Windows应用，而用户所需要做的就是在iPad或gPad上安装Splashtop Remote，打开这个应用就可以自动连接到DeviceVM的Windows<br />
+ PC/Server，利用现成的Windows程序了——省去了自己购买并维护PC的很多麻烦，节省了购买大量Windows软件的开支，何乐而不为呢？而且这也正契合了时下的云计算潮流。</span>&quot;</span></p>
+<p>果然英雄所见略同，已经有人开始提供这样的服务了。不过OnLive能否流行开来，还有待用户和市场的检验。使用体验是否可以被用户接受？如何解决网速（无论有线或无线）慢的情况？ 微软会不会推出iPad版的Office软件？即使该服务的终极目标不仅仅限于Windows或者Office软件，其他只能能在PC运行的程序会不会有替代解决方案在iPad或者Android平板上？以及现存的很多类VNC的软件……凡此种种，都构成了该服务的不确定因素。</p>
+<p>无论如何，这都是一个很好的尝试。</p>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2012/01/09/updating-fedora-to-fedora16-and-installing-ubuntu-11-04">Updating Fedora to Fedora16 and Installing Ubuntu 11.04</a></h2>
     <p>
@@ -454,237 +1287,6 @@ IOTA</code></p>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/18/merge-split-pdf-files">Merge/Split PDF files in Linux</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-18</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-First install pdftk (pdf toolkit). Pdftk runs from the command line which means you should unpack the software into a directory that you can access easily. I put the file into c: for&nbsp;<a href="http://www.ghacks.net/2007/10/02/merge-pdf-files/#" class="kLink" id="KonaLink0" style="border-style:initial;border-color:initial;outline-width:initial;outline-style:none;outline-color:initial;background-color:transparent!important;vertical-align:baseline;color:rgb(0,114,188);font-family:inherit!important;display:inline!important;top:0;right:0;bottom:0;left:0;position:static;font-size:inherit!important;border-width:0!important;margin:0;padding:0;"><span style="color:#0072bc;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0;margin:0;padding:0;"><span class="kLink" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;width:auto!important;float:none!important;display:inline!important;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0 0 1px!important;margin:0;padding:0 0 1px!important;">testing</span></span></a>&nbsp;purposes<br />
- along with two pdfs called 123.pdf and 456.pdf.</p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-If you run pdftk without parameters you get a quick output that details the most important parameters. Lets take a look at the possible operations:</p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span id="more-2012" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;"></span><span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Merge<br />
- pdf files:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- 123.pdf 456.pdf output 123456.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-This tells pdftk to merge the two pdf files 123.pdf and 456.pdf into a new pdf called 123456.pdf. If you want to merge more than two pdf files at once you simply add them between pdftk and output. You could also use wildcards to merge many or all pdfs with<br />
- a certain name.</p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- *.pdf output 123456.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Split<br />
- pages from one or more pdfs:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- A=123.pdf B=456.pdf cat A1-2 B4-5 output 1245.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Repair<br />
- a pdf:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- 123.pdf output 123fixed.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Merge<br />
- encrypted pdfs:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- A=123.pdf 456.pdf input_pw A=password cat output 123456.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-Pdftk offers several more possibilities which are worth a look if you want to do something that I did not describe on this website. A version for Linux and Windows is available.</p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Read<br />
- More:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<a href="http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;text-decoration:none;color:rgb(0,0,255);border-width:0;margin:0;padding:0;">Pdftk<br />
- Homepage</a></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-原文：<a href="http://www.ghacks.net/2007/10/02/merge-pdf-files/">http://www.ghacks.net/2007/10/02/merge-pdf-files/</a></p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/16/tcl-send">Tk send</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-<code>send</code>&nbsp;is a Tk command&nbsp;used to execute a command in a different application. This send communication mechanism is limited to applications&nbsp;running on one display. Multiple screens on one workstation still count as the same display on X.</p>
-<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-In order to use&nbsp;<code>send</code>&nbsp;in your program, you should</p>
-<ol style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-<ol>
-<li>use command&nbsp;<tt>winfo interps</tt>&nbsp;to find out all the names of Tk applications reachable with send.</li>
-<li>to get the real name of a spplicaiton, using&nbsp;<tt>tk appname &lt;application&gt;.</tt></li>
-<li><tt>run tcl command remotely by send [tk appname &lt;application&gt;] &lt;command&gt;.</tt></li>
-</ol>
-</ol>
-<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-------------------<br />
-Reference:</p>
-<ol style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-<li>send manual page:&nbsp;<a href="http://www.tcl.tk/man/tcl8.4/TkCmd/send.htm">http://www.tcl.tk/man/tcl8.4/TkCmd/send.htm</a></li>
-<li><a href="http://www.amazon.com/exec/obidos/ISBN=0130385603/brentwelchA/">Practical Programming in Tcl and Tk(4th edition)</a></li>
-</ol>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/16/change-character-case">How to change the character case in ksh?</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>1. To change lower case characters to upper case, you can</p></p>
-<pre>echo abc | tr &quot;[a-z]&quot; &quot;[A-Z]&quot;</pre>
-<p>
-or&nbsp;</p></p>
-<pre>echo abc | tr '[:lower:]' '[:upper:]'</pre>
-<p>
-2. To change upper case characters to lower case, you can</p>
-<p><span style="font-family:monospace;"><span style="white-space:pre;"></span></span>
-<pre>echo ABC | tr &quot;[A-Z]&quot; &quot;[a-z]&quot;</pre>
-<p>
-<span style="white-space:pre;font-family:monospace;">or</span></p>
-<p><span style="font-family:monospace;"><span style="white-space:pre;"></span></span>
-<pre>echo ABC | tr '[:upper:]' '[:lower:]'</pre></p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/02/rup-rpc-program-not-registered-in-rhel6-1">rup:: RPC: Program not registered in RHEL6.1</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#RHEL6.1-ref" rel="nofollow">RHEL6.1</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#RPC-ref" rel="nofollow">RPC</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#rup-ref" rel="nofollow">rup</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>I just installed Redhat Enterprise Linux 6.1 on one HP server. Following error met when rup it on other servers:</p>
-<p>[sourcecode language="text"]<br />
-$rup coolnjmcl033<br />
-rup:coolnjmcl033: RPC: Program not registered<br />
-[/sourcecode]</p>
-<p>SOLUTION:<br />
-1) check if all nfs related services are working:</p>
-<p>[sourcecode language="text"]<br />
-[root@coolnjmcl033init.d]# rpcinfo -p<br />
-program vers proto port service<br />
-100000 4 tcp 111 portmapper<br />
-100000 3 tcp 111 portmapper<br />
-100000 2 tcp 111 portmapper<br />
-100000 4 udp 111 portmapper<br />
-100000 3 udp 111 portmapper<br />
-100000 2 udp 111 portmapper<br />
-100011 1 udp 875 rquotad<br />
-100011 2 udp 875 rquotad<br />
-100011 1 tcp 875 rquotad<br />
-100011 2 tcp 875 rquotad<br />
-100003 2 tcp 2049 nfs<br />
-100003 3 tcp 2049 nfs<br />
-100003 4 tcp 2049 nfs<br />
-100227 2 tcp 2049 nfs_acl<br />
-100227 3 tcp 2049 nfs_acl<br />
-100003 2 udp 2049 nfs<br />
-100003 3 udp 2049 nfs<br />
-100003 4 udp 2049 nfs<br />
-100227 2 udp 2049 nfs_acl<br />
-100227 3 udp 2049 nfs_acl<br />
-100005 1 udp 51310 mountd<br />
-100005 1 tcp 60605 mountd<br />
-100005 2 udp 42799 mountd<br />
-100005 2 tcp 44201 mountd<br />
-100005 3 udp 49544 mountd<br />
-100005 3 tcp 49098 mountd<br />
-100024 1 udp 37035 status<br />
-100024 1 tcp 60898 status<br />
-100001 3 udp 1008 rstatd<br />
-100001 2 udp 1008 rstatd<br />
-100001 1 udp 1008 rstatd<br />
-[/sourcecode]</p>
-<p>If there is no running rstatdservice , start it byservice rstatd start.<br />
-Accordingto RHEL 6 RUP manual:</p>
-<p>[sourcecode language="text"]<br />
-rup: RPC: Program not registered<br />
-[/sourcecode]</p>
-<p>The rpc.rstatd(8) daemon has not been started on the remote host.</p>
-<p>2) check if package rusers-server-*and rusers-* are installed: rpm –qa|greprusers. If not, install it and then restart service rstatd.</p>
-<p>PS:<br />
-Other userful commands:<br />
-[sourcecode language="text"]<br />
-rup localhost<br />
-service rstatd status<br />
-[/sourcecode]</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/02/cfilt">C++filt</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#CPP-ref" rel="nofollow">CPP</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>c++flit decodes(demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
-<p>You may use c++filt to demangle the symbols.<br />
-[sourcecode language="text"]<br />
-$ c++filt _ZNSt8ios_base4InitD1Ev<br />
-std::ios_base::Init::~Init()<br />
-[/sourcecode]</p>
-<p>You may try adding-lstdc++ to your link command to resolve the issue.</p>
-<p><a href="http://sourceware.org/binutils/docs-2.16/binutils/c_002b_002bfilt.html"><strong>c++filt manual</strong></a> </p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/11/28/whats-the-differences-between-virtualization-and-cloud-computing">What's the differences between  virtualization and cloud computing?</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-11-28</strong> with tags 
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Many people will be confused by the relations and differences between virtualization and cloud computing. Following essays will clarify the nature of the two technologies.<br />
-1. Cloud is an operations model, not technology: <a href="http://news.cnet.com/8301-19413_3-10249486-240.html">http://news.cnet.com/8301-19413_3-10249486-240.html</a><br />
-2. Difference Between Virtualization and Cloud Computing: <a href="http://data-centers.in/virtualization-and-cloud-computing/">http://data-centers.in/virtualization-and-cloud-computing/</a><br />
-3. The Difference Between Virtualization and Cloud Computing: <a href="http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/">http://www.erpsoftwareblog.com/2010/08/the-difference-between-virtualization-and-cloud-computing/</a></p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/11/22/gmail-tips">如何在Gmail中搜索特定时间段的邮件</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-11-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tips-ref" rel="nofollow">Tips</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>由于众所周知的原因，在天朝登录Gmail时越来越困难了，但是很多以前的邮件都还在，时不时还需要翻一翻，如何搜索特定时间段的邮件呢？</p>
-<p>答案就是在Gmail的搜索框中输入after:或者/和before:， 如 “after:2007/07/31 before:2007/12/31”就是搜索2007年7月31日之后12月31日之前的邮件。</p>
-<p></p>
-<p><img src="http://www.iamatechie.com/wp-content/uploads/2008/05/gmail-search-box-duration.jpg" alt="" /></p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -721,7 +1323,7 @@ std::ios_base::Init::~Init()<br />
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">18</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">23</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -755,7 +1357,7 @@ std::ios_base::Init::~Init()<br />
     
         <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
     
-        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">14</span></a>
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">15</span></a>
     
         <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
     
@@ -779,7 +1381,7 @@ std::ios_base::Init::~Init()<br />
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">17</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">23</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -853,6 +1455,10 @@ std::ios_base::Init::~Init()<br />
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
     
+        <a href="/tags.html#Architecture-ref" class="btn btn-mini">Architecture <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Cache-ref" class="btn btn-mini">Cache <span class="badge">1</span></a>
+    
         <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
@@ -861,16 +1467,40 @@ std::ios_base::Init::~Init()<br />
     
         <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
     
+        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">1</span></a>
+    
   
 
 
 
+			</div>
+		</div>
+		<!-- /well -->
+        <div class="well">
+			<h4>Visitors</h4>
+			<div class="tag_box">
+				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4nm24yds2ph&amp;s=300&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
+	
 			</div>
         </div>
         <!-- /well -->
         <div class="well">
             <h3>Recent Posts</h3>
 	        <ul>
+			
+  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
+			
+  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
+			
+  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
+			
+  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
@@ -879,18 +1509,6 @@ std::ios_base::Init::~Init()<br />
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
-			
-  			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
-			
-  			<li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">Coin Change Problem</a></li>
-			
-  			<li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">Text Justification</a></li>
-			
-  			<li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">Sort Colors</a></li>
-			
-  			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
-			
-  			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
 			
 			</ul>
         </div>

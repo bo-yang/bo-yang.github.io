@@ -42,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand" href="/">bo-yang</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -87,6 +87,788 @@
 		<div class="col-md-8">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-14</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The <a href="https://oj.leetcode.com/problems/insertion-sort-list/">Insertion Sort List problem</a> is:</p>
+
+<blockquote>
+  <p>Sort a linked list using insertion sort.</p>
+</blockquote>
+
+<p>There is a very simple insertion sort method for arrays in Wikipedia.</p>
+
+<pre><code>for i ← 1 to length(A)
+    j ← i
+    while j &gt; 0 and A[j-1] &gt; A[j]
+        swap A[j] and A[j-1]
+        j ← j - 1
+</code></pre>
+
+<p>The core of this algorithm is to find the position where to insert an smaller element. Compared to array, the list nodes cannot access nodes before them - they only know the nodes behind them. Therefore, instead of looking for insert positions decreasingly from current position down to the beginning, we can search the position from the head instead.</p>
+
+<p>Following is my C++ implementation. Swapping two nodes is a little tricky, because you need to take care of four links.</p>
+
+<pre><code>struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+ 
+class Solution {
+public:
+    ListNode *insertionSortList(ListNode *head) {
+        if(head==NULL||head-&gt;next==NULL)
+			return head;
+
+		ListNode* pre_head=new ListNode(-1); // to manipulate the head
+		pre_head-&gt;next=head;
+		ListNode* cur=head;
+		while(cur-&gt;next!=NULL) {
+			if(cur-&gt;val &gt; cur-&gt;next-&gt;val) {
+				ListNode* node=pre_head;
+
+				// find position to insert
+				while(node-&gt;next-&gt;val &lt; cur-&gt;next-&gt;val)
+					node=node-&gt;next;
+
+				// swap nodes
+				ListNode* tmp1=node-&gt;next;
+				ListNode* tmp2=cur-&gt;next-&gt;next;
+				node-&gt;next=cur-&gt;next;
+				cur-&gt;next-&gt;next=tmp1;
+				cur-&gt;next=tmp2;
+			} else {
+				cur=cur-&gt;next;
+			}
+		}
+		
+		head=pre_head-&gt;next;
+		delete pre_head;
+
+		return head;
+    }
+};
+</code></pre>
+
+<p>In addition to above insertion sort, which moves smaller elements forward, we also can move the larger elments backward. The following code is more like bubble sort.</p>
+
+<pre><code>ListNode *insertionSortList(ListNode *head) {
+    if(head==NULL||head-&gt;next==NULL)
+		return head;
+
+	// find the length of the list
+	int len=0;
+	ListNode* node=head;
+	while(node!=NULL) {
+		node=node-&gt;next;
+		len++;
+	}
+
+	// iteratively insert the largest number to the end
+	for(int i=len-1;i&gt;=0;i--) {
+		int j=0;
+		node=head;
+		ListNode* prev=NULL; // previous of node
+		while(j&lt;i &amp;&amp; node!=NULL &amp;&amp; node-&gt;next!=NULL) {
+			if(node-&gt;val &gt; node-&gt;next-&gt;val) {
+				// swap nodes
+				ListNode* tmp=node-&gt;next;
+				node-&gt;next=node-&gt;next-&gt;next;
+				tmp-&gt;next=node;
+				if(j==0||prev==NULL) {
+					head=tmp;
+				} else {
+					prev-&gt;next=tmp;
+				}
+				prev=tmp;
+			} else {
+				prev=node;
+				node=node-&gt;next;
+			}
+			j++;
+		}
+	} // end for
+
+	return head;
+}
+</code></pre>
+
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The <a href="https://oj.leetcode.com/problems/linked-list-cycle/">Linked List Cycle problem</a> is:</p>
+
+<blockquote>
+  <p>Given a linked list, determine if it has a cycle in it. Can you solve it without using extra space?</p>
+</blockquote>
+
+<p>A <a href="https://oj.leetcode.com/problems/linked-list-cycle-ii/">follow up problem</a> is:</p>
+
+<blockquote>
+  <p>Given a linked list, return the node where the cycle begins. If there is no cycle, return <code>null</code>.Can you solve it without using extra space? </p>
+</blockquote>
+
+<p>The first problem can be solved by the <strong><a href="http://www.geeksforgeeks.org/write-a-c-function-to-detect-loop-in-a-linked-list/">Floyd’s Cycle-Finding Algorithm</a></strong>:</p>
+
+<blockquote>
+  <p>Traverse linked list using two pointers: move one pointer by <em>one</em> and other pointer by <em>two</em>.  If these pointers meet at some node then there is a loop.  If pointers do not meet then linked list doesn’t have loop.</p>
+</blockquote>
+
+<p>As for the second problem, it is also based on the <strong>Floyd’s Cycle-Finding Algorithm</strong>. However, after detecting loop, we need to find the starting point of the cycle. <strong>The most convinient way is to use two pointers, one points to the head node, and the other points to the node that pointers meet when detecting loop. Then move both the two pointers by one respectively in each iteration, until they meet. The node they meet is the starting point of the cycle.</strong></p>
+
+<p>Here is the detailed explanation of above trick(reference: <a href="http://www.cnblogs.com/TenosDoIt/p/3416702.html">http://www.cnblogs.com/TenosDoIt/p/3416702.html</a>). </p>
+
+<ol>
+  <li>Assume the length(number of nodes, the same below) of the list is <code>l</code>, the distance(number of nodes, the same below) between <code>head</code> and the starting point of cycle is <code>a</code>, the distance between the cycle-starting point and the point where the slow/fast pointers meet is <code>b</code>, and the length of the cycle is <code>r</code>.</li>
+  <li>Assume when the fast/slow pointers meet, the slow pointer has accessed <code>s</code> nodes. Then the fast pointer has moved <code>2s</code>, and <code>s=a+b</code>.</li>
+  <li>Since the nodes accessed by the fast pointer also calculated as <code>kr+s</code>, where <code>k</code> is the number of cycles and \( k \ge 1 \). We have <code>2s=kr+s</code>, i.e. <code>s=kr</code>.</li>
+  <li>Since <code>s=a+b</code> and <code>s=kr</code>, we have <code>a+b=kr=(k-1)r+r</code>. Since <code>r=l-a</code>, we have <code>a+b=(k-1)+l-a</code>, i.e. <code>a=(k-1)+l-a-b</code>. Notice that <code>l-a-b</code> is the distance from the point where slow/fast pointers meet to the starting point of cycle(note: we only can go through the cycle of the linked list in one direction).</li>
+  <li>Since <code>a</code> is the distance between <code>head</code> node and the starting point of cycle, <code>a=(k-1)+l-a-b</code> means that the distance between <code>head</code> node and the starting point of cycle(<code>a</code>) <em>equals</em> to the distance from the point where slow/fast pointers meet to the starting point of cycle(<code>l-a-b</code>) plus several loops of the cycle.</li>
+  <li>Therefore, when we use two pointers to find the starting point of cycle, one pointer moves to the start point from the head of the list, while the other pointer winds aroung the cycle at the same pace. When the two pointers meet, one pointer must have moved <code>a</code> and the other moved <code>(k-1)+l-a-b</code>.</li>
+</ol>
+
+<p>Following is my C++ implmentation.</p>
+
+<pre><code>class Solution {
+public:
+	ListNode *detectCycle(ListNode *head) {
+		if(head==NULL || head-&gt;next==NULL)
+			return NULL;
+
+		ListNode* first=head;
+		ListNode* second=head;
+        while(first!=NULL &amp;&amp; second!=NULL &amp;&amp; second-&gt;next!=NULL) {
+			first=first-&gt;next;
+			second=second-&gt;next-&gt;next;
+
+			if(first==second)
+				break;
+		}
+
+		if(first==second) {
+			// Continue walking X steps
+			first = head;
+			while(first!=second)
+			{
+	            first = first-&gt;next;
+	            second = second-&gt;next;
+	        }
+	
+			return second;
+		} else {
+			return NULL;
+		}
+    }
+
+	// Create list with cycle using given vector of integers.
+	// 	lb - the beginning index(in vec) of the cycle.
+	ListNode* createList(vector&lt;int&gt;&amp; vec, int lb) {
+		head=new ListNode(vec[0]);
+		ListNode* node=head;
+		ListNode* begin=NULL;
+		for(int i=1;i&lt;vec.size();++i) {
+			node-&gt;next=new ListNode(vec[i]);
+			node=node-&gt;next;
+			if(i==lb)
+				begin=node;
+		}
+		if(lb&gt;0 &amp;&amp; lb&lt;vec.size())
+			node-&gt;next=begin;
+		else if(lb&gt;=vec.size()) // index out of upper bound, set to NULL
+			node-&gt;next=NULL;
+		else
+			node-&gt;next=head; // index out of lower bound, linked to the head
+
+		return head;
+	}
+
+	void printList(ListNode *head) {
+		ListNode* node=head;
+		while(node!=NULL) {
+			cout&lt;&lt;node-&gt;val&lt;&lt;" ";
+			node=node-&gt;next;
+		}
+		cout&lt;&lt;endl;
+	}
+
+	Solution() {head=NULL;}
+
+	~Solution() {
+		ListNode* node=head;
+		while(head!=NULL){
+			head=head-&gt;next;
+			delete node;
+			node=head;
+		}
+	}
+
+private:
+	ListNode* head;
+
+};
+</code></pre>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/07/08/sort-list">Sort List</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-08</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><a href="https://oj.leetcode.com/problems/sort-list/">The Sort List problem</a> is:</p>
+
+<blockquote>
+  <p>Sort a linked list in \( O(n log n) \) time using constant space complexity.</p>
+</blockquote>
+
+<p>The solution to this problem is modifying the array/vector based merge sort and make it work for lists. The key is finding the middle node of each list to be sorted. This can be achieved by two pointers: one points to the head of list(<code>mid</code>), and the other point to the next node of head(<code>end</code>). Then iteratively go through elements in the list - the <code>mid</code> pointer increase one position in each iteration, while the <code>end</code> pointer increased two positions. Thus when <code>end</code> pointer reached the end of the list, the <code>mid</code> pointer arrives at the middle of the list.</p>
+
+<p>Following is my C++ implementation, which contains methods of creating list, printing list, sorting list and deleting allocated memory.</p>
+
+<pre><code>struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+ 
+class Solution {
+public:
+    ListNode *sortList(ListNode *head) {
+	   //cout&lt;&lt;"sorting list: "; // TEST ONLY
+	   //printList(head); // TEST ONLY
+
+       if(head==NULL || head-&gt;next==NULL) 
+		   return head;
+
+	   // Find the middle node of the list
+	   ListNode* mid=head;
+	   ListNode* end=head-&gt;next;
+	   while(end!=NULL &amp;&amp; end-&gt;next!=NULL) {
+		   mid=mid-&gt;next;
+		   end=end-&gt;next-&gt;next;
+	   }
+
+	   ListNode* head_right=mid-&gt;next;
+	   mid-&gt;next=NULL;
+	   ListNode* head_left=sortList(head);
+	   head_right=sortList(head_right);
+	   head=mergeList(head_left,head_right);
+
+	   //cout&lt;&lt;"merged lists: "; // TEST ONLY
+	   //printList(head); // TEST ONLY
+
+	   return head;
+    }
+
+	ListNode* mergeList(ListNode *head_left, ListNode *head_right) {
+		if(head_left==NULL &amp;&amp; head_right==NULL)
+			return NULL;
+
+		// Determine the head
+		ListNode* head=NULL;
+		if(head_left==NULL || head_left-&gt;val &gt; head_right-&gt;val) {
+			head=head_right; 
+			head_right=head_right-&gt;next;
+		} else {
+			head=head_left;
+			head_left=head_left-&gt;next;
+		}
+
+		// Merge lists in ascending order
+		ListNode* node=head;
+		while(head_left!=NULL &amp;&amp; head_right!=NULL) {
+			if(head_left-&gt;val &lt; head_right-&gt;val) {
+				node-&gt;next=head_left;
+				head_left=head_left-&gt;next;
+			} else {
+				node-&gt;next=head_right;
+				head_right=head_right-&gt;next;
+			}
+			node=node-&gt;next;
+		}
+		while(head_left!=NULL) {
+			node-&gt;next=head_left;
+			node=node-&gt;next;
+			head_left=head_left-&gt;next;
+		}
+		while(head_right!=NULL) {
+			node-&gt;next=head_right;
+			node=node-&gt;next;
+			head_right=head_right-&gt;next;
+		}
+
+		return head;
+	}
+
+	// Create list using given vector of integers
+	ListNode* createList(vector&lt;int&gt;&amp; vec) {
+		head=new ListNode(vec[0]);
+		ListNode* node=head;
+		for(int i=1;i&lt;vec.size();++i) {
+			node-&gt;next=new ListNode(vec[i]);
+			node=node-&gt;next;
+		}
+
+		return head;
+	}
+
+	void printList(ListNode *head) {
+		ListNode* node=head;
+		while(node!=NULL) {
+			cout&lt;&lt;node-&gt;val&lt;&lt;" ";
+			node=node-&gt;next;
+		}
+		cout&lt;&lt;endl;
+	}
+
+	Solution() {head=NULL;}
+
+	~Solution() {
+		ListNode* node=head;
+		while(head!=NULL){
+			head=head-&gt;next;
+			delete node;
+			node=head;
+		}
+	}
+
+private:
+	ListNode* head;
+};
+</code></pre>
+
+<p>Following code can be used for testing the above solution:</p>
+
+<pre><code>int main() {
+	vector&lt;int&gt; vec={3,6,2,-1,4,7,4,11,9,20,8,-3,0};
+	Solution sol;
+	ListNode* head=sol.createList(vec);
+	cout&lt;&lt;"Before sorting:"&lt;&lt;endl;
+	sol.printList(head);
+	
+	head=sol.sortList(head);
+	cout&lt;&lt;"After sorting:"&lt;&lt;endl;
+	sol.printList(head);
+}
+</code></pre>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/07/07/subset-sum">Subset Sum Problem</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-07</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><a href="https://oj.leetcode.com/problems/3sum/">The 3Sum problem</a> is:</p>
+
+<blockquote>
+  <p>Given an array <code>S</code> of n integers, are there elements <code>a, b, c</code> in <code>S</code> such that <code>a + b + c = 0</code>? Find all unique triplets in the array which gives the sum of zero.</p>
+
+  <p>Note:</p>
+
+  <ul>
+    <li>Elements in a triplet <code>(a,b,c)</code> must be in non-descending order. (ie, <code>a ≤ b ≤ c</code>)</li>
+    <li>The solution set must not contain duplicate triplets.</li>
+  </ul>
+</blockquote>
+
+<p>Inspired by the <a href="http://en.wikipedia.org/wiki/3SUM">Wikipedia solution</a>, I implemented following solution. The first step is sorting the array <code>S</code> in ascending order, so that we can guarantee the front elements in the array are not less than the elemts at the end of the array. Then for every number in array, we can use the two variables to go through the whole array to find the triplets summed to 0. </p>
+
+<p>In order to guarantee there are no duplicate triplets, a hash table is used to record the triplets that have been found. Before inserting the newly found triplet into the solution matrix(<code>vector&lt;vector&lt;int&gt; &gt;</code>), try to look for the triplet in the hash table first. Since C++ doesn’t support <code>vector&lt;int&gt;</code> keys, I formulate string keys using the integer triplets in the following code.</p>
+
+<pre><code>class Solution {
+public:
+    vector&lt;vector&lt;int&gt; &gt; threeSum(vector&lt;int&gt; &amp;num) {
+		// Sort the vector
+		std::sort(num.begin(), num.end());
+		
+		// Find triplets
+		unordered_map&lt;string,bool&gt; map; // store found triplets
+		char* buf=new char[100];
+		for(int i=0;i&lt;num.size();++i) {
+			vector&lt;int&gt; triplet;
+			int hi=num.size()-1;
+			int lo=0;
+			while(hi&gt;i &amp;&amp; lo&lt;i) {
+				if(num[i]+num[hi]+num[lo]==0) { // found a triplet
+					sprintf(buf,"%d%d%d",num[i],num[hi],num[lo]);
+					string str(buf);
+					unordered_map&lt;string,bool&gt;::const_iterator got=map.find(str);
+					if(got==map.end()) { // a brand new triplet
+						triplet.push_back(num[lo]);
+						triplet.push_back(num[i]);
+						triplet.push_back(num[hi]);
+						map[str]=true;
+						sol.push_back(triplet);
+					}
+					triplet.clear();
+					hi--;lo++;
+				} else if(num[i]+num[hi]+num[lo]&gt;0) {
+					hi--;
+				} else { // &lt;0
+					lo++;
+				}
+			}
+		}
+		delete [] buf;
+
+		return sol;
+    }
+	
+private:
+	vector&lt;vector&lt;int&gt; &gt; sol;
+};
+</code></pre>
+
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-07</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Distributed Systems-ref" rel="nofollow">Distributed Systems</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Network-ref" rel="nofollow">Network</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The problem is:</p>
+
+<blockquote>
+  <p>Determines the top 10 most common source IP addresses, and their hit rates, for a fleet of 1000 web servers within the last hour.</p>
+
+  <p>The following assumptions may be used…</p>
+
+  <ul>
+    <li>web servers are locally writing access logs in the <a href="http://httpd.apache.org/docs/current/logs.html#combined">Apache Combined Log Format</a>.</li>
+    <li>web servers are accessible by <code>ssh</code>.</li>
+  </ul>
+</blockquote>
+
+<p>My solution is:</p>
+
+<ol>
+  <li>For each server in the fleet, copy the <code>/var/log/httpd/access_log</code> to local directory by <code>ssh</code>.</li>
+  <li>Given a access_log, for each line in the log, extract the IP address, time/time zone and status code. </li>
+  <li>For lines written in the past hour, count the occurrences of each IP address(number of requests) and numbers of sucessful operations(status code 1xx,2xx and 3xx in my implementation).</li>
+  <li>After counting logs of all servers, sort the IP addresses by their occurrences.</li>
+  <li>For the top 10 IP addresses, calculate their hit rates using equation:
+ <code>hit rate = (# of successful operations) / (# of all requests)</code></li>
+</ol>
+
+<p>Assumptions are:</p>
+
+<ol>
+  <li>The names of servers in the fleet are stored in a file, such as ‘fleet_servers’. The servers can be geographically distributed in different cities/countries.</li>
+  <li>This script will be executed in a directory that can be read &amp; written by the user. </li>
+  <li>The report of the top 10 most common IPs and hit rates will be stored in current directory.</li>
+  <li>The SSH keys to remote servers have been generated and synced, so that there is no need to manually enter the passwords. </li>
+  <li>Following Perl modules should be installed:
+    <ul>
+      <li><code>DateTime</code> - used to determine if the logs are older than 1 hour.</li>
+      <li><code>Parallel::ForkManager</code> - check multiple logs in concurrently.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Following is my Perl implementation. For more information and the source file, please refer to <a href="https://github.com/bo-yang/CommonSourceIPs">https://github.com/bo-yang/CommonSourceIPs</a>.</p>
+
+<pre><code>use strict;
+use warnings;
+use POSIX qw(strftime);
+use DateTime;
+use Parallel::ForkManager;
+use Getopt::Long;
+use FindBin qw($Bin);
+use Cwd 'abs_path';
+
+my $ldt=DateTime-&gt;now(); # Get UTC date time
+my $input='fleet_servers'; # default file to store server list
+my $output="report_".strftime("%Y%d%m_%H%M%S",localtime()); # default file t ostore report
+my $login=`whoami`;
+my $access_log='/var/log/httpd/access_log'; # the default location of the access log
+my $time_range=1; # 1 hour by default
+my $num_ips=10;	# number of the most common source IP addresses
+my $num_process=30; # Max number of processes for parallel processing
+
+GetOptions(
+	'input|i=s'  =&gt; \$input,
+	'output|o=s' =&gt; \$output,
+	'login|l=s'  =&gt; \$login,
+	'alog|a=s'   =&gt; \$access_log,
+	'trange|t=i' =&gt; \$time_range,
+	'num_ip|n=i' =&gt; \$num_ips,
+	'process|p=i'=&gt; \$num_process,
+	'help|?'	 =&gt; \&amp;ShowUsage
+   ) or ShowUsage();
+
+
+die("ERROR: no input reads specied!\n") if (!$input);
+
+# Handle signals
+my $CleanupDone   = 0;
+$SIG{'ABRT'} = 'doCleanup';
+$SIG{'HUP'}  = 'doCleanup';
+$SIG{'INT'}  = 'doCleanup';
+$SIG{'QUIT'} = 'doCleanup';
+
+open IN, "&lt;$input" or die("ERROR: cannot open file $input!");
+
+# Iteratively access each server. Assume that each line of the input file is 
+# a server name or IP address.
+my $clients={};
+my $pm = new Parallel::ForkManager($num_process);
+while (my $server = &lt;IN&gt;) {
+	$pm-&gt;start and next; # do the fork
+
+	chomp $server;
+	my $tmplog=".${server}.access_log.tmp";
+	`ssh ${login}@${server} "cat ${access_log}" &gt; $tmplog`;
+
+	open LOG, "&lt;$tmplog" or die("ERROR: cannot open file $tmplog!");
+	# Parse the access_log of this server
+	while (my $line = &lt;LOG&gt;) {
+		if($line =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/) {
+			my $ip=$1;
+			my ($rdt, $stat_code)=($line =~ m/\[(.*)\].*" (\d{3})/);
+	
+			# Calculate time differece between local and remote servers(in seconds)
+			my $time_diff=CompareTime($ldt,$rdt);
+			# Skip messages older than specified time range
+			next if($time_diff &gt; $time_range*3600);
+	
+			# Count requests and successful oprations
+			if(not $clients-&gt;{$ip}){
+				$clients-&gt;{$ip}-&gt;{'request'}=1;
+				$clients-&gt;{$ip}-&gt;{'success'}=0;
+			} else {
+				$clients-&gt;{$ip}-&gt;{'request'}++;
+			}
+			# Only status code that begins with 1, 2 or 3 will be counted
+			$clients-&gt;{$ip}-&gt;{'success'}++ if($stat_code =~ /[1-3]\d{2}/);
+		} else {
+			warn "No IP address found in ${tmplog}.";
+		}
+	}
+	close LOG;
+	unlink $tmplog; # remove temporary files
+
+	$pm-&gt;finish;
+}
+$pm-&gt;wait_all_children; # wait for forked-processes
+
+close IN;
+
+# Find the most common IP addresses and calculate their hit rates
+open OUT, "&gt;$output" or die("ERROR: cannot write file $output!");
+print OUT "IP Address \t Hit Rate \t # Req \t # Succ\n";
+print STDOUT "IP Address \t Hit Rate \t # Req \t # Succ\n";
+my $cnt=0;
+# Sort source IP addresses in descending order of requests
+foreach my $ip (sort {$clients-&gt;{$b}-&gt;{'request'} &lt;=&gt; $clients-&gt;{$a}-&gt;{'request'}} keys %{$clients}) {
+	# Calculate hit rate
+	$clients-&gt;{$ip}-&gt;{'hit rate'}=$clients-&gt;{$ip}-&gt;{'success'}/$clients-&gt;{$ip}-&gt;{'request'};
+	my $hit_rate=sprintf("%.4f",$clients-&gt;{$ip}-&gt;{'hit rate'});
+	print OUT "$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n";
+	print STDOUT "$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n";
+
+	$cnt++;
+	last if($cnt&gt;=$num_ips); # break out
+}
+
+close OUT;
+
+
+#
+# Compare two time and return the differences in seconds.
+# 
+# Inputs: 
+# 	local time(array), remote time(string)
+# Output: 
+# 	time difference(in seconds)
+#
+sub CompareTime {
+	my $ldt=$_[0]; # local time, array
+	my $remote_dt=$_[1]; # remote time, string
+	
+	my %month_map = (
+		'Jan' =&gt; 1, 'Feb' =&gt; 2, 'Mar' =&gt; 3,
+		'Apr' =&gt; 4, 'May' =&gt; 5, 'Jun' =&gt; 6,
+		'Jul' =&gt; 7, 'Aug' =&gt; 8, 'Sep' =&gt; 9,
+		'Oct' =&gt; 10,'Sep' =&gt; 11,'Dec' =&gt; 12
+	);
+
+	my ($rday,$rmonth,$ryear,$rhour,$rmin,$rsec,$rtz)=($remote_dt =~ m/(\d+)\/(\S+)\/(\d+):(\d+):(\d+):(\d+) ([+-]\d+)/);
+	my $rdt = DateTime-&gt;new(
+		year	=&gt; $ryear,
+		month	=&gt; $month_map{$rmonth},
+		day		=&gt; $rday,
+		hour	=&gt; $rhour,
+		minute	=&gt; $rmin,
+		second	=&gt; $rsec,
+		time_zone =&gt; $ldt-&gt;time_zone,
+	);
+
+	# Convert the remote time into UTC time zone.
+	my $ltz='+0000';
+	if($ltz ne $rtz) {
+		my $abs_rtz=$rtz;
+		if($abs_rtz =~ m/[+-].*/) {
+			$abs_rtz=substr $abs_rtz, 1; # remove the leading +/-
+		}
+		# The ISO 8601 offset from UTC in timezone linke +0700 (1 minute=1, 1 hour=100)
+		my $tz_diff=$abs_rtz/100*3600; # time zone diff in seconds
+		my $dur = DateTime::Duration-&gt;new(
+			years       =&gt; 0,
+	      	months      =&gt; 0,
+	      	weeks       =&gt; 0,
+	      	days        =&gt; 0,
+	      	hours       =&gt; 0,
+	      	minutes     =&gt; 0,
+	      	seconds     =&gt; $tz_diff,
+	      	nanoseconds =&gt; 0
+		);
+		# Add/subtract time zone influence
+		if($rtz =~ /\-\d+/) {
+			$rdt-&gt;add_duration($dur);
+		} else {
+			$rdt-&gt;subtract_duration($dur);
+		}
+	}
+	
+	# Calculate the absolute time differences in seconds
+	my $time_diff=$ldt-&gt;subtract_datetime_absolute($rdt);
+	return $time_diff-&gt;in_units('seconds');
+}
+
+#
+# Show usgage
+# 
+sub ShowUsage {
+	my $proc=`basename $0`;
+	chomp($proc);
+
+	print STDOUT "Usage: $proc [-i server_list] [-o report] [-l login] [-a access_log] [-t time_range] [-n ip_num] [-p process_num]\n";
+	print STDOUT "where:\n";
+	print STDOUT "  server_list\t - list of servers in the pool, optional\n";
+	print STDOUT "  report\t - report file, optional \n";
+	print STDOUT "  login\t\t - login to admin servers, optional\n";
+	print STDOUT "  access_log\t - path of Apache access_log, optional\n";
+	print STDOUT "  time_range\t - range of time to be analysed(unit: hour), optional\n";
+	print STDOUT "  ip_num\t - number of the top source IPs, optional\n";
+	print STDOUT "  process_num\t - number of concurrent processes, optional\n";
+	
+	exit;
+}
+
+#
+# Clean up before exit
+#
+sub doCleanup {
+	if($CleanupDone == 1) {
+		exit;
+	}
+
+	`rm .*.access_log.tmp`; # remove temp files
+	$CleanupDone = 1;
+	exit 0;
+} ## end sub doCleanup
+</code></pre>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-06</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The <a href="https://oj.leetcode.com/problems/longest-palindromic-substring/">Longest Palindromic Substring problem</a> is:</p>
+
+<blockquote>
+  <p>Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring. </p>
+</blockquote>
+
+<p>To solve this problem, first investigate following examples:</p>
+
+<ul>
+  <li><code>abcdefedchz</code>: the longest palindrome is <code>cdefedc</code>, the left and right parts are symmetric to letter <code>f</code>.</li>
+  <li><code>acbbcae</code>: the longest palindrome <code>acbbca</code>, which is symmetric to the (virtual) postion between <code>bb</code>.</li>
+  <li><code>a</code>: the longest palindrome is the letter <code>a</code>.</li>
+</ul>
+
+<p>Based on above investigations, we could summarize the solution as: </p>
+
+<ol>
+  <li>For every letter in the string, find the longest repetitive characters to current letter, record the <code>start</code> and <code>end</code> position;</li>
+  <li>Minus <code>start</code> position by one and see if <code>s[start]</code> is still identical to <code>s[end]</code>.</li>
+  <li>If yes, iteratively compare <code>s[start--]</code> and <code>s[end--]</code> until they are not equal.</li>
+  <li>The possible longest palindrome for current letter is <code>end-start-1</code>.</li>
+</ol>
+
+<p>Following is my C++ implementation. This algorithm could be enhanced by not checking every letters, however, the time complexity will still be \( O(N^2) \). A better method is <a href="http://en.wikipedia.org/wiki/Longest_palindromic_substring">Manacher’s Algorithm</a>, which has  \( O(N) \) time complexity.</p>
+
+<pre><code>class Solution {
+public:
+    string longestPalindrome(string s) {
+		if(s.empty())
+			return "";
+
+        int pd_start=0; // the start position of the palindrome
+		int pd_len=0; // the length of the palindrome
+		for(int i=0;i&lt;s.length();++i) {
+			int start=i;
+			int end=i;
+			while(end&lt;s.length() &amp;&amp; s[start]==s[end])
+				end++;
+
+			start--;
+			while(start&gt;=0 &amp;&amp; end&lt;s.length() &amp;&amp; s[start]==s[end]) {
+				start--;
+				end++;
+			}
+			
+			if(pd_len&lt;end-start-1) {
+				pd_len=end-start-1;
+				pd_start=start+1;	
+			}
+		}
+
+		return s.substr(pd_start,pd_len);		
+    }
+};
+</code></pre>
+
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></h2>
     <p>
@@ -619,768 +1401,6 @@ public:
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-25</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/combination-sum/">Combination Sum Problem</a>:</p>
-
-<blockquote>
-  <p>Given a set of candidate numbers \(C\) and a target number \(T\), find all unique combinations in \(C\) where the candidate numbers sums to \(T\).</p>
-
-  <p>The same repeated number may be chosen from \(C\) unlimited number of times.</p>
-
-  <p>Note:</p>
-
-  <ul>
-    <li>All numbers (including target) will be positive integers.</li>
-    <li>Elements in a combination (\(a_1, a_2, \cdots , a_k\)) must be in non-descending order. (ie, \(a_1 \leq a_2 \leq \cdots ≤ a_k\)).</li>
-    <li>The solution set must not contain duplicate combinations.</li>
-  </ul>
-
-  <p>For example, given candidate set 2,3,6,7 and target 7,</p>
-</blockquote>
-
-<blockquote>
-  <p>a solution set is:
-[7]</p>
-</blockquote>
-
-<blockquote>
-  <p>[2, 2, 3] </p>
-</blockquote>
-
-<p>The popular solution is to recursively scan all elements in the cadidate set, such as <a href="http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html">http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html</a>.</p>
-
-<p>However, I don’t want to use recursion. My solution to this problem is to build trees level by level for each number in the candidate set, where the nodes are candidate set number. The sum of the sequence from root to current node is compared to the target:</p>
-
-<ul>
-  <li>if the sum equals to the target, then we find one solution;</li>
-  <li>if the sum is less than the target, then subnodes could be added to this node; </li>
-  <li>if the sum is larger than the target, then this node is a leaf node.</li>
-</ul>
-
-<p>Only numbers equal to or larger than current node can be used as the children of current node. When there is no child could be added, this tree stops growing.</p>
-
-<p>For example, given candidate set, \({2,3,6,7}\) and target 7, the following trees could be built:</p>
-
-<p><img src="/assets/images/2014-06-25/combi_sum_trees.png" alt="Combination sum trees" /></p>
-
-<p>Based on above strategy, my C++ implementation is:</p>
-
-<pre>
-class Solution {
-public:
-	struct Node {
-		int val;
-		int sum; // sum to now
-		vector<int> path; // path to now
-		//Node* pre; // parent node
-	};
-
-    vector&lt;vector<int> &gt; combinationSum(vector<int> &amp;candidates, int target) {
-		vector&lt;vector<int> &gt; trace;
-
-       	for(auto&amp; x:candidates) {
-			if(x==target) {
-				vector<int> tr={x};
-				trace.push_back(tr);
-				continue;
-			}
-
-		   	// Build trees in level order for every candidate
-		   	vector&lt;vector<node>&gt; layers;
-			int cur=0;
-		   	int next=1;
-			vector<node> tmp;
-			layers.push_back(tmp);
-			layers.push_back(tmp);
-
-		  	Node nd={x,x,{x}};
-		   	layers[cur].push_back(nd);
-		  	while(layers[cur].size()&gt;0) {
-				for(auto&amp; y:layers[cur]) {
-					for(auto&amp; z: candidates) {
-						if(z&gt;=y.val &amp;&amp; z+y.sum&lt;=target) {
-							Node tmp_nd;
-							tmp_nd.val=z;
-							tmp_nd.sum=z+y.sum;
-							tmp_nd.path=y.path;
-							tmp_nd.path.push_back(z);
-							if(tmp_nd.sum==target) // reach the target, record the trace
-								trace.push_back(tmp_nd.path);
-							else
-								layers[next].push_back(tmp_nd);
-						}
-					} // end for z
-			   	} // end for y
-				cur=!cur;
-				next=!next;
-				layers[next].clear();
-
-				//cout&lt;&lt;endl;; // TEST ONLY
-		   	} // end while
-	   	}// end for
-
-		return trace;
-    } 
-};
-
-
-</node></node></int></int></int></int></int></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/20/coin-change">Coin Change Problem</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Java-ref" rel="nofollow">Java</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Dynamic Programming-ref" rel="nofollow">Dynamic Programming</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Given \(N\) denominations,how can a given amount of money \(V\) be made with the least number of coins? The most intuitive solution is greedy algorithm: sort the denominations, try the largest denominations lower than the value every time, and decrease the value with the denominations picked in every iteration. Repeat this process until the value reduces to 0. This greedy strategy works for the US (and most other) coin systems, However, it is not a general solution to all denomincations. For example, if the coin denominations were 1, 3 and 4, then to make 6, the greedy algorithm would choose three coins (4,1,1) whereas the optimal solution is two coins (3,3).</p>
-
-<p>Actually the <a href="http://en.wikipedia.org/wiki/Change-making_problem">change-making problem</a> is a knapsack type problem, which can be solved efficiently by Dynamic Programming. </p>
-
-<p>Given denominations \( {x_1, x_2,\cdots,x_n} \), in order to get value \(V\), there are two possibilities for a denomination \( x_i \): (1) if \( x_i \) is not picked, then value \( V \) could be made out of \( { x_1, x_2,\cdots,x_{i-1} } \). (2) if \( x_i \) is picked, then value \(V-x_i\) should be made out of \( { x_1, x_2,\cdots,x_i } \). Since our goal is to find the least number of coins, we can formulate the following recursive function:</p>
-
-<script type="math/tex; mode=display"> OPT(i,v)=0,\quad \text{if} \enspace i=0 </script>
-
-<script type="math/tex; mode=display"> OPT(i,v)=OPT(i-1,v),\quad \text{if} \enspace x_i>v </script>
-
-<script type="math/tex; mode=display"> OPT(i,v)=\min \{ OPT(i-1,v), 1+OPT(i,v-x_i) \}, \quad \text{otherwise}</script>
-
-<p>Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination \(x_i\) of the row), then the smallest coin changes should be \(v/x_i\). </p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Denom</th>
-      <th>Values</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>0 1 2 3 4 5 6 7 8 9 10 11</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>0 1 2 1 2 3 2 3 4 3 4 5</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>0 1 2 1 1 2 2 2 2 3 3 3</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>The bottom right number in above table is the smallest coin changes.</p>
-
-<pre><code>public class Coin {
-	public static int CoinChange(int value, int[] denom) {
-		int M[][]=new int[denom.length][value+1];
-
-		// Initialization
-		final int INF=9999999;
-		for(int i=0;i&lt;denom.length;++i) {
-			for(int j=0;j&lt;=value;++j) {
-				if(j%denom[i]==0)
-					M[i][j]=j/denom[i];
-				else
-					M[i][j]=INF;	
-			}
-		}
-
-		// Fill the table with smallest coin changes
-		for(int i=1;i&lt;denom.length;++i) {
-			for(int j=1;j&lt;=value;++j) {
-				if(denom[i]&gt;j)
-					M[i][j]=M[i-1][j];
-				else
-					M[i][j]=M[i-1][j]&lt;1+M[i][j-denom[i]] ? M[i-1][j] : 1+M[i][j-denom[i]];
-			}
-		}
-
-		// Print the table
-		for(int i=0;i&lt;denom.length;++i) {
-			for(int j=0;j&lt;=value;++j) {
-				System.out.print(M[i][j]+" ");
-			}
-			System.out.print("\n");
-		}
-
-		return M[denom.length-1][value];
-	}
-
-	public static void main(String[] args) {
-		int[] denom={1,3,4};
-		int value=10;
-		int num=CoinChange(value,denom);
-		System.out.println(num);
-	}
-}
-</code></pre>
-
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/18/text-justification">Text Justification</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-18</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/text-justification/">The Problem</a>:</p>
-
-<blockquote>
-  <p>Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ‘ ‘ when necessary so that each line has exactly L characters.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>For the last line of text, it should be left justified and no extra space is inserted between words.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>For example, words: [“This”, “is”, “an”, “example”, “of”, “text”, “justification.”] 
-L: 16.</p>
-</blockquote>
-
-<blockquote>
-  <p>Return the formatted lines as:</p>
-</blockquote>
-<pre>
-[
-   "This    is    an",
-   "example  of text",
-   "justification.  "
-]
-</pre>
-
-<blockquote>
-  <p>Note: Each word is guaranteed not to exceed L in length.</p>
-</blockquote>
-
-<p>This problem can be solved in two steps in general: (1) count the number of words that can be placed in current line, and then (2) allocate spaces. </p>
-
-<p>For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the \( N \) words plus the default \( N-1 \) spaces between the N words. Be careful to the last word in this line.</p>
-
-<p>For the second step, we should treat two types of lines differently. Assume there are totally \( M \) spaces should be inserted in a line. For the lines other than the last line, insert \( M/(N-1) \) spaces between two nearby words if \( M \) can be divided by \( N-1 \)(where \( N \) is the number of words in this line). If \( M \) cannot be divided by \( N-1 \), add 1 space for the first \(M \mod (N-1) \) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  </p>
-
-<p>Following is my C++ implementation of text justification:</p>
-
-<pre>
-class Solution {
-public:
-    vector<string> fullJustify(vector<string> &amp;words, int L) {
-        vector<string> ret;
-		int word_cnt=0; // count words that have been processed
-		
-		while(word_cnt &lt; static_cast<int>(words.size())) {
-			// count words that can be placed in current line
-			int char_cnt=0; // characters justified in a line
-			vector<string> vec;
-			int idx=word_cnt;
-			while(char_cnt+static_cast<int>(vec.size())-1&lt;=L &amp;&amp; idx&lt;static_cast<int>(words.size())) {
-				char_cnt+=static_cast<int>(words[idx].size());
-				vec.push_back(words[idx]);
-				idx++;
-			}
-			if(char_cnt+static_cast<int>(vec.size())-1&gt;L) {
-				char_cnt-=vec.back().size();
-				vec.pop_back(); // remove the last word because it surpasses the line limit
-			}
-			word_cnt+=vec.size();
-
-			// assign spaces for this line
-			string line;
-			int total_spaces=L-char_cnt;
-			int avg_spaces; // average spaces for 
-			int left_spaces; //spaces left
-			if(word_cnt!=static_cast<int>(words.size())) {
-				if(static_cast<int>(vec.size())&gt;1) { // This line contains more than 1 word
-					avg_spaces=total_spaces/(static_cast<int>(vec.size())-1);
-					left_spaces=total_spaces%(static_cast<int>(vec.size())-1);
-					// Formulate strings per line
-					for(int i=0;i&lt;static_cast<int>(vec.size())-1;++i) {
-						line+=vec[i];
-						for(int j=0;j&lt;avg_spaces;++j)
-							line+=" ";
-						if(left_spaces&gt;0) {
-							line+=" ";
-							left_spaces--;
-						}
-					}
-					line+=vec.back(); // put the last word to the rightmost position
-				} else { // Only one word
-					avg_spaces=0;
-					left_spaces=total_spaces;
-					line+=vec.back();
-					while(left_spaces&gt;0) {
-						line+=" "; // append spaces to the last word
-						--left_spaces;
-					}
-				}
-			} else { 
-				// The last line
-				avg_spaces=1;
-				left_spaces=total_spaces-static_cast<int>(vec.size())+1;
-				for(int i=0;i&lt;static_cast<int>(vec.size())-1;++i) {
-					line+=vec[i];
-					line+=" ";
-				}
-				line+=vec.back();
-				while(left_spaces&gt;0) {
-					line+=" "; // append spaces to the last word
-					--left_spaces;
-				}
-			}
-			ret.push_back(line);
-		}
-
-		return ret;
-    }
-};
-
-</int></int></int></int></int></int></int></int></int></int></int></string></int></string></string></string></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/17/sort-colors">Sort Colors</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/sort-colors/">Problem</a>:</p>
-
-<blockquote>
-  <p>Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.</p>
-
-  <p>Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.</p>
-</blockquote>
-
-<p>This problem is trivial when using two-pass counting sort: first pass count the numbers of each color, and then assign each element in array into corresponding regions in the array in the second pass.</p>
-
-<p>The follow up of this problem requires to design a one-pass algorithm using constant space. The strategy is go through all the elements in the array, and move red colors(0s) to the left and move blue colors to the right(2s). The green colors(1s) will finally remain in the middle part of the array.</p>
-
-<p>In order to implement above strategy, three indices can be used: one index for current element, one idex for the right-most red color, and one index for the left-most blue color. When meeting a red color, move it to the end of the red colors. When meeting a blue color, move it to the front(left-most) of the blue colors. And when meeting a green color, just increase current index.</p>
-
-<p>Following is my C++ implementation:</p>
-
-<pre><code>class Solution {
-public:
-    void sortColors(int A[], int n) {
-		int idx=0,ridx=0,bidx=n-1; // ridx - index for red color, bidx - index for blue color
-        while(idx&lt;=bidx) {
-			switch(A[idx]) {
-				case 0: { // Red color, move it to left
-					while(A[ridx]==0 &amp;&amp; ridx&lt;n)
-						++ridx;
-					if(idx&gt;ridx){
-						swap(A[idx],A[ridx]);
-						++ridx;
-					} else {
-						idx=ridx;
-					}
-					break;
-				}
-				case 1: { // Green color, skip it
-					++idx;					
-					break;
-				}
-				case 2: { // Blue color, move it to right
-					while(A[bidx]==2 &amp;&amp; bidx&gt;idx)
-						--bidx;
-					swap(A[idx],A[bidx]);
-					--bidx;
-					break;
-				}
-				default:
-					cout&lt;&lt;"Error: invalid color detected"&lt;&lt;endl;
-			}
-		} // end while
-    }
-};
-</code></pre>
-
-<p>And the following code can be used for test:</p>
-
-<pre><code>#include &lt;iostream&gt;
-#include &lt;utility&gt;
-#include &lt;cstdlib&gt;
-using namespace std;
-
-int main() {
-	/* initialize random seed: */
-	srand (time(NULL));
-	
-	const int N=10;
-	Solution sol;
-	int* A=new int[N];
-	cout&lt;&lt;"Before sorting:"&lt;&lt;endl;
-	for(int i=0;i&lt;N;++i) {
-		A[i]=rand()%3;
-		cout&lt;&lt;A[i]&lt;&lt;" ";
-	}
-	cout&lt;&lt;endl;
-
-	sol.sortColors(A,N);
-	
-	cout&lt;&lt;"After sorting:"&lt;&lt;endl;
-	for(int i=0;i&lt;N;++i)
-		cout&lt;&lt;A[i]&lt;&lt;" ";
-	cout&lt;&lt;endl;
-
-
-	delete [] A;
-}
-</code></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/14/soduku">Check Soduku Solution</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-14</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The objective of Soduku game is to fill a \(9 \times 9\) grid with digits so that each column, each row, and each of the nine \(3 \times 3\) sub-grids that compose the grid (also called “boxes”, “blocks”, “regions”, or “sub-squares”) contains all of the digits from 1 to 9. A solved Soduku game is like:</p>
-
-<p><img src="/assets/images/sudoku_solution.png" alt="Solved_Suduku" /></p>
-
-<p>To check if a \(9 \times 9\) grid is a valid solution, we need to check every row, every column and \(3 \times 3\) subgrids. It is not hard to check rows and columns, but checking subgrids is little tricky. When considering going through the grid only one time, it will be much harder.</p>
-
-<p>My solution is define a 9-item-long vector to count the occurrences of each element in a row, a 9-item-long vector to count the occurrences of each element in a column, and a \(3 \times 9\) matrix to count the occurrences of elements in the 3 nearby subgrids. The value of each element in grid can be used as the indices of the counting vectors, because they are supposed to be in the range of 0~9. If found one occurrence greater than one in the vectors, then return false.</p>
-
-<pre><code>bool isSoduku(vector&lt;vector&lt;int&gt;&gt; grid) {
-	const int dim=3;
-	vector&lt;vector&lt;int&gt;&gt; subGridCnt(grid[0].size()/dim,vector&lt;int&gt;(dim*dim+1,0)); // count the occurrences of elements in 3 nearby 3x3 subgrids.
-	// check row,column, subgrids
-	for(int i=0;i&lt;grid.size();++i) {
-		if(i%3==0) { // reset subGridCnt
-			subGridCnt.clear();
-			for(int cnt=0;cnt&lt;grid[0].size()/dim;++cnt)
-				subGridCnt.push_back(vector&lt;int&gt;(dim*dim+1,0));
-		}
-		vector&lt;int&gt; rowCnt(grid[0].size()+1,0); // count the occurrences of elements in one row.
-		vector&lt;int&gt; colCnt(grid.size()+1,0); // count the occurrences of elements in one column.
-		for(int j=0;j&lt;grid[i].size();++j) {
-			rowCnt[grid[i][j]]++;
-			colCnt[grid[j][i]]++;
-			subGridCnt[j/3][grid[i][j]]++;
-			if(rowCnt[grid[i][j]]&gt;1) {
-				cout&lt;&lt;"Error: "&lt;&lt;rowCnt[grid[i][j]]&lt;&lt;" "&lt;&lt;grid[i][j]&lt;&lt;"s found in row "&lt;&lt;i+1&lt;&lt;"."&lt;&lt;endl;
-				return false;
-			}
-			if(colCnt[grid[j][i]]&gt;1) {
-				cout&lt;&lt;"Error: "&lt;&lt;colCnt[grid[j][i]]&lt;&lt;" "&lt;&lt;grid[j][i]&lt;&lt;"s found in column "&lt;&lt;i+1&lt;&lt;"."&lt;&lt;endl;
-				return false;
-			}
-			if(subGridCnt[j/3][grid[i][j]]&gt;1) {
-				cout&lt;&lt;"Error: duplicate elements found in subgrid &lt;"&lt;&lt;i/3+1&lt;&lt;","&lt;&lt;j/3+1&lt;&lt;"&gt;: "&lt;&lt;grid[i][j]&lt;&lt;"."&lt;&lt;endl;
-				return false;
-			}
-		}
-	}
-	
-	return true;
-}
-</code></pre>
-
-<p>To test above funciton, following code segment can be used:</p>
-
-<pre><code>int main() {
-	vector&lt;vector&lt;int&gt;&gt; grid={ 
-		{6,5,7,2,9,1,8,4,3},
-		{8,9,4,6,7,3,2,1,5},
-		{1,2,3,5,8,4,7,9,6},
-		{5,6,8,3,4,7,1,8,2},
-		{7,3,1,9,2,8,5,6,4},
-		{4,8,2,1,6,5,3,7,9},
-		{2,7,6,8,3,9,4,5,1},
-		{3,4,5,7,1,6,9,2,8},
-		{9,1,8,4,5,2,6,3,7} 
-	};
-
-	for(int i=0;i&lt;grid.size();++i) {
-		for(int j=0;j&lt;grid[i].size();++j) {
-			cout&lt;&lt;grid[i][j]&lt;&lt;" ";
-		}
-		cout&lt;&lt;endl;
-	}
-	
-	if(isSoduku(grid))
-		cout&lt;&lt;"A valid solution!"&lt;&lt;endl;
-	else
-		cout&lt;&lt;"Not a solution!"&lt;&lt;endl;
-}
-</code></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-12</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>According to <a href="https://oj.leetcode.com/problems/lru-cache/">LeetCode</a>:</p>
-
-<blockquote>
-  <p>Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: <code>get</code> and <code>set</code>.</p>
-</blockquote>
-
-<blockquote>
-  <p><code>get(key)</code> - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.</p>
-</blockquote>
-
-<blockquote>
-  <p><code>set(key, value)</code> - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.</p>
-</blockquote>
-
-<p>When dealing with (key, vlaue) pairs, the most straight-forward data structure is hashmap(map or unordered_map in C++). However, at least for C++, it is difficult to control the insertion of new items: (1) the position you can specify is just a hint and does not force the new element to be inserted at that position within the map/unordered_map container, and (2) there is no <code>push_back</code> or <code>push_front</code> methods provided for map/unordered_map. </p>
-
-<p>So if you implement the LRU cache only using hashmap, you may find that the order of inserted/deleted items is a mess. If you at first insert 10 items(keys 0~9) into the LRU cache of size 10, then enter another 10 items(keys 10~19), you will find that old items are not replaced in order.</p>
-
-<pre>
-Initial LRU cache:
-Key  Value
-9: 54
-8: 71
-7: 49
-6: 12
-5: 42
-4: 10
-3: 37
-2: 12
-1: 35
-0: 83
-
-Erase pair &lt;9,54&gt;
-Erase pair &lt;10,2&gt;
-Erase pair &lt;8,71&gt;
-Erase pair &lt;7,49&gt;
-Erase pair &lt;6,12&gt;
-Erase pair &lt;5,42&gt;
-Erase pair &lt;15,87&gt;
-Erase pair &lt;16,35&gt;
-Erase pair &lt;17,72&gt;
-Erase pair &lt;18,36&gt;
-
-Updated LRU cache:
-Key  Value
-19: 61
-4: 10
-14: 20
-3: 37
-13: 72
-2: 12
-12: 4
-1: 35
-11: 53
-0: 83
-</pre>
-
-<p>To fix the order issue, there are three candidates: <code>vector</code>, <code>list</code>, <code>queue</code>. Since queue doesn’t support deleting an item at arbitrary position and deleting an item requires O(n) time cost for vector, the best choice is list. List is flexible enough to support inserting items into any position and erazing an arbitrary item in constant time. </p>
-
-<p>However, the potential issue for list is that searching for an item requires O(n) time. To find an item in list in constant time, the best way is constructing a hashmap to record the key and its corresponding address in list. In C++, the builtin(actually, from C++ STL) hashmap data structure is <code>unordered_map</code>.</p>
-
-<p>In order to update the values in the cache according to keys, <code>list</code> also needs to record both keys and values. There are two data structures can be used: <code>pair&lt;int, int&gt;</code> or <code>struct{int key;int val;}</code>. There is a saying, when dealing with large data, the STL <code>pair</code> struct will be much slower than the self-defined <code>struct</code>, because <a href="http://stackoverflow.com/questions/1606894/stdpairint-int-vs-struct-with-two-ints">std::pair&lt;int, int&gt;::pair() constructor initializes the fields with default values and initializing requires writing to each field which requires a whole lot of memory accesses that are relatively time consuming</a>. But my tests showed that <strong>the <code>pair</code> implementation always performs better</strong>.</p>
-
-<p>I implemented LRU cache using both <code>pair&lt;int, int&gt;</code> and <code>struct{int key;int val;}</code>, and I also tested the time cost on my Mac. When setting the LRU capacity to 100, with the same test code, the <code>pair&lt;int, int&gt;</code> implementation is faster.</p>
-
-<pre>
-macmini:LRU boyang$ time ./lru_pair
-real	0m0.010s
-user	0m0.007s
-sys	0m0.003s
-
-macmini:LRU boyang$ time ./lru_struct
-real	0m0.020s
-user	0m0.016s
-sys	0m0.003s
-</pre>
-
-<p>When setting the LRU capacity to 10000:</p>
-
-<pre>
-macmini:LRU boyang$ time ./lru_pair
-real	0m0.575s
-user	0m0.547s
-sys	0m0.003s
-macmini:LRU boyang$ time ./lru_struct
-real	0m0.584s
-user	0m0.580s
-sys	0m0.003s
-</pre>
-
-<p>When setting the LRU capacity to 100000:</p>
-<pre>
-macmini:LRU boyang$ time ./lru_pair
-real	1m23.615s
-user	1m23.509s
-sys	0m0.079s
-macmini:LRU boyang$ time ./lru_struct 
-real	2m1.782s
-user	2m1.552s
-sys	0m0.167s
-</pre>
-
-<p>Following are my implementations of LRU cache. There is one tricky thing of implementing <code>set(key,value)</code>: if you check if the cache size surpasses the capacity for every input and move the <code>while</code> clause out of the <code>if</code> block, then your code won’t pass the LeetCode tests, and you will receive an error of exceeding time limit. I think the cache size checking should be trivial, but I still cannot really understand why it matters so much in large data tests.</p>
-
-<p><code>struct</code> implementation:</p>
-
-<pre><code>class LRUCache{
-public:
-	struct Node {
-		int key;
-		int val;
-		Node(int k, int v):key(k),val(v) {}
-	};
-
-	LRUCache(int capacity) {
-        cap=capacity;
-    }
-
-    int get(int key) {
-		unordered_map&lt;int,list&lt;Node&gt;::iterator&gt;::iterator got=hash.find(key);
-		if(got!=hash.end()) {
-			// update key&amp;value
-			Node ptr=*(got-&gt;second);
-			cache.erase(got-&gt;second);
-			cache.push_front(ptr);
-			hash[key]=cache.begin();
-
-			return ptr.val;
-		} else {
-			return -1;
-		}
-    }
-    
-    void set(int key, int value) {
-		Node ptr(key, value);
-		unordered_map&lt;int,list&lt;Node&gt;::iterator&gt;::iterator got=hash.find(key);
-		if(got!=hash.end()) {
-			cache.erase(got-&gt;second); // erase so as to update key&amp;value
-			hash.erase(key);
-		} else {
-			// Assume that least recently used items are stored at the end of the cache
-	        while(cache.size()&gt;=cap) {
-				Node it=cache.back();
-				//cout&lt;&lt;"Erase pair &lt;"&lt;&lt;key&lt;&lt;","&lt;&lt;it.val&lt;&lt;"&gt;"&lt;&lt;endl; // TEST ONLY
-				hash.erase(it.key);
-				cache.pop_back();
-			}
-		}
-
-		cache.push_front(ptr);
-		hash[key]=cache.begin();
-
-    }
-
-	void print() {
-		cout&lt;&lt;"Key  Value"&lt;&lt;endl;
-		for(auto&amp; x: cache)
-			cout&lt;&lt;x.key&lt;&lt;": "&lt;&lt;x.val&lt;&lt;endl;
-	}
-
-private:
-	list&lt;Node&gt; cache; // &lt;value&gt;
-	unordered_map&lt;int,list&lt;Node&gt;::iterator&gt; hash; // &lt;key, iterator&gt;
-	int cap;
-};
-</code></pre>
-
-<p><code>pair</code> implementation:</p>
-
-<pre><code>class LRUCache{
-public:
-    LRUCache(int capacity) {
-        cap=capacity;
-    }
-    
-    int get(int key) {
-		unordered_map&lt;int,list&lt;pair&lt;int,int&gt;&gt;::iterator&gt;::iterator got=hash.find(key);
-		if(got!=hash.end()) {
-			// update key&amp;value
-			int val=got-&gt;second-&gt;second;
-			cache.erase(got-&gt;second);
-			cache.push_front(pair&lt;int,int&gt;(key,val));
-			hash[key]=cache.begin();
-
-			return val;
-		} else {
-			return -1;
-		}
-    }
-    
-    void set(int key, int value) {
-		// Assume that least recently used items are stored at the end of the cache
-		unordered_map&lt;int,list&lt;pair&lt;int,int&gt;&gt;::iterator&gt;::iterator got=hash.find(key);
-		if(got!=hash.end()) {
-			cache.erase(got-&gt;second); // erase so as to update key&amp;value
-			hash.erase(key);
-		} else {
-			while(cache.size()&gt;=cap) { // for big data, must run here
-				pair&lt;int,int&gt; it=cache.back();
-				//cout&lt;&lt;"Erase pair &lt;"&lt;&lt;it.first&lt;&lt;","&lt;&lt;it.second&lt;&lt;"&gt;"&lt;&lt;endl; // TEST ONLY
-				hash.erase(it.first);
-				cache.pop_back();
-			}
-		}
-
-		cache.push_front(pair&lt;int,int&gt;(key,value));
-		hash[key]=cache.begin();
-
-    }
-
-	void print() {
-		cout&lt;&lt;"Key  Value"&lt;&lt;endl;
-		for(auto&amp; x: cache)
-			cout&lt;&lt;x.first&lt;&lt;": "&lt;&lt;x.second&lt;&lt;endl;
-	}
-
-private:
-	list&lt;pair&lt;int,int&gt; &gt; cache; // &lt;key, value&gt;
-	unordered_map&lt;int,list&lt;pair&lt;int,int&gt;&gt;::iterator&gt; hash; // &lt;key, iterator&gt;
-	int cap;
-};
-</code></pre>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1417,7 +1437,7 @@ private:
     
         <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">18</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">23</span></a>
     
         <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
     
@@ -1451,7 +1471,7 @@ private:
     
         <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
     
-        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">14</span></a>
+        <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">15</span></a>
     
         <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
     
@@ -1475,7 +1495,7 @@ private:
     
         <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">17</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">23</span></a>
     
         <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
     
@@ -1549,6 +1569,10 @@ private:
     
         <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
     
+        <a href="/tags.html#Architecture-ref" class="btn btn-mini">Architecture <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Cache-ref" class="btn btn-mini">Cache <span class="badge">1</span></a>
+    
         <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
     
         <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
@@ -1557,16 +1581,40 @@ private:
     
         <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
     
+        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">1</span></a>
+    
+        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">1</span></a>
+    
   
 
 
 
+			</div>
+		</div>
+		<!-- /well -->
+        <div class="well">
+			<h4>Visitors</h4>
+			<div class="tag_box">
+				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4nm24yds2ph&amp;s=300&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
+	
 			</div>
         </div>
         <!-- /well -->
         <div class="well">
             <h3>Recent Posts</h3>
 	        <ul>
+			
+  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
+			
+  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
+			
+  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
+			
+  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
+			
+  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
@@ -1575,18 +1623,6 @@ private:
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
   			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
-			
-  			<li><span>2014-06-25</span> &raquo; <a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></li>
-			
-  			<li><span>2014-06-20</span> &raquo; <a href="/2014/06/20/coin-change">Coin Change Problem</a></li>
-			
-  			<li><span>2014-06-18</span> &raquo; <a href="/2014/06/18/text-justification">Text Justification</a></li>
-			
-  			<li><span>2014-06-17</span> &raquo; <a href="/2014/06/17/sort-colors">Sort Colors</a></li>
-			
-  			<li><span>2014-06-14</span> &raquo; <a href="/2014/06/14/soduku">Check Soduku Solution</a></li>
-			
-  			<li><span>2014-06-12</span> &raquo; <a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></li>
 			
 			</ul>
         </div>

@@ -1,0 +1,474 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Top Source IP Addresses in Distributed Systems | Bo's Blog</title>
+  
+  <meta name="author" content="Bo Yang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <!--
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  -->
+
+  <!-- Bootstrap -->
+  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+
+  <!-- font-awesome -->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+
+  <!-- Google Prettify -->
+  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/style/blog.css" rel="stylesheet">
+  
+  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+   <!-- navigation bar -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">bo-yang</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/archive.html">Archive</a>
+                    </li>
+                    <li><a href="/about.html">About</a>
+                    </li>
+                    <li><a href="/messages.html">Messages</a>
+                    </li>
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+		          <li>
+		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+		              <input type="hidden" name="ie" value="UTF-8" />
+		              <input type="hidden" name="oe" value="UTF-8" />
+		              <input type="hidden" name="hl" value="en-US" />
+		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
+		            </form>
+		          </li>
+		        </ul>
+            </div>
+			<!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+  <div class="container">
+    <div class="row" id="content-row">
+      
+<div class="page-header">
+	<h1>Find Top Source IP Addresses in Distributed Systems</h1>
+	<p>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2014-07-07 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Distributed Systems-ref" rel="nofollow">Distributed Systems</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Network-ref" rel="nofollow">Network</a>
+	</p>
+</div>
+
+<div class="col-lg-10">
+	<div class="post paper">
+		<p>The problem is:</p>
+
+<blockquote>
+  <p>Determines the top 10 most common source IP addresses, and their hit rates, for a fleet of 1000 web servers within the last hour.</p>
+
+  <p>The following assumptions may be used…</p>
+
+  <ul>
+    <li>web servers are locally writing access logs in the <a href="http://httpd.apache.org/docs/current/logs.html#combined">Apache Combined Log Format</a>.</li>
+    <li>web servers are accessible by <code>ssh</code>.</li>
+  </ul>
+</blockquote>
+
+<p>My solution is:</p>
+
+<ol>
+  <li>For each server in the fleet, copy the <code>/var/log/httpd/access_log</code> to local directory by <code>ssh</code>.</li>
+  <li>Given a access_log, for each line in the log, extract the IP address, time/time zone and status code. </li>
+  <li>For lines written in the past hour, count the occurrences of each IP address(number of requests) and numbers of sucessful operations(status code 1xx,2xx and 3xx in my implementation).</li>
+  <li>After counting logs of all servers, sort the IP addresses by their occurrences.</li>
+  <li>For the top 10 IP addresses, calculate their hit rates using equation:
+ <code>hit rate = (# of successful operations) / (# of all requests)</code></li>
+</ol>
+
+<p>Assumptions are:</p>
+
+<ol>
+  <li>The names of servers in the fleet are stored in a file, such as ‘fleet_servers’. The servers can be geographically distributed in different cities/countries.</li>
+  <li>This script will be executed in a directory that can be read &amp; written by the user. </li>
+  <li>The report of the top 10 most common IPs and hit rates will be stored in current directory.</li>
+  <li>The SSH keys to remote servers have been generated and synced, so that there is no need to manually enter the passwords. </li>
+  <li>Following Perl modules should be installed:
+    <ul>
+      <li><code>DateTime</code> - used to determine if the logs are older than 1 hour.</li>
+      <li><code>Parallel::ForkManager</code> - check multiple logs in concurrently.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Following is my Perl implementation. For more information and the source file, please refer to <a href="https://github.com/bo-yang/CommonSourceIPs">https://github.com/bo-yang/CommonSourceIPs</a>.</p>
+
+<pre><code>use strict;
+use warnings;
+use POSIX qw(strftime);
+use DateTime;
+use Parallel::ForkManager;
+use Getopt::Long;
+use FindBin qw($Bin);
+use Cwd 'abs_path';
+
+my $ldt=DateTime-&gt;now(); # Get UTC date time
+my $input='fleet_servers'; # default file to store server list
+my $output="report_".strftime("%Y%d%m_%H%M%S",localtime()); # default file t ostore report
+my $login=`whoami`;
+my $access_log='/var/log/httpd/access_log'; # the default location of the access log
+my $time_range=1; # 1 hour by default
+my $num_ips=10;	# number of the most common source IP addresses
+my $num_process=30; # Max number of processes for parallel processing
+
+GetOptions(
+	'input|i=s'  =&gt; \$input,
+	'output|o=s' =&gt; \$output,
+	'login|l=s'  =&gt; \$login,
+	'alog|a=s'   =&gt; \$access_log,
+	'trange|t=i' =&gt; \$time_range,
+	'num_ip|n=i' =&gt; \$num_ips,
+	'process|p=i'=&gt; \$num_process,
+	'help|?'	 =&gt; \&amp;ShowUsage
+   ) or ShowUsage();
+
+
+die("ERROR: no input reads specied!\n") if (!$input);
+
+# Handle signals
+my $CleanupDone   = 0;
+$SIG{'ABRT'} = 'doCleanup';
+$SIG{'HUP'}  = 'doCleanup';
+$SIG{'INT'}  = 'doCleanup';
+$SIG{'QUIT'} = 'doCleanup';
+
+open IN, "&lt;$input" or die("ERROR: cannot open file $input!");
+
+# Iteratively access each server. Assume that each line of the input file is 
+# a server name or IP address.
+my $clients={};
+my $pm = new Parallel::ForkManager($num_process);
+while (my $server = &lt;IN&gt;) {
+	$pm-&gt;start and next; # do the fork
+
+	chomp $server;
+	my $tmplog=".${server}.access_log.tmp";
+	`ssh ${login}@${server} "cat ${access_log}" &gt; $tmplog`;
+
+	open LOG, "&lt;$tmplog" or die("ERROR: cannot open file $tmplog!");
+	# Parse the access_log of this server
+	while (my $line = &lt;LOG&gt;) {
+		if($line =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/) {
+			my $ip=$1;
+			my ($rdt, $stat_code)=($line =~ m/\[(.*)\].*" (\d{3})/);
+	
+			# Calculate time differece between local and remote servers(in seconds)
+			my $time_diff=CompareTime($ldt,$rdt);
+			# Skip messages older than specified time range
+			next if($time_diff &gt; $time_range*3600);
+	
+			# Count requests and successful oprations
+			if(not $clients-&gt;{$ip}){
+				$clients-&gt;{$ip}-&gt;{'request'}=1;
+				$clients-&gt;{$ip}-&gt;{'success'}=0;
+			} else {
+				$clients-&gt;{$ip}-&gt;{'request'}++;
+			}
+			# Only status code that begins with 1, 2 or 3 will be counted
+			$clients-&gt;{$ip}-&gt;{'success'}++ if($stat_code =~ /[1-3]\d{2}/);
+		} else {
+			warn "No IP address found in ${tmplog}.";
+		}
+	}
+	close LOG;
+	unlink $tmplog; # remove temporary files
+
+	$pm-&gt;finish;
+}
+$pm-&gt;wait_all_children; # wait for forked-processes
+
+close IN;
+
+# Find the most common IP addresses and calculate their hit rates
+open OUT, "&gt;$output" or die("ERROR: cannot write file $output!");
+print OUT "IP Address \t Hit Rate \t # Req \t # Succ\n";
+print STDOUT "IP Address \t Hit Rate \t # Req \t # Succ\n";
+my $cnt=0;
+# Sort source IP addresses in descending order of requests
+foreach my $ip (sort {$clients-&gt;{$b}-&gt;{'request'} &lt;=&gt; $clients-&gt;{$a}-&gt;{'request'}} keys %{$clients}) {
+	# Calculate hit rate
+	$clients-&gt;{$ip}-&gt;{'hit rate'}=$clients-&gt;{$ip}-&gt;{'success'}/$clients-&gt;{$ip}-&gt;{'request'};
+	my $hit_rate=sprintf("%.4f",$clients-&gt;{$ip}-&gt;{'hit rate'});
+	print OUT "$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n";
+	print STDOUT "$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n";
+
+	$cnt++;
+	last if($cnt&gt;=$num_ips); # break out
+}
+
+close OUT;
+
+
+#
+# Compare two time and return the differences in seconds.
+# 
+# Inputs: 
+# 	local time(array), remote time(string)
+# Output: 
+# 	time difference(in seconds)
+#
+sub CompareTime {
+	my $ldt=$_[0]; # local time, array
+	my $remote_dt=$_[1]; # remote time, string
+	
+	my %month_map = (
+		'Jan' =&gt; 1, 'Feb' =&gt; 2, 'Mar' =&gt; 3,
+		'Apr' =&gt; 4, 'May' =&gt; 5, 'Jun' =&gt; 6,
+		'Jul' =&gt; 7, 'Aug' =&gt; 8, 'Sep' =&gt; 9,
+		'Oct' =&gt; 10,'Sep' =&gt; 11,'Dec' =&gt; 12
+	);
+
+	my ($rday,$rmonth,$ryear,$rhour,$rmin,$rsec,$rtz)=($remote_dt =~ m/(\d+)\/(\S+)\/(\d+):(\d+):(\d+):(\d+) ([+-]\d+)/);
+	my $rdt = DateTime-&gt;new(
+		year	=&gt; $ryear,
+		month	=&gt; $month_map{$rmonth},
+		day		=&gt; $rday,
+		hour	=&gt; $rhour,
+		minute	=&gt; $rmin,
+		second	=&gt; $rsec,
+		time_zone =&gt; $ldt-&gt;time_zone,
+	);
+
+	# Convert the remote time into UTC time zone.
+	my $ltz='+0000';
+	if($ltz ne $rtz) {
+		my $abs_rtz=$rtz;
+		if($abs_rtz =~ m/[+-].*/) {
+			$abs_rtz=substr $abs_rtz, 1; # remove the leading +/-
+		}
+		# The ISO 8601 offset from UTC in timezone linke +0700 (1 minute=1, 1 hour=100)
+		my $tz_diff=$abs_rtz/100*3600; # time zone diff in seconds
+		my $dur = DateTime::Duration-&gt;new(
+			years       =&gt; 0,
+	      	months      =&gt; 0,
+	      	weeks       =&gt; 0,
+	      	days        =&gt; 0,
+	      	hours       =&gt; 0,
+	      	minutes     =&gt; 0,
+	      	seconds     =&gt; $tz_diff,
+	      	nanoseconds =&gt; 0
+		);
+		# Add/subtract time zone influence
+		if($rtz =~ /\-\d+/) {
+			$rdt-&gt;add_duration($dur);
+		} else {
+			$rdt-&gt;subtract_duration($dur);
+		}
+	}
+	
+	# Calculate the absolute time differences in seconds
+	my $time_diff=$ldt-&gt;subtract_datetime_absolute($rdt);
+	return $time_diff-&gt;in_units('seconds');
+}
+
+#
+# Show usgage
+# 
+sub ShowUsage {
+	my $proc=`basename $0`;
+	chomp($proc);
+
+	print STDOUT "Usage: $proc [-i server_list] [-o report] [-l login] [-a access_log] [-t time_range] [-n ip_num] [-p process_num]\n";
+	print STDOUT "where:\n";
+	print STDOUT "  server_list\t - list of servers in the pool, optional\n";
+	print STDOUT "  report\t - report file, optional \n";
+	print STDOUT "  login\t\t - login to admin servers, optional\n";
+	print STDOUT "  access_log\t - path of Apache access_log, optional\n";
+	print STDOUT "  time_range\t - range of time to be analysed(unit: hour), optional\n";
+	print STDOUT "  ip_num\t - number of the top source IPs, optional\n";
+	print STDOUT "  process_num\t - number of concurrent processes, optional\n";
+	
+	exit;
+}
+
+#
+# Clean up before exit
+#
+sub doCleanup {
+	if($CleanupDone == 1) {
+		exit;
+	}
+
+	`rm .*.access_log.tmp`; # remove temp files
+	$CleanupDone = 1;
+	exit 0;
+} ## end sub doCleanup
+</code></pre>
+
+	</div>
+
+	<div align="right">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+	</div>
+
+	<!-- page link -->
+    <div class="pager">
+      <ul>
+      
+        <li class="previous"><a href="/2014/07/06/longest-palindromic-substring" title="Longest Palindromic Substring">&larr; Previous</a></li>
+      
+
+      
+        <li class="next"><a href="/2014/07/07/subset-sum" title="Subset Sum Problem">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+
+	<!--
+	<div class="well">
+		<script>
+var linkwithin_site_id = 2140443;
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+	</div>
+	-->
+    <div class="well">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2014/07/07/determine-top-common-ip-addresses';
+    var disqus_url = 'http://bo-yang.github.com//2014/07/07/determine-top-common-ip-addresses';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> Bo Yang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+	    </script>
+      </footer>
+  </div>
+
+  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
+  <script src="/assets/run_prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 400);
+        if (count > 400) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow" class="btn btn-primary" role="button">' + 'Read More &raquo;</a>');
+        }
+      });
+    });
+  </script>
+
+  
+
+</body>
+</html>
+
