@@ -13,13 +13,23 @@ published: true
 author: Bo Yang
 ---
 
+#### Contents
+
+1. [Naive Method](#naive_method)
+2. [Divide-and-Conquer Algorithm](#divide_conquer)
+3. [Non-Recursive Method](#heap)
+
 The [Merge `k` Sorted Lists](https://oj.leetcode.com/problems/merge-k-sorted-lists/) is:
 
 > Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
 
 In this problem, the sorted lists are stored in a vector, i.e. `vector<ListNode*>`. Assume the longest list contains `n` elements.
 
+### <a name="naive_method">Naive Method</a>
+
 The naive method of merging `k` sorted lists is: iteratively compare the head elements of the `k` lists, find the smallest node, append this node to the merged list and forward that list by one step. Then repeat above step until all lists reach the end. Obviously, since in every iteration `k` comparisons are needed, and the longest list has `n` elements, therefore, the time complexity is \\( O(k^{nk}) \\) - the worst case is all lists have `n` elements, so for the total `nk` elements, totally \\( k^{nk} \\) comparisons are needed to merge them into one list.
+
+### <a name="divide_conquer">Divide-and-Conquer Algorithm</a>
 
 Other than exponential time complexity, a much better method is to use divide-and-conquer. Since merging two sorted lists is easy, we can recursively divide the `k` lists into two parts until there are no more than two lists. Then we can use a merge method similiar to the merge sort to merge the two lists together.
 
@@ -90,6 +100,8 @@ public:
 	}
 };
 
+### <a name="heap">Non-Recursive Method</a>
+
 In addition to the recursive divide-conquer method, there is also a non-recursive method. We can use a maximum `k`-element heap(in C++, `priority_queue`) to merge the `k` lists. The strategy is:
 
 1. Create a heap to store `ListNode*`, which should sort list nodes in the ascending order or node values.
@@ -141,3 +153,8 @@ public:
     }
 };
 
+### References:
+
+1. [Merge k Sorted Lists -- LeetCode](http://blog.csdn.net/linhuanmars/article/details/19899259)
+2. [std::priority_queue](http://www.cplusplus.com/reference/queue/priority_queue/)
+3. [std::greater](http://www.cplusplus.com/reference/functional/greater/)
