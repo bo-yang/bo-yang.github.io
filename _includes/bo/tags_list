@@ -1,14 +1,17 @@
 {% if site.JB.tags_list.provider == "custom" %}
   {% include custom/tags_list %}
 {% else %}
+  <ul class="nav nav-pills nav-stacked">
   {% if tags_list.first[0] == null %}
     {% for tag in tags_list %}
-        <a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag }}-ref" class="btn btn-mini">{{ tag }} <span class="badge">{{ site.tags[tag].size }}</span></a>
+        <li class="active"><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag }}">{{ tag }} <span class="badge pull-right">{{ site.tags[tag].size }}</span></a></li>
     {% endfor %}
   {% else %}
     {% for tag in tags_list %}
-        <a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref" class="btn btn-mini">{{ tag[0] }} <span class="badge">{{ tag[1].size }}</span></a>
+        <li class="active"><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}">{{ tag[0] }} <span class="badge pull-right">{{ tag[1].size }}</span></a></li>
     {% endfor %}
   {% endif %}
+  </ul>
 {% endif %}
+
 {% assign tags_list = nil %}

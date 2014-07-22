@@ -58,17 +58,20 @@ links:
         <!-- /well -->
         <div class="well">
 			<h4>Tags</h4>
-			<div class="tag_box">
-		    	{% assign tags_list = site.tags %}
+				<div class="tag_box">
+					<!--{% assign tags_list = site.tags %}-->
+				{% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
+				<!-- site_tags: {{ site_tags }} -->
+				{% assign tags_list = site_tags | split:',' | sort %}
+				<!-- tag_words: {{ tag_words }} -->
+
 				{% include bo/tags_list %}
-			</div>
+				</div>
 		</div>
 		<!-- /well -->
         <div class="well">
 			<h4>Visitors</h4>
-			<div class="tag_box">
 				{% include bo/revolvermaps %}	
-			</div>
         </div>
 		<!-- /well -->
 		<!--

@@ -7,7 +7,10 @@ group: no-navigation
 {% include JB/setup %}
 
 <ul class="tag_box">
-  {% assign tags_list = site.tags %}  
+	<!--{% assign tags_list = site.tags %}-->
+  {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
+	<!-- site_tags: {{ site_tags }} -->
+  {% assign tags_list = site_tags | split:',' | sort %}
   {% include bo/tags_list %}
 </ul>
 
