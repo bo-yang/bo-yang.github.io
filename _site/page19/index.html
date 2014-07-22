@@ -84,13 +84,33 @@
 
 <div class="container">
     <div class="row" id="content-row">
-		<div class="col-md-8">
+		<div class="col-md-9">
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2008/09/15/firefox-problem">Fedora 9中Firefox启动后进入www.s.com的解决方法</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-09-15</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>
+    几个月来，自从手动装上Firefox3.0之后，在Fedora桌面上点击图标启动Firefox一直进入www.s.com（本来我的主页设置为iGoogle），而且图标也不再显示为Firefox的图标。很是让人郁闷。（注：据说该问题只是在图形界面下点击图标才会出现，若在命令行下面直接用命令启动Firefox不会有这个问题。）</p>
+<p>今天搜了一下，发现有这个问题的人还比较多，但大多没有解决方法。找了半天之后总算发现有人给出了方法。原来问题出自 ~/.local/share/applications/preferred-web-browser.desktop 中的Exec选项。</p>
+<p>手动装完Firefox之后把我的preferred-web-browser.desktop中的Exec改成了<br /><font color="#ff0000">Exec=/opt/firefox/firefox "%s"</font></p>
+<p>由于我是在我的个人用户下装的Firefox 3，因此root用户并没有受到影响，root用户的preferred-web-browser.desktop也没有被该变。于是我参照root用户的配置把Exec改成了<br /><font color="#0000ff">Exec=/opt/firefox/firefox %u</font></p>
+<p>同时把Icon选项改成了 <font color="#0000ff">Icon=firefox</font><br />把Name改为 <font color="#0000ff">Name=Firefox Web Browser</font></p>
+<p>再重新启动Firefox，一切正常！</p>
+<p></p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2008/09/14/beginning-linux-programming-2">《Beginning Linux Programming》读书笔记（二）</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-09-14</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-09-14</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Notes-ref" rel="nofollow">Notes</a>
 	</p>
 	<hr>
     
@@ -215,7 +235,7 @@ by enclosing them in braces {} to make a statement block.</p>
 	<div class="post paper">	
     <h2 class="header"><a href="/2008/09/11/linux-program-design-1">《Linux程序设计》读书笔记（一）</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-09-11</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-09-11</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Notes-ref" rel="nofollow">Notes</a>
 	</p>
 	<hr>
     
@@ -270,7 +290,7 @@ work as you expect.</p>
 	<div class="post paper">	
     <h2 class="header"><a href="/2008/09/08/function-pointer-in-class">类成员函数指针浅析</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-09-08</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-09-08</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
 	</p>
 	<hr>
     
@@ -524,7 +544,7 @@ less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么
 	<div class="post paper">	
     <h2 class="header"><a href="/2008/09/08/function-object">函数对象</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-09-08</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-09-08</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
 	</p>
 	<hr>
     
@@ -671,7 +691,7 @@ object）作为其第三个参数。判断对象是一个返回Boolean型结果�
 	<div class="post paper">	
     <h2 class="header"><a href="/2008/08/26/big-array-in-c">C语言函数中定义大数组耗尽堆栈的问题</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-08-26</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-08-26</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
 	</p>
 	<hr>
     
@@ -765,7 +785,7 @@ calloc和malloc基本一样，不同的是有两点，一是calloc分配的空�
 	<div class="post paper">	
     <h2 class="header"><a href="/2008/08/21/unix-textbook">《UNIX教程》读书笔记(一)</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-08-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-08-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Notes-ref" rel="nofollow">Notes</a>
 	</p>
 	<hr>
     
@@ -839,7 +859,7 @@ error: Failed dependencies:<br />
 	<div class="post paper">	
     <h2 class="header"><a href="/2008/07/20/cdma2000-naming">CDMA2000 Channel Naming Conventions</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-07-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Telecommunication-ref" rel="nofollow">Telecommunication</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-07-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Telecom-ref" rel="nofollow">Telecom</a>
 	</p>
 	<hr>
     
@@ -864,7 +884,7 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
 	<div class="post paper">	
     <h2 class="header"><a href="/2008/07/13/advanced-programming-in-unix-2">《Advanced Programming in the UNIX Environment》读书笔记（2）</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-07-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-07-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Notes-ref" rel="nofollow">Notes</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 	<hr>
     
@@ -1051,34 +1071,6 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2008/07/10/advanced-programming-in-unix">《Advanced Programming in the UNIX Environment》读书笔记（1）</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-07-10</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<div id="mnm0">
-<p id="i6v1" style="font-family:Verdana;"><font size="2"><span id="kf-u0">1、系统口令文件通常为/etc/passwd。口令文件中的登录项由7个以冒号分隔的字段组成：登录名、加密口令、数字用户ID、数字组&nbsp;ID、注释字段、起始目录以及shell程序。</span></font></p>
-<p id="i6v10" style="font-family:Verdana;"><font size="2"><span id="kf-u1"> 2、不能出现在文件名中的字符只有两个：/和空操作符(null)。</span></font></p>
-<p id="i6v12" style="font-family:Verdana;"><font size="2"><span id="kf-u2"> &nbsp;&nbsp;&nbsp; 当创建一个新目录时，自动创建了两个文件名：.和..。.引用当前目录，..引用父目录。</span></font></p>
-<p id="n50c" style="font-family:Verdana;"><font size="2"><span id="n50c1">&nbsp;&nbsp;&nbsp;&nbsp; A process can change its working directory with the <span style="color:rgb(255,0,0);" id="n50c2"><strong>chdir</strong> </span>function.<br /></span></font></p>
-<p id="i6v14" style="font-family:Verdana;"><font size="2"><span id="kf-u3"> 3、</span><img alt="" /><span id="kf-u4">ls(1)用以引用UNIX手册集中的一个特定项，它引用第一部分中的ls项。各部分通常用数字1～8表示，在每个部分中的各项则按字母顺序排列。</span></font></p>
-<p><font size="2">4、</font>UNIX目录操作函数：opendir, readdir, closedir。<br />&nbsp;&nbsp;&nbsp; 三个用于进程控制的主要函数：fork, exec, waitpid。<br />5、头文件&lt;unistd.h&gt;中包含了许多UNIX系统服务的函数原型，函数原型是ANSI&nbsp;C标准的组成部分。<br />6、当度量一个进程的执行时间时，UNIX系统使用三个进程时间值：</p>
-<ul id="ri8j0">
-<li id="ri8j1">时钟时间</li>
-<li id="ri8j2">用户CPU时间 </li>
-<li id="ri8j4">系统CPU时间&nbsp;</li>
-</ul>
-</div>
-<p>&nbsp;&nbsp;&nbsp; 时钟时间又称为墙上时钟时间（wall clock time），是进程运行的时间总量，其值与系统中同时运行的进程数有关。<br />&nbsp;&nbsp;&nbsp; 用户CPU时间是执行用户指令所用的时间量。<br />&nbsp;&nbsp;&nbsp; 系统CPU时间是为该进程执行内核所经历的时间。<br />&nbsp;&nbsp;&nbsp; 用户CPU时间 和 系统CPU时间的<strong>和</strong>被称为CPU时间。<br />&nbsp;&nbsp;&nbsp; 要取得任一进程的时钟时间、用户时间和系统时间很简单，只需执行命令time(1), 其参数是要度量其执行时间的命令。如：<br />[bonn@localhost unix_advance]$ time ps<br />&nbsp; PID TTY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TIME CMD<br />&nbsp;3734 pts/2&nbsp;&nbsp;&nbsp; 00:00:00 bash<br />&nbsp;6743 pts/2&nbsp;&nbsp;&nbsp; 00:00:00 ps</p>
-<p>real&nbsp;&nbsp;&nbsp; 0m0.023s<br />user&nbsp;&nbsp;&nbsp; 0m0.010s<br />sys&nbsp;&nbsp;&nbsp; 0m0.013s</p>
-<p>7、BSD: the Berkeley Software Distribution</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1095,14 +1087,13 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
 	<!-- content -->
 </div>
 
-<div class="col-lg-4">
+<div class="col-lg-3">
 		<div class="well">
             <h4>Links</h4>
-            <a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a> &nbsp;&nbsp;
-			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> &nbsp;&nbsp;
-			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> &nbsp;&nbsp;
-			<a href="https://plus.google.com/" target="_blank"> <i class="fa fa-google-plus-square fa-3x"></i> </a> &nbsp;&nbsp;
-			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> 
+			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> 
+			<a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a>
+			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> 
         	<a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a>	
         </div>
         <!-- /well -->
@@ -1113,57 +1104,45 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
 				
   
     
-        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">50</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">23</span></a>
-    
-        <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">25</span></a>
     
         <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span class="badge">9</span></a>
     
-        <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span class="badge">2</span></a>
+        <a href="/tags.html#Fault Diagnosis-ref" class="btn btn-mini">Fault Diagnosis <span class="badge">3</span></a>
     
-        <a href="/tags.html#EMI-ref" class="btn btn-mini">EMI <span class="badge">1</span></a>
+        <a href="/tags.html#Notes-ref" class="btn btn-mini">Notes <span class="badge">25</span></a>
     
-        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span class="badge">3</span></a>
-    
-        <a href="/tags.html#CBR-ref" class="btn btn-mini">CBR <span class="badge">1</span></a>
-    
-        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span class="badge">5</span></a>
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span class="badge">7</span></a>
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span class="badge">1</span></a>
     
-        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span class="badge">1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span class="badge">100</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span class="badge">1</span></a>
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span class="badge">13</span></a>
     
-        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span class="badge">10</span></a>
+        <a href="/tags.html#Telecom-ref" class="btn btn-mini">Telecom <span class="badge">1</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span class="badge">93</span></a>
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span class="badge">9</span></a>
     
-        <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span class="badge">1</span></a>
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span class="badge">15</span></a>
     
-        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span class="badge">6</span></a>
-    
-        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span class="badge">12</span></a>
-    
-        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
+        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">4</span></a>
     
         <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">15</span></a>
-    
-        <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
     
         <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span class="badge">6</span></a>
     
         <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span class="badge">2</span></a>
     
+        <a href="/tags.html#API-ref" class="btn btn-mini">API <span class="badge">3</span></a>
+    
         <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span class="badge">2</span></a>
     
-        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span class="badge">4</span></a>
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span class="badge">5</span></a>
     
-        <a href="/tags.html#ESXi-ref" class="btn btn-mini">ESXi <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Virtual Machine-ref" class="btn btn-mini">Virtual Machine <span class="badge">2</span></a>
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">4</span></a>
     
         <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span class="badge">2</span></a>
     
@@ -1171,97 +1150,33 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
     
         <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span class="badge">3</span></a>
     
-        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
+        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">23</span></a>
-    
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
-    
-        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span class="badge">5</span></a>
-    
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span class="badge">1</span></a>
-    
-        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span class="badge">1</span></a>
-    
-        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span class="badge">1</span></a>
-    
-        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Ubuntu-ref" class="btn btn-mini">Ubuntu <span class="badge">1</span></a>
-    
-        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span class="badge">1</span></a>
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span class="badge">4</span></a>
     
         <a href="/tags.html#Genetic Algorihtm-ref" class="btn btn-mini">Genetic Algorihtm <span class="badge">1</span></a>
     
-        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span class="badge">1</span></a>
-    
-        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span class="badge">1</span></a>
-    
-        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span class="badge">1</span></a>
-    
-        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span class="badge">1</span></a>
-    
         <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span class="badge">1</span></a>
     
-        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span class="badge">1</span></a>
-    
-        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span class="badge">1</span></a>
-    
-        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span class="badge">1</span></a>
-    
-        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span class="badge">1</span></a>
+        <a href="/tags.html#Statistics-ref" class="btn btn-mini">Statistics <span class="badge">1</span></a>
     
         <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span class="badge">3</span></a>
     
-        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span class="badge">1</span></a>
+        <a href="/tags.html#Multithreading-ref" class="btn btn-mini">Multithreading <span class="badge">2</span></a>
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span class="badge">1</span></a>
     
         <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span class="badge">4</span></a>
     
-        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span class="badge">2</span></a>
-    
-        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span class="badge">1</span></a>
-    
-        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span class="badge">1</span></a>
-    
         <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span class="badge">2</span></a>
-    
-        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span class="badge">1</span></a>
     
         <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span class="badge">1</span></a>
     
-        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span class="badge">1</span></a>
-    
         <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
     
         <a href="/tags.html#Architecture-ref" class="btn btn-mini">Architecture <span class="badge">1</span></a>
     
-        <a href="/tags.html#Cache-ref" class="btn btn-mini">Cache <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
-    
-        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
-    
         <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">1</span></a>
     
   
 
@@ -1273,14 +1188,17 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
         <div class="well">
 			<h4>Visitors</h4>
 			<div class="tag_box">
-				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4nm24yds2ph&amp;s=300&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
+				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4158ons5ftv&amp;s=220&amp;m=0&amp;v=false&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
 	
 			</div>
         </div>
-        <!-- /well -->
+		<!-- /well -->
+		<!--
         <div class="well">
             <h3>Recent Posts</h3>
 	        <ul>
+			
+  			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
 			
   			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
 			
@@ -1300,10 +1218,9 @@ both. The following naming conventions apply to all cdma2000 standards.</p>
 			
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
-  			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
-			
 			</ul>
-        </div>
+		</div>
+		-->
         <!-- /well -->
 </div>
 

@@ -84,13 +84,65 @@
 
 <div class="container">
     <div class="row" id="content-row">
-		<div class="col-md-8">
+		<div class="col-md-9">
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2009/08/09/fedora-10-mp3-support">Fedora 10 MP3 Support</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-08-09</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><a title="Fedora 10 MP3 Support"><br />
+</a></p>
+<p><a title="Fedora 10 MP3 Support"></p>
+<h2>Fedora 10 MP3 Support</h2>
+<p></a></p>
+<div id="node-92" class="node">
+<div class="content">
+<p>Fedora 10 does not come with built-in MP3 support. To get MP3 support with Fedora, you can use RPM Fusion's YUM repositories to download MP3 enabled RPMs.</p>
+<p>&nbsp;</p>
+<p><strong>Enable RPM Fusion</strong></p>
+<p>First, install RPM Fusion's free and nonfree YUM repositories. For detailed information about installing RPM Fusion, see:&nbsp;<a title="http://rpmfusion.org/Configuration" href="http://rpmfusion.org/Configuration">http://rpmfusion.org/Configuration</a></p>
+<p><code>su -c "rpm -Uvh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm"</code></p>
+<p><code>su -c "rpm -Uvh http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm"</code></p>
+<p>&nbsp;</p>
+<p><strong>Install GStreamer</strong></p>
+<p>Next, run this command to get the&nbsp;<a title="GStreamer" href="http://www.gstreamer.net/">gstreamer</a>&nbsp;plugins.</p>
+<p><code>su -c "yum install gstreamer gstreamer-plugins-bad gstreamer-plugins-ugly"</code></p>
+<p>&nbsp;</p>
+<p><strong>Install Applications and Libraries</strong></p>
+<p>For&nbsp;<a title="Amarok" href="http://amarok.kde.org/">Amarok</a>&nbsp;with MP3 support, install these packages:</p>
+<p><code>su -c "yum install amarok phonon-backend-gstreamer"</code></p>
+<p>For&nbsp;<a title="MPlayer" href="http://www.mplayerhq.hu">MPlayer</a>&nbsp;with MP3 support, install these RPMs:</p>
+<p><code>su -c "yum install mplayer gnome-mplayer gnome-mplayer-common mencoder"</code></p>
+<p>For&nbsp;<a title="XMMS" href="http://sourceforge.net/projects/xmms/">XMMS</a>&nbsp;with MP3 support, install the following:</p>
+<p><code>su -c "yum install xmms xmms-mp3"</code></p>
+<p>For&nbsp;<a title="Xine" href="http://xinehq.de/">xine</a>&nbsp;with MP3 support, install these RPMs:</p>
+<p><code>su -c "yum install xine xine-lib-extras-nonfree"</code></p>
+<p>To create MP3s with&nbsp;<a href="http://lame.sourceforge.net">LAME</a>, install lame and lame-mp3x.</p>
+<p><code>su -c "yum install lame lame-mp3x"</code></p>
+<p>&nbsp;</p>
+<p>Alternatively, run this command to install everything:</p>
+<p><code>su -c "yum install xmms xine mplayer amarok xmms-mp3 gstreamer phonon-backend-gstreamer gstreamer-plugins-bad gstreamer-plugins-ugly xine-lib-extras-nonfree mplayer gnome-mplayer-common mencoder gnome-mplayer lame lame-mp3x"</code></p>
+<p>&nbsp;</p>
+<p>[http://hacktux.com/fedora/mp3]</p>
+<p>&nbsp;</p>
+<p>PS: To install VLC media player:</p>
+<p>su -c "yum install vlc"</p>
+</div>
+</div>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2009/07/27/trip-in-us">车·行·记</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-07-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-07-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
 	</p>
 	<hr>
     
@@ -133,7 +185,7 @@
 	<div class="post paper">	
     <h2 class="header"><a href="/2009/06/19/google-china-in-porn-gate">谷歌中国的“色情门“</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-06-19</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-06-19</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
 	</p>
 	<hr>
     
@@ -181,7 +233,7 @@
 	<div class="post paper">	
     <h2 class="header"><a href="/2009/05/15/swine-flew-in-us">在美国体验猪流感</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-05-15</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Essay-ref" rel="nofollow">Essay</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-05-15</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
 	</p>
 	<hr>
     
@@ -282,7 +334,7 @@ function showAnswer() {
 	<div class="post paper">	
     <h2 class="header"><a href="/2009/04/11/regular-expression">[转]在C语言中使用正则表达式</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-04-11</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C-ref" rel="nofollow">C</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-04-11</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
 	<hr>
     
@@ -380,7 +432,7 @@ int main(int argc, char** argv)
 	<div class="post paper">	
     <h2 class="header"><a href="/2009/04/05/tcl-tk-one-line-1">TCL/Tk一句话笔记（一）</a></h2>
     <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-04-05</strong> with tags 
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-04-05</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Notes-ref" rel="nofollow">Notes</a>
 	</p>
 	<hr>
     
@@ -524,74 +576,6 @@ opposed to its value, into a procedure.</span></pre>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/03/05/print-socket-msg">PERL打印收到的Socket消息</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-03-05</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>&nbsp;</p>
-<div>
-<h1>PERL打印收到的Socket消息</h1>
-<div>利用Perl的Select(),sysread()和syswrite()收到的消息将以二进制的形式存储到$buffer中，因此如果直接打印$buffer的内容将得到乱码。要将二进制内容转换为十六进制数串，则必须使用unpack()函数，即：</div>
-<div>my $hexstr=unpack("H*",$buffer);</div>
-<div>而此时如果打印$hexstr将得到一系列的十六进制数串（数串的长度是接收到的字节数的两倍），仍然难以阅读。因此，有必要将十六进制数串每两个数字进行拆分并加前缀&ldquo;0x&rdquo;以便阅读。此时需要借助正则表达式进行模式匹配，方法为:</div>
-<div>my @msg=($hexstr =~ m/../g);</div>
-<div>其中.用以匹配一个字符。</div>
-<div></div>
-<div>示例代码如下：</div>
-<div>
-<pre>##################################################################
-#               DumpMsg
-#
-# Dump received message in hex mode.
-#
-# Format: DumpMsg($type, $msglen, $msg);
-#
-# input:        $type= 'MSC' | 'BSC'
-#               $msglen= msg length
-#               $msg= received msg
-#
-# output:       Print received msg to stderr and log in hex type
-##################################################################
-sub DumpMsg {
-    my $type=$_[0];
-    my $msglen=$_[1];
-    CoolMisc::coolprint("Received message from $type: $msglen bytes/n" );
-    LogPrint("Received message from $type: $msglen bytes/n");
-    # change the received message from bin to hex string.
-    # my @msg=split(/../,unpack("H*", $_[2]),$msglen);
-    my $tmp = unpack("H*", $_[2]);
-    my @msg = ( $tmp =~ m/../g );
-    # print the message to stdout and log file.
-    for(my $i=0;$i&lt;$msglen;$i++) {
-        print "0x$msg[$i] ";
-        syswrite($ROUTELOG,"0x$msg[$i] ");
-        if ($i%8 ==7) {
-            print "/n";
-            syswrite($ROUTELOG,"/n");
-        }
-    }
-    print "/n";
-    syswrite($ROUTELOG,"/n");
-}
-</pre>
-<p>&nbsp;</p></div>
-<div></div>
-<div></div>
-<div>参考文献：</div>
-<div>1. Perl Doc-Data::Numbers&nbsp;<a href="http://perl.active-venture.com/pod/perlfaq4-datanumber.html">http://perl.active-venture.com/pod/perlfaq4-datanumber.html</a></div>
-<div>2. Perl函数pack/unpack:<a href="http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html">http://hi.baidu.com/xemoaya/blog/item/7ea20008f8d23ed563d98660.html</a>&nbsp;</div>
-<div>3.&nbsp;<span><strong><a href="http://stackoverflow.com/questions/372370/how-can-i-split-a-string-into-chunks-of-two-characters-each-in-perl">How can I split a string into chunks of two characters each in Perl?</a></strong></span></div>
-<div><strong><br /></strong></div>
-</div>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -608,14 +592,13 @@ sub DumpMsg {
 	<!-- content -->
 </div>
 
-<div class="col-lg-4">
+<div class="col-lg-3">
 		<div class="well">
             <h4>Links</h4>
-            <a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a> &nbsp;&nbsp;
-			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> &nbsp;&nbsp;
-			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> &nbsp;&nbsp;
-			<a href="https://plus.google.com/" target="_blank"> <i class="fa fa-google-plus-square fa-3x"></i> </a> &nbsp;&nbsp;
-			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> &nbsp;&nbsp;
+			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> 
+			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> 
+			<a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a>
+			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> 
         	<a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a>	
         </div>
         <!-- /well -->
@@ -626,57 +609,45 @@ sub DumpMsg {
 				
   
     
-        <a href="/tags.html#MFC-ref" class="btn btn-mini">MFC <span class="badge">10</span></a>
+        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">50</span></a>
     
-        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">23</span></a>
-    
-        <a href="/tags.html#C-ref" class="btn btn-mini">C <span class="badge">16</span></a>
+        <a href="/tags.html#Algorithm-ref" class="btn btn-mini">Algorithm <span class="badge">25</span></a>
     
         <a href="/tags.html#EMC-ref" class="btn btn-mini">EMC <span class="badge">9</span></a>
     
-        <a href="/tags.html#fault diagnosis-ref" class="btn btn-mini">fault diagnosis <span class="badge">2</span></a>
+        <a href="/tags.html#Fault Diagnosis-ref" class="btn btn-mini">Fault Diagnosis <span class="badge">3</span></a>
     
-        <a href="/tags.html#EMI-ref" class="btn btn-mini">EMI <span class="badge">1</span></a>
+        <a href="/tags.html#Notes-ref" class="btn btn-mini">Notes <span class="badge">25</span></a>
     
-        <a href="/tags.html#notes-ref" class="btn btn-mini">notes <span class="badge">3</span></a>
-    
-        <a href="/tags.html#CBR-ref" class="btn btn-mini">CBR <span class="badge">1</span></a>
-    
-        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span class="badge">5</span></a>
+        <a href="/tags.html#AI-ref" class="btn btn-mini">AI <span class="badge">7</span></a>
     
         <a href="/tags.html#Database-ref" class="btn btn-mini">Database <span class="badge">1</span></a>
     
-        <a href="/tags.html#Unix-ref" class="btn btn-mini">Unix <span class="badge">1</span></a>
+        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span class="badge">100</span></a>
     
-        <a href="/tags.html#Linux-ref" class="btn btn-mini">Linux <span class="badge">1</span></a>
+        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span class="badge">13</span></a>
     
-        <a href="/tags.html#Personal-ref" class="btn btn-mini">Personal <span class="badge">10</span></a>
+        <a href="/tags.html#Telecom-ref" class="btn btn-mini">Telecom <span class="badge">1</span></a>
     
-        <a href="/tags.html#Unix/Linux-ref" class="btn btn-mini">Unix/Linux <span class="badge">93</span></a>
+        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span class="badge">9</span></a>
     
-        <a href="/tags.html#Telecommunication-ref" class="btn btn-mini">Telecommunication <span class="badge">1</span></a>
+        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span class="badge">15</span></a>
     
-        <a href="/tags.html#Tcl/Tk-ref" class="btn btn-mini">Tcl/Tk <span class="badge">6</span></a>
-    
-        <a href="/tags.html#Shell-ref" class="btn btn-mini">Shell <span class="badge">12</span></a>
-    
-        <a href="/tags.html#Network/Telecom-ref" class="btn btn-mini">Network/Telecom <span class="badge">3</span></a>
+        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">4</span></a>
     
         <a href="/tags.html#Perl-ref" class="btn btn-mini">Perl <span class="badge">15</span></a>
-    
-        <a href="/tags.html#Essay-ref" class="btn btn-mini">Essay <span class="badge">12</span></a>
     
         <a href="/tags.html#Industry-ref" class="btn btn-mini">Industry <span class="badge">6</span></a>
     
         <a href="/tags.html#Cloud Computing-ref" class="btn btn-mini">Cloud Computing <span class="badge">2</span></a>
     
+        <a href="/tags.html#API-ref" class="btn btn-mini">API <span class="badge">3</span></a>
+    
         <a href="/tags.html#Android-ref" class="btn btn-mini">Android <span class="badge">2</span></a>
     
-        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span class="badge">4</span></a>
+        <a href="/tags.html#VBA-ref" class="btn btn-mini">VBA <span class="badge">5</span></a>
     
-        <a href="/tags.html#ESXi-ref" class="btn btn-mini">ESXi <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Virtual Machine-ref" class="btn btn-mini">Virtual Machine <span class="badge">2</span></a>
+        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">4</span></a>
     
         <a href="/tags.html#Browser-ref" class="btn btn-mini">Browser <span class="badge">2</span></a>
     
@@ -684,97 +655,33 @@ sub DumpMsg {
     
         <a href="/tags.html#Go-ref" class="btn btn-mini">Go <span class="badge">3</span></a>
     
-        <a href="/tags.html#Virtualization-ref" class="btn btn-mini">Virtualization <span class="badge">2</span></a>
+        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">2</span></a>
     
-        <a href="/tags.html#C/C++-ref" class="btn btn-mini">C/C++ <span class="badge">23</span></a>
-    
-        <a href="/tags.html#RHEL6.1-ref" class="btn btn-mini">RHEL6.1 <span class="badge">2</span></a>
-    
-        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span class="badge">5</span></a>
-    
-        <a href="/tags.html#CPP-ref" class="btn btn-mini">CPP <span class="badge">1</span></a>
-    
-        <a href="/tags.html#RPC-ref" class="btn btn-mini">RPC <span class="badge">1</span></a>
-    
-        <a href="/tags.html#rup-ref" class="btn btn-mini">rup <span class="badge">1</span></a>
-    
-        <a href="/tags.html#ksh-ref" class="btn btn-mini">ksh <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Ubuntu-ref" class="btn btn-mini">Ubuntu <span class="badge">1</span></a>
-    
-        <a href="/tags.html#file descriptor-ref" class="btn btn-mini">file descriptor <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Expect-ref" class="btn btn-mini">Expect <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Here Document-ref" class="btn btn-mini">Here Document <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Evolutionary Computation-ref" class="btn btn-mini">Evolutionary Computation <span class="badge">1</span></a>
+        <a href="/tags.html#Tips-ref" class="btn btn-mini">Tips <span class="badge">4</span></a>
     
         <a href="/tags.html#Genetic Algorihtm-ref" class="btn btn-mini">Genetic Algorihtm <span class="badge">1</span></a>
     
-        <a href="/tags.html#ldd-ref" class="btn btn-mini">ldd <span class="badge">1</span></a>
-    
-        <a href="/tags.html#signal-ref" class="btn btn-mini">signal <span class="badge">1</span></a>
-    
-        <a href="/tags.html#swap-ref" class="btn btn-mini">swap <span class="badge">1</span></a>
-    
-        <a href="/tags.html#NIC-ref" class="btn btn-mini">NIC <span class="badge">1</span></a>
-    
         <a href="/tags.html#Mac OS-ref" class="btn btn-mini">Mac OS <span class="badge">1</span></a>
     
-        <a href="/tags.html#VNC-ref" class="btn btn-mini">VNC <span class="badge">1</span></a>
-    
-        <a href="/tags.html#X11-ref" class="btn btn-mini">X11 <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Merge sort-ref" class="btn btn-mini">Merge sort <span class="badge">1</span></a>
-    
-        <a href="/tags.html#boost-ref" class="btn btn-mini">boost <span class="badge">1</span></a>
-    
-        <a href="/tags.html#CDF-ref" class="btn btn-mini">CDF <span class="badge">1</span></a>
+        <a href="/tags.html#Statistics-ref" class="btn btn-mini">Statistics <span class="badge">1</span></a>
     
         <a href="/tags.html#Matlab-ref" class="btn btn-mini">Matlab <span class="badge">3</span></a>
     
-        <a href="/tags.html#Multi-Process-ref" class="btn btn-mini">Multi-Process <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Multi-Threading-ref" class="btn btn-mini">Multi-Threading <span class="badge">1</span></a>
+        <a href="/tags.html#Multithreading-ref" class="btn btn-mini">Multithreading <span class="badge">2</span></a>
     
         <a href="/tags.html#Bioinformatics-ref" class="btn btn-mini">Bioinformatics <span class="badge">1</span></a>
     
         <a href="/tags.html#Computer Vision-ref" class="btn btn-mini">Computer Vision <span class="badge">4</span></a>
     
-        <a href="/tags.html#DTF-ref" class="btn btn-mini">DTF <span class="badge">2</span></a>
-    
-        <a href="/tags.html#ffmpeg-ref" class="btn btn-mini">ffmpeg <span class="badge">1</span></a>
-    
-        <a href="/tags.html#OpenCV-ref" class="btn btn-mini">OpenCV <span class="badge">1</span></a>
-    
         <a href="/tags.html#Machine Learning-ref" class="btn btn-mini">Machine Learning <span class="badge">2</span></a>
-    
-        <a href="/tags.html#parfor-ref" class="btn btn-mini">parfor <span class="badge">1</span></a>
     
         <a href="/tags.html#BACI-ref" class="btn btn-mini">BACI <span class="badge">1</span></a>
     
-        <a href="/tags.html#Alogrithm-ref" class="btn btn-mini">Alogrithm <span class="badge">1</span></a>
-    
         <a href="/tags.html#Jekyll-ref" class="btn btn-mini">Jekyll <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Github-ref" class="btn btn-mini">Github <span class="badge">1</span></a>
     
         <a href="/tags.html#Architecture-ref" class="btn btn-mini">Architecture <span class="badge">1</span></a>
     
-        <a href="/tags.html#Cache-ref" class="btn btn-mini">Cache <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Fisher Vector-ref" class="btn btn-mini">Fisher Vector <span class="badge">1</span></a>
-    
-        <a href="/tags.html#SVM-ref" class="btn btn-mini">SVM <span class="badge">1</span></a>
-    
         <a href="/tags.html#Java-ref" class="btn btn-mini">Java <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Dynamic Programming-ref" class="btn btn-mini">Dynamic Programming <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Distributed Systems-ref" class="btn btn-mini">Distributed Systems <span class="badge">1</span></a>
-    
-        <a href="/tags.html#Network-ref" class="btn btn-mini">Network <span class="badge">1</span></a>
     
   
 
@@ -786,14 +693,17 @@ sub DumpMsg {
         <div class="well">
 			<h4>Visitors</h4>
 			<div class="tag_box">
-				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4nm24yds2ph&amp;s=300&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
+				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4158ons5ftv&amp;s=220&amp;m=0&amp;v=false&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
 	
 			</div>
         </div>
-        <!-- /well -->
+		<!-- /well -->
+		<!--
         <div class="well">
             <h3>Recent Posts</h3>
 	        <ul>
+			
+  			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
 			
   			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
 			
@@ -813,10 +723,9 @@ sub DumpMsg {
 			
   			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
-  			<li><span>2014-06-27</span> &raquo; <a href="/2014/06/27/nqueens">N-Queens Problem</a></li>
-			
 			</ul>
-        </div>
+		</div>
+		-->
         <!-- /well -->
 </div>
 

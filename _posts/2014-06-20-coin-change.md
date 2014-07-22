@@ -8,7 +8,6 @@ categories:
 tags:
 - Algorithm
 - Java
-- Dynamic Programming
 status: publish
 type: post
 published: true

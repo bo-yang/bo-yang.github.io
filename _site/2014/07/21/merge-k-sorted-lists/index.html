@@ -1,0 +1,396 @@
+
+<!DOCTYPE HTML>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merge K Sorted Lists | Bo's Blog</title>
+  
+  <meta name="author" content="Bo Yang" />
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <!--
+  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  -->
+
+  <!-- Bootstrap -->
+  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+
+  <!-- font-awesome -->
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+
+  <!-- Google Prettify -->
+  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+  <!-- Google Pretty end -->
+
+  <link href="/assets/style/blog.css" rel="stylesheet">
+  
+  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
+  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+   <!-- navigation bar -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">bo-yang</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/archive.html">Archive</a>
+                    </li>
+                    <li><a href="/about.html">About</a>
+                    </li>
+                    <li><a href="/messages.html">Messages</a>
+                    </li>
+				</ul>
+				<ul class="nav navbar-nav pull-right">
+		          <li>
+		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
+		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
+		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
+		              <input type="hidden" name="ie" value="UTF-8" />
+		              <input type="hidden" name="oe" value="UTF-8" />
+		              <input type="hidden" name="hl" value="en-US" />
+		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
+					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
+					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
+		            </form>
+		          </li>
+		        </ul>
+            </div>
+			<!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+  <div class="container">
+    <div class="row" id="content-row">
+      
+<div class="page-header">
+	<h1>Merge K Sorted Lists</h1>
+	<p>
+		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2014-07-21 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+</div>
+
+<div class="col-lg-10">
+	<div class="post paper">
+		<h4 id="contents">Contents</h4>
+
+<ol>
+  <li><a href="#naive_method">Naive Method</a></li>
+  <li><a href="#divide_conquer">Divide-and-Conquer Algorithm</a></li>
+  <li><a href="#heap">Non-Recursive Method</a></li>
+</ol>
+
+<p>The <a href="https://oj.leetcode.com/problems/merge-k-sorted-lists/">Merge <code>k</code> Sorted Lists</a> is:</p>
+
+<blockquote>
+  <p>Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.</p>
+</blockquote>
+
+<p>In this problem, the sorted lists are stored in a vector, i.e. <code>vector&lt;ListNode*&gt;</code>. Assume the longest list contains <code>n</code> elements.</p>
+
+<h3 id="a-namenaivemethodnaive-methoda"><a name="naive_method">Naive Method</a></h3>
+
+<p>The naive method of merging <code>k</code> sorted lists is: iteratively compare the head elements of the <code>k</code> lists, find the smallest node, append this node to the merged list and forward that list by one step. Then repeat above step until all lists reach the end. Obviously, since in every iteration <code>k</code> comparisons are needed, and the longest list has <code>n</code> elements, therefore, the time complexity is \( O(k^{nk}) \) - the worst case is all lists have <code>n</code> elements, so for the total <code>nk</code> elements, totally \( k^{nk} \) comparisons are needed to merge them into one list.</p>
+
+<h3 id="a-namedivideconquerdivide-and-conquer-algorithma"><a name="divide_conquer">Divide-and-Conquer Algorithm</a></h3>
+
+<p>Other than exponential time complexity, a much better method is to use divide-and-conquer. Since merging two sorted lists is easy, we can recursively divide the <code>k</code> lists into two parts until there are no more than two lists. Then we can use a merge method similiar to the merge sort to merge the two lists together.</p>
+
+<p>Assume the longest list contains <code>n</code> elements, the time required for dividing and merging lists is \( T(k)=2T(k/2)+O(nk) \). According to the Master Theorem, the time complexity is \( O(nk \log k) \). The space complexity of this algorithm is \( O(1) \).</p>
+
+<p>Following is my C++ implementation of the divide-conquer method.</p>
+
+<pre><code>class Solution {
+public:
+    ListNode *mergeKLists(vector&lt;ListNode *&gt; &amp;lists) {
+		if(lists.size()==0)
+            return NULL;
+        if(lists.size()==1)
+            return lists[0];
+
+		return divideConquerLists(lists,0,lists.size()-1);
+    }
+
+	ListNode* divideConquerLists(vector&lt;ListNode *&gt; &amp;lists, int start, int end) {
+		if(start+1&lt;end) {
+			int mid=(start+end)/2;
+			ListNode* head1=divideConquerLists(lists,start,mid);
+			ListNode* head2=divideConquerLists(lists,mid+1,end);
+			return mergeTwoLists(head1,head2);
+		} else if(start+1==end) {
+			return mergeTwoLists(lists[start],lists[end]);
+		} else if(start==end) {
+			return lists[start];
+		}
+	}
+
+	ListNode* mergeTwoLists(ListNode* head1, ListNode* head2) {
+		if(head1==NULL)
+			return head2;
+		if(head2==NULL)
+			return head1;
+	
+		ListNode* pre_head=new ListNode(-1);
+		ListNode* pre=pre_head;
+		ListNode* node1=head1;
+		ListNode* node2=head2;
+		while(node1!=NULL &amp;&amp; node2!=NULL) {
+			if(node1-&gt;val &lt; node2-&gt;val) {
+				pre-&gt;next=node1;
+				node1=node1-&gt;next;
+			} else {
+				pre-&gt;next=node2;
+				node2=node2-&gt;next;
+			}
+			pre=pre-&gt;next;
+		}
+		while(node1!=NULL) {
+			pre-&gt;next=node1;
+			node1=node1-&gt;next;
+			pre=pre-&gt;next;
+		}
+		while(node2!=NULL) {
+			pre-&gt;next=node2;
+			node2=node2-&gt;next;
+			pre=pre-&gt;next;
+		}
+		pre-&gt;next=NULL;
+
+		ListNode* head=pre_head-&gt;next;
+		delete pre_head;
+
+		return head;
+	}
+};
+</code></pre>
+
+<h3 id="a-nameheapnon-recursive-methoda"><a name="heap">Non-Recursive Method</a></h3>
+
+<p>In addition to the recursive divide-conquer method, there is also a non-recursive method. We can use a maximum <code>k</code>-element heap(in C++, <code>priority_queue</code>) to merge the <code>k</code> lists. The strategy is:</p>
+
+<ol>
+  <li>Create a heap to store <code>ListNode*</code>, which should sort list nodes in the ascending order or node values.</li>
+  <li>Insert the first node(head) of each list into the heap, so that we store all the <code>k</code> entries in the heap.</li>
+  <li>Get the top element in heap and add in to the merged list.</li>
+  <li>If the top element of heap is the last node in a list, pop it and go to step 3.</li>
+  <li>If the top element of heap has followers, pop it and push its following node into heap. </li>
+  <li>Go to step 3 until the heap is empty.</li>
+</ol>
+
+<p>To create a heap meet step’1 requirement, we need to create a structure/class that overloads the operator <code>()</code>, so that we can compare two list nodes based on their values. Such structure/class is required by the <code>priority_queue</code> template. Instead of a struct, I would rather use a lambda function to do so. Unfortunately, lambda function still cannot be used as the comparison object in <code>priority_queue</code>.</p>
+
+<p>For a <code>k</code>-element <code>priority_queue</code>, an insertion requires \( O(\log k) \) time. Since we need to do such insertion for at most \(nk\) times, therefore the time complexity for this method is also \( O(nk \log k) \). Obviously, the space complexity of this algorithm is \( O(k) \).</p>
+
+<pre><code>class Solution {
+public:
+	// comparison structure, required by priority_queue template
+	struct greaterListNode{ 
+		bool operator() (ListNode* x, ListNode* y) {return x-&gt;val &gt; y-&gt;val;}
+	};
+
+    ListNode *mergeKLists(vector&lt;ListNode *&gt; &amp;lists) {
+		if(lists.size()==0)
+			return NULL;
+		if(lists.size()==1)
+			return lists[0];
+
+		ListNode* pre_head=new ListNode(-1);
+		ListNode* pre=pre_head;
+		std::priority_queue&lt;ListNode*, vector&lt;ListNode*&gt;, greaterListNode&gt; pq;
+
+		// Insert entries of every list into heap
+		for(auto&amp; lst:lists)
+			if(lst!=NULL)
+				pq.push(lst);
+
+		// Recursively parse every element in lists
+		while(!pq.empty()) {
+			pre-&gt;next=pq.top();
+			pre=pre-&gt;next;
+			pq.pop();
+
+			if(pre!=NULL &amp;&amp; pre-&gt;next!=NULL)
+				pq.push(pre-&gt;next);
+		}
+
+		ListNode* head=pre_head-&gt;next;
+		delete pre_head;
+		return head;
+    }
+};
+</code></pre>
+
+<h3 id="references">References:</h3>
+
+<ol>
+  <li><a href="http://blog.csdn.net/linhuanmars/article/details/19899259">Merge k Sorted Lists – LeetCode</a></li>
+  <li><a href="http://www.cplusplus.com/reference/queue/priority_queue/">std::priority_queue</a></li>
+  <li><a href="http://www.cplusplus.com/reference/functional/greater/">std::greater</a></li>
+</ol>
+
+	</div>
+
+	<div align="right">
+        <div class="bshare-custom">
+	<span class='st_facebook_large' displayText='Facebook'></span>
+	<span class='st_googleplus_large' displayText='Google +'></span>
+	<span class='st_twitter_large' displayText='Tweet'></span>
+	<span class='st_sina_large' displayText='Sina'></span>
+	<span class='st_linkedin_large' displayText='LinkedIn'></span>
+	<span class='st_tumblr_large' displayText='Tumblr'></span>
+	<span class='st_sharethis_large' displayText='ShareThis'></span>
+	<span class='st_blogger_large' displayText='Blogger'></span>
+	<span class='st_email_large' displayText='Email'></span>
+</div>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+	</div>
+
+	<!-- page link -->
+    <div class="pager">
+      <ul>
+      
+        <li class="previous"><a href="/2014/07/14/insertion-sort-list" title="Insertion Sort List">&larr; Previous</a></li>
+      
+
+      
+        <li class="next disabled"><a>Next &rarr;</a>
+      
+      </ul>
+    </div>
+
+	<!--
+	<div class="well">
+		<script>
+var linkwithin_site_id = 2140443;
+</script>
+<script src="http://www.linkwithin.com/widget.js"></script>
+<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
+
+	</div>
+	-->
+    <div class="well">
+		
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
+     var disqus_identifier = '/2014/07/21/merge-k-sorted-lists';
+    var disqus_url = 'http://bo-yang.github.com//2014/07/21/merge-k-sorted-lists';
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+    </div>
+</div>
+
+<div class="col-lg-2">
+	<div class="well">
+		<h4>Visitors</h4>
+		<div class="tag_box">
+			<script type="text/javascript" src="http://je.revolvermaps.com/2/2.js?i=493pvkdo4nt&amp;m=0&amp;s=130&amp;c=ff0000&amp;t=1" async="async"></script>
+	
+		</div>
+    </div>
+
+</div>
+
+
+
+
+    </div>
+
+    <footer>
+        <p>&copy; 2007 <span id="now_year"></span> Bo Yang. </p>
+        <script type="text/javascript">
+          var now_year = new Date().getFullYear();
+          if (now_year != 2007) {
+              $('#now_year').html('- ' + now_year);
+          }
+	    </script>
+      </footer>
+  </div>
+
+  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
+  <script src="/assets/run_prettify.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('a[href^="http"]').each(function () {
+        $(this).attr('target', '_blank');
+      });
+
+      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
+      window.prettyPrint && prettyPrint();
+
+      function traverse($node, len, maxCount) {
+        var reachMaxCount = len > maxCount;
+        if (reachMaxCount) {
+          $node.hide();
+        }
+        var $contents = $node.contents();
+        for (var i = 0; i < $contents.length; ++i) {
+          if (reachMaxCount) {
+            $contents.eq(i).hide();
+            continue;
+          }
+          if ($contents[i].nodeType == 3) { // TextNode
+            var tmp = len;
+            var s = $contents[i].nodeValue;
+            len += s.length;
+            reachMaxCount = len > maxCount;
+            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
+              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
+            }
+          }
+          else if ($contents[i].nodeType == 1) { // Element
+            len = traverse($contents.eq(i), len, maxCount);
+          }
+        }
+        return len;
+      }
+
+      $('.post_at_index').each(function() {
+        var count = traverse($(this), 0, 400);
+        if (count > 400) {
+          var thisUrl = $(this).siblings().first().children().attr('href');
+          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow" class="btn btn-primary" role="button">' + 'Read More &raquo;</a>');
+        }
+      });
+    });
+  </script>
+
+  
+
+</body>
+</html>
+

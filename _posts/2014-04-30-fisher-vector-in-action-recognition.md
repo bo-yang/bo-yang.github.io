@@ -7,8 +7,6 @@ categories:
 tags:
 - Computer Vision
 - Machine Learning
-- Fisher Vector
-- SVM
 status: publish
 type: post
 published: true

@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Tags
+title: "Tags"
 header: Posts By Tag
 group: no-navigation
 ---
@@ -11,13 +11,12 @@ group: no-navigation
   {% include bo/tags_list %}
 </ul>
 
-
 {% for tag in site.tags %} 
   <h3 id="{{ tag[0] }}-ref">{{ tag[0] }}</h3>
   <ul class="post">
     {% assign pages_list = tag[1] %}  
     {% include JB/pages_list %}
-  </ul>
+</ul>
 {% endfor %}
 
 {% include bo/tab_select %}

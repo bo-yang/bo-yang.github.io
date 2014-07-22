@@ -6,7 +6,6 @@ categories:
 - C/C++ 
 tags:
 - Architecture
-- Cache
 - C/C++
 status: publish
 type: post

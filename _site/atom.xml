@@ -4,13 +4,176 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-07-17T11:20:01-07:00</updated>
+ <updated>2014-07-21T19:03:31-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Merge K Sorted Lists</title>
+   <link href="http://bo-yang.github.com//2014/07/21/merge-k-sorted-lists"/>
+   <updated>2014-07-21T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/21/merge-k-sorted-lists</id>
+   <content type="html">&lt;h4 id=&quot;contents&quot;&gt;Contents&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;#naive_method&quot;&gt;Naive Method&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#divide_conquer&quot;&gt;Divide-and-Conquer Algorithm&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#heap&quot;&gt;Non-Recursive Method&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://oj.leetcode.com/problems/merge-k-sorted-lists/&quot;&gt;Merge &lt;code&gt;k&lt;/code&gt; Sorted Lists&lt;/a&gt; is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In this problem, the sorted lists are stored in a vector, i.e. &lt;code&gt;vector&amp;lt;ListNode*&amp;gt;&lt;/code&gt;. Assume the longest list contains &lt;code&gt;n&lt;/code&gt; elements.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-namenaivemethodnaive-methoda&quot;&gt;&lt;a name=&quot;naive_method&quot;&gt;Naive Method&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;The naive method of merging &lt;code&gt;k&lt;/code&gt; sorted lists is: iteratively compare the head elements of the &lt;code&gt;k&lt;/code&gt; lists, find the smallest node, append this node to the merged list and forward that list by one step. Then repeat above step until all lists reach the end. Obviously, since in every iteration &lt;code&gt;k&lt;/code&gt; comparisons are needed, and the longest list has &lt;code&gt;n&lt;/code&gt; elements, therefore, the time complexity is \( O(k^{nk}) \) - the worst case is all lists have &lt;code&gt;n&lt;/code&gt; elements, so for the total &lt;code&gt;nk&lt;/code&gt; elements, totally \( k^{nk} \) comparisons are needed to merge them into one list.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-namedivideconquerdivide-and-conquer-algorithma&quot;&gt;&lt;a name=&quot;divide_conquer&quot;&gt;Divide-and-Conquer Algorithm&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Other than exponential time complexity, a much better method is to use divide-and-conquer. Since merging two sorted lists is easy, we can recursively divide the &lt;code&gt;k&lt;/code&gt; lists into two parts until there are no more than two lists. Then we can use a merge method similiar to the merge sort to merge the two lists together.&lt;/p&gt;
+
+&lt;p&gt;Assume the longest list contains &lt;code&gt;n&lt;/code&gt; elements, the time required for dividing and merging lists is \( T(k)=2T(k/2)+O(nk) \). According to the Master Theorem, the time complexity is \( O(nk \log k) \). The space complexity of this algorithm is \( O(1) \).&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation of the divide-conquer method.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    ListNode *mergeKLists(vector&amp;lt;ListNode *&amp;gt; &amp;amp;lists) {
+		if(lists.size()==0)
+            return NULL;
+        if(lists.size()==1)
+            return lists[0];
+
+		return divideConquerLists(lists,0,lists.size()-1);
+    }
+
+	ListNode* divideConquerLists(vector&amp;lt;ListNode *&amp;gt; &amp;amp;lists, int start, int end) {
+		if(start+1&amp;lt;end) {
+			int mid=(start+end)/2;
+			ListNode* head1=divideConquerLists(lists,start,mid);
+			ListNode* head2=divideConquerLists(lists,mid+1,end);
+			return mergeTwoLists(head1,head2);
+		} else if(start+1==end) {
+			return mergeTwoLists(lists[start],lists[end]);
+		} else if(start==end) {
+			return lists[start];
+		}
+	}
+
+	ListNode* mergeTwoLists(ListNode* head1, ListNode* head2) {
+		if(head1==NULL)
+			return head2;
+		if(head2==NULL)
+			return head1;
+	
+		ListNode* pre_head=new ListNode(-1);
+		ListNode* pre=pre_head;
+		ListNode* node1=head1;
+		ListNode* node2=head2;
+		while(node1!=NULL &amp;amp;&amp;amp; node2!=NULL) {
+			if(node1-&amp;gt;val &amp;lt; node2-&amp;gt;val) {
+				pre-&amp;gt;next=node1;
+				node1=node1-&amp;gt;next;
+			} else {
+				pre-&amp;gt;next=node2;
+				node2=node2-&amp;gt;next;
+			}
+			pre=pre-&amp;gt;next;
+		}
+		while(node1!=NULL) {
+			pre-&amp;gt;next=node1;
+			node1=node1-&amp;gt;next;
+			pre=pre-&amp;gt;next;
+		}
+		while(node2!=NULL) {
+			pre-&amp;gt;next=node2;
+			node2=node2-&amp;gt;next;
+			pre=pre-&amp;gt;next;
+		}
+		pre-&amp;gt;next=NULL;
+
+		ListNode* head=pre_head-&amp;gt;next;
+		delete pre_head;
+
+		return head;
+	}
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;a-nameheapnon-recursive-methoda&quot;&gt;&lt;a name=&quot;heap&quot;&gt;Non-Recursive Method&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;In addition to the recursive divide-conquer method, there is also a non-recursive method. We can use a maximum &lt;code&gt;k&lt;/code&gt;-element heap(in C++, &lt;code&gt;priority_queue&lt;/code&gt;) to merge the &lt;code&gt;k&lt;/code&gt; lists. The strategy is:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create a heap to store &lt;code&gt;ListNode*&lt;/code&gt;, which should sort list nodes in the ascending order or node values.&lt;/li&gt;
+  &lt;li&gt;Insert the first node(head) of each list into the heap, so that we store all the &lt;code&gt;k&lt;/code&gt; entries in the heap.&lt;/li&gt;
+  &lt;li&gt;Get the top element in heap and add in to the merged list.&lt;/li&gt;
+  &lt;li&gt;If the top element of heap is the last node in a list, pop it and go to step 3.&lt;/li&gt;
+  &lt;li&gt;If the top element of heap has followers, pop it and push its following node into heap. &lt;/li&gt;
+  &lt;li&gt;Go to step 3 until the heap is empty.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To create a heap meet step’1 requirement, we need to create a structure/class that overloads the operator &lt;code&gt;()&lt;/code&gt;, so that we can compare two list nodes based on their values. Such structure/class is required by the &lt;code&gt;priority_queue&lt;/code&gt; template. Instead of a struct, I would rather use a lambda function to do so. Unfortunately, lambda function still cannot be used as the comparison object in &lt;code&gt;priority_queue&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;For a &lt;code&gt;k&lt;/code&gt;-element &lt;code&gt;priority_queue&lt;/code&gt;, an insertion requires \( O(\log k) \) time. Since we need to do such insertion for at most \(nk\) times, therefore the time complexity for this method is also \( O(nk \log k) \). Obviously, the space complexity of this algorithm is \( O(k) \).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+	// comparison structure, required by priority_queue template
+	struct greaterListNode{ 
+		bool operator() (ListNode* x, ListNode* y) {return x-&amp;gt;val &amp;gt; y-&amp;gt;val;}
+	};
+
+    ListNode *mergeKLists(vector&amp;lt;ListNode *&amp;gt; &amp;amp;lists) {
+		if(lists.size()==0)
+			return NULL;
+		if(lists.size()==1)
+			return lists[0];
+
+		ListNode* pre_head=new ListNode(-1);
+		ListNode* pre=pre_head;
+		std::priority_queue&amp;lt;ListNode*, vector&amp;lt;ListNode*&amp;gt;, greaterListNode&amp;gt; pq;
+
+		// Insert entries of every list into heap
+		for(auto&amp;amp; lst:lists)
+			if(lst!=NULL)
+				pq.push(lst);
+
+		// Recursively parse every element in lists
+		while(!pq.empty()) {
+			pre-&amp;gt;next=pq.top();
+			pre=pre-&amp;gt;next;
+			pq.pop();
+
+			if(pre!=NULL &amp;amp;&amp;amp; pre-&amp;gt;next!=NULL)
+				pq.push(pre-&amp;gt;next);
+		}
+
+		ListNode* head=pre_head-&amp;gt;next;
+		delete pre_head;
+		return head;
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;references&quot;&gt;References:&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;http://blog.csdn.net/linhuanmars/article/details/19899259&quot;&gt;Merge k Sorted Lists – LeetCode&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.cplusplus.com/reference/queue/priority_queue/&quot;&gt;std::priority_queue&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.cplusplus.com/reference/functional/greater/&quot;&gt;std::greater&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Insertion Sort List</title>
