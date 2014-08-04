@@ -17,11 +17,11 @@ The _string permutation_ problem aims to find all the _permutations_ of a string
 
 The essence of string permutation is recursively swapping each letter with other letters in this string. Following image shows the permutation of string "ABC". For each step, fix the left part of the string, and swap two letters in the right part, until there is no letters left in the right part. 
 
-{% image http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif attr="Recursion Tree for String Permutations" %}
+<img src="http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif" width="678" height="277" class="aligncenter size-full wp-image-118925"></img>
 
 Based on above strategy, the following two recusive algorithm could be implemented.
 
-Algorithm 1(Reference: http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/): 
+Algorithm 1(Reference: [Write a C program to print all permutations of a given string](http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/)): 
 
 	void StrPermute(string& str, vector<string>& vec, int i) {
 		if(i==str.length())
@@ -35,7 +35,7 @@ Algorithm 1(Reference: http://www.geeksforgeeks.org/write-a-c-program-to-print-a
 		} // end if
 	}
 
-Algorithm 2(Reference: http://learnprogramming.machinesentience.com/java_permutations_recursion/):
+Algorithm 2(Reference: [Find all the permutations of a string in Java](http://learnprogramming.machinesentience.com/java_permutations_recursion/)):
 
 	void StrPermute(vector<string>& vec, string prefix, string str) {
 		//cout<<"prefix="<<prefix<<", str="<<str<<endl; // TEST ONLY

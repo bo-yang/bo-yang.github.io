@@ -90,6 +90,232 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-01</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><a href="https://oj.leetcode.com/problems/longest-consecutive-sequence/">The problem</a> is:</p>
+
+<blockquote>
+  <p>Given an unsorted array of integers, find the length of the longest consecutive elements sequence.</p>
+
+  <p>For example,</p>
+
+  <p>Given <code>[100, 4, 200, 1, 3, 2]</code>,the longest consecutive elements sequence is <code>[1, 2, 3, 4]</code>. Return its length: <code>4</code>.</p>
+
+  <p>Your algorithm should run in \( O(n) \) complexity.</p>
+</blockquote>
+
+<p>The most intuitive solution to this problem is sorting the array first, and then go through the sorted array and record the length of the longest consecutive sequence. However, the time complexity of this method is \(O(n \log n)\). </p>
+
+<p>In order to get the \( O(n) \) complexity, we can pick up the first element in array(say <code>num[0]</code>), and then check if <code>num[0]-1</code> and <code>num[0]+1</code> are in the array. If yes, iteratively check the upper/lower boundary of this sequence. Until the upper/lower boundaries never change, find a new element in the array that has not been accessed and start a new search. </p>
+
+<p>In this solution, a hash table(<code>unordered_map</code> in C++) is needed to record the accessibility of each element in the array. The keys to the hash table are the integeres in the array, and the values are bool - if the key has been accessed, then set to <code>false</code>; otherwise set to <code>true</code>. In average, checking the existence(in C++, the <code>find()</code> of <code>unordered_map</code>) of a key in the hash table costs constant time. Since we only access every element in the array(or hash table) for only one time, and the operations for each element only cost \(O(1)\) time, the time complexity of this method is \( O(n) \). And the space complexity is also \( O(n) \) due to the hash table.</p>
+
+<p>Following is my C++ implementation.</p>
+
+<pre>
+class Solution {
+public:
+    int longestConsecutive(vector<int> &amp;num) {
+        unordered_map&lt;int,bool&gt; map;
+		for(auto&amp; x:num)
+			map[x]=true;
+		
+		int start=num[0];
+		int end=num[0];
+		int max_len=1;
+		int cnt=1; // items have been accessed
+		int idx=1;
+		while(cnt&lt;=num.size()) {
+			//cout&lt;&lt;"start="&lt;&lt;start&lt;&lt;", end="&lt;&lt;end&lt;&lt;endl; // TEST ONLY
+			map[start]=false;
+			map[end]=false;
+			// Find the lower boundary
+			unordered_map&lt;int,bool&gt;::iterator got=map.find(start-1);
+			if(got!=map.end() &amp;&amp; got-&gt;second) { 
+				start--;
+				cnt++;
+			}
+			
+			// Find the upper boundary
+			got=map.find(end+1);
+			if(got!=map.end() &amp;&amp; got-&gt;second) { 
+				end++;
+				cnt++;
+			}
+
+			if(max_len&lt;end-start+1)
+				max_len=end-start+1;
+
+			if(!(map[start]||map[end])) { 
+				// If both start and end rich the boundaries, 
+				// find a new entry for them.
+				while(idx&lt;num.size() &amp;&amp; map[num[idx]]==false)
+					idx++;
+				start=num[idx];
+				end=num[idx];
+				map[start]=false;
+				cnt++;
+			}
+		}
+
+		return max_len;
+    }
+};
+
+</int></pre>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/06/29/top-n-numbers">Top N Numbers</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The problem is:</p>
+
+<blockquote>
+  <p>Given an arbitrarily large file and a number, \(N\), containing individual numbers on each line (e.g. 200Gb file), will output the largest \(N\) numbers, highest first. Analyse the run time/space complexity of your approach.</p>
+</blockquote>
+
+<p>The intuitive method for the top-\(N\) is to sort all numbers first, and then return the first/last \(N\) numbers. However, the time complexity of sorting is usually \(O(n \log n)\), and when the data are very big, it is impossible to do the sorting in memory directly.</p>
+
+<p>Finding the top \(N\) items can be done in \(O(n \log N) \) time, which is approximate to \( O(n) \). The key is to use a heap(in C++, it is <em>priority_queue</em>) to store the top \(N\) items during reading the huge data. <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">Heap</a> is a specialized (binary) tree-based data structure that satisfies the <em>heap property</em>: either the keys of parent nodes are always greater than or equal to those of the children and the highest key is in the root node (this kind of heap is called max heap) or the keys of parent nodes are less than or equal to those of the children and the lowest key is in the root node (min heap).</p>
+
+<p>The strategy is:</p>
+
+<ul>
+  <li>maintain an \(N\)-item long heap, and read all items iteratively.</li>
+  <li>after reading a new item from the huge data, compare it with the smallest number in heap.</li>
+  <li>if the number is greater than the smallest number in heap, then pop the top number in heap(also is the smallest one) and push this data into heap.</li>
+  <li>otherwise, continue and read a new data.</li>
+  <li>finally, dump the \(N\) items in the heap.</li>
+</ul>
+
+<p>Since the heap could mantain the <em>heap property</em> by iteself, inserting a new item won’t disorder the heap. As inserting a new item to heap requires \( O(\log N) \) time, the worst case of processing \(n\) data costs \(O(n \log N) \) time.</p>
+
+<p>Following is my C++ solution. The <em>push</em> function of <em>priority_queue</em> will invoke <a href="http://www.cplusplus.com/reference/queue/priority_queue/push/">two functions</a>: one call to push_back on the underlying container and one call to push_heap on the range that includes all the elements of the underlying container.</p>
+
+<pre><code>class Numbers {
+	public:
+		Numbers(){}
+		Numbers(long len){ genNums(len); }
+		Numbers(string file){ readNums(file); }
+
+		vector&lt;int&gt;&amp; topN(vector&lt;int&gt;&amp; nums, int N);
+		vector&lt;int&gt;&amp; topNbySort(vector&lt;int&gt;&amp; nums, int N);
+		vector&lt;int&gt;&amp; genNums(long len);
+		vector&lt;int&gt;&amp; readNums(string file);
+		void printNums();
+		void printTopN(vector&lt;int&gt;&amp; top_num);
+
+	private:
+		vector&lt;int&gt; nums;
+		vector&lt;int&gt; top_nums;
+};
+
+// Find the top N numbers by heap.
+vector&lt;int&gt;&amp; Numbers::topN(vector&lt;int&gt;&amp; nums, int N) {
+	priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt; pq; // top element is the minimum
+	pq.push(nums.front());
+	for(vector&lt;int&gt;::iterator it=nums.begin()+1;it!=nums.end();++it) {
+		if(pq.top()&lt;*it) {
+			if(pq.size()&lt;N) {
+				pq.push(*it);
+			} else {
+				pq.pop();
+				pq.push(*it);
+			}
+		}
+	}
+	while(!pq.empty()) {
+		top_nums.push_back(pq.top());
+		pq.pop();
+	}
+
+	return top_nums;
+}
+
+// Find the top N numbers using sort.
+vector&lt;int&gt;&amp; Numbers::topNbySort(vector&lt;int&gt;&amp; nums, int N) {
+	sort(nums.begin(),nums.end()-1);
+	auto rit=nums.crbegin();
+	for(int i=0;i&lt;N;++i) {
+		top_nums.push_back(*rit);
+		rit++;
+	}
+	return top_nums;
+}
+
+void Numbers::printTopN(vector&lt;int&gt;&amp; top_num) {
+	cout&lt;&lt;"The top "&lt;&lt;top_num.size()&lt;&lt;" numbers are:"&lt;&lt;endl;
+	for(auto&amp; x:top_num)
+		cout&lt;&lt;x&lt;&lt;" ";
+	cout&lt;&lt;endl;
+}
+
+vector&lt;int&gt;&amp; Numbers::genNums(long len) {
+	for(int i=0;i&lt;len;++i)
+		nums.push_back(rand()%len+1);
+
+	return nums;
+}
+
+vector&lt;int&gt;&amp; Numbers::readNums(string file) {
+	fstream fs(file,std::fstream::in);
+	if (fs.is_open()) {
+		while(!fs.eof()) {
+			int tmp;
+			fs&gt;&gt;tmp;
+			nums.push_back(tmp);
+		}
+	} else {
+		cerr&lt;&lt;"Failed to open file "&lt;&lt;file&lt;&lt;endl;
+	}
+	fs.close();
+	nums.pop_back(); // delete the last number, because it was read two times.
+	return nums;
+}
+
+void Numbers::printNums() {
+	for(auto&amp; x:nums)
+		cout&lt;&lt;x&lt;&lt;" ";
+	cout&lt;&lt;endl;
+}
+</code></pre>
+
+<p>I tested the time costs of sorting and heap when handling 10,000,000 integers respectively. Obviously the heap method is 5 times faster than sort method.</p>
+
+<pre>
+macmini:TopNumbers boyang$ time ./top_nums_sort 
+The top 10 numbers are:
+8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
+
+real	0m6.646s
+user	0m6.589s
+sys	0m0.052s
+
+macmini:TopNumbers boyang$ time ./top_nums_heap 
+The top 10 numbers are:
+9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
+
+real	0m1.182s
+user	0m1.130s
+sys	0m0.043s
+</pre>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2014/06/27/nqueens">N-Queens Problem</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
@@ -1507,309 +1733,6 @@ private:
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/04/30/fisher-vector-in-action-recognition">Action Recognition with Fisher Vectors</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-04-30</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Machine Learning-ref" rel="nofollow">Machine Learning</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(<a href="http://crcv.ucf.edu/data/UCF101.php">http://crcv.ucf.edu/data/UCF101.php</a>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. </p>
-
-<p>You can find my Matlab code from <a href="https://github.com/bo-yang">my GitHub Channel</a>:</p>
-
-<ul>
-  <li><a href="https://github.com/bo-yang/dtf_fisher">DTF + Fisher Vector code</a></li>
-  <li><a href="https://github.com/bo-yang/stip_fisher">STIP + Fisher Vector code</a></li>
-</ul>
-
-<h3 id="dense-trajectory-features">Dense Trajectory Features</h3>
-
-<p>For some details of DTF, please refer to <a href="http://bo-yang.github.io/2014/01/10/dense-trajectory-notes/">my previous post</a>.</p>
-
-<h3 id="pipeline">Pipeline</h3>
-
-<p>The pipeline of integrating DTF/STIP features and Fisher vectors is shown in Figure 1. The first step is subsampling a fixed number of STIP/DTF features(in my implementation, 1000) from each
-video clip in training list, which will be used to do PCA and train
-Gaussian Mixture Models(GMMs).</p>
-
-<p>After getting the PCA coefficients and GMM parameters, treat UCF 101 video clips
-action by action. For each action, first load all train videos in this
-action(positive videos), and then randomly load the same number of video
-clips not in this action(negative videos). All of the loaded videos are
-multiplied with the saved PCA coefficients in order to reduce dimensions
-and rotate matrices. Fisher vectors are computed for each loaded video
-clip. Finally a binary SVM model is trained with both the positive and negative
-Fisher vectors.</p>
-
-<p>When dealing with the test videos, similar process is adopted. The only
-difference is that the Fisher vectors are used for SVM classification,
-which is based on the SVM model trained with training videos.</p>
-
-<p><img src="/assets/images/fisher_pipeline.png" alt="Figure 1. Pipeline of UCF101 action recognition using Fisher
-vector." />.</p>
-
-<p>To well utilize the STIP or DTF features, features(HOG, HOF, MBH, etc.) are treated
-separately and they are only combined(simple concatenation) after computing Fisher
-vectors before linear SVM classification.</p>
-
-<h3 id="pre-processing">Pre-processing</h3>
-
-<h4 id="stip-features">STIP Features</h4>
-
-<p>The offcial STIP features are stored in class, which means that all the STIP
-info of all video clips in each class are mixed together in a file. To
-extract STIP features for each video, I wrote a script(mk_stip_data)
-to separate STIP features for each video clip. And all the following
-operations are based on each video clip.</p>
-
-<h4 id="dtf-features">DTF Features</h4>
-
-<p>Since the DTF features are “dense”(which means a lot of data), it took me 4~5 days to exact the (improved) DTF features of UCF 101 clips with the dedault parameters on a modern Linux desktop(I used 10 threads for extraction in paralle). The installation of DTF tools was also a very tricky task.</p>
-
-<p>To save space, all the DTF features were compressed. For UCF101, it would cost about 500GB after zip compression. And the required space would doubled if not compressing. If you don’t want to save the DTF features, you can call the DTF tools in Matlab and discard the extracted features.</p>
-
-<h3 id="fisher-vector">Fisher Vector</h3>
-
-<p>The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.  </p>
-
-<p>Following is the algorithm of computing Fisher vectors from features(actually I implemented this algorithm in Matlab, and if you are interested, please refer <a href="https://github.com/bo-yang/stip_fisher/blob/master/fisher_encode.m">here</a>):</p>
-
-<p><img src="/assets/images/fisher_vector_algorithm.png" alt="Figure 2. Algorithm of computing Fisher vectors." />.</p>
-
-<p>During the subsampling of STIP features, I randomly chose 1000 HOG or
-HOF features from each training video clip. For some videos, if the
-total number of features were less than 1000, I would use all of their
-features. All the subsampled features are square rooted after L1
-normalization.</p>
-
-<p>After that, the dimensions of the subsampled features were reduced to
-half of their original dimensions by doing PCA. At this step, the
-coefficients of PCA were recorded, which would be used in later. The
-GMMs were trained with the half-sized features, and the parameters of
-GMMs(i.e. weight, mean and covariance) were stored for the following
-process. In my program, the GMM code implemented by Oxford Visual
-Geometry
-Group(VGG, http://www.robots.ox.ac.uk/~vgg/software/enceval_toolkit/)
-is used, which eventually call VLFeat(http://www.vlfeat.org/). In my
-code, 256 Gaussians were used.</p>
-
-<h3 id="svm-classification">SVM Classification</h3>
-
-<p>Binary SVM classification(<a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a>) is used in my implementation.
-For each action, positive video clips are labeled as 1 while negative
-videos are as labeled -1 during training and test. In my code, SVM cost
-is set to 100. The option of SVM training is:</p>
-
-<blockquote>
-  <p>-t 0 -s 0 -q -c 100 -b 1.</p>
-</blockquote>
-
-<h3 id="results">Results</h3>
-
-<p>The action recognition accuracy of all the 101 actions was 77.95% when
-using above pipeline. And the confusion matrix is shown in Figure 3.</p>
-
-<p><img src="/assets/images/confusionmat_101.png" alt="Figure 3. Confusion matrix of all the 101 actions with STIP features." /></p>
-
-<p>The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was around 85%, about 8% higher than using BOV representation(internal test). And the best result I got with the ISA network on UCF 101 was only 58% last year.</p>
-
-<h3 id="conclusion">Conclusion</h3>
-
-<p>It is obvious that Fisher vector can lead to better results than Bag-of-visual words in action recognition. Compared to other low-level visual features, DTF features have more advantages in action recognition. However, in the long run I still believe deep learning methods - when deep neural networks could be trained with millions of vidios[5], they would learn more info from scratch and achieve state-of-the-art accuracy.</p>
-
-<h3 id="references">References</h3>
-
-<ol>
-  <li>Gabriela Csurka, Florent Perronnin, <em>Fisher Vectors: Beyond Bag-of-Visual-Words Image Representations</em> , Communications in Computer and Information Science Volume 229, 2011, pp 28-42.</li>
-  <li>Chih-Chung Chang and Chih-Jen Lin. <em>Libsvm: A library for support vector machines</em>. ACM Trans. Intell. Syst. Technol., 2(3):27:1–27:27, May 2011.</li>
-  <li>Heng Wang and Cordelia Schmid. <em>Action Recognition with Improved Trajectories</em>. In ICCV 2013 - IEEE International Conference on Computer Vision, Sydney, Australia, December 2013. IEEE.</li>
-  <li>Jorge Sanchez, Florent Perronnin, Thomas Mensink, and Jakob Verbeek. <em>Image Classification with the Fisher Vector: Theory and Practice</em>. International Journal of Computer Vision, 105(3):222–245, December 2013.</li>
-  <li>Andrej Karpathy, George Toderici, Sanketh Shetty, Thomas Leung, Rahul Sukthankar, and Li Fei-Fei. <em>Large-scale video classification with convolutional neural networks</em>. In CVPR, 2014.</li>
-</ol>
-
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/04/18/inclusion-property">Implementing Inclusion Property with SimpleScalar</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-04-18</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Architecture-ref" rel="nofollow">Architecture</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<ol>
-  <li><a href="#inclusion_property">Inclusion Property</a></li>
-  <li><a href="#code_change">Code Change</a></li>
-  <li><a href="#experiments">Experiments</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
-</ol>
-
-<h3 id="a-nameinclusionpropertyinclusion-propertya">1. <a name="inclusion_property">Inclusion Property</a></h3>
-
-<p>If the two-level cache system satisfies the inclusion property, it means everything in the primary cache is also in the secondary cache and all snooping can be done by the secondary cache. To implement the inclusion property, two requirements must be met:</p>
-
-<ul>
-  <li>Whenever a new block of data are loaded into(or removed from) L1 cache, they also should be loaded into(or removed from) the L2 cache.</li>
-  <li>Whenever a block of data are loaded into(or removed from) L2 cache, they also should be loaded into(or removed from) the L1 cache.</li>
-</ul>
-
-<p><em>SimpleScalar</em> already implemented the first requirement. When there is a cache miss in L1 cache, L2 cache will be accessed for the block. If the block are also cannot be found in the L2 cache, they will be loaded from the memory. The data consistency is kept in this way.</p>
-
-<p>However, the second requirement is not supported by the official SimpleScalar. To implement this feature, the data block must be checked every time L2 cache encounter a cache miss. Since all cache read/write operations are done in function cache_access(), the action of checking and removing data blocks from L1 cache should also be added into that function with the condition of accessing L2 cache.</p>
-
-<h3 id="a-namecodechangecode-changea">2. <a name="code_change">Code Change</a></h3>
-
-<p>Since there is no existing way in cache_t to find the upper level cache(DL1) of the DL2 cache, a new structure element </p>
-
-<p><code>struct cache_t *ucp;		/* upper level cache */</code></p>
-
-<p>should be added into struct cache_t. This pointer should be set to NULL in function cache_create() if the cache name is not “dl2”. Otherwise the pointer to DL1 cache should be assigned.</p>
-
-<p>To support the new added struct element, a new parameter </p>
-
-<p><code>struct cache_t *ucp;		/* upper level cache */</code></p>
-
-<p>should also be added into function cache_create(), which is called in sim-cache.c and sim-outorder.c. The new interface of this function becomes:</p>
-
-<pre><code>/* create and initialize a general cache structure */
-struct cache_t *			/* pointer to cache created */
-cache_create(char *name,		/* name of the cache */
-	     int nsets,			/* total number of sets in cache */
-	     int bsize,			/* block (line) size of cache */
-	     int balloc,		/* allocate data space for blocks? */
-	     int usize,			/* size of user data to alloc w/blks */
-	     int assoc,			/* associativity of cache */
-	     enum cache_policy policy,	/* replacement policy w/in sets */
-	     /* block access function, see description w/in struct cache def */
-	     unsigned int (*blk_access_fn)(enum mem_cmd cmd,
-					   md_addr_t baddr, int bsize,
-					   struct cache_blk_t *blk,
-					   tick_t now),
-	     unsigned int hit_latency,/* latency in cycles for a hit */
-	     struct cache_t *ucp);	/* upper level cache */
-</code></pre>
-
-<p>For DL2 cache, the pointer ucp is set to cache_dl1 in sim-cache.c in function cache_create(). For other cache, NULL is set. For example:</p>
-
-<pre><code>cache_dl2 = cache_create(name, nsets, bsize, /* balloc */FALSE,
-				   /* usize */0, assoc, cache_char2policy(c),
-				   dl2_access_fn, /* hit latency */1,cache_dl1);
-</code></pre>
-
-<p>As checking and removing blocks from DL1 only involves DL1 and DL2 cache, all the operations can be encapsulated in a function cache_inclusion(). This function is called after blocks moved out from DL2 in the case of cache miss. Then check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.</p>
-
-<pre><code>/*
- * Inclusion Property:
- * 	Make sure data leave DL2 also leave DL1 
- * */
-int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
-		struct cache_t *cp_l2, /* L2 cache */
-		tick_t now)		/* time of access */
-{
-
-	/* Loop through each set and each block in the L1 cache, 
-	 * probe the L2 cache to guaranttee the inclusion */
-	int num_l1_sets = cp_l1-&gt;set_mask + 1;
-	int set;
-  	struct cache_blk_t *blk;
-	md_addr_t addr;
-	int hindex;
-	int num_hash_buckets = cp_l1-&gt;hsize;
-	int there; /* indicates if the L1 line is in L2 */
-	int lat=0;
-
-	/* for each set */
-	for(set=0; set&lt;num_l1_sets; set++){
-		/* for each block in a higly-associativity cache*/
-  		if (num_hash_buckets){
-			/* for each hash bucket */
-			for(hindex=0; hindex&lt;num_hash_buckets; hindex++){
-			    /* for each block in a hash bucket */
-			    for (blk=cp_l1-&gt;sets[set].hash[hindex];
-				 blk;
-				 blk=blk-&gt;hash_next)
-				{	
-					/* Probe the L2 cache for this block */
-					addr = CACHE_MK_BADDR(cp_l1, blk-&gt;tag, set);
-					there = cache_probe(cp_l2, addr);
-					if(!there){ // line in DL1 but not in DL2
-						lat += cache_flush_addr(cp_l1,addr,now);
-						//fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
-					}
-		   		}/* end for block in a bucket */
-			}/* end for each bucket */
-  		}/* end if highly associative cache*/
-
-		/* for each block in a low-associativity cache*/
-		else {
-			for (blk=cp_l1-&gt;sets[set].way_head;
-			 blk;
-			 blk=blk-&gt;way_next)
-    		{
-				/* Probe the L2 cache for this block */
-				addr = CACHE_MK_BADDR(cp_l1, blk-&gt;tag, set);
-				there = cache_probe(cp_l2, addr);
-				if(!there){ // line in DL1 but not in DL2
-					lat += cache_flush_addr(cp_l1,addr,now);
-					//fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
-				}
-		    }/* end for */
-  		}/* end for each block */
-	}/* end for each set */
-	
-	return lat;
-}
-</code></pre>
-
-<p>This function should be called in cache_access() after removing blocks from DL2. The basic idea of the above function is to  check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.</p>
-
-<p>The code segment for calling cache_inclusion() in cache_access() is:
-	/* cache block not found */</p>
-
-<pre><code> /* **MISS** */
- cp-&gt;misses++;
-…...
-
-/* link this entry back into the hash table */
-  if (cp-&gt;hsize)
-    link_htab_ent(cp, &amp;cp-&gt;sets[set], repl);
-
-  /* Inclusion property:
-   * 	Make sure data leave DL2 also leave DL1, or vice versa */
-  if(!mystricmp(cp-&gt;name,"dl2") &amp;&amp; cp-&gt;ucp != NULL) 
-  {
-  	lat += cache_inclusion(cp-&gt;ucp,cp,now);
-  }
-
-  /* return latency of the operation */
-  return lat;
-</code></pre>
-
-<h3 id="a-nameexperimentsexperimentsa">3. <a name="experiments">Experiments</a></h3>
-
-<p>In my experiment, three benchmarks are used: gcc, mcf and vpr. For each benchmark, three different configurations are tested, which are the same as the three commands listed in the project requirement. Compared to the SimpleScalar without inclusion property, it took 2 times longer time after implementing the inclusion property. </p>
-
-<p>After implementing inclusion property, the miss rates of DL1 generally increase a little, while the miss rates of DL2 decrease or keep the same. This is consistent with the code change, because due to inclusion property, statistically fewer data can be stored in DL1, but more valid data can be stored in DL2 cache. </p>
-
-<p><img src="/assets/images/2014-04-18-inclusion-property/dl1.jpg" alt="Miss rate of DL1" /></p>
-
-<p>Figure 1. Miss rate of DL1, with(red) and without(blue) inclusion.</p>
-
-<p><img src="/assets/images/2014-04-18-inclusion-property/dl2.jpg" alt="Miss rate of DL2" /></p>
-
-<p>Figure 2. Miss rate of DL2, with(red) and without(blue) inclusion.</p>
-
-<h3 id="a-nameconclusionconclusiona">4. <a name="conclusion">Conclusion</a></h3>
-
-<p>In this project I implemented the inclusion property with SimpleScalar. I tested my change with three different benchmarks in three different configurations. Experiments show proves the correctness of my change. Inclusion property cannot guarantee the overall performance the cache, although it seems like a promising technique.</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1852,7 +1775,7 @@ int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">25</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">27</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -1864,7 +1787,7 @@ int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">50</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">52</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -1942,6 +1865,10 @@ int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
+			
+  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
+			
   			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
 			
   			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
@@ -1957,10 +1884,6 @@ int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
   			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
-			
-  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></li>
-			
-  			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
 			</ul>
 		</div>

@@ -90,6 +90,207 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2014/08/03/string-permutation">String Permutation</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-08-03</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The <em>string permutation</em> problem aims to find all the <em>permutations</em> of a string(re-arrangement of characters in this string). A string of length <code>n</code> has <code>n!</code> permutations.</p>
+
+<p>The essence of string permutation is recursively swapping each letter with other letters in this string. Following image shows the permutation of string “ABC”. For each step, fix the left part of the string, and swap two letters in the right part, until there is no letters left in the right part. </p>
+
+<p><img src="http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif" width="565" height="231" class="aligncenter size-full wp-image-118925" />&lt;/img&gt;</p>
+
+<p>Based on above strategy, the following two recusive algorithm could be implemented.</p>
+
+<p>Algorithm 1(Reference: <a href="http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/">Write a C program to print all permutations of a given string</a>): </p>
+
+<p><code>C++
+void StrPermute(string&amp; str, vector&lt;string&gt;&amp; vec, int i) {
+	if(i==str.length())
+		vec.push_back(str);
+	else {
+		for(int j=i;j&lt;str.size();++j) {
+			std::swap(str[i],str[j]);
+			StrPermute(str,vec,i+1);
+			std::swap(str[i],str[j]);
+		}
+	} // end if
+}
+</code></p>
+
+<p>Algorithm 2(Reference: <a href="http://learnprogramming.machinesentience.com/java_permutations_recursion/">Find all the permutations of a string in Java</a>):</p>
+
+<p><code>C++
+void StrPermute(vector&lt;string&gt;&amp; vec, string prefix, string str) {
+	//cout&lt;&lt;"prefix="&lt;&lt;prefix&lt;&lt;", str="&lt;&lt;str&lt;&lt;endl; // TEST ONLY
+	int n=str.length();
+	if(n==0)
+		vec.push_back(prefix);
+	else {
+		for(int j=0;j&lt;n;++j)
+			StrPermute(vec,prefix+str[j],str.substr(0,j)+str.substr(j+1));
+	} // end if
+}
+</code></p>
+
+<p>The permuted strings are stored as a vector of string. For both algorithms, the time complexities are <code>O(n*n!)</code>.</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-28</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The <a href="https://oj.leetcode.com/problems/word-search/">Word Search</a> states:</p>
+
+<blockquote>
+  <p>Given a 2D board and a word, find if the word exists in the grid.</p>
+
+  <p>The word can be constructed from letters of sequentially adjacent cell, where “adjacent” cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.</p>
+
+  <p>For example,</p>
+
+  <p>Given board =</p>
+
+  <p>[</p>
+
+  <p>[“ABCE”],</p>
+
+  <p>[“SFCS”],</p>
+
+  <p>[“ADEE”]</p>
+
+  <p>]</p>
+</blockquote>
+
+<blockquote>
+  <ul>
+    <li>word = “ABCCED”, -&gt; returns <code>true</code>,</li>
+    <li>word = “SEE”, -&gt; returns <code>true</code>,</li>
+    <li>word = “ABCB”, -&gt; returns <code>false</code>.</li>
+  </ul>
+</blockquote>
+
+<p>The most popular solution to this problem is recursive, such as <a href="http://yucoding.blogspot.com/2013/02/leetcode-question-124-word-search.html">http://yucoding.blogspot.com/2013/02/leetcode-question-124-word-search.html</a>.</p>
+
+<p>However, I tried to solve this problem without recursion. In my implementation, three stacks are used to record the possible coordinates in <code>board</code>, the character position in <code>word</code>(with respect to each candidate cell) and the cells have been accessed to each possible coordinates, repectively. </p>
+
+<p>The first step is finding the possible cells for the first char in <code>word</code>, and push coordinates, position of the char in <code>word</code>(here is 0) and accessed cells(here are matched cells) into stacks. </p>
+
+<p>The second step is exploring all the neighbors of cells in stack, and match each char in <code>word</code> respectively. For a match, push contexts into stack and try to match the next char. For a mismatch, pop the top of stacks and try another candidate. If the search could reach the end of the word, then we successfully find the word. If the stacks turns empty and there are still chars left, that means the seach fails.</p>
+
+<p>Following is my C++ implementation of the non-recursive solution.</p>
+
+<pre><code>class Solution {
+public:
+    bool exist(vector&lt;vector&lt;char&gt; &gt; &amp;board, string word) {
+		if(board.empty())
+			return false;
+
+		std::stack&lt;std::pair&lt;int,int&gt;&gt; st_coord; // coordinates of the board
+		std::stack&lt;int&gt; st_char; // store characters of the words
+		vector&lt;std::pair&lt;int,int&gt; &gt; vec;
+		std::stack&lt;vector&lt;std::pair&lt;int,int&gt; &gt; &gt; st_access;
+		bool found=false;
+        for(int l=0;l&lt;word.length();) {
+			if(l==0) { // Find the first character of word in board
+				for(int i=0;i&lt;board.size();++i) {
+					for(int j=0;j&lt;board[0].size();++j)
+						if(board[i][j]==word[l]){
+							st_coord.push(std::pair&lt;int,int&gt;(i,j));
+							st_char.push(l);
+							vec.push_back(std::pair&lt;int,int&gt;(i,j));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+							if(word.size()==1) 
+								return true;
+						}
+				}
+				l++;
+			} else {
+				if(st_coord.empty()) // cannot find the first character
+					break;
+
+				// Explore all possible cells to match each character of the word
+				while(!st_coord.empty()) {
+					int x=st_coord.top().first;
+					int y=st_coord.top().second;
+					vec=st_access.top();
+					l=st_char.top()+1;
+					if(l==word.length()) {
+						found=true;
+						break;
+					}
+					
+					st_coord.pop();
+					st_char.pop();
+					st_access.pop();
+
+					if(x-1&gt;=0 &amp;&amp; board[x-1][y]==word[l]) {
+						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
+							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x-1,y));
+						if(got==vec.end()) {
+							st_coord.push(std::pair&lt;int,int&gt;(x-1,y));
+							st_char.push(l);
+							vec.push_back(std::pair&lt;int,int&gt;(x-1,y));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+						}
+					}
+					if(x+1&lt;board.size() &amp;&amp; board[x+1][y]==word[l]) {
+						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
+							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x+1,y));
+						if(got==vec.end()) {
+							st_coord.push(std::pair&lt;int,int&gt;(x+1,y));
+							st_char.push(l);
+							vec.push_back(std::pair&lt;int,int&gt;(x+1,y));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+						}
+					}
+					if(y-1&gt;=0 &amp;&amp; board[x][y-1]==word[l]) {
+						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
+							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x,y-1));
+						if(got==vec.end()) {
+							st_coord.push(std::pair&lt;int,int&gt;(x,y-1));
+							st_char.push(l);
+							vec.push_back(std::pair&lt;int,int&gt;(x,y-1));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+						}
+					}
+					if(y+1&lt;board[0].size() &amp;&amp; board[x][y+1]==word[l]) {
+						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
+							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x,y+1));
+						if(got==vec.end()) {
+							st_coord.push(std::pair&lt;int,int&gt;(x,y+1));
+							st_char.push(l);
+							vec.push_back(std::pair&lt;int,int&gt;(x,y+1));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+						}
+					}
+				}
+			} // end else
+		} // end for l
+
+		return found;
+    }
+};
+</code></pre>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
@@ -1173,232 +1374,6 @@ public:
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-01</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/longest-consecutive-sequence/">The problem</a> is:</p>
-
-<blockquote>
-  <p>Given an unsorted array of integers, find the length of the longest consecutive elements sequence.</p>
-
-  <p>For example,</p>
-
-  <p>Given <code>[100, 4, 200, 1, 3, 2]</code>,the longest consecutive elements sequence is <code>[1, 2, 3, 4]</code>. Return its length: <code>4</code>.</p>
-
-  <p>Your algorithm should run in \( O(n) \) complexity.</p>
-</blockquote>
-
-<p>The most intuitive solution to this problem is sorting the array first, and then go through the sorted array and record the length of the longest consecutive sequence. However, the time complexity of this method is \(O(n \log n)\). </p>
-
-<p>In order to get the \( O(n) \) complexity, we can pick up the first element in array(say <code>num[0]</code>), and then check if <code>num[0]-1</code> and <code>num[0]+1</code> are in the array. If yes, iteratively check the upper/lower boundary of this sequence. Until the upper/lower boundaries never change, find a new element in the array that has not been accessed and start a new search. </p>
-
-<p>In this solution, a hash table(<code>unordered_map</code> in C++) is needed to record the accessibility of each element in the array. The keys to the hash table are the integeres in the array, and the values are bool - if the key has been accessed, then set to <code>false</code>; otherwise set to <code>true</code>. In average, checking the existence(in C++, the <code>find()</code> of <code>unordered_map</code>) of a key in the hash table costs constant time. Since we only access every element in the array(or hash table) for only one time, and the operations for each element only cost \(O(1)\) time, the time complexity of this method is \( O(n) \). And the space complexity is also \( O(n) \) due to the hash table.</p>
-
-<p>Following is my C++ implementation.</p>
-
-<pre>
-class Solution {
-public:
-    int longestConsecutive(vector<int> &amp;num) {
-        unordered_map&lt;int,bool&gt; map;
-		for(auto&amp; x:num)
-			map[x]=true;
-		
-		int start=num[0];
-		int end=num[0];
-		int max_len=1;
-		int cnt=1; // items have been accessed
-		int idx=1;
-		while(cnt&lt;=num.size()) {
-			//cout&lt;&lt;"start="&lt;&lt;start&lt;&lt;", end="&lt;&lt;end&lt;&lt;endl; // TEST ONLY
-			map[start]=false;
-			map[end]=false;
-			// Find the lower boundary
-			unordered_map&lt;int,bool&gt;::iterator got=map.find(start-1);
-			if(got!=map.end() &amp;&amp; got-&gt;second) { 
-				start--;
-				cnt++;
-			}
-			
-			// Find the upper boundary
-			got=map.find(end+1);
-			if(got!=map.end() &amp;&amp; got-&gt;second) { 
-				end++;
-				cnt++;
-			}
-
-			if(max_len&lt;end-start+1)
-				max_len=end-start+1;
-
-			if(!(map[start]||map[end])) { 
-				// If both start and end rich the boundaries, 
-				// find a new entry for them.
-				while(idx&lt;num.size() &amp;&amp; map[num[idx]]==false)
-					idx++;
-				start=num[idx];
-				end=num[idx];
-				map[start]=false;
-				cnt++;
-			}
-		}
-
-		return max_len;
-    }
-};
-
-</int></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/29/top-n-numbers">Top N Numbers</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The problem is:</p>
-
-<blockquote>
-  <p>Given an arbitrarily large file and a number, \(N\), containing individual numbers on each line (e.g. 200Gb file), will output the largest \(N\) numbers, highest first. Analyse the run time/space complexity of your approach.</p>
-</blockquote>
-
-<p>The intuitive method for the top-\(N\) is to sort all numbers first, and then return the first/last \(N\) numbers. However, the time complexity of sorting is usually \(O(n \log n)\), and when the data are very big, it is impossible to do the sorting in memory directly.</p>
-
-<p>Finding the top \(N\) items can be done in \(O(n \log N) \) time, which is approximate to \( O(n) \). The key is to use a heap(in C++, it is <em>priority_queue</em>) to store the top \(N\) items during reading the huge data. <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">Heap</a> is a specialized (binary) tree-based data structure that satisfies the <em>heap property</em>: either the keys of parent nodes are always greater than or equal to those of the children and the highest key is in the root node (this kind of heap is called max heap) or the keys of parent nodes are less than or equal to those of the children and the lowest key is in the root node (min heap).</p>
-
-<p>The strategy is:</p>
-
-<ul>
-  <li>maintain an \(N\)-item long heap, and read all items iteratively.</li>
-  <li>after reading a new item from the huge data, compare it with the smallest number in heap.</li>
-  <li>if the number is greater than the smallest number in heap, then pop the top number in heap(also is the smallest one) and push this data into heap.</li>
-  <li>otherwise, continue and read a new data.</li>
-  <li>finally, dump the \(N\) items in the heap.</li>
-</ul>
-
-<p>Since the heap could mantain the <em>heap property</em> by iteself, inserting a new item won’t disorder the heap. As inserting a new item to heap requires \( O(\log N) \) time, the worst case of processing \(n\) data costs \(O(n \log N) \) time.</p>
-
-<p>Following is my C++ solution. The <em>push</em> function of <em>priority_queue</em> will invoke <a href="http://www.cplusplus.com/reference/queue/priority_queue/push/">two functions</a>: one call to push_back on the underlying container and one call to push_heap on the range that includes all the elements of the underlying container.</p>
-
-<pre><code>class Numbers {
-	public:
-		Numbers(){}
-		Numbers(long len){ genNums(len); }
-		Numbers(string file){ readNums(file); }
-
-		vector&lt;int&gt;&amp; topN(vector&lt;int&gt;&amp; nums, int N);
-		vector&lt;int&gt;&amp; topNbySort(vector&lt;int&gt;&amp; nums, int N);
-		vector&lt;int&gt;&amp; genNums(long len);
-		vector&lt;int&gt;&amp; readNums(string file);
-		void printNums();
-		void printTopN(vector&lt;int&gt;&amp; top_num);
-
-	private:
-		vector&lt;int&gt; nums;
-		vector&lt;int&gt; top_nums;
-};
-
-// Find the top N numbers by heap.
-vector&lt;int&gt;&amp; Numbers::topN(vector&lt;int&gt;&amp; nums, int N) {
-	priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt; pq; // top element is the minimum
-	pq.push(nums.front());
-	for(vector&lt;int&gt;::iterator it=nums.begin()+1;it!=nums.end();++it) {
-		if(pq.top()&lt;*it) {
-			if(pq.size()&lt;N) {
-				pq.push(*it);
-			} else {
-				pq.pop();
-				pq.push(*it);
-			}
-		}
-	}
-	while(!pq.empty()) {
-		top_nums.push_back(pq.top());
-		pq.pop();
-	}
-
-	return top_nums;
-}
-
-// Find the top N numbers using sort.
-vector&lt;int&gt;&amp; Numbers::topNbySort(vector&lt;int&gt;&amp; nums, int N) {
-	sort(nums.begin(),nums.end()-1);
-	auto rit=nums.crbegin();
-	for(int i=0;i&lt;N;++i) {
-		top_nums.push_back(*rit);
-		rit++;
-	}
-	return top_nums;
-}
-
-void Numbers::printTopN(vector&lt;int&gt;&amp; top_num) {
-	cout&lt;&lt;"The top "&lt;&lt;top_num.size()&lt;&lt;" numbers are:"&lt;&lt;endl;
-	for(auto&amp; x:top_num)
-		cout&lt;&lt;x&lt;&lt;" ";
-	cout&lt;&lt;endl;
-}
-
-vector&lt;int&gt;&amp; Numbers::genNums(long len) {
-	for(int i=0;i&lt;len;++i)
-		nums.push_back(rand()%len+1);
-
-	return nums;
-}
-
-vector&lt;int&gt;&amp; Numbers::readNums(string file) {
-	fstream fs(file,std::fstream::in);
-	if (fs.is_open()) {
-		while(!fs.eof()) {
-			int tmp;
-			fs&gt;&gt;tmp;
-			nums.push_back(tmp);
-		}
-	} else {
-		cerr&lt;&lt;"Failed to open file "&lt;&lt;file&lt;&lt;endl;
-	}
-	fs.close();
-	nums.pop_back(); // delete the last number, because it was read two times.
-	return nums;
-}
-
-void Numbers::printNums() {
-	for(auto&amp; x:nums)
-		cout&lt;&lt;x&lt;&lt;" ";
-	cout&lt;&lt;endl;
-}
-</code></pre>
-
-<p>I tested the time costs of sorting and heap when handling 10,000,000 integers respectively. Obviously the heap method is 5 times faster than sort method.</p>
-
-<pre>
-macmini:TopNumbers boyang$ time ./top_nums_sort 
-The top 10 numbers are:
-8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
-
-real	0m6.646s
-user	0m6.589s
-sys	0m0.052s
-
-macmini:TopNumbers boyang$ time ./top_nums_heap 
-The top 10 numbers are:
-9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
-
-real	0m1.182s
-user	0m1.130s
-sys	0m0.043s
-</pre>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1441,7 +1416,7 @@ sys	0m0.043s
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">25</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">27</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -1453,7 +1428,7 @@ sys	0m0.043s
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">50</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">52</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -1531,6 +1506,10 @@ sys	0m0.043s
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
+			
+  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
+			
   			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
 			
   			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
@@ -1546,10 +1525,6 @@ sys	0m0.043s
   			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
-			
-  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></li>
-			
-  			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
 			</ul>
 		</div>

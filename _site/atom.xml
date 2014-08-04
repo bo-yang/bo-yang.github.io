@@ -4,13 +4,206 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-07-23T10:51:34-07:00</updated>
+ <updated>2014-08-03T23:46:06-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>String Permutation</title>
+   <link href="http://bo-yang.github.com//2014/08/03/string-permutation"/>
+   <updated>2014-08-03T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/08/03/string-permutation</id>
+   <content type="html">&lt;p&gt;The &lt;em&gt;string permutation&lt;/em&gt; problem aims to find all the &lt;em&gt;permutations&lt;/em&gt; of a string(re-arrangement of characters in this string). A string of length &lt;code&gt;n&lt;/code&gt; has &lt;code&gt;n!&lt;/code&gt; permutations.&lt;/p&gt;
+
+&lt;p&gt;The essence of string permutation is recursively swapping each letter with other letters in this string. Following image shows the permutation of string “ABC”. For each step, fix the left part of the string, and swap two letters in the right part, until there is no letters left in the right part. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif&quot; width=&quot;565&quot; height=&quot;231&quot; class=&quot;aligncenter size-full wp-image-118925&quot; /&gt;&amp;lt;/img&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;Based on above strategy, the following two recusive algorithm could be implemented.&lt;/p&gt;
+
+&lt;p&gt;Algorithm 1(Reference: &lt;a href=&quot;http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/&quot;&gt;Write a C program to print all permutations of a given string&lt;/a&gt;): &lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;C++
+void StrPermute(string&amp;amp; str, vector&amp;lt;string&amp;gt;&amp;amp; vec, int i) {
+	if(i==str.length())
+		vec.push_back(str);
+	else {
+		for(int j=i;j&amp;lt;str.size();++j) {
+			std::swap(str[i],str[j]);
+			StrPermute(str,vec,i+1);
+			std::swap(str[i],str[j]);
+		}
+	} // end if
+}
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Algorithm 2(Reference: &lt;a href=&quot;http://learnprogramming.machinesentience.com/java_permutations_recursion/&quot;&gt;Find all the permutations of a string in Java&lt;/a&gt;):&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;C++
+void StrPermute(vector&amp;lt;string&amp;gt;&amp;amp; vec, string prefix, string str) {
+	//cout&amp;lt;&amp;lt;&quot;prefix=&quot;&amp;lt;&amp;lt;prefix&amp;lt;&amp;lt;&quot;, str=&quot;&amp;lt;&amp;lt;str&amp;lt;&amp;lt;endl; // TEST ONLY
+	int n=str.length();
+	if(n==0)
+		vec.push_back(prefix);
+	else {
+		for(int j=0;j&amp;lt;n;++j)
+			StrPermute(vec,prefix+str[j],str.substr(0,j)+str.substr(j+1));
+	} // end if
+}
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The permuted strings are stored as a vector of string. For both algorithms, the time complexities are &lt;code&gt;O(n*n!)&lt;/code&gt;.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Word Search Problem - Non-recursive Solution</title>
+   <link href="http://bo-yang.github.com//2014/07/28/word-search"/>
+   <updated>2014-07-28T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/07/28/word-search</id>
+   <content type="html">&lt;p&gt;The &lt;a href=&quot;https://oj.leetcode.com/problems/word-search/&quot;&gt;Word Search&lt;/a&gt; states:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a 2D board and a word, find if the word exists in the grid.&lt;/p&gt;
+
+  &lt;p&gt;The word can be constructed from letters of sequentially adjacent cell, where “adjacent” cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.&lt;/p&gt;
+
+  &lt;p&gt;For example,&lt;/p&gt;
+
+  &lt;p&gt;Given board =&lt;/p&gt;
+
+  &lt;p&gt;[&lt;/p&gt;
+
+  &lt;p&gt;[“ABCE”],&lt;/p&gt;
+
+  &lt;p&gt;[“SFCS”],&lt;/p&gt;
+
+  &lt;p&gt;[“ADEE”]&lt;/p&gt;
+
+  &lt;p&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;word = “ABCCED”, -&amp;gt; returns &lt;code&gt;true&lt;/code&gt;,&lt;/li&gt;
+    &lt;li&gt;word = “SEE”, -&amp;gt; returns &lt;code&gt;true&lt;/code&gt;,&lt;/li&gt;
+    &lt;li&gt;word = “ABCB”, -&amp;gt; returns &lt;code&gt;false&lt;/code&gt;.&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The most popular solution to this problem is recursive, such as &lt;a href=&quot;http://yucoding.blogspot.com/2013/02/leetcode-question-124-word-search.html&quot;&gt;http://yucoding.blogspot.com/2013/02/leetcode-question-124-word-search.html&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, I tried to solve this problem without recursion. In my implementation, three stacks are used to record the possible coordinates in &lt;code&gt;board&lt;/code&gt;, the character position in &lt;code&gt;word&lt;/code&gt;(with respect to each candidate cell) and the cells have been accessed to each possible coordinates, repectively. &lt;/p&gt;
+
+&lt;p&gt;The first step is finding the possible cells for the first char in &lt;code&gt;word&lt;/code&gt;, and push coordinates, position of the char in &lt;code&gt;word&lt;/code&gt;(here is 0) and accessed cells(here are matched cells) into stacks. &lt;/p&gt;
+
+&lt;p&gt;The second step is exploring all the neighbors of cells in stack, and match each char in &lt;code&gt;word&lt;/code&gt; respectively. For a match, push contexts into stack and try to match the next char. For a mismatch, pop the top of stacks and try another candidate. If the search could reach the end of the word, then we successfully find the word. If the stacks turns empty and there are still chars left, that means the seach fails.&lt;/p&gt;
+
+&lt;p&gt;Following is my C++ implementation of the non-recursive solution.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    bool exist(vector&amp;lt;vector&amp;lt;char&amp;gt; &amp;gt; &amp;amp;board, string word) {
+		if(board.empty())
+			return false;
+
+		std::stack&amp;lt;std::pair&amp;lt;int,int&amp;gt;&amp;gt; st_coord; // coordinates of the board
+		std::stack&amp;lt;int&amp;gt; st_char; // store characters of the words
+		vector&amp;lt;std::pair&amp;lt;int,int&amp;gt; &amp;gt; vec;
+		std::stack&amp;lt;vector&amp;lt;std::pair&amp;lt;int,int&amp;gt; &amp;gt; &amp;gt; st_access;
+		bool found=false;
+        for(int l=0;l&amp;lt;word.length();) {
+			if(l==0) { // Find the first character of word in board
+				for(int i=0;i&amp;lt;board.size();++i) {
+					for(int j=0;j&amp;lt;board[0].size();++j)
+						if(board[i][j]==word[l]){
+							st_coord.push(std::pair&amp;lt;int,int&amp;gt;(i,j));
+							st_char.push(l);
+							vec.push_back(std::pair&amp;lt;int,int&amp;gt;(i,j));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+							if(word.size()==1) 
+								return true;
+						}
+				}
+				l++;
+			} else {
+				if(st_coord.empty()) // cannot find the first character
+					break;
+
+				// Explore all possible cells to match each character of the word
+				while(!st_coord.empty()) {
+					int x=st_coord.top().first;
+					int y=st_coord.top().second;
+					vec=st_access.top();
+					l=st_char.top()+1;
+					if(l==word.length()) {
+						found=true;
+						break;
+					}
+					
+					st_coord.pop();
+					st_char.pop();
+					st_access.pop();
+
+					if(x-1&amp;gt;=0 &amp;amp;&amp;amp; board[x-1][y]==word[l]) {
+						vector&amp;lt;std::pair&amp;lt;int,int&amp;gt; &amp;gt;::iterator got=
+							std::find(vec.begin(),vec.end(),std::pair&amp;lt;int,int&amp;gt;(x-1,y));
+						if(got==vec.end()) {
+							st_coord.push(std::pair&amp;lt;int,int&amp;gt;(x-1,y));
+							st_char.push(l);
+							vec.push_back(std::pair&amp;lt;int,int&amp;gt;(x-1,y));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+						}
+					}
+					if(x+1&amp;lt;board.size() &amp;amp;&amp;amp; board[x+1][y]==word[l]) {
+						vector&amp;lt;std::pair&amp;lt;int,int&amp;gt; &amp;gt;::iterator got=
+							std::find(vec.begin(),vec.end(),std::pair&amp;lt;int,int&amp;gt;(x+1,y));
+						if(got==vec.end()) {
+							st_coord.push(std::pair&amp;lt;int,int&amp;gt;(x+1,y));
+							st_char.push(l);
+							vec.push_back(std::pair&amp;lt;int,int&amp;gt;(x+1,y));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+						}
+					}
+					if(y-1&amp;gt;=0 &amp;amp;&amp;amp; board[x][y-1]==word[l]) {
+						vector&amp;lt;std::pair&amp;lt;int,int&amp;gt; &amp;gt;::iterator got=
+							std::find(vec.begin(),vec.end(),std::pair&amp;lt;int,int&amp;gt;(x,y-1));
+						if(got==vec.end()) {
+							st_coord.push(std::pair&amp;lt;int,int&amp;gt;(x,y-1));
+							st_char.push(l);
+							vec.push_back(std::pair&amp;lt;int,int&amp;gt;(x,y-1));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+						}
+					}
+					if(y+1&amp;lt;board[0].size() &amp;amp;&amp;amp; board[x][y+1]==word[l]) {
+						vector&amp;lt;std::pair&amp;lt;int,int&amp;gt; &amp;gt;::iterator got=
+							std::find(vec.begin(),vec.end(),std::pair&amp;lt;int,int&amp;gt;(x,y+1));
+						if(got==vec.end()) {
+							st_coord.push(std::pair&amp;lt;int,int&amp;gt;(x,y+1));
+							st_char.push(l);
+							vec.push_back(std::pair&amp;lt;int,int&amp;gt;(x,y+1));
+							st_access.push(vec);
+							vec.pop_back(); // do not affect other candidates
+						}
+					}
+				}
+			} // end else
+		} // end for l
+
+		return found;
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Merge K Sorted Lists</title>

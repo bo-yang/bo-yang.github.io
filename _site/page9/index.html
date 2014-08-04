@@ -90,6 +90,153 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2011/05/03/shell-floating-point">Shell浮点数运算</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-05-03</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Shell本身不支持浮点数运算，(())之类的数学运算符只能进行整数运算。要想在shell中运算浮点数，只能借助于bc, Awk或者Perl。 如</p>
+<p>
+<pre>a=0.1
+b=0.2
+c=$(echo "$a+$b" | bc -l)</pre>
+<p>&nbsp;</p>
+<p>或者</p>
+<p>
+<pre>perl -e "print STDOUT $a + $b;"</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>需要注意的是，如果数学表达式中有负数，则必须确保运算符(+ - * /)与其前后的表达式之间至少有一空格。如：</p>
+<p>
+<pre>[bonn@bonn Downloads]$ echo $a $b
+-0.1 -0.2
+[bonn@bonn Downloads]$ echo "$a - $b" | bc -l
+.1
+[bonn@bonn Downloads]$ perl -e "print STDOUT $a - $b;"
+0.1
+</pre>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/04/20/groff">groff初体验</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-04-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&ldquo;所见即所得（WYSIWYG，What you see is what you get）&rdquo;编辑器可以使简单的工作更简单，却无法完成某些复杂的工作。</p>
+<p>&nbsp;</p>
+<p>nroff/troff是UNIX下经典的typesetting工具，groff是GNU的*roff实现，并对troff的功能进行了增强。与LaTeX相比，体积较小，且大多为*nix自带，使用较为方便。虽说TeX为Donald Knuth所创，排版效果非常好，但体积相当庞大（安装完差不多3.5GB），而且通篇的/xx语法确实把我雷倒了&mdash;&mdash;还是先由groff入手吧。</p>
+<p>&nbsp;</p>
+<p>已经搜集到的*roff相关的资料：</p>
+<ul>
+<li><span><a class="l" href="http://www.angelfire.com/linux/mlaha/pdffiles/grofftut.pdfg" target="_blank">An Introduction to the GNU&nbsp;<em>Groff</em>&nbsp;Text Processing System</a></span></li>
+<li><span><a class="l" href="http://www.angelfire.com/linux/mlaha/pdffiles/grofftut.pdfg" target="_blank"></a></span><a href="http://www.ibm.com/developerworks/aix/tutorials/au-groff/index.html">Produce device-independent documentation with Groff</a></li>
+<li><a href="http://www.gnu.org/software/groff/manual/groff.pdf">Groff Manual</a></li>
+<li><a href="http://www.ibm.com/developerworks/aix/tutorials/au-groff/index.html"></a><a href="http://troff.org/">http://troff.org/</a></li>
+<li><a href="http://oreilly.com/openbook/utp/UnixTextProcessing.pdf">http://oreilly.com/openbook/utp/UnixTextProcessing.pdf</a></li>
+<li><a href="http://floppsie.comp.glam.ac.uk/Glamorgan/gaius/web/groff_www.html">groff_www</a></li>
+<li><a href="http://floppsie.comp.glam.ac.uk/Glamorgan/gaius/web/groff.xhtml">GROFF &amp; [X]HTML</a></li>
+</ul>
+<p>groff最吸引我的地方在于能够轻松的编辑数学公式、绘图、制表、排版并且转化为ps/pdf文件或者网页。为了体验这些功能，将下面的代码为输入纯文本文件html_test,</p>
+<p>
+<pre>.URL http://netpbm.sourceforge.net/doc "Netpbm manual"
+.URL pic.html "Eric Raymond's pic guide"
+.LK TestLink
+.LP
+.EQ
+G(z) ~=~ e sup { ln ~ G(z) }
+    ~=~ exp left ( sum from k&gt;=1 { S sub k z sup k } over k right )
+    ~=~ prod from k&gt;=1 e sup { S sub k z sup k /k }
+.EN
+.LP
+.TS
+tab(:);
+c s s
+c | c | c
+l | l | n.
+Major New York Bridges
+=
+Bridge:Designer:Length
+_
+Brooklyn:J. A. Roebling:1595
+Manhattan:G. Lindenthal: 1470
+Williamsburg:L. L. Buck:1600
+_
+Queensborough:Palmer &amp;:1182
+/^:  Hornbostel:/^
+_
+Triborough:O. H. Ammann:1380
+/^:/^:383
+_
+Bronx Whitestone:O. H. Ammann:2300
+Throgs Neck:O. H. Ammann:1800
+_
+George Washington:O. H. Ammann:3500
+_
+.TE
+.LP
+.PS
+lineht = lineht / 2
+box "/fIletter.tr/fP"
+arrow
+circle "tbl"
+arrow
+Eqn: circle "eqn"
+arrow
+Troff: circle "troff"
+arc cw
+line down
+arc cw
+left
+arrow
+circle "grops"
+arrow
+box "/fIletter.ps/fP"
+up
+line &lt;- from Troff.n
+arc
+line
+box "/fItmac.m/fP"
+.PE
+</pre>
+<p>&nbsp;</p>
+<p>然后输入下列命令：</p>
+<p>
+<pre>pic html_test | eqn | tbl | groff -ms -Thtml &gt; html_test.html</pre>
+<p>&nbsp;</p>
+<p>或者</p>
+<p>
+<pre>groff -p -e -t -ms -Thtml html_test &gt; html_test.html</pre>
+<p>&nbsp;</p>
+<p>在处理pic时，宏-ms必不可少。</p>
+<p>&nbsp;</p>
+<p>如果不出错的话，链接将会在网页中正常显示，公式、表格以及图表会被转换为图片。</p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/04/0_1303308743p06n.gif" alt="" width="402" height="201" /></p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/04/0_13033087485aw7.gif" alt="" /></p>
+<p>&nbsp;</p>
+<p><img src="http://bonny95.files.wordpress.com/2011/04/0_13033087538dbq.gif" alt="" /></p>
+<p>&nbsp;</p>
+<p>groff的groff_www扩展会调用pnmcut，netpbm的工具包中的一个工具。netpbm可以在<a href="http://netpbm.sourceforge.net/">http://netpbm.sourceforge.net/</a>下载并安装。安装成功后，需要把netpbm的路径加入到PATH中，最好是在$HOME/.bashrc中加入。</p>
+<p>&nbsp;</p>
+<hr />
+<p>Update 2011-04-21:</p>
+<p>&nbsp;</p>
+<p>今天试着用groff写了一个文件，并把它转化为html格式，那是相当的痛苦&mdash;&mdash;对于一个习惯了所见即所得的初学者，groff的学习曲线确实相当的陡峭。</p>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2011/04/05/qemu-commands">QEMU常用命令</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-04-05</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Virtualization-ref" rel="nofollow">Virtualization</a>
@@ -689,67 +836,6 @@ are contained or required by our object and executable files.</p>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/02/21/install-go-inplan9">Plan 9安装Go</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-02-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Go-ref" rel="nofollow">Go</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>I、安装python和mercurial(hg)</p>
-<p>首先是在term中输入9fs sources, 然后cd到/n/sources/contrib下，参照Plan 9的<a href="http://plan9.bell-labs.com/wiki/plan9/contrib_index/index.html">contrib index</a>，找到"From fgb's contrib"的python用户名。</p>
-<p><pre>% 9fs sources
-% /n/sources/contrib/fgb/root/rc/bin/contrib/install fgb/contrib
-% contrib/install -f bichued/python
-% contrib/install -f bichued/hg</pre></p>
-<p>或者将/n/sources/extra/python.iso.bz2拷到自己的目录下，然后</p>
-<p>
-<pre>% bunzip2 python.iso.bz2
-% 9660srv -f python.iso
-% 9fs 9660
-% cd /n/9660
-% cat README</pre></p>
-<p>
-然后参照README中的说明来安装python。需要注意的是在执行setup脚本之前，应该9fs kfs，否则会出错。</p>
-<p>&nbsp;</p>
-<p>II、安装Go<br />
-参考<a href="http://golang.org/doc/install.html">http://golang.org/doc/install.html</a></p>
-<p>
-<pre>% hg clone -r release https://go.googlecode.com/hg/ go</pre></p>
-<p>奇怪的是装完mercurial，执行上面的命令之后，总是会报如下的错误：</p>
-<p><img src="http://bonny95.files.wordpress.com/2011/02/0_1298343128g5li.gif" alt="plan9 hg error" width="708" height="441" /></p>
-<p>后来在contrib index中找到了contrib/ericvh目录下的go-plan9，尝试用dircp拷到自己目录下，总是会报各种各样的问题。几次失败之后，决定用tar cvf $home/go.tar /n/sources/contrib/ericvh/go-plan9试试。</p>
-<p>&nbsp;</p>
-<p><strong><em>2011-02-25更新：</em></strong></p>
-<p>在VirtualBox的Plan 9虚拟机中按照contrib/install来安装Python, Mercurial和执行hg clone go时并未出现任何错误。看来9vx和Plan9比起来还是很不稳定的。可惜的是Go默认的编译脚本是bash写的，而Plan 9只支持rc，看来只能等将来有时间再研究如何把bash的脚本改成rc了。</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/02/21/abaco-in-plan9">Plan 9中使用Abaco</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-02-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Go-ref" rel="nofollow">Go</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Abaco是Plan 9的一个非常原始的浏览器，要想使用它，必须首先按照下列步骤：</p>
-<ol>
-<li>term% &nbsp;<span>webcookies (可选，如果webfs可以直接运行的话，不必运行webcookies)</span></li>
-<li><span>term% &nbsp;webfs</span></li>
-<li><span>term% &nbsp;abaco</span></li>
-</ol>
-<p>如果不启动webfs的话，很可能你会遇到这样的错误：</p>
-<p><span><br />
-</span>
-<pre>term% abaco
-*abaco: can't initialize webfs: '/mnt/web/ctl' does not exist*</pre></p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -792,7 +878,7 @@ are contained or required by our object and executable files.</p>
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">25</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">27</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -804,7 +890,7 @@ are contained or required by our object and executable files.</p>
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">50</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">52</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -882,6 +968,10 @@ are contained or required by our object and executable files.</p>
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
+			
+  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
+			
   			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
 			
   			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
@@ -897,10 +987,6 @@ are contained or required by our object and executable files.</p>
   			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
-			
-  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></li>
-			
-  			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
 			</ul>
 		</div>

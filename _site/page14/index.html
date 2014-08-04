@@ -90,6 +90,220 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2009/10/27/build-c-library-in-linux">【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-10-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>本文根据<a href="http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487">http://topic.csdn.net/u/20091026/10/0e913e37-e4a2-4504-bcc7-61af18a22dde.html?6487</a>的回复总结而成。</p>
+<p>&nbsp;</p>
+<p>1. 共享库</p>
+<p>&nbsp;</p>
+<p>通常做成共享库的话，在编绎时加上-shared参数，并把链接生成的文件名命名libxxx.so，可以放在/usr/lib下&nbsp;</p>
+<p>其他程序引用这个库时，在链接的时候加上-lxxx就可以了。</p>
+<p>&nbsp;</p>
+<p>编辑好代码以后,编译时采用类似下面的命令可生成"共享库"(假如源文件是myfun.c):&nbsp;<br />gcc -shared -fPIC -Wmyfun.c -0 libmy.so&nbsp;<br />解释: -shared 生成共享库;&nbsp;<br />&nbsp; &nbsp; &nbsp; -fIPC 表示&ldquo;位置无关代码&rdquo;（Position Independent Code),可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; -W 表示输出警告信息,可不加;&nbsp;<br />&nbsp; &nbsp; &nbsp; 库文件的命名要按照libxxxx.so的格式;&nbsp;</p>
+<p>要引用这个库时:&nbsp;<br />&nbsp; &nbsp; &nbsp; gcc xxx.c -0 xxx.out -lmy&nbsp;<br />&nbsp; &nbsp; -l 表示设定要连接的库(libmy.so,输my便可)&nbsp;</p>
+<p>&nbsp;</p>
+<p>2.&nbsp;静态库&nbsp;</p>
+<p>文件名：lib.c&nbsp;<br />先编译成目标文件 gcc -o mylib.o -c lib.c&nbsp;<br />然后创建静态库,将mylib.o放到libmylib.a中 ar rcs libmylib.a mylib.o&nbsp;<br />最后copy到库目录下/usr/lib&nbsp; cp libmylib.a /usr/lib/libmylib.a&nbsp;</p>
+<p>在编写的时候直接调用其中的函数就是了，只不过在编译的时候要加入-l选项后面跟上库名&nbsp;<br />如 gcc -o test test.c -lmylib&nbsp; //mylib是前面创建的库的名称&nbsp;</p>
+<p>3. 动态库 </p>
+<p>创建就是 gcc -fPIC -share -o mylib.so lib.c&nbsp;<br />调用也分两种方法&nbsp;<br />一种方法是 gcc -o test test.c ./libmylib.so (注意这里跟的是动态库的路径 )<br />第二种方法是使用动态库的函数 你man dlopen看下那几个函数看下就知道了就不多说了</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2009/10/22/call-perl-in-shell">Shell中直接调用perl命令</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-10-22</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The &nbsp;<em>-e</em> option is handy for quick Perl operations<br />
+from the command line. Want to change all instances of "oldstring" in<br />
+Wiffle.bat to "newstrong"? Try</p>
+<p>&nbsp;</p>
+<p>
+<pre>perl -i.old -p -e "s/ oldstring/ newstrong/g" wiffle.bat</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>This says: "Take each line of &nbsp;Wiffle.bat (-p); store the original in Wiffle.old (-i); substitute all instances of &nbsp;oldstring with newstrong (-e); write the result (-p) to the<br />
+original file (-i)."</p>
+<p>&nbsp;</p>
+<p>Other PERL command line options are:</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;<strong>Perl 5 Command-Line Switches</strong></p>
+<p>&nbsp;</p>
+<table style="width:80%;" border="1">
+<tbody>
+<tr valign="top">
+<td width="109">
+<em>Option</em></td>
+<td width="150"><em>Arguments</em> </td>
+<td width="168"><em>Purpose</em></td>
+<td width="163"><em>Notes</em> </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-0</tt></td>
+<td width="150">octal character code</td>
+<td width="168">Specify record separator </td>
+<td width="163">Default is newline (<tt>/n</tt>) </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-a</tt></td>
+<td width="150">none</td>
+<td width="168">Automatically spli recordst </td>
+<td width="163">Used with <tt>-n</tt> or or <tt>-p</tt> </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-c</tt></td>
+<td width="150">none</td>
+<td width="168">Check syntax only</td>
+<td width="163">Do not execute</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-d</tt></td>
+<td width="150">none</td>
+<td width="168">Run script using Perl debugger </td>
+<td width="163">If Perl debugging option was included when Perl was installed
+</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-D</tt></td>
+<td width="150">flags</td>
+<td width="168">Specify debugging behavior </td>
+<td width="163">See table 2</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-e</tt></td>
+<td width="150">command</td>
+<td width="168">Pass a command to Perl from the command line </td>
+<td width="163">Useful for quick operations</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-F</tt></td>
+<td width="150">regular expression</td>
+<td width="168">If <tt>-a</tt> used </td>
+<td width="163">Expression to split by default is white space </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-i</tt></td>
+<td width="150">extension</td>
+<td width="168">Replace original file with results </td>
+<td width="163">Useful for modifying contents of files</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-I</tt></td>
+<td width="150">directory</td>
+<td width="168">Specify location of <tt>include</tt> files </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-l</tt></td>
+<td width="150">octal character code</td>
+<td width="168">Drop newlines when used </td>
+<td width="163">With <tt>-n</tt> and <tt>-p</tt> and use designated character as<br />
+line- termination character </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-n</tt></td>
+<td width="150">none</td>
+<td width="168">Process the script using each specified file as an argument </td>
+<td width="163">Used for performing the same set of actions on a set of files
+</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-p</tt></td>
+<td width="150">none</td>
+<td width="168">Same as <tt>-n</tt> but each line is printed </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-P</tt></td>
+<td width="150">none</td>
+<td width="168">Run the script through the C preprocessor before Perl compiles it
+</td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-s</tt></td>
+<td width="150">none</td>
+<td width="168">Enable passing of arbitrary switches to Perl </td>
+<td width="163">Use <tt>-s -what -ever </tt>to have the Perl variables <tt>$what<br />
+</tt>and <tt>$ever </tt>defined within your script </td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-S</tt></td>
+<td width="150">none</td>
+<td width="168">Tell Perl to look along the path for the script </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-T</tt></td>
+<td width="150">none</td>
+<td width="168">Use taint checking; don't evaluate expressions supplied on the<br />
+command line </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-u</tt></td>
+<td width="150">none</td>
+<td width="168">Make Perl dump core after compiling your script; intended to allow<br />
+for generation of Perl executables </td>
+<td width="163">Very messy; wait for the Perl compiler</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-U</tt></td>
+<td width="150">none</td>
+<td width="168">Unsafe mode; overrides Perl's natural caution </td>
+<td width="163">Don't use this!</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-v</tt></td>
+<td width="150">none</td>
+<td width="168">Print Perl version number </td>
+<td width="163">&nbsp;</td>
+</tr>
+<tr valign="top">
+<td width="109">
+<tt>-w</tt></td>
+<td width="150">none</td>
+<td width="168">Print warnings about script syntax </td>
+<td width="163">Extremely useful, especially during development &nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2009/10/17/tcl-call-awk-command">Tcl中调用Awk命令</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-10-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
@@ -591,316 +805,6 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）</div>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/08/24/big-num-operations">大数运算</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-08-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>下面这段程序包含了大数的加、减、乘运算的代码，除法运算尚在研究中。</p>
-<p>&nbsp;</p>
-<p>
-<pre>/*
- * =====================================================================================
- *
- *       Filename:  LargeNumOp.c
- *
- *    Description:  The regular version of Large Number Multiplication.
- *
- *        Version:  1.0
- *        Created:  08/23/2009 07:02:48 PM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Bonn Yang 
- *        Company:  
- *
- * =====================================================================================
- */
-#include &lt;stdio.h&gt;
-#include &lt;string.h&gt;
-/* 
- * Large number multiplication. 
- *	a*b=c
- * The product stores in c.
- */ 
-void multiply(char* a,char* b,char* c)
-{
-    int i,j,ca,cb,* s;
-    ca=strlen(a);
-    cb=strlen(b);
-    s=(int*)malloc(sizeof(int)*(ca+cb));
-    for (i=0;i&lt;ca+cb;i++)
-        s[i]=0;
-    for (i=0;i&lt;ca;i++)
-        for (j=0;j&lt;cb;j++)
-            s[i+j+1]+=(a[i]-'0')*(b[j]-'0');
-    for (i=ca+cb-1;i&gt;=0;i--)
-        if (s[i]&gt;=10)
-        {
-            s[i-1]+=s[i]/10;
-            s[i]%=10;
-        }
-    i=0;
-    while (s[i]==0)
-        i++;
-    for (j=0;i&lt;ca+cb;i++,j++)
-        c[j]=s[i]+'0';
-    c[j]='/0';
-    free(s);
-}
-/* Large number addition 
- * 		a+b=c
- */
-void add(char* a, char* b, char* c)
-{
-	int i,j,ca,cb,rlen,* s;
-    ca=strlen(a);
-    cb=strlen(b);
-	rlen=((ca&gt;cb)?ca:cb)+1;		/* len of result */
-    s=(int*)malloc(sizeof(int)*rlen);
-    for (i=0;i&lt;rlen;i++)
-        s[i]=0;
-	if(ca&gt;cb)
-	{
-    	for(i=0;i&lt;ca-cb;i++)
-			s[i+1]=a[i]-'0';
-		for(i=ca-cb;i&lt;ca;i++)
-			s[i+1]=(a[i]-'0')+(b[i-ca+cb]-'0');
-	} 
-	else 
-	{
-		for(i=0;i&lt;cb-ca;i++)
-			s[i+1]=b[i]-'0';
-		for(i=cb-ca;i&lt;cb;i++)
-			s[i+1]=(a[i-cb+ca]-'0')+(b[i]-'0');
-	} 
-	
-    for (i=rlen-1;i&gt;=0;i--)
-        if (s[i]&gt;=10)
-        {
-            s[i-1]+=s[i]/10;
-            s[i]%=10;
-        }
-    i=0;
-    while (s[i]==0)
-        i++;
-	for (j=0;i&lt;rlen;i++,j++)
-        c[j]=s[i]+'0';
-    c[j]='/0';
-    free(s);
-}
-/* Large number substraction 
- * 		a-b=c
- */
-void sub(char* a,char* b,char* c)
-{
-	int i,j,ca,cb,rlen,* s;
-    ca=strlen(a);
-    cb=strlen(b);
-	rlen=((ca&gt;cb)?ca:cb)+1;		/* len of result, the first byte is negative or positive sign */
-    s=(int*)malloc(sizeof(int)*rlen);
-    for (i=0;i&lt;rlen;i++)
-        s[i]=0;
-	if(ca&gt;cb)
-	{
-		s[0]='+';
-    	for(i=ca-1;i&gt;=ca-cb;i--)
-		{
-			if(a[i]&gt;b[i-ca+cb])
-			{
-				s[i+1]=(a[i]-'0')-(b[i-ca+cb]-'0');
-			}
-			else if(a[i]&lt;b[i-ca+cb])
-			{
-				s[i+1]=(a[i]-'0'+10)-(b[i-ca+cb]-'0');
-				a[i-1]-=1;
-			}
-			else
-				s[i+1]=0;
-		}
-		for(i=ca-cb-1;i&gt;=1;i--)
-		{
-			if(a[i]&gt;0)
-			{
-				s[i+1]=(a[i]-'0');
-			}
-			else if(a[i]&lt;0)
-			{
-				s[i+1]=a[i]-'0'+10;
-				a[i-1]-=1;
-			}
-			else
-				s[i+1]=0;
-		}
-		s[1]=a[i]-'0';
-	} 
-	else if(ca&lt;cb)
-	{
-		s[0]='-';
-		for(i=cb-1;i&gt;cb-ca-1;i--)
-		{
-			if(b[i]&gt;a[i-cb+ca])
-			{
-				s[i+1]=(b[i]-'0')-(a[i-cb+ca]-'0');
-			}
-			else if(b[i]&lt;a[i-ca+cb])
-			{
-				s[i+1]=(b[i]-'0'+10)-(a[i-cb+ca]-'0');
-				b[i-1]-=1;
-			}
-			else
-				s[i+1]=0;
-		}
-		for(i=cb-ca-1;i&gt;=1;i--)
-		{
-			if(b[i]&gt;0)
-			{
-				s[i+1]=(b[i]-'0');
-			}
-			else if(b[i]&lt;0)
-			{
-				s[i+1]=b[i]-'0'+10;
-				b[i-1]-=1;
-			}
-			else
-				s[i+1]=0;
-		}
-		s[1]=b[i]-'0';
-	} 
-	else	/* ca==cb */
-	{
-		if(strcmp(a,b)&gt;0)		/* a&gt;b */
-		{
-			s[0]='+';
-			for(i=ca-1;i&gt;=1;i--)
-			{
-				if(a[i]&gt;b[i])
-				{
-					s[i+1]=(a[i]-'0')-(b[i]-'0');
-				}
-				else if(a[i]&lt;b[i])
-				{
-					s[i+1]=(a[i]-'0'+10)-(b[i]-'0');
-					a[i-1]-=1;
-				}
-				else
-					s[i+1]=0;
-			}
-			s[1]=(a[i]-'0')-(b[i]-'0');
-		}
-		else if(strcmp(a,b)&lt;0)	/* a&lt;b */
-		{
-			s[0]='-';
-			for(i=ca-1;i&gt;=1;--i)
-			{
-				if(b[i]&gt;a[i])
-				{
-					s[i+1]=(b[i]-'0')-(a[i]-'0');
-				}
-				else if(b[i]&lt;a[i])
-				{
-					s[i+1]=(b[i]-'0'+10)-(a[i]-'0');
-					b[i-1]-=1;
-				}
-				else
-					s[i+1]=0;
-			}
-			s[1]=(b[i]-'0')-(a[i]-'0');
-		}
-		else					/* a==b */
-		{
-			c[0]='+';
-			c[1]='0';
-			c[2]='/0';
-			free(s);
-		}
-	}
-	c[0]=s[0];
-    i=1;j=1;
-    while ((s[i]==0) &amp;&amp; (i&lt;rlen))
-        i++;
-	if(i!=rlen)	/* result is not zero */
-	{
-		for (j=1;i&lt;rlen;i++,j++)
-		{
-			if(s[i]&lt;0)
-				c[j]='0'-s[i];
-			else
-        		c[j]=s[i]+'0';
-		}
-	} else {	/* result is zero */
-		c[j++]='0';
-	}
-    c[j]='/0';
-    free(s);
-}
-int main()
-{
-	char a[1024]={'/0'};
-	char b[1024]={'/0'};
-	char c[1024]={'/0'};
-	printf(&quot;Enter two numbers:/n&quot;);
-	gets(a);
-	gets(b);
-	multiply(a,b,c);
-	printf(&quot;%s * %s = %s/n&quot;,a,b,c);
-	add(a,b,c);
-	printf(&quot;%s + %s = %s/n&quot;,a,b,c);
-	sub(a,b,c);
-	printf(&quot;%s - %s = %s/n&quot;,a,b,c);
-	
-	return 0;
-}
-</pre></p>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/08/19/install-amule-in-linux">Linux下安装aMule</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-08-19</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>今晚打算在Fedora 10下安装aMule，以便电驴下载。本打算yum安装，结果发现无法yum安装，于是只好下载了aMule的源代码（无Linux下的二进制安装文件）。解压之后，./configure，却出现了&quot;wxWindows&quot;的错误。</p>
-<p>&nbsp;</p>
-<p>在网上搜了半天之后，发现除了系统已经装好的wxGTK之外，还要安装wxGTK-devel，于是我便yum install wxGTK-devel,成功。</p>
-<p>&nbsp;</p>
-<p>重新在aMule的目录下./configure，这次却又报了更奇怪的错误：</p>
-<p>&nbsp;</p>
-<pre style="margin-top:0;display:inline;">&quot;checking for crypto++ version &gt;= 5.1... configure: error:<br />
-Could not find cryptopp header file &quot;cryptlib.h&quot;.<br />
-Please check if the path &quot;/usr&quot; is valid.&quot;</pre>
-<p>&nbsp;</p>
-<p>在网上找到一个解决办法：</p>
-<p>&nbsp;</p>
-<p>Download the latest crypto package from &quot;<a href="http://www.cryptopp.com/#download" target="_blank">http://www.cryptopp.com/#download</a><br />
-&quot;<br />
-in this case package &quot;Crypto++ 5.5.2&quot;. Now open your console terminal<br />
-and do the following commands to install the crypto package.</p>
-<p>A) mkdir crypto<br />
-B) mv cryptopp552.zip ./crypto<br />
-C) cd crypto<br />
-D) unzip cryptopp552.zip<br />
-E) make<br />
-F) cp libcryptopp.a /usr/lib/<br />
-G) mkdir /usr/include/cryptopp<br />
-H) cp *.h /usr/include/cryptopp/<br />
-I) ldconfig</p>
-<p>&nbsp;</p>
-<p>完成之后继续./configure，成功。（有一个关于uPnP的warning可以忽略。）然后make,成功，只是时间比较长。然后make install，成功！</p>
-<p>&nbsp;</p>
-<p>aMule终于可以用了！</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -943,7 +847,7 @@ I) ldconfig</p>
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">25</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">27</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -955,7 +859,7 @@ I) ldconfig</p>
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">50</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">52</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -1033,6 +937,10 @@ I) ldconfig</p>
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
+			
+  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
+			
   			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
 			
   			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
@@ -1048,10 +956,6 @@ I) ldconfig</p>
   			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
 			
   			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
-			
-  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></li>
-			
-  			<li><span>2014-06-29</span> &raquo; <a href="/2014/06/29/top-n-numbers">Top N Numbers</a></li>
 			
 			</ul>
 		</div>
