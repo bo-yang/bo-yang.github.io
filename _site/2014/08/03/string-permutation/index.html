@@ -93,14 +93,13 @@
 
 <p>The essence of string permutation is recursively swapping each letter with other letters in this string. Following image shows the permutation of string “ABC”. For each step, fix the left part of the string, and swap two letters in the right part, until there is no letters left in the right part. </p>
 
-<p><img src="http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif" width="565" height="231" class="aligncenter size-full wp-image-118925" />&lt;/img&gt;</p>
+<p><img src="http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif" width="678" height="277" class="aligncenter size-full wp-image-118925" />&lt;/img&gt;</p>
 
 <p>Based on above strategy, the following two recusive algorithm could be implemented.</p>
 
 <p>Algorithm 1(Reference: <a href="http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/">Write a C program to print all permutations of a given string</a>): </p>
 
-<p><code>C++
-void StrPermute(string&amp; str, vector&lt;string&gt;&amp; vec, int i) {
+<pre><code>void StrPermute(string&amp; str, vector&lt;string&gt;&amp; vec, int i) {
 	if(i==str.length())
 		vec.push_back(str);
 	else {
@@ -111,12 +110,11 @@ void StrPermute(string&amp; str, vector&lt;string&gt;&amp; vec, int i) {
 		}
 	} // end if
 }
-</code></p>
+</code></pre>
 
 <p>Algorithm 2(Reference: <a href="http://learnprogramming.machinesentience.com/java_permutations_recursion/">Find all the permutations of a string in Java</a>):</p>
 
-<p><code>C++
-void StrPermute(vector&lt;string&gt;&amp; vec, string prefix, string str) {
+<pre><code>void StrPermute(vector&lt;string&gt;&amp; vec, string prefix, string str) {
 	//cout&lt;&lt;"prefix="&lt;&lt;prefix&lt;&lt;", str="&lt;&lt;str&lt;&lt;endl; // TEST ONLY
 	int n=str.length();
 	if(n==0)
@@ -126,7 +124,7 @@ void StrPermute(vector&lt;string&gt;&amp; vec, string prefix, string str) {
 			StrPermute(vec,prefix+str[j],str.substr(0,j)+str.substr(j+1));
 	} // end if
 }
-</code></p>
+</code></pre>
 
 <p>The permuted strings are stored as a vector of string. For both algorithms, the time complexities are <code>O(n*n!)</code>.</p>
 
@@ -201,6 +199,18 @@ var linkwithin_site_id = 2140443;
 </div>
 
 <div class="col-lg-2">
+	<div class="well">
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Right-side Ad -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-1292710832620237"
+     data-ad-slot="9707222500"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+	</div>
 	<div class="well">
 		<h4>Visitors</h4>
 		<div class="tag_box">

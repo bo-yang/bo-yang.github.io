@@ -4,7 +4,7 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-08-03T23:46:06-07:00</updated>
+ <updated>2014-08-06T22:13:52-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
@@ -21,14 +21,13 @@
 
 &lt;p&gt;The essence of string permutation is recursively swapping each letter with other letters in this string. Following image shows the permutation of string “ABC”. For each step, fix the left part of the string, and swap two letters in the right part, until there is no letters left in the right part. &lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif&quot; width=&quot;565&quot; height=&quot;231&quot; class=&quot;aligncenter size-full wp-image-118925&quot; /&gt;&amp;lt;/img&amp;gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif&quot; width=&quot;678&quot; height=&quot;277&quot; class=&quot;aligncenter size-full wp-image-118925&quot; /&gt;&amp;lt;/img&amp;gt;&lt;/p&gt;
 
 &lt;p&gt;Based on above strategy, the following two recusive algorithm could be implemented.&lt;/p&gt;
 
 &lt;p&gt;Algorithm 1(Reference: &lt;a href=&quot;http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/&quot;&gt;Write a C program to print all permutations of a given string&lt;/a&gt;): &lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;C++
-void StrPermute(string&amp;amp; str, vector&amp;lt;string&amp;gt;&amp;amp; vec, int i) {
+&lt;pre&gt;&lt;code&gt;void StrPermute(string&amp;amp; str, vector&amp;lt;string&amp;gt;&amp;amp; vec, int i) {
 	if(i==str.length())
 		vec.push_back(str);
 	else {
@@ -39,12 +38,11 @@ void StrPermute(string&amp;amp; str, vector&amp;lt;string&amp;gt;&amp;amp; vec, 
 		}
 	} // end if
 }
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Algorithm 2(Reference: &lt;a href=&quot;http://learnprogramming.machinesentience.com/java_permutations_recursion/&quot;&gt;Find all the permutations of a string in Java&lt;/a&gt;):&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;C++
-void StrPermute(vector&amp;lt;string&amp;gt;&amp;amp; vec, string prefix, string str) {
+&lt;pre&gt;&lt;code&gt;void StrPermute(vector&amp;lt;string&amp;gt;&amp;amp; vec, string prefix, string str) {
 	//cout&amp;lt;&amp;lt;&quot;prefix=&quot;&amp;lt;&amp;lt;prefix&amp;lt;&amp;lt;&quot;, str=&quot;&amp;lt;&amp;lt;str&amp;lt;&amp;lt;endl; // TEST ONLY
 	int n=str.length();
 	if(n==0)
@@ -54,7 +52,7 @@ void StrPermute(vector&amp;lt;string&amp;gt;&amp;amp; vec, string prefix, string
 			StrPermute(vec,prefix+str[j],str.substr(0,j)+str.substr(j+1));
 	} // end if
 }
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;The permuted strings are stored as a vector of string. For both algorithms, the time complexities are &lt;code&gt;O(n*n!)&lt;/code&gt;.&lt;/p&gt;
 </content>
