@@ -90,6 +90,22 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2013/10/10/build-dense-trajectory-codes-in-ubuntu">Build Dense Trajectory Codes in Ubuntu</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-10-10</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>Even when the OpenCV and ffmpeg have been successfully installed, you still may meet the error of "<strong>undefined reference to main</strong>" when building the <a href="http://lear.inrialpes.fr/people/wang/dense_trajectories">Dense Trajectory code</a>. Since the author didn't provide a solution, I share my workaround here -- just use command g++ directly:</p>
+
+<p><pre>g++ -o DenseTrack -pipe -D __STDC_CONSTANT_MACROS -D STD=std -Wall -I. -I/opt/include -O3 -DNDEBUG -ggdb -L/opt/lib -lopencv_core -lopencv_highgui -lopencv_video -lopencv_imgproc -lavformat -lavdevice -lavutil -lavcodec -lswscale *.h DenseTrack.cpp</pre></p>
+<p>The program <em>Video</em> can be built in similar way, just substitute all <em>DenseTrack</em> into Video.</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2013/06/12/matlab-startup-script">Matlab Startup Script</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-06-12</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Matlab-ref" rel="nofollow">Matlab</a>
@@ -1538,30 +1554,6 @@ void Merge_sort(int* input, long p, long r)<br />
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2012/08/24/connect-mac-os-x-with-linux-server">Connect Mac OS X with Linux Server</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-08-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Mac OS-ref" rel="nofollow">Mac OS</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>There are many ways to connect Mac OS X with Linux by command line. However, connecting them with GUI is not so easy. I tried two ways, but none of them work perfectly and each of them has both advantages and disadvantages.</p>
-<p>The first way I tried was VNC. <a href="http://sourceforge.net/projects/cotvnc/">Chicken of the VNC</a> was said to be the best VNC client under Mac OS X, unfortunately, I haven't make it work, even follow the tips of webpage <a id="using_vnc_on_mac_os_x" name="using_vnc_on_mac_os_x"></a><a href="http://www.cs.vassar.edu/sysnews/vnc/osx">Using VNC on Mac OS X</a>. I used realvnc. The first step is to configure ssh. I followed the tips on webpage <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>.  In the Linux server, after installing openssh, edit the file <code>/etc/ssh/ssh_config</code> and make sure</p>
-<pre>ForwardAgent yes
-ForwardX11 yes
-ForwardX11Trusted yes</pre>
-<p>Then edit <code>/etc/ssh/sshd_config</code> and make sure</p>
-<pre>X11Forwarding yes</pre>
-<p>.</p>
-<p>In the terminal of Mac OS X, enter command "<code>ssh -L 5901:localhost:5900 &lt;login&gt;@&lt;LinuxServer&gt;</code>". 5901 is the port number to be used by RealVNC, and 5900 is the port number of the VNC in Linux. For details about this command, refer to <a href="http://manas.tungare.name/blog/ssh-port-forwarding-on-mac-os-x/">SSH Port Forwarding on Mac OS X</a>. Then start RealVNC, enter "<code>localhost:5901</code>" and your VNC password.</p>
-<p>RealVNC works reliably, but the quality of GUI is not good and sometimes responds slowly.</p>
-<p>The other method is also based on ssh, therefore the ssh should also be configured in the Linux side. The only difference is X11 should be installed in Mac OS X. The above<br />
-ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&gt;". After login to Linux in terminal, run command "<code>gnome-session</code>"(this requires Gnome be installed in Linux server). In this way, remote Linux programs runs as local Mac applications. For more info, please refer to <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>. The disadvantage of using this way is, X11 is not reliable in Mac OS X and it may crash at any time.</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1604,7 +1596,7 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">27</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -1616,7 +1608,7 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">52</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -1660,7 +1652,7 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
     
         <li><a href="/tags.html#Shell">Shell <span class="badge pull-right">15</span></a></li>
     
-        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">1</span></a></li>
+        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">2</span></a></li>
     
         <li><a href="/tags.html#Tcl%2FTk">Tcl/Tk <span class="badge pull-right">9</span></a></li>
     
@@ -1694,6 +1686,8 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
+			
   			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
 			
   			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
@@ -1711,8 +1705,6 @@ ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&
   			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
 			
   			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
 			</ul>
 		</div>

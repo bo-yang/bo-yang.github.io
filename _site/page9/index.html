@@ -90,6 +90,75 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2011/05/13/process-attached-to-shared-memory">How to list processes attached to a shared memory segment in linux?</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-05-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>本文整理自网络，参考网页(references):</p>
+<ol>
+<li><a href="http://stackoverflow.com/questions/5658568/how-to-list-processes-attached-to-a-shared-memory-segment-in-linux">http://stackoverflow.com/questions/5658568/how-to-list-processes-attached-to-a-shared-memory-segment-in-linux</a></li>
+<li><a href="http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Frzahz%2Fipcs.htm">http://publib.boulder.ibm.com/infocenter/iseries/v5r4/index.jsp?topic=%2Frzahz%2Fipcs.htm</a></li>
+</ol>
+<p>[Question]:</p>
+<p><span><br />
+</span></p>
+<p>How do I determine what process is attached to a shared memory segment?</p>
+<pre><code>awagner@tree:/home/awagner$ ipcs -m
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x00000000 0          root       777        102400     1                       
+0x00000000 32769      root       774        96         1          dest         
+0x00000000 98306      awagner    600        393216     2          dest         
+0x00000000 131075     awagner    600        393216     2          dest    
+</code></pre>
+<p>i.e. how do I figure out which two processes are attached to segment 98305?</p>
+<p>&nbsp;</p>
+<p>[Answer]:</p>
+<p>
+<span><br />
+</span></p>
+<p>I don't think you can do this with the standard tools. You can use&nbsp;<code>ipcs -mp</code>&nbsp;to get the process ID of the<em>last</em>&nbsp;process to attach/detach but I'm not aware of how to get&nbsp;<em>all</em>&nbsp;attached processes with&nbsp;<code>ipcs</code>.</p>
+<p>With a two-process-attached segment, assuming they both&nbsp;<em>stayed</em>&nbsp;attached, you can possibly figure out from the creator PID&nbsp;<code>cpid</code>&nbsp;and last-attached PID&nbsp;<code>lpid</code>&nbsp;which are the two processes but that won't scale to more than two processes so its usefulness is limited.</p>
+<p>The&nbsp;<code>cat /proc/sysvipc/shm</code>&nbsp;method seems similarly limited but I believe there's a way to do it with other parts of the&nbsp;<code>/proc</code>&nbsp;filesystem, as shown below:</p>
+<p>When I do a&nbsp;<code>grep</code>&nbsp;on the&nbsp;<code>procfs</code>&nbsp;maps for all processes, I get entries containing lines for the&nbsp;<code>cpid</code>and&nbsp;<code>lpid</code>&nbsp;processes.</p>
+<p>For example, I get the following shared memory segment from&nbsp;<code>ipcs -m</code>:</p>
+<pre><code>------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x00000000 123456     pax        600        1024       2          dest
+</code></pre>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0">and, from&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">ipcs -mp</span></code><span class="goog_qs-tidbit goog_qs-tidbit-0">, the&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">cpid</span></code><span class="goog_qs-tidbit goog_qs-tidbit-0">&nbsp;is 3956 and the&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">lpid</span></code><span class="goog_qs-tidbit goog_qs-tidbit-0">&nbsp;is 9999 for that given shared memory segment (123456).</span></p>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0">Then, with the command&nbsp;</span><code><span class="goog_qs-tidbit goog_qs-tidbit-0">grep 123456</span>&nbsp;/proc/*/maps</code>, I see:</p>
+<pre><code>/proc/3956/maps: blah blah blah 123456 /SYSV000000 (deleted)
+/proc/9999/maps: blah blah blah 123456 /SYSV000000 (deleted)
+</code></pre>
+<p>So there&nbsp;<em>is</em>&nbsp;a way to get the processes that attached to it. I'm pretty certain that the&nbsp;<code>dest</code>&nbsp;status and<code>(deleted)</code>&nbsp;indicator are because the creator has marked the segment for destruction once the final detach occurs, not that it's already been destroyed.</p>
+<p>So, by scanning of the&nbsp;<code>/proc/*/maps</code>&nbsp;"files", you should be able to discover which PIDs are currently attached to a given segment.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+<p>
+<span>
+<dt><strong>CPID</strong>&nbsp;(-p, -a)</dt>
+<dd>The process ID of the job that created the shared memory segment.</dd>
+<p></span><span><br />
+</span></p>
+<p>&nbsp;</p>
+<p><span>
+<dt><strong>LPID</strong>&nbsp;(-p, -a)</dt>
+<dd>The process ID of the last job to attach or detach from the shared memory segment or change the semaphore value.</dd>
+<p></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2011/05/03/shell-floating-point">Shell浮点数运算</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-05-03</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
@@ -794,48 +863,6 @@ are contained or required by our object and executable files.</p>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/02/24/ip-addr-in-plan9">Plan9自动获取IP地址</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-02-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Plan 9的Manual和Wiki上面关于网络配置的介绍，都是以server为原型，前提条件是这些server都会有固定的IP地址，集成DHCP、DNS乃至自己的子网。可我的Plan 9是在VirtualBox4.0的虚拟机上装的，Host是Fedora 14，通过家用无线路由器上网，IP地址动态获取，不可能有固定IP和固定的DNS、Gateway等等。因此<a href="http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html">http://cm.bell-labs.com/wiki/plan9/Network_configuration/index.html</a>和<a href="http://plan9.escet.urjc.es/magic/man2html/8/ipconfig">http://plan9.escet.urjc.es/magic/man2html/8/ipconfig</a>的方法根本无效。</p>
-<p>VirtualBox4.0安装Plan9时，由于没有选择正确的网卡，Plan9使用了默认的Am79C970A网卡，而Plan 9自身并没有该网卡的驱动。要使用plan9自带的网卡驱动而无须自己编译内核的方法就是在plan9.ini中更改默认网卡的类型，可以参考&nbsp;<a href="http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini">http://plan9.escet.urjc.es/magic/man2html/8/plan9.ini</a>。plan9.ini存储在9fat中，默认不挂载到fossil，因此需要在Rio的窗口中输入命令&ldquo;<span style="font-family:mceinline;">9fat:</span>&rdquo;挂载9fat，然后<span style="font-family:mceinline;">cd /n/9fat/</span>，编辑plan9.ini，加入一行&ldquo;<span style="font-family:mceinline;">ether0=type=igbe</span>&rdquo;。同时VirtualBox的网卡也要选择NAT --&gt; Intel Pro1000系列。重启Plan9之后，可以通过ip/ipconfig检查网卡是否能正常工作&mdash;&mdash;如果不报错，证明网卡正常。</p>
-<p>网卡正常工作后，我曾经尝试使用下列命令配置网络，DHCP可以正常工作，但DNS一直无法解析域名：</p>
-<p>
-<pre>ip/ipconfig -D -d ether /net/ether0</pre>
-<p>&nbsp;</p>
-<p>尝试更改/lib/ndb/local多次，仍然无效。无奈之下打开<span style="font-family:mceinline;">/rc/bin/termrc</span>，发现其中依然有了网络配置的内容，只是默认被注释掉了，去掉if以及ip/ipconfig两行前面的#后，重启Plan 9，网络竟然正常了！</p>
-<p>
-<pre># start IP on the LAN, if not already configured.  diskless terminals
-# are already configured by now.  It's commented out to avoid a long timeout
-# on startup waiting for DHCP.
-#
-# If your site provides DHCP service,
-#
-#if(! test -e /net/ipifc/0/ctl)
-#	ip/ipconfig
-#
-# Otherwise, see /cfg/$sysname/termrc (/cfg/example/termrc is an example).
-</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>另外，9vx本身没有虚拟网卡，因此在/net下没有ether0的选项；但是9vx默认是通过宿主机的网卡来上网的，因此一般情况下9vx的网络无须特殊配置（/rc/bin/termrc中也有对vx32的相应处理）。</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -878,7 +905,7 @@ are contained or required by our object and executable files.</p>
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">27</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -890,7 +917,7 @@ are contained or required by our object and executable files.</p>
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">52</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -934,7 +961,7 @@ are contained or required by our object and executable files.</p>
     
         <li><a href="/tags.html#Shell">Shell <span class="badge pull-right">15</span></a></li>
     
-        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">1</span></a></li>
+        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">2</span></a></li>
     
         <li><a href="/tags.html#Tcl%2FTk">Tcl/Tk <span class="badge pull-right">9</span></a></li>
     
@@ -968,6 +995,8 @@ are contained or required by our object and executable files.</p>
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
+			
   			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
 			
   			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
@@ -985,8 +1014,6 @@ are contained or required by our object and executable files.</p>
   			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
 			
   			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
 			</ul>
 		</div>

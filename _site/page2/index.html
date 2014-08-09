@@ -90,6 +90,141 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-01</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p><a href="https://oj.leetcode.com/problems/implement-strstr/">The problem</a> is:</p>
+
+<blockquote>
+  <p>Implement strStr().</p>
+
+  <p>Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.</p>
+</blockquote>
+
+<p>A naive method: (1) find the the first letter of <code>needle</code> in <code>haystack</code>, (2)comparing other consecutive characters of needle and haystack, (3) if all letters in <code>needle</code> can be found in <code>haystack</code> consecutively, then return the position in <code>haystack</code>.</p>
+
+<pre><code>class Solution {
+public:
+    char *strStr(char *haystack, char *needle) {
+		if(haystack==NULL || needle==NULL)
+			return NULL;
+
+		if(needle[0]=='\0')
+			return haystack;
+
+		// Find the first character of needle in haystack
+		int hay_len=strlen(haystack);
+		int need_len=strlen(needle);
+		int pos=0;
+		bool found=false;
+		while(hay_len-pos&gt;=need_len &amp;&amp; haystack[pos]!='\0') {
+			if(haystack[pos] == needle[0]){
+				int th=pos+1;
+				int tn=1;
+				while(haystack[th] == needle[tn]) {
+					if(needle[tn]=='\0')
+						break;
+					th++;
+					tn++;
+				}
+				if(tn == need_len) {
+					found=true;
+					break;
+				}
+			}
+			pos++;
+		}
+
+		if(found)
+			return haystack+pos;
+		else
+			return NULL;
+    }
+};
+</code></pre>
+
+<p>A better solution is to use the famous KMP algorithm(<a href="http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/">http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/</a>).</p>
+
+<pre><code>class Solution {
+public:
+    char *strStr(char *haystack, char *needle) {
+		if(haystack==NULL || needle==NULL)
+	 		return NULL;
+	 	if(needle[0]=='\0')
+	 		return haystack;
+
+		int n=strlen(haystack);
+		int m=strlen(needle);
+		vector&lt;int&gt; pi(m); // the longest proper prefix which is also suffix
+		computePrefix(needle,pi);
+		//printPrefix(pi); // TEST ONLY
+
+		int q=0; // index for needle
+		int i=0; // index for haystack
+		while(i&lt;n) {
+			//cout&lt;&lt;"needle["&lt;&lt;q&lt;&lt;"]="&lt;&lt;needle[q]&lt;&lt;", haystack["&lt;&lt;i&lt;&lt;"]="&lt;&lt;haystack[i]&lt;&lt;endl; // TEST ONLY
+			if(needle[q]==haystack[i]) {
+				q++;
+				i++;
+			}
+			if(q==m) {
+				//cout&lt;&lt;"Pattern occurs with shift "&lt;&lt;i-m&lt;&lt;endl; // TEST ONLY
+				return haystack+i-m;
+			} else if(needle[q]!=haystack[i]) {
+				if(q!=0)
+					q=pi[q-1];
+				else
+					i++;
+			}
+		}
+		return NULL;
+	}
+
+	// Calculate the longest proper prefix which is also suffix.
+	// Examples:
+	// 	For the pattern “AABAACAABAA”, lps[] is [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
+	//	For the pattern “ABCDE”, lps[] is [0, 0, 0, 0, 0]
+	//	For the pattern “AAAAA”, lps[] is [0, 1, 2, 3, 4]
+	//	For the pattern “AAABAAA”, lps[] is [0, 1, 2, 0, 1, 2, 3]
+	//	For the pattern “AAACAAAAAC”, lps[] is [0, 1, 2, 0, 1, 2, 3, 3, 3, 4]
+	void computePrefix(char* P, vector&lt;int&gt;&amp; pi) {
+		int m=strlen(P);
+		pi[0]=0; // lps[0] is always 0
+		int k=0; // length of the previous prefix suffix
+		int i=1;
+		while(i&lt;m) {
+			if(P[k]==P[i]) {
+				k++;
+				pi[i]=k;
+				i++;
+			} else {
+				if(k!=0) {
+					k=pi[k-1];
+				} else {
+					pi[i]=0;
+					i++;
+				}
+			}
+		}
+	}
+
+	void printPrefix(vector&lt;int&gt;&amp; pi) {
+		cout&lt;&lt;"pi={ ";
+		for(auto&amp; x:pi)
+			cout&lt;&lt;x&lt;&lt;" ";
+		cout&lt;&lt;"}"&lt;&lt;endl;
+	}
+};
+</code></pre>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-01</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
@@ -1248,491 +1383,6 @@ private:
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-05-26</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and Breadth First Search(BFS). Depth First Search visits the tree by proceeding deeper and deeper until it reaches the leaf nodes, including pre-order, in-order, post-order tree traversal. DFS uses a data structure called Stack.</p>
-
-<p>Breadth First Search is the most natural solution for level-order traversal, since it visits the nodes level by level. BFS requires the use of a data structure called Queue, which is a First In First Out (FIFO) structure.</p>
-
-<p>For the complete C++ source code used in this article, please refer to: <a href="https://github.com/bo-yang/BinaryTree">https://github.com/bo-yang/BinaryTree</a>.</p>
-
-<ol>
-  <li><a href="#data_structure">Data Structure</a></li>
-  <li><a href="#build_tree">Build Binary Tree</a></li>
-  <li><a href="#preorder">Preorder Traversal</a></li>
-  <li><a href="#inorder">Inorder Traversal</a></li>
-  <li><a href="#postorder">Postorder Traversal</a></li>
-  <li><a href="#bft">Breadth First Traversal</a></li>
-  <li><a href="#zigzag">Zigzag Traversal</a></li>
-  <li><a href="#comparison">Binary Tree Comparison</a></li>
-</ol>
-
-<h3 id="a-namedatastructuredata-structurea"><a name="data_structure">Data Structure</a></h3>
-
-<p>The data structure used for the tree node is very simple, which is adopted from <a href="https://oj.leetcode.com/problems/binary-tree-inorder-traversal/">LeetCode OJ</a>:</p>
-
-<pre><code>struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-</code></pre>
-
-<strike>The constructing function TreeNode() is added to purely because it is easier to dynamically allocate TreeNode array by `new TreeNode[size]`. C++98 doesn't support specifying default arguments for objects allocated by `new`. However, the TreeNode array can simplify the process of building binary trees.</strike>
-
-<p>The data structure for the binary tree is:</p>
-
-<pre><code>class BinaryTree {
-public:
-	BinaryTree() { root=NULL;layers=0; }
-	BinaryTree(vector&lt;string&gt;&amp; t) { BuildTree(t); }
-	~BinaryTree();
-	TreeNode* GetRoot() { return root; }
-	vector&lt;int&gt; PreorderTraversal(TreeNode *root);
-	vector&lt;int&gt; InorderTraversal(TreeNode *root);
-	vector&lt;int&gt; PostorderTraversal(TreeNode *root);
-	vector&lt;vector&lt;int&gt; &gt; ZigzagLevelOrder(TreeNode *root);
-	void PrintTraversal(vector&lt;int&gt;&amp; vec, string type);
-	void PrintTraversal(vector&lt;vector&lt;int&gt; &gt;&amp; vec, string type);
-	TreeNode* BuildTree(vector&lt;string&gt;&amp; t);
-	void PrintTree(TreeNode *root);
-	bool IsSameTree(TreeNode *p, TreeNode *q);
-
-private:
-	TreeNode* root;
-	int layers;	// number of layers
-};
-</code></pre>
-
-<h3 id="a-namebuildtreebuild-binary-treea"><a name="build_tree">Build Binary Tree</a></h3>
-
-<p>In my implementation, binary trees are built from a vector of strings. For example, given sequence {1,2,3,#,#,4,#,#,5}, the following binary tree can be built:</p>
-
-<pre>
-	  1
-	 / \
-	2   3
-	   /
-	  4
-	 / \
-	5   6
-</pre>
-
-<p>The tree is built layer by layer, where the first element in sequence is viewed as the root node. Here the “#” is used as terminator. </p>
-
-<p>For each node other than the last layer, there are two children in the next layer, either a number(or string) or a “#”(invalid node). When parsing nodes in current layer, count the number of elements in next layer. The exception is for “#”s - they have no child nodes. In this way, we can parse the dependency of nodes layer by layer. </p>
-
-<p>Following is the C++ code for building binary trees:</p>
-
-<pre><code>TreeNode* BuildTree(vector&lt;string&gt;&amp; t) {
-	if(t.empty())
-		return NULL;
-
-	root=new TreeNode(-1);
-	TreeNode* tree=root;
-	queue&lt;TreeNode*&gt; q; // store nodes of next layer
-	q.push(tree);
-
-	// Build binary tree from vector of strings, where # denotes an invalid node.
-	// The main idea is to parse vector of strings(nodes) layer by layer. 
-	// The first item in the vector should be the root node, and the number of
-	// first layer is one. When parsing the first layer, count the nodes of the
-	// second layer, and so on.
-	int idx=0;
-	int nodes_cur_layer=1;
-	vector&lt;string&gt;::iterator it=t.begin(); 
-	while(idx&lt;t.size()){
-		int nodes_next_layer=0; // all nodes, including #s
-		int vi=0;	// index of valid nodes in next layer
-		for(int i=0;i&lt;nodes_cur_layer;++i) {
-			if(idx+i&lt;t.size() &amp;&amp; *(it+i)=="#") { // Skip #s
-				continue;
-			}
-
-			tree=q.front();
-			q.pop();
-
-			int left=nodes_cur_layer+nodes_next_layer;
-			int right=nodes_cur_layer+nodes_next_layer+1;
-			if(idx+left&lt;t.size()) { // in case of out-of-boundary access
-				if(*(it+left)!="#" ) {
-					tree-&gt;left=new TreeNode(-1);
-					q.push(tree-&gt;left);
-					vi++;
-				} else {
-					tree-&gt;left=NULL;
-				}
-				nodes_next_layer++;
-			}
-			if(idx+right&lt;t.size()) { // in case of out-of-boundary access
-				if(*(it+right)!="#") {
-					tree-&gt;right=new TreeNode(-1);
-					q.push(tree-&gt;right);
-					vi++;
-				} else {
-					tree-&gt;right=NULL;
-				}
-				nodes_next_layer++;
-			}
-
-			tree-&gt;val=atoi((it+i)-&gt;c_str());
-		}
-
-		idx+=nodes_cur_layer;
-		it+=nodes_cur_layer;
-		nodes_cur_layer=nodes_next_layer;
-		layers++;
-	}
-
-	return root;	// root of the tree
-}
-</code></pre>
-
-<p>In order to delete the memroy dynamically allocated in function BuildTree(), in the desctructor, every node in the tree should be traversed and deleted. For simplicity, layer-by-layer traversal is used.</p>
-
-<pre><code>~BinaryTree() {
-	if(root!=NULL) {
-		// delete allocated nodes iteratively
-		queue&lt;TreeNode*&gt; q;
-		TreeNode* tmp=root;
-		q.push(tmp);
-		int nodes_cur_layer=1; // # of nodes in current layer
-		int nodes_next_layer=0;	// # of nodes in next layer
-		while(nodes_cur_layer&gt;0) {
-			for(int i=0;i&lt;nodes_cur_layer;++i) {
-				tmp=q.front();
-				q.pop();
-
-				if(tmp-&gt;left!=NULL) {
-					q.push(tmp-&gt;left);
-					nodes_next_layer++;
-				}
-				if(tmp-&gt;right!=NULL) {
-					q.push(tmp-&gt;right);
-					nodes_next_layer++;
-				}
-
-				delete tmp;
-			}
-			nodes_cur_layer=nodes_next_layer;
-			nodes_next_layer=0;
-		}
-	}
-}
-</code></pre>
-
-<h3 id="a-namepreorderpreorder-traversala"><a name="preorder">Preorder Traversal</a></h3>
-
-<p>To traverse a binary tree in Preorder, following operations are carried-out 
-1. Visit the root, 
-2. Traverse the left subtree, and 
-3. Traverse the right subtree. </p>
-
-<p>For the example binary tree {1,2,3,#,#,4,#,5,6}, the preorder traversal is:</p>
-
-<p><code>
-1,2,3,4,5,6
-</code></p>
-
-<p>Following is my C++ implementation of preorder traversal(<a href="http://en.wikipedia.org/wiki/Tree_traversal#Implementations">Pseudo Code</a>):</p>
-
-<pre><code>vector&lt;int&gt; PreorderTraversal(TreeNode *root) {
-	vector&lt;int&gt; trace;
-	stack&lt;TreeNode*&gt; st;
-	while(root!=NULL) {
-		trace.push_back(root-&gt;val); // Visit the root
-		if(root-&gt;left!=NULL) {	// Traverse the left subtree
-			TreeNode* tmp=root;
-			root=root-&gt;left;
-			if(tmp-&gt;right!=NULL)
-				st.push(tmp-&gt;right);	// store the root of the right subtree
-		} else if(root-&gt;right!=NULL) {
-			root=root-&gt;right;
-		} else {
-			if(st.empty()) {
-				root=NULL;
-			} else {
-				root=st.top();
-				st.pop();
-			}
-		}
-	} // end of while
-	return trace;
-}
-</code></pre>
-
-<h3 id="a-nameinorderinorder-traversala"><a name="inorder">Inorder Traversal</a></h3>
-
-<p>To traverse a binary tree in Inorder, following operations are carried-out:
-1. Traverse the leftmost subtree starting at the left external node,
-2. Visit the root, and 
-3. Traverse the right subtree starting at the left external node.</p>
-
-<p>For the example binary tree {1,2,3,#,#,4,#,5,6}, the inorder traversal is:</p>
-
-<p><code>
-2,1,5,4,6,3
-</code></p>
-
-<p>Following is my C++ implementation of inorder traversal(<a href="http://en.wikipedia.org/wiki/Tree_traversal#Implementations">Pseudo Code</a>):</p>
-
-<pre><code>vector&lt;int&gt; InorderTraversal(TreeNode *root) {
-	vector&lt;int&gt; trace;
-	stack&lt;TreeNode&gt; st;
-    while(root!=NULL) {
-		// Find the left-most node
-		if(root-&gt;left!=NULL) {
-			TreeNode tmp=*root;
-			root=root-&gt;left;
-			tmp.left=NULL;
-			st.push(tmp);	// store the root of the right subtree
-		} else if(root-&gt;right!=NULL) {
-			// Handle the right subtree
-			trace.push_back(root-&gt;val); // Visit leftmost node
-			root=root-&gt;right;
-		} else {
-			trace.push_back(root-&gt;val); // Visit leaf/root node
-			if(st.empty()) {
-				root=NULL;
-			} else {
-				root=&amp;(st.top());
-				st.pop();
-			}
-		}
-	}
-	return trace;
-}
-</code></pre>
-
-<h3 id="a-namepostorderpostorder-traversala"><a name="postorder">Postorder Traversal</a></h3>
-
-<p>To traverse a binary tree in Postorder, following operations are carried-out: 
-1. Traverse all the left external nodes starting with the leftmost subtree which is then followed by bubble-up all the internal nodes, 
-2. Traverse the right subtree starting at the left external node which is then followed by bubble-up all the internal nodes, and 
-3. Visit the root.</p>
-
-<p>For the example binary tree {1,2,3,#,#,4,#,5,6}, the postorder traversal is:</p>
-
-<p><code>
-2,5,6,4,3,1
-</code></p>
-
-<p>Following is my C++ implementation of postorder traversal(<a href="http://en.wikipedia.org/wiki/Tree_traversal#Implementations">Pseudo Code</a>):</p>
-
-<pre><code>vector&lt;int&gt; PostorderTraversal(TreeNode *root) {
-	vector&lt;int&gt; trace;
-	stack&lt;TreeNode&gt; st;
-    while(root!=NULL) {
-		// Find the left-most node
-		if(root-&gt;left!=NULL) {
-			TreeNode tmp=*root;
-			root=root-&gt;left;
-			tmp.left=NULL;
-			st.push(tmp);	// store the root of the right subtree
-		} else if(root-&gt;right!=NULL) {
-			TreeNode tmp=*root;
-			root=root-&gt;right;
-			tmp.left=NULL;
-			tmp.right=NULL;
-			st.push(tmp);	// store the root
-		} else {
-			trace.push_back(root-&gt;val);	// Print root at last
-			if(st.empty()) {
-				root=NULL;
-			} else {
-				root=&amp;(st.top());
-				st.pop();
-			}
-		}
-	}
-	return trace;
-}
-</code></pre>
-
-<h3 id="a-namebftbreadth-first-traversalbfta"><a name="bft">Breadth First Traversal(BFT)</a></h3>
-
-<p>Breadth first traversal is used for printing the binary tree in my code. The key of for BFT is to use a queue(s) to store nodes in current and/or next layers. The simplest way to use two queues: one to store nodes of current layer and the other for next layer. </p>
-
-<p>However, a single queue also can work well. For the first layer, there is only one node - the root. When accessing this node, count the number of nodes in the second layer and push them into queue. When accessing the second layer, pop items in FIFO sequence and remove them from queue, and push the nodes in third layer into queue, and so on. Two inteher variables can be used to count the numbers of nodes in current layer and the next layer, respectively.</p>
-
-<p>Following is my C++ impementation of traversing binary tree in level order:</p>
-
-<pre><code>void PrintTree(TreeNode *root) {
-	queue&lt;TreeNode*&gt; q;
-	TreeNode* tmp=root;
-	q.push(tmp);
-	int nodes_cur_layer=1; // # of nodes in current layer
-	int nodes_next_layer=0;	// # of nodes in next layer
-	while(nodes_cur_layer&gt;0) {
-		for(int i=0;i&lt;nodes_cur_layer;++i) {
-			tmp=q.front();
-			q.pop();
-
-			cout&lt;&lt;tmp-&gt;val&lt;&lt;" ";
-
-			if(tmp-&gt;left!=NULL) {
-				q.push(tmp-&gt;left);
-				nodes_next_layer++;
-			}
-			if(tmp-&gt;right!=NULL) {
-				q.push(tmp-&gt;right);
-				nodes_next_layer++;
-			}
-		}
-		cout&lt;&lt;endl;
-		nodes_cur_layer=nodes_next_layer;
-		nodes_next_layer=0;
-	}
-}
-</code></pre>
-
-<h3 id="a-namezigzagzigzag-traversala"><a name="zigzag">Zigzag Traversal</a></h3>
-
-<p>Zigzag level order traversal is a Breadth First Traversal(BFT). The procedure  of this traversal is (i) from left to right, (ii) then right to left for the next level, (iii) and alternate between). </p>
-
-<p>For the example binary tree {1,2,3,#,#,4,#,5,6}, the postorder traversal is:</p>
-
-<p><code>
-[[1],[3,2],[4],[6,5]]
-</code></p>
-
-<p>Although zigzag traversal is kind of BFT, it is not easy to use one or two queues to implement it, because you need to traverse every layer from left to right, and print nodes from right to left for some layers. Since I don’t want to use three queues(one to store the nodes of current layer, the other two store the left-to-right traversal of next layer, but one of them should be used for left-to-right traveral in next iteration and the other used for right-to-left printing), I implemented the zigzag traversal with two lists: one list to store the left-to-right traversal of current layer, and the other list for storing left-to-right traversal of next layer. During printing, the same list can be controlled to output nodes either from left to right or right to left without loosing any information(unlike queue, quque is not iterable).</p>
-
-<p>Following is my code for zigzag traversal. Note that the output is a vector of vectors.</p>
-
-<pre><code>vector&lt;vector&lt;int&gt; &gt; ZigzagLevelOrder(TreeNode *root) {
-    vector&lt;vector&lt;int&gt; &gt; trace;
-	list&lt;TreeNode*&gt; lst_cur;
-	int next_layer_nodes=0;
-	int cur_layer_nodes;
-	bool l2r=true;
-	if(root!=NULL) {
-		cur_layer_nodes=1;
-		lst_cur.push_back(root);
-	}else{
-		return trace;
-	}
-
-	// Use two lists for left to right traversal and vice versa: 
-	// one list used for storing nodes of current layer, and the 
-	// other used for storing nodes layer below.
-	//
-	// The binary tree will always be traversed from left to right 
-	// for each layer, however, for every other layer, the nodes will
-	// be printed from right to left.
-	while(cur_layer_nodes&gt;0) {
-		vector&lt;int&gt; subtr;
-		list&lt;TreeNode*&gt; lst_next;
-		list&lt;TreeNode*&gt;::iterator lr=lst_cur.begin();
-		list&lt;TreeNode*&gt;::iterator rl=lst_cur.end();
-		for(int i=0;i&lt;cur_layer_nodes;++i) {
-			TreeNode* tn = *(lr);
-			if(l2r) {
-				subtr.push_back((*(lr))-&gt;val);
-			} else {
-				rl--; // lst_cur.end() points to undefined memory
-				subtr.push_back((*(rl))-&gt;val);
-			}
-			
-			if(tn-&gt;left!=NULL) {
-				next_layer_nodes++;
-				lst_next.push_back(tn-&gt;left);
-			}
-
-			if(tn-&gt;right!=NULL) {
-				next_layer_nodes++;
-				lst_next.push_back(tn-&gt;right);
-			}
-
-			lr++;
-		} // end for
-		trace.push_back(subtr);
-		cur_layer_nodes=next_layer_nodes;
-		next_layer_nodes=0;
-		lst_cur=lst_next;
-		l2r=!l2r;
-	} // end while
-
-	return trace;
-}
-</code></pre>
-
-<h3 id="a-namecomparisonbinary-tree-comparisona"><a name="comparison">Binary Tree Comparison</a></h3>
-
-<p>As for the comparison of two binary trees, only equality is considered. Two binary trees are considered equal if they are structurally identical and the nodes have the same value. To implement this, two trees should be traversed at the same time using same traverse method. If for every pair of nodes, the values are equal, and both of them have left child and right child, then the two nodes are considered equal.</p>
-
-<p>For simplicity, Breadth First Traversal is used in my implementation:</p>
-
-<pre><code>bool IsSameTree(TreeNode *p, TreeNode *q) {
-	bool same_tree=true;
-    queue&lt;TreeNode*&gt; qp;
-	queue&lt;TreeNode*&gt; qq;
-	int cur_layer_nodes;
-	int next_layer_nodes=0;
-	if(p!=NULL &amp;&amp; q!=NULL) {
-		cur_layer_nodes=1;
-		qp.push(p);
-		qq.push(q);
-	} else if(p==NULL &amp;&amp; q==NULL) {
-		return true;
-	} else {
-		return false;
-	}
-
-	// Traverse trees layer by layer
-	while(cur_layer_nodes&gt;0) {
-		next_layer_nodes=0;
-		for(int i=0;i&lt;cur_layer_nodes;++i) {
-			TreeNode* tp=qp.front();
-			qp.pop();
-			TreeNode* tq=qq.front();
-			qq.pop();
-
-			if((tp-&gt;val!=tq-&gt;val) || (tp-&gt;left==NULL) &amp;&amp; (tq-&gt;left!=NULL) || (tp-&gt;left!=NULL) &amp;&amp; (tq-&gt;left==NULL) || (tp-&gt;right==NULL) &amp;&amp; (tq-&gt;right!=NULL) || (tp-&gt;right!=NULL) &amp;&amp; (tq-&gt;right==NULL)) {
-				same_tree=false;
-				break;
-			}
-
-			if(tp-&gt;left!=NULL) {
-				qp.push(tp-&gt;left);
-				qq.push(tq-&gt;left);
-				next_layer_nodes++;
-			}
-
-			if(tp-&gt;right!=NULL) {
-				qp.push(tp-&gt;right);
-				qq.push(tq-&gt;right);
-				next_layer_nodes++;
-			}
-		} // end for
-		cur_layer_nodes=next_layer_nodes;
-		if(!same_tree)
-			break;
-	} // end while
-
-	return same_tree;
-}
-</code></pre>
-
-<p><em>[Updated 05/30/2014]</em></p>
-
-<h3 id="references">References</h3>
-<ol>
-  <li>https://oj.leetcode.com/problems/binary-tree-inorder-traversal/</li>
-  <li><a href="http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html">Binary tree traversal: Preorder, Inorder, and Postorder</a></li>
-  <li><a href="http://en.wikipedia.org/wiki/Tree_traversal">Tree Traversal</a></li>
-</ol>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1775,7 +1425,7 @@ private:
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">27</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -1787,7 +1437,7 @@ private:
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">52</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -1831,7 +1481,7 @@ private:
     
         <li><a href="/tags.html#Shell">Shell <span class="badge pull-right">15</span></a></li>
     
-        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">1</span></a></li>
+        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">2</span></a></li>
     
         <li><a href="/tags.html#Tcl%2FTk">Tcl/Tk <span class="badge pull-right">9</span></a></li>
     
@@ -1865,6 +1515,8 @@ private:
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
+			
   			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
 			
   			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
@@ -1882,8 +1534,6 @@ private:
   			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
 			
   			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
 			</ul>
 		</div>

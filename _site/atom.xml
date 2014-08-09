@@ -4,13 +4,117 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-08-06T22:13:52-07:00</updated>
+ <updated>2014-08-09T13:06:58-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
    <email>bonny95@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Retrieve String From Sampled Slices</title>
+   <link href="http://bo-yang.github.com//2014/08/09/retrive-string-from-slices"/>
+   <updated>2014-08-09T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/08/09/retrive-string-from-slices</id>
+   <content type="html">&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;&amp;quot;#problem&amp;quot;&quot;&gt;Problem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;&amp;quot;#solution&amp;quot;&quot;&gt;Solution&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;&amp;quot;#code&amp;quot;&quot;&gt;Source Code&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;a-nameproblemproblema&quot;&gt;1. &lt;a name=&quot;problem&quot;&gt;Problem&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Given a string, such as 01001010101001101011, we can randomly sliced multiple substrings. Assume that during the slicing, due to some unexpected noises, some characters may flip(0-&amp;gt;1 or 1-&amp;gt;0). For example:&lt;/p&gt;
+
+&lt;pre&gt;
+Position: 0123456789.........
+String:   01001010101001101011
+
+slice1:    1001110101000
+slice2:       1010111001111
+slice3:       10101
+slice4:                1101011
+&lt;/pre&gt;
+
+&lt;p&gt;In above sample, &lt;code&gt;slice1&lt;/code&gt; starts from position 1(assume that the index of a string begins with 0), &lt;code&gt;slice2&lt;/code&gt; starts from position 4, &lt;code&gt;slice3&lt;/code&gt; starts from 4, and &lt;code&gt;slice4&lt;/code&gt; starts from 13. In slice1, &lt;code&gt;0&lt;/code&gt; flips to &lt;code&gt;1&lt;/code&gt; at position 5 and &lt;code&gt;1&lt;/code&gt; flips to &lt;code&gt;0&lt;/code&gt; at position 13.&lt;/p&gt;
+
+&lt;p&gt;For one specific position in the original string, if it is &lt;code&gt;1&lt;/code&gt;, then the probability of flipping to 0 in a slicing is 0.1; and vice versa(i.e.Prob(0-&amp;gt;1)=0.1).&lt;/p&gt;
+
+&lt;p&gt;The problem is: &lt;strong&gt;if we only have multiple slices(the length of each slice may vary) and their starting positions in the string, and we don’t know the original string, given an arbitrary position in the original string, how can we calculate the probability that position is a &lt;code&gt;1&lt;/code&gt;?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Assume most positions will be covered at least once in slices, and we have following parameters:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;p01=0.1; // Probability a ‘0’ in string but flipped to a ‘1’ in a slice
+p10=0.1; // Probability a ‘1’ in string but flipped to a ‘0’ in a slice
+p1=0.5;  // Prior probability that any given position in string is a ‘1’
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can also assume that the string is a random string of &lt;code&gt;0&lt;/code&gt;s and &lt;code&gt;1&lt;/code&gt;s, and during slicing, each position is sampled independently.&lt;/p&gt;
+
+&lt;p&gt;For the above example string and four slices, we already have following probabilities for each position:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Pos Prob
+0   0.500
+1   0.900
+2   0.100
+3   0.100
+4   0.999
+5   0.100
+6   0.999
+7   0.001
+8   0.999
+9   0.500
+10  0.988
+11  0.012
+12  0.012
+13  0.900
+14  0.988
+15  0.500
+16  0.988
+17  0.100
+18  0.900
+19  0.900
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;a-namesolutionsolutiona&quot;&gt;2. &lt;a name=&quot;solution&quot;&gt;Solution&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Obviously, the numbers of 0s and 1s in all slices for each position can be counted using a hashmap(&lt;code&gt;unordered_map&lt;/code&gt; in C++). However, the difficult part is to find a model to calculate the probabilities. Simple multiplicaiton or subtraction won’t work, because we cannot get &lt;code&gt;0.999&lt;/code&gt; with the given probabilities and arithmetic operations. Besides, the Bayes’ theorem also cannot be used directly, because we don’t know the number of slices and the computation would be too complicated. And we also may be tempted to try Markov Model, but Markov Model cannot fit all positions in the above example, such as positions 4(&lt;code&gt;1,1,1&lt;/code&gt;), 5(&lt;code&gt;1,0,0&lt;/code&gt;), 9(&lt;code&gt;0,1&lt;/code&gt;) and 13(&lt;code&gt;0,1,1&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;The best model to fit this problem is the &lt;a href=&quot;http://www.mathworks.com/help/stats/binomial-distribution.html&quot;&gt;Binomial Distribution&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The binomial distribution models the total number of successes in repeated trials from an infinite population under the following conditions:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;Only two outcomes are possible on each of n trials.&lt;/li&gt;
+    &lt;li&gt;The probability of success for each trial is constant.&lt;/li&gt;
+    &lt;li&gt;All trials are independent of each other.&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The probability density function(pdf) of Binomial Distribution is:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;
+	f(x|n,p)={n \choose x} p^x (1-p)^{n-x}; \quad \quad x=0,1,2,\cdots,n.
+&lt;/script&gt;
+
+&lt;p&gt;As for this problem, given a position in the original string, we first need to find the probability of a &lt;code&gt;0&lt;/code&gt; occurs in this position(in this case &lt;code&gt;0&lt;/code&gt;=&amp;gt;&lt;code&gt;1&lt;/code&gt;, say &lt;code&gt;bp01&lt;/code&gt;), and then calculate the probability of a &lt;code&gt;1&lt;/code&gt; occurs in this position(in this case &lt;code&gt;1&lt;/code&gt;=&amp;gt;&lt;code&gt;1&lt;/code&gt;, say say &lt;code&gt;bp11&lt;/code&gt;). Finally, we can get the probability of &lt;code&gt;1&lt;/code&gt; in this position in the original string by: &lt;code&gt;p=bp11/(bp01+bp11)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Take position 5 as an example. We get one &lt;code&gt;1&lt;/code&gt; and two &lt;code&gt;0&lt;/code&gt;s in position 5 in three observations. We can calculate &lt;code&gt;b11&lt;/code&gt; using Matlab &lt;code&gt;binopdf&lt;/code&gt; function. Since &lt;code&gt;p11=1-p10=0.9&lt;/code&gt;, therefore we have &lt;code&gt;bp11=binopdf(1,3,0.9)=0.027&lt;/code&gt;. As for &lt;code&gt;bp01&lt;/code&gt;, because &lt;code&gt;p01=0.1&lt;/code&gt;, we have &lt;code&gt;bp01=binopdf(1,3,0.1)=0.243&lt;/code&gt;. Therefore, we can calc the probability of &lt;code&gt;1&lt;/code&gt; in position 5 by &lt;code&gt;p=0.027/(0.243 + 0.027)=0.1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-namecodesource-codea&quot;&gt;3. &lt;a name=&quot;code&quot;&gt;Source Code&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;The implementation of this problem can be found in &lt;a href=&quot;https://github.com/bo-yang/ProgrammingChallenges/tree/master/string_retrieve&quot;&gt;my GitHub Channel&lt;/a&gt;. &lt;/p&gt;
+
+&lt;h3 id=&quot;references&quot;&gt;References:&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o&lt;/li&gt;
+  &lt;li&gt;http://www.mathworks.com/help/stats/binomial-distribution.html&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+ </entry>
  
  <entry>
    <title>String Permutation</title>

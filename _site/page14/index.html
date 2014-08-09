@@ -90,6 +90,31 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
+    <h2 class="header"><a href="/2009/10/30/install-chrome-in-fedora">Fedora升级/安装Chromium(Chrome)总结</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-10-30</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;尽管Linux版Chrome浏览器还没有正式发布，Fedora早已官方支持Google的Chromium了。Fedora社区会定期build最新的稳定版Chromium，可以在<a href="http://spot.fedorapeople.org/chromium/">http://spot.fedorapeople.org/chromium/</a>下载到。当然也可以下载Google 每天build的二进制版Chromium，不过就是这些都不一定稳定：<a href="http://build.chromium.org/buildbot/snapshots/">http://build.chromium.org/buildbot/snapshots/</a>。</p>
+<p>&nbsp;</p>
+<p>如果要安装Fedora社区的Chromium，需要下载v8, v8-devel和chromium，目前最新的版本是</p>
+<p>&nbsp;</p>
+<pre><a href="v8-1.3.16-1.20091027svn3152.fc11.i586.rpm">v8-1.3.16-1.20091027svn3152.fc11.i586.rpm</a> </pre>
+<pre></pre>
+<pre><a href="v8-devel-1.3.16-1.20091027svn3152.fc11.i586.rpm">v8-devel-1.3.16-1.20091027svn3152.fc11.i586.rpm</a></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<pre><a href="chromium-4.0.227.0-0.1.20091027svn30269.fc11.i586.rpm">chromium-4.0.227.0-0.1.20091027svn30269.fc11.i586.rpm</a></pre>
+<pre>安装时需要先安装v8,然后是v8-devel，最后安装chromium。如果要升级的话，最好先把老版本的删除，然后再安装新版本的chromium。</pre>
+<pre>删除的时候按照和安装时相反的顺序，先删除chromium,再删除v8-devel,最后删除v8。</pre>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
     <h2 class="header"><a href="/2009/10/27/build-c-library-in-linux">【总结】Linux下C开发，怎么做成库文件，又怎么引用这个库文件？</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-10-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
@@ -781,30 +806,6 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）</div>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/08/26/1byte-file-in-unix">UNIX下大小为1byte的文件——都是换行符(EOL)惹得祸</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-08-26</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>某同事用tcl和ksh写了一个程序，利用进行某项操作，如有错误就将错误信息写入某个文件中，写入方法是 2&gt;$stderr，然后判断该文件的大小，如果大于0，则认为有错误发生，报错。</p>
-<p>&nbsp;</p>
-<p>奇怪的是该程序一直不能成功执行，一直报错。同事逐行追踪他的代码，结果发现文件$stderr刚创建时大小为0，可过一会之后自己就会变成1byte. 然而打开查看时，该文件内容却是空的。后来用vi按照16进制打开(:%!xxd)，发现了0a。</p>
-<p>&nbsp;</p>
-<p>0x0a是UNIX下默认的行结束符(EOL)，每行都会有的。我们试验了一下，凡是用print在UNIX下创建一个文件：</p>
-<p>
-<pre>print $test &gt; test</pre>
-<p>&nbsp;</p>
-<p>其中$test为未定义的变量，则会生成一个大小为1byte的文件。打开文件，也能发现0a的存在。</p>
-<p>&nbsp;</p>
-<p>可是如果是用C语言编写一个文件操作的函数，却能得到一个大小为0而打开后也有0a的文件。很是奇怪&hellip;&hellip;</p>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -847,7 +848,7 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）</div>
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">27</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -859,7 +860,7 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）</div>
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">52</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -903,7 +904,7 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）</div>
     
         <li><a href="/tags.html#Shell">Shell <span class="badge pull-right">15</span></a></li>
     
-        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">1</span></a></li>
+        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">2</span></a></li>
     
         <li><a href="/tags.html#Tcl%2FTk">Tcl/Tk <span class="badge pull-right">9</span></a></li>
     
@@ -937,6 +938,8 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）</div>
             <h3>Recent Posts</h3>
 	        <ul>
 			
+  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
+			
   			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
 			
   			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
@@ -954,8 +957,6 @@ $sudo apt-get remove 内核版本（如：linux-image-2.6.15-23-386）</div>
   			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
 			
   			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-  			<li><span>2014-07-01</span> &raquo; <a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></li>
 			
 			</ul>
 		</div>
