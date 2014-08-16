@@ -4,17 +4,19 @@ title: Binary Tree Operations(II) - Path Sum and Cycle Detection
 categories: 
 - Algorithm
 - C/C++
-- Statistics
 tags:
 - Algorithm
 - C/C++
-- Statistics
 status: publish
 type: post
 published: true
 author: Bo Yang
 ---
 This is the second article on binary tree operations. For topics on binary tree build, traversal and comparison, please refer to [Binary Tree Operations(I)](http://bo-yang.github.io/2014/05/26/binary-tree-traversal/)
+
+1. [Path Sum](#path_sum)
+2. [Build Binary Tree With Cycle](#build_cycle)
+3. [Detect Cycle in Binary Tree](#detect_cycle)
 
 ### 1. <a name="path_sum">Path Sum</a>
 
