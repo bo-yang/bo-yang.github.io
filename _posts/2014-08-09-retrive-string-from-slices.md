@@ -15,9 +15,9 @@ published: true
 author: Bo Yang
 ---
 
-1. [Problem]("#problem")
-2. [Solution]("#solution")
-3. [Source Code]("#code")
+1. [Problem](#problem)
+2. [Solution](#solution)
+3. [Source Code](#code)
 
 ### 1. <a name="problem">Problem</a>
 
