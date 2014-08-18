@@ -81,7 +81,7 @@
     <div class="row" id="content-row">
       
 <div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Beginner's mind.</i></font></small></h1>
+	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
 </div>
 
 <div class="container">
@@ -89,6 +89,34 @@
 		<div class="col-md-9">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2009/08/28/tcl-condition">TCL判断条件</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-08-28</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>编写TCL代码时遇要写一个if判断条件，很简单的一个语句，结果却费了很大力气才搞定。要判断的是，如果执行info exists成功而且某全局数组C的某个成员大于0，正确的语句为：</p>
+<p>&nbsp;</p>
+<p>if { [info exists C(AP${AP}cdnnoperap)] &amp;&amp; $C(AP${AP}cdnnoperap &gt; 0 } { }</p>
+<p>&nbsp;</p>
+<p>我为了逻辑上的清晰，特地将语句写为：</p>
+<p>&nbsp;</p>
+<p>if { [info exists C(AP${AP}cdnnoperap)] &amp;&amp; ｛$C(AP${AP}cdnnoperap｝ &gt; 0 } { }</p>
+<p>&nbsp;</p>
+<p>结果报错。又改成</p>
+<p>if { [info exists C(AP${AP}cdnnoperap)] &amp;&amp; ［$C(AP${AP}cdnnoperap］ &gt; 0 } { }</p>
+<p>还是报错。又改为</p>
+<p>if { [info exists C(AP${AP}cdnnoperap)] &amp;&amp; {&quot;$C(AP${AP}cdnnoperap&quot; != &quot;0&quot;} } { }</p>
+<p>仍然报错。</p>
+<p>&nbsp;</p>
+<p>看来TCL的语法确实还是很有自己的特点的。往后要多加注意。</p>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2009/08/26/1byte-file-in-unix">UNIX下大小为1byte的文件——都是换行符(EOL)惹得祸</a></h2>
     <p>
@@ -618,55 +646,6 @@ I) ldconfig</p>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/04/12/crack-thought-reading-webpage">破解“读心术”网页</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-04-12</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>&nbsp;</p>
-<div>
-<h1>
-</h1>
-<h1><span style="font-weight:normal;font-size:12px;">无意之中看到这样一种网页&ldquo;读心术：<span style="font-size:x-small;">这个程序有着能够看穿你心思的特殊能力，试试吧</span>&rdquo;，如<a href="http://www.souxin.com/dxs.htm">http://www.souxin.com/dxs.htm</a>&nbsp;或&nbsp;<a href="http://www.91cool.net/heart.html">http://www.91cool.net/heart.html</a>。</span></h1>
-<div>试过之后大感惊奇，该网页怎么竟有如此魔力？但我毕竟是个无神论者，而且用的又是Chrome浏览器，查看网页的源代码很方便，于是便查看网页源代码。找了半天，发现了相关的代码如下：
-<pre>&lt;SCRIPT language=javascript&gt; 
-ax=0;
-function writeTable() {
-        ax=Math.round(Math.random()*26);
-        alphaArray=new Array("a", "n", "b", "d", "f", "h", "{", "i", "l", "v", "x", "z", "I", "J", "M", "N", "o", "O", "R", "S", "T", "U", "m", "6", "^", "u", "_", "[", "]")
-        table="&lt;table border=0 cellspacing=1 cellpadding=1 width='100%'&gt;&lt;tr&gt;"
-        j=1;
-        for ( i = 99 ; i &gt;= 0 ; i-- ) {
-                a=Math.round(Math.random()*26);
-                if ( i%9 == 0 &amp;&amp; i &lt; 89 ) 
-                        a=ax;
-                table+="&lt;td class='numtd'&gt;"+i+"&lt;/td&gt;&lt;td class='symtd'&gt;"+alphaArray[a]+"&lt;/td&gt;"
-                 if ( j%10 == 0 ) 
-                         table+="&lt;/tr&gt;&lt;tr&gt;" 
-                 j++
-        }
-        table+="&lt;/table&gt;"
-        sym.innerHTML=table
-        sh.innerHTML=""
-}
-function showAnswer() {
-        sh.innerHTML=alphaArray[ax]
-        sym.innerHTML="&lt;span class=big&gt;&lt;a href="javascript:writeTable()" mce_href="javascript:writeTable()" class=hot&gt;Try Next 再试一次&lt;/a&gt;&lt;/font&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;"
-}
-&lt;/SCRIPT&gt; </pre>
-<p>&nbsp;</p></div>
-<p>看了又看也没发现这段代码有何神奇之处，无非就是打印输出表格，用到了随机数改变输出的图像顺序而已。</p>
-<div>我忽然注意到了&ldquo; i &lt; 89&rdquo;这一条件，认定此处必有玄机。我于是算了一算，发现90～99所有的数按照&ldquo;读心术&rdquo;的要求运算之后都是81，而80～89运算之后都是72，70～79是63，以此类推分别是54、45、36、27、18和0.只要保证0、18、27、36、45、54、63、72、81这几个数所对应的图像是相同的就可以了。查看&ldquo;读心术&rdquo;网页打印出来的图像，果然如此。</div>
-<div>继续看代码，发现了&ldquo;i%9 == 0&rdquo;这一判断条件，再一观察，发现上面那几个关键的数（0、18、27、36、45、54、63、72、81）确实是9的倍数。代码中当遇到小于89的9的倍数时，强制令a=ax，这样一来便保证了9的倍数对应的图像是相同的。于是，对于任何符合两位数，减去自己的个位和十位后，所对应的图像都是相同的。这就是所谓&ldquo;读心术&rdquo;程序的trick。</div>
-</div>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -709,7 +688,7 @@ function showAnswer() {
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -721,7 +700,7 @@ function showAnswer() {
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -794,34 +773,18 @@ function showAnswer() {
 	
         </div>
 		<!-- /well -->
-		<!--
-        <div class="well">
-            <h3>Recent Posts</h3>
-	        <ul>
-			
-  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
-			
-  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
-			
-  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
-			
-  			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
-			
-  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
-			
-  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
-			
-  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
-			
-  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-			</ul>
-		</div>
-		-->
+		<div class="well">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Right-side Ad(300x600) -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-1292710832620237"
+     data-ad-slot="9707222500"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+	   	</div>
         <!-- /well -->
 </div>
 

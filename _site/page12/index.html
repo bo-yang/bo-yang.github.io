@@ -81,7 +81,7 @@
     <div class="row" id="content-row">
       
 <div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Beginner's mind.</i></font></small></h1>
+	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
 </div>
 
 <div class="container">
@@ -89,6 +89,23 @@
 		<div class="col-md-9">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/09/21/special-var-in-ksh">Ksh中的$*和$@</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-09-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>The meaning of $* and $@ is identical when not quoted or when used as a<br />
+parameter assignment value or as a file name.</p>
+<p>&nbsp;</p>
+<p>However, when used as a command argument, "$*" is equivalent to "$1<span class="docEmphasis">d</span>$2<span class="docEmphasis">d</span>..." , where <span class="docEmphasis">d</span> is the first character of the <span class="docEmphStrong">IFS</span> parameter, whereas "$@" is equivalent to "$1"<br />
+"$2" ....</p>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2010/09/14/clone-vm-in-ESXi">How to Clone VMs in ESXi</a></h2>
     <p>
@@ -539,55 +556,6 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2010/06/24/apache-subversion-config">Apache and Subversion配置</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-06-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>&nbsp;</p>
-<h2>I.&nbsp;<span style="color:#000000;"><a href="http://xuebingnanmm.javaeye.com/blog/629810">CentOS Apache配置详解</a></span></h2>
-<p><span style="color:#000000;">(</span><a href="http://xuebingnanmm.javaeye.com/blog/629810">http://xuebingnanmm.javaeye.com/blog/629810</a>)</p>
-<p>&nbsp;</p>
-<p><span style="color:#000000;"><br />
-</span></p>
-<h2>II.<span style="color:#000000;"><a id="vqhi" title="Subversion on CentOS" href="http://wiki.centos.org/HowTos/Subversion#head-63b296629e14e219beb2a4b866521947afe58d68">Subversion on CentOS</a>&nbsp;</span></h2>
-<pre><span style="color:#000000;">(</span><a href="http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9">http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9</a>)</pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<h2>III. How to customize the path of svn repository?&nbsp;</h2>
-<p>The URL of svn repository is like http://&lt;server_name&gt;/&lt;location&gt;/&lt;project&gt;. You can store the svn repository to anywhere you want.&nbsp;</p>
-<p>&nbsp;</p>
-<div>If the location is not defined in&nbsp;/etc/httpd/conf/httpd.conf, add such definition in it:</div>
-<div><span style="font-family:'Courier New';">&lt;Directory /path&gt;</span></div>
-<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;Options FollowSymLinks<br /></span></div>
-<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;AllowOverride None</span></div>
-<div><span style="font-family:'Courier New';">&lt;/Directory&gt;</span></div>
-<p>&nbsp;</p>
-<div>Then change the&nbsp;<strong>/etc/httpd/conf.d/subversion.conf</strong>, such as:</div>
-<div><span style="font-family:'Courier New';">&lt;Location /tmp&gt;</span></div>
-<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;DAV svn</span></div>
-<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;SVNParentPath /var/www/svn/repos</span></div>
-<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;AuthzSVNAccessFile /etc/svn-acl-conf</span></div>
-<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;SVNPath /tmp/svn/project</span></div>
-<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthType Basic</span></div>
-<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthName "Subversion repos"</span></div>
-<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthUserFile /etc/svn-auth-conf</span></div>
-<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;Require valid-user</span></div>
-<div><span style="font-family:'Courier New';">&lt;/Location&gt;</span></div>
-<p>
-<br />However,&nbsp;<span style="font-family:'courier new';">SVNParentPath&nbsp;</span>is can not be used here and only&nbsp;<span style="font-family:'courier new';">SVNPath&nbsp;</span>is supported (<a href="http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html">http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html</a>).</p>
-<div>The &lt;Location /&gt;...&lt;/Location&gt; tags also can be added in /etc/httpd/conf/httpd.conf (<a href="http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn">http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn</a>).</div>
-<div>Command to stop SELinux: &nbsp;<span style="font-family:'courier new';"><span style="font-size:x-small;">setenforce 0</span></span></div>
-<p>&nbsp;</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -630,7 +598,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -642,7 +610,7 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -715,34 +683,18 @@ INVERT_IP=$ip4.$ip3.$ip2.$ip1</pre>
 	
         </div>
 		<!-- /well -->
-		<!--
-        <div class="well">
-            <h3>Recent Posts</h3>
-	        <ul>
-			
-  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
-			
-  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
-			
-  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
-			
-  			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
-			
-  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
-			
-  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
-			
-  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
-			
-  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-			</ul>
-		</div>
-		-->
+		<div class="well">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Right-side Ad(300x600) -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-1292710832620237"
+     data-ad-slot="9707222500"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+	   	</div>
         <!-- /well -->
 </div>
 

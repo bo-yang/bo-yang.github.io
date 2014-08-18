@@ -81,7 +81,7 @@
     <div class="row" id="content-row">
       
 <div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Beginner's mind.</i></font></small></h1>
+	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
 </div>
 
 <div class="container">
@@ -89,6 +89,55 @@
 		<div class="col-md-9">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2010/06/24/apache-subversion-config">Apache and Subversion配置</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2010-06-24</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>&nbsp;</p>
+<h2>I.&nbsp;<span style="color:#000000;"><a href="http://xuebingnanmm.javaeye.com/blog/629810">CentOS Apache配置详解</a></span></h2>
+<p><span style="color:#000000;">(</span><a href="http://xuebingnanmm.javaeye.com/blog/629810">http://xuebingnanmm.javaeye.com/blog/629810</a>)</p>
+<p>&nbsp;</p>
+<p><span style="color:#000000;"><br />
+</span></p>
+<h2>II.<span style="color:#000000;"><a id="vqhi" title="Subversion on CentOS" href="http://wiki.centos.org/HowTos/Subversion#head-63b296629e14e219beb2a4b866521947afe58d68">Subversion on CentOS</a>&nbsp;</span></h2>
+<pre><span style="color:#000000;">(</span><a href="http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9">http://wiki.centos.org/HowTos/Subversion#head-2afd8f61ccc6de4477fde9a4bcc84720b86c17a9</a>)</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>III. How to customize the path of svn repository?&nbsp;</h2>
+<p>The URL of svn repository is like http://&lt;server_name&gt;/&lt;location&gt;/&lt;project&gt;. You can store the svn repository to anywhere you want.&nbsp;</p>
+<p>&nbsp;</p>
+<div>If the location is not defined in&nbsp;/etc/httpd/conf/httpd.conf, add such definition in it:</div>
+<div><span style="font-family:'Courier New';">&lt;Directory /path&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;Options FollowSymLinks<br /></span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp;AllowOverride None</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Directory&gt;</span></div>
+<p>&nbsp;</p>
+<div>Then change the&nbsp;<strong>/etc/httpd/conf.d/subversion.conf</strong>, such as:</div>
+<div><span style="font-family:'Courier New';">&lt;Location /tmp&gt;</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;DAV svn</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;SVNParentPath /var/www/svn/repos</span></div>
+<div><span style="font-family:'Courier New';"># &nbsp; &nbsp; &nbsp;AuthzSVNAccessFile /etc/svn-acl-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;SVNPath /tmp/svn/project</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthType Basic</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthName "Subversion repos"</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;AuthUserFile /etc/svn-auth-conf</span></div>
+<div><span style="font-family:'Courier New';">&nbsp;&nbsp; &nbsp; &nbsp;Require valid-user</span></div>
+<div><span style="font-family:'Courier New';">&lt;/Location&gt;</span></div>
+<p>
+<br />However,&nbsp;<span style="font-family:'courier new';">SVNParentPath&nbsp;</span>is can not be used here and only&nbsp;<span style="font-family:'courier new';">SVNPath&nbsp;</span>is supported (<a href="http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html">http://lists.freebsd.org/pipermail/freebsd-questions/2009-November/208244.html</a>).</p>
+<div>The &lt;Location /&gt;...&lt;/Location&gt; tags also can be added in /etc/httpd/conf/httpd.conf (<a href="http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn">http://stackoverflow.com/questions/673572/how-to-specify-the-repository-in-apache-dav-svn</a>).</div>
+<div>Command to stop SELinux: &nbsp;<span style="font-family:'courier new';"><span style="font-size:x-small;">setenforce 0</span></span></div>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2010/06/13/batch-process-with-excel-vba">利用Excel VBA处理文档</a></h2>
     <p>
@@ -958,78 +1007,6 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2009/11/29/install-android-sdk-in-fedora">Fedora 12安装Android SDK</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-11-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Android-ref" rel="nofollow">Android</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>
-    &nbsp;</p>
-<div>
-<h1>Fedora 12安装Android SDK</h1>
-<h3>1. 下载Android SDK</h3>
-<h3><span><span style="font-size:x-small;">由于android网站国内不能直接访问， 请通过以下网址下载</span></span></h3>
-<p><span><br />
-</span>
-<p><a id="bkhs" title="http://androidappdocs.appspot.com/index.html" href="http://androidappdocs.appspot.com/index.html"><span style="font-size:x-small;">http://androidappdocs.appspot.com/index.html</span></a></p>
-<p><a title="http://dl.google.com/android/android-sdk-windows-1.6_r1.zip" href="http://dl.google.com/android/android-sdk-windows-1.6_r1.zip"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-windows-1.6_r1.zip</span></a></p>
-<p><span style="font-size:x-small;">Windows：&nbsp;</span><a href="http://dl.google.com/android/android-sdk-windows-1.6_r1.zip"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-windows-1.6_r1.zip</span></a></p>
-<p><span style="font-size:x-small;">Mac OS X (intel)：&nbsp;</span><a href="http://dl.google.com/android/android-sdk-mac_x86-1.6_r1.zip"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-mac_x86-1.6_r1.zip</span></a></p>
-<p><span style="font-size:x-small;">Linux (i386)：&nbsp;</span><a href="http://dl.google.com/android/android-sdk-linux_x86-1.6_r1.tgz"><span style="font-size:x-small;">http://dl.google.com/android/android-sdk-linux_x86-1.6_r1.tgz</span></a></p>
-<p><span style="font-size:x-small;">ADT Plugin for Eclipse 0.9.3：&nbsp;</span><a href="http://dl.google.com/android/ADT-0.9.3.zip"><span style="font-size:x-small;">http://dl.google.com/android/ADT-0.9.3.zip</span></a></p>
-<p><span style="font-size:x-small;">ophone develop ：</span><a href="http://www.ophonesdn.com/"><span style="font-size:x-small;">http://www.ophonesdn.com/</span></a></p>
-<p><span style="font-size:x-small;">&nbsp;</span><a href="http://blog.csdn.net/vagrxie/archive/2009/08/04/4409464.aspx"><span style="font-size:x-small;">http://blog.csdn.net/vagrxie/archive/2009/08/04/4409464.aspx</span></a></p>
-<p><span style="font-size:x-small;">android developer：&nbsp;</span><a href="http://www.anddev.org/"><span style="font-size:x-small;">http://www.anddev.org/</span></a></p>
-<div><span style="font-size:small;"><br /></span></div>
-<h3>2. 添加Android SDK</h3>
-<div>运行android后，在选择Available Packages时遇到错误消息：</div>
-<div>Failed to fetch URL https://dl-ssl.google.com/android/repository/repository.xml, reason: HTTPS SSL error. You might want to force download through HTTP in the settings.</div>
-<div>解决方法是：</div>
-<div>
-<ul>
-<li><span><span style="font-size:x-small;">创建配置文件： ~/.android/androidtool.cfg，在该文件中添加一行</span></span></li>
-</ul>
-<p><span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">sdkman.force.http=true&nbsp;</span></span></div>
-<div><span style="font-family:arial, sans-serif;"><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; &nbsp;</span><span style="font-size:x-small;">&nbsp;&nbsp; （该方法无效）</span><span style="font-size:x-small;"><br /></span></span></p>
-<ul>
-<li><span><span style="font-size:x-small;">打开"Settings" 选项并选中misc section "force https:// ... sources to be fetched using http://..." ，重启android. (点击Save后没有反应，重启后发现该选项并没有选中，无效)</span></span></li>
-<li><span><span style="font-size:x-small;"><strong><em>export GDK_NATIVE_WINDOWS=true</em></strong>&nbsp;before running android sdk manager.&nbsp;<br />It fixes both the save button and the install button for me. （该方法可行）</span></span></li>
-</ul>
-<p><span><span style="font-size:x-small;">&nbsp;</span></span></div>
-<div><a id="p1rm" title="http://groups.google.com/group/android-developers/browse_thread/thread/63a44163a8d07cd9" href="http://groups.google.com/group/android-developers/browse_thread/thread/63a44163a8d07cd9">http://groups.google.com/group/android-developers/browse_thread/thread/63a44163a8d07cd9</a></div>
-<h3>3. 为Eclipse安装ADT插件</h3>
-<div>安装ADT的方法<span style="font-family:Arial;"><span style="font-size:x-small;">：</span></span><span><a id="f9:j" title="Installing and Updating ADT" href="http://androidappdocs.appspot.com/sdk/eclipse-adt.html"><span style="font-family:Arial;"><strong><span style="font-size:x-small;">Installing and Updating ADT</span></strong></span></a></span></div>
-<div>遇到的问题：<span><span style="font-size:x-small;">During installation, there's an error about requiring org.eclipse.wst.sse.ui.&nbsp;</span></span></div>
-<div><span><span style="font-size:x-small;">完整的解决方法参见<a id="ccnw" title="http://code.google.com/eclipse/docs/faq.html#wstinstallerror" href="http://code.google.com/eclipse/docs/faq.html#wstinstallerror">http://code.google.com/eclipse/docs/faq.html#wstinstallerror</a>。</span></span></div>
-<div><span style="font-family:Helvetica, Arial, sans-serif;"><span style="font-size:x-small;">下面是我的经验：</span></span></div>
-<div><span style="font-size:x-small;"><br />
-</span>
-<p><span style="font-size:x-small;">The Google Plugin for Eclipse depends on other specific Eclipse components, such as&nbsp;<a href="http://www.eclipse.org/webtools/wst/main.php">WST</a>. Your installation of Eclipse may not yet include all of them, but they can be easily installed by following these instructions.</span></p>
-<h4><strong><span style="font-size:small;">Eclipse 3.5 (Galileo)</span></strong></h4>
-<p>&nbsp;</p>
-<ol>
-<li><span style="font-size:x-small;">Select&nbsp;<strong>Help &gt; Install New Software...</strong></span></li>
-<li><span style="font-size:x-small;">Click the hyperlink for&nbsp;<strong>Available Software Sites</strong>.</span></li>
-<li><span style="font-size:x-small;">Ensure there is an update site named&nbsp;<strong>Galileo</strong>. If this is not present, click&nbsp;<strong>Add...</strong>&nbsp;and enter&nbsp;</span><span style="font-family:'Courier New';">http://download.eclipse.org/releases/galileo</span><span style="font-size:x-small;">&nbsp;for the Location.（在这一步，添加完Galileo之后，最好能安装一下这个site的可用的关键更新）</span></li>
-<li><span style="font-size:x-small;">Now go through the&nbsp;<a href="http://blog.csdn.net/eclipse/docs/install-eclipse-3.5.html">installation steps</a>; Eclipse should download and install the plugin's dependencies.</span></li>
-</ol>
-<p>完成上面的步骤之后，Google App Engine和 Web Toolkit插件就被安装到了Eclipse。此时你仍然需要按照<a id="gv2d" title="http://androidappdocs.appspot.com/sdk/eclipse-adt.html" href="http://androidappdocs.appspot.com/sdk/eclipse-adt.html">http://androidappdocs.appspot.com/sdk/eclipse-adt.html</a>所陈述的步骤再安装ADT并配置SDK。</div>
-<div><span style="font-size:x-small;"><br /></span></div>
-<div><span style="font-size:x-small;">如果按照上述方法仍然无法安装ADT，最好通过System-&gt;Administration-&gt;Add/Remove Software彻底删除Eclipse，删除$HOME/.eclipse文件夹，更新操作系统，然后重装Eclipse。如果选择自己下载Eclipse,运行时很可能会遇到"JVM terminated. Exit Code=-1"的问题。因此还是建议通过Add/Remove Software或者yum install eclipse安装。重新安装完eclipse,再按照上述步骤先安装GAE和GWT，然后安装ADT。</span></div>
-<div><span style="font-size:x-small;"><br /></span></div>
-<div><span style="font-size:x-small;">ADT成功安装后，在Eclipse的Window-&gt;Preferences中，可以找到Android这一项：</span></div>
-<div>
-<div id="mqrl"><img src="File?id=dd6nw3mt_346fcv5wnfh_b" alt="" /></div>
-<div id="gtqx">装完ADT之后就可以按照<a id="u3vv" title="http://androidappdocs.appspot.com/guide/tutorials/hello-world.html" href="http://androidappdocs.appspot.com/guide/tutorials/hello-world.html">http://androidappdocs.appspot.com/guide/tutorials/hello-world.html</a>的示例开始体验Android程序了！</div>
-<p><span style="font-size:x-small;"><br /></span></div>
-</div>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1072,7 +1049,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -1084,7 +1061,7 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -1157,34 +1134,18 @@ node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 sysca
 	
         </div>
 		<!-- /well -->
-		<!--
-        <div class="well">
-            <h3>Recent Posts</h3>
-	        <ul>
-			
-  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
-			
-  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
-			
-  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
-			
-  			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
-			
-  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
-			
-  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
-			
-  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
-			
-  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-			</ul>
-		</div>
-		-->
+		<div class="well">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Right-side Ad(300x600) -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-1292710832620237"
+     data-ad-slot="9707222500"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+	   	</div>
         <!-- /well -->
 </div>
 

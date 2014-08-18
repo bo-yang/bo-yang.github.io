@@ -81,7 +81,7 @@
     <div class="row" id="content-row">
       
 <div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Beginner's mind.</i></font></small></h1>
+	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
 </div>
 
 <div class="container">
@@ -90,7 +90,241 @@
 	<!-- blog entry -->
 	
 	<div class="post paper">	
-    <h2 class="header"><a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations</a></h2>
+    <h2 class="header"><a href="/2014/06/12/lru-cache">Least Recently Used(LRU) Cache</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-12</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>According to <a href="https://oj.leetcode.com/problems/lru-cache/">LeetCode</a>:</p>
+
+<blockquote>
+  <p>Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: <code>get</code> and <code>set</code>.</p>
+</blockquote>
+
+<blockquote>
+  <p><code>get(key)</code> - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.</p>
+</blockquote>
+
+<blockquote>
+  <p><code>set(key, value)</code> - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.</p>
+</blockquote>
+
+<p>When dealing with (key, vlaue) pairs, the most straight-forward data structure is hashmap(map or unordered_map in C++). However, at least for C++, it is difficult to control the insertion of new items: (1) the position you can specify is just a hint and does not force the new element to be inserted at that position within the map/unordered_map container, and (2) there is no <code>push_back</code> or <code>push_front</code> methods provided for map/unordered_map. </p>
+
+<p>So if you implement the LRU cache only using hashmap, you may find that the order of inserted/deleted items is a mess. If you at first insert 10 items(keys 0~9) into the LRU cache of size 10, then enter another 10 items(keys 10~19), you will find that old items are not replaced in order.</p>
+
+<pre>
+Initial LRU cache:
+Key  Value
+9: 54
+8: 71
+7: 49
+6: 12
+5: 42
+4: 10
+3: 37
+2: 12
+1: 35
+0: 83
+
+Erase pair &lt;9,54&gt;
+Erase pair &lt;10,2&gt;
+Erase pair &lt;8,71&gt;
+Erase pair &lt;7,49&gt;
+Erase pair &lt;6,12&gt;
+Erase pair &lt;5,42&gt;
+Erase pair &lt;15,87&gt;
+Erase pair &lt;16,35&gt;
+Erase pair &lt;17,72&gt;
+Erase pair &lt;18,36&gt;
+
+Updated LRU cache:
+Key  Value
+19: 61
+4: 10
+14: 20
+3: 37
+13: 72
+2: 12
+12: 4
+1: 35
+11: 53
+0: 83
+</pre>
+
+<p>To fix the order issue, there are three candidates: <code>vector</code>, <code>list</code>, <code>queue</code>. Since queue doesn’t support deleting an item at arbitrary position and deleting an item requires O(n) time cost for vector, the best choice is list. List is flexible enough to support inserting items into any position and erazing an arbitrary item in constant time. </p>
+
+<p>However, the potential issue for list is that searching for an item requires O(n) time. To find an item in list in constant time, the best way is constructing a hashmap to record the key and its corresponding address in list. In C++, the builtin(actually, from C++ STL) hashmap data structure is <code>unordered_map</code>.</p>
+
+<p>In order to update the values in the cache according to keys, <code>list</code> also needs to record both keys and values. There are two data structures can be used: <code>pair&lt;int, int&gt;</code> or <code>struct{int key;int val;}</code>. There is a saying, when dealing with large data, the STL <code>pair</code> struct will be much slower than the self-defined <code>struct</code>, because <a href="http://stackoverflow.com/questions/1606894/stdpairint-int-vs-struct-with-two-ints">std::pair&lt;int, int&gt;::pair() constructor initializes the fields with default values and initializing requires writing to each field which requires a whole lot of memory accesses that are relatively time consuming</a>. But my tests showed that <strong>the <code>pair</code> implementation always performs better</strong>.</p>
+
+<p>I implemented LRU cache using both <code>pair&lt;int, int&gt;</code> and <code>struct{int key;int val;}</code>, and I also tested the time cost on my Mac. When setting the LRU capacity to 100, with the same test code, the <code>pair&lt;int, int&gt;</code> implementation is faster.</p>
+
+<pre>
+macmini:LRU boyang$ time ./lru_pair
+real	0m0.010s
+user	0m0.007s
+sys	0m0.003s
+
+macmini:LRU boyang$ time ./lru_struct
+real	0m0.020s
+user	0m0.016s
+sys	0m0.003s
+</pre>
+
+<p>When setting the LRU capacity to 10000:</p>
+
+<pre>
+macmini:LRU boyang$ time ./lru_pair
+real	0m0.575s
+user	0m0.547s
+sys	0m0.003s
+macmini:LRU boyang$ time ./lru_struct
+real	0m0.584s
+user	0m0.580s
+sys	0m0.003s
+</pre>
+
+<p>When setting the LRU capacity to 100000:</p>
+<pre>
+macmini:LRU boyang$ time ./lru_pair
+real	1m23.615s
+user	1m23.509s
+sys	0m0.079s
+macmini:LRU boyang$ time ./lru_struct 
+real	2m1.782s
+user	2m1.552s
+sys	0m0.167s
+</pre>
+
+<p>Following are my implementations of LRU cache. There is one tricky thing of implementing <code>set(key,value)</code>: if you check if the cache size surpasses the capacity for every input and move the <code>while</code> clause out of the <code>if</code> block, then your code won’t pass the LeetCode tests, and you will receive an error of exceeding time limit. I think the cache size checking should be trivial, but I still cannot really understand why it matters so much in large data tests.</p>
+
+<p><code>struct</code> implementation:</p>
+
+<pre><code>class LRUCache{
+public:
+	struct Node {
+		int key;
+		int val;
+		Node(int k, int v):key(k),val(v) {}
+	};
+
+	LRUCache(int capacity) {
+        cap=capacity;
+    }
+
+    int get(int key) {
+		unordered_map&lt;int,list&lt;Node&gt;::iterator&gt;::iterator got=hash.find(key);
+		if(got!=hash.end()) {
+			// update key&amp;value
+			Node ptr=*(got-&gt;second);
+			cache.erase(got-&gt;second);
+			cache.push_front(ptr);
+			hash[key]=cache.begin();
+
+			return ptr.val;
+		} else {
+			return -1;
+		}
+    }
+    
+    void set(int key, int value) {
+		Node ptr(key, value);
+		unordered_map&lt;int,list&lt;Node&gt;::iterator&gt;::iterator got=hash.find(key);
+		if(got!=hash.end()) {
+			cache.erase(got-&gt;second); // erase so as to update key&amp;value
+			hash.erase(key);
+		} else {
+			// Assume that least recently used items are stored at the end of the cache
+	        while(cache.size()&gt;=cap) {
+				Node it=cache.back();
+				//cout&lt;&lt;"Erase pair &lt;"&lt;&lt;key&lt;&lt;","&lt;&lt;it.val&lt;&lt;"&gt;"&lt;&lt;endl; // TEST ONLY
+				hash.erase(it.key);
+				cache.pop_back();
+			}
+		}
+
+		cache.push_front(ptr);
+		hash[key]=cache.begin();
+
+    }
+
+	void print() {
+		cout&lt;&lt;"Key  Value"&lt;&lt;endl;
+		for(auto&amp; x: cache)
+			cout&lt;&lt;x.key&lt;&lt;": "&lt;&lt;x.val&lt;&lt;endl;
+	}
+
+private:
+	list&lt;Node&gt; cache; // &lt;value&gt;
+	unordered_map&lt;int,list&lt;Node&gt;::iterator&gt; hash; // &lt;key, iterator&gt;
+	int cap;
+};
+</code></pre>
+
+<p><code>pair</code> implementation:</p>
+
+<pre><code>class LRUCache{
+public:
+    LRUCache(int capacity) {
+        cap=capacity;
+    }
+    
+    int get(int key) {
+		unordered_map&lt;int,list&lt;pair&lt;int,int&gt;&gt;::iterator&gt;::iterator got=hash.find(key);
+		if(got!=hash.end()) {
+			// update key&amp;value
+			int val=got-&gt;second-&gt;second;
+			cache.erase(got-&gt;second);
+			cache.push_front(pair&lt;int,int&gt;(key,val));
+			hash[key]=cache.begin();
+
+			return val;
+		} else {
+			return -1;
+		}
+    }
+    
+    void set(int key, int value) {
+		// Assume that least recently used items are stored at the end of the cache
+		unordered_map&lt;int,list&lt;pair&lt;int,int&gt;&gt;::iterator&gt;::iterator got=hash.find(key);
+		if(got!=hash.end()) {
+			cache.erase(got-&gt;second); // erase so as to update key&amp;value
+			hash.erase(key);
+		} else {
+			while(cache.size()&gt;=cap) { // for big data, must run here
+				pair&lt;int,int&gt; it=cache.back();
+				//cout&lt;&lt;"Erase pair &lt;"&lt;&lt;it.first&lt;&lt;","&lt;&lt;it.second&lt;&lt;"&gt;"&lt;&lt;endl; // TEST ONLY
+				hash.erase(it.first);
+				cache.pop_back();
+			}
+		}
+
+		cache.push_front(pair&lt;int,int&gt;(key,value));
+		hash[key]=cache.begin();
+
+    }
+
+	void print() {
+		cout&lt;&lt;"Key  Value"&lt;&lt;endl;
+		for(auto&amp; x: cache)
+			cout&lt;&lt;x.first&lt;&lt;": "&lt;&lt;x.second&lt;&lt;endl;
+	}
+
+private:
+	list&lt;pair&lt;int,int&gt; &gt; cache; // &lt;key, value&gt;
+	unordered_map&lt;int,list&lt;pair&lt;int,int&gt;&gt;::iterator&gt; hash; // &lt;key, iterator&gt;
+	int cap;
+};
+</code></pre>
+
+	</div>
+	</div>
+    
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/05/26/binary-tree-traversal">Binary Tree Operations(I)</a></h2>
     <p>
     	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-05-26</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
 	</p>
@@ -1363,34 +1597,6 @@ end</code></p>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2013/10/10/undefined-reference-error-during-installing-opencv">"undefined reference" error during installing OpenCV</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2013-10-10</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Computer Vision-ref" rel="nofollow">Computer Vision</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Many people(including me) met the infamous "undefined reference" error during installing OpenCV, such as</p>
-<pre>../../lib/libopencv_highgui.so.2.4.1: undefined reference to `avpriv_vorbis_parse_extradata’
-../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_init’
-../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_rc4_crypt’
-../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_aes_crypt’
-../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_des_mac’
-../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_tree_destroy’
-../../lib/libopencv_highgui.so.2.4.1: undefined reference to `av_sha_update’
-collect2: ld returned 1 exit status
-make[2]: *** [bin/opencv_perf_imgproc] Error 1
-make[1]: *** [modules/imgproc/CMakeFiles/opencv_perf_imgproc.dir/all] Error 2
-make: *** [all] Error 2</pre>
-<p>This error was caused by lacking of or improper installation of <a href="http://www.ffmpeg.org/">ffmpeg</a>. If you are sure the ffmpeg is successfully installed, and you can find "– FFMPEG: YES" after cmake opencv, then you'd better think about adding option "<code>--enable-shared</code> " when <i>configure</i> ffmpeg. After re-installing ffmpeg, then this "undefined reference" error should disappear.</p>
-<p>PS: A very good guideline of installing OpenCV on Ubuntu: </p>
-<h1><a href="http://www.ozbotz.org/opencv-installation/">A Comprehensive Guide to Installing and Configuring OpenCV 2.4.2 on Ubuntu</a></h1>
-<p>PPS: Damn Ubuntu!!!</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1433,7 +1639,7 @@ make: *** [all] Error 2</pre>
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -1445,7 +1651,7 @@ make: *** [all] Error 2</pre>
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -1518,34 +1724,18 @@ make: *** [all] Error 2</pre>
 	
         </div>
 		<!-- /well -->
-		<!--
-        <div class="well">
-            <h3>Recent Posts</h3>
-	        <ul>
-			
-  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
-			
-  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
-			
-  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
-			
-  			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
-			
-  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
-			
-  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
-			
-  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
-			
-  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-			</ul>
-		</div>
-		-->
+		<div class="well">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Right-side Ad(300x600) -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-1292710832620237"
+     data-ad-slot="9707222500"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+	   	</div>
         <!-- /well -->
 </div>
 

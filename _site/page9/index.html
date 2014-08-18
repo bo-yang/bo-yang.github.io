@@ -81,7 +81,7 @@
     <div class="row" id="content-row">
       
 <div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Beginner's mind.</i></font></small></h1>
+	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
 </div>
 
 <div class="container">
@@ -89,6 +89,41 @@
 		<div class="col-md-9">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2011/05/16/perl-library">Perl的library设置</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-05-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>参考链接：</p>
+<ol>
+<li><a href="http://stackoverflow.com/questions/841785/how-do-i-include-a-perl-module-thats-in-a-different-directory">http://stackoverflow.com/questions/841785/how-do-i-include-a-perl-module-thats-in-a-different-directory</a></li>
+<li><a href="http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc">http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc</a></li>
+</ol>
+<p>&nbsp;</p>
+<p>在Fedora/RHEL/CentOS中，perl 的library默认安装路径为：</p>
+<p>
+<pre>@INC (@INC contains: /usr/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi /usr/lib/perl5/site_perl/5.8.8 /usr/lib/perl5/site_perl /usr/lib64/perl5/vendor_perl/5.8.8/x86_64-linux-thread-multi /usr/lib/perl5/vendor_perl/5.8.8 /usr/lib/perl5/vendor_perl /usr/lib64/perl5/5.8.8/x86_64-linux-thread-multi /usr/lib/perl5/5.8.8 .)</pre>
+<p>&nbsp;</p>
+<p>如果要使用自定义的perllib，就需要参考以下的设置了。</p>
+<p>&nbsp;</p>
+<p>EDIT: Putting the right solution first, originally from&nbsp;<a href="http://stackoverflow.com/questions/185114/how-do-i-use-a-perl-module-in-a-directory-not-in-inc">this question</a>. It's the only one that searches relative to the&nbsp;<strong>module</strong>&nbsp;directory:</p>
+<pre class="lang-perl prettyprint"><code><span class="kwd">use</span><span class="pln"> </span><span class="typ">FindBin</span><span class="pun">;</span><span class="pln"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="com"># locate this script</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> lib </span><span class="str">"$FindBin::Bin/.."</span><span class="pun">;</span><span class="pln"> &nbsp;</span><span class="com"># use the parent directory</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> yourlib</span><span class="pun">;</span><span class="pln"><br /></span></code></pre>
+<p>There's many other ways that search for libraries relative to the&nbsp;<strong>current</strong>&nbsp;directory. You can invoke perl with the -I argument, passing the directory of the other module:</p>
+<pre class="lang-perl prettyprint"><code><span class="pln">perl </span><span class="pun">-</span><span class="pln">I</span><span class="pun">..</span><span class="pln"> yourscript</span><span class="pun">.</span><span class="pln">pl<br /></span></code></pre>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0">You can include a line near the top of your perl script:</span></p>
+<pre class="lang-perl prettyprint"><code><span class="kwd"><span class="goog_qs-tidbit goog_qs-tidbit-0">use</span></span><span class="pln"><span class="goog_qs-tidbit goog_qs-tidbit-0"> lib </span></span><span class="str"><span class="goog_qs-tidbit goog_qs-tidbit-0">'..'</span></span><span class="pun"><span class="goog_qs-tidbit goog_qs-tidbit-0">;</span></span><span class="pln"><br /></span></code></pre>
+<p><span class="goog_qs-tidbit goog_qs-tidbit-0">You can modify the environment variable PERL5LIB before you run the</span>&nbsp;script:</p>
+<pre class="lang-perl prettyprint"><code><span class="pln">export PERL5LIB</span><span class="pun">=</span><span class="pln">$PERL5LIB</span><span class="pun">:..</span><span class="pln"><br /></span></code></pre>
+<p>The push(@INC) strategy can also work, but it has to be wrapped in BEGIN{} to make sure that the push is run before the module search:</p>
+<pre class="lang-perl prettyprint"><code><span class="kwd">BEGIN</span><span class="pln"> </span><span class="pun">{</span><span class="pln">push </span><span class="lit">@INC</span><span class="pun">,</span><span class="pln"> </span><span class="str">'..'</span><span class="pun">}</span><span class="pln"><br /></span><span class="kwd">use</span><span class="pln"> yourlib</span><span class="pun">;</span></code></pre>
+<p>&nbsp;</p>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2011/05/13/process-attached-to-shared-memory">How to list processes attached to a shared memory segment in linux?</a></h2>
     <p>
@@ -752,117 +787,6 @@ This is what we did to capture screen images .</span></span></p>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/02/26/plan9-intro-note-2">Notes of Introduction to OS Abstractions Using Plan 9 from Bell Labs(II)</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-02-26</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Plan 9-ref" rel="nofollow">Plan 9</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>	&lt;!--<br />
-		@page { margin: 0.79in }<br />
-		P { margin-bottom: 0.08in }<br />
-	--&gt;</p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span><span style="font-size:x-small;"><span style="font-family:mceinline;">man</span><span style="font-family:'Trebuchet MS', sans-serif;">:<br />
-section 1 is for commands, section 8 is fo</span><span style="font-family:mceinline;">r&nbsp;</span></span></span></span><span style="font-family:'Trebuchet MS', sans-serif;font-size:x-small;"><span style="font-family:mceinline;">commands<br />
-not commonly used by users (i.e., they are intended to administer the<br />
-system), and</span></span></p>
-<p align="LEFT"><span style="color:#000000;"><br />
-</span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">section<br />
-2 is for C functions and libraries. </span></span></span></span></p>
-<p lang="en-US" align="LEFT">&nbsp;</p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;">To<br />
-read a manual page found at a particular</span></span></span></p>
-<p align="LEFT"><span style="color:#000000;"><br />
-</span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">section,<br />
-you can type the section number and the page name after the man<br />
-command, like in</span></span></span></span></p>
-<p lang="en-US" align="LEFT">&nbsp;</p>
-<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"> </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">;<br />
-man 1 ls</span></span></span></span></p>
-<p lang="en-US" align="LEFT">&nbsp;</p>
-<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">lookman<br />
-</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">is<br />
-used to search manual.</span></span></span></span></p>
-<p align="LEFT">&nbsp;</p>
-<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">sig</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
-displays the signature, i.e., the prototype for a C function<br />
-documented in section 2 of the manual.</span></span></span></span></p>
-<p align="LEFT">&nbsp;</p>
-<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">Flag<br />
-</span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-m</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
-asks </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">ls</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
-to print the name of the user who last modified a file, along with<br />
-the file name.</span></span></span></span></p>
-<p lang="en-US" align="LEFT">&nbsp;</p>
-<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">cp</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
-accepts more than one  (source) file name to copy to the destination<br />
-file name. </span></span></span></span></p>
-<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">We<br />
-can see a dump of the bytes kept within that file using the  program<br />
-</span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">xd</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
-(hexadecimal dump). This program reads a file and writes its contents<br />
-so that it is </span></span></span></span></p>
-<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">easy<br />
-for us to read. Option </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-b</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
-asks </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">xd</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US"><br />
-to print the contents as a series of bytes:</span></span></span></span></p>
-<p lang="en-US" align="LEFT">&nbsp;</p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">term%<br />
-xd -b TODO</span></span></span></p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000000<br />
- 63 6f 70 79 20 6d 6b 64 65 70 20 66 72 6f 6d 20</span></span></span></p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000010<br />
- 6c 65 66 66 65 20 28 2d 72 20 66 6c 61 67 29 0a</span></span></span></p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000020<br />
- 0a</span></span></span></p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000021<br />
-</span></span></span></p>
-<p align="LEFT"><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">Adding<br />
-option </span></span></span></span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">-c</span></span></span></span><span style="color:#000000;"><span style="font-family:'Trebuchet MS', sans-serif;"><span style="font-size:x-small;"><span lang="en-US">,<br />
-the program prints the character for each byte when feasible:</span></span></span></span></p>
-<p lang="en-US" align="LEFT">&nbsp;</p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">term%<br />
-xd -b -c TODO</span></span></span></p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000000<br />
- 63 6f 70 79 20 6d 6b 64 65 70 20 66 72 6f 6d 20</span></span></span></p>
-<p align="LEFT"><span style="color:#000000;"><br />
-</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">0<br />
-  c  o  p  y     m  k  d  e  p     f  r  o  m   </span></span></span></span></p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000010<br />
- 6c 65 66 66 65 20 28 2d 72 20 66 6c 61 67 29 0a</span></span></span></p>
-<p align="LEFT"><span style="color:#000000;"><br />
-</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">10<br />
-  l  e  f  f  e     (  -  r     f  l  a  g  ) /n</span></span></span></span></p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000020<br />
- 0a</span></span></span></p>
-<p align="LEFT"><span style="color:#000000;"><br />
-</span><span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;"><span lang="en-US">20<br />
- /n</span></span></span></span></p>
-<p lang="en-US" align="LEFT">
-<span style="color:#000000;"><span style="font-family:'Courier New', monospace;"><span style="font-size:x-small;">0000021<br />
-</span></span></span></p>
-<p align="LEFT">&nbsp;</p>
-<p align="LEFT">The<br />
-command <span style="font-family:'Courier New', monospace;">nm</span> (name list)<br />
-displays the names of symbols (i.e., procedure names, variables) that<br />
-are contained or required by our object and executable files.</p>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -905,7 +829,7 @@ are contained or required by our object and executable files.</p>
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -917,7 +841,7 @@ are contained or required by our object and executable files.</p>
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -990,34 +914,18 @@ are contained or required by our object and executable files.</p>
 	
         </div>
 		<!-- /well -->
-		<!--
-        <div class="well">
-            <h3>Recent Posts</h3>
-	        <ul>
-			
-  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
-			
-  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
-			
-  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
-			
-  			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
-			
-  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
-			
-  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
-			
-  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
-			
-  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-			</ul>
-		</div>
-		-->
+		<div class="well">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Right-side Ad(300x600) -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-1292710832620237"
+     data-ad-slot="9707222500"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+	   	</div>
         <!-- /well -->
 </div>
 

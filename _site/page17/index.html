@@ -81,7 +81,7 @@
     <div class="row" id="content-row">
       
 <div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Beginner's mind.</i></font></small></h1>
+	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
 </div>
 
 <div class="container">
@@ -89,6 +89,47 @@
 		<div class="col-md-9">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2009/02/07/wulongji">乌龙记</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2009-02-07</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Personal-ref" rel="nofollow">Personal</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<br />
+<h1 style="text-align:center;">&nbsp;乌龙记</h1>
+<div>
+<div>
+<p>&nbsp;</p>
+<p>过去两个月一直都在忙一个Feature（我们公司把一个大项目分解成很多小功能，每个小功能叫做一个Feature），这也是我工作以来真正意义上的第一个Feature，总体而言，累并快乐着。&nbsp;</p>
+<p>&nbsp;</p>
+<p>公司是电信设备商，我去年7月一进公司就听说了并且逐渐感受到了公司产品的复杂&mdash;&mdash;既有历史的客观原因，也有人为的主观因素。通过做这个feature，才真正体会到了什么叫&ldquo;浩如烟海&rdquo;，哪个是&ldquo;沧海一粟&rdquo;。其实一开始在另外一个Team，等到快要真正开始做项目时又被转到了现在的team。现在做的是公司无线产品的仿真软件，已经由美国人做了十几年了，去年开始将一部分功能转移到中国做，而我就成了中国新组建的这个Team的一员。</p>
+<p>&nbsp;</p>
+<p>尽管公司已有百余年的历史，而且奠定了现在通用的好多计算机/通信技术，但公司的传统却是身教重于言传，言传胜过文档，而文档却又七零八落。美国的同事给我们培训的时候我们问的最多的就是&ldquo;文档在哪里&rdquo;，而美国的同事回答最多就是&ldquo;Reading the code&rdquo;。尽管公司现在已今非昔比，但公司里其实还是有很多牛人的，通过看code就知道，因为我经常看不懂。</p>
+<p>&nbsp;</p>
+<p>产品的code只是很小的一个方面，作为一个电信厂商，有很多更重要的东西需要Care，销售、管理、运营等我不熟悉的方面我就不谈了（因为无话可谈），但就软件而言（硬件我也不太懂），系统架构、代码管理、配置工具等等缺一不可。而这些东西在工作中又时常用到，人多手杂，天长日久也难免会出各种各样的问题。</p>
+<p>&nbsp;</p>
+<p>第一次做feature，最难的不是实现feature，而是熟悉一大套工具和流程。即便是feature本身也大多不是非常有创意或技术含量的东西，本应是对现有产品的尽可能的仿真却由于各种原因蜕变成了现实与模拟的妥协，而我们要做的事就是在各种铜墙铁壁中找出一条夹缝，然后在夹缝中求生存。做产品的仿真软件，有时要截弯取直，有时又不得不曲径通幽，变化之间，奇妙无穷。</p>
+<p>&nbsp;</p>
+<p>由于是公司内部用的仿真软件，因此不像电信产品那样要求稳定性、可靠性，只要能用来做测试就行了。一旦出了问题，重启一下软件继续。但是也正因为质量上要求不高，问题也是非常的多，每天都有很多用户发邮件找我们解决问题。同时我们又得不断开发新的feature以支持产品测试，每个人的压力还是很大的。我们刚接手，一个人也就当半个人用，可美国的那些同事，最少的也已经做了十年了，在经历了身边同事不断被裁掉的劫波之后，肩上的担子也越来越重。忙中也就难免会出错。</p>
+<p>&nbsp;</p>
+<p>前两天我在测试自己的Feature时，发现了一个问题，就是将产品中代码和我们自己代码build出来Product在用的时候一直出问题。看log并且反复测试了一天最后终于发现了问题的所在：产品中改了一个struct的定义，增加了一个成员，而我们的代码中没有做相应更改。于是就把我的发现发邮件告诉了美国的Mentor。晚上在家里加班时，美国的mentor在MOC（Microsoft Office Communicator，一款企业IM软件，说实话做的非常一般）上问我具体情况，我告诉了他我的判断。他起初很怀疑我的判断，我就演示给他看，他终于承认了这个问题的存在，但还是试图找出一种他更愿意接受的原因。用了两个小时，最终证明确实不是我们的问题，而是产品team造成的。Mentor查看了那个文件修改的历史，发现了一个不是我们team的人改了那个文件，于是告诉我可以问问那个人是否改过源文件。那天晚上我睡觉时已经凌晨3：50了。第二天白天我给那个人发了一封邮件，可是始终没有得到回复。</p>
+<p>&nbsp;</p>
+<p>第二天晚上，美国的Mentor和我查找产品team的负责人，由于公司team太多，每个team相对独立，很是费了一番力气。找到以后，mentor告诉我可以联系那个负责人。因为已经很晚了，于是我说我明天给他发邮件，可是mentor说他可以帮我立刻发邮件确认一下。由于那个产品也是由美国人负责，很快邮件得到恢复，说那人已经不再负责那个产品了，让我们联系另外一个人。我们有联系了另外一个人，那个人说他是manager，具体技术问题联系他的一个手下的员工。Mentor在MOC上加了那个产品的owner，由于之前有默契，Mentor和我组团忽悠产品owner，希望他们能调整一下那个struct新加入成员的顺序，把它加到最后，那样对我们的影响是最小的。尽管我们很卖力的忽悠，但人家认定现在已经不好改了，而且我们仿真软件就应该服务于产品，不能本末倒置，无果。于是mentor让我着手改我们的代码，而且越快解决越好。那天晚上睡觉时意识凌晨4：00多。</p>
+<p>&nbsp;</p>
+<p>第三天白天下午我才去上班，上午在睡觉。刚到公司就有一个人给我打电话，问我关于那个struct的问题。原来那人已经再上一个release对我们的代码做了private的更改，上一个release的更改已经提交，只是这个release的还没有提交，要等到产品的代码提交后才可以。可是现在产品已经提交了，他们却并不知道，只能等到下一个load在提交了。难怪一个月以来没有用户反应这个问题，而在最新的release中我却碰到了问题呢。形势豁然开朗，终于不用我们再负责这个问题了。立马发邮件给mentor，告诉他这个好消息。</p>
+<p>&nbsp;</p>
+<p>晚上mentor回复我的邮件，深表欣慰。他说那人提交代码的时候应该找我们team的人作为inspector，他找了吗？我回复说应该没有，不然我们应该会知道更改的。没想到mentor很快又发邮件给我说他想起来了，那个人确实找我们team做inspect了，那个inspector就是他&mdash;&mdash;我的mentor！我顿时无语，只好给他恢复了&ldquo;OMG！^_^&rdquo;。</p>
+<p>&nbsp;</p>
+<p>这种骑驴找驴的乌龙事件尽管耽误了我们不少时间，但想想也很有意思，因此尽管已经很晚了，我还是坚持把它记下来（其实我的生物钟已经和格林威治时间同步了，再修炼一段时间估计去美国就不用倒时差了^_^）。</p>
+<div></div>
+</div>
+</div>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2009/01/13/perl-note-3">Perl Notes(III) -- Introduction To Berkeley Sockets</a></h2>
     <p>
@@ -1867,181 +1908,6 @@ undef() # is a function returning the undefined value, so false.</pre>
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2008/12/01/kshell-note-5">Korn Shell Notes(V)</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2008-12-01</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Notes-ref" rel="nofollow">Notes</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>
-     <span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;"><span class="Apple-style-span" style="font-size:19px;font-style:italic;font-weight:bold;">19. Input/Output Commands</span><br />
-<h2 style="font-size:14pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h2>
-<h3 style="font-size:12pt;"><a name="19_1_Escape_Characters_1455877" id="19_1_Escape_Characters_1455877"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">19.1 Escape Characters</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">
-<div id="t.5t" style="text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;"><img src="http://docs.google.com/File?id=dd6nw3mt_183d5p8rtgc_b" style="width:533px;height:397px;" /></p>
-</div>
-<p></span></span>
-<div style="text-align:left;margin-top:0;margin-bottom:0;">The /c escape character causes the trailing newline to be dropped from the output. It is often used to create prompts.<br /><span style="font-family:'Courier New';">    $ print "Enter choice: /c"</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    Enter choice: $</span><br />Notice that the command prompt was displayed following the argument, and not on the next line.</p>
-<h3 style="font-size:12pt;"><a name="19_2_print_Options_00785647007" id="19_2_print_Options_00785647007"></a>19.2 print Options</h3>
-<div id="fkqi" style="text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;"><img src="http://docs.google.com/File?id=dd6nw3mt_184ggh3tnpj_b" style="width:546px;height:518px;" />
-<div style="text-align:left;margin-top:0;margin-bottom:0;">
-<h3 style="font-size:12pt;"><a name="_19_3_The_exec_Command_3587034" id="_19_3_The_exec_Command_3587034"></a>19.3 The exec Command</h3>
-<p>The <b>exec</b> command is used to perform I/O redirection with file descriptors 0 through 9 using this format:<br /><span style="font-family:Georgia;"><b>        exec</b> <i>I/O-redirection-command</i></span><br />The I/O redirection performed by the exec command stays in effect until specifically closed, changed, or if the script or shell terminates.</div>
-</div>
-<p>Here, file redir.out is opened as file descriptor 5 for reading and writing:<br /><span style="font-family:'Courier New';">    $ exec 5&lt;&gt;redir.out</span><br />Now the print command writes something to file descriptor 5:<br /><span style="font-family:'Courier New';">    $ print —u5 "This is going to fd 5"</span><br />and the cat command reads from it:<br /><span style="font-family:'Courier New';">    $ cat &lt;&amp;5</span><br style="font-family:'Courier New';" /></div>
-<p><span style="font-family:'Courier New';"></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><span style="font-family:'Courier New';">    This is going to fd 5</span><br />To finish up, we use another exec to close file descriptor 5:<br />$ exec 5&lt;&amp;—</p>
-<p>Standard input can be taken from a file like this:<br /><span style="font-family:'Courier New';">    exec 0&lt;file</span><br />Commands could be read in from file, and it would be almost as if you typed them at your terminal.</p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_19_4_The_read_Command_8516806" id="_19_4_The_read_Command_8516806"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">19.4 The read Command</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The read command is used to read input from a terminal or file. The basic format for the read command is:<br /><span style="font-family:Georgia;"><b>        read</b> <i>variables</i></span><br />where a line is read from standard input. Each word in the input is assigned to a corresponding variable, so the first variable gets the first word, the second variable the second word, and so on. Here, "This is output" is read in to the variables X, Y, and Z. The first word of the input is This, so it is assigned to the first variable X. The second word is is, so it is assigned to the second variable Y. The third word is output, so it is assigned to Z.<br /><span style="font-family:'Courier New';">    $ print "This is output" | read X Y Z</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $X</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    This</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $Y</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    is</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $Z</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    output</span><br /><u><br />If there aren't enough variables for all the words in the input, the last variable gets all the remaining words.</u> This command is the same as the last one, except that an extra string "again" is given.<br /><span style="font-family:'Courier New';">    $ print "This is output again " | read X Y Z</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $X</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    This</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $Y</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    is</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $Z</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    output again</span>
-<div id="przl" style="text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;"><img src="http://docs.google.com/File?id=dd6nw3mt_185zd8vcvfj_b" style="width:541px;height:340px;" /></p>
-</div>
-<p></span></span>
-<div style="text-align:left;margin-top:0;margin-bottom:0;">
-<h4 style="font-size:10pt;"><a name="_19_4_1_Reading_Input_from_Fil" id="_19_4_1_Reading_Input_from_Fil"></a>19.4.1 Reading Input from Files</h4>
-<p>The read command by itself will only read one line of input, so you need a looping command with it. To read in the contents of a file, use this format:<br /><b><span style="font-family:Georgia;">        exec </span></b><span style="font-family:Georgia;"><i><span style="font-family:Verdana;">0</span>&lt;file</i></span><b><br style="font-family:Georgia;" /><span style="font-family:Georgia;">        while read </span></b><span style="font-family:Georgia;"><i>variable</i></span><b><br style="font-family:Georgia;" /><span style="font-family:Georgia;">        do</span><br style="font-family:Georgia;" /></b><i><span style="font-family:Georgia;">                    commands</span></i><b><br style="font-family:Georgia;" /><span style="font-family:Georgia;">        done</span></b><br />The exec command opens file for standard input, and the while command causes input to be read a line at a time until there is no more input.</div>
-<p><span style="font-family:'Courier New';"></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><br />Here is an alternate format that will also work for reading input from files:<br /><b><span style="font-family:Georgia;">        cat </span></b><span style="font-family:Georgia;"><i>file</i></span><b><span style="font-family:Georgia;"> | while read </span></b><i><span style="font-family:Georgia;">variable</span></i><b><br style="font-family:Georgia;" /><span style="font-family:Georgia;">        do</span><br style="font-family:Georgia;" /></b><i><span style="font-family:Georgia;">                commands</span></i><b><br style="font-family:Georgia;" /><span style="font-family:Georgia;">        done</span></b><br />On the systems tested, the exec format for reading input from files was about 40-60 times faster than the last version above.</p>
-<p></span></span><br />
-<h4 style="font-size:10pt;"><a name="_19_4_2_The_IFS_Variable_80535" id="_19_4_2_The_IFS_Variable_80535"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">19.4.2 The IFS Variable</span></span></h4>
-<h4 style="font-size:10pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h4>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The read command normally uses the IFS (Internal Field Separator) variable as the word separators. The default for IFS is space, tab, or snewline character, in that order, but it can be set to something else.<br />By setting IFS to :, the fields in the /etc/passwd file could be read into separate variables.<br /><span style="font-family:'Courier New';">    $ cat ifs_test</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    IFS=:</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    exec 0&lt;/etc/passwd</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    while read -r NAME PASS UID GID COMM HOME SHELL</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    do</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">        print "Account name= $NAME</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    Home directory= $HOME</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    Login Shell= $SHELL"</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    done</span></p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_19_4_3_Reading_Input_Interact" id="_19_4_3_Reading_Input_Interact"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">19.4.3 Reading Input Interactively</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The read command allows input to be read interactively using this format:<br /><span style="font-family:Georgia;"><b>        read</b> <i>name</i><b>?</b><i>prompt</i></span><br />where </span></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><span style="font-family:Georgia;"><i>prompt</i></span></span></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;"> is displayed on standard error and the response is read into </span></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><span style="font-family:Georgia;"><i>name</i></span></span></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;">.</p>
-<p>So instead of using two commands to display a prompt and read the input:<br /><span style="font-family:'Courier New';">    $ print —n "Enter anything: "</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ read ANSWER</span><br />The same thing can be done with one command.<br /><span style="font-family:'Courier New';">    $ read ANSWER?"Enter anything: "</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    Enter anything: ANYTHING</span><br />Here is ANSWER:<br /><span style="font-family:'Courier New';">    $ print $ANSWER</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    ANYTHING</span></p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_19_4_4_The_REPLY_variable_360" id="_19_4_4_The_REPLY_variable_360"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">19.4.4 The<span style="font-family:Georgia;"> </span><b>REPLY</b> variable</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">If no variables are given to the <b>read</b> command, the input is automatically assigned to the <b>REPLY</b> variable. Here, ANYTHING is read into REPLY:<br /><span style="font-family:'Courier New';">    $ print ANYTHING | read</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $REPLY</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    ANYTHING</span></p>
-<p></span></span><br />
-<h2 style="font-size:14pt;"><a name="_20_Miscellaneous_Programming_" id="_20_Miscellaneous_Programming_"></a><i><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20 Miscellaneous Programming Features</span></span></i></h2>
-<h2 style="font-size:14pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h2>
-<h3 style="font-size:12pt;"><a name="_20_1_The_Command_872161202132" id="_20_1_The_Command_872161202132"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.1 The . Command</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The <b>.</b> command reads in a complete file, then executes the commands in it as if they were typed in at the prompt. This is done in the current shell, so any variable, alias, or function settings stay in effect. It is typically used to read in and execute a profile, environment, alias, or functions file. Here the .profile file is read in and executed:<br />$ . .profile</p>
-<p>The following example illustrates the difference between executing files as Korn shell scripts and reading/executing them using the .command. The .test file sets the variable X:<br /><span style="font-family:'Courier New';">    $ cat .test</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    X=ABC</span><br /><u>When the .test file is executed as a Korn shell script, variable X is not defined in the current environment, because scripts are run in a subshell</u>:<br /><span style="font-family:'Courier New';">    $ ksh .test</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $X</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $</span><br /><u>After the .test file is read in and executed using the . command, notice that the variable X is still defined</u>:<br /><span style="font-family:'Courier New';">    $ . .test</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $X</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    ABC</span><br />The standard search path, PATH, is checked if the file is not in the current directory.</p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_2_Functions_01172757241874" id="_20_2_Functions_01172757241874"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.2 Functions</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">Functions are most efficient for commands with arguments that are invoked fairly often, and are defined with the following format:</p>
-<p><span style="font-family:Georgia;"><b>        function</b> <i>name</i> {</span><br style="font-family:Georgia;" /><i><span style="font-family:Georgia;">                commands</span></i><br style="font-family:Georgia;" /><span style="font-family:Georgia;">        }<br /></span><br />To maintain compatibility with the Bourne shell, functions can also be declared with this POSIX-style format:<br /><span style="font-family:Georgia;"><i>        function-name</i><b>()</b> {</span><br style="font-family:Georgia;" /><i><span style="font-family:Georgia;">                commands</span></i><br style="font-family:Georgia;" /><span style="font-family:Georgia;">        }</span><br style="font-family:Georgia;" /><br />These types of functions have many limitations compared to Korn shell style functions, such as no support for local variables.</p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_3_Scope_Availability_75594" id="_20_3_Scope_Availability_75594"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.3 Scope &amp; Availability</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">By default, functions are not available to subshells. This means that <u>a regular function that was read in your working environment, <b>.profile</b> file, or environment file would not be available in a Korn shell script.<br /></u><br />To export a function, use the <b>typeset -fx</b> command:<br /><b>        typeset -fx</b> <i>function-name</i></p>
-<p>To make a function available across separate invocations of the Korn shell, include the </span></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b> typeset -fx</b> <i>function-name</i></span></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;"> command in the environment file.</p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_4_Function_Variables_90486" id="_20_4_Function_Variables_90486"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.4 Function Variables</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">All function variables, except those explicitly declared locally within the function with the <b>typeset</b> command, are inherited and shared by the calling Korn shell script. In this example, the X, Y, and Z variables are set within and outside of the function f:</p>
-<p><span style="font-family:'Courier New';">    $ cat ftest</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    X=1</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    function f {</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">        Y=2</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">        typeset Z=4</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">        print "In function f, X=$X, Y=$Y, Z=$Z"</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">        X=3</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    }</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    f</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    print "Outside function f, X=$X, Y=$Y, Z=$Z"</span></p>
-<p>Notice that when executed, all the variable values are shared between the function and calling script, except for variable Z, because it is explicitly set to a local function variable using the typeset command.<br />The value is not passed back to the calling Korn shell script:<br /><span style="font-family:'Courier New';">    $ ftest</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    In function f, X=1, Y=2, Z=4</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    Outside function f, X=3, Y=2, Z=</span></p>
-<p>The current working directory, aliases, functions, traps, and open files from the invoking script or current environment are also shared with functions.</p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_5_Displaying_Current_Funct" id="_20_5_Displaying_Current_Funct"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.5 Displaying Current Functions</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The list of currently available functions are displayed using the <b>typeset -f </b>command.</p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_6_Autoloading_Functions_38" id="_20_6_Autoloading_Functions_38"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.6 Autoloading Functions</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">To improve performance, functions can be specified to autoload. <u>This causes the function to be read in when invoked, instead of each time a Korn shell script is invoked, and is used with functions that are not invoked frequently</u>. To define an autoloading function, use the <span style="font-family:Georgia;"><b>typeset -fu</b> <i>function-name</i></span> command. Here, lsf is made an autoloading function:<br /><span style="font-family:'Courier New';">    $ typeset —fu lsf</span></p>
-<p>The <b>autoload</b> alias can also be used to define an autoloading function. On most systems, it is preset to <b>typeset -fu</b>.</p>
-<p>The <b>FPATH</b> variable which contains the pathnames to search for autoloading functions must be set and have at least one directory for autoloading functions to work.</p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_7_Discipline_Functions_023" id="_20_7_Discipline_Functions_023"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.7 Discipline Functions</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><u>Discipline functions are a special type of function used to manipulate variables. They are defined but not specifically called. Rather, they are called whenever the variable associated with the function is accessed.</u></p>
-<p>There are some specific rules as to how discipline functions are named and accessed. First of all, discipline functions are named using this syntax:<br /><i><span style="font-family:Georgia;">       <b> </b><b>name.function</b></span></i></p>
-<p>Notice the the funcion has two parts separated with a dot. <u>The first part name corresponds to the name of a variable, and the second part must be <b>get</b>, <b>set</b>, or <b>unset</b></u>. These correspond to the following operations on the variable:<br /></span></span>
-<ul style="margin-top:0;margin-bottom:0;">
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>get</b>     whenever the base discipline variable is accessed</span></span></li>
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>set</b>     whenever the base discipline variable is set</span></span></li>
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>unset</b>     whenever the base discipline variable is unset</span></span></li>
-</ul>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><br />For example, the discipline function LBIN.get, LBIN.set, LBIN.unset is called whenever the variable LBIN is accessed, set, or unset.</p>
-<p>All three discipline functions are optional, so not all need to be specified. Within a discipline function, the following special reserved variables can be used:<br /></span></span>
-<ul style="margin-top:0;margin-bottom:0;">
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>.sh.name</b>     name of current variable</span></span></li>
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>.sh.value</b>     value of the current variable</span></span></li>
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>.sh.subscript</b>     name of the subscript (if array variable)</span></span></li>
-</ul>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><br />From a practical perspective, discipline functions are often used to help debug by tracing the setting and current value of variables in running scripts. Here is a function that can be used to trace setting the value of X:<br /><span style="font-family:'Courier New';">    function X.set {</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">        print "DEBUG: ${.sh.name} = ${.sh.value}"</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    }</span><br style="font-family:'Courier New';" /><br />Discipline functions are also a good place to centralize your variable assignment validation rules. Here is a function that checks to make sure that X it set ao a number between 3 and 10:<br /><span style="font-family:'Courier New';">    function X.set {</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">        if (( .sh.value&lt;3 || .sh.value &gt;10 ))</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">        then</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">            print "Bad value for ${.sh.name}: ${.sh.value}"</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">        fi</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    }</span></p>
-<p>Note that <b>builtin</b> functions can also be used as additional discipline functions.</p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_8_FPATH_8677511420100927" id="_20_8_FPATH_8677511420100927"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.8 FPATH</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The <b>FPATH</b> variable contains a list of colon-separated directories to check when an autoloading function is invoked. It is analogous to<b> PATH</b> and <b>CDPATH</b>, except that the Korn shell checks for function files, instead of commands or directories. Each directory in FPATH is searched from left-to-right for a file whose name matches the name of the function. Once found, it is read in and executed in the current environment. With the following <b>FPATH</b> setting, if an autoloading function <b>lsf</b> was invoked, the Korn shell would check for a file called <b>lsf</b> in <b>/home/anatole/.fdir</b>, then <b>/etc/.functions</b>, and if existent, read and execute it:</p>
-<p><span style="font-family:'Courier New';">    $ print $FPATH</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    /home/anatole/.fdir:/etc/.functions</span></p>
-<p>There is no default value for <b>FPATH</b>, so if not specifically set, this feature is not enabled.</p>
-<p></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_9_Removing_Function_Defini" id="_20_9_Removing_Function_Defini"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.9 Removing Function Definitions</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">Functions are removed by using the <b>unset -f</b> command. Here, the rd function is removed:<br /><span style="font-family:'Courier New';">    $ unset -f rd</span><br style="font-family:'Courier New';" /><br /></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_10_Traps_9392005437985063" id="_20_10_Traps_9392005437985063"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.10 Traps</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The trap command is used to execute commands when the specified signals are received.<br /><span style="font-family:Georgia;"><b>        trap</b> commands signals</span></p>
-<p><u>Trap commands are useful in controlling side effects from Korn shell scripts</u>. For example, if you have a script that creates a number of temporary files, and you hit the &lt;BREAK&gt; or &lt;DELETE&gt; key in the middle of execution, you may inadvertently leave the temporary files. By setting a <b>trap</b> command, the temporary files can be cleaned up on an error or interrupt.</p>
-<p>The <b>trap_test</b> script creates some files, then removes them when an interrupt is received. <span style="background-color:rgb(0,255,255);">Notice that the </span><b>trap</b><span style="background-color:rgb(0,255,255);"> command is surrounded in single quotes. This is so that the </span><b>FILES</b><span style="background-color:rgb(0,255,255);"> variable is evaluated when the signal is received, not when the trap is set.</span><br /><span style="font-family:'Courier New';">    $ cat trap_test</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    trap 'print "$0 interrupted - removing temp files" ;/</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    rm —rf $FILES; exit 1' 1 2</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    FILES="a b c d e f"</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    touch $FILES</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    sleep 100</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ trap_test</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    Ctl-c</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    trap_test interrupted - removing temp files</span></p>
-<p>If an invalid trap is set, an error is generated.</p>
-<p></span></span><br />
-<h4 style="font-size:10pt;"><a name="_20_10_1_Ignoring_Signals_1856" id="_20_10_1_Ignoring_Signals_1856"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.10.1 Ignoring Signals</span></span></h4>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The <b>trap</b> command can be used to ignore signals by specifying null as the command argument:<br /><span style="font-family:Georgia;">        <b>trap  "" </b> <i>signals</i></span><br />This could be used to make all or part of a Korn shell script uninterruptable using normal interrupt keys like Ctl-c.</p>
-<p></span></span><br />
-<h4 style="font-size:10pt;"><a name="_20_10_2_Resetting_Traps_86836" id="_20_10_2_Resetting_Traps_86836"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.10.2 Resetting Traps</span></span></h4>
-<h4 style="font-size:10pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h4>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The trap command can also be used to reset traps to their default action by omitting the command argument:<br />    <b>trap</b> - <i>signals</i><br />or<br />    <b>trap</b><i> signals</i></p>
-<p></span></span><br />
-<h4 style="font-size:10pt;"><a name="_20_10_3_Exit_Function_Traps_3" id="_20_10_3_Exit_Function_Traps_3"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.10.3 Exit &amp; Function Traps</span></span></h4>
-<h4 style="font-size:10pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h4>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">A trap can be set to execute when a Korn shell script exits. This is done by using a 0 or EXIT as the signals argument to the trap command:<br /><b>        trap</b> '<i><span style="font-family:Georgia;">commands</span></i>' <b>0</b><br />or<br /><b>        trap</b> '</span></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><i><span style="font-family:Georgia;">commands</span></i></span></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;">' <b>EXIT</b><br />This could be used to consolidate Korn shell script cleanup functions into one place.<br /></span></span><br />
-<h4 style="font-size:10pt;"><a name="_20_10_4_Trap_Signal_Precedenc" id="_20_10_4_Trap_Signal_Precedenc"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.10.4 Trap Signal Precedence</span></span></h4>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">If multiple traps are set, the order of precedence is:<br /></span></span>
-<ul style="margin-top:0;margin-bottom:0;">
-<li style="margin-top:0;margin-bottom:0;"><b><span style="font-family:'Courier New';"><span style="font-family:Verdana;">DEBUG</span></span></b></li>
-<li style="margin-top:0;margin-bottom:0;"><b><span style="font-family:'Courier New';"><span style="font-family:Verdana;">ERR</span></span></b></li>
-<li style="font-family:Georgia;margin-top:0;margin-bottom:0;"><i>Signal Number</i></li>
-<li style="margin-top:0;margin-bottom:0;"><b><span style="font-family:'Courier New';"><span style="font-family:Verdana;">EXIT</span></span></b></li>
-</ul>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><br /></span></span><br />
-<h4 style="font-size:10pt;"><a name="_20_10_5_Trapping_Keyboard_Sig" id="_20_10_5_Trapping_Keyboard_Sig"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.10.5 Trapping Keyboard Signals</span></span></h4>
-<h4 style="font-size:10pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h4>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The Korn shell traps <b>KEYBD</b> signals (sent when you type a character) and automatically assigns the following reserved variables:<br /></span></span>
-<ul style="margin-top:0;margin-bottom:0;">
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>.sh.edchar</b>     contains last character of key sequence</span></span></li>
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>.sh.edtext</b>     contains current input line</span></span></li>
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>.sh.edmode</b>     contains NULL character (or escape character is user in command mode)</span></span></li>
-<li style="margin-top:0;margin-bottom:0;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><b>.sh.edcol</b>     contains position within the current line</span></span></li>
-</ul>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><br /></span></span><br />
-<h3 style="font-size:12pt;"><a name="_20_11_Debugging_Korn_Shell_Sc" id="_20_11_Debugging_Korn_Shell_Sc"></a><span style="font-family:'Courier New';"><span style="font-family:Verdana;">20.11 Debugging Korn Shell Scripts</span></span></h3>
-<h3 style="font-size:12pt;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"></span></span></h3>
-<p><span style="font-family:'Courier New';"><span style="font-family:Verdana;">The Korn shell provides a number of options that are useful in debugging scripts: <b>noexec</b>, <b>verbose</b>, and <b>xtrace</b>. The noexec option causes commands to be read without being executed. It is used to check for syntax errors in Korn shell scripts. The verbose option causes the input to be displayed as it is read. The xtrace option causes the commands in a script to be displayed as they are executed.</span></span></span>
-<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;"><span style="font-family:'Courier New';"><span style="font-family:Verdana;"><img src="http://docs.google.com/File?id=dd6nw3mt_186cd3mp7hq_b&amp;writelyrefresh=0" /><br /></span></span></span>
-<div><span class="Apple-style-span" style="color:rgb(0,0,0);font-family:Verdana;font-size:13px;">
-<div style="text-align:left;margin-top:0;margin-bottom:0;">
-<h4 style="font-size:10pt;">20.11.1 Debugging with trap</h4>
-<p>The <b>trap</b> command can also be helpful in debugging Korn shell scripts. The syntax for this type of trap command is:<br /><b>        trap </b><i>commands</i><b> DEBUG</b><br />or<br /><b>        trap </b><i>commands</i><b> ERR</b></div>
-<p><span style="font-family:'Courier New';"></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;">
-<div style="text-align:left;margin-top:0;margin-bottom:0;"><img src="http://docs.google.com/File?id=dd6nw3mt_1872q8bgfhj_b" style="width:459px;height:143px;" /></p>
-<h3 style="font-size:12pt;"><a name="_20_12_Co_Processes_1690269969" id="_20_12_Co_Processes_1690269969"></a>20.12 Co-Processes</h3>
-<p><u>Co-processes are commands that are terminated with a <b>|&amp;</b> character. They are executed in the background, but have their standard input and output attached to the current shell.</u><i> </i>The <b>print -p</b> command is used to write to the standard input of a co-process, while <b>read -p</b> is used to read from the standard output of a co-process. Here, the output of the date command is read into the DATE variable using the read -p command:<br /><span style="font-family:'Courier New';">    $ date |&amp;</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    [2] 241</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ read —p DATE</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    $ print $DATE</span><br style="font-family:'Courier New';" /><span style="font-family:'Courier New';">    Thu Jul 18 12:23:57 PST 1996</span><br />Co-processes can be used to edit a file from within a Korn shell script.</div>
-<p></span></span><span style="font-family:'Courier New';"></span><span style="font-family:'Courier New';"><span style="font-family:Verdana;">
-<div id="s_ck" style="text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;"><img src="http://docs.google.com/File?id=dd6nw3mt_188f9s93ndw_b" style="width:562px;height:406px;" /></div>
-<div id="s_ck" style="text-align:center;margin-top:0;margin-bottom:0;padding:1em 0;"><span class="Apple-style-span" style="color:rgb(255,0,0);font-size:28pt;"><span class="Apple-style-span" style="font-weight:bold;">THE END</span></span></div>
-<div style="text-align:center;"></div>
-<p></span></span></span></div>
-</div>
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -2084,7 +1950,7 @@ undef() # is a function returning the undefined value, so false.</pre>
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -2096,7 +1962,7 @@ undef() # is a function returning the undefined value, so false.</pre>
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -2169,34 +2035,18 @@ undef() # is a function returning the undefined value, so false.</pre>
 	
         </div>
 		<!-- /well -->
-		<!--
-        <div class="well">
-            <h3>Recent Posts</h3>
-	        <ul>
-			
-  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
-			
-  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
-			
-  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
-			
-  			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
-			
-  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
-			
-  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
-			
-  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
-			
-  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-			</ul>
-		</div>
-		-->
+		<div class="well">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Right-side Ad(300x600) -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-1292710832620237"
+     data-ad-slot="9707222500"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+	   	</div>
         <!-- /well -->
 </div>
 

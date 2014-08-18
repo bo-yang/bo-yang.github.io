@@ -81,7 +81,7 @@
     <div class="row" id="content-row">
       
 <div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Beginner's mind.</i></font></small></h1>
+	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
 </div>
 
 <div class="container">
@@ -89,6 +89,77 @@
 		<div class="col-md-9">
 	<!-- blog entry -->
 	
+	<div class="post paper">	
+    <h2 class="header"><a href="/2014/08/16/binary-tree-ii">Binary Tree Operations(II) - Path Sum and Cycle Detection</a></h2>
+    <p>
+    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-08-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
+	</p>
+	<hr>
+    
+    <div class="post_at_index thepost">
+    	<p>This is the second article on binary tree operations. For topics on binary tree build, traversal and comparison, please refer to <a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a></p>
+
+<ol>
+  <li><a href="#path_sum">Path Sum</a></li>
+  <li><a href="#build_cycle">Build Binary Tree With Cycle</a></li>
+  <li><a href="#detect_cycle">Detect Cycle in Binary Tree</a></li>
+</ol>
+
+<h3 id="a-namepathsumpath-suma">1. <a name="path_sum">Path Sum</a></h3>
+
+<p>The <a href="http://www.programcreek.com/2013/01/leetcode-path-sum/">Path Sum problem</a> of binary tree is:</p>
+
+<blockquote>
+  <p>Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.</p>
+</blockquote>
+
+<p>This problem can be easily solved by level-order traversal. During traversal, record the sum and path to each node: </p>
+
+<ul>
+  <li>if the sum to current node is larger than the given sum, then remove the sum and path to current node and stop tracing its child nodes.</li>
+  <li>if the sum to current node equals to the given sum, the print or record the path.</li>
+  <li>if to current node is less than the given sum, continue searching its children.</li>
+</ul>
+
+<p>For the source code of this section, please refer to function <code>PathSum()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
+
+<h3 id="a-namebuildcyclebuild-binary-tree-with-cyclea">2. <a name="build_cycle">Build Binary Tree With Cycle</a></h3>
+
+<p>To build a binary tree with cycles, we can first build a binary tree using the method described in <a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a>, and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(<code>left</code> and <code>right</code>).</p>
+
+<pre><code>struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+</code></pre>
+
+<p>For example, given a binary tree in following image,</p>
+
+<p><img src="/assets/images/binary_tree_with_cycle.png" alt="Binary Tree with Cycle" /></p>
+
+<p>We can build a tree using string sequence {1,2,3,4,#,5,#} at first, and then add links {3-&gt;2, 2-&gt;5}. Or build tree {1,2,3,4,5,#,#} first and then add links {3-&gt;2,3-&gt;5}. </p>
+
+<p>For the source code of this section, please refer to functions <code>BuildTree()</code> and <code>BuildCycleTree()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
+
+<h3 id="a-namedetectcycledetect-cycle-in-binary-treea">3. <a name="detect_cycle">Detect Cycle in Binary Tree</a></h3>
+
+<p>Cycles in a binary tree can be detected by DFS(in preorder) - if there’s a cycle, there must be a node has a child node that is already been accessed before(i.e. a right hand node linked to the left hand node). A <code>unordered_set</code> can be used to record the nodes that have been accessed.</p>
+
+<p>Considering above example again, when we traverse that binary tree in pre-order, we would first access nodes {1,2,4,5}. And when we accessing node <code>3</code>, we will find that node <code>3</code> has a child <code>2</code>(or<code>5</code>) that has already been accessed. So this tree has a cycle.</p>
+
+<p>For the source code of this section, please refer to function <code>HasLoop()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
+
+<h3 id="references">References:</h3>
+
+<ol>
+  <li><a href="http://www.geeksforgeeks.org/detect-cycle-in-a-graph/">Detect Cycle in a Directed Graph</a></li>
+</ol>
+
+	</div>
+	</div>
+    
 	<div class="post paper">	
     <h2 class="header"><a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></h2>
     <p>
@@ -98,9 +169,9 @@
     
     <div class="post_at_index thepost">
     	<ol>
-  <li><a href="&quot;#problem&quot;">Problem</a></li>
-  <li><a href="&quot;#solution&quot;">Solution</a></li>
-  <li><a href="&quot;#code&quot;">Source Code</a></li>
+  <li><a href="#problem">Problem</a></li>
+  <li><a href="#solution">Solution</a></li>
+  <li><a href="#code">Source Code</a></li>
 </ol>
 
 <h3 id="a-nameproblemproblema">1. <a name="problem">Problem</a></h3>
@@ -179,7 +250,7 @@ p1=0.5;  // Prior probability that any given position in string is a ‘1’
 	f(x|n,p)={n \choose x} p^x (1-p)^{n-x}; \quad \quad x=0,1,2,\cdots,n.
 </script>
 
-<p>As for this problem, given a position in the original string, we first need to find the probability of a <code>0</code> occurs in this position(in this case <code>0</code>=&gt;<code>1</code>, say <code>bp01</code>), and then calculate the probability of a <code>1</code> occurs in this position(in this case <code>1</code>=&gt;<code>1</code>, say say <code>bp11</code>). Finally, we can get the probability of <code>1</code> in this position in the original string by: <code>p=bp11/(bp01+bp11)</code>.</p>
+<p>As for this problem, given a position in the original string, we first need to find the probability of a <code>0</code> occurs in this position(in this case <code>0</code>=&gt;<code>1</code>, say <code>bp01</code>), and then calculate the probability of a <code>1</code> occurs in this position(in this case <code>1</code>=&gt;<code>1</code>, say <code>bp11</code>). Finally, we can get the probability of <code>1</code> in this position in the original string by: <code>p=bp11/(bp01+bp11)</code>.</p>
 
 <p>Take position 5 as an example. We get one <code>1</code> and two <code>0</code>s in position 5 in three observations. We can calculate <code>b11</code> using Matlab <code>binopdf</code> function. Since <code>p11=1-p10=0.9</code>, therefore we have <code>bp11=binopdf(1,3,0.9)=0.027</code>. As for <code>bp01</code>, because <code>p01=0.1</code>, we have <code>bp01=binopdf(1,3,0.1)=0.243</code>. Therefore, we can calc the probability of <code>1</code> in position 5 by <code>p=0.027/(0.243 + 0.027)=0.1</code>.</p>
 
@@ -190,8 +261,8 @@ p1=0.5;  // Prior probability that any given position in string is a ‘1’
 <h3 id="references">References:</h3>
 
 <ol>
-  <li>http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o</li>
-  <li>http://www.mathworks.com/help/stats/binomial-distribution.html</li>
+  <li><a href="http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o">http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o</a></li>
+  <li><a href="http://www.mathworks.com/help/stats/binomial-distribution.html">http://www.mathworks.com/help/stats/binomial-distribution.html</a></li>
 </ol>
 
 	</div>
@@ -1277,74 +1348,6 @@ sub doCleanup {
 	</div>
 	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-06</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The <a href="https://oj.leetcode.com/problems/longest-palindromic-substring/">Longest Palindromic Substring problem</a> is:</p>
-
-<blockquote>
-  <p>Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring. </p>
-</blockquote>
-
-<p>To solve this problem, first investigate following examples:</p>
-
-<ul>
-  <li><code>abcdefedchz</code>: the longest palindrome is <code>cdefedc</code>, the left and right parts are symmetric to letter <code>f</code>.</li>
-  <li><code>acbbcae</code>: the longest palindrome <code>acbbca</code>, which is symmetric to the (virtual) postion between <code>bb</code>.</li>
-  <li><code>a</code>: the longest palindrome is the letter <code>a</code>.</li>
-</ul>
-
-<p>Based on above investigations, we could summarize the solution as: </p>
-
-<ol>
-  <li>For every letter in the string, find the longest repetitive characters to current letter, record the <code>start</code> and <code>end</code> position;</li>
-  <li>Minus <code>start</code> position by one and see if <code>s[start]</code> is still identical to <code>s[end]</code>.</li>
-  <li>If yes, iteratively compare <code>s[start--]</code> and <code>s[end--]</code> until they are not equal.</li>
-  <li>The possible longest palindrome for current letter is <code>end-start-1</code>.</li>
-</ol>
-
-<p>Following is my C++ implementation. This algorithm could be enhanced by not checking every letters, however, the time complexity will still be \( O(N^2) \). A better method is <a href="http://en.wikipedia.org/wiki/Longest_palindromic_substring">Manacher’s Algorithm</a>, which has  \( O(N) \) time complexity.</p>
-
-<pre><code>class Solution {
-public:
-    string longestPalindrome(string s) {
-		if(s.empty())
-			return "";
-
-        int pd_start=0; // the start position of the palindrome
-		int pd_len=0; // the length of the palindrome
-		for(int i=0;i&lt;s.length();++i) {
-			int start=i;
-			int end=i;
-			while(end&lt;s.length() &amp;&amp; s[start]==s[end])
-				end++;
-
-			start--;
-			while(start&gt;=0 &amp;&amp; end&lt;s.length() &amp;&amp; s[start]==s[end]) {
-				start--;
-				end++;
-			}
-			
-			if(pd_len&lt;end-start-1) {
-				pd_len=end-start-1;
-				pd_start=start+1;	
-			}
-		}
-
-		return s.substr(pd_start,pd_len);		
-    }
-};
-</code></pre>
-
-
-	</div>
-	</div>
-    
 	
 	<!-- Pagination links -->
 	
@@ -1387,7 +1390,7 @@ public:
     
         <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
     
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">28</span></a></li>
+        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
     
         <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
     
@@ -1399,7 +1402,7 @@ public:
     
         <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
     
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">53</span></a></li>
+        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
     
         <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
     
@@ -1472,34 +1475,18 @@ public:
 	
         </div>
 		<!-- /well -->
-		<!--
-        <div class="well">
-            <h3>Recent Posts</h3>
-	        <ul>
-			
-  			<li><span>2014-08-09</span> &raquo; <a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></li>
-			
-  			<li><span>2014-08-03</span> &raquo; <a href="/2014/08/03/string-permutation">String Permutation</a></li>
-			
-  			<li><span>2014-07-28</span> &raquo; <a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></li>
-			
-  			<li><span>2014-07-21</span> &raquo; <a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></li>
-			
-  			<li><span>2014-07-14</span> &raquo; <a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></li>
-			
-  			<li><span>2014-07-13</span> &raquo; <a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></li>
-			
-  			<li><span>2014-07-08</span> &raquo; <a href="/2014/07/08/sort-list">Sort List</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/subset-sum">Subset Sum Problem</a></li>
-			
-  			<li><span>2014-07-07</span> &raquo; <a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></li>
-			
-  			<li><span>2014-07-06</span> &raquo; <a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></li>
-			
-			</ul>
-		</div>
-		-->
+		<div class="well">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Right-side Ad(300x600) -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-1292710832620237"
+     data-ad-slot="9707222500"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+	   	</div>
         <!-- /well -->
 </div>
 

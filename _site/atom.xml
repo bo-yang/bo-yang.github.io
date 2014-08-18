@@ -4,7 +4,7 @@
  <title>Bo's Blog</title>
  <link href="http://bo-yang.github.com//atom.xml" rel="self"/>
  <link href="http://bo-yang.github.com/"/>
- <updated>2014-08-09T13:06:58-07:00</updated>
+ <updated>2014-08-18T11:26:53-07:00</updated>
  <id>http://bo-yang.github.com/</id>
  <author>
    <name>Bo Yang</name>
@@ -13,14 +13,81 @@
 
  
  <entry>
+   <title>Binary Tree Operations(II) - Path Sum and Cycle Detection</title>
+   <link href="http://bo-yang.github.com//2014/08/16/binary-tree-ii"/>
+   <updated>2014-08-16T00:00:00-07:00</updated>
+   <id>http://bo-yang.github.com//2014/08/16/binary-tree-ii</id>
+   <content type="html">&lt;p&gt;This is the second article on binary tree operations. For topics on binary tree build, traversal and comparison, please refer to &lt;a href=&quot;http://bo-yang.github.io/2014/05/26/binary-tree-traversal/&quot;&gt;Binary Tree Operations(I)&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;#path_sum&quot;&gt;Path Sum&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#build_cycle&quot;&gt;Build Binary Tree With Cycle&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#detect_cycle&quot;&gt;Detect Cycle in Binary Tree&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;a-namepathsumpath-suma&quot;&gt;1. &lt;a name=&quot;path_sum&quot;&gt;Path Sum&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;The &lt;a href=&quot;http://www.programcreek.com/2013/01/leetcode-path-sum/&quot;&gt;Path Sum problem&lt;/a&gt; of binary tree is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This problem can be easily solved by level-order traversal. During traversal, record the sum and path to each node: &lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;if the sum to current node is larger than the given sum, then remove the sum and path to current node and stop tracing its child nodes.&lt;/li&gt;
+  &lt;li&gt;if the sum to current node equals to the given sum, the print or record the path.&lt;/li&gt;
+  &lt;li&gt;if to current node is less than the given sum, continue searching its children.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For the source code of this section, please refer to function &lt;code&gt;PathSum()&lt;/code&gt; in &lt;a href=&quot;https://github.com/bo-yang/BinaryTree&quot;&gt;my Binary Tree Library&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-namebuildcyclebuild-binary-tree-with-cyclea&quot;&gt;2. &lt;a name=&quot;build_cycle&quot;&gt;Build Binary Tree With Cycle&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;To build a binary tree with cycles, we can first build a binary tree using the method described in &lt;a href=&quot;http://bo-yang.github.io/2014/05/26/binary-tree-traversal/&quot;&gt;Binary Tree Operations(I)&lt;/a&gt;, and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(&lt;code&gt;left&lt;/code&gt; and &lt;code&gt;right&lt;/code&gt;).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;struct TreeNode {
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For example, given a binary tree in following image,&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/binary_tree_with_cycle.png&quot; alt=&quot;Binary Tree with Cycle&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can build a tree using string sequence {1,2,3,4,#,5,#} at first, and then add links {3-&amp;gt;2, 2-&amp;gt;5}. Or build tree {1,2,3,4,5,#,#} first and then add links {3-&amp;gt;2,3-&amp;gt;5}. &lt;/p&gt;
+
+&lt;p&gt;For the source code of this section, please refer to functions &lt;code&gt;BuildTree()&lt;/code&gt; and &lt;code&gt;BuildCycleTree()&lt;/code&gt; in &lt;a href=&quot;https://github.com/bo-yang/BinaryTree&quot;&gt;my Binary Tree Library&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-namedetectcycledetect-cycle-in-binary-treea&quot;&gt;3. &lt;a name=&quot;detect_cycle&quot;&gt;Detect Cycle in Binary Tree&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Cycles in a binary tree can be detected by DFS(in preorder) - if there’s a cycle, there must be a node has a child node that is already been accessed before(i.e. a right hand node linked to the left hand node). A &lt;code&gt;unordered_set&lt;/code&gt; can be used to record the nodes that have been accessed.&lt;/p&gt;
+
+&lt;p&gt;Considering above example again, when we traverse that binary tree in pre-order, we would first access nodes {1,2,4,5}. And when we accessing node &lt;code&gt;3&lt;/code&gt;, we will find that node &lt;code&gt;3&lt;/code&gt; has a child &lt;code&gt;2&lt;/code&gt;(or&lt;code&gt;5&lt;/code&gt;) that has already been accessed. So this tree has a cycle.&lt;/p&gt;
+
+&lt;p&gt;For the source code of this section, please refer to function &lt;code&gt;HasLoop()&lt;/code&gt; in &lt;a href=&quot;https://github.com/bo-yang/BinaryTree&quot;&gt;my Binary Tree Library&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;references&quot;&gt;References:&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.geeksforgeeks.org/detect-cycle-in-a-graph/&quot;&gt;Detect Cycle in a Directed Graph&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Retrieve String From Sampled Slices</title>
    <link href="http://bo-yang.github.com//2014/08/09/retrive-string-from-slices"/>
    <updated>2014-08-09T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2014/08/09/retrive-string-from-slices</id>
    <content type="html">&lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;&amp;quot;#problem&amp;quot;&quot;&gt;Problem&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;&amp;quot;#solution&amp;quot;&quot;&gt;Solution&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;&amp;quot;#code&amp;quot;&quot;&gt;Source Code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#problem&quot;&gt;Problem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#solution&quot;&gt;Solution&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#code&quot;&gt;Source Code&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h3 id=&quot;a-nameproblemproblema&quot;&gt;1. &lt;a name=&quot;problem&quot;&gt;Problem&lt;/a&gt;&lt;/h3&gt;
@@ -99,7 +166,7 @@ p1=0.5;  // Prior probability that any given position in string is a ‘1’
 	f(x|n,p)={n \choose x} p^x (1-p)^{n-x}; \quad \quad x=0,1,2,\cdots,n.
 &lt;/script&gt;
 
-&lt;p&gt;As for this problem, given a position in the original string, we first need to find the probability of a &lt;code&gt;0&lt;/code&gt; occurs in this position(in this case &lt;code&gt;0&lt;/code&gt;=&amp;gt;&lt;code&gt;1&lt;/code&gt;, say &lt;code&gt;bp01&lt;/code&gt;), and then calculate the probability of a &lt;code&gt;1&lt;/code&gt; occurs in this position(in this case &lt;code&gt;1&lt;/code&gt;=&amp;gt;&lt;code&gt;1&lt;/code&gt;, say say &lt;code&gt;bp11&lt;/code&gt;). Finally, we can get the probability of &lt;code&gt;1&lt;/code&gt; in this position in the original string by: &lt;code&gt;p=bp11/(bp01+bp11)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;As for this problem, given a position in the original string, we first need to find the probability of a &lt;code&gt;0&lt;/code&gt; occurs in this position(in this case &lt;code&gt;0&lt;/code&gt;=&amp;gt;&lt;code&gt;1&lt;/code&gt;, say &lt;code&gt;bp01&lt;/code&gt;), and then calculate the probability of a &lt;code&gt;1&lt;/code&gt; occurs in this position(in this case &lt;code&gt;1&lt;/code&gt;=&amp;gt;&lt;code&gt;1&lt;/code&gt;, say &lt;code&gt;bp11&lt;/code&gt;). Finally, we can get the probability of &lt;code&gt;1&lt;/code&gt; in this position in the original string by: &lt;code&gt;p=bp11/(bp01+bp11)&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Take position 5 as an example. We get one &lt;code&gt;1&lt;/code&gt; and two &lt;code&gt;0&lt;/code&gt;s in position 5 in three observations. We can calculate &lt;code&gt;b11&lt;/code&gt; using Matlab &lt;code&gt;binopdf&lt;/code&gt; function. Since &lt;code&gt;p11=1-p10=0.9&lt;/code&gt;, therefore we have &lt;code&gt;bp11=binopdf(1,3,0.9)=0.027&lt;/code&gt;. As for &lt;code&gt;bp01&lt;/code&gt;, because &lt;code&gt;p01=0.1&lt;/code&gt;, we have &lt;code&gt;bp01=binopdf(1,3,0.1)=0.243&lt;/code&gt;. Therefore, we can calc the probability of &lt;code&gt;1&lt;/code&gt; in position 5 by &lt;code&gt;p=0.027/(0.243 + 0.027)=0.1&lt;/code&gt;.&lt;/p&gt;
 
@@ -110,8 +177,8 @@ p1=0.5;  // Prior probability that any given position in string is a ‘1’
 &lt;h3 id=&quot;references&quot;&gt;References:&lt;/h3&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o&lt;/li&gt;
-  &lt;li&gt;http://www.mathworks.com/help/stats/binomial-distribution.html&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o&quot;&gt;http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.mathworks.com/help/stats/binomial-distribution.html&quot;&gt;http://www.mathworks.com/help/stats/binomial-distribution.html&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </content>
  </entry>
@@ -2483,7 +2550,7 @@ private:
  </entry>
  
  <entry>
-   <title>Binary Tree Operations</title>
+   <title>Binary Tree Operations(I)</title>
    <link href="http://bo-yang.github.com//2014/05/26/binary-tree-traversal"/>
    <updated>2014-05-26T00:00:00-07:00</updated>
    <id>http://bo-yang.github.com//2014/05/26/binary-tree-traversal</id>
