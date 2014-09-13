@@ -26,7 +26,7 @@ Given a binary tree in left-right representation as below
                   A
                  /  \
                 B	 C
-   	      	    	/  \
+   	      	        /  \
    	      	       D    E
                   /    /  \
                  F    G    H
