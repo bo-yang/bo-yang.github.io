@@ -13,7 +13,7 @@ published: true
 author: Bo Yang
 ---
 
-## Problem
+### Problem
 
 An example of triangle of numbers is:
 
@@ -31,7 +31,7 @@ Imagine drawing a path connecting adjacent numbers from top to bottom. Take the 
 
 Write a program which will read a file describing a triangle such as this one, and determine the lowest possible sum of numbers which connect the top and the bottom. The input will be a tab-separated list of numbers.
 
-## Solution
+### Solution
 
 The lowest sum can be found recursively by choosing the child node with the smallest sum. This greedy strategy should work for both positive and negative numbers, because every possible combination of nearby numbers are considered in the recursion(considering the connections of numbers in two nearby layers). 
 
@@ -90,14 +90,14 @@ And the code for finding the shortest path is:
 		return trace[0][0];
 	}
 
-## Complexity
+### Complexity
 
 Given a triangle number with n lines, then:
 
- - Time complexity for finding the lowest sum of numbers: \\( 1+2+ \cdots +n = ( O(n^2) \\).
+ - Time complexity for finding the lowest sum of numbers: \\( 1+2+ \cdots +n = O(n^2) \\).
  - Time complexity for finding the shortest path: \\( O(n) \\).
  - Space complexity for above code is \\( O(n^2) \\), because the sums from bottom to the root of each node are recorded in an matrix.
 
- ## Code
+### Code
 
  For the complete code of this problem, please refer to [https://github.com/bo-yang/ProgrammingChallenges/tree/master/triangle_numbers](https://github.com/bo-yang/ProgrammingChallenges/tree/master/triangle_numbers).
