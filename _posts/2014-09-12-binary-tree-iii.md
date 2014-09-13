@@ -23,13 +23,13 @@ Down-Right representation is an alternate representation where every node has a 
 
 Given a binary tree in left-right representation as below
 
-                  A
-                 /  \
-                B	 C
-   	      	        /  \
-   	      	       D    E
-                  /    /  \
-                 F    G    H
+		  A
+		 /  \
+		B	 C
+		    /  \
+		   D    E
+		  /    /  \
+		 F    G    H
 
 Convert the structure of the tree to down-right representation like the below tree.
 
