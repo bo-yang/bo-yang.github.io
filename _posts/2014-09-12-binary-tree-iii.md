@@ -25,7 +25,7 @@ Given a binary tree in left-right representation as below
 
 		  A
 		 /  \
-		B	 C
+		B    C
 		    /  \
 		   D    E
 		  /    /  \
