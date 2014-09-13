@@ -21,14 +21,14 @@ author: Bo Yang
 >
 >For example:
 >
->- sheeeeep
->- sheep
+>	>sheeeeep
+>	sheep
 >
->- peepple
->- people
+>	>peepple
+>	people
 >
->- sheeple
->- NO SUGGESTION
+>	>sheeple
+>	NO SUGGESTION
 > 
 >The class of spelling mistakes to be corrected is as follows:
 >
