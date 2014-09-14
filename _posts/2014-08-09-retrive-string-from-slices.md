@@ -101,4 +101,4 @@ The implementation of this problem can be found in [my GitHub Channel](https://g
 
 1. [http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o](http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o)
 2. [http://www.mathworks.com/help/stats/binomial-distribution.html](http://www.mathworks.com/help/stats/binomial-distribution.html)
-<p>_If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks\!_</p>
+<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

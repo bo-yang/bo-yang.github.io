@@ -619,4 +619,4 @@ int main(int argc, char** argv)
 
 	return 0;
 }</pre>
-<p>_If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks\!_</p>
+<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

@@ -94,4 +94,4 @@ Following is the code to converting a left-right binary tree to down-right repre
 ### References:
 
 1. [Convert left-right representation of a bianry tree to down-right](http://geeksquiz.com/convert-left-right-representation-bianry-tree-right/)
-<p>_If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks\!_</p>
+<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

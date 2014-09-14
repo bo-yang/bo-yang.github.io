@@ -477,4 +477,4 @@ _[Updated 05/30/2014]_
 1. https://oj.leetcode.com/problems/binary-tree-inorder-traversal/
 2. [Binary tree traversal: Preorder, Inorder, and Postorder](http://datastructuresnotes.blogspot.com/2009/02/binary-tree-traversal-preorder-inorder.html)
 3. [Tree Traversal](http://en.wikipedia.org/wiki/Tree_traversal)
-<p>_If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks\!_</p>
+<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>
