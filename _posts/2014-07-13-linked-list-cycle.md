@@ -115,3 +115,4 @@ Following is my C++ implmentation.
 		ListNode* head;
 	
 	};
+<p>_If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks\!_</p>

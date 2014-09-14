@@ -63,3 +63,4 @@ For the source code of this section, please refer to function `HasLoop()` in [my
 ### References:
 
 1. [Detect Cycle in a Directed Graph](http://www.geeksforgeeks.org/detect-cycle-in-a-graph/)
+<p>_If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks\!_</p>

@@ -32,3 +32,4 @@ author:
 <p>在编写的时候直接调用其中的函数就是了，只不过在编译的时候要加入-l选项后面跟上库名&nbsp;<br />如 gcc -o test test.c -lmylib&nbsp; //mylib是前面创建的库的名称&nbsp;</p>
 <p>3. 动态库 </p>
 <p>创建就是 gcc -fPIC -share -o mylib.so lib.c&nbsp;<br />调用也分两种方法&nbsp;<br />一种方法是 gcc -o test test.c ./libmylib.so (注意这里跟的是动态库的路径 )<br />第二种方法是使用动态库的函数 你man dlopen看下那几个函数看下就知道了就不多说了</p>
+<p>_If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks\!_</p>
