@@ -49,4 +49,3 @@ Algorithm 2(Reference: [Find all the permutations of a string in Java](http://le
 	}
 
 The permuted strings are stored as a vector of string. For both algorithms, the time complexities are `O(n*n!)`.
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

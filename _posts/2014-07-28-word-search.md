@@ -143,4 +143,3 @@ Following is my C++ implementation of the non-recursive solution.
 			return found;
 	    }
 	};
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

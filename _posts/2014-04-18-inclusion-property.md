@@ -170,4 +170,3 @@ Figure 2. Miss rate of DL2, with(red) and without(blue) inclusion.
 ### 4. <a name="conclusion">Conclusion</a>
 
 In this project I implemented the inclusion property with SimpleScalar. I tested my change with three different benchmarks in three different configurations. Experiments show proves the correctness of my change. Inclusion property cannot guarantee the overall performance the cache, although it seems like a promising technique.
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

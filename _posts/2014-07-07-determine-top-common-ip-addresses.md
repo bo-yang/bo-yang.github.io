@@ -245,4 +245,3 @@ Following is my Perl implementation. For more information and the source file, p
 		$CleanupDone = 1;
 		exit 0;
 	} ## end sub doCleanup
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

@@ -128,4 +128,3 @@ It is obvious that Fisher vector can lead to better results than Bag-of-visual w
 4. Jorge Sanchez, Florent Perronnin, Thomas Mensink, and Jakob Verbeek. _Image Classification with the Fisher Vector: Theory and Practice_. International Journal of Computer Vision, 105(3):222–245, December 2013.
 5. Andrej Karpathy, George Toderici, Sanketh Shetty, Thomas Leung, Rahul Sukthankar, and Li Fei-Fei. _Large-scale video classification with convolutional neural networks_. In CVPR, 2014.
 
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

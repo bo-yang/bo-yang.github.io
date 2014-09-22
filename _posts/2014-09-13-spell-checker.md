@@ -65,4 +65,3 @@ Time complexity: `O(n*m)` for loading dictionary and `O(1 + m)` for word checkin
 ### 3. Code
 
 For the python implementation of this problem, please refer to [https://github.com/bo-yang/ProgrammingChallenges/tree/master/spell_check](https://github.com/bo-yang/ProgrammingChallenges/tree/master/spell_check).
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

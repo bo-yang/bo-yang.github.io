@@ -158,4 +158,3 @@ For a `k`-element `priority_queue`, an insertion requires \\( O(\log k) \\) time
 1. [Merge k Sorted Lists -- LeetCode](http://blog.csdn.net/linhuanmars/article/details/19899259)
 2. [std::priority_queue](http://www.cplusplus.com/reference/queue/priority_queue/)
 3. [std::greater](http://www.cplusplus.com/reference/functional/greater/)
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

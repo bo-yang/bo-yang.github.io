@@ -63,4 +63,3 @@ Following is my C++ implementation. This algorithm could be enhanced by not chec
 	};
 
 
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

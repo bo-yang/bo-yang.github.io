@@ -101,4 +101,3 @@ Given a triangle number with n lines, then:
 ### Code
 
  For the complete code of this problem, please refer to [https://github.com/bo-yang/ProgrammingChallenges/tree/master/triangle_numbers](https://github.com/bo-yang/ProgrammingChallenges/tree/master/triangle_numbers).
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>

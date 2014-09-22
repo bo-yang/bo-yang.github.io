@@ -141,4 +141,3 @@ real	0m1.182s
 user	0m1.130s
 sys	0m0.043s
 </pre>
-<p><i>If you find this post helpful, please click the Google Ads on the right(you don't need to buy anything, just a click will help). Many Thanks.</i></p>
