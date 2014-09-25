@@ -15,4 +15,4 @@ Following are my notes of some advanced C/C++ features, which were collected fro
 
 I will continue updating this note. If you are interested, please keep an eye on this page.
 
-<iframe src="https://docs.google.com/document/d/1aWGXd9q74k2CFhWyCQYKtvCqfryoEZEj02e4XVcvhbk/pub?embedded=true" height="960" width="830"></iframe>
+<iframe src="https://docs.google.com/document/d/1aWGXd9q74k2CFhWyCQYKtvCqfryoEZEj02e4XVcvhbk/pub?embedded=true" height="960" width="820"></iframe>
