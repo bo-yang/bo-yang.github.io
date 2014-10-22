@@ -36,7 +36,7 @@ There are two options to make one copy of bash config file work for all scenario
 
 SSHFS (SSH Filesystem) is a filesystem client to mount and interact with directories and files located on a remote server or workstation. SSHFS is based on [FUSE](http://fuse.sourceforge.net/) (the best userspace filesystem framework for *nix ). 
 
-For Linux distributions, you can install sshfs using `sudo apt-get install sshfs` or `sudo yum install sshfs`. However, for Mac OS X, you will need to download FUSE and SSHFS from the [osxfuse site](http://osxfuse.github.io/).
+For Linux distributions, you can install sshfs using `sudo apt-get install sshfs` or `sudo yum install sshfs`. However, for Mac OS X, you will need to download FUSE and SSHFS from the [**osxfuse site**](http://osxfuse.github.io/).
 
 To mount remote directories, you can use command 
 
@@ -60,7 +60,7 @@ File `$HOME/.vimrc` is used for Vim configuration, and Vim plugins are can be in
 
 #### 3.1 Word, variable, function, and line completion
 
-_Word completion_: if words or functions are in your dictionary, or in the current file, you can save a lot of time with **<Ctrl-P>** and **<Ctrl-N>**. 
+_Word completion_: if words or functions are in your dictionary, or in the current file, you can save a lot of time with `<Ctrl-P>` and `<Ctrl-N>`. 
 
 ![vim completion]({{ site.url }}/assets/images/2014-10-21-develop-env/vim_completion1.jpg)
 
@@ -163,11 +163,11 @@ To search for a specific tag and open Vim to its definition, run command `vim -t
 Vncserver and vncviewer are convenient for accessing remote GUI. Actually I am trying my best to avoid the use of remote GUI and VNC. Because I don't like start heavy GUI like Gnome or KDE in remote server, I will try to use [MWM](http://xwinman.org/mwm.php) or [OLVWM](http://xwinman.org/olvwm.php) if I have to. To make them fancy, you need to modify or download the corresponding `.*rc` files, `.Xdefaults` or `.Xresources` files.
 
 ### References
-1. http://www.joshstaiger.org/archives/2005/07/bash_profile_vs.html
-2. http://stackoverflow.com/questions/415403/whats-the-difference-between-bashrc-bash-profile-and-environment
-3. https://www.digitalocean.com/community/tutorials/how-to-use-sshfs-to-mount-remote-file-systems-over-ssh
+1. [.bash_profile vs .bashrc](http://www.joshstaiger.org/archives/2005/07/bash_profile_vs.html)
+2. [What's the difference between .bashrc, .bash_profile, and .environment?](http://stackoverflow.com/questions/415403/whats-the-difference-between-bashrc-bash-profile-and-environment)
+3. [How To Use SSHFS to Mount Remote File Systems Over SSH](https://www.digitalocean.com/community/tutorials/how-to-use-sshfs-to-mount-remote-file-systems-over-ssh)
 4. [Vim and Ctags](http://andrew.stwrt.ca/posts/vim-ctags)
 5. [Vim 101: Tags](http://usevim.com/2013/01/18/tags/)
-6. http://stackoverflow.com/questions/563616/vim-and-ctags-tips-and-tricks
-7. http://xwinman.org/
+6. [Vim and Ctags tips and tricks](http://stackoverflow.com/questions/563616/vim-and-ctags-tips-and-tricks)
+7. [http://xwinman.org/](http://xwinman.org/)
 
