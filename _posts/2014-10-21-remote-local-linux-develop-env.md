@@ -135,11 +135,11 @@ After moving the cursor to a word,
 
 - `<Ctrl+]>` - go to definition.
 - `<Ctrl+T>` - Jump back from the definition.
-- `Ctrl+W Ctrl+]>` - Open the definition in a horizontal split.
+- `<Ctrl+W Ctrl+]>` - Open the definition in a horizontal split.
 - `<Ctrl+Left MouseClick>` - Go to definition.
 - `<Ctrl+Right MouseClick>` - Jump back from definition
 
-To open the definition of a tag in a new tab, add following lines in `.vimrc`:
+To open the definition of a tag in a **new tab**, add the following lines in `.vimrc`:
 
 	map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 	map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
