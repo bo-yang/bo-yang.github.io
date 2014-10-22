@@ -18,6 +18,7 @@ _This is the fourth article on binary tree operations. For other topics on binar
 1. [Binary Tree Operations(I)](http://bo-yang.github.io/2014/05/26/binary-tree-traversal/)
 2. [Binary Tree Operations(II)](http://bo-yang.github.io/2014/08/16/binary-tree-ii/)
 3. [Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation](http://bo-yang.github.io/2014/09/12/binary-tree-iii/)
+4. [Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree](http://bo-yang.github.io/2014/10/09/is-valid-bst/)
 
 
 The problem is: _given a binary tree, how to determine if it is a Binary Search Tree(BST) or not?_ A binary search tree is a binary tree data structure which has the following properties.

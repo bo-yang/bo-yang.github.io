@@ -3,8 +3,10 @@ layout: post
 title: Notes of Advanced C/C++
 categories: 
 - C/C++
+- Notes
 tags:
 - C/C++
+- Notes
 status: publish
 type: post
 published: true

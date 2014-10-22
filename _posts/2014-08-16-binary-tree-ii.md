@@ -12,7 +12,12 @@ type: post
 published: true
 author: Bo Yang
 ---
-This is the second article on binary tree operations. For topics on binary tree build, traversal and comparison, please refer to [Binary Tree Operations(I)](http://bo-yang.github.io/2014/05/26/binary-tree-traversal/)
+This is the second article on binary tree operations. For other topics on binary tree, please refer to 
+
+1. [Binary Tree Operations(I)](http://bo-yang.github.io/2014/05/26/binary-tree-traversal/)
+2. [Binary Tree Operations(II)](http://bo-yang.github.io/2014/08/16/binary-tree-ii/)
+3. [Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation](http://bo-yang.github.io/2014/09/12/binary-tree-iii/)
+4. [Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree](http://bo-yang.github.io/2014/10/09/is-valid-bst/)
 
 1. [Path Sum](#path_sum)
 2. [Build Binary Tree With Cycle](#build_cycle)
