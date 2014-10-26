@@ -20,8 +20,6 @@ group: navigation
   {% endunless %}{% endfor %}
   </ul>
 
-  {% include bo/revenuehits_728x90 %}
-
   {% for item in (0..site.tags.size) %}{% unless forloop.last %}
     {% capture this_word %}{{ tag_words[item] | strip_newlines }}{% endcapture %}
   <h2 id="{{ this_word | cgi_escape }}">{{ this_word }}</h2>
@@ -35,9 +33,7 @@ group: navigation
 </div>
 
 <div class="col-md-2">
-	{% include bo/revenuehits_160x600 %}
 	{% include bo/bidvertiser_160x600 %}
-	{% include bo/amazon_160x600 %}
 	<div class="well">
 		<h4>Visitors</h4>
 		<div class="tag_box">
