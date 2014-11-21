@@ -80,7 +80,7 @@ Following program demonstrates this problem:
 After building above code, say `pthread_exit_test`, run this program and find the PID of it. Then `cat /proc/<PID>/status`, you will find the process status like
 
 	Name:	pthread_exit_te
-	**State:	Z (zombie)**
+	State:	Z (zombie)
 	Tgid:	3091
 	Pid:	3091
 	PPid:	2849
@@ -88,7 +88,7 @@ After building above code, say `pthread_exit_test`, run this program and find th
 	Uid:	370845	370845	370845	370845
 	Gid:	25	25	25	25
 	Utrace:	0
-	**FDSize:	0**
+	FDSize:	0
 	Groups:	25 1000000312 
 	Threads:	6
 	SigQ:	0/78966
