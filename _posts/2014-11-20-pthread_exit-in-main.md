@@ -1,6 +1,6 @@
 ---
 layout: post
-title: pthread_exit() in main() 
+title: Be careful to pthread_exit() in main() 
 categories: 
 - Unix/Linux
 - Notes
@@ -14,7 +14,7 @@ published: true
 author: Bo Yang
 ---
 
-Most threads call `pthread_exit()` implicitly on return from the thread start routine. Besides, `pthread_exit()` also can be used to terminate the initial process thread in `main()`, leaving other threads to continue operation. The process will go away automatically when the last thread terminates. If you don't care about the process exit status, or if is difficult to know the created thread IDs(e.g. created by third party APIs), you can call 
+When using `pthread` for multithreading, most threads call `pthread_exit()` implicitly on return from the thread start routine. Besides, `pthread_exit()` also can be used to terminate the initial process thread in `main()`, leaving other threads to continue operation. The process will go away automatically when the last thread terminates. If you don't care about the process exit status, or if is difficult to know the created thread IDs(e.g. created by third party APIs), you can call 
 
 	pthread_detach(pthread_self());
 	pthread_exit(NULL);
@@ -107,6 +107,8 @@ After building above code, say `pthread_exit_test`, run this program and find th
 	Mems_allowed_list:	0
 	voluntary_ctxt_switches:	14
 	nonvoluntary_ctxt_switches:	1
+
+For the above program, if replace `pthread_exit()` with `pthread_join()` or `while(1) {sleep(120); }`, it would work well. The `while` loop is especially usefull when you don't know the thread id to be joined.
 
 Until now I am still don't know why openning `/proc/mounts` would fail and why openning `/proc/cpuinfo` could succeed in above code. I also tried other system file or link, and found all of them could be successively readed. 
 
