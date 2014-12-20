@@ -58,9 +58,11 @@ If you have generated ctags file, then you can automatically load it by:
 - add following lines into your `$HOME/.vimrc`
 
 ```Shell
+
     if filereadable($CTAGS_TAG)
 	    set tags=$CTAGS_TAG
     endif
+    
 ```
 
 #### 1.3 Most Recently Used(MRU) Files
