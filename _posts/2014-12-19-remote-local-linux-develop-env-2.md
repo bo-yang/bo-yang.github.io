@@ -13,7 +13,7 @@ published: true
 author: Bo Yang
 ---
 
-__This is the second article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the previous article on this topic, please refer to [Building Remote+Local *nix Develop Environment](http://www.bo-yang.net/2014/10/21/remote-local-linux-develop-env/).__
+_This is the second article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the previous article on this topic, please refer to [Building Remote+Local *nix Develop Environment](http://www.bo-yang.net/2014/10/21/remote-local-linux-develop-env/)._
 
 ### 1. Vim Tips & Plugins
 
