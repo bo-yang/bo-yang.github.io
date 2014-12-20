@@ -53,15 +53,15 @@ Or use a more complicated one in the `.vimrc`:
 
 If you have generated ctags file, then you can automatically load it by:
 
-- export `CTAGS_TAG` in `$HOME/.bashrc` by
-    
-    export CTAGS_TAG=/path/to/your/tags
+- export `CTAGS_TAG` in `$HOME/.bashrc` by `export CTAGS_TAG=/path/to/your/tags`.
 
 - add following lines into your `$HOME/.vimrc`
 
+```Shell
     if filereadable($CTAGS_TAG)
 	    set tags=$CTAGS_TAG
     endif
+```
 
 #### 1.3 Most Recently Used(MRU) Files
 
