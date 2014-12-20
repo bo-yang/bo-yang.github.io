@@ -13,6 +13,8 @@ published: true
 author: Bo Yang
 ---
 
+_This is the first article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the following-up article on this topic, please refer to [Building Remote+Local *nix Develop Environment(II)](http://www.bo-yang.net/2014/12/19/remote-local-linux-develop-env-2/)._
+
 ### 1. `.bashrc` vs `.bash_profile`
 
 The Bash is configured by `.bashrc` or `.bash_profile`. According to the [bash man page](http://linux.die.net/man/1/bash), `.bash_profile` is executed for login shells, while `.bashrc` is executed for interactive non-login shells.
@@ -53,6 +55,8 @@ for Linux, and use command
 	umount [-f] <LOCAL_MOUNT_POINT>
 
 for Mac OS X.
+
+Since sshfs command requires too much parameters, and things will be worse when the network is not stable. [This wrapper script](https://github.com/bo-yang/misc/blob/master/sshfs_wrapper) will ease your pain.
 
 ### 3. vim/gvim/mvim
 
@@ -157,6 +161,8 @@ To search for a specific tag and open Vim to its definition, run command `vim -t
 	nmap tb :TagbarToggle<CR>
 
 , which bind key `<t+b>` to show/hide Tagbar.
+
+To save the effort of generating ctags, I wrote a cross-platform(Linux & Mac OS X) [wrapper script](https://github.com/bo-yang/misc/blob/master/gen_cscope_ctags), which can be found in [my GitHub channel](https://github.com/bo-yang/misc/blob/master/gen_cscope_ctags).
 
 ### 5. vnc
 
