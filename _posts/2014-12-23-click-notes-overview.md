@@ -8,7 +8,7 @@ tags:
 - Unix/Linux
 - Notes
 status: publish
-type: post
+type: draft
 published: false
 author: Bo Yang
 ---
