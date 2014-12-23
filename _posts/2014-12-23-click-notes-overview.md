@@ -40,7 +40,6 @@ Elements have five important properties: element class, ports, configuration str
 
 An example of real Click element is:
 
-```
     #ifndef CLICK_SWITCH_HH
     #define CLICK_SWITCH_HH
     #include <click/element.hh>
@@ -73,10 +72,8 @@ An example of real Click element is:
     
     CLICK_ENDDECLS
     #endif
-```
 In above code, some Click macros are defined as:
 
-```
     /* Define macros that surround Click declarations. */
     #define CLICK_DECLS		namespace Click {
     #define CLICK_ENDDECLS		}
@@ -87,13 +84,11 @@ In above code, some Click macros are defined as:
     #else
     # define CLICK_COLD __attribute__((cold))
     #endif
-```
 
 Where the GNU `cold` attribute on functions is used to inform the compiler that the function is unlikely to be executed. The function is optimized for size rather than speed and on many targets it is placed into a special subsection of the text section so all cold functions appear close together, improving code locality of non-cold parts of program. 
 
 And the handlers of this element can be defined as:
-
-```
+    
     String
     Switch::read_param(Element *e, void *)
     {
@@ -122,7 +117,6 @@ And the handlers of this element can be defined as:
         add_read_handler("config", read_param, 0);
         set_handler_flags("config", 0, Handler::CALM);
     }
-```
 
 By adding handlers to element `Switch`, the Switch attributes `switch` and `config` can be read or changed by reading/writing files `/proc/click/<switch_obj>/switch` and `/proc/click/<switch_obj>/config` at run time, if Click is running in Linux kernel.
 
@@ -135,8 +129,6 @@ Several packet headers may share the same packet data. When copying a packet, Cl
 Headers contain a number of annotations in addition to a pointer to the packet data. Some annotations contain information independent of the packet data - for example, the time when the packet arrived. Other annotations cache information about the data, i.e, the CheckIPHeader element sets the IP header annotation on passing IP packets. 
 
 In Linux, the sk_buff is defined as:
-
-```
 
     struct sk_buff {
     	/* These two members must be first. */
@@ -214,11 +206,8 @@ In Linux, the sk_buff is defined as:
     	unsigned int		truesize;
     	atomic_t		users;
     };
-```
 
 The Click Packet is defined as:
-
-```
 
     class Packet {
     …...
@@ -271,7 +260,6 @@ The Click Packet is defined as:
         AllAnno _aa;
     …...
     }
-```
 
 ### Connections
 
