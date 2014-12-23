@@ -15,18 +15,28 @@ author: Bo Yang
 
 Click is a modular router toolkit written mainly in C++, which can be run in both user space and OS kernel space. Since its invention in late 1990s by Eddie Kohler, Click is has gained great successes in both research and industry. This series of notes aims to (1)introduce Click platform, (2)analyze the implementation of Click, and (3) discuss some general problems related to Operating System and Network Programming.
 
-### Models Behind Click
+1. [Router Models](#router_model)
+2. [Click Architecture](#click_arch)
+3. [Elements](#element)
+4. [Packets](#packet)
+5. [Connections](#connect)
+6. [References](#ref)
+
+### <a name="router_model">Router Models</a>
 Click was developed based on an abstract router model. Routers are viewed as pure packet processors: packets arrive on one network interface, travel through the packet processor’s forwarding path, and are emitted on another network interface. In routers, packets flow through the forwarding paths, which behave just like the pipelines. Packets will lose their identity after they arrive the target - only data will be transferred to applications(running on host). One significant differences between routers and hosts is: in packet processors, packets move horizontally between peers, not vertically between application layers. 
 
 Click also used an important observation - the packet operation is be basis of computer networks. Firewall limits access to a protected network, often by dropping inappropriate packets. Network address translators allow a large set of machines to share a single public IP address; they work by rewriting packet headers, and occasionally some data. Load balancers send packets to one of a set of servers, dynamically choosing a server based on load or some application characteristic. Therefore, most Click elements center on packet operations.
 
-### Click Router Architecture
+### <a name="click_arch">Click Architecture</a>
 
-The Click architecture is centered on the element. Each element is a software component representing a unit of router processing, which generally examines or modifies packets in some way. At run time, elements pass packets to one another over links called connections. Each connection represents a possible path for packet transfer. A router configuration is a directed graph with elements at the vertices and connections as the edges.  Router configurations, run in the context of some driver, either at user level or in the Linux kernel. 
+The Click architecture is centered on the element. Each element is a software component representing a unit of router processing, which generally examines or modifies packets in some way. At run time, elements pass packets to one another over links called connections. Each connection represents a possible path for packet transfer. A router configuration is a directed graph with elements at the vertices and connections as the edges. Router configurations, run in the context of some driver, either at user level or in the Linux kernel. 
 
 A Click router is assembled from packet processing modules called elements. Individual elements implement simple router functions like packet classification, queueing, scheduling, and interfacing with network devices. Configurations are written in a declarative language that supports user-defined abstractions. Due to Click’s architecture and language, Click router configurations are modular and easy to extend. To build a router configuration, Click users can choose a collection of elements and connects them into a directed graph.
 
-### Elements
+In addition to the modular router, Click also supports a configuration scripting language and provides an interpreter, which are also written in C++. Click supports multiple processros and has a builtin scheduler for tasks(elements). These topics will be covered in the future posts.
+
+
+### <a name="element">Elements</a>
 
 Elements have five important properties: element class, ports, configuration strings, method interfaces and handlers.
 
@@ -120,7 +130,7 @@ And the handlers of this element can be defined as:
 
 By adding handlers to element `Switch`, the Switch attributes `switch` and `config` can be read or changed by reading/writing files `/proc/click/<switch_obj>/switch` and `/proc/click/<switch_obj>/config` at run time, if Click is running in Linux kernel.
 
-### Packets
+### <a name="packet">Packets</a>
 
 A Click Packet consists of a small packet header and the actual packet data -- the packet header points to the data. In the Linux kernel driver, Click packet objects are equivalent to sk_buffs, which avoids translation or indirection overhead when communicating with device drivers or the kernel itself. 
 
@@ -261,7 +271,9 @@ The Click Packet is defined as:
     …...
     }
 
-### Connections
+Obviously, both Linux `sk_buff` and Click `Packet` class have similiar elements, like hearder, data and tail of a packet.
+
+### <a name="connect">Connections</a>
 
 Each Click connection represents a possible path for packet transfer between elements. Connections are represented as pointers to element objects, and passing a packet along a connection is implemented by a single virtual function call(push or pull). Each connection links a source port to a destination port. The source port is always an output port, and the destination port is always an input port. 
 
@@ -274,7 +286,7 @@ Click supports two kinds of connections, push and pull. On a push connection, pa
 Connections between two push ports are push, and connections between two pull ports are pull. Connections between a push port and a pull port are illegal. For agnostic ports, they behave as push when connected to push ports and pull when connected to pull ports(Null elements in above picture). In the above picture, Queue element has a push input port and a pull output port - the input port respond to pushed packets by enqueueing them, and the output port responds to pull requests by dequeuing packets and returning them. 
 
 
-### References
+### <a name="ref">References</a>
 
 - [Eddie Kohler, _The Click modular router_, Ph.D. thesis, MIT, November 2000. This has more detail and examples than the TOCS and SOSP papers of the same name.](http://pdos.csail.mit.edu/papers/click:kohler-phd/thesis.pdf)
 - [http://read.cs.ucla.edu/click/](http://read.cs.ucla.edu/click/)
