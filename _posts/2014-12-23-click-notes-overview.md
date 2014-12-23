@@ -33,5 +33,6 @@ The Click architecture is centered on the element. Each element is a software co
 
 ### References
 
+- [Eddie Kohler, _The Click modular router_, Ph.D. thesis, MIT, November 2000. This has more detail and examples than the TOCS and SOSP papers of the same name.](http://pdos.csail.mit.edu/papers/click:kohler-phd/thesis.pdf)
 - [http://read.cs.ucla.edu/click/](http://read.cs.ucla.edu/click/)
 - [http://www.pats.ua.ac.be/software/click/](http://www.pats.ua.ac.be/software/click/)
