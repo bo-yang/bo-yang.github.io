@@ -30,6 +30,8 @@ A Click router is assembled from packet processing modules called elements. Indi
 
 Elements have five important properties: element class, ports, configuration strings, method interfaces and handlers.
 
+![Click Connections]({{ site.url }}/assets/images/click_notes/click_element.png)
+
 - Element class. An element’s class specifies that element’s data layout and behavior.
 - Ports. Each element can have any number of input and output ports. Every connection links an output port on one element to an input port on another. Ports may be push, pull, or agnostic.
 - Configuration string. optional, contains additional arguments passed to the element at router initialization time. Lexically, a configuration string is a list of arguments separated by commas, i.e. `c1 :: Classifier(9/17, 9/6, -);`.
@@ -278,6 +280,8 @@ Each Click connection represents a possible path for packet transfer between ele
 Connections link ports, but not elements. Each element may have many ports. If a path exists from an output port o to an input port i in the port graph representation of a router configuration, then we say that i is downstream of o, and conversely, that o is upstream of i.
 
 Click supports two kinds of connections, push and pull. On a push connection, packets start at the source element and are passed downstream to the destination element. On a pull connection, in contrast, the destination element initiates packet transfer: it asks the source element to return a packet, or a null pointer if no packet is available. These packet transfers are implemented by two virtual function calls, push and pull. 
+
+![Click Connections]({{ site.url }}/assets/images/click_notes/click_connections.png)
 
 Connections between two push ports are push, and connections between two pull ports are pull. Connections between a push port and a pull port are illegal. For agnostic ports, they behave as push when connected to push ports and pull when connected to pull ports(Null elements in above picture). In the above picture, Queue element has a push input port and a pull output port - the input port respond to pushed packets by enqueueing them, and the output port responds to pull requests by dequeuing packets and returning them. 
 
