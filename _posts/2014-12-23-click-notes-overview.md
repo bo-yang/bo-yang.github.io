@@ -7,8 +7,8 @@ categories:
 tags:
 - Unix/Linux
 - Notes
-status: publish
-type: draft
+status: draft
+type: post
 published: false
 author: Bo Yang
 ---
