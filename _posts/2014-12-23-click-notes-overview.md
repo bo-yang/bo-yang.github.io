@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Click Notes I: Overview
+title: Click Notes I - Overview
 categories: 
 - Unix/Linux
 - Notes
