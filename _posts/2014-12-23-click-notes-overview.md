@@ -42,11 +42,11 @@ Elements have five important properties: element class, ports, configuration str
 
 ![Click Connections]({{ site.url }}/assets/images/click_notes/click_element.png)
 
-- Element class. An element’s class specifies that element’s data layout and behavior.
-- Ports. Each element can have any number of input and output ports. Every connection links an output port on one element to an input port on another. Ports may be push, pull, or agnostic.
-- Configuration string. optional, contains additional arguments passed to the element at router initialization time. Lexically, a configuration string is a list of arguments separated by commas, i.e. `c1 :: Classifier(9/17, 9/6, -);`.
-- Method interfaces. Each element exports methods that other elements may access. This set of methods is grouped into method interfaces. 
-- Handlers. Handlers are methods that are exported to the user, rather than to other elements in the router configuration. They support text-based read/write semantics, as opposed to fully general method call semantics. In the Linux kernel driver, handlers appear as files in the dynamic `/proc` file system.
+- *Element class*. An element’s class specifies that element’s data layout and behavior.
+- *Ports*. Each element can have any number of input and output ports. Every connection links an output port on one element to an input port on another. Ports may be push, pull, or agnostic.
+- *Configuration string*. optional, contains additional arguments passed to the element at router initialization time. Lexically, a configuration string is a list of arguments separated by commas, i.e. `c1 :: Classifier(9/17, 9/6, -);`.
+- *Method interfaces*. Each element exports methods that other elements may access. This set of methods is grouped into method interfaces. 
+- *Handlers*. Handlers are methods that are exported to the user, rather than to other elements in the router configuration. They support text-based read/write semantics, as opposed to fully general method call semantics. In the Linux kernel driver, handlers appear as files in the dynamic `/proc` file system.
 
 An example of real Click element is:
 
@@ -82,7 +82,9 @@ An example of real Click element is:
     
     CLICK_ENDDECLS
     #endif
-In above code, some Click macros are defined as:
+
+
+In above code, the Click macros are defined as:
 
     /* Define macros that surround Click declarations. */
     #define CLICK_DECLS		namespace Click {
