@@ -14,7 +14,7 @@ published: true
 author: Bo Yang
 ---
 
-[Click](http://www.read.cs.ucla.edu/click/click) is a modular router toolkit written mainly in C++, which can be run in both user space and OS kernel space. Since its invention in late 1990s by Eddie Kohler, Click is has gained great successes in both research and industry. This series of notes aims to (1)introduce Click platform, (2)analyze the implementation of Click, and (3) discuss some general problems related to Operating System and Network Programming.
+[Click](http://www.read.cs.ucla.edu/click/click) is a modular router toolkit written mainly in C++, which can be run in both user space and OS kernel space. Since its invention in late 1990s by Eddie Kohler, Click is has gained great successes in both research and industry. This series of notes aims to (1)introduce Click platform, (2)analyze the implementation of Click, and (3) discuss some general problems related to Operating System and Network Programming. The Click Source code can be found [here](https://github.com/kohler/click/).
 
 1. [Router Models](#router_model)
 2. [Click Architecture](#click_arch)
