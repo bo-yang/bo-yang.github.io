@@ -14,7 +14,13 @@ published: true
 author: Bo Yang
 ---
 
-The [Click programming language](http://www.read.cs.ucla.edu/click/docs/language) was developed to configure Click routers, but nowadays you also can use it to write test cases for Click elements. 
+The [Click programming language](http://www.read.cs.ucla.edu/click/docs/language) was developed to configure Click routers, but nowadays you also can use it to write test cases for Click elements.
+
+1. [Basic Syntax](#syntax)
+2. [Element Group](#element_group)
+3. [Compound Element](#comp_element)
+4. [Script](#script)
+5. [Testie](#testie)
 
 ### <a name="syntax">Basic Syntax</a>
 
@@ -189,4 +195,10 @@ All of the handlers defined in the Script element need to parse the script langu
 In addition to above sections, you also can define one or multiple Script elements in the testie file, which group a set of Click Script instructions.
 
 `click/test/testie` is the Perl tool to run testie files. Given a testie file, the testie interpreter will first read and parse each section defined in the testie file: `%require` files will be expanded, files defined in section `%file` will be created in a temporary directory, commands listed under `%script` will be recorded in a hash, and so on. After preprocessing, the commands will be executed by shell or interpreted by click. `click/test/testie` is a very good template of simple interpreter. 
+
+### <a name="refer">References</a>
+- [http://www.read.cs.ucla.edu/click/docs/language](http://www.read.cs.ucla.edu/click/docs/language)
+- [Eddie Kohler, _The Click modular router_, Ph.D. thesis, MIT, November 2000. This has more detail and examples than the TOCS and SOSP papers of the same name.](http://pdos.csail.mit.edu/papers/click:kohler-phd/thesis.pdf)
+- [http://www.read.cs.ucla.edu/click/elements/script](http://www.read.cs.ucla.edu/click/elements/script)
+- [http://www.read.cs.ucla.edu/click/docs/testie](http://www.read.cs.ucla.edu/click/docs/testie)
 
