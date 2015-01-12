@@ -145,50 +145,48 @@ The `syslog-ng` application is a flexible and highly scalable system logging app
 
 By default the time stamps are printed in "seconds since boot" (this is the way the kernel is programmed to print the time stamps in `vprintk()`, and it can not be changed to print the time stamps in a human readable format). The system uptime can be helpful to calculate an absolute time stamp if needed (run the `uptime` command).
 
-The algorithm below for converting the printed time stamps to a human readable format is demonstrated on the example given above:
+Given timestamp:
 
     [196149.728085] hello world
 
-<pre>
-1. Take the log's time stamp in seconds: 
+The algorithm below converts the printed time stamps to a human readable format:
 
-196149.728085 seconds (round the number down/up if needed) 
-
-
-2. Divide the time stamp in seconds by 60 to get the total amount of minutes: 
-
-196150 : 60 = 3269.1667 minutes (round the number down/up if needed) 
-
-
-3. Divide the time stamp in minutes by 60 to get the total amount of hours: 
-
-3269.1667 : 60 = 54.486111666666666666666666666667 hours 
-
-
-4. Break the decimal number into 2 parts: 
-
-54.486111666666666666666666666667 hours = (54 hours) + (0.486111666666666666666666666667 decimal hours) 
-
-
-5. Use the time conversion charts below to convert decimal hours to minutes: 
-
-0.486111666666666666666666666667 decimal hours ~ 0.48 decimal hours ~ 29 minutes 
-
-6. Note: For more precise conversion (down to seconds), you can use various time converters available on the Internet. Just search for 'convert decimal time' in any search engine. 
-
-
-7. Hence, we get that the log was created this amount of time since boot: 
-
-196149.728085 seconds ~ 54 hours 29 minutes 
-
-
-8. Check the current system's uptime: 
-
-[Expert@HostName]# uptime 
-
-
-9. To get the log's real time stamp, subtract the log's time stamp in dmesg kernel ring buffer from the current system's uptime.
-</pre>
+    1. Take the log's time stamp in seconds: 
+    
+    196149.728085 seconds (round the number down/up if needed) 
+    
+    
+    2. Divide the time stamp in seconds by 60 to get the total amount of minutes: 
+    
+    196150 : 60 = 3269.1667 minutes (round the number down/up if needed) 
+    
+    
+    3. Divide the time stamp in minutes by 60 to get the total amount of hours: 
+    
+    3269.1667 : 60 = 54.486111666666666666666666666667 hours 
+    
+    
+    4. Break the decimal number into 2 parts: 
+    
+    54.486111666666666666666666666667 hours = (54 hours) + (0.486111666666666666666666666667 decimal hours) 
+    
+    
+    5. Use the time conversion charts below to convert decimal hours to minutes: 
+    
+    0.486111666666666666666666666667 decimal hours ~ 0.48 decimal hours ~ 29 minutes 
+    
+    6. Note: For more precise conversion (down to seconds), you can use various time converters available on the Internet. Just search for 'convert decimal time' in any search engine. 
+    
+    
+    7. Hence, we get that the log was created this amount of time since boot: 
+    
+    196149.728085 seconds ~ 54 hours 29 minutes 
+    
+    8. Check the current system's uptime: 
+    
+    [Expert@HostName]# uptime 
+    
+    9. To get the log's real time stamp, subtract the log's time stamp in dmesg kernel ring buffer from the current system's uptime.
 
 Following is a Shell script to transform uptime timestamp to human-readable timestamp:
 
