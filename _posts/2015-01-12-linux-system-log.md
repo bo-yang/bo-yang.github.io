@@ -21,7 +21,7 @@ author: Bo Yang
 6. [syslog-ng](#syslog-ng)
 7. [Convert Timestamp](#convert_timestamp)
 
-### <a name="overview">Overview</a>
+### 1. <a name="overview">Overview</a>
 
 Linux adopts a ring buffer in kernel with a size of `__LOG_BUF_LEN` bytes to store system logs, where `__LOG_BUF_LEN` equals (`1 << CONFIG_LOG_BUF_SHIFT`) (see `kernel/printk.c` for details). Using a ring buffer implies that older messages get overwritten once the buffer fills up, but this is only a minor drawback compared to the robustness of this solution (i.e. minimum memory footprint, callable from every context, not many resources wasted if nobody reads the buffer, no filling up of disk space/ram when some kernel process goes wild and spams the buffer, ...). Using a reasonably large buffer size should give you enough time to read your important messages before they are overwritten.
 
@@ -29,7 +29,7 @@ The kernel log buffer is accessible for reading from userspace by `/proc/kmsg`. 
 
 ![Linux Kernel Log]({{ site.url }}/assets/images/2015-01-12-linux-system-log/linux_kernel_log.png)
 
-### <a name="printk">`printk`</a>
+### 2. <a name="printk">`printk`</a>
 
 `printk` is the kernel function to classify messages according to their severity by loglevels and write them to the circular system message buffer. The function then wakes any process that is waiting for messages, that is, any process that is sleeping in the `syslog` system call or that is reading `/proc/kmsg`. `printk` can be invoked from anywhere, even from an interrupt handler, with no limit on how much data can be printed.
 
@@ -87,14 +87,14 @@ Kernel log timestamp is added by `vprintk()`, in `kernel/printk.c`:
 	}
 
 
-### <a name="klogd">`klogd`</a>
+### 3. <a name="klogd">`klogd`</a>
 
 **If the `klogd` process is running, it retrieves kernel messages and dispatches them to `syslogd`, which in turn checks `/etc/syslog.conf` to find out how to deal with them.** `syslogd` differentiates between messages according to a facility and a priority; allowable values for both the facility and the priority are defined in `<sys/syslog.h>`. Kernel messages are logged by the `LOG_KERN` facility at a priority corresponding to the one used in `printk` (for example, `LOG_ERR` is used for `KERN_ERR` messages). **If `klogd` isn't running, data remains in the circular buffer until someone reads it or the buffer overflows.**
 
 If you want to avoid clobbering your system log with the monitoring messages from your driver, you can either specify the (file) option to `klogd` to instruct it to save messages to a specific file, or customize `/etc/syslog.conf` to suit your needs. Yet another possibility is to take the brute-force approach: kill `klogd` and verbosely print messages on an unused virtual terminal, or issue the command `cat /proc/kmsg` from an unused xterm.
 
 
-### <a name="syslog">`syslog`</a>
+### 4. <a name="syslog">`syslog`</a>
 
 Accessing to the log buffer is provided at the core through the multi-purpose `syslog` system call. The prototype for the `syslog system` call is defined in `./linux/include/linux/syslog.h`; its implementation is in `./linux/kernel/printk.c`.
 
@@ -126,7 +126,7 @@ User space syslog API(glibc wrapper):
 
 `klogctl()` is the glibc wrapper to control the kernel `printk()` buffer. 
 
-### <a name="dmesg">`dmesg`</a>
+### 5. <a name="dmesg">`dmesg`</a>
 
 The `dmesg` command is used to print and control the kernel ring buffer. This command uses the `klogctl` system call to read the kernel ring buffer and emit it to standard output (stdout). The command can also be used to clear the kernel ring buffer (using the `-c` option), set the level for logging to the console (the `-n` option), and define the size of the buffer used to read the kernel log messages (the `-s` option).
 
@@ -135,13 +135,13 @@ The `dmesg` command is used to print and control the kernel ring buffer. This co
     ### CONFIG_LOG_BUF_SHIFT 17 = 128k
     $ dmesg -s 128000
 
-### <a name="syslog-ng">`syslog-ng`</a>
+### 6. <a name="syslog-ng">`syslog-ng`</a>
 
 The `syslog-ng` application is a flexible and highly scalable system logging application that is ideal for creating centralized and trusted logging solutions. It extends the original syslogd model with content-based filtering, rich filtering capabilities, flexible configuration options and adds important features to syslog. 
 
 `syslog-ng` also supports ISO/RFC timestamp for system logs. For more info about this powerful log system, please refer to [the manual](http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html).
 
-### <a name="convert_timestamp">Converting Timestamps</a>
+### 7. <a name="convert_timestamp">Converting Timestamps</a>
 
 By default the time stamps are printed in "seconds since boot" (this is the way the kernel is programmed to print the time stamps in `vprintk()`, and it can not be changed to print the time stamps in a human readable format). The system uptime can be helpful to calculate an absolute time stamp if needed (run the `uptime` command).
 
