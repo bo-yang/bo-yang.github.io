@@ -149,7 +149,7 @@ The algorithm below for converting the printed time stamps to a human readable f
 
     [196149.728085] hello world
 
-<code>
+<pre>
 1. Take the log's time stamp in seconds: 
 
 196149.728085 seconds (round the number down/up if needed) 
@@ -188,7 +188,7 @@ The algorithm below for converting the printed time stamps to a human readable f
 
 
 9. To get the log's real time stamp, subtract the log's time stamp in dmesg kernel ring buffer from the current system's uptime.
-</code>
+</pre>
 
 Following is a Shell script to transform uptime timestamp to human-readable timestamp:
 
