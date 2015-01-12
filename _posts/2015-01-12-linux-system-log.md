@@ -13,7 +13,15 @@ published: true
 author: Bo Yang
 ---
 
-### Overview
+1. [Overview](#overview)
+2. [printk](#printk)
+3. [klogd](#klogd)
+4. [syslog](#syslog)
+5. [dmesg](#dmesg)
+6. [syslog-ng](#syslog-ng)
+7. [Convert Timestamp](#convert_timestamp)
+
+### <a name="overview">Overview</a>
 
 Linux adopts a ring buffer in kernel with a size of `__LOG_BUF_LEN` bytes to store system logs, where `__LOG_BUF_LEN` equals (`1 << CONFIG_LOG_BUF_SHIFT`) (see `kernel/printk.c` for details). Using a ring buffer implies that older messages get overwritten once the buffer fills up, but this is only a minor drawback compared to the robustness of this solution (i.e. minimum memory footprint, callable from every context, not many resources wasted if nobody reads the buffer, no filling up of disk space/ram when some kernel process goes wild and spams the buffer, ...). Using a reasonably large buffer size should give you enough time to read your important messages before they are overwritten.
 
@@ -21,7 +29,7 @@ The kernel log buffer is accessible for reading from userspace by `/proc/kmsg`. 
 
 ![Linux Kernel Log]({{ site.url }}/assets/images/2015-01-12-linux-system-log/linux_kernel_log.png)
 
-### `printk`
+### <a name="printk">`printk`</a>
 
 `printk` is the kernel function to classify messages according to their severity by loglevels and write them to the circular system message buffer. The function then wakes any process that is waiting for messages, that is, any process that is sleeping in the `syslog` system call or that is reading `/proc/kmsg`. `printk` can be invoked from anywhere, even from an interrupt handler, with no limit on how much data can be printed.
 
@@ -79,14 +87,14 @@ Kernel log timestamp is added by `vprintk()`, in `kernel/printk.c`:
 	}
 
 
-### `klogd`
+### <a name="klogd">`klogd`</a>
 
 **If the `klogd` process is running, it retrieves kernel messages and dispatches them to `syslogd`, which in turn checks `/etc/syslog.conf` to find out how to deal with them.** `syslogd` differentiates between messages according to a facility and a priority; allowable values for both the facility and the priority are defined in `<sys/syslog.h>`. Kernel messages are logged by the `LOG_KERN` facility at a priority corresponding to the one used in `printk` (for example, `LOG_ERR` is used for `KERN_ERR` messages). **If `klogd` isn't running, data remains in the circular buffer until someone reads it or the buffer overflows.**
 
 If you want to avoid clobbering your system log with the monitoring messages from your driver, you can either specify the (file) option to `klogd` to instruct it to save messages to a specific file, or customize `/etc/syslog.conf` to suit your needs. Yet another possibility is to take the brute-force approach: kill `klogd` and verbosely print messages on an unused virtual terminal, or issue the command `cat /proc/kmsg` from an unused xterm.
 
 
-### `syslog`
+### <a name="syslog">`syslog`</a>
 
 Accessing to the log buffer is provided at the core through the multi-purpose `syslog` system call. The prototype for the `syslog system` call is defined in `./linux/include/linux/syslog.h`; its implementation is in `./linux/kernel/printk.c`.
 
@@ -118,7 +126,7 @@ User space syslog API(glibc wrapper):
 
 `klogctl()` is the glibc wrapper to control the kernel `printk()` buffer. 
 
-### `dmesg`
+### <a name="dmesg">`dmesg`</a>
 
 The `dmesg` command is used to print and control the kernel ring buffer. This command uses the `klogctl` system call to read the kernel ring buffer and emit it to standard output (stdout). The command can also be used to clear the kernel ring buffer (using the `-c` option), set the level for logging to the console (the `-n` option), and define the size of the buffer used to read the kernel log messages (the `-s` option).
 
@@ -127,7 +135,13 @@ The `dmesg` command is used to print and control the kernel ring buffer. This co
     ### CONFIG_LOG_BUF_SHIFT 17 = 128k
     $ dmesg -s 128000
 
-### Converting Timestamps
+### <a name="syslog-ng">`syslog-ng`</a>
+
+The `syslog-ng` application is a flexible and highly scalable system logging application that is ideal for creating centralized and trusted logging solutions. It extends the original syslogd model with content-based filtering, rich filtering capabilities, flexible configuration options and adds important features to syslog. 
+
+`syslog-ng` also supports ISO/RFC timestamp for system logs. For more info about this powerful log system, please refer to [the manual](http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html).
+
+### <a name="convert_timestamp">Converting Timestamps</a>
 
 By default the time stamps are printed in "seconds since boot" (this is the way the kernel is programmed to print the time stamps in `vprintk()`, and it can not be changed to print the time stamps in a human readable format). The system uptime can be helpful to calculate an absolute time stamp if needed (run the `uptime` command).
 
@@ -135,44 +149,46 @@ The algorithm below for converting the printed time stamps to a human readable f
 
     [196149.728085] hello world
 
-    1. Take the log's time stamp in seconds: 
-    
-    196149.728085 seconds (round the number down/up if needed) 
-    
-    
-    2. Divide the time stamp in seconds by 60 to get the total amount of minutes: 
-    
-    196150 : 60 = 3269.1667 minutes (round the number down/up if needed) 
-    
-    
-    3. Divide the time stamp in minutes by 60 to get the total amount of hours: 
-    
-    3269.1667 : 60 = 54.486111666666666666666666666667 hours 
-    
-    
-    4. Break the decimal number into 2 parts: 
-    
-    54.486111666666666666666666666667 hours = (54 hours) + (0.486111666666666666666666666667 decimal hours) 
-    
-    
-    5. Use the time conversion charts below to convert decimal hours to minutes: 
-    
-    0.486111666666666666666666666667 decimal hours ~ 0.48 decimal hours ~ 29 minutes 
-    
-    6. Note: For more precise conversion (down to seconds), you can use various time converters available on the Internet. Just search for 'convert decimal time' in any search engine. 
-    
-    
-    7. Hence, we get that the log was created this amount of time since boot: 
-    
-    196149.728085 seconds ~ 54 hours 29 minutes 
-    
-    
-    8. Check the current system's uptime: 
-    
-    [Expert@HostName]# uptime 
-    
-    
-    9. To get the log's real time stamp, subtract the log's time stamp in dmesg kernel ring buffer from the current system's uptime.
+<code>
+1. Take the log's time stamp in seconds: 
+
+196149.728085 seconds (round the number down/up if needed) 
+
+
+2. Divide the time stamp in seconds by 60 to get the total amount of minutes: 
+
+196150 : 60 = 3269.1667 minutes (round the number down/up if needed) 
+
+
+3. Divide the time stamp in minutes by 60 to get the total amount of hours: 
+
+3269.1667 : 60 = 54.486111666666666666666666666667 hours 
+
+
+4. Break the decimal number into 2 parts: 
+
+54.486111666666666666666666666667 hours = (54 hours) + (0.486111666666666666666666666667 decimal hours) 
+
+
+5. Use the time conversion charts below to convert decimal hours to minutes: 
+
+0.486111666666666666666666666667 decimal hours ~ 0.48 decimal hours ~ 29 minutes 
+
+6. Note: For more precise conversion (down to seconds), you can use various time converters available on the Internet. Just search for 'convert decimal time' in any search engine. 
+
+
+7. Hence, we get that the log was created this amount of time since boot: 
+
+196149.728085 seconds ~ 54 hours 29 minutes 
+
+
+8. Check the current system's uptime: 
+
+[Expert@HostName]# uptime 
+
+
+9. To get the log's real time stamp, subtract the log's time stamp in dmesg kernel ring buffer from the current system's uptime.
+</code>
 
 Following is a Shell script to transform uptime timestamp to human-readable timestamp:
 
@@ -196,10 +212,6 @@ Following is a Shell script to transform uptime timestamp to human-readable time
       echo "Timestamps are disabled (/sys/module/printk/parameters/time)"
     fi
 
-
-### `syslog-ng`
-
-The `syslog-ng` application is a flexible and highly scalable system logging application that is ideal for creating centralized and trusted logging solutions. It extends the original syslogd model with content-based filtering, rich filtering capabilities, flexible configuration options and adds important features to syslog. For more info about this powerful log system, please refer to [the manual](http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html).
 
 ### References
 - [http://elinux.org/Debugging_by_printing](http://elinux.org/Debugging_by_printing)
