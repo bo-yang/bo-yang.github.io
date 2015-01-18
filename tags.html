@@ -20,7 +20,7 @@ group: navigation
   {% endunless %}{% endfor %}
   </ul>
 
-  {% include bo/adsense_728x90 %}
+  <center>{% include bo/adsense_728x90 %}</center>
 
   {% for item in (0..site.tags.size) %}{% unless forloop.last %}
     {% capture this_word %}{{ tag_words[item] | strip_newlines }}{% endcapture %}
@@ -33,6 +33,7 @@ group: navigation
   {% endunless %}{% endfor %}
 </div>
 {% include bo/infolinks_intext %}
+<center>{% include bo/adsense_728x90 %}</center>
 </div>
 
 <div class="col-md-2">
