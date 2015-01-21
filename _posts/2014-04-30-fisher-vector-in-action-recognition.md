@@ -88,12 +88,14 @@ half of their original dimensions by doing PCA. At this step, the
 coefficients of PCA were recorded, which would be used in later. The
 GMMs were trained with the half-sized features, and the parameters of
 GMMs(i.e. weight, mean and covariance) were stored for the following
-process. In my program, the GMM code implemented by Oxford Visual
-Geometry
-Group(VGG, http://www.robots.ox.ac.uk/~vgg/software/enceval_toolkit/)
-is used, which eventually call VLFeat(http://www.vlfeat.org/). In my
+process. In my program, the GMM code implemented by [Oxford Visual Geometry Group(VGG)](http://www.robots.ox.ac.uk/~vgg/software/enceval_toolkit/)
+is used, which eventually call [VLFeat](http://www.vlfeat.org/). In my
 code, 256 Gaussians were used.
 
+When computing the Gaussians, sometimes value _Inf_ will be returned. For the _Inf_ entries, a
+very large number(in my code, 1e30) is assigned instead to make the subsequent computation
+smoother. Before the L2 and power normalization, the unexpected _NaN_ entries are replaced by a
+large number(in my implementation, 123456).
 
 ### SVM Classification
 
