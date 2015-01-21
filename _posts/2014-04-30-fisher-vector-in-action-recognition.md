@@ -110,11 +110,11 @@ is set to 100. The option of SVM training is:
 ### Results
 
 The action recognition accuracy of all the 101 actions was 77.95% when
-using above pipeline. And the confusion matrix is shown in Figure 3.
+using above pipeline and STIP features. And the confusion matrix is shown in Figure 3.
 
 ![Figure 3. Confusion matrix of all the 101 actions with STIP features.]({{ site.url }}/assets/images/confusionmat_101.png)
 
-The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was around 85%, about 8% higher than using BOV representation(internal test). And the best result I got with the ISA network on UCF 101 was only 58% last year.
+The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was around 85% using DTF features, about 8% higher than using BOV representations(internal test). And the best result I got with the ISA neural network on UCF 101 was only 58% in November, 2013.
 
 
 ### Conclusion
