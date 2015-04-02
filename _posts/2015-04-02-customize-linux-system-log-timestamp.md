@@ -20,6 +20,8 @@ A bash script of customizing Linux dmesg timestamp is also given in my post post
 
 The basic idea of customizing console syslog timestamp is periodically calling `dmesg -c`, which clears system circular buffer after dumping the system log. In order to also store the log in syslog file(like /var/log/messages), the dumped message also needs to be redirected(or appending) to the syslog file. The timestamps of `dmesg` can be replaced with a human readable one. And the required addition/subtraction is implemented by awk in a very special way.
 
+Instead of `dmesg`, someone may be tempted to use command `tail -f /var/log/messages`. Unfortunately, the `tail` command would automatically stop printing from `/var/log/messages` after a while. It may be caused by the implementation of Busybox `tail` or OpenWRT system log mechanism.
+
 Following is the source code in `ash`:
 
     #!/bin/ash
