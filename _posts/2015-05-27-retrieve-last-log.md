@@ -42,7 +42,7 @@ To load `ramoops`
 
     insmod /lib/modules/ramoops.ko mem_address=<addr> mem_size=<len> [record_size=<chunks>]
 
- where `<addr>` and `<len>` are same as above, and `record_size` is the chunks of reserved memory area.
+ where `<addr>` and `<len>` have the same meaning as above, and `record_size` is the chunks of reserved memory area.
 
 #### Copy Log To `phram` Memory
 
