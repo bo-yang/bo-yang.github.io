@@ -30,7 +30,7 @@ As for user-sapce core dump, core files will be generated to `/tmp/pid.core`(cor
 
 Both `phram` and `ramoops` can be compiled to `.ko` shared library, which can be configured using Linux menuconfig. 
 
-### Loading Modules
+#### Loading Modules
 
 `phram` can be dynamically loaded using following command:
 
@@ -44,7 +44,7 @@ To load `ramoops`
 
  where <addr> and <len> are same as above, and "record_size" is the chunks of reserved memory area.
 
-### Copy Log To `phram` Memory
+#### Copy Log To `phram` Memory
 
 For kernel panic, the ramoops will automatically copy the panic log into the reserved memory. The panic log begins with leading "====" followed by a timestamp and a new line.
 
@@ -65,7 +65,7 @@ Unfortunately, reading & writing byte-by-byte usaully is very slow. A faster way
         skip = (fsize - len)/bsize + 1;
     count = len/bsize + 1;
 
-### Dump Last Log
+#### Dump Last Log
 
 `dd` command can also be used for dumping data from reserved phram memory area, e.g.
 
@@ -73,7 +73,7 @@ Unfortunately, reading & writing byte-by-byte usaully is very slow. A faster way
 
 Other file operation commands/APIs can also be used for `phram` memory device.
 
-### Reset `phram` Memory
+#### Reset `phram` Memory
 
 `phram` memory can be cleared by file operation coomands/APIS, e.g.
 
