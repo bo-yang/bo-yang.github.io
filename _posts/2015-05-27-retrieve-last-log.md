@@ -18,7 +18,8 @@ In Linux, there are two kinds of crashes - kernel panic/oom and user space core 
 
 As for user-sapce core dump, core files will be generated to `/tmp/pid.core`(core pattern can be changed in `/proc/sys/kernel/core_pattern`) by default. It is up to the admin to decide if the system or process needs reboot after core dump. Although a script can be used to record more logs for the coredump, sometimes it's still useful to retain some info in the persistent memory, like the backtrace of the coredumped process.
 
-### Modules Needed
+
+#### Modules Needed
 
 - [**phram**](http://lxr.free-electrons.com/source/drivers/mtd/devices/phram.c)
 
@@ -29,6 +30,7 @@ As for user-sapce core dump, core files will be generated to `/tmp/pid.core`(cor
 `ramoops` is an kernel oops/panic logger that writes its logs to predefined memory area before the system crashes. It works by logging oopses and panics in a circular buffer. As long as the device has power supply during reboot, the content stored in ramoops won't go away.
 
 Both `phram` and `ramoops` can be compiled to `.ko` shared library, which can be configured using Linux menuconfig. 
+
 
 #### Loading Modules
 
@@ -43,6 +45,7 @@ To load `ramoops`
     insmod /lib/modules/ramoops.ko mem_address=<addr> mem_size=<len> [record_size=<chunks>]
 
  where `<addr>` and `<len>` have the same meaning as above, and `record_size` is the chunks of reserved memory area.
+
 
 #### Copy Log To `phram` Memory
 
@@ -65,6 +68,7 @@ Unfortunately, reading & writing byte-by-byte usaully is very slow. A faster way
         skip = (fsize - len)/bsize + 1;
     count = len/bsize + 1;
 
+
 #### Dump Last Log
 
 `dd` command can also be used for dumping data from reserved phram memory area, e.g.
@@ -73,11 +77,13 @@ Unfortunately, reading & writing byte-by-byte usaully is very slow. A faster way
 
 Other file operation commands/APIs can also be used for `phram` memory device.
 
+
 #### Reset `phram` Memory
 
 `phram` memory can be cleared by file operation coomands/APIS, e.g.
 
     dd if=/dev/zero bs=<len> count=1 of=/dev/mtdchar/phram-oops
+
 
 #### References
 
