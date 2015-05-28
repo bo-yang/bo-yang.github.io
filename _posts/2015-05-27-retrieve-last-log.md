@@ -62,7 +62,7 @@ Unfortunately, reading & writing byte-by-byte usaully is very slow. A faster way
     if (fsize <= bsize)
         skip =  0;
     else
-        skip = (fsize - len)/bsize + 1, if fsize > bsize;
+        skip = (fsize - len)/bsize + 1;
     count = len/bsize + 1;
 
 ### Dump Last Log
