@@ -36,13 +36,13 @@ Both `phram` and `ramoops` can be compiled to `.ko` shared library, which can be
 
     insmod /lib/modules/phram.ko phram=<name>,<addr>,<len>
 
-where <name> is the device(i.e. file) name under `/dev/mtdchar/`, <addr> is the reserved starting memory address, and <len> is the predefined length of the memory area.
+where `<name>` is the device(i.e. file) name under `/dev/mtdchar/`, `<addr>` is the reserved starting memory address, and `<len>` is the predefined length of the memory area.
 
 To load `ramoops`
 
     insmod /lib/modules/ramoops.ko mem_address=<addr> mem_size=<len> [record_size=<chunks>]
 
- where <addr> and <len> are same as above, and "record_size" is the chunks of reserved memory area.
+ where `<addr>` and `<len>` are same as above, and `record_size` is the chunks of reserved memory area.
 
 #### Copy Log To `phram` Memory
 
@@ -50,7 +50,7 @@ For kernel panic, the ramoops will automatically copy the panic log into the res
 
 If you need to store other info, `dd` command can be used to copy file to the memory, e.g.
 
-    dd if=/var/log/messages bs=1 count=65536 skip=<filesize - len> of=/dev/mtdchar/phram-oops
+    dd if=/var/log/messages bs=1 count=65536 skip=<fsize - len> of=/dev/mtdchar/phram-oops
 
 According to `dd` manual, `if` is the the input file stream, `of` is the output file, `bs` specifies the bytes to be read and write at a time, and `skip` configs the input blocks to be skipped from the input file. Here the size of _block_ is defined by `bs`. In the above example, the block size is set to 1 byte, and only the last `len` bytes will be copied to `phram` memory.
 
