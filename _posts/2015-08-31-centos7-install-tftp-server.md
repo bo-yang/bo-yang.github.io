@@ -15,7 +15,7 @@ author: Bo Yang
 
 Since CentOS 7(or RedHat 7) is quite different from CentOS 6.x, most notes online for installing TFTP server in CentOS are obsolete already. This post not only summarizes the procedure of installing & configuring TFTP server, but also introduces a general strategy of configuring network services in CentOS 7.
 
-1. Install `tftp-server`
+### 1. Install `tftp-server`
 
 TFTP server can be installed using following command, where `xinetd` is necessary. 
 
@@ -37,7 +37,7 @@ Then edit `/etc/xinetd.d/tftp` - set `disable` to `no` and add `-c` option into 
     	flags			= IPv4
     }
 
-2. Enable TFTP Service
+### 2. Enable TFTP Service
 
 The CentOS 7 services(`systemd`) can be configured from files under `/usr/lib/systemd/system/`. Go to this dir, and edit `tftp.service` as follows:
 
@@ -63,7 +63,7 @@ However, to make them automatically start after boot, following commands are nee
 
 After these two commands, permanent links will be made for  `xinetd` and TFTP services.
 
-3. Configure SELinux
+### 3. Configure SELinux
 
 In CentOS 7, the SELinux is not supposed to be disabled(the system will abort booting if you disable SELinux). So the TFTP read and write must be allowed in SELinux. By default, the SELinux uses `enforcing` policy, which does not accept any change. To make any change to SELinux, first modify `/etc/selinux/config` and change the policy to `permissive`:
 
@@ -107,7 +107,7 @@ If the TFTP write is off as shown above, enable it with `setsebool` command:
 
 Above changes to SELinux are permanent, so no need to change any SELinux config files any more.
 
-4. Configure `firewalld`
+### 4. Configure `firewalld`
 
 Unlike CentOS 6.x, the `firewalld` is used to replace `iptables` as default firewall in CentOS 7. Fortunately, `iptable` config file `/etc/sysconfig/iptables` is also used by `firewalld`. So to allow TFTP services, following line should be added to `/etc/sysconfig/iptables`
 
