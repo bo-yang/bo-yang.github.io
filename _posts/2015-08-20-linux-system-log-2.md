@@ -44,7 +44,7 @@ The supported facilities and priorites are defined in `syslog.h`:
     #define	LOG_AUTHPRIV	(10<<3)	/* security/authorization messages (private) */
     #define	LOG_FTP		(11<<3)	/* ftp daemon */
     
-    	/* other codes through 15 reserved for system use */
+    /* other codes through 15 reserved for system use */
     #define	LOG_LOCAL0	(16<<3)	/* reserved for local use */
     #define	LOG_LOCAL1	(17<<3)	/* reserved for local use */
     #define	LOG_LOCAL2	(18<<3)	/* reserved for local use */
@@ -65,7 +65,7 @@ The special priority `none` prevents those messages from being logged even thoug
 
 However, the dash(-) in front of the log filename is not documented in the man page, but it turns out to mean "Don't sync after every write to the file". Except that rsyslogd won't sync anyway, unless you add a special directive in the Global Directives section. Note that you might lose information if the system crashes right behind a write attempt. Nevertheless this might give you back some performance, especially if you run programs that use logging in a very verbose manner. So for most people, a dash makes no difference one way or the other -- it will be ignored.
 
-And in program `foo`, what you need to do is open log file by specifing `LOG_LOCAL1` facility. The use of `openlog()` is mandatory here. Otherwise, it will automatically be called by syslog(), in which case ident will default to `NULL`.
+And in program `foo`, what you need to do is open log file by specifing `LOG_LOCAL1` facility. The use of `openlog()` is mandatory here. Otherwise, it will automatically be called by syslog(), in which case facility will default to `LOG_USER`.
 
     #include <syslog.h>
     int main(int, char**)
