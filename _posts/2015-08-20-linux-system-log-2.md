@@ -56,7 +56,7 @@ The supported facilities and priorites are defined in `syslog.h`:
 
 The local facilities can be used for redirecting/filtering the log of your own programs. For example, given a program `foo`, if you want to log all the non-critical messages in `/var/log/foo.log`, and make the critical logs go to system log file `/var/log/messages`, you can use the following config file
 
-    # use facility local1 for capwap_brain & connection_monitor logs
+    # use facility local1 for foo logs
     local1.debug;local1.info;local1.notice;local1.warn   -/var/log/foo.log
     local1.panic;local1.alert;local1.crit;local1.err   -/var/log/messages
     *.*;local1.none   /var/log/messages 
