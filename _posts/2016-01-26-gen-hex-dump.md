@@ -35,9 +35,25 @@ To make Wireshark understands the above hex string, it should be formated into:
     
 Once got the hexdump file, it can be parsed by Wireshark using the "**File->Import from Hex Dump**" dialog box.
 
+![import_from_hex_dump](https://www.wireshark.org/docs/wsug_html_chunked/wsug_graphics/ws-file-import.png)
+
 To automatically generate the hexdump file, a [C++ tool `gen_hexdump`](https://github.com/bo-yang/misc/blob/master/gen_hexdump.cc) is developed. Usage:
 
-    gen_hexdump [-i input_file] [-o out_file] [-s hex_str]
+    gen_hexdump [-i input_file] [-n] [-s hex_str] -o out_file
+
+Examples:
+
+1. format a single hex string:
+    
+    gen_hexdump -o <output> -s <hex_string>
+    
+2. format a single packet in a file:
+
+    gen_hexdump -n -i <input> -o <output>
+
+3. format multiple packets from a file(one packet per line):
+
+    gen_hexdump -i <input> -o <output>
 
 Reference:
 - https://www.wireshark.org/docs/wsug_html_chunked/ChIOImportSection.html
