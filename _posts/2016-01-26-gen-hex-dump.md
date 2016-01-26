@@ -39,7 +39,7 @@ Once got the hexdump file, it can be parsed by Wireshark using the "**File->Impo
 
 To automatically generate the hexdump file, a [C++ tool `gen_hexdump`](https://github.com/bo-yang/misc/blob/master/gen_hexdump.cc) is developed. Usage:
 
-    gen_hexdump [-i input_file] [-n] [-s hex_str] -o out_file
+    `gen_hexdump [-i input_file] [-n] [-s hex_str] -o out_file`
 
 Examples:
 
