@@ -44,16 +44,22 @@ To automatically generate the hexdump file, a [C++ tool `gen_hexdump`](https://g
 Examples:
 
 1. format a single hex string:
-    
-    gen_hexdump -o <output> -s <hex_string>
-    
+
+```
+gen_hexdump -o <output> -s <hex_string>
+```
+
 2. format a single packet in a file:
 
-    gen_hexdump -n -i <input> -o <output>
+```
+gen_hexdump -n -i <input> -o <output>
+```
 
 3. format multiple packets from a file(one packet per line):
 
-    gen_hexdump -i <input> -o <output>
+```
+gen_hexdump -i <input> -o <output>
+```
 
 Reference:
 - https://www.wireshark.org/docs/wsug_html_chunked/ChIOImportSection.html
