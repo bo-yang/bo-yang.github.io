@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,19 +429,20 @@
   <p>The <a href="http://www.read.cs.ucla.edu/click/docs/language">Click programming language</a> was developed to configure Click routers, but nowadays you also can use it to write test cases for Click elements.</p>
 
 <ol>
-<li><a href="#syntax">Basic Syntax</a></li>
-<li><a href="#element_group">Element Group</a></li>
-<li><a href="#comp_element">Compound Element</a></li>
-<li><a href="#script">Script</a></li>
-<li><a href="#testie">Testie</a></li>
+  <li><a href="#syntax">Basic Syntax</a></li>
+  <li><a href="#element_group">Element Group</a></li>
+  <li><a href="#comp_element">Compound Element</a></li>
+  <li><a href="#script">Script</a></li>
+  <li><a href="#testie">Testie</a></li>
 </ol>
 
-<h3 id="basic-syntax"><a name="syntax">Basic Syntax</a></h3>
+<h3 id="a-namesyntaxbasic-syntaxa"><a name="syntax">Basic Syntax</a></h3>
 
-<p>The Click Script Language defines a configuration graph, which consists of connected elements. Each element has an element class specified by class name. Elements are connected through their input and output ports. Input and output ports are distinguished by number, while elements are distinguished by name. </p>
+<p>The Click Script Language defines a configuration graph, which consists of connected elements. Each element has an element class specified by class name. Elements are connected through their input and output ports. Input and output ports are distinguished by number, while elements are distinguished by name.</p>
 
 <p>Click configuration strings are comma-separated lists of arguments delimited by parentheses. The fundamental syntax of Click Script Language is:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">name :: class(config-string);    // declare element object
+
+<div class="highlighter-rouge"><pre class="highlight"><code>name :: class(config-string);    // declare element object
 name1, name2, ..., nameN :: class(config); // declaration shorhand
 name1[port1] -&gt; [port2]name2;    // connect two elements
 name1[port1] -&gt; [port2a]name2[port2b] -&gt; [port3]name3;    // piggyback connections
@@ -457,40 +458,52 @@ n1, n2 :: class -&gt; n3;  // many-to-one connections
 // '=&gt;' is the many-to-many connector.
 c[0], c[1], c[2] =&gt; Paint(0), Paint(1), Paint(2) -&gt; next;
 c =&gt; Paint(0), Paint(1), Paint(2) -&gt; next;
-</code></pre></div>
-<h3 id="element-group"><a name="element_group">Element Group</a></h3>
+</code></pre>
+</div>
 
-<p>An element group is one or more Click statements enclosed in parentheses. Within the parentheses, the special pseudoelements <code>input</code> and <code>output</code> refer to connections from outside the group. Click expands the group at parse time, so connections through <code>input</code> and <code>output</code> have no run-time overhead. The following five lines are equivalent:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">x -&gt; y;
+<h3 id="a-nameelementgroupelement-groupa"><a name="element_group">Element Group</a></h3>
+
+<p>An element group is one or more Click statements enclosed in parentheses. Within the parentheses, the special pseudoelements <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> refer to connections from outside the group. Click expands the group at parse time, so connections through <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> have no run-time overhead. The following five lines are equivalent:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>x -&gt; y;
 x -&gt; ( input -&gt; output ) -&gt; y;
 x -&gt; ( [0] -&gt; [0] ) -&gt; y;
 x -&gt; (-&gt;) -&gt; y;
 x -&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) =&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) -&gt; y;
-</code></pre></div>
-<p>Line five uses the fact that connections may be repeated without error (the line expands to <code>x -&gt; y; x -&gt; y</code>), where the explicit semicolons are used to avoid ambiguity.</p>
+</code></pre>
+</div>
+
+<p>Line five uses the fact that connections may be repeated without error (the line expands to <code class="highlighter-rouge">x -&gt; y; x -&gt; y</code>), where the explicit semicolons are used to avoid ambiguity.</p>
 
 <p>Element groups have implicit, overridable port specifications that list all their ports in sequential order. For example, these three lines are equivalent:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">x =&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) -&gt; y;
+
+<div class="highlighter-rouge"><pre class="highlight"><code>x =&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) -&gt; y;
 x =&gt; [0,1] ( [0]-&gt;[0]; [1]-&gt;[1] ) [0,1] -&gt; y;
 x -&gt; y; x [1] -&gt; y;
-</code></pre></div>
+</code></pre>
+</div>
+
 <p>An element group does <strong>not</strong> define a new scope. Its contents may refer to elements declared outside of the group, and declarations inside the group are visible after the group closes. This differs from compound elements, described next, which have a related syntax but additionally introduce a new scope.</p>
 
-<h3 id="compound-element"><a name="comp_element">Compound Element</a></h3>
+<h3 id="a-namecompelementcompound-elementa"><a name="comp_element">Compound Element</a></h3>
 
-<p>A <strong>compound element</strong> is a scoped collection of elements that behaves like a single element. A compound element can be used anywhere an element class is expected (that is, in a declaration or connection). Syntactically, a compound element is a set of Click statements enclosed in braces <code>{ }</code>. Inside the braces, the special names <code>input</code> and <code>output</code> represent connections from or to the outside.</p>
+<p>A <strong>compound element</strong> is a scoped collection of elements that behaves like a single element. A compound element can be used anywhere an element class is expected (that is, in a declaration or connection). Syntactically, a compound element is a set of Click statements enclosed in braces <code class="highlighter-rouge"><span class="p">{</span><span class="w"> </span><span class="p">}</span></code>. Inside the braces, the special names <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> represent connections from or to the outside.</p>
 
-<p>Compound element classes are router configuration fragments consisted by Click elements and statements that are treated like element classes. For compound elements, only components remain in the final configuration graph, and all compound element structure is compiled away. This process is called <strong>flattening</strong>, during which compound element components are given names that reflect their origin. For example, a component named <code>e</code> of a compound element <code>compound</code> is named <code>compound/e</code> in the flattened configuration. </p>
-<div class="highlight"><pre><code class="language-" data-lang="">elementclass Name {    // compound elements
+<p>Compound element classes are router configuration fragments consisted by Click elements and statements that are treated like element classes. For compound elements, only components remain in the final configuration graph, and all compound element structure is compiled away. This process is called <strong>flattening</strong>, during which compound element components are given names that reflect their origin. For example, a component named <code class="highlighter-rouge">e</code> of a compound element <code class="highlighter-rouge">compound</code> is named <code class="highlighter-rouge">compound/e</code> in the flattened configuration.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>elementclass Name {    // compound elements
     ... Click Statements …  // defined by click statements but not C++ class
 }
 e :: {    // anonymous compound element class
     ... Click Statements … 
 }
 elementclass MyQueue Queue;   // define an alias for an existing element class
-</code></pre></div>
-<p>Like any element, compound elements may have input and output ports. Each connection to or from a compound element port is transformed by flattening into a connection to or from one of its components’ ports. Inside a compound element class, the special pseudoelements <code>input</code> and <code>output</code> specify how this transformation proceeds. Given a compound element e. If <code>e/input</code> connects to component <code>e/c</code> through port <code>i</code>, then every connection to <code>e</code>’s input port <code>i</code> will flatten into a connection to its component <code>e/c</code>.  For example, </p>
-<div class="highlight"><pre><code class="language-" data-lang="">elementclass Example {
+</code></pre>
+</div>
+
+<p>Like any element, compound elements may have input and output ports. Each connection to or from a compound element port is transformed by flattening into a connection to or from one of its components’ ports. Inside a compound element class, the special pseudoelements <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> specify how this transformation proceeds. Given a compound element e. If <code class="highlighter-rouge">e/input</code> connects to component <code class="highlighter-rouge">e/c</code> through port <code class="highlighter-rouge">i</code>, then every connection to <code class="highlighter-rouge">e</code>’s input port <code class="highlighter-rouge">i</code> will flatten into a connection to its component <code class="highlighter-rouge">e/c</code>.  For example,</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>elementclass Example {
     s1 :: InfiniteSource; s2 :: RatedSource;
     s1 -&gt; [0]output; s2 -&gt; [0]output;
 }
@@ -500,29 +513,35 @@ above code will be flattened to
 
 e/s1 :: InfiniteSource; e/s2 :: RatedSource; d :: Discard;
 e/s1 -&gt; d; e/s2 -&gt; d;
-</code></pre></div>
-<p>Compound element classes also can take varying number configuration arguments, input ports, and output ports. <strong>Formal parameters</strong> define the arguments that a compound element class should take. A <strong>formal parameter</strong> is a sequence of alphanumeric characters preceded by a dollar sign, such as <code>$var</code>. A compound element class may begin with a list of parameters. </p>
+</code></pre>
+</div>
 
-<p>While formal parameters let a compound element class support a fixed number of positional arguments, <strong>overloading</strong> lets several compound element definitions with different numbers of arguments or ports share a single name. As a side-effect, overloading also support different behaviors in a compound element based on numbers of input/output ports. Every compound element class can correspond to a number of definitions, which are textually separated by <code>||</code>, which are distinguished by the numbers of formal parameters, input ports or output ports. Given a declaration of compound element, the interpreter checks the number of arguments and search for a matching definition. If found one, then it is expanded; otherwise, an error will occur. </p>
-<div class="highlight"><pre><code class="language-" data-lang="">// Example 1: argument overloading
-elementclass ShapedQueue {              
+<p>Compound element classes also can take varying number configuration arguments, input ports, and output ports. <strong>Formal parameters</strong> define the arguments that a compound element class should take. A <strong>formal parameter</strong> is a sequence of alphanumeric characters preceded by a dollar sign, such as <code class="highlighter-rouge">$var</code>. A compound element class may begin with a list of parameters.</p>
+
+<p>While formal parameters let a compound element class support a fixed number of positional arguments, <strong>overloading</strong> lets several compound element definitions with different numbers of arguments or ports share a single name. As a side-effect, overloading also support different behaviors in a compound element based on numbers of input/output ports. Every compound element class can correspond to a number of definitions, which are textually separated by <code class="highlighter-rouge">||</code>, which are distinguished by the numbers of formal parameters, input ports or output ports. Given a declaration of compound element, the interpreter checks the number of arguments and search for a matching definition. If found one, then it is expanded; otherwise, an error will occur.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// Example 1: argument overloading
+elementclass ShapedQueue {				
     input -&gt; Queue -&gt; Shaper(10000) -&gt; output;
     ||
     $cap | input -&gt; Queue($cap) -&gt; Shaper(10000) -&gt; output; 
-}               
+}				
 q1 :: ShapedQueue;    // OK; uses first definition
 q2 :: ShapedQueue(1024);    // OK; uses second definition
 q3 :: ShapedQueue(1024, 10000);   // error—no matching definition 
 
-// Example 1: port overloading - additional output port             
+// Example 1: port overloading - additional output port				
 elementclass VerboseCheckIPHeader {
     input -&gt; c :: CheckIPHeader -&gt; output; c[1] -&gt; Print(CheckIPHeader) -&gt; Discard; 
     ||
-    input -&gt; c :: CheckIPHeader -&gt; output; c[1] -&gt; Print(CheckIPHeader) -&gt; [1]output;   
+    input -&gt; c :: CheckIPHeader -&gt; output; c[1] -&gt; Print(CheckIPHeader) -&gt; [1]output;	
 } 
-</code></pre></div>
-<p>Overloading also allows user to add new definitions to an existing element class. For example, following definition will add a two-argument version of <code>Queue</code>:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">elementclass Queue {
+</code></pre>
+</div>
+
+<p>Overloading also allows user to add new definitions to an existing element class. For example, following definition will add a two-argument version of <code class="highlighter-rouge">Queue</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>elementclass Queue {
   ... ||  // 'dot dot dot' is part of the syntax 
 $capacity, $rate | input -&gt; Queue($capacity)
                          -&gt; Shaper($rate) -&gt; output;
@@ -530,24 +549,30 @@ $capacity, $rate | input -&gt; Queue($capacity)
 q1 :: Queue;        // built-in Queue
 q2 :: Queue(1024);  // built-in Queue
 q3 :: Queue(1024, 10000); // overloaded Queue definition above
-</code></pre></div>
-<p>When choosing the definition that corresponds to a given compound element declaration, Click only considers the definitions that were lexically visible at the point of declaration. </p>
+</code></pre>
+</div>
 
-<p>Compound element configuration arguments are only meaningful inside the configuration strings of components. So that you cannot change the element class of a given component, or cause components to be added to or subtracted from the compound. However, it  is possible to build a compound element that sends packets through different sets of components based on the value of its configuration string. Following example uses StaticSwitch to implement a selective checksum check.(The <code>CheckIPHeader</code> element checks an IP header’s length and checksum for sanity; <code>CheckIPHeader2</code> does the work of <code>CheckIPHeader</code> except for the checksum check.)</p>
-<div class="highlight"><pre><code class="language-" data-lang="">elementclass MaybeChecksum { $checksum_p |
+<p>When choosing the definition that corresponds to a given compound element declaration, Click only considers the definitions that were lexically visible at the point of declaration.</p>
+
+<p>Compound element configuration arguments are only meaningful inside the configuration strings of components. So that you cannot change the element class of a given component, or cause components to be added to or subtracted from the compound. However, it  is possible to build a compound element that sends packets through different sets of components based on the value of its configuration string. Following example uses StaticSwitch to implement a selective checksum check.(The <code class="highlighter-rouge">CheckIPHeader</code> element checks an IP header’s length and checksum for sanity; <code class="highlighter-rouge">CheckIPHeader2</code> does the work of <code class="highlighter-rouge">CheckIPHeader</code> except for the checksum check.)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>elementclass MaybeChecksum { $checksum_p |
     input -&gt; sw :: StaticSwitch($checksum_p);
     sw[0] -&gt; CheckIPHeader2 -&gt; output;
     sw[1] -&gt; CheckIPHeader -&gt; output;
 };
 c1 :: MaybeChecksum(0);    // uses CheckIPHeader2, skips checksum
 c2 :: MaybeChecksum(1);    // uses CheckIPHeader, checks checksum
-</code></pre></div>
-<h3 id="script"><a name="script">Script</a></h3>
+</code></pre>
+</div>
 
-<p>The <a href="http://www.read.cs.ucla.edu/click/elements/script">Script element</a> implements a simple scripting language interpreter useful for controlling Click configurations. Scripts can set variables, call handlers, wait for prodding from other elements, and stop the router. Script element is defined in <code>click/elements/standard/Script.hh</code>.  For details of instructions and handlers, please refer to <a href="http://www.read.cs.ucla.edu/click/elements/script">http://www.read.cs.ucla.edu/click/elements/script</a>. </p>
+<h3 id="a-namescriptscripta"><a name="script">Script</a></h3>
+
+<p>The <a href="http://www.read.cs.ucla.edu/click/elements/script">Script element</a> implements a simple scripting language interpreter useful for controlling Click configurations. Scripts can set variables, call handlers, wait for prodding from other elements, and stop the router. Script element is defined in <code class="highlighter-rouge">click/elements/standard/Script.hh</code>.  For details of instructions and handlers, please refer to <a href="http://www.read.cs.ucla.edu/click/elements/script">http://www.read.cs.ucla.edu/click/elements/script</a>.</p>
 
 <p>In the Script element, each keyword is handled by a corresponding handler:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">void
+
+<div class="highlighter-rouge"><pre class="highlight"><code>void
 Script::add_handlers()
 {
     set_handler("step", Handler::OP_WRITE | Handler::h_nonconst, step_handler, 0, ST_STEP);
@@ -561,13 +586,23 @@ Script::add_handlers()
     set_handler("unquote", Handler::OP_READ | Handler::READ_PARAM, basic_handler, ar_unquote, 0);
 …….
 }
-</code></pre></div>
-<p>All of the handlers defined in the Script element need to parse the script language, which is implemented in click/lib/confparse.[hh|cc]. In this way, the Script element could serve as an interpreter to the script instructions and handlers. </p>
+</code></pre>
+</div>
 
-<h3 id="testie"><a name="testie">Testie</a></h3>
+<table>
+  <tbody>
+    <tr>
+      <td>All of the handlers defined in the Script element need to parse the script language, which is implemented in click/lib/confparse.[hh</td>
+      <td>cc]. In this way, the Script element could serve as an interpreter to the script instructions and handlers.</td>
+    </tr>
+  </tbody>
+</table>
 
-<p><a href="http://www.read.cs.ucla.edu/click/docs/testie">Testie</a> is a simple test tool for Click elements, which enables the Test-Driven-Development of Click. Each testie file is written mainly in Click script language and incorporates a shell script to be run. Tool <code>click/test/testie</code> runs the Click script, and checks the expected error or output. A testie file may have following layout:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">%info 
+<h3 id="a-nametestietestiea"><a name="testie">Testie</a></h3>
+
+<p><a href="http://www.read.cs.ucla.edu/click/docs/testie">Testie</a> is a simple test tool for Click elements, which enables the Test-Driven-Development of Click. Each testie file is written mainly in Click script language and incorporates a shell script to be run. Tool <code class="highlighter-rouge">click/test/testie</code> runs the Click script, and checks the expected error or output. A testie file may have following layout:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>%info 
 // a short description of the test.
 
 %require [-q]
@@ -595,19 +630,21 @@ Script::add_handlers()
 %ignorex [-di] [+LENGTH] [FILENAME]
 %ignore, %ignorev
 // lines to be ignored.
-</code></pre></div>
+</code></pre>
+</div>
+
 <p>In addition to above sections, you also can define one or multiple Script elements in the testie file, which group a set of Click Script instructions.</p>
 
-<p><code>click/test/testie</code> is the Perl tool to run testie files. Given a testie file, the testie interpreter will first read and parse each section defined in the testie file: <code>%require</code> files will be expanded, files defined in section <code>%file</code> will be created in a temporary directory, commands listed under <code>%script</code> will be recorded in a hash, and so on. After preprocessing, the commands will be executed by shell or interpreted by click. <code>click/test/testie</code> is a very good template of simple interpreter. </p>
+<p><code class="highlighter-rouge">click/test/testie</code> is the Perl tool to run testie files. Given a testie file, the testie interpreter will first read and parse each section defined in the testie file: <code class="highlighter-rouge">%require</code> files will be expanded, files defined in section <code class="highlighter-rouge">%file</code> will be created in a temporary directory, commands listed under <code class="highlighter-rouge">%script</code> will be recorded in a hash, and so on. After preprocessing, the commands will be executed by shell or interpreted by click. <code class="highlighter-rouge">click/test/testie</code> is a very good template of simple interpreter.</p>
 
-<h3 id="references"><a name="refer">References</a></h3>
-
+<h3 id="a-namereferreferencesa"><a name="refer">References</a></h3>
 <ul>
-<li><a href="http://www.read.cs.ucla.edu/click/docs/language">http://www.read.cs.ucla.edu/click/docs/language</a></li>
-<li><a href="http://pdos.csail.mit.edu/papers/click:kohler-phd/thesis.pdf">Eddie Kohler, <em>The Click modular router</em>, Ph.D. thesis, MIT, November 2000. This has more detail and examples than the TOCS and SOSP papers of the same name.</a></li>
-<li><a href="http://www.read.cs.ucla.edu/click/elements/script">http://www.read.cs.ucla.edu/click/elements/script</a></li>
-<li><a href="http://www.read.cs.ucla.edu/click/docs/testie">http://www.read.cs.ucla.edu/click/docs/testie</a></li>
+  <li><a href="http://www.read.cs.ucla.edu/click/docs/language">http://www.read.cs.ucla.edu/click/docs/language</a></li>
+  <li><a href="http://pdos.csail.mit.edu/papers/click:kohler-phd/thesis.pdf">Eddie Kohler, <em>The Click modular router</em>, Ph.D. thesis, MIT, November 2000. This has more detail and examples than the TOCS and SOSP papers of the same name.</a></li>
+  <li><a href="http://www.read.cs.ucla.edu/click/elements/script">http://www.read.cs.ucla.edu/click/elements/script</a></li>
+  <li><a href="http://www.read.cs.ucla.edu/click/docs/testie">http://www.read.cs.ucla.edu/click/docs/testie</a></li>
 </ul>
+
 
 </article>
 

@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -427,149 +427,162 @@
 
 <article class="post-content">
   <ol>
-<li><a href="#overview">Overview</a></li>
-<li><a href="#printk">printk</a></li>
-<li><a href="#klogd">klogd</a></li>
-<li><a href="#syslog">syslog</a></li>
-<li><a href="#dmesg">dmesg</a></li>
-<li><a href="#syslog-ng">syslog-ng</a></li>
-<li><a href="#convert_timestamp">Convert Timestamp</a></li>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#printk">printk</a></li>
+  <li><a href="#klogd">klogd</a></li>
+  <li><a href="#syslog">syslog</a></li>
+  <li><a href="#dmesg">dmesg</a></li>
+  <li><a href="#syslog-ng">syslog-ng</a></li>
+  <li><a href="#convert_timestamp">Convert Timestamp</a></li>
 </ol>
 
-<h3 id="1-overview">1. <a name="overview">Overview</a></h3>
+<h3 id="a-nameoverviewoverviewa">1. <a name="overview">Overview</a></h3>
 
-<p>Linux adopts a ring buffer in kernel with a size of <code>__LOG_BUF_LEN</code> bytes to store system logs, where <code>__LOG_BUF_LEN</code> equals (<code>1 &lt;&lt; CONFIG_LOG_BUF_SHIFT</code>) (see <code>kernel/printk.c</code> for details). Using a ring buffer implies that older messages get overwritten once the buffer fills up, but this is only a minor drawback compared to the robustness of this solution (i.e. minimum memory footprint, callable from every context, not many resources wasted if nobody reads the buffer, no filling up of disk space/ram when some kernel process goes wild and spams the buffer, &hellip;). Using a reasonably large buffer size should give you enough time to read your important messages before they are overwritten.</p>
+<p>Linux adopts a ring buffer in kernel with a size of <code class="highlighter-rouge">__LOG_BUF_LEN</code> bytes to store system logs, where <code class="highlighter-rouge">__LOG_BUF_LEN</code> equals (<code class="highlighter-rouge">1 &lt;&lt; CONFIG_LOG_BUF_SHIFT</code>) (see <code class="highlighter-rouge">kernel/printk.c</code> for details). Using a ring buffer implies that older messages get overwritten once the buffer fills up, but this is only a minor drawback compared to the robustness of this solution (i.e. minimum memory footprint, callable from every context, not many resources wasted if nobody reads the buffer, no filling up of disk space/ram when some kernel process goes wild and spams the buffer, …). Using a reasonably large buffer size should give you enough time to read your important messages before they are overwritten.</p>
 
-<p>The kernel log buffer is accessible for reading from userspace by <code>/proc/kmsg</code>. <code>/proc/kmsg</code> behaves more or less like a FIFO and blocks until new messages appear. Please note, reading from <code>/proc/kmsg</code> consumes the messages in the ring buffer so they may not be available for other programs. It is usually a good idea to let <code>klogd</code> or <code>syslog</code> do this job and read the content of the buffer via dmesg.</p>
+<p>The kernel log buffer is accessible for reading from userspace by <code class="highlighter-rouge">/proc/kmsg</code>. <code class="highlighter-rouge">/proc/kmsg</code> behaves more or less like a FIFO and blocks until new messages appear. Please note, reading from <code class="highlighter-rouge">/proc/kmsg</code> consumes the messages in the ring buffer so they may not be available for other programs. It is usually a good idea to let <code class="highlighter-rouge">klogd</code> or <code class="highlighter-rouge">syslog</code> do this job and read the content of the buffer via dmesg.</p>
 
-<p><img src="http://www.bo-yang.net//assets/images/2015-01-12-linux-system-log/linux_kernel_log.png" alt="Linux Kernel Log"></p>
+<p><img src="http://www.bo-yang.net//assets/images/2015-01-12-linux-system-log/linux_kernel_log.png" alt="Linux Kernel Log" /></p>
 
-<h3 id="2-printk">2. <a name="printk"><code>printk</code></a></h3>
+<h3 id="a-nameprintkprintka">2. <a name="printk"><code class="highlighter-rouge">printk</code></a></h3>
 
-<p><code>printk</code> is the kernel function to classify messages according to their severity by loglevels and write them to the circular system message buffer. The function then wakes any process that is waiting for messages, that is, any process that is sleeping in the <code>syslog</code> system call or that is reading <code>/proc/kmsg</code>. <code>printk</code> can be invoked from anywhere, even from an interrupt handler, with no limit on how much data can be printed.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">printk( KERN_CRIT "Error code %08x.\n", val );
-</code></pre></div>
-<p>There are eight possible loglevel strings, defined in the header <linux/kernel.h>; we list them in order of decreasing severity:</p>
+<p><code class="highlighter-rouge">printk</code> is the kernel function to classify messages according to their severity by loglevels and write them to the circular system message buffer. The function then wakes any process that is waiting for messages, that is, any process that is sleeping in the <code class="highlighter-rouge">syslog</code> system call or that is reading <code class="highlighter-rouge">/proc/kmsg</code>. <code class="highlighter-rouge">printk</code> can be invoked from anywhere, even from an interrupt handler, with no limit on how much data can be printed.</p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>String</th>
-<th>Meaning</th>
-<th>alias function</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>KERN_EMERG</td>
-<td>&ldquo;0&rdquo;</td>
-<td>Emergency messages, system is about to crash or is unstable</td>
-<td>pr_emerg</td>
-</tr>
-<tr>
-<td>KERN_ALERT</td>
-<td>&ldquo;1&rdquo;</td>
-<td>Something bad happened and action must be taken immediately</td>
-<td>pr_alert</td>
-</tr>
-<tr>
-<td>KERN_CRIT</td>
-<td>&ldquo;2&rdquo;</td>
-<td>A critical condition occurred like a serious hardware/software failure</td>
-<td>pr_crit</td>
-</tr>
-<tr>
-<td>KERN_ERR</td>
-<td>&ldquo;3&rdquo;</td>
-<td>An error condition, often used by drivers to indicate difficulties with the hardware</td>
-<td>pr_err</td>
-</tr>
-<tr>
-<td>KERN_WARNING</td>
-<td>&ldquo;4&rdquo;</td>
-<td>A warning, meaning nothing serious by itself but might indicate problems</td>
-<td>pr_warning</td>
-</tr>
-<tr>
-<td>KERN_NOTICE</td>
-<td>&ldquo;5&rdquo;</td>
-<td>Nothing serious, but notably nevertheless. Often used to report security events.</td>
-<td>pr_notice</td>
-</tr>
-<tr>
-<td>KERN_INFO</td>
-<td>&ldquo;6&rdquo;</td>
-<td>Informational message e.g. startup information at driver initialization</td>
-<td>pr_info</td>
-</tr>
-<tr>
-<td>KERN_DEBUG</td>
-<td>&ldquo;7&rdquo;</td>
-<td>Debug messages</td>
-<td>pr_debug, pr_devel if DEBUG is defined</td>
-</tr>
-<tr>
-<td>KERN_DEFAULT</td>
-<td>&ldquo;d&rdquo;</td>
-<td>The default kernel loglevel</td>
-<td></td>
-</tr>
-<tr>
-<td>KERN_CONT</td>
-<td>&ldquo;&rdquo;</td>
-<td>&ldquo;continued&rdquo; line of log printout (only done after a line that had no enclosing <code>\n</code>)</td>
-<td>pr_cont</td>
-</tr>
-</tbody></table>
+<div class="highlighter-rouge"><pre class="highlight"><code>printk( KERN_CRIT "Error code %08x.\n", val );
+</code></pre>
+</div>
+
+<p>There are eight possible loglevel strings, defined in the header &lt;linux/kernel.h&gt;; we list them in order of decreasing severity:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>String</th>
+      <th>Meaning</th>
+      <th>alias function</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>KERN_EMERG</td>
+      <td>“0”</td>
+      <td>Emergency messages, system is about to crash or is unstable</td>
+      <td>pr_emerg</td>
+    </tr>
+    <tr>
+      <td>KERN_ALERT</td>
+      <td>“1”</td>
+      <td>Something bad happened and action must be taken immediately</td>
+      <td>pr_alert</td>
+    </tr>
+    <tr>
+      <td>KERN_CRIT</td>
+      <td>“2”</td>
+      <td>A critical condition occurred like a serious hardware/software failure</td>
+      <td>pr_crit</td>
+    </tr>
+    <tr>
+      <td>KERN_ERR</td>
+      <td>“3”</td>
+      <td>An error condition, often used by drivers to indicate difficulties with the hardware</td>
+      <td>pr_err</td>
+    </tr>
+    <tr>
+      <td>KERN_WARNING</td>
+      <td>“4”</td>
+      <td>A warning, meaning nothing serious by itself but might indicate problems</td>
+      <td>pr_warning</td>
+    </tr>
+    <tr>
+      <td>KERN_NOTICE</td>
+      <td>“5”</td>
+      <td>Nothing serious, but notably nevertheless. Often used to report security events.</td>
+      <td>pr_notice</td>
+    </tr>
+    <tr>
+      <td>KERN_INFO</td>
+      <td>“6”</td>
+      <td>Informational message e.g. startup information at driver initialization</td>
+      <td>pr_info</td>
+    </tr>
+    <tr>
+      <td>KERN_DEBUG</td>
+      <td>“7”</td>
+      <td>Debug messages</td>
+      <td>pr_debug, pr_devel if DEBUG is defined</td>
+    </tr>
+    <tr>
+      <td>KERN_DEFAULT</td>
+      <td>“d”</td>
+      <td>The default kernel loglevel</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>KERN_CONT</td>
+      <td>””</td>
+      <td>“continued” line of log printout (only done after a line that had no enclosing <code class="highlighter-rouge">\n</code>)</td>
+      <td>pr_cont</td>
+    </tr>
+  </tbody>
+</table>
 
 <p>Each string (in the macro expansion) represents an integer in angle brackets. Integers range from 0 to 7, with smaller values representing higher priorities.</p>
 
-<p>A <code>printk</code> statement with no specified priority defaults to <code>DEFAULT_MESSAGE_LOGLEVEL</code>, specified in <code>kernel/printk.c</code> as an integer. For this the kernel compares the log level of the message to the <code>console_loglevel</code> (a kernel variable) and if the priority is higher (i.e. a lower value) than the console_loglevel the message will be printed to the current console. The <code>console_loglevel</code> can be checked by</p>
-<div class="highlight"><pre><code class="language-" data-lang=""># cat /proc/sys/kernel/printk
-7       4       1       7
-</code></pre></div>
-<p>The first integer shows you your current <code>console_loglevel</code>; the second is the <code>DEFAULT_MESSAGE_LOGLEVEL</code>.</p>
+<p>A <code class="highlighter-rouge">printk</code> statement with no specified priority defaults to <code class="highlighter-rouge">DEFAULT_MESSAGE_LOGLEVEL</code>, specified in <code class="highlighter-rouge">kernel/printk.c</code> as an integer. For this the kernel compares the log level of the message to the <code class="highlighter-rouge">console_loglevel</code> (a kernel variable) and if the priority is higher (i.e. a lower value) than the console_loglevel the message will be printed to the current console. The <code class="highlighter-rouge">console_loglevel</code> can be checked by</p>
 
-<p>Kernel log timestamp is added by <code>vprintk()</code>, in <code>kernel/printk.c</code>:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">#if defined(CONFIG_PRINTK_TIME)
+<div class="highlighter-rouge"><pre class="highlight"><code># cat /proc/sys/kernel/printk
+7       4       1       7
+</code></pre>
+</div>
+
+<p>The first integer shows you your current <code class="highlighter-rouge">console_loglevel</code>; the second is the <code class="highlighter-rouge">DEFAULT_MESSAGE_LOGLEVEL</code>.</p>
+
+<p>Kernel log timestamp is added by <code class="highlighter-rouge">vprintk()</code>, in <code class="highlighter-rouge">kernel/printk.c</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#if defined(CONFIG_PRINTK_TIME)
 static bool printk_time = 1;
 #else
 static bool printk_time = 0;
 #endif
 
 if (printk_time) {
-        /* Add the current time stamp */
-        char tbuf[50], *tp;
-        unsigned tlen;
-        unsigned long long t;
-        unsigned long nanosec_rem;
+		/* Add the current time stamp */
+		char tbuf[50], *tp;
+		unsigned tlen;
+		unsigned long long t;
+		unsigned long nanosec_rem;
 
-        t = cpu_clock(printk_cpu);
-        nanosec_rem = do_div(t, 1000000000);
-        tlen = sprintf(tbuf, "[%5lu.%06lu] ",
-                (unsigned long) t,
-                nanosec_rem / 1000);
+		t = cpu_clock(printk_cpu);
+		nanosec_rem = do_div(t, 1000000000);
+		tlen = sprintf(tbuf, "[%5lu.%06lu] ",
+				(unsigned long) t,
+				nanosec_rem / 1000);
 
-        for (tp = tbuf; tp &lt; tbuf + tlen; tp++)
-            emit_log_char(*tp);
-        printed_len += tlen;
+		for (tp = tbuf; tp &lt; tbuf + tlen; tp++)
+			emit_log_char(*tp);
+		printed_len += tlen;
 }
-</code></pre></div>
-<h3 id="3-klogd">3. <a name="klogd"><code>klogd</code></a></h3>
+</code></pre>
+</div>
 
-<p><strong>If the <code>klogd</code> process is running, it retrieves kernel messages and dispatches them to <code>syslogd</code>, which in turn checks <code>/etc/syslog.conf</code> to find out how to deal with them.</strong> <code>syslogd</code> differentiates between messages according to a facility and a priority; allowable values for both the facility and the priority are defined in <code>&lt;sys/syslog.h&gt;</code>. Kernel messages are logged by the <code>LOG_KERN</code> facility at a priority corresponding to the one used in <code>printk</code> (for example, <code>LOG_ERR</code> is used for <code>KERN_ERR</code> messages). <strong>If <code>klogd</code> isn&rsquo;t running, data remains in the circular buffer until someone reads it or the buffer overflows.</strong></p>
+<h3 id="a-nameklogdklogda">3. <a name="klogd"><code class="highlighter-rouge">klogd</code></a></h3>
 
-<p>If you want to avoid clobbering your system log with the monitoring messages from your driver, you can either specify the (file) option to <code>klogd</code> to instruct it to save messages to a specific file, or customize <code>/etc/syslog.conf</code> to suit your needs. Yet another possibility is to take the brute-force approach: kill <code>klogd</code> and verbosely print messages on an unused virtual terminal, or issue the command <code>cat /proc/kmsg</code> from an unused xterm.</p>
+<p><strong>If the <code class="highlighter-rouge">klogd</code> process is running, it retrieves kernel messages and dispatches them to <code class="highlighter-rouge">syslogd</code>, which in turn checks <code class="highlighter-rouge">/etc/syslog.conf</code> to find out how to deal with them.</strong> <code class="highlighter-rouge">syslogd</code> differentiates between messages according to a facility and a priority; allowable values for both the facility and the priority are defined in <code class="highlighter-rouge">&lt;sys/syslog.h&gt;</code>. Kernel messages are logged by the <code class="highlighter-rouge">LOG_KERN</code> facility at a priority corresponding to the one used in <code class="highlighter-rouge">printk</code> (for example, <code class="highlighter-rouge">LOG_ERR</code> is used for <code class="highlighter-rouge">KERN_ERR</code> messages). <strong>If <code class="highlighter-rouge">klogd</code> isn’t running, data remains in the circular buffer until someone reads it or the buffer overflows.</strong></p>
 
-<h3 id="4-syslog">4. <a name="syslog"><code>syslog</code></a></h3>
+<p>If you want to avoid clobbering your system log with the monitoring messages from your driver, you can either specify the (file) option to <code class="highlighter-rouge">klogd</code> to instruct it to save messages to a specific file, or customize <code class="highlighter-rouge">/etc/syslog.conf</code> to suit your needs. Yet another possibility is to take the brute-force approach: kill <code class="highlighter-rouge">klogd</code> and verbosely print messages on an unused virtual terminal, or issue the command <code class="highlighter-rouge">cat /proc/kmsg</code> from an unused xterm.</p>
 
-<p>Accessing to the log buffer is provided at the core through the multi-purpose <code>syslog</code> system call. The prototype for the <code>syslog system</code> call is defined in <code>./linux/include/linux/syslog.h</code>; its implementation is in <code>./linux/kernel/printk.c</code>.</p>
+<h3 id="a-namesyslogsysloga">4. <a name="syslog"><code class="highlighter-rouge">syslog</code></a></h3>
 
-<p>The <code>syslog</code> call serves as the input/output (I/O) and control interface to the kernel&rsquo;s log message ring buffer. From the syslog call, an application can read log messages (partial, in their entirety, or only new messages) as well as control the behavior of the ring buffer (clear contents, set the level of messages to be logged, enable or disable console, and so on).</p>
+<p>Accessing to the log buffer is provided at the core through the multi-purpose <code class="highlighter-rouge">syslog</code> system call. The prototype for the <code class="highlighter-rouge">syslog system</code> call is defined in <code class="highlighter-rouge">./linux/include/linux/syslog.h</code>; its implementation is in <code class="highlighter-rouge">./linux/kernel/printk.c</code>.</p>
 
-<p>Although reading from <code>/proc/kmsg</code> consumes the data from the log buffer, the <code>syslog</code> system call can optionally return log data while leaving it for other processes as well.</p>
+<p>The <code class="highlighter-rouge">syslog</code> call serves as the input/output (I/O) and control interface to the kernel’s log message ring buffer. From the syslog call, an application can read log messages (partial, in their entirety, or only new messages) as well as control the behavior of the ring buffer (clear contents, set the level of messages to be logged, enable or disable console, and so on).</p>
+
+<p>Although reading from <code class="highlighter-rouge">/proc/kmsg</code> consumes the data from the log buffer, the <code class="highlighter-rouge">syslog</code> system call can optionally return log data while leaving it for other processes as well.</p>
 
 <p>Kernel space syslog API:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">#include &lt;syslog.h&gt;
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#include &lt;syslog.h&gt;
 
 void openlog(const char *ident, int option, int facility);
 void syslog(int priority, const char *format, ...);
@@ -578,43 +591,55 @@ void closelog(void);
 #include &lt;stdarg.h&gt;
 
 void vsyslog(int priority, const char *format, va_list ap);
-</code></pre></div>
+</code></pre>
+</div>
+
 <ul>
-<li><code>closelog()</code> closes the descriptor being used to write to the system logger. </li>
-<li><code>openlog()</code> opens a connection to the system logger for a program.</li>
-<li><code>syslog()</code> generates a log message, which will be distributed by <code>syslogd</code>. It does this by writing to the Unix domain socket <code>/dev/log</code>.</li>
-<li><code>vsyslog()</code> is functionally identical to <code>syslog()</code>, with the BSD style variable length argument.</li>
+  <li><code class="highlighter-rouge">closelog()</code> closes the descriptor being used to write to the system logger.</li>
+  <li><code class="highlighter-rouge">openlog()</code> opens a connection to the system logger for a program.</li>
+  <li><code class="highlighter-rouge">syslog()</code> generates a log message, which will be distributed by <code class="highlighter-rouge">syslogd</code>. It does this by writing to the Unix domain socket <code class="highlighter-rouge">/dev/log</code>.</li>
+  <li><code class="highlighter-rouge">vsyslog()</code> is functionally identical to <code class="highlighter-rouge">syslog()</code>, with the BSD style variable length argument.</li>
 </ul>
 
 <p>User space syslog API(glibc wrapper):</p>
-<div class="highlight"><pre><code class="language-" data-lang="">int syslog( int type, char *bufp, int len );
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int syslog( int type, char *bufp, int len );
 int klogctl( int type, char *bufp, int len );
-</code></pre></div>
-<p><code>klogctl()</code> is the glibc wrapper to control the kernel <code>printk()</code> buffer. </p>
+</code></pre>
+</div>
 
-<h3 id="5-dmesg">5. <a name="dmesg"><code>dmesg</code></a></h3>
+<p><code class="highlighter-rouge">klogctl()</code> is the glibc wrapper to control the kernel <code class="highlighter-rouge">printk()</code> buffer.</p>
 
-<p>The <code>dmesg</code> command is used to print and control the kernel ring buffer. This command uses the <code>klogctl</code> system call to read the kernel ring buffer and emit it to standard output (stdout). The command can also be used to clear the kernel ring buffer (using the <code>-c</code> option), set the level for logging to the console (the <code>-n</code> option), and define the size of the buffer used to read the kernel log messages (the <code>-s</code> option).</p>
+<h3 id="a-namedmesgdmesga">5. <a name="dmesg"><code class="highlighter-rouge">dmesg</code></a></h3>
 
-<p><code>dmesg</code> reads by default a buffer of max 16392 bytes, so if you use a larger log buffer you have to invoke <code>dmesg</code> with the <code>-s</code> parameter e.g.:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">### CONFIG_LOG_BUF_SHIFT 17 = 128k
+<p>The <code class="highlighter-rouge">dmesg</code> command is used to print and control the kernel ring buffer. This command uses the <code class="highlighter-rouge">klogctl</code> system call to read the kernel ring buffer and emit it to standard output (stdout). The command can also be used to clear the kernel ring buffer (using the <code class="highlighter-rouge">-c</code> option), set the level for logging to the console (the <code class="highlighter-rouge">-n</code> option), and define the size of the buffer used to read the kernel log messages (the <code class="highlighter-rouge">-s</code> option).</p>
+
+<p><code class="highlighter-rouge">dmesg</code> reads by default a buffer of max 16392 bytes, so if you use a larger log buffer you have to invoke <code class="highlighter-rouge">dmesg</code> with the <code class="highlighter-rouge">-s</code> parameter e.g.:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>### CONFIG_LOG_BUF_SHIFT 17 = 128k
 $ dmesg -s 128000
-</code></pre></div>
-<h3 id="6-syslog-ng">6. <a name="syslog-ng"><code>syslog-ng</code></a></h3>
+</code></pre>
+</div>
 
-<p>The <code>syslog-ng</code> application is a flexible and highly scalable system logging application that is ideal for creating centralized and trusted logging solutions. It extends the original syslogd model with content-based filtering, rich filtering capabilities, flexible configuration options and adds important features to syslog. </p>
+<h3 id="a-namesyslog-ngsyslog-nga">6. <a name="syslog-ng"><code class="highlighter-rouge">syslog-ng</code></a></h3>
 
-<p><code>syslog-ng</code> also supports ISO/RFC timestamp for system logs. For more info about this powerful log system, please refer to <a href="http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html">the manual</a>.</p>
+<p>The <code class="highlighter-rouge">syslog-ng</code> application is a flexible and highly scalable system logging application that is ideal for creating centralized and trusted logging solutions. It extends the original syslogd model with content-based filtering, rich filtering capabilities, flexible configuration options and adds important features to syslog.</p>
 
-<h3 id="7-converting-timestamps">7. <a name="convert_timestamp">Converting Timestamps</a></h3>
+<p><code class="highlighter-rouge">syslog-ng</code> also supports ISO/RFC timestamp for system logs. For more info about this powerful log system, please refer to <a href="http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html">the manual</a>.</p>
 
-<p>By default the time stamps are printed in &ldquo;seconds since boot&rdquo; (this is the way the kernel is programmed to print the time stamps in <code>vprintk()</code>, and it can not be changed to print the time stamps in a human readable format). The system uptime can be helpful to calculate an absolute time stamp if needed (run the <code>uptime</code> command).</p>
+<h3 id="a-nameconverttimestampconverting-timestampsa">7. <a name="convert_timestamp">Converting Timestamps</a></h3>
+
+<p>By default the time stamps are printed in “seconds since boot” (this is the way the kernel is programmed to print the time stamps in <code class="highlighter-rouge">vprintk()</code>, and it can not be changed to print the time stamps in a human readable format). The system uptime can be helpful to calculate an absolute time stamp if needed (run the <code class="highlighter-rouge">uptime</code> command).</p>
 
 <p>Given timestamp:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">[196149.728085] hello world
-</code></pre></div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[196149.728085] hello world
+</code></pre>
+</div>
+
 <p>The algorithm below converts the printed time stamps to a human readable format:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">1. Take the log's time stamp in seconds: 
+
+<div class="highlighter-rouge"><pre class="highlight"><code>1. Take the log's time stamp in seconds: 
 
 196149.728085 seconds (round the number down/up if needed) 
 
@@ -650,9 +675,12 @@ $ dmesg -s 128000
 [Expert@HostName]# uptime 
 
 9. To get the log's real time stamp, subtract the log's time stamp in dmesg kernel ring buffer from the current system's uptime.
-</code></pre></div>
+</code></pre>
+</div>
+
 <p>Following is a Shell script to transform uptime timestamp to human-readable timestamp:</p>
-<div class="highlight"><pre><code class="language-" data-lang=""><span class="c">#!/bin/bash</span>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 <span class="c"># Translate dmesg timestamps to human readable format</span>
 
 <span class="c"># desired date format</span>
@@ -671,16 +699,17 @@ $ dmesg -s 128000
 else
   </span><span class="nb">echo</span> <span class="s2">"Timestamps are disabled (/sys/module/printk/parameters/time)"</span>
 <span class="k">fi</span>
-</code></pre></div>
-<h3 id="references">References</h3>
+</code></pre>
+</div>
 
+<h3 id="references">References</h3>
 <ul>
-<li><a href="http://elinux.org/Debugging_by_printing">http://elinux.org/Debugging_by_printing</a></li>
-<li>Linux Device Drivers, Corbet, Rubini and Kroah-Hartmann, 3rd Edition, Chapter 4 Section 2</li>
-<li><a href="http://www.ibm.com/developerworks/library/l-kernel-logging-apis/index.html">Kernel logging: APIs and implementation</a></li>
-<li><a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?dmesg+8">http://unixhelp.ed.ac.uk/CGI/man-cgi?dmesg+8</a></li>
-<li><a href="https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;solutionid=sk92677">https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;solutionid=sk92677</a></li>
-<li><a href="http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html">http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html</a></li>
+  <li><a href="http://elinux.org/Debugging_by_printing">http://elinux.org/Debugging_by_printing</a></li>
+  <li>Linux Device Drivers, Corbet, Rubini and Kroah-Hartmann, 3rd Edition, Chapter 4 Section 2</li>
+  <li><a href="http://www.ibm.com/developerworks/library/l-kernel-logging-apis/index.html">Kernel logging: APIs and implementation</a></li>
+  <li><a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?dmesg+8">http://unixhelp.ed.ac.uk/CGI/man-cgi?dmesg+8</a></li>
+  <li><a href="https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;solutionid=sk92677">https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&amp;solutionid=sk92677</a></li>
+  <li><a href="http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html">http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html</a></li>
 </ul>
 
 </article>

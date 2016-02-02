@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,10 +429,10 @@
   <p><em>This is the third article on binary tree operations. For other topics on binary tree, please refer to:</em></p>
 
 <ol>
-<li><a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a></li>
-<li><a href="http://bo-yang.github.io/2014/08/16/binary-tree-ii/">Binary Tree Operations(II)</a></li>
-<li><a href="http://bo-yang.github.io/2014/09/12/binary-tree-iii/">Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation</a></li>
-<li><a href="http://bo-yang.github.io/2014/10/09/is-valid-bst/">Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree</a></li>
+  <li><a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a></li>
+  <li><a href="http://bo-yang.github.io/2014/08/16/binary-tree-ii/">Binary Tree Operations(II)</a></li>
+  <li><a href="http://bo-yang.github.io/2014/09/12/binary-tree-iii/">Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation</a></li>
+  <li><a href="http://bo-yang.github.io/2014/10/09/is-valid-bst/">Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree</a></li>
 </ol>
 
 <p>Left-Right representation of a binary tree is standard representation where every node has a pointer to left child and another pointer to right child.</p>
@@ -440,75 +440,84 @@
 <p>Down-Right representation is an alternate representation where every node has a pointer to left (or first) child and another pointer to next sibling. So siblings at every level are connected from left to right.</p>
 
 <p>Given a binary tree in left-right representation as below</p>
-<div class="highlight"><pre><code class="language-" data-lang="">      A
-     /  \
-    B    C
-        /  \
-       D    E
-      /    /  \
-     F    G    H
-</code></pre></div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	  A
+	 /  \
+	B    C
+	    /  \
+	   D    E
+	  /    /  \
+	 F    G    H
+</code></pre>
+</div>
+
 <p>Convert the structure of the tree to down-right representation like the below tree.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">    A
-    |
-    B – C
-    |
-    D — E
-    |
-    F — G – H
-</code></pre></div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   	A
+   	|
+   	B – C
+   	|
+   	D — E
+   	|
+   	F — G – H
+</code></pre>
+</div>
+
 <p>The conversion should happen in-place, i.e., left child pointer should be used as down pointer and right child pointer should be used as right sibling pointer.</p>
 
-<p>The solution to this problem is (1) traversing this binary tree in layer order, (2)converting all nodes in the same layer as a single list and (3) connecting all the head nodes in each layer together. </p>
+<p>The solution to this problem is (1) traversing this binary tree in layer order, (2)converting all nodes in the same layer as a single list and (3) connecting all the head nodes in each layer together.</p>
 
-<p>In order to connecting layers together via heads, at the begining of each layer, we need to record the leftmost node as the head of this layer. And after traversing current layer, we also need to link the head of current layer to the head of next layer. </p>
+<p>In order to connecting layers together via heads, at the begining of each layer, we need to record the leftmost node as the head of this layer. And after traversing current layer, we also need to link the head of current layer to the head of next layer.</p>
 
-<p>Following is the code to converting a left-right binary tree to down-right representation. For more details, please refer to <a href="https://github.com/bo-yang/BinaryTree">https://github.com/bo-yang/BinaryTree</a>. </p>
-<div class="highlight"><pre><code class="language-" data-lang="">TreeNode* Convert2DL(TreeNode* root) {
-    if(root==NULL)
-        return NULL;
+<p>Following is the code to converting a left-right binary tree to down-right representation. For more details, please refer to <a href="https://github.com/bo-yang/BinaryTree">https://github.com/bo-yang/BinaryTree</a>.</p>
 
-    queue&lt;TreeNode*&gt; q;
-    q.push(root);
-    int nCur=1; // number of nodes in current layer
-    TreeNode* head=NULL; // the head node in each layer
-    while(!q.empty()) {
-        head=q.front();
-        TreeNode* cur=head;
-        int nNext=0; // number of nodes in next layer
-        for(int i=0;i&lt;nCur;++i) {
-            TreeNode* n=q.front();
-            q.pop();
-            if(n-&gt;left!=NULL) {
-                q.push(n-&gt;left);
-                nNext++;
-            }
-            if(n-&gt;right!=NULL) {
-                q.push(n-&gt;right);
-                nNext++;
-            }
-            // Link current node to the right of this layer
-            if(n!=head) { 
-                cur-&gt;right=n;
-                cur=n;
-                cur-&gt;left=NULL;
-            }
-        }
-        nCur=nNext;
-        cur-&gt;right=NULL;
-        if(q.empty())
-            head-&gt;left=NULL;
-        else 
-            head-&gt;left=q.front(); // point to the head of the next layer
-    }
+<div class="highlighter-rouge"><pre class="highlight"><code>TreeNode* Convert2DL(TreeNode* root) {
+	if(root==NULL)
+		return NULL;
 
-    return root;
+	queue&lt;TreeNode*&gt; q;
+	q.push(root);
+	int nCur=1; // number of nodes in current layer
+	TreeNode* head=NULL; // the head node in each layer
+	while(!q.empty()) {
+		head=q.front();
+		TreeNode* cur=head;
+		int nNext=0; // number of nodes in next layer
+		for(int i=0;i&lt;nCur;++i) {
+			TreeNode* n=q.front();
+			q.pop();
+			if(n-&gt;left!=NULL) {
+				q.push(n-&gt;left);
+				nNext++;
+			}
+			if(n-&gt;right!=NULL) {
+				q.push(n-&gt;right);
+				nNext++;
+			}
+			// Link current node to the right of this layer
+			if(n!=head) { 
+				cur-&gt;right=n;
+				cur=n;
+				cur-&gt;left=NULL;
+			}
+		}
+		nCur=nNext;
+		cur-&gt;right=NULL;
+		if(q.empty())
+			head-&gt;left=NULL;
+		else 
+			head-&gt;left=q.front(); // point to the head of the next layer
+	}
+
+	return root;
 }
-</code></pre></div>
+</code></pre>
+</div>
+
 <h3 id="references">References:</h3>
 
 <ol>
-<li><a href="http://geeksquiz.com/convert-left-right-representation-bianry-tree-right/">Convert left-right representation of a bianry tree to down-right</a></li>
+  <li><a href="http://geeksquiz.com/convert-left-right-representation-bianry-tree-right/">Convert left-right representation of a bianry tree to down-right</a></li>
 </ol>
 
 </article>

@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,123 +429,129 @@
   <p><a href="https://oj.leetcode.com/problems/implement-strstr/">The problem</a> is:</p>
 
 <blockquote>
-<p>Implement strStr().</p>
+  <p>Implement strStr().</p>
 
-<p>Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.</p>
+  <p>Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.</p>
 </blockquote>
 
-<p>A naive method: (1) find the the first letter of <code>needle</code> in <code>haystack</code>, (2)comparing other consecutive characters of needle and haystack, (3) if all letters in <code>needle</code> can be found in <code>haystack</code> consecutively, then return the position in <code>haystack</code>.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">class Solution {
+<p>A naive method: (1) find the the first letter of <code class="highlighter-rouge">needle</code> in <code class="highlighter-rouge">haystack</code>, (2)comparing other consecutive characters of needle and haystack, (3) if all letters in <code class="highlighter-rouge">needle</code> can be found in <code class="highlighter-rouge">haystack</code> consecutively, then return the position in <code class="highlighter-rouge">haystack</code>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class Solution {
 public:
     char *strStr(char *haystack, char *needle) {
-        if(haystack==NULL || needle==NULL)
-            return NULL;
+		if(haystack==NULL || needle==NULL)
+			return NULL;
 
-        if(needle[0]=='\0')
-            return haystack;
+		if(needle[0]=='\0')
+			return haystack;
 
-        // Find the first character of needle in haystack
-        int hay_len=strlen(haystack);
-        int need_len=strlen(needle);
-        int pos=0;
-        bool found=false;
-        while(hay_len-pos&gt;=need_len &amp;&amp; haystack[pos]!='\0') {
-            if(haystack[pos] == needle[0]){
-                int th=pos+1;
-                int tn=1;
-                while(haystack[th] == needle[tn]) {
-                    if(needle[tn]=='\0')
-                        break;
-                    th++;
-                    tn++;
-                }
-                if(tn == need_len) {
-                    found=true;
-                    break;
-                }
-            }
-            pos++;
-        }
+		// Find the first character of needle in haystack
+		int hay_len=strlen(haystack);
+		int need_len=strlen(needle);
+		int pos=0;
+		bool found=false;
+		while(hay_len-pos&gt;=need_len &amp;&amp; haystack[pos]!='\0') {
+			if(haystack[pos] == needle[0]){
+				int th=pos+1;
+				int tn=1;
+				while(haystack[th] == needle[tn]) {
+					if(needle[tn]=='\0')
+						break;
+					th++;
+					tn++;
+				}
+				if(tn == need_len) {
+					found=true;
+					break;
+				}
+			}
+			pos++;
+		}
 
-        if(found)
-            return haystack+pos;
-        else
-            return NULL;
+		if(found)
+			return haystack+pos;
+		else
+			return NULL;
     }
 };
-</code></pre></div>
+</code></pre>
+</div>
+
 <p>A better solution is to use the famous KMP algorithm(<a href="http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/">http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/</a>).</p>
-<div class="highlight"><pre><code class="language-" data-lang="">class Solution {
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class Solution {
 public:
     char *strStr(char *haystack, char *needle) {
-        if(haystack==NULL || needle==NULL)
-            return NULL;
-        if(needle[0]=='\0')
-            return haystack;
+		if(haystack==NULL || needle==NULL)
+	 		return NULL;
+	 	if(needle[0]=='\0')
+	 		return haystack;
 
-        int n=strlen(haystack);
-        int m=strlen(needle);
-        vector&lt;int&gt; pi(m); // the longest proper prefix which is also suffix
-        computePrefix(needle,pi);
-        //printPrefix(pi); // TEST ONLY
+		int n=strlen(haystack);
+		int m=strlen(needle);
+		vector&lt;int&gt; pi(m); // the longest proper prefix which is also suffix
+		computePrefix(needle,pi);
+		//printPrefix(pi); // TEST ONLY
 
-        int q=0; // index for needle
-        int i=0; // index for haystack
-        while(i&lt;n) {
-            //cout&lt;&lt;"needle["&lt;&lt;q&lt;&lt;"]="&lt;&lt;needle[q]&lt;&lt;", haystack["&lt;&lt;i&lt;&lt;"]="&lt;&lt;haystack[i]&lt;&lt;endl; // TEST ONLY
-            if(needle[q]==haystack[i]) {
-                q++;
-                i++;
-            }
-            if(q==m) {
-                //cout&lt;&lt;"Pattern occurs with shift "&lt;&lt;i-m&lt;&lt;endl; // TEST ONLY
-                return haystack+i-m;
-            } else if(needle[q]!=haystack[i]) {
-                if(q!=0)
-                    q=pi[q-1];
-                else
-                    i++;
-            }
-        }
-        return NULL;
-    }
+		int q=0; // index for needle
+		int i=0; // index for haystack
+		while(i&lt;n) {
+			//cout&lt;&lt;"needle["&lt;&lt;q&lt;&lt;"]="&lt;&lt;needle[q]&lt;&lt;", haystack["&lt;&lt;i&lt;&lt;"]="&lt;&lt;haystack[i]&lt;&lt;endl; // TEST ONLY
+			if(needle[q]==haystack[i]) {
+				q++;
+				i++;
+			}
+			if(q==m) {
+				//cout&lt;&lt;"Pattern occurs with shift "&lt;&lt;i-m&lt;&lt;endl; // TEST ONLY
+				return haystack+i-m;
+			} else if(needle[q]!=haystack[i]) {
+				if(q!=0)
+					q=pi[q-1];
+				else
+					i++;
+			}
+		}
+		return NULL;
+	}
 
-    // Calculate the longest proper prefix which is also suffix.
-    // Examples:
-    //  For the pattern “AABAACAABAA”, lps[] is [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
-    //  For the pattern “ABCDE”, lps[] is [0, 0, 0, 0, 0]
-    //  For the pattern “AAAAA”, lps[] is [0, 1, 2, 3, 4]
-    //  For the pattern “AAABAAA”, lps[] is [0, 1, 2, 0, 1, 2, 3]
-    //  For the pattern “AAACAAAAAC”, lps[] is [0, 1, 2, 0, 1, 2, 3, 3, 3, 4]
-    void computePrefix(char* P, vector&lt;int&gt;&amp; pi) {
-        int m=strlen(P);
-        pi[0]=0; // lps[0] is always 0
-        int k=0; // length of the previous prefix suffix
-        int i=1;
-        while(i&lt;m) {
-            if(P[k]==P[i]) {
-                k++;
-                pi[i]=k;
-                i++;
-            } else {
-                if(k!=0) {
-                    k=pi[k-1];
-                } else {
-                    pi[i]=0;
-                    i++;
-                }
-            }
-        }
-    }
+	// Calculate the longest proper prefix which is also suffix.
+	// Examples:
+	// 	For the pattern “AABAACAABAA”, lps[] is [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
+	//	For the pattern “ABCDE”, lps[] is [0, 0, 0, 0, 0]
+	//	For the pattern “AAAAA”, lps[] is [0, 1, 2, 3, 4]
+	//	For the pattern “AAABAAA”, lps[] is [0, 1, 2, 0, 1, 2, 3]
+	//	For the pattern “AAACAAAAAC”, lps[] is [0, 1, 2, 0, 1, 2, 3, 3, 3, 4]
+	void computePrefix(char* P, vector&lt;int&gt;&amp; pi) {
+		int m=strlen(P);
+		pi[0]=0; // lps[0] is always 0
+		int k=0; // length of the previous prefix suffix
+		int i=1;
+		while(i&lt;m) {
+			if(P[k]==P[i]) {
+				k++;
+				pi[i]=k;
+				i++;
+			} else {
+				if(k!=0) {
+					k=pi[k-1];
+				} else {
+					pi[i]=0;
+					i++;
+				}
+			}
+		}
+	}
 
-    void printPrefix(vector&lt;int&gt;&amp; pi) {
-        cout&lt;&lt;"pi={ ";
-        for(auto&amp; x:pi)
-            cout&lt;&lt;x&lt;&lt;" ";
-        cout&lt;&lt;"}"&lt;&lt;endl;
-    }
+	void printPrefix(vector&lt;int&gt;&amp; pi) {
+		cout&lt;&lt;"pi={ ";
+		for(auto&amp; x:pi)
+			cout&lt;&lt;x&lt;&lt;" ";
+		cout&lt;&lt;"}"&lt;&lt;endl;
+	}
 };
-</code></pre></div>
+</code></pre>
+</div>
+
 </article>
 
 

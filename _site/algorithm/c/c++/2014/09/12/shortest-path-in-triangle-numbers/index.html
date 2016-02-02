@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,14 +429,17 @@
   <h3 id="problem">Problem</h3>
 
 <p>An example of triangle of numbers is:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">      1
+
+<div class="highlighter-rouge"><pre class="highlight"><code>      1
      / \
     2   5
    / \ / \ 
   9   4  33
  / \ / \/  \ 
 11  6  99   0
-</code></pre></div>
+</code></pre>
+</div>
+
 <p>In each row (except for the last), the numbers are adjacent to two numbers on the row below it. For example, 9 is adjacent to 11 and 6.</p>
 
 <p>Imagine drawing a path connecting adjacent numbers from top to bottom. Take the sum of the numbers in this path. The lowest possible sum you could arrive at for this triangle is 13 (1 + 2 + 4 + 6).</p>
@@ -445,68 +448,77 @@
 
 <h3 id="solution">Solution</h3>
 
-<p>The lowest sum can be found recursively by choosing the child node with the smallest sum. This greedy strategy should work for both positive and negative numbers, because every possible combination of nearby numbers are considered in the recursion(considering the connections of numbers in two nearby layers). </p>
+<p>The lowest sum can be found recursively by choosing the child node with the smallest sum. This greedy strategy should work for both positive and negative numbers, because every possible combination of nearby numbers are considered in the recursion(considering the connections of numbers in two nearby layers).</p>
 
 <p>The recursion function is:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">OPT(i,j)=tnum(i,j)+min(OPT(i+1,j),OPT(i+1,j+1))
-</code></pre></div>
-<p>where <code>OPT(i,j)</code> is the lowest sum of number <code>tnum[i][j]</code>. Above function can be implemented by dynamic programming.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>OPT(i,j)=tnum(i,j)+min(OPT(i+1,j),OPT(i+1,j+1))
+</code></pre>
+</div>
+
+<p>where <code class="highlighter-rouge">OPT(i,j)</code> is the lowest sum of number <code class="highlighter-rouge">tnum[i][j]</code>. Above function can be implemented by dynamic programming.</p>
 
 <p>The data structure for triangle numbers can be:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">// Data structure of Triangle numbers.
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// Data structure of Triangle numbers.
 class TriangNum {
 public:
-    TriangNum();    // default constructor
-    TriangNum(string file); // constructor
-    ~TriangNum(){}
+	TriangNum();	// default constructor
+	TriangNum(string file);	// constructor
+	~TriangNum(){}
 
-    const vector&lt;vector&lt;int&gt; &gt;&amp; LoadData(string file); // Build a binary tree from Triangle Numbers
-    int ShortestPath(); // Find the path of lowest possible sum of numbers
-    void PrintNum() const;
-    void PrintPath() const;
+	const vector&lt;vector&lt;int&gt; &gt;&amp; LoadData(string file); // Build a binary tree from Triangle Numbers
+	int ShortestPath();	// Find the path of lowest possible sum of numbers
+	void PrintNum() const;
+	void PrintPath() const;
 
 private:
-    vector&lt;vector&lt;int&gt; &gt; tnum;  // triangle numbers
-    vector&lt;vector&lt;int&gt; &gt; trace; // all possible sums in the shortest path
-    vector&lt;int&gt; spath; // shortest path
+	vector&lt;vector&lt;int&gt; &gt; tnum;	// triangle numbers
+	vector&lt;vector&lt;int&gt; &gt; trace; // all possible sums in the shortest path
+	vector&lt;int&gt; spath; // shortest path
 
-    vector&lt;int&gt; ReadNumbers(string line); // Read numbers in a line
-    int Min(int x, int y) { return x&lt;y?x:y; }
+	vector&lt;int&gt; ReadNumbers(string line); // Read numbers in a line
+	int Min(int x, int y) { return x&lt;y?x:y; }
 };
-</code></pre></div>
+</code></pre>
+</div>
+
 <p>And the code for finding the shortest path is:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">int TriangNum::ShortestPath() {
-    // Find the lowest possible sum of numbers.
-    trace=tnum;
-    for(int i=tnum.size()-2;i&gt;=0;--i) {
-        for(int j=tnum[i].size()-1;j&gt;=0;--j) {
-            trace[i][j]=tnum[i][j]+Min(trace[i+1][j],trace[i+1][j+1]);
-        }
-    }
 
-    // Find the shortest path
-    spath.push_back(tnum[0][0]);
-    int idx=0;
-    for(int i=1;i&lt;tnum.size();++i) {
-        if(trace[i][idx]&lt;trace[i][idx+1]) {
-            spath.push_back(tnum[i][idx]);
-        } else {
-            idx+=1;
-            spath.push_back(tnum[i][idx]);
-        }
-    }
+<div class="highlighter-rouge"><pre class="highlight"><code>int TriangNum::ShortestPath() {
+	// Find the lowest possible sum of numbers.
+	trace=tnum;
+	for(int i=tnum.size()-2;i&gt;=0;--i) {
+		for(int j=tnum[i].size()-1;j&gt;=0;--j) {
+			trace[i][j]=tnum[i][j]+Min(trace[i+1][j],trace[i+1][j+1]);
+		}
+	}
 
-    return trace[0][0];
+	// Find the shortest path
+	spath.push_back(tnum[0][0]);
+	int idx=0;
+	for(int i=1;i&lt;tnum.size();++i) {
+		if(trace[i][idx]&lt;trace[i][idx+1]) {
+			spath.push_back(tnum[i][idx]);
+		} else {
+			idx+=1;
+			spath.push_back(tnum[i][idx]);
+		}
+	}
+
+	return trace[0][0];
 }
-</code></pre></div>
+</code></pre>
+</div>
+
 <h3 id="complexity">Complexity</h3>
 
 <p>Given a triangle number with n lines, then:</p>
 
 <ul>
-<li>Time complexity for finding the lowest sum of numbers: \( 1+2+ \cdots +n = O(n^2) \).</li>
-<li>Time complexity for finding the shortest path: \( O(n) \).</li>
-<li>Space complexity for above code is \( O(n^2) \), because the sums from bottom to the root of each node are recorded in an matrix.</li>
+  <li>Time complexity for finding the lowest sum of numbers: \( 1+2+ \cdots +n = O(n^2) \).</li>
+  <li>Time complexity for finding the shortest path: \( O(n) \).</li>
+  <li>Space complexity for above code is \( O(n^2) \), because the sums from bottom to the root of each node are recorded in an matrix.</li>
 </ul>
 
 <h3 id="code">Code</h3>

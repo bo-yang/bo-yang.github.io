@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,62 +429,66 @@
   <p><a href="https://oj.leetcode.com/problems/3sum/">The 3Sum problem</a> is:</p>
 
 <blockquote>
-<p>Given an array <code>S</code> of n integers, are there elements <code>a, b, c</code> in <code>S</code> such that <code>a + b + c = 0</code>? Find all unique triplets in the array which gives the sum of zero.</p>
+  <p>Given an array <code class="highlighter-rouge">S</code> of n integers, are there elements <code class="highlighter-rouge">a, b, c</code> in <code class="highlighter-rouge">S</code> such that <code class="highlighter-rouge">a + b + c = 0</code>? Find all unique triplets in the array which gives the sum of zero.</p>
 
-<p>Note:</p>
+  <p>Note:</p>
 
-<ul>
-<li>Elements in a triplet <code>(a,b,c)</code> must be in non-descending order. (ie, <code>a ≤ b ≤ c</code>)</li>
-<li>The solution set must not contain duplicate triplets.</li>
-</ul>
+  <ul>
+    <li>Elements in a triplet <code class="highlighter-rouge">(a,b,c)</code> must be in non-descending order. (ie, <code class="highlighter-rouge">a ≤ b ≤ c</code>)</li>
+    <li>The solution set must not contain duplicate triplets.</li>
+  </ul>
 </blockquote>
 
-<p>Inspired by the <a href="http://en.wikipedia.org/wiki/3SUM">Wikipedia solution</a>, I implemented following solution. The first step is sorting the array <code>S</code> in ascending order, so that we can guarantee the front elements in the array are not less than the elemts at the end of the array. Then for every number in array, we can use the two variables to go through the whole array to find the triplets summed to 0. </p>
+<p>Inspired by the <a href="http://en.wikipedia.org/wiki/3SUM">Wikipedia solution</a>, I implemented following solution. The first step is sorting the array <code class="highlighter-rouge">S</code> in ascending order, so that we can guarantee the front elements in the array are not less than the elemts at the end of the array. Then for every number in array, we can use the two variables to go through the whole array to find the triplets summed to 0.</p>
 
-<p>In order to guarantee there are no duplicate triplets, a hash table is used to record the triplets that have been found. Before inserting the newly found triplet into the solution matrix(<code>vector&lt;vector&lt;int&gt; &gt;</code>), try to look for the triplet in the hash table first. Since C++ doesn&rsquo;t support <code>vector&lt;int&gt;</code> keys, I formulate string keys using the integer triplets in the following code.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">class Solution {
+<p>In order to guarantee there are no duplicate triplets, a hash table is used to record the triplets that have been found. Before inserting the newly found triplet into the solution matrix(<code class="highlighter-rouge">vector&lt;vector&lt;int&gt; &gt;</code>), try to look for the triplet in the hash table first. Since C++ doesn’t support <code class="highlighter-rouge">vector&lt;int&gt;</code> keys, I formulate string keys using the integer triplets in the following code.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class Solution {
 public:
     vector&lt;vector&lt;int&gt; &gt; threeSum(vector&lt;int&gt; &amp;num) {
-        // Sort the vector
-        std::sort(num.begin(), num.end());
+		// Sort the vector
+		std::sort(num.begin(), num.end());
+		
+		// Find triplets
+		unordered_map&lt;string,bool&gt; map; // store found triplets
+		char* buf=new char[100];
+		for(int i=0;i&lt;num.size();++i) {
+			vector&lt;int&gt; triplet;
+			int hi=num.size()-1;
+			int lo=0;
+			while(hi&gt;i &amp;&amp; lo&lt;i) {
+				if(num[i]+num[hi]+num[lo]==0) { // found a triplet
+					sprintf(buf,"%d%d%d",num[i],num[hi],num[lo]);
+					string str(buf);
+					unordered_map&lt;string,bool&gt;::const_iterator got=map.find(str);
+					if(got==map.end()) { // a brand new triplet
+						triplet.push_back(num[lo]);
+						triplet.push_back(num[i]);
+						triplet.push_back(num[hi]);
+						map[str]=true;
+						sol.push_back(triplet);
+					}
+					triplet.clear();
+					hi--;lo++;
+				} else if(num[i]+num[hi]+num[lo]&gt;0) {
+					hi--;
+				} else { // &lt;0
+					lo++;
+				}
+			}
+		}
+		delete [] buf;
 
-        // Find triplets
-        unordered_map&lt;string,bool&gt; map; // store found triplets
-        char* buf=new char[100];
-        for(int i=0;i&lt;num.size();++i) {
-            vector&lt;int&gt; triplet;
-            int hi=num.size()-1;
-            int lo=0;
-            while(hi&gt;i &amp;&amp; lo&lt;i) {
-                if(num[i]+num[hi]+num[lo]==0) { // found a triplet
-                    sprintf(buf,"%d%d%d",num[i],num[hi],num[lo]);
-                    string str(buf);
-                    unordered_map&lt;string,bool&gt;::const_iterator got=map.find(str);
-                    if(got==map.end()) { // a brand new triplet
-                        triplet.push_back(num[lo]);
-                        triplet.push_back(num[i]);
-                        triplet.push_back(num[hi]);
-                        map[str]=true;
-                        sol.push_back(triplet);
-                    }
-                    triplet.clear();
-                    hi--;lo++;
-                } else if(num[i]+num[hi]+num[lo]&gt;0) {
-                    hi--;
-                } else { // &lt;0
-                    lo++;
-                }
-            }
-        }
-        delete [] buf;
-
-        return sol;
+		return sol;
     }
-
+	
 private:
-    vector&lt;vector&lt;int&gt; &gt; sol;
+	vector&lt;vector&lt;int&gt; &gt; sol;
 };
-</code></pre></div>
+</code></pre>
+</div>
+
+
 </article>
 
 

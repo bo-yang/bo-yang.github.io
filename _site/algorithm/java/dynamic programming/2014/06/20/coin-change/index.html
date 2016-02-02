@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -428,83 +428,90 @@
 <article class="post-content">
   <p>Given \(N\) denominations,how can a given amount of money \(V\) be made with the least number of coins? The most intuitive solution is greedy algorithm: sort the denominations, try the largest denominations lower than the value every time, and decrease the value with the denominations picked in every iteration. Repeat this process until the value reduces to 0. This greedy strategy works for the US (and most other) coin systems, However, it is not a general solution to all denomincations. For example, if the coin denominations were 1, 3 and 4, then to make 6, the greedy algorithm would choose three coins (4,1,1) whereas the optimal solution is two coins (3,3).</p>
 
-<p>Actually the <a href="http://en.wikipedia.org/wiki/Change-making_problem">change-making problem</a> is a knapsack type problem, which can be solved efficiently by Dynamic Programming. </p>
+<p>Actually the <a href="http://en.wikipedia.org/wiki/Change-making_problem">change-making problem</a> is a knapsack type problem, which can be solved efficiently by Dynamic Programming.</p>
 
 <p>Given denominations \( {x_1, x_2,\cdots,x_n} \), in order to get value \(V\), there are two possibilities for a denomination \( x_i \): (1) if \( x_i \) is not picked, then value \( V \) could be made out of \( { x_1, x_2,\cdots,x_{i-1} } \). (2) if \( x_i \) is picked, then value \(V-x_i\) should be made out of \( { x_1, x_2,\cdots,x_i } \). Since our goal is to find the least number of coins, we can formulate the following recursive function:</p>
 
-<p>$$ OPT(i,v)=0,\quad \text{if} \enspace i=0 $$</p>
+<script type="math/tex; mode=display">OPT(i,v)=0,\quad \text{if} \enspace i=0</script>
 
-<p>$$ OPT(i,v)=OPT(i-1,v),\quad \text{if} \enspace x_i&gt;v $$</p>
+<script type="math/tex; mode=display">OPT(i,v)=OPT(i-1,v),\quad \text{if} \enspace x_i>v</script>
 
-<p>$$ OPT(i,v)=\min { OPT(i-1,v), 1+OPT(i,v-x_i) }, \quad \text{otherwise}$$</p>
+<script type="math/tex; mode=display">OPT(i,v)=\min \{ OPT(i-1,v), 1+OPT(i,v-x_i) \}, \quad \text{otherwise}</script>
 
-<p>Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination \(x_i\) of the row), then the smallest coin changes should be \(v/x_i\). </p>
+<p>Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination \(x_i\) of the row), then the smallest coin changes should be \(v/x_i\).</p>
 
-<table><thead>
-<tr>
-<th>Denom</th>
-<th>Values</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>1</td>
-<td>0 1 2 3 4 5 6 7 8 9 10 11</td>
-</tr>
-<tr>
-<td>3</td>
-<td>0 1 2 1 2 3 2 3 4 3 4 5</td>
-</tr>
-<tr>
-<td>4</td>
-<td>0 1 2 1 1 2 2 2 2 3 3 3</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Denom</th>
+      <th>Values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>0 1 2 3 4 5 6 7 8 9 10 11</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0 1 2 1 2 3 2 3 4 3 4 5</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0 1 2 1 1 2 2 2 2 3 3 3</td>
+    </tr>
+  </tbody>
+</table>
 
 <p>The bottom right number in above table is the smallest coin changes.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">public class Coin {
-    public static int CoinChange(int value, int[] denom) {
-        int M[][]=new int[denom.length][value+1];
 
-        // Initialization
-        final int INF=9999999;
-        for(int i=0;i&lt;denom.length;++i) {
-            for(int j=0;j&lt;=value;++j) {
-                if(j%denom[i]==0)
-                    M[i][j]=j/denom[i];
-                else
-                    M[i][j]=INF;    
-            }
-        }
+<div class="highlighter-rouge"><pre class="highlight"><code>public class Coin {
+	public static int CoinChange(int value, int[] denom) {
+		int M[][]=new int[denom.length][value+1];
 
-        // Fill the table with smallest coin changes
-        for(int i=1;i&lt;denom.length;++i) {
-            for(int j=1;j&lt;=value;++j) {
-                if(denom[i]&gt;j)
-                    M[i][j]=M[i-1][j];
-                else
-                    M[i][j]=M[i-1][j]&lt;1+M[i][j-denom[i]] ? M[i-1][j] : 1+M[i][j-denom[i]];
-            }
-        }
+		// Initialization
+		final int INF=9999999;
+		for(int i=0;i&lt;denom.length;++i) {
+			for(int j=0;j&lt;=value;++j) {
+				if(j%denom[i]==0)
+					M[i][j]=j/denom[i];
+				else
+					M[i][j]=INF;	
+			}
+		}
 
-        // Print the table
-        for(int i=0;i&lt;denom.length;++i) {
-            for(int j=0;j&lt;=value;++j) {
-                System.out.print(M[i][j]+" ");
-            }
-            System.out.print("\n");
-        }
+		// Fill the table with smallest coin changes
+		for(int i=1;i&lt;denom.length;++i) {
+			for(int j=1;j&lt;=value;++j) {
+				if(denom[i]&gt;j)
+					M[i][j]=M[i-1][j];
+				else
+					M[i][j]=M[i-1][j]&lt;1+M[i][j-denom[i]] ? M[i-1][j] : 1+M[i][j-denom[i]];
+			}
+		}
 
-        return M[denom.length-1][value];
-    }
+		// Print the table
+		for(int i=0;i&lt;denom.length;++i) {
+			for(int j=0;j&lt;=value;++j) {
+				System.out.print(M[i][j]+" ");
+			}
+			System.out.print("\n");
+		}
 
-    public static void main(String[] args) {
-        int[] denom={1,3,4};
-        int value=10;
-        int num=CoinChange(value,denom);
-        System.out.println(num);
-    }
+		return M[denom.length-1][value];
+	}
+
+	public static void main(String[] args) {
+		int[] denom={1,3,4};
+		int value=10;
+		int num=CoinChange(value,denom);
+		System.out.println(num);
+	}
 }
-</code></pre></div>
+</code></pre>
+</div>
+
+
 </article>
 
 

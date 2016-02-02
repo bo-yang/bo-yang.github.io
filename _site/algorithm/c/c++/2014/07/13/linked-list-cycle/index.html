@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,113 +429,116 @@
   <p>The <a href="https://oj.leetcode.com/problems/linked-list-cycle/">Linked List Cycle problem</a> is:</p>
 
 <blockquote>
-<p>Given a linked list, determine if it has a cycle in it. Can you solve it without using extra space?</p>
+  <p>Given a linked list, determine if it has a cycle in it. Can you solve it without using extra space?</p>
 </blockquote>
 
 <p>A <a href="https://oj.leetcode.com/problems/linked-list-cycle-ii/">follow up problem</a> is:</p>
 
 <blockquote>
-<p>Given a linked list, return the node where the cycle begins. If there is no cycle, return <code>null</code>.Can you solve it without using extra space? </p>
+  <p>Given a linked list, return the node where the cycle begins. If there is no cycle, return <code class="highlighter-rouge">null</code>.Can you solve it without using extra space?</p>
 </blockquote>
 
 <p>The first problem can be solved by the <strong><a href="http://www.geeksforgeeks.org/write-a-c-function-to-detect-loop-in-a-linked-list/">Floyd’s Cycle-Finding Algorithm</a></strong>:</p>
 
 <blockquote>
-<p>Traverse linked list using two pointers: move one pointer by <em>one</em> and other pointer by <em>two</em>.  If these pointers meet at some node then there is a loop.  If pointers do not meet then linked list doesn’t have loop.</p>
+  <p>Traverse linked list using two pointers: move one pointer by <em>one</em> and other pointer by <em>two</em>.  If these pointers meet at some node then there is a loop.  If pointers do not meet then linked list doesn’t have loop.</p>
 </blockquote>
 
 <p>As for the second problem, it is also based on the <strong>Floyd’s Cycle-Finding Algorithm</strong>. However, after detecting loop, we need to find the starting point of the cycle. <strong>The most convinient way is to use two pointers, one points to the head node, and the other points to the node that pointers meet when detecting loop. Then move both the two pointers by one respectively in each iteration, until they meet. The node they meet is the starting point of the cycle.</strong></p>
 
-<p>Here is the detailed explanation of above trick(reference: <a href="http://www.cnblogs.com/TenosDoIt/p/3416702.html">http://www.cnblogs.com/TenosDoIt/p/3416702.html</a>). </p>
+<p>Here is the detailed explanation of above trick(reference: <a href="http://www.cnblogs.com/TenosDoIt/p/3416702.html">http://www.cnblogs.com/TenosDoIt/p/3416702.html</a>).</p>
 
 <ol>
-<li>Assume the length(number of nodes, the same below) of the list is <code>l</code>, the distance(number of nodes, the same below) between <code>head</code> and the starting point of cycle is <code>a</code>, the distance between the cycle-starting point and the point where the slow/fast pointers meet is <code>b</code>, and the length of the cycle is <code>r</code>.</li>
-<li>Assume when the fast/slow pointers meet, the slow pointer has accessed <code>s</code> nodes. Then the fast pointer has moved <code>2s</code>, and <code>s=a+b</code>.</li>
-<li>Since the nodes accessed by the fast pointer also calculated as <code>kr+s</code>, where <code>k</code> is the number of cycles and \( k \ge 1 \). We have <code>2s=kr+s</code>, i.e. <code>s=kr</code>.</li>
-<li>Since <code>s=a+b</code> and <code>s=kr</code>, we have <code>a+b=kr=(k-1)r+r</code>. Since <code>r=l-a</code>, we have <code>a+b=(k-1)+l-a</code>, i.e. <code>a=(k-1)+l-a-b</code>. Notice that <code>l-a-b</code> is the distance from the point where slow/fast pointers meet to the starting point of cycle(note: we only can go through the cycle of the linked list in one direction).</li>
-<li>Since <code>a</code> is the distance between <code>head</code> node and the starting point of cycle, <code>a=(k-1)+l-a-b</code> means that the distance between <code>head</code> node and the starting point of cycle(<code>a</code>) <em>equals</em> to the distance from the point where slow/fast pointers meet to the starting point of cycle(<code>l-a-b</code>) plus several loops of the cycle.</li>
-<li>Therefore, when we use two pointers to find the starting point of cycle, one pointer moves to the start point from the head of the list, while the other pointer winds aroung the cycle at the same pace. When the two pointers meet, one pointer must have moved <code>a</code> and the other moved <code>(k-1)+l-a-b</code>.</li>
+  <li>Assume the length(number of nodes, the same below) of the list is <code class="highlighter-rouge">l</code>, the distance(number of nodes, the same below) between <code class="highlighter-rouge">head</code> and the starting point of cycle is <code class="highlighter-rouge">a</code>, the distance between the cycle-starting point and the point where the slow/fast pointers meet is <code class="highlighter-rouge">b</code>, and the length of the cycle is <code class="highlighter-rouge">r</code>.</li>
+  <li>Assume when the fast/slow pointers meet, the slow pointer has accessed <code class="highlighter-rouge">s</code> nodes. Then the fast pointer has moved <code class="highlighter-rouge">2s</code>, and <code class="highlighter-rouge">s=a+b</code>.</li>
+  <li>Since the nodes accessed by the fast pointer also calculated as <code class="highlighter-rouge">kr+s</code>, where <code class="highlighter-rouge">k</code> is the number of cycles and \( k \ge 1 \). We have <code class="highlighter-rouge">2s=kr+s</code>, i.e. <code class="highlighter-rouge">s=kr</code>.</li>
+  <li>Since <code class="highlighter-rouge">s=a+b</code> and <code class="highlighter-rouge">s=kr</code>, we have <code class="highlighter-rouge">a+b=kr=(k-1)r+r</code>. Since <code class="highlighter-rouge">r=l-a</code>, we have <code class="highlighter-rouge">a+b=(k-1)+l-a</code>, i.e. <code class="highlighter-rouge">a=(k-1)+l-a-b</code>. Notice that <code class="highlighter-rouge">l-a-b</code> is the distance from the point where slow/fast pointers meet to the starting point of cycle(note: we only can go through the cycle of the linked list in one direction).</li>
+  <li>Since <code class="highlighter-rouge">a</code> is the distance between <code class="highlighter-rouge">head</code> node and the starting point of cycle, <code class="highlighter-rouge">a=(k-1)+l-a-b</code> means that the distance between <code class="highlighter-rouge">head</code> node and the starting point of cycle(<code class="highlighter-rouge">a</code>) <em>equals</em> to the distance from the point where slow/fast pointers meet to the starting point of cycle(<code class="highlighter-rouge">l-a-b</code>) plus several loops of the cycle.</li>
+  <li>Therefore, when we use two pointers to find the starting point of cycle, one pointer moves to the start point from the head of the list, while the other pointer winds aroung the cycle at the same pace. When the two pointers meet, one pointer must have moved <code class="highlighter-rouge">a</code> and the other moved <code class="highlighter-rouge">(k-1)+l-a-b</code>.</li>
 </ol>
 
 <p>Following is my C++ implmentation.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">class Solution {
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class Solution {
 public:
-    ListNode *detectCycle(ListNode *head) {
-        if(head==NULL || head-&gt;next==NULL)
-            return NULL;
+	ListNode *detectCycle(ListNode *head) {
+		if(head==NULL || head-&gt;next==NULL)
+			return NULL;
 
-        ListNode* first=head;
-        ListNode* second=head;
+		ListNode* first=head;
+		ListNode* second=head;
         while(first!=NULL &amp;&amp; second!=NULL &amp;&amp; second-&gt;next!=NULL) {
-            first=first-&gt;next;
-            second=second-&gt;next-&gt;next;
+			first=first-&gt;next;
+			second=second-&gt;next-&gt;next;
 
-            if(first==second)
-                break;
-        }
+			if(first==second)
+				break;
+		}
 
-        if(first==second) {
-            // Continue walking X steps
-            first = head;
-            while(first!=second)
-            {
-                first = first-&gt;next;
-                second = second-&gt;next;
-            }
-
-            return second;
-        } else {
-            return NULL;
-        }
+		if(first==second) {
+			// Continue walking X steps
+			first = head;
+			while(first!=second)
+			{
+	            first = first-&gt;next;
+	            second = second-&gt;next;
+	        }
+	
+			return second;
+		} else {
+			return NULL;
+		}
     }
 
-    // Create list with cycle using given vector of integers.
-    //  lb - the beginning index(in vec) of the cycle.
-    ListNode* createList(vector&lt;int&gt;&amp; vec, int lb) {
-        head=new ListNode(vec[0]);
-        ListNode* node=head;
-        ListNode* begin=NULL;
-        for(int i=1;i&lt;vec.size();++i) {
-            node-&gt;next=new ListNode(vec[i]);
-            node=node-&gt;next;
-            if(i==lb)
-                begin=node;
-        }
-        if(lb&gt;0 &amp;&amp; lb&lt;vec.size())
-            node-&gt;next=begin;
-        else if(lb&gt;=vec.size()) // index out of upper bound, set to NULL
-            node-&gt;next=NULL;
-        else
-            node-&gt;next=head; // index out of lower bound, linked to the head
+	// Create list with cycle using given vector of integers.
+	// 	lb - the beginning index(in vec) of the cycle.
+	ListNode* createList(vector&lt;int&gt;&amp; vec, int lb) {
+		head=new ListNode(vec[0]);
+		ListNode* node=head;
+		ListNode* begin=NULL;
+		for(int i=1;i&lt;vec.size();++i) {
+			node-&gt;next=new ListNode(vec[i]);
+			node=node-&gt;next;
+			if(i==lb)
+				begin=node;
+		}
+		if(lb&gt;0 &amp;&amp; lb&lt;vec.size())
+			node-&gt;next=begin;
+		else if(lb&gt;=vec.size()) // index out of upper bound, set to NULL
+			node-&gt;next=NULL;
+		else
+			node-&gt;next=head; // index out of lower bound, linked to the head
 
-        return head;
-    }
+		return head;
+	}
 
-    void printList(ListNode *head) {
-        ListNode* node=head;
-        while(node!=NULL) {
-            cout&lt;&lt;node-&gt;val&lt;&lt;" ";
-            node=node-&gt;next;
-        }
-        cout&lt;&lt;endl;
-    }
+	void printList(ListNode *head) {
+		ListNode* node=head;
+		while(node!=NULL) {
+			cout&lt;&lt;node-&gt;val&lt;&lt;" ";
+			node=node-&gt;next;
+		}
+		cout&lt;&lt;endl;
+	}
 
-    Solution() {head=NULL;}
+	Solution() {head=NULL;}
 
-    ~Solution() {
-        ListNode* node=head;
-        while(head!=NULL){
-            head=head-&gt;next;
-            delete node;
-            node=head;
-        }
-    }
+	~Solution() {
+		ListNode* node=head;
+		while(head!=NULL){
+			head=head-&gt;next;
+			delete node;
+			node=head;
+		}
+	}
 
 private:
-    ListNode* head;
+	ListNode* head;
 
 };
-</code></pre></div>
+</code></pre>
+</div>
+
 </article>
 
 

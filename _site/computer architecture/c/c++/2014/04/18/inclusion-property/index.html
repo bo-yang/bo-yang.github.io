@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -427,128 +427,138 @@
 
 <article class="post-content">
   <ol>
-<li><a href="#inclusion_property">Inclusion Property</a></li>
-<li><a href="#code_change">Code Change</a></li>
-<li><a href="#experiments">Experiments</a></li>
-<li><a href="#conclusion">Conclusion</a></li>
+  <li><a href="#inclusion_property">Inclusion Property</a></li>
+  <li><a href="#code_change">Code Change</a></li>
+  <li><a href="#experiments">Experiments</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
 </ol>
 
-<h3 id="1-inclusion-property">1. <a name="inclusion_property">Inclusion Property</a></h3>
+<h3 id="a-nameinclusionpropertyinclusion-propertya">1. <a name="inclusion_property">Inclusion Property</a></h3>
 
 <p>If the two-level cache system satisfies the inclusion property, it means everything in the primary cache is also in the secondary cache and all snooping can be done by the secondary cache. To implement the inclusion property, two requirements must be met:</p>
 
 <ul>
-<li>Whenever a new block of data are loaded into(or removed from) L1 cache, they also should be loaded into(or removed from) the L2 cache.</li>
-<li>Whenever a block of data are loaded into(or removed from) L2 cache, they also should be loaded into(or removed from) the L1 cache.</li>
+  <li>Whenever a new block of data are loaded into(or removed from) L1 cache, they also should be loaded into(or removed from) the L2 cache.</li>
+  <li>Whenever a block of data are loaded into(or removed from) L2 cache, they also should be loaded into(or removed from) the L1 cache.</li>
 </ul>
 
 <p><em>SimpleScalar</em> already implemented the first requirement. When there is a cache miss in L1 cache, L2 cache will be accessed for the block. If the block are also cannot be found in the L2 cache, they will be loaded from the memory. The data consistency is kept in this way.</p>
 
 <p>However, the second requirement is not supported by the official SimpleScalar. To implement this feature, the data block must be checked every time L2 cache encounter a cache miss. Since all cache read/write operations are done in function cache_access(), the action of checking and removing data blocks from L1 cache should also be added into that function with the condition of accessing L2 cache.</p>
 
-<h3 id="2-code-change">2. <a name="code_change">Code Change</a></h3>
+<h3 id="a-namecodechangecode-changea">2. <a name="code_change">Code Change</a></h3>
 
-<p>Since there is no existing way in cache_t to find the upper level cache(DL1) of the DL2 cache, a new structure element </p>
+<p>Since there is no existing way in cache_t to find the upper level cache(DL1) of the DL2 cache, a new structure element</p>
 
-<p><code>struct cache_t *ucp;       /* upper level cache */</code></p>
+<p><code class="highlighter-rouge">struct cache_t *ucp;		/* upper level cache */</code></p>
 
 <p>should be added into struct cache_t. This pointer should be set to NULL in function cache_create() if the cache name is not “dl2”. Otherwise the pointer to DL1 cache should be assigned.</p>
 
-<p>To support the new added struct element, a new parameter </p>
+<p>To support the new added struct element, a new parameter</p>
 
-<p><code>struct cache_t *ucp;       /* upper level cache */</code></p>
+<p><code class="highlighter-rouge">struct cache_t *ucp;		/* upper level cache */</code></p>
 
 <p>should also be added into function cache_create(), which is called in sim-cache.c and sim-outorder.c. The new interface of this function becomes:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">/* create and initialize a general cache structure */
-struct cache_t *            /* pointer to cache created */
-cache_create(char *name,        /* name of the cache */
-         int nsets,         /* total number of sets in cache */
-         int bsize,         /* block (line) size of cache */
-         int balloc,        /* allocate data space for blocks? */
-         int usize,         /* size of user data to alloc w/blks */
-         int assoc,         /* associativity of cache */
-         enum cache_policy policy,  /* replacement policy w/in sets */
-         /* block access function, see description w/in struct cache def */
-         unsigned int (*blk_access_fn)(enum mem_cmd cmd,
-                       md_addr_t baddr, int bsize,
-                       struct cache_blk_t *blk,
-                       tick_t now),
-         unsigned int hit_latency,/* latency in cycles for a hit */
-         struct cache_t *ucp);  /* upper level cache */
-</code></pre></div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/* create and initialize a general cache structure */
+struct cache_t *			/* pointer to cache created */
+cache_create(char *name,		/* name of the cache */
+	     int nsets,			/* total number of sets in cache */
+	     int bsize,			/* block (line) size of cache */
+	     int balloc,		/* allocate data space for blocks? */
+	     int usize,			/* size of user data to alloc w/blks */
+	     int assoc,			/* associativity of cache */
+	     enum cache_policy policy,	/* replacement policy w/in sets */
+	     /* block access function, see description w/in struct cache def */
+	     unsigned int (*blk_access_fn)(enum mem_cmd cmd,
+					   md_addr_t baddr, int bsize,
+					   struct cache_blk_t *blk,
+					   tick_t now),
+	     unsigned int hit_latency,/* latency in cycles for a hit */
+	     struct cache_t *ucp);	/* upper level cache */
+</code></pre>
+</div>
+
 <p>For DL2 cache, the pointer ucp is set to cache_dl1 in sim-cache.c in function cache_create(). For other cache, NULL is set. For example:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">cache_dl2 = cache_create(name, nsets, bsize, /* balloc */FALSE,
-                   /* usize */0, assoc, cache_char2policy(c),
-                   dl2_access_fn, /* hit latency */1,cache_dl1);
-</code></pre></div>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cache_dl2 = cache_create(name, nsets, bsize, /* balloc */FALSE,
+				   /* usize */0, assoc, cache_char2policy(c),
+				   dl2_access_fn, /* hit latency */1,cache_dl1);
+</code></pre>
+</div>
+
 <p>As checking and removing blocks from DL1 only involves DL1 and DL2 cache, all the operations can be encapsulated in a function cache_inclusion(). This function is called after blocks moved out from DL2 in the case of cache miss. Then check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">/*
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/*
  * Inclusion Property:
- *  Make sure data leave DL2 also leave DL1 
+ * 	Make sure data leave DL2 also leave DL1 
  * */
 int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
-        struct cache_t *cp_l2, /* L2 cache */
-        tick_t now)     /* time of access */
+		struct cache_t *cp_l2, /* L2 cache */
+		tick_t now)		/* time of access */
 {
 
-    /* Loop through each set and each block in the L1 cache, 
-     * probe the L2 cache to guaranttee the inclusion */
-    int num_l1_sets = cp_l1-&gt;set_mask + 1;
-    int set;
-    struct cache_blk_t *blk;
-    md_addr_t addr;
-    int hindex;
-    int num_hash_buckets = cp_l1-&gt;hsize;
-    int there; /* indicates if the L1 line is in L2 */
-    int lat=0;
+	/* Loop through each set and each block in the L1 cache, 
+	 * probe the L2 cache to guaranttee the inclusion */
+	int num_l1_sets = cp_l1-&gt;set_mask + 1;
+	int set;
+  	struct cache_blk_t *blk;
+	md_addr_t addr;
+	int hindex;
+	int num_hash_buckets = cp_l1-&gt;hsize;
+	int there; /* indicates if the L1 line is in L2 */
+	int lat=0;
 
-    /* for each set */
-    for(set=0; set&lt;num_l1_sets; set++){
-        /* for each block in a higly-associativity cache*/
-        if (num_hash_buckets){
-            /* for each hash bucket */
-            for(hindex=0; hindex&lt;num_hash_buckets; hindex++){
-                /* for each block in a hash bucket */
-                for (blk=cp_l1-&gt;sets[set].hash[hindex];
-                 blk;
-                 blk=blk-&gt;hash_next)
-                {   
-                    /* Probe the L2 cache for this block */
-                    addr = CACHE_MK_BADDR(cp_l1, blk-&gt;tag, set);
-                    there = cache_probe(cp_l2, addr);
-                    if(!there){ // line in DL1 but not in DL2
-                        lat += cache_flush_addr(cp_l1,addr,now);
-                        //fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
-                    }
-                }/* end for block in a bucket */
-            }/* end for each bucket */
-        }/* end if highly associative cache*/
+	/* for each set */
+	for(set=0; set&lt;num_l1_sets; set++){
+		/* for each block in a higly-associativity cache*/
+  		if (num_hash_buckets){
+			/* for each hash bucket */
+			for(hindex=0; hindex&lt;num_hash_buckets; hindex++){
+			    /* for each block in a hash bucket */
+			    for (blk=cp_l1-&gt;sets[set].hash[hindex];
+				 blk;
+				 blk=blk-&gt;hash_next)
+				{	
+					/* Probe the L2 cache for this block */
+					addr = CACHE_MK_BADDR(cp_l1, blk-&gt;tag, set);
+					there = cache_probe(cp_l2, addr);
+					if(!there){ // line in DL1 but not in DL2
+						lat += cache_flush_addr(cp_l1,addr,now);
+						//fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
+					}
+		   		}/* end for block in a bucket */
+			}/* end for each bucket */
+  		}/* end if highly associative cache*/
 
-        /* for each block in a low-associativity cache*/
-        else {
-            for (blk=cp_l1-&gt;sets[set].way_head;
-             blk;
-             blk=blk-&gt;way_next)
-            {
-                /* Probe the L2 cache for this block */
-                addr = CACHE_MK_BADDR(cp_l1, blk-&gt;tag, set);
-                there = cache_probe(cp_l2, addr);
-                if(!there){ // line in DL1 but not in DL2
-                    lat += cache_flush_addr(cp_l1,addr,now);
-                    //fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
-                }
-            }/* end for */
-        }/* end for each block */
-    }/* end for each set */
-
-    return lat;
+		/* for each block in a low-associativity cache*/
+		else {
+			for (blk=cp_l1-&gt;sets[set].way_head;
+			 blk;
+			 blk=blk-&gt;way_next)
+    		{
+				/* Probe the L2 cache for this block */
+				addr = CACHE_MK_BADDR(cp_l1, blk-&gt;tag, set);
+				there = cache_probe(cp_l2, addr);
+				if(!there){ // line in DL1 but not in DL2
+					lat += cache_flush_addr(cp_l1,addr,now);
+					//fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
+				}
+		    }/* end for */
+  		}/* end for each block */
+	}/* end for each set */
+	
+	return lat;
 }
-</code></pre></div>
+</code></pre>
+</div>
+
 <p>This function should be called in cache_access() after removing blocks from DL2. The basic idea of the above function is to  check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.</p>
 
 <p>The code segment for calling cache_inclusion() in cache_access() is:
-    /* cache block not found */</p>
-<div class="highlight"><pre><code class="language-" data-lang=""> /* **MISS** */
+	/* cache block not found */</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> /* **MISS** */
  cp-&gt;misses++;
 …...
 
@@ -557,30 +567,32 @@ int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
     link_htab_ent(cp, &amp;cp-&gt;sets[set], repl);
 
   /* Inclusion property:
-   *    Make sure data leave DL2 also leave DL1, or vice versa */
+   * 	Make sure data leave DL2 also leave DL1, or vice versa */
   if(!mystricmp(cp-&gt;name,"dl2") &amp;&amp; cp-&gt;ucp != NULL) 
   {
-    lat += cache_inclusion(cp-&gt;ucp,cp,now);
+  	lat += cache_inclusion(cp-&gt;ucp,cp,now);
   }
 
   /* return latency of the operation */
   return lat;
-</code></pre></div>
-<h3 id="3-experiments">3. <a name="experiments">Experiments</a></h3>
+</code></pre>
+</div>
 
-<p>In my experiment, three benchmarks are used: gcc, mcf and vpr. For each benchmark, three different configurations are tested, which are the same as the three commands listed in the project requirement. Compared to the SimpleScalar without inclusion property, it took 2 times longer time after implementing the inclusion property. </p>
+<h3 id="a-nameexperimentsexperimentsa">3. <a name="experiments">Experiments</a></h3>
 
-<p>After implementing inclusion property, the miss rates of DL1 generally increase a little, while the miss rates of DL2 decrease or keep the same. This is consistent with the code change, because due to inclusion property, statistically fewer data can be stored in DL1, but more valid data can be stored in DL2 cache. </p>
+<p>In my experiment, three benchmarks are used: gcc, mcf and vpr. For each benchmark, three different configurations are tested, which are the same as the three commands listed in the project requirement. Compared to the SimpleScalar without inclusion property, it took 2 times longer time after implementing the inclusion property.</p>
 
-<p><img src="http://www.bo-yang.net//assets/images/2014-04-18-inclusion-property/dl1.jpg" alt="Miss rate of DL1"></p>
+<p>After implementing inclusion property, the miss rates of DL1 generally increase a little, while the miss rates of DL2 decrease or keep the same. This is consistent with the code change, because due to inclusion property, statistically fewer data can be stored in DL1, but more valid data can be stored in DL2 cache.</p>
+
+<p><img src="http://www.bo-yang.net//assets/images/2014-04-18-inclusion-property/dl1.jpg" alt="Miss rate of DL1" /></p>
 
 <p>Figure 1. Miss rate of DL1, with(red) and without(blue) inclusion.</p>
 
-<p><img src="http://www.bo-yang.net//assets/images/2014-04-18-inclusion-property/dl2.jpg" alt="Miss rate of DL2"></p>
+<p><img src="http://www.bo-yang.net//assets/images/2014-04-18-inclusion-property/dl2.jpg" alt="Miss rate of DL2" /></p>
 
 <p>Figure 2. Miss rate of DL2, with(red) and without(blue) inclusion.</p>
 
-<h3 id="4-conclusion">4. <a name="conclusion">Conclusion</a></h3>
+<h3 id="a-nameconclusionconclusiona">4. <a name="conclusion">Conclusion</a></h3>
 
 <p>In this project I implemented the inclusion property with SimpleScalar. I tested my change with three different benchmarks in three different configurations. Experiments show proves the correctness of my change. Inclusion property cannot guarantee the overall performance the cache, although it seems like a promising technique.</p>
 

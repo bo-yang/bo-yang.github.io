@@ -21,6 +21,7 @@ As documented in the man page, the Linux system log is configured in file `/etc/
 
 The supported facilities and priorites are defined in `syslog.h`:
 
+~~~cpp
     #define	LOG_EMERG	0	/* system is unusable */
     #define	LOG_ALERT	1	/* action must be taken immediately */
     #define	LOG_CRIT	2	/* critical conditions */
@@ -53,6 +54,7 @@ The supported facilities and priorites are defined in `syslog.h`:
     #define	LOG_LOCAL5	(21<<3)	/* reserved for local use */
     #define	LOG_LOCAL6	(22<<3)	/* reserved for local use */
     #define	LOG_LOCAL7	(23<<3)	/* reserved for local use */
+~~~
 
 The local facilities can be used for redirecting/filtering the log of your own programs. For example, given a program `foo`, if you want to log all the non-critical messages in `/var/log/foo.log`, and make the critical logs go to system log file `/var/log/messages`, you can use the following config file
 
@@ -67,6 +69,7 @@ However, the dash(-) in front of the log filename is not documented in the man p
 
 And in program `foo`, what you need to do is open log file by specifing `LOG_LOCAL1` facility. The use of `openlog()` is mandatory here. Otherwise, it will automatically be called by syslog(), in which case facility will default to `LOG_USER`.
 
+~~~cpp
     #include <syslog.h>
     int main(int, char**)
     {
@@ -75,6 +78,7 @@ And in program `foo`, what you need to do is open log file by specifing `LOG_LOC
         syslog(LOG_ERR, "test error log"); /* go to /var/log/messages */
         closelog();
     }
+~~~
 
 
 ### References

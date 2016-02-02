@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -426,13 +426,13 @@
 </div>
 
 <article class="post-content">
-  <p>This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, <a href="http://lear.inrialpes.fr/%7Ewang/improved_trajectories">http://lear.inrialpes.fr/~wang/improved_trajectories</a>) and STIP features(<a href="http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html">http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html</a>) on UCF 101 dataset(<a href="http://crcv.ucf.edu/data/UCF101.php">http://crcv.ucf.edu/data/UCF101.php</a>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. </p>
+  <p>This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(<a href="http://crcv.ucf.edu/data/UCF101.php">http://crcv.ucf.edu/data/UCF101.php</a>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions.</p>
 
 <p>You can find my Matlab code from <a href="https://github.com/bo-yang">my GitHub Channel</a>:</p>
 
 <ul>
-<li><a href="https://github.com/bo-yang/dtf_fisher">DTF + Fisher Vector code</a></li>
-<li><a href="https://github.com/bo-yang/stip_fisher">STIP + Fisher Vector code</a></li>
+  <li><a href="https://github.com/bo-yang/dtf_fisher">DTF + Fisher Vector code</a></li>
+  <li><a href="https://github.com/bo-yang/stip_fisher">STIP + Fisher Vector code</a></li>
 </ul>
 
 <h3 id="dense-trajectory-features">Dense Trajectory Features</h3>
@@ -459,7 +459,7 @@ difference is that the Fisher vectors are used for SVM classification,
 which is based on the SVM model trained with training videos.</p>
 
 <p><img src="http://www.bo-yang.net//assets/images/fisher_pipeline.png" alt="Figure 1. Pipeline of UCF101 action recognition using Fisher
-vector.">.</p>
+vector." />.</p>
 
 <p>To well utilize the STIP or DTF features, features(HOG, HOF, MBH, etc.) are treated
 separately and they are only combined(simple concatenation) after computing Fisher
@@ -477,17 +477,17 @@ operations are based on each video clip.</p>
 
 <h4 id="dtf-features">DTF Features</h4>
 
-<p>Since the DTF features are &ldquo;dense&rdquo;(which means a lot of data), it took me 4~5 days to exact the (improved) DTF features of UCF 101 clips with the dedault parameters on a modern Linux desktop(I used 10 threads for extraction in paralle). The installation of DTF tools was also a very tricky task.</p>
+<p>Since the DTF features are “dense”(which means a lot of data), it took me 4~5 days to exact the (improved) DTF features of UCF 101 clips with the dedault parameters on a modern Linux desktop(I used 10 threads for extraction in paralle). The installation of DTF tools was also a very tricky task.</p>
 
-<p>To save space, all the DTF features were compressed. For UCF101, it would cost about 500GB after zip compression. And the required space would doubled if not compressing. If you don&rsquo;t want to save the DTF features, you can call the DTF tools in Matlab and discard the extracted features.</p>
+<p>To save space, all the DTF features were compressed. For UCF101, it would cost about 500GB after zip compression. And the required space would doubled if not compressing. If you don’t want to save the DTF features, you can call the DTF tools in Matlab and discard the extracted features.</p>
 
 <h3 id="fisher-vector">Fisher Vector</h3>
 
-<p>The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.  </p>
+<p>The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.</p>
 
 <p>Following is the algorithm of computing Fisher vectors from features(actually I implemented this algorithm in Matlab, and if you are interested, please refer <a href="https://github.com/bo-yang/stip_fisher/blob/master/fisher_encode.m">here</a>):</p>
 
-<p><img src="http://www.bo-yang.net//assets/images/fisher_vector_algorithm.png" alt="Figure 2. Algorithm of computing Fisher vectors.">.</p>
+<p><img src="http://www.bo-yang.net//assets/images/fisher_vector_algorithm.png" alt="Figure 2. Algorithm of computing Fisher vectors." />.</p>
 
 <p>During the subsampling of STIP features, I randomly chose 1000 HOG or
 HOF features from each training video clip. For some videos, if the
@@ -500,7 +500,7 @@ half of their original dimensions by doing PCA. At this step, the
 coefficients of PCA were recorded, which would be used in later. The
 GMMs were trained with the half-sized features, and the parameters of
 GMMs(i.e. weight, mean and covariance) were stored for the following
-process. In my program, the GMM code implemented by <a href="http://www.robots.ox.ac.uk/%7Evgg/software/enceval_toolkit/">Oxford Visual Geometry Group(VGG)</a>
+process. In my program, the GMM code implemented by <a href="http://www.robots.ox.ac.uk/~vgg/software/enceval_toolkit/">Oxford Visual Geometry Group(VGG)</a>
 is used, which eventually call <a href="http://www.vlfeat.org/">VLFeat</a>. In my
 code, 256 Gaussians were used.</p>
 
@@ -511,13 +511,13 @@ large number(in my implementation, 123456).</p>
 
 <h3 id="svm-classification">SVM Classification</h3>
 
-<p>Binary SVM classification(<a href="http://www.csie.ntu.edu.tw/%7Ecjlin/libsvm/">LIBSVM</a>) is used in my implementation.
+<p>Binary SVM classification(<a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a>) is used in my implementation.
 For each action, positive video clips are labeled as 1 while negative
 videos are as labeled -1 during training and test. In my code, SVM cost
 is set to 100. The option of SVM training is:</p>
 
 <blockquote>
-<p>-t 0 -s 0 -q -c 100 -b 1.</p>
+  <p>-t 0 -s 0 -q -c 100 -b 1.</p>
 </blockquote>
 
 <h3 id="results">Results</h3>
@@ -525,7 +525,7 @@ is set to 100. The option of SVM training is:</p>
 <p>The action recognition accuracy of all the 101 actions was 77.95% when
 using above pipeline and STIP features. And the confusion matrix is shown in Figure 3.</p>
 
-<p><img src="http://www.bo-yang.net//assets/images/confusionmat_101.png" alt="Figure 3. Confusion matrix of all the 101 actions with STIP features."></p>
+<p><img src="http://www.bo-yang.net//assets/images/confusionmat_101.png" alt="Figure 3. Confusion matrix of all the 101 actions with STIP features." /></p>
 
 <p>The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was around 85% using DTF features, about 8% higher than using BOV representations(internal test). And the best result I got with the ISA neural network on UCF 101 was only 58% in November, 2013.</p>
 
@@ -536,12 +536,13 @@ using above pipeline and STIP features. And the confusion matrix is shown in Fig
 <h3 id="references">References</h3>
 
 <ol>
-<li>Gabriela Csurka, Florent Perronnin, <em>Fisher Vectors: Beyond Bag-of-Visual-Words Image Representations</em> , Communications in Computer and Information Science Volume 229, 2011, pp 28-42.</li>
-<li>Chih-Chung Chang and Chih-Jen Lin. <em>Libsvm: A library for support vector machines</em>. ACM Trans. Intell. Syst. Technol., 2(3):27:1–27:27, May 2011.</li>
-<li>Heng Wang and Cordelia Schmid. <em>Action Recognition with Improved Trajectories</em>. In ICCV 2013 - IEEE International Conference on Computer Vision, Sydney, Australia, December 2013. IEEE.</li>
-<li>Jorge Sanchez, Florent Perronnin, Thomas Mensink, and Jakob Verbeek. <em>Image Classification with the Fisher Vector: Theory and Practice</em>. International Journal of Computer Vision, 105(3):222–245, December 2013.</li>
-<li>Andrej Karpathy, George Toderici, Sanketh Shetty, Thomas Leung, Rahul Sukthankar, and Li Fei-Fei. <em>Large-scale video classification with convolutional neural networks</em>. In CVPR, 2014.</li>
+  <li>Gabriela Csurka, Florent Perronnin, <em>Fisher Vectors: Beyond Bag-of-Visual-Words Image Representations</em> , Communications in Computer and Information Science Volume 229, 2011, pp 28-42.</li>
+  <li>Chih-Chung Chang and Chih-Jen Lin. <em>Libsvm: A library for support vector machines</em>. ACM Trans. Intell. Syst. Technol., 2(3):27:1–27:27, May 2011.</li>
+  <li>Heng Wang and Cordelia Schmid. <em>Action Recognition with Improved Trajectories</em>. In ICCV 2013 - IEEE International Conference on Computer Vision, Sydney, Australia, December 2013. IEEE.</li>
+  <li>Jorge Sanchez, Florent Perronnin, Thomas Mensink, and Jakob Verbeek. <em>Image Classification with the Fisher Vector: Theory and Practice</em>. International Journal of Computer Vision, 105(3):222–245, December 2013.</li>
+  <li>Andrej Karpathy, George Toderici, Sanketh Shetty, Thomas Leung, Rahul Sukthankar, and Li Fei-Fei. <em>Large-scale video classification with convolutional neural networks</em>. In CVPR, 2014.</li>
 </ol>
+
 
 </article>
 

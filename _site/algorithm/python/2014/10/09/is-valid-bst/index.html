@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012235" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,51 +429,55 @@
   <p><em>This is the fourth article on binary tree operations. For other topics on binary tree, please refer to:</em></p>
 
 <ol>
-<li><a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a></li>
-<li><a href="http://bo-yang.github.io/2014/08/16/binary-tree-ii/">Binary Tree Operations(II)</a></li>
-<li><a href="http://bo-yang.github.io/2014/09/12/binary-tree-iii/">Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation</a></li>
-<li><a href="http://bo-yang.github.io/2014/10/09/is-valid-bst/">Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree</a></li>
+  <li><a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a></li>
+  <li><a href="http://bo-yang.github.io/2014/08/16/binary-tree-ii/">Binary Tree Operations(II)</a></li>
+  <li><a href="http://bo-yang.github.io/2014/09/12/binary-tree-iii/">Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation</a></li>
+  <li><a href="http://bo-yang.github.io/2014/10/09/is-valid-bst/">Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree</a></li>
 </ol>
 
 <p>The problem is: <em>given a binary tree, how to determine if it is a Binary Search Tree(BST) or not?</em> A binary search tree is a binary tree data structure which has the following properties.</p>
 
 <ul>
-<li>The left subtree of a node contains only nodes with keys less than the node’s key.</li>
-<li>The right subtree of a node contains only nodes with keys greater than the node’s key.</li>
-<li>Both the left and right subtrees must also be binary search trees. </li>
+  <li>The left subtree of a node contains only nodes with keys less than the node’s key.</li>
+  <li>The right subtree of a node contains only nodes with keys greater than the node’s key.</li>
+  <li>Both the left and right subtrees must also be binary search trees.</li>
 </ul>
 
-<p>The strategy is to recursively check (1) if the maximum value in the left subtree is smaller than the root node, and (2) if the minimum value in the right subtree is greater than the root node. </p>
+<p>The strategy is to recursively check (1) if the maximum value in the left subtree is smaller than the root node, and (2) if the minimum value in the right subtree is greater than the root node.</p>
 
-<p>In order to implement the recursion, a helper function <code>IsBSTHelper(TreeNode* root, int min, int max)</code> is needed, where <code>min</code> and <code>max</code> define the range of possible values of subtree nodes. When checking a binary tree, the initial value of <code>min</code> is <code>INT_MIN</code> and the initial value of <code>max</code> is <code>INT_MAX</code>. However, when exploring the left subtree, the <code>max</code> will be changed to the value of root, and the <code>min</code> value remains; when exploring the right subtree, the <code>min</code> value is the value of root and the <code>max</code> value remains. </p>
+<p>In order to implement the recursion, a helper function <code class="highlighter-rouge">IsBSTHelper(TreeNode* root, int min, int max)</code> is needed, where <code class="highlighter-rouge">min</code> and <code class="highlighter-rouge">max</code> define the range of possible values of subtree nodes. When checking a binary tree, the initial value of <code class="highlighter-rouge">min</code> is <code class="highlighter-rouge">INT_MIN</code> and the initial value of <code class="highlighter-rouge">max</code> is <code class="highlighter-rouge">INT_MAX</code>. However, when exploring the left subtree, the <code class="highlighter-rouge">max</code> will be changed to the value of root, and the <code class="highlighter-rouge">min</code> value remains; when exploring the right subtree, the <code class="highlighter-rouge">min</code> value is the value of root and the <code class="highlighter-rouge">max</code> value remains.</p>
 
-<p>For complete code of checking BST, please refer to functions <code>IsBST()</code> and <code>IsBSTHelper(TreeNode* root, int min, int max)</code> in <a href="https://github.com/bo-yang/BinaryTree">my binary tree library</a>. Please note that, we assume a <code>NULL</code> node is a valid binary search tree.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">bool IsBST(TreeNode* root) {
-    return IsBSTHelper(root, INT_MIN, INT_MAX);
+<p>For complete code of checking BST, please refer to functions <code class="highlighter-rouge">IsBST()</code> and <code class="highlighter-rouge">IsBSTHelper(TreeNode* root, int min, int max)</code> in <a href="https://github.com/bo-yang/BinaryTree">my binary tree library</a>. Please note that, we assume a <code class="highlighter-rouge">NULL</code> node is a valid binary search tree.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bool IsBST(TreeNode* root) {
+	return IsBSTHelper(root, INT_MIN, INT_MAX);
 }
 
 // Helper function for checking binary search tree
 bool IsBSTHelper(TreeNode* root, int min, int max) {
-    if(root==NULL)
-        return true;
+	if(root==NULL)
+		return true;
 
-    assert(root-&gt;val &gt; min &amp;&amp; root-&gt;val &lt; max);
+	assert(root-&gt;val &gt; min &amp;&amp; root-&gt;val &lt; max);
 
-    bool bst_left=true;
-    bool bst_right=true;
-    if(root-&gt;left!=NULL &amp;&amp; (root-&gt;left-&gt;val &gt;= root-&gt;val || root-&gt;left-&gt;val &lt;= min))
-        return false;
-    else
-        bst_left=IsBSTHelper(root-&gt;left, min, root-&gt;val);
+	bool bst_left=true;
+	bool bst_right=true;
+	if(root-&gt;left!=NULL &amp;&amp; (root-&gt;left-&gt;val &gt;= root-&gt;val || root-&gt;left-&gt;val &lt;= min))
+		return false;
+	else
+		bst_left=IsBSTHelper(root-&gt;left, min, root-&gt;val);
+	
+	if(root-&gt;right!=NULL &amp;&amp; (root-&gt;right-&gt;val &lt;= root-&gt;val || root-&gt;right-&gt;val &gt;= max))
+		return false;
+	else
+		bst_right=IsBSTHelper(root-&gt;right, root-&gt;val, max);
 
-    if(root-&gt;right!=NULL &amp;&amp; (root-&gt;right-&gt;val &lt;= root-&gt;val || root-&gt;right-&gt;val &gt;= max))
-        return false;
-    else
-        bst_right=IsBSTHelper(root-&gt;right, root-&gt;val, max);
-
-    return (bst_left &amp;&amp; bst_right);
+	return (bst_left &amp;&amp; bst_right);
 }
-</code></pre></div>
+</code></pre>
+</div>
+
+
 </article>
 
 
