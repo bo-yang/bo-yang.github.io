@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>《Beiginning Linux programming || Linux 程序设计》读书笔记(四) &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Unix/Linux">
+    <link rel="canonical" href="http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="《Beiginning Linux programming || Linux 程序设计》读书笔记(四)">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="《Beiginning Linux programming || Linux 程序设计》读书笔记(四)" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>《Beiginning Linux programming || Linux 程序设计》读书笔记(四)</h1>
+  <span class="post-meta">Sep 23, 2008</span><br>
+  
+  <span class="post-meta small">
+  
+    9 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div>(21) Trap</div>
+<p>&nbsp;&nbsp; &nbsp;The trap command is used to specify the<br />
+actions to take on receipt of signals.&nbsp;A common use is to tidy up a<br />
+script when it is interrupted.<br />&nbsp;&nbsp; &nbsp;The trap command is passed the action to take, followed by the signal name (or names) to trap on:
+<div>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="background-color:rgb(238,238,238);">&nbsp;</span><span style="background-color:rgb(238,238,238);">trap command signal</span></div>
+<div>Remember<br />
+that the scripts are normally interpreted from top to bottom, so you<br />
+must specify the trap&nbsp;command before the part of the script you wish to<br />
+protect.</div>
+<p>&nbsp;&nbsp; &nbsp;To see the signal numbers and associated names, you can just type <span style="font-family:Courier New;background-color:rgb(204,204,204);">trap -l </span>at a command prompt.<br />&nbsp;&nbsp;&nbsp;<br />
+To reset a trap condition to the default, simply specify the command as<br />
+-. To ignore a signal, set the command to the empty string <span style="font-family:Courier New;">‘’</span>.</p>
+<p><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;Signal&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Description</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;<b>HUP (1)</b>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Hang up; usually sent when a terminal goes offline, or a user logs out</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;<b>INT (2)</b>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Interrupt; usually sent by pressing Ctrl+C</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;<b>QUIT (3)</b>&nbsp; &nbsp;&nbsp; &nbsp; Quit; usually sent by pressing Ctrl+/</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;<b>ABRT (6)&nbsp;</b> &nbsp;&nbsp; &nbsp; Abort; usually sent on some serious execution error</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;<b>ALRM (14)</b> &nbsp;&nbsp; &nbsp; Alarm; usually used for handling timeouts</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;<b>TERM (15) </b>&nbsp;&nbsp; &nbsp;Terminate; usually sent by the system when it’s shutting down</span></p>
+<p>(22) unset<br />&nbsp;&nbsp;<br />
+&nbsp;The unset command removes variables or functions from the environment.<br />
+It can’t do this to read-only variables defined by the shell itself,<br />
+such as IFS. </p>
+<p>(23) <b>find</b><br />&nbsp;&nbsp;&nbsp; The full syntax for the find command is as follows:<br />&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<b><span style="background-color:rgb(204,204,204);"><span style="font-family:Courier New;">find [path] [options] [tests] [actions]</span></span></b></p>
+<p>&nbsp;&nbsp; &nbsp;<span style="background-color:rgb(204,204,204);">Option&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Meaning</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;-depth&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Search the contents of a directory before looking at the directory itself.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;-follow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Follow symbolic links.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;-maxdepths N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;Search at most N levels of the directory when searching.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;-mount (or -xdev) &nbsp;&nbsp; &nbsp;Don’t search directories on other file systems.</span><br /><br style="background-color:rgb(204,204,204);" /><br /><span style="background-color:rgb(204,204,204);">Test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Meaning</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-atime N&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;The file was last accessed N days ago.&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-mtime N&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;The file was last modified N days ago.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-name pattern&nbsp;&nbsp; &nbsp;The name of the file, excluding any path, matches the pattern pro-</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;vided. To ensure that the pattern is passed to find, and not evaluated</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;by the shell immediately, the pattern must always be in quotes.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-newer otherfile&nbsp;&nbsp; &nbsp;The file is newer than the file otherfile.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-type C&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; The file is of type C, where C can be of a particular type; the most</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;common are “d” for a directory and “f” for a regular file. For other</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;types consult the manual pages.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-user username&nbsp;&nbsp; &nbsp;The file is owned by the user with the given name.</span></p>
+<p><span style="background-color:rgb(204,204,204);">Operator, &nbsp;&nbsp; &nbsp;Short Form Operator, &nbsp;&nbsp; &nbsp;Long Form Meaning</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -not&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Invert the test.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -and&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Both tests must be true.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-o&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -or&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Either test must be true.</span><br /><br style="background-color:rgb(204,204,204);" /><br /><span style="background-color:rgb(204,204,204);">Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Meaning</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-exec command&nbsp;&nbsp; &nbsp;Execute a command. This is one of the most common actions. See the</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;explanation following this table for how parameters may be passed to</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;the command. This action must be terminated with a </span><b><span style="font-family:Courier New;">/;</span></b><span style="background-color:rgb(204,204,204);"> character pair.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-ok command&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Like -exec, except that it prompts for user confirmation of each file on</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;which it will carry out the command before executing the command.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;This action must be terminated with a </span><b><span style="font-family:Courier New;">/;</span></b><span style="background-color:rgb(204,204,204);"> character pair.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-print&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; Print out the name of the file.</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">-ls&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Use the command </span><span style="font-family:Courier New;color:rgb(0,0,255);background-color:rgb(204,204,204);">ls -dils</span><span style="background-color:rgb(204,204,204);"> on the current file.</span></p>
+<p>(24) <b>grep</b><br />&nbsp;&nbsp; &nbsp;The grep command takes options, a pattern to match, and files to search in:<br />&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family:Courier New;color:rgb(0,0,255);">grep [options] PATTERN [FILES]</span></p>
+<p><span style="background-color:rgb(204,204,204);">Option &nbsp;&nbsp; &nbsp;Meaning</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="font-family:Courier New;background-color:rgb(204,204,204);">-c</span><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Rather than print matching lines, print a count of the number of linesthat match.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="font-family:Courier New;background-color:rgb(204,204,204);">-E</span><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Turn on extended expressions.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="font-family:Courier New;background-color:rgb(204,204,204);">-h</span><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Suppress the normal prefixing of each output line with the name of the file it was found in.&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="font-family:Courier New;background-color:rgb(204,204,204);">-i</span><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;Ignore case.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="font-family:Courier New;background-color:rgb(204,204,204);">-l</span><span style="background-color:rgb(204,204,204);"><span style="font-family:Courier New;">&nbsp;</span>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;List the names of the files with matching lines; don’t output the actual matched line.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="font-family:Courier New;background-color:rgb(204,204,204);">-v</span><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Invert the matching pattern to select nonmatching lines, rather than matching lines.</span></p>
+<p>(25) Regular Expressions<br />&nbsp;&nbsp; &nbsp;The most frequently used are shown in the following table:</p>
+<p>&nbsp;<span style="background-color:rgb(204,204,204);">&nbsp; Character&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Meaning</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; <b>^</b></span>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">Anchor to the beginning of a line</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; <b>$</b></span>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="background-color:rgb(204,204,204);">Anchor to the end of a line</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; <b>.</b></span>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="background-color:rgb(204,204,204);">Any single character</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;<b> [ ]</b></span>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="background-color:rgb(204,204,204);">The square braces contain a range of characters, any one of which</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; may be matched, such as a range of characters like a–e or an inverted</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; range by preceding the range with a ^ symbol.</span><br style="background-color:rgb(204,204,204);" />If you want to use any of these characters as “normal” characters, precede them with a /.</p>
+<p>There are also some useful special match patterns that can be used in square braces, as described in the following table:<br />&nbsp;&nbsp; <br /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp; &nbsp;Match Pattern&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Meaning</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:alnum:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Alphanumeric characters</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:alpha:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; Letters</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:ascii:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; ASCII characters</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:blank:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Space or tab</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:cntrl:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ASCII control characters</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:digit:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Digits</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:graph:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; Noncontrol, nonspace characters</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:lower:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Lowercase letters</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:print:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; Printable characters</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:punct:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Punctuation characters</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:space:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Whitespace characters, including vertical tab</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:upper:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; Uppercase letters</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp;&nbsp;&nbsp; [:xdigit:]&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; Hexadecimal digits</span></p>
+<p>In addition, if the <span style="font-family:Courier New;">-E</span><br />
+for extended matching is also specified, other characters that control<br />
+the completion of matching may follow the regular expression (see the<br />
+following table). With grep it is also necessary to precede these<br />
+characters with a <span style="font-family:Courier New;">/</span>.
+<div id="qc05" style="padding:1em 0;text-align:center;"><img style="width:989px;height:354px;" src="http://docs.google.com/a/ecdesk.jp/File?id=dd6nw3mt_92dx4f5fdf_b" /></div>
+<p>Examples:<br />&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(238,238,238);font-family:Courier New;">$ grep "e$" words2.txt</span>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <span style="color:rgb(56,118,29);"># this finds lines that end in the letter e.</span><br />&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(238,238,238);font-family:Courier New;">$ grep a[[:blank:]] words2.txt</span><span style="font-family:Courier New;">&nbsp;</span>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="color:rgb(39,78,19);"># find words that end with the letter a.&nbsp; [[:blank:]]&nbsp; tests for a space or a tab</span><br />&nbsp;&nbsp;&nbsp; <span style="background-color:rgb(238,238,238);font-family:Courier New;">$ grep -E [a-z]/{10/} words2.txt</span>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<span style="color:rgb(56,118,29);">#<br />
+use the extended grep mode to search for lowercase words that are<br />
+exactly 10 characterslong. Do this by specifying a range of &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;# characters<br />
+to match a to z, and a repetition of 10 matches</span></p>
+<p>(26) Command Execution<br />&nbsp;&nbsp;&nbsp; Execute a command and put the output of the command into a variable. You can do this by using the <span style="font-family:Courier New;color:rgb(0,0,255);">$(command)</span> syntax.The result of the <span style="font-family:Courier New;color:rgb(0,0,255);">$(command)</span> is simply the output from the command. If you want to get the result into a variable, you can just assign it in the usual way:<br /><span style="background-color:rgb(238,238,238);">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;whoisthere=$(who)</span><br style="background-color:rgb(238,238,238);" /><span style="background-color:rgb(238,238,238);">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;echo $whoisthere</span><br style="background-color:rgb(238,238,238);" /><br style="background-color:rgb(204,204,204);" />(27) Arithmetic Expansion<br />&nbsp;&nbsp;&nbsp; The <span style="font-family:Courier New;">expr</span><br />
+command can enable simple arithmetic commands to be processed, but this<br />
+is quite slow to execute because a new shell is invoked to process the <span style="font-family:Courier New;">expr</span> command.<br />&nbsp;&nbsp;&nbsp; A newer and better alternative is <span style="font-family:Courier New;"><span style="color:rgb(0,0,255);">$((...))</span> </span>expansion. By enclosing the expression you wish to evaluate in <span style="font-family:Courier New;color:rgb(0,0,255);">$((...))</span>, you can perform simple arithmetic much more efficiently.</p>
+<p><span style="background-color:rgb(204,204,204);font-family:Courier New;">#!/bin/sh</span><br style="background-color:rgb(204,204,204);font-family:Courier New;" /><br style="background-color:rgb(204,204,204);font-family:Courier New;" /><span style="background-color:rgb(204,204,204);font-family:Courier New;">x=0</span><br style="background-color:rgb(204,204,204);font-family:Courier New;" /><span style="background-color:rgb(204,204,204);font-family:Courier New;">while [ "$x" -ne 10 ]; do</span><br style="background-color:rgb(204,204,204);font-family:Courier New;" /><span style="background-color:rgb(204,204,204);font-family:Courier New;">&nbsp;&nbsp;&nbsp; echo $x</span><br style="background-color:rgb(204,204,204);font-family:Courier New;" /><span style="background-color:rgb(204,204,204);font-family:Courier New;">&nbsp;&nbsp;&nbsp; x=$(($x+1))</span><br style="background-color:rgb(204,204,204);font-family:Courier New;" /><span style="background-color:rgb(204,204,204);font-family:Courier New;">done</span><br style="background-color:rgb(204,204,204);font-family:Courier New;" /><br style="background-color:rgb(204,204,204);font-family:Courier New;" /><span style="background-color:rgb(204,204,204);font-family:Courier New;">exit 0</span></p>
+<p>(28) Parameter Expansion
+<div id="cwzl" style="padding:1em 0;text-align:center;"><img style="width:987px;height:449px;" src="http://docs.google.com/a/ecdesk.jp/File?id=dd6nw3mt_93d54kdkcr_b" /></div>
+<p>These<br />
+substitutions are often useful when you’re working with strings. The<br />
+last four, which remove parts of strings, are especially useful for<br />
+processing filenames and paths, as the following example shows.</p>
+<p><span style="background-color:rgb(238,238,238);font-family:Courier New;">#!/bin/sh</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">unset foo</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">echo ${foo:-bar}</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">foo=fud</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">echo ${foo:-bar}</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">foo=/usr/bin/X11/startx</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">echo ${foo#*/}</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">echo ${foo##*/}</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">bar=/usr/local/etc/local/networks</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">echo ${bar%local*}</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">echo ${bar%%local*}</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">exit 0</span></p>
+<p>The output is:</p>
+<p><span style="background-color:rgb(238,238,238);font-family:Courier New;">bar</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">fud</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">usr/bin/X11/startx</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">startx</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">/usr/local/etc</span><br style="background-color:rgb(238,238,238);font-family:Courier New;" /><span style="background-color:rgb(238,238,238);font-family:Courier New;">/usr</span></p>
+<div id="by20" style="padding:1em 0;text-align:center;"><img style="width:867px;height:225px;" src="http://docs.google.com/a/ecdesk.jp/File?id=dd6nw3mt_94gv3fx3ck_b" /></div>
+<p>(29) Here Document<br />One<br />
+special way of passing input to a command from a shell script is to use<br />
+a here document. This document allows a command to execute as though it<br />
+were reading from a file or the keyboard, whereas in fact it’s getting<br />
+input from the script.</p>
+<p>A here document starts with the leader <span style="font-family:Courier New;">&lt;&lt;</span>, followed by a special sequence of characters that is repeated at the end of the document. <span style="font-family:Courier New;">&lt;&lt;</span><br />
+is the shell’s label redirector, which in this case forces the command<br />
+input to be the here document. This special sequence acts as a marker<br />
+to tell the shell where the here document ends. The marker sequence<br />
+must not appear in the lines to be passed to the command, so it’s best<br />
+to make them memorable and fairly unusual.<br /><br style="background-color:rgb(238,238,238);" /><span style="background-color:rgb(238,238,238);">#!/bin/sh</span><br style="background-color:rgb(238,238,238);" /><br style="background-color:rgb(238,238,238);" /><span style="background-color:rgb(238,238,238);">cat &lt;&lt;!FUNKY!</span><br style="background-color:rgb(238,238,238);" /><span style="background-color:rgb(238,238,238);">hello</span><br style="background-color:rgb(238,238,238);" /><span style="background-color:rgb(238,238,238);">this is a here</span><br style="background-color:rgb(238,238,238);" /><span style="background-color:rgb(238,238,238);">document</span><br style="background-color:rgb(238,238,238);" /><br style="background-color:rgb(238,238,238);" /><span style="background-color:rgb(238,238,238);">!FUNKY!</span></p>
+<p>4.7 Debugging Shell<br />&nbsp;&nbsp;<br />
+&nbsp;Since scripts are interpreted, there’s no compilation overhead in<br />
+modifying and retrying a script. The main way to trace more complicated<br />
+errors is to set various shell options. To do this, you can either use<br />
+command-line options after invoking the shell or use the set command.<br />
+The following table summarizes the options:
+<div id="qs.8" style="padding:1em 0;text-align:center;"><img style="width:984px;height:351px;" src="http://docs.google.com/File?id=dd6nw3mt_95frsmv27m_b" /></div>
+<p>4.8 Dialog Utility</p>
+<p>Example1:<br /><span style="background-color:rgb(204,204,204);">#!/bin/sh</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);"># Ask some questions and collect the answer</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --title "Questionnaire" --msgbox "Welcome to my simple survey" 9 18</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --title "Confirm" --yesno "Are you willing to take part?" 9 18</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">if [ "$?" != 0 ]; then</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; dialog --infobox "Thank you anyway" 5 20</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; sleep 2</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; dialog --clear</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; exit 0</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">fi</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --title "Questionnaire" --inputbox "Please enter your name" 9 30 2&gt;_1.txt</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">Q_NAME=$(cat _1.txt)</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --menu "$Q_NAME, what music do you like best?" 15 30 4 1 "Classical" 2 "Jazz" 3 "Country" 4 "Other" 2&gt;_1.txt</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">Q_MUSIC=$(cat _1.txt)</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">if [ "$Q_MUSIC" = "1" ]; then</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; dialog --title "Likes Classical" --msgbox "Good choice!" 12 25</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">else</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">&nbsp; dialog --title "Doesn’t like Classical" --msgbox "Shame" 12 25</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">fi</span><br style="background-color:rgb(204,204,204);" /><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">sleep 2</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">dialog --clear</span><br style="background-color:rgb(204,204,204);" /><span style="background-color:rgb(204,204,204);">exit 0</span></p>
+<p>Explanation:<br />&nbsp;&nbsp; &nbsp;You start with a simple welcome screen, before asking the user if he will take part using the simple <span style="font-family:Courier New;">--yesno</span> option of dialog. You use the <b><span style="font-family:Courier New;color:rgb(0,0,255);">$?</span></b> variable to check the reply. If he agreed, you then get his name, store it in a variable <span style="font-family:Courier New;">Q_NAME</span>, and ask what sort of music he likes, using the --menu option of dialog. By storing the numerical output in the variable <span style="font-family:Courier New;">Q_MUSIC</span>, you can see what he answered, and give an appropriate response.</p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=《Beiginning Linux programming || Linux 程序设计》读书笔记(四)&url=http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/&title=《Beiginning Linux programming || Linux 程序设计》读书笔记(四)" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/&name=《Beiginning Linux programming || Linux 程序设计》读书笔记(四)" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/&title=《Beiginning Linux programming || Linux 程序设计》读书笔记(四)" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/&t=《Beiginning Linux programming || Linux 程序设计》读书笔记(四)" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/unix/linux/2008/09/23/beginning-linux-programming-4';
+    var disqus_title      = '《Beiginning Linux programming || Linux 程序设计》读书笔记(四)';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//unix/linux/2008/09/23/beginning-linux-programming-4/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>expect_out(buffer)中包含send的数据 &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Tcl/Tk, Unix/Linux">
+    <link rel="canonical" href="http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="expect_out(buffer)中包含send的数据">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="expect_out(buffer)中包含send的数据" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>expect_out(buffer)中包含send的数据</h1>
+  <span class="post-meta">Jul 22, 2010</span><br>
+  
+  <span class="post-meta small">
+  
+    1 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>&nbsp;</p>
+<div>
+<h1 id="zw-129f916d484wZwN43916c">expect_out(buffer)中包含send的数据</h1>
+<p id="zw-129f9095e02SqGVnn3916c"><span id="zw-129f9081eab6rVFjl3916c">我一直以为在Expect中一旦执行send之后，</span><span id="zw-129f9081eab0LvB_n3916c">expect_out(buffer)就会被清空，直到有新的数据被填入，而恰恰就是这些数据被用在expect语句中。而今天在调试时发现的问题却令我大吃一惊，原来expect_out(buffer)不会被自动清空，而expect到的数据很可能不是你真正想要的，非常有可能是历史数据。</span><span id="zw-129f9095dc2QusTdp3916c"><a id="zw-129f9081f1cN6cQM93916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378">"expect_out(buffer) has the content of the previous send"</a>&nbsp;</span><span id="zw-129f9099e0e7RHXvZ3916c">一文</span><span id="zw-129f908ec42SOcAlE3916c">也指出了这个问题。</span></p>
+<h4></h4>
+<p id="zw-129f8fe7303mkLwZ3916c">&nbsp;</p>
+<p id="zw-129f9000807KX0na03916c">&nbsp;</p>
+<div id="zw-129f900a60bRM8gME3916c"><span id="zw-129f900a60cjSAA9Y3916c">比如在我的代码中，有如下片段：</span></div>
+<div id="zw-129f90d0f92fIcFt93916c">
+<pre>set prompt "#"
+set lockfile "/root/tmp/.cool.lock" 
+send "
+if /[ -e $lockfile ]; then
+        cat $lockfile
+else 
+        echo /"COOLID: $coolid/" &gt; $lockfile
+        echo DONE!
+fi
+/r"
+sleep 1 ;# necessary
+expect {
+        timeout {
+                puts stderr "WARNING: $ME: cannot verify if the Linux AP is locked by other COOL session!";
+                exit 2;
+        }
+       -re "COOLID: (/[1-9](/[0-9])*).*$prompt" {
+                puts stdout "expect_out(buffer)=$expect_out(buffer)"
+                puts stdout "expect_out(0,string)=$expect_out(0,string)"
+                puts stdout "expect_out(1,string)=$expect_out(1,string)"
+                puts stdout "expect_out(2,string)=$expect_out(2,string)"
+                puts stdout "expect_out(3,string)=$expect_out(3,string)"
+        }
+        "DONE!"  ;# do nothing    
+}
+</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f90da827xtgjkZ3916c">无论$<span id="zw-129f90e1718nSGeGs3916c">lockfile是否存在，expect总会得到COOLID: 68，而expect_out(buffer)的出如下：</span></div>
+<div id="zw-129f90b2476dtXxBy3916c"><span id="zw-129f90b2476oxjVv3916c"><br /></span></div>
+<div id="zw-129f909c0f6KIKdhr3916c">
+<pre>[root@bjvsmcl05 ~]# expect_out(buffer)= 
+Last login: Fri Jul 23 09:32:13 2010 from bjbldd
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]# if [ -e /root/tmp/.cool.lock ]; then
+&gt;         cat /root/tmp/.cool.lock
+&gt; else 
+&gt;         echo "COOLID: 68" &gt; /root/tmp/.cool.lock
+&gt;         echo DONE!
+&gt; fi
+COOLID: 1234
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]#
+expect_out(0,string)=23 09:32:13 2010 from bjbldd
+[root@bjvsmcl05 ~]# 
+[root@bjvsmcl05 ~]# if [ -e /root/tmp/.cool.lock ]; then
+&gt;         cat /root/tmp/.cool.lock
+&gt; else 
+&gt;         echo "COOLID: 68" &gt; /root/tmp/.cool.lock
+&gt;         echo DONE!
+&gt; fi
+COOLID: 1234</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f900a6154k9vr_3916c"></div>
+<div id="zw-129f9105181rk1x3916c"><span id="zw-129f910e606ulQUt93916c">由此可见，由于</span><span id="zw-129f910e6063BF84J3916c">expect_out(buffer)中含有send的</span><span id="zw-129f910e666C0g_Fp3916c">echo "COOLID: 68"</span><span id="zw-129f910e607avGslF3916c">，因此永远都能匹配到这个数据。</span></div>
+<div id="zw-129f912e050bsjfk33916c"><span id="zw-129f912e0513SIKJW3916c"><br /></span></div>
+<div id="zw-129f912eb9dtLDgK3916c"><span id="zw-129f91d3abebAfTcg3916c">由于没有找到一种可以清空</span><span id="zw-129f91d3ac0nlD1Le3916c">expect_out(buffer)的方法，无法实时地将</span><span id="zw-129f91d3b3fb8YqAR3916c">expect_out(buffer)清空。</span><span id="zw-129f91d3ac3QUsX9u3916c">我能想到的解决方法有两种：一是更改send和expect的内容或方式，避免send的内容中出现expect的模式(pattern)。比如在我的程序中把上述代码段改为：</span></div>
+<div id="zw-129f9158fb2IWSJh63916c">
+<pre>set lockfile "/root/tmp/.cool.lock"   
+send "cat $lockfile/r"
+expect {
+        -re "COOLID: (/[1-9](/[0-9])*)" {
+                puts stdout "expect_out(buffer)=$expect_out(buffer)"
+                puts stdout "expect_out(0,string)=$expect_out(0,string)"
+                puts stdout "expect_out(1,string)=$expect_out(1,string)"
+                if { [string compare $expect_out(1,string) $coolid] } {
+                        puts stdout "ERROR: $ME: $pcname has been reserverd by COOL session $expect_out(1,string), please choose another Linux PC instead./n"
+                        exit 2;
+                }
+        }
+        "cat: $lockfile: No such file or directory*" {
+                send "echo /"COOLID: $coolid/" &gt; $lockfile/r"
+        }
+}</pre>
+<p>&nbsp;</p></div>
+<div id="zw-129f9158fbfu4Bqbj3916c">就可以正常工作了。</div>
+<div id="zw-129f915d6eatVpx_B3916c"></div>
+<div id="zw-129f915ddd2JF4vnX3916c"><span id="zw-129f9193cbaAjqmW43916c">另一种方法是按照</span><a id="zw-129f9193cbcDH9aOQ3916c" title="click to see reference to this page" href="http://wiki.tcl.tk/_/ref?N=17378"><span id="zw-129f9193cbdI49BAL3916c">"expect_out(buffer) has the content of the previous send"</span></a><span id="zw-129f9193cbfZkPuN3916c">的例子中的方法，set prompt，保持原始代码中send的内容不变，将expect的正则表达式改为&nbsp;</span><span id="zw-129f9193d30IyWK1h3916c">-re "fi(</span><span id="zw-129f9193d30nUI-eL3916c">.*)</span><span id="zw-129f9193d30LfTLJL3916c">$prompt"，如此一来希望的输出就在expect_out(1,string)中了，然后利用string或者lsearch命令对匹配到的数据进行分析。</span></div>
+<div id="zw-129f91aeeb09SBIGu3916c"><span id="zw-129f91aeeb1poW5U3916c"><br /></span></div>
+<div id="zw-129f91af02eanEEu3916c"><span id="zw-129f91af02eiHWs1G3916c">结论：今后在编写Expect脚本时，不仅要考虑每一步的send/expect，也还要考虑到这一步的expect的内容有可能出现在之前的历史数据中。</span></div>
+<div><span id="zw-129f91af02eiHWs1G3916c"><br /></span></div>
+<p id="zw-129f9158fca-kkq893916c">&nbsp;</p>
+</div>
+<p>&nbsp;</p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=expect_out(buffer)中包含send的数据&url=http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/&title=expect_out(buffer)中包含send的数据" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/&name=expect_out(buffer)中包含send的数据" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/&title=expect_out(buffer)中包含send的数据" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/&t=expect_out(buffer)中包含send的数据" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out';
+    var disqus_title      = 'expect_out(buffer)中包含send的数据';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//tcl/tk/unix/linux/2010/07/22/expect-send-data-in-expect_out/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

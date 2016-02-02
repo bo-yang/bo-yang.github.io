@@ -1,1432 +1,580 @@
-
-<!DOCTYPE HTML>
-<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bo Yang | Bo's Blog</title>
-  
-  <meta name="author" content="Bo Yang" />
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <!--
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    
+    <link rel="canonical" href="http://www.bo-yang.net//page2/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
-  <!-- Bootstrap -->
-  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
 
-  <!-- font-awesome -->
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
 
-  <!-- Google Prettify -->
-  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
-  <!-- Google Pretty end -->
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
 
-  <link href="/assets/style/blog.css" rel="stylesheet">
-  
-  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
-  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Bo&#39;s Blog">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//page2/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Bo's Blog" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//page2/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
 </head>
 
-<body>
+<body class="site">
 
-   <!-- navigation bar -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a class="navbar-brand" href="/"><b>bo-yang</b></a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="/archive.html"><b>Archive</b></a>
-					</li>
-					<li><a href="/tags.html"><b>Tags</b></a>
-                    </li>
-                    <li><a href="/about.html"><b>About</b></a>
-                    </li>
-                    <li><a href="/messages.html"><b>Messages</b></a>
-                    </li>
-				</ul>
-				<ul class="nav navbar-nav pull-right">
-		          <li>
-		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
-		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
-		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
-		              <input type="hidden" name="ie" value="UTF-8" />
-		              <input type="hidden" name="oe" value="UTF-8" />
-		              <input type="hidden" name="hl" value="en-US" />
-		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
-					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
-					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
-		            </form>
-		          </li>
-		        </ul>
-            </div>
-			<!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-  <div class="container">
-    <div class="row" id="content-row">
-      
-<div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
-</div>
-
-<div class="container">
-    <div class="row" id="content-row">
-		<div class="col-md-9">
-	<!-- blog entry -->
 	
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/06/longest-palindromic-substring">Longest Palindromic Substring</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-06</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
     
-    <div class="post_at_index thepost">
-    	<p>The <a href="https://oj.leetcode.com/problems/longest-palindromic-substring/">Longest Palindromic Substring problem</a> is:</p>
 
-<blockquote>
-  <p>Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring. </p>
-</blockquote>
+    
 
-<p>To solve this problem, first investigate following examples:</p>
+    
+        <a href="/archive/">Archive</a>
+    
 
-<ul>
-  <li><code>abcdefedchz</code>: the longest palindrome is <code>cdefedc</code>, the left and right parts are symmetric to letter <code>f</code>.</li>
-  <li><code>acbbcae</code>: the longest palindrome <code>acbbca</code>, which is symmetric to the (virtual) postion between <code>bb</code>.</li>
-  <li><code>a</code>: the longest palindrome is the letter <code>a</code>.</li>
-</ul>
+    
 
-<p>Based on above investigations, we could summarize the solution as: </p>
+    
 
-<ol>
-  <li>For every letter in the string, find the longest repetitive characters to current letter, record the <code>start</code> and <code>end</code> position;</li>
-  <li>Minus <code>start</code> position by one and see if <code>s[start]</code> is still identical to <code>s[end]</code>.</li>
-  <li>If yes, iteratively compare <code>s[start--]</code> and <code>s[end--]</code> until they are not equal.</li>
-  <li>The possible longest palindrome for current letter is <code>end-start-1</code>.</li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+<div class="home">
+  
+    <div class="posts">
+      
+        <div class="post py3">
+          <p class="post-meta">Nov 20, 2014</p>
+          <a href="/unix/linux/notes/2014/11/20/pthread_exit-in-main/" class="post-link"><h3 class="h2 post-title">Be careful to pthread_exit() in main()</h3></a>
+          <p class="post-summary">
+            
+              <p>When using <code class="highlighter-rouge">pthread</code> for multithreading, most threads call <code class="highlighter-rouge">pthread_exit()</code> implicitly on return from the thread start routine. Besides, <code class="highlighter-rouge">pthread_exit()</code> also can be used to terminate the initial process thread in <code class="highlighter-rouge">main()</code>, leaving other threads to continue operation. The process will go away automatically when the last thread terminates. If you don’t care about the process exit status, or if is difficult to know the created thread IDs(e.g. created by third party APIs), you can call</p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Oct 21, 2014</p>
+          <a href="/unix/linux/notes/2014/10/21/remote-local-linux-develop-env/" class="post-link"><h3 class="h2 post-title">Building Remote+Local *nix Develop Environment</h3></a>
+          <p class="post-summary">
+            
+              <p><em>This is the first article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the following-up article on this topic, please refer to <a href="http://www.bo-yang.net/2014/12/19/remote-local-linux-develop-env-2/">Building Remote+Local *nix Develop Environment(II)</a>.</em></p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Oct 9, 2014</p>
+          <a href="/algorithm/python/2014/10/09/is-valid-bst/" class="post-link"><h3 class="h2 post-title">Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree</h3></a>
+          <p class="post-summary">
+            
+              <p><em>This is the fourth article on binary tree operations. For other topics on binary tree, please refer to:</em></p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Sep 25, 2014</p>
+          <a href="/c/c++/notes/2014/09/25/advanced-c-cpp-notes/" class="post-link"><h3 class="h2 post-title">Notes of Advanced C/C++</h3></a>
+          <p class="post-summary">
+            
+              <p>Following are my notes of some advanced C/C++ features, which were collected from the Internet. Sharing or reposting this note is welcomed. However, there is no guarantee for the correctness of the content.</p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Sep 13, 2014</p>
+          <a href="/algorithm/python/2014/09/13/spell-checker/" class="post-link"><h3 class="h2 post-title">Spell Checker</h3></a>
+          <p class="post-summary">
+            
+              <h3 id="problem">1. Problem</h3>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Sep 12, 2014</p>
+          <a href="/algorithm/c/c++/2014/09/12/shortest-path-in-triangle-numbers/" class="post-link"><h3 class="h2 post-title">Find The Shortest Path In Triangle Numbers</h3></a>
+          <p class="post-summary">
+            
+              <h3 id="problem">Problem</h3>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Sep 12, 2014</p>
+          <a href="/algorithm/c/c++/2014/09/12/binary-tree-iii/" class="post-link"><h3 class="h2 post-title">Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation</h3></a>
+          <p class="post-summary">
+            
+              <p><em>This is the third article on binary tree operations. For other topics on binary tree, please refer to:</em></p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Aug 16, 2014</p>
+          <a href="/algorithm/c/c++/2014/08/16/binary-tree-ii/" class="post-link"><h3 class="h2 post-title">Binary Tree Operations(II) - Path Sum and Cycle Detection</h3></a>
+          <p class="post-summary">
+            
+              <p>This is the second article on binary tree operations. For other topics on binary tree, please refer to</p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Aug 9, 2014</p>
+          <a href="/algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/" class="post-link"><h3 class="h2 post-title">Retrieve String From Sampled Slices</h3></a>
+          <p class="post-summary">
+            
+              <ol>
+  <li><a href="#problem">Problem</a></li>
+  <li><a href="#solution">Solution</a></li>
+  <li><a href="#code">Source Code</a></li>
 </ol>
 
-<p>Following is my C++ implementation. This algorithm could be enhanced by not checking every letters, however, the time complexity will still be \( O(N^2) \). A better method is <a href="http://en.wikipedia.org/wiki/Longest_palindromic_substring">Manacher’s Algorithm</a>, which has  \( O(N) \) time complexity.</p>
 
-<pre><code>class Solution {
-public:
-    string longestPalindrome(string s) {
-		if(s.empty())
-			return "";
-
-        int pd_start=0; // the start position of the palindrome
-		int pd_len=0; // the length of the palindrome
-		for(int i=0;i&lt;s.length();++i) {
-			int start=i;
-			int end=i;
-			while(end&lt;s.length() &amp;&amp; s[start]==s[end])
-				end++;
-
-			start--;
-			while(start&gt;=0 &amp;&amp; end&lt;s.length() &amp;&amp; s[start]==s[end]) {
-				start--;
-				end++;
-			}
-			
-			if(pd_len&lt;end-start-1) {
-				pd_len=end-start-1;
-				pd_start=start+1;	
-			}
-		}
-
-		return s.substr(pd_start,pd_len);		
-    }
-};
-</code></pre>
-
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/01/strstr">The First Occurrence of Needle In Haystack</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-01</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/implement-strstr/">The problem</a> is:</p>
-
-<blockquote>
-  <p>Implement strStr().</p>
-
-  <p>Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.</p>
-</blockquote>
-
-<p>A naive method: (1) find the the first letter of <code>needle</code> in <code>haystack</code>, (2)comparing other consecutive characters of needle and haystack, (3) if all letters in <code>needle</code> can be found in <code>haystack</code> consecutively, then return the position in <code>haystack</code>.</p>
-
-<pre><code>class Solution {
-public:
-    char *strStr(char *haystack, char *needle) {
-		if(haystack==NULL || needle==NULL)
-			return NULL;
-
-		if(needle[0]=='\0')
-			return haystack;
-
-		// Find the first character of needle in haystack
-		int hay_len=strlen(haystack);
-		int need_len=strlen(needle);
-		int pos=0;
-		bool found=false;
-		while(hay_len-pos&gt;=need_len &amp;&amp; haystack[pos]!='\0') {
-			if(haystack[pos] == needle[0]){
-				int th=pos+1;
-				int tn=1;
-				while(haystack[th] == needle[tn]) {
-					if(needle[tn]=='\0')
-						break;
-					th++;
-					tn++;
-				}
-				if(tn == need_len) {
-					found=true;
-					break;
-				}
-			}
-			pos++;
-		}
-
-		if(found)
-			return haystack+pos;
-		else
-			return NULL;
-    }
-};
-</code></pre>
-
-<p>A better solution is to use the famous KMP algorithm(<a href="http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/">http://www.geeksforgeeks.org/searching-for-patterns-set-2-kmp-algorithm/</a>).</p>
-
-<pre><code>class Solution {
-public:
-    char *strStr(char *haystack, char *needle) {
-		if(haystack==NULL || needle==NULL)
-	 		return NULL;
-	 	if(needle[0]=='\0')
-	 		return haystack;
-
-		int n=strlen(haystack);
-		int m=strlen(needle);
-		vector&lt;int&gt; pi(m); // the longest proper prefix which is also suffix
-		computePrefix(needle,pi);
-		//printPrefix(pi); // TEST ONLY
-
-		int q=0; // index for needle
-		int i=0; // index for haystack
-		while(i&lt;n) {
-			//cout&lt;&lt;"needle["&lt;&lt;q&lt;&lt;"]="&lt;&lt;needle[q]&lt;&lt;", haystack["&lt;&lt;i&lt;&lt;"]="&lt;&lt;haystack[i]&lt;&lt;endl; // TEST ONLY
-			if(needle[q]==haystack[i]) {
-				q++;
-				i++;
-			}
-			if(q==m) {
-				//cout&lt;&lt;"Pattern occurs with shift "&lt;&lt;i-m&lt;&lt;endl; // TEST ONLY
-				return haystack+i-m;
-			} else if(needle[q]!=haystack[i]) {
-				if(q!=0)
-					q=pi[q-1];
-				else
-					i++;
-			}
-		}
-		return NULL;
-	}
-
-	// Calculate the longest proper prefix which is also suffix.
-	// Examples:
-	// 	For the pattern “AABAACAABAA”, lps[] is [0, 1, 0, 1, 2, 0, 1, 2, 3, 4, 5]
-	//	For the pattern “ABCDE”, lps[] is [0, 0, 0, 0, 0]
-	//	For the pattern “AAAAA”, lps[] is [0, 1, 2, 3, 4]
-	//	For the pattern “AAABAAA”, lps[] is [0, 1, 2, 0, 1, 2, 3]
-	//	For the pattern “AAACAAAAAC”, lps[] is [0, 1, 2, 0, 1, 2, 3, 3, 3, 4]
-	void computePrefix(char* P, vector&lt;int&gt;&amp; pi) {
-		int m=strlen(P);
-		pi[0]=0; // lps[0] is always 0
-		int k=0; // length of the previous prefix suffix
-		int i=1;
-		while(i&lt;m) {
-			if(P[k]==P[i]) {
-				k++;
-				pi[i]=k;
-				i++;
-			} else {
-				if(k!=0) {
-					k=pi[k-1];
-				} else {
-					pi[i]=0;
-					i++;
-				}
-			}
-		}
-	}
-
-	void printPrefix(vector&lt;int&gt;&amp; pi) {
-		cout&lt;&lt;"pi={ ";
-		for(auto&amp; x:pi)
-			cout&lt;&lt;x&lt;&lt;" ";
-		cout&lt;&lt;"}"&lt;&lt;endl;
-	}
-};
-</code></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/01/longest-consecutive-sequence">Longest Consecutive Sequence</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-01</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/longest-consecutive-sequence/">The problem</a> is:</p>
-
-<blockquote>
-  <p>Given an unsorted array of integers, find the length of the longest consecutive elements sequence.</p>
-
-  <p>For example,</p>
-
-  <p>Given <code>[100, 4, 200, 1, 3, 2]</code>,the longest consecutive elements sequence is <code>[1, 2, 3, 4]</code>. Return its length: <code>4</code>.</p>
-
-  <p>Your algorithm should run in \( O(n) \) complexity.</p>
-</blockquote>
-
-<p>The most intuitive solution to this problem is sorting the array first, and then go through the sorted array and record the length of the longest consecutive sequence. However, the time complexity of this method is \(O(n \log n)\). </p>
-
-<p>In order to get the \( O(n) \) complexity, we can pick up the first element in array(say <code>num[0]</code>), and then check if <code>num[0]-1</code> and <code>num[0]+1</code> are in the array. If yes, iteratively check the upper/lower boundary of this sequence. Until the upper/lower boundaries never change, find a new element in the array that has not been accessed and start a new search. </p>
-
-<p>In this solution, a hash table(<code>unordered_map</code> in C++) is needed to record the accessibility of each element in the array. The keys to the hash table are the integeres in the array, and the values are bool - if the key has been accessed, then set to <code>false</code>; otherwise set to <code>true</code>. In average, checking the existence(in C++, the <code>find()</code> of <code>unordered_map</code>) of a key in the hash table costs constant time. Since we only access every element in the array(or hash table) for only one time, and the operations for each element only cost \(O(1)\) time, the time complexity of this method is \( O(n) \). And the space complexity is also \( O(n) \) due to the hash table.</p>
-
-<p>Following is my C++ implementation.</p>
-
-<pre>
-class Solution {
-public:
-    int longestConsecutive(vector<int> &amp;num) {
-        unordered_map&lt;int,bool&gt; map;
-		for(auto&amp; x:num)
-			map[x]=true;
-		
-		int start=num[0];
-		int end=num[0];
-		int max_len=1;
-		int cnt=1; // items have been accessed
-		int idx=1;
-		while(cnt&lt;=num.size()) {
-			//cout&lt;&lt;"start="&lt;&lt;start&lt;&lt;", end="&lt;&lt;end&lt;&lt;endl; // TEST ONLY
-			map[start]=false;
-			map[end]=false;
-			// Find the lower boundary
-			unordered_map&lt;int,bool&gt;::iterator got=map.find(start-1);
-			if(got!=map.end() &amp;&amp; got-&gt;second) { 
-				start--;
-				cnt++;
-			}
-			
-			// Find the upper boundary
-			got=map.find(end+1);
-			if(got!=map.end() &amp;&amp; got-&gt;second) { 
-				end++;
-				cnt++;
-			}
-
-			if(max_len&lt;end-start+1)
-				max_len=end-start+1;
-
-			if(!(map[start]||map[end])) { 
-				// If both start and end rich the boundaries, 
-				// find a new entry for them.
-				while(idx&lt;num.size() &amp;&amp; map[num[idx]]==false)
-					idx++;
-				start=num[idx];
-				end=num[idx];
-				map[start]=false;
-				cnt++;
-			}
-		}
-
-		return max_len;
-    }
-};
-
-</int></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/29/top-n-numbers">Top N Numbers</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-29</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The problem is:</p>
-
-<blockquote>
-  <p>Given an arbitrarily large file and a number, \(N\), containing individual numbers on each line (e.g. 200Gb file), will output the largest \(N\) numbers, highest first. Analyse the run time/space complexity of your approach.</p>
-</blockquote>
-
-<p>The intuitive method for the top-\(N\) is to sort all numbers first, and then return the first/last \(N\) numbers. However, the time complexity of sorting is usually \(O(n \log n)\), and when the data are very big, it is impossible to do the sorting in memory directly.</p>
-
-<p>Finding the top \(N\) items can be done in \(O(n \log N) \) time, which is approximate to \( O(n) \). The key is to use a heap(in C++, it is <em>priority_queue</em>) to store the top \(N\) items during reading the huge data. <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">Heap</a> is a specialized (binary) tree-based data structure that satisfies the <em>heap property</em>: either the keys of parent nodes are always greater than or equal to those of the children and the highest key is in the root node (this kind of heap is called max heap) or the keys of parent nodes are less than or equal to those of the children and the lowest key is in the root node (min heap).</p>
-
-<p>The strategy is:</p>
-
-<ul>
-  <li>maintain an \(N\)-item long heap, and read all items iteratively.</li>
-  <li>after reading a new item from the huge data, compare it with the smallest number in heap.</li>
-  <li>if the number is greater than the smallest number in heap, then pop the top number in heap(also is the smallest one) and push this data into heap.</li>
-  <li>otherwise, continue and read a new data.</li>
-  <li>finally, dump the \(N\) items in the heap.</li>
-</ul>
-
-<p>Since the heap could mantain the <em>heap property</em> by iteself, inserting a new item won’t disorder the heap. As inserting a new item to heap requires \( O(\log N) \) time, the worst case of processing \(n\) data costs \(O(n \log N) \) time.</p>
-
-<p>Following is my C++ solution. The <em>push</em> function of <em>priority_queue</em> will invoke <a href="http://www.cplusplus.com/reference/queue/priority_queue/push/">two functions</a>: one call to push_back on the underlying container and one call to push_heap on the range that includes all the elements of the underlying container.</p>
-
-<pre><code>class Numbers {
-	public:
-		Numbers(){}
-		Numbers(long len){ genNums(len); }
-		Numbers(string file){ readNums(file); }
-
-		vector&lt;int&gt;&amp; topN(vector&lt;int&gt;&amp; nums, int N);
-		vector&lt;int&gt;&amp; topNbySort(vector&lt;int&gt;&amp; nums, int N);
-		vector&lt;int&gt;&amp; genNums(long len);
-		vector&lt;int&gt;&amp; readNums(string file);
-		void printNums();
-		void printTopN(vector&lt;int&gt;&amp; top_num);
-
-	private:
-		vector&lt;int&gt; nums;
-		vector&lt;int&gt; top_nums;
-};
-
-// Find the top N numbers by heap.
-vector&lt;int&gt;&amp; Numbers::topN(vector&lt;int&gt;&amp; nums, int N) {
-	priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt; pq; // top element is the minimum
-	pq.push(nums.front());
-	for(vector&lt;int&gt;::iterator it=nums.begin()+1;it!=nums.end();++it) {
-		if(pq.top()&lt;*it) {
-			if(pq.size()&lt;N) {
-				pq.push(*it);
-			} else {
-				pq.pop();
-				pq.push(*it);
-			}
-		}
-	}
-	while(!pq.empty()) {
-		top_nums.push_back(pq.top());
-		pq.pop();
-	}
-
-	return top_nums;
-}
-
-// Find the top N numbers using sort.
-vector&lt;int&gt;&amp; Numbers::topNbySort(vector&lt;int&gt;&amp; nums, int N) {
-	sort(nums.begin(),nums.end()-1);
-	auto rit=nums.crbegin();
-	for(int i=0;i&lt;N;++i) {
-		top_nums.push_back(*rit);
-		rit++;
-	}
-	return top_nums;
-}
-
-void Numbers::printTopN(vector&lt;int&gt;&amp; top_num) {
-	cout&lt;&lt;"The top "&lt;&lt;top_num.size()&lt;&lt;" numbers are:"&lt;&lt;endl;
-	for(auto&amp; x:top_num)
-		cout&lt;&lt;x&lt;&lt;" ";
-	cout&lt;&lt;endl;
-}
-
-vector&lt;int&gt;&amp; Numbers::genNums(long len) {
-	for(int i=0;i&lt;len;++i)
-		nums.push_back(rand()%len+1);
-
-	return nums;
-}
-
-vector&lt;int&gt;&amp; Numbers::readNums(string file) {
-	fstream fs(file,std::fstream::in);
-	if (fs.is_open()) {
-		while(!fs.eof()) {
-			int tmp;
-			fs&gt;&gt;tmp;
-			nums.push_back(tmp);
-		}
-	} else {
-		cerr&lt;&lt;"Failed to open file "&lt;&lt;file&lt;&lt;endl;
-	}
-	fs.close();
-	nums.pop_back(); // delete the last number, because it was read two times.
-	return nums;
-}
-
-void Numbers::printNums() {
-	for(auto&amp; x:nums)
-		cout&lt;&lt;x&lt;&lt;" ";
-	cout&lt;&lt;endl;
-}
-</code></pre>
-
-<p>I tested the time costs of sorting and heap when handling 10,000,000 integers respectively. Obviously the heap method is 5 times faster than sort method.</p>
-
-<pre>
-macmini:TopNumbers boyang$ time ./top_nums_sort 
-The top 10 numbers are:
-8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
-
-real	0m6.646s
-user	0m6.589s
-sys	0m0.052s
-
-macmini:TopNumbers boyang$ time ./top_nums_heap 
-The top 10 numbers are:
-9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
-
-real	0m1.182s
-user	0m1.130s
-sys	0m0.043s
-</pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/27/nqueens">N-Queens Problem</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-27</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/n-queens/">N-Queens Problem</a>:</p>
-
-<blockquote>
-  <p>The \(n\)-queens puzzle is the problem of placing \(n\) queens on an \(n \times n\) chessboard such that no two queens attack each other, which means <a href="http://en.wikipedia.org/wiki/Eight_queens_puzzle">no two queens share the same row, column, or diagonal</a>.
-Given an integer \(n\), return all distinct solutions to the \(n\)-queens puzzle.
-Each solution contains a distinct board configuration of the \(n\)-queens’ placement, where ‘Q’ and ‘.’ both indicate a queen and an empty space respectively.</p>
-</blockquote>
-
-<p>This problem can be solved recursively: for every free grid in a row, resursively check possible solutions in the row below, until (1) there is no free grid in the next row(failure) or (2) there is no row below(current row is the last row, sucess). </p>
-
-<p>For any grid in the table, if the value of the grid is <em>true</em>, then this grid is free. Otherwise, it is not free. In order to guaranttee there is no two queens in the same row, column or diagonal, after picking up a grid, set the value of grids in the same row, column or diagonal to be <em>false</em>. After checking the remaining rows, the states of grids set in this step should be restored. </p>
-
-<p>Following is my C++ implementation. Functions checkRow() and setGrid() are very tricky.</p>
-
-<pre>
-class Solution {
-public:
-	vector&lt;vector<string> &gt; solveNQueens(int n) {
-	   vector&lt;vector<bool> &gt; grid;
-	   vector<bool> row_bool;
-	   for(int j=0;j&lt;n;++j) 
-		   row_bool.push_back(true);
-	   for(int i=0;i&lt;n;++i)
-		   grid.push_back(row_bool);
-
-	   vector&lt;vector&lt;pair&lt;int,int&gt; &gt; &gt; points;
-	   vector&lt;pair&lt;int,int&gt; &gt; path;
-	   checkRow(grid,path,points,n,0);
-
-	   vector&lt;vector<string> &gt; ret;
-	   for(int i=0;i&lt;points.size();++i) {
-		   vector<string> trace;
-		   string row_trace;
-		   for(int i=0;i&lt;n;++i)
-			   row_trace+=".";
-		   for(int i=0;i&lt;n;++i)
-			   trace.push_back(row_trace);
-
-		   for(auto&amp; pt: points[i]) 
-			   trace[pt.first][pt.second]='Q';
-
-		   ret.push_back(trace);
-	   }
-
-	   return ret;
-    }
-
-	// Recrusively try a solution row-by-row
-	void checkRow(vector&lt;vector<bool> &gt;&amp; grid, vector&lt;pair&lt;int,int&gt; &gt;&amp; path, vector&lt;vector&lt;pair&lt;int,int&gt; &gt; &gt;&amp; trace, int n, int row) {
-		if(row==n &amp;&amp; path.size()==n) {
-			trace.push_back(path);	// store the solution
-			return;
-		}
-
-		vector<int> avail_cols;
-		findAvailGrids(grid,avail_cols,row);
-		if(avail_cols.empty())
-			return;
-
-		for(auto&amp; col:avail_cols) {
-			path.push_back(pair&lt;int,int&gt;(row,col));
-			vector&lt;pair&lt;int,int&gt; &gt; points;
-			setGrid(grid,points,row,col,false);
-			checkRow(grid,path,trace,n,row+1);
-			setGrid(grid,points,true);	// recover the state of table
-			path.pop_back();
-		}
-	}
-
-	// Find available grids in a row
-	void findAvailGrids(vector&lt;vector<bool> &gt;&amp; grid,vector<int>&amp; vec,int row) {
-		for(int j=0;j&lt;grid[0].size();++j) {
-			if(grid[row][j])
-				vec.push_back(j);
-		}
-	}
-
-	// Set grids to val based on the coordinate of a given grid
-	void setGrid(vector&lt;vector<bool> &gt;&amp; grid,vector&lt;pair&lt;int,int&gt; &gt;&amp; points, int row, int col, bool val) {
-		const int n=grid.size();
-		// set grids in the same row and column
-		for(int i=0;i&lt;n;++i) {
-			if(grid[i][col]!=val)
-				points.push_back(pair&lt;int,int&gt;(i,col));
-			if(grid[row][i]!=val)
-				points.push_back(pair&lt;int,int&gt;(row,i));
-			grid[i][col]=val;
-			grid[row][i]=val;
-		}
-		// set diagnal grids
-		int x=row;
-		int y=col;
-		while(x&gt;=0 &amp;&amp; y&gt;=0) {
-			if(grid[x][y]!=val)
-				points.push_back(pair&lt;int,int&gt;(x,y));
-			grid[x][y]=val;
-			x--;y--;
-		}
-		x=row+1; y=col+1;
-		while(x&lt;n &amp;&amp; y&lt;n) {
-			if(grid[x][y]!=val)
-				points.push_back(pair&lt;int,int&gt;(x,y));
-			grid[x][y]=val;
-			x++;y++;
-		}
-		x=row-1; y=col+1;
-		while(x&gt;=0 &amp;&amp; y&lt;n) {
-			if(grid[x][y]!=val)
-				points.push_back(pair&lt;int,int&gt;(x,y));
-			grid[x][y]=val;
-			x--;y++;
-		}
-		x=row+1; y=col-1;
-		while(x&lt;n &amp;&amp; y&gt;=0) {
-			if(grid[x][y]!=val)
-				points.push_back(pair&lt;int,int&gt;(x,y));
-			grid[x][y]=val;
-			x++;y--;
-		}
-	}
-
-	// Set grids to val based on a collection of grids
-	void setGrid(vector&lt;vector<bool> &gt;&amp; grid, vector&lt;pair&lt;int,int&gt; &gt;&amp; points, bool val) {
-		for(auto&amp; pt:points)
-			grid[pt.first][pt.second]=val;
-	}
-
-	// Print all solutions, test only
-	void printSolution(vector&lt;vector<string> &gt;&amp; trace) {
-		cout&lt;&lt;"["&lt;&lt;endl;
-		for(int i=0;i&lt;trace.size();++i) {
-			cout&lt;&lt;"  [\""&lt;&lt;trace[i][0]&lt;&lt;"\","&lt;&lt;endl;
-			for(int j=1;j&lt;trace[i].size();++j) {
-				if(j!=trace[i].size()-1)
-					cout&lt;&lt;"   \""&lt;&lt;trace[i][j]&lt;&lt;"\","&lt;&lt;endl;
-				else
-					cout&lt;&lt;"   \""&lt;&lt;trace[i][j]&lt;&lt;"\"]"&lt;&lt;endl;
-			}
-			cout&lt;&lt;endl;
-		}
-	}
-
-	// Print the values of all grids in the table, test only
-	void printGrid(vector&lt;vector<bool> &gt;&amp; grid,int row,int col,string str) {
-		cout&lt;&lt;"("&lt;&lt;row&lt;&lt;","&lt;&lt;col&lt;&lt;")"&lt;&lt;str&lt;&lt;":"&lt;&lt;endl;
-		for(int i=0;i&lt;grid.size();++i) {
-			for(int j=0;j&lt;grid[0].size();++j) {
-				if(grid[i][j])
-					cout&lt;&lt;"T ";
-				else
-					cout&lt;&lt;"F ";
-			}
-			cout&lt;&lt;endl;
-		}
-		cout&lt;&lt;endl;
-	}
-};
-
-</bool></string></bool></bool></int></bool></int></bool></string></string></bool></bool></string></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/25/combination-sum">Combination Sum Problem - A Non-recursive Method</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-25</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/combination-sum/">Combination Sum Problem</a>:</p>
-
-<blockquote>
-  <p>Given a set of candidate numbers \(C\) and a target number \(T\), find all unique combinations in \(C\) where the candidate numbers sums to \(T\).</p>
-
-  <p>The same repeated number may be chosen from \(C\) unlimited number of times.</p>
-
-  <p>Note:</p>
-
-  <ul>
-    <li>All numbers (including target) will be positive integers.</li>
-    <li>Elements in a combination (\(a_1, a_2, \cdots , a_k\)) must be in non-descending order. (ie, \(a_1 \leq a_2 \leq \cdots ≤ a_k\)).</li>
-    <li>The solution set must not contain duplicate combinations.</li>
-  </ul>
-
-  <p>For example, given candidate set 2,3,6,7 and target 7,</p>
-</blockquote>
-
-<blockquote>
-  <p>a solution set is:
-[7]</p>
-</blockquote>
-
-<blockquote>
-  <p>[2, 2, 3] </p>
-</blockquote>
-
-<p>The popular solution is to recursively scan all elements in the cadidate set, such as <a href="http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html">http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html</a>.</p>
-
-<p>However, I don’t want to use recursion. My solution to this problem is to build trees level by level for each number in the candidate set, where the nodes are candidate set number. The sum of the sequence from root to current node is compared to the target:</p>
-
-<ul>
-  <li>if the sum equals to the target, then we find one solution;</li>
-  <li>if the sum is less than the target, then subnodes could be added to this node; </li>
-  <li>if the sum is larger than the target, then this node is a leaf node.</li>
-</ul>
-
-<p>Only numbers equal to or larger than current node can be used as the children of current node. When there is no child could be added, this tree stops growing.</p>
-
-<p>For example, given candidate set, \({2,3,6,7}\) and target 7, the following trees could be built:</p>
-
-<p><img src="/assets/images/2014-06-25/combi_sum_trees.png" alt="Combination sum trees" /></p>
-
-<p>Based on above strategy, my C++ implementation is:</p>
-
-<pre>
-class Solution {
-public:
-	struct Node {
-		int val;
-		int sum; // sum to now
-		vector<int> path; // path to now
-		//Node* pre; // parent node
-	};
-
-    vector&lt;vector<int> &gt; combinationSum(vector<int> &amp;candidates, int target) {
-		vector&lt;vector<int> &gt; trace;
-
-       	for(auto&amp; x:candidates) {
-			if(x==target) {
-				vector<int> tr={x};
-				trace.push_back(tr);
-				continue;
-			}
-
-		   	// Build trees in level order for every candidate
-		   	vector&lt;vector<node>&gt; layers;
-			int cur=0;
-		   	int next=1;
-			vector<node> tmp;
-			layers.push_back(tmp);
-			layers.push_back(tmp);
-
-		  	Node nd={x,x,{x}};
-		   	layers[cur].push_back(nd);
-		  	while(layers[cur].size()&gt;0) {
-				for(auto&amp; y:layers[cur]) {
-					for(auto&amp; z: candidates) {
-						if(z&gt;=y.val &amp;&amp; z+y.sum&lt;=target) {
-							Node tmp_nd;
-							tmp_nd.val=z;
-							tmp_nd.sum=z+y.sum;
-							tmp_nd.path=y.path;
-							tmp_nd.path.push_back(z);
-							if(tmp_nd.sum==target) // reach the target, record the trace
-								trace.push_back(tmp_nd.path);
-							else
-								layers[next].push_back(tmp_nd);
-						}
-					} // end for z
-			   	} // end for y
-				cur=!cur;
-				next=!next;
-				layers[next].clear();
-
-				//cout&lt;&lt;endl;; // TEST ONLY
-		   	} // end while
-	   	}// end for
-
-		return trace;
-    } 
-};
-
-
-</node></node></int></int></int></int></int></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/20/coin-change">Coin Change Problem</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-20</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Java-ref" rel="nofollow">Java</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>Given \(N\) denominations,how can a given amount of money \(V\) be made with the least number of coins? The most intuitive solution is greedy algorithm: sort the denominations, try the largest denominations lower than the value every time, and decrease the value with the denominations picked in every iteration. Repeat this process until the value reduces to 0. This greedy strategy works for the US (and most other) coin systems, However, it is not a general solution to all denomincations. For example, if the coin denominations were 1, 3 and 4, then to make 6, the greedy algorithm would choose three coins (4,1,1) whereas the optimal solution is two coins (3,3).</p>
-
-<p>Actually the <a href="http://en.wikipedia.org/wiki/Change-making_problem">change-making problem</a> is a knapsack type problem, which can be solved efficiently by Dynamic Programming. </p>
-
-<p>Given denominations \( {x_1, x_2,\cdots,x_n} \), in order to get value \(V\), there are two possibilities for a denomination \( x_i \): (1) if \( x_i \) is not picked, then value \( V \) could be made out of \( { x_1, x_2,\cdots,x_{i-1} } \). (2) if \( x_i \) is picked, then value \(V-x_i\) should be made out of \( { x_1, x_2,\cdots,x_i } \). Since our goal is to find the least number of coins, we can formulate the following recursive function:</p>
-
-<script type="math/tex; mode=display"> OPT(i,v)=0,\quad \text{if} \enspace i=0 </script>
-
-<script type="math/tex; mode=display"> OPT(i,v)=OPT(i-1,v),\quad \text{if} \enspace x_i>v </script>
-
-<script type="math/tex; mode=display"> OPT(i,v)=\min \{ OPT(i-1,v), 1+OPT(i,v-x_i) \}, \quad \text{otherwise}</script>
-
-<p>Following is my implementation in Java. During the initialization, the first column(value=0) are set to 0, and the first row(denomination=1) are set to the number of corresponding value. Another observation is that, if a value(the grid) in the following table can be divided by the corresponding denomination(the denomination \(x_i\) of the row), then the smallest coin changes should be \(v/x_i\). </p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Denom</th>
-      <th>Values</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>0 1 2 3 4 5 6 7 8 9 10 11</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>0 1 2 1 2 3 2 3 4 3 4 5</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>0 1 2 1 1 2 2 2 2 3 3 3</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>The bottom right number in above table is the smallest coin changes.</p>
-
-<pre><code>public class Coin {
-	public static int CoinChange(int value, int[] denom) {
-		int M[][]=new int[denom.length][value+1];
-
-		// Initialization
-		final int INF=9999999;
-		for(int i=0;i&lt;denom.length;++i) {
-			for(int j=0;j&lt;=value;++j) {
-				if(j%denom[i]==0)
-					M[i][j]=j/denom[i];
-				else
-					M[i][j]=INF;	
-			}
-		}
-
-		// Fill the table with smallest coin changes
-		for(int i=1;i&lt;denom.length;++i) {
-			for(int j=1;j&lt;=value;++j) {
-				if(denom[i]&gt;j)
-					M[i][j]=M[i-1][j];
-				else
-					M[i][j]=M[i-1][j]&lt;1+M[i][j-denom[i]] ? M[i-1][j] : 1+M[i][j-denom[i]];
-			}
-		}
-
-		// Print the table
-		for(int i=0;i&lt;denom.length;++i) {
-			for(int j=0;j&lt;=value;++j) {
-				System.out.print(M[i][j]+" ");
-			}
-			System.out.print("\n");
-		}
-
-		return M[denom.length-1][value];
-	}
-
-	public static void main(String[] args) {
-		int[] denom={1,3,4};
-		int value=10;
-		int num=CoinChange(value,denom);
-		System.out.println(num);
-	}
-}
-</code></pre>
-
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/18/text-justification">Text Justification</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-18</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/text-justification/">The Problem</a>:</p>
-
-<blockquote>
-  <p>Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ‘ ‘ when necessary so that each line has exactly L characters.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>For the last line of text, it should be left justified and no extra space is inserted between words.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>For example, words: [“This”, “is”, “an”, “example”, “of”, “text”, “justification.”] 
-L: 16.</p>
-</blockquote>
-
-<blockquote>
-  <p>Return the formatted lines as:</p>
-</blockquote>
-<pre>
-[
-   "This    is    an",
-   "example  of text",
-   "justification.  "
-]
-</pre>
-
-<blockquote>
-  <p>Note: Each word is guaranteed not to exceed L in length.</p>
-</blockquote>
-
-<p>This problem can be solved in two steps in general: (1) count the number of words that can be placed in current line, and then (2) allocate spaces. </p>
-
-<p>For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the \( N \) words plus the default \( N-1 \) spaces between the N words. Be careful to the last word in this line.</p>
-
-<p>For the second step, we should treat two types of lines differently. Assume there are totally \( M \) spaces should be inserted in a line. For the lines other than the last line, insert \( M/(N-1) \) spaces between two nearby words if \( M \) can be divided by \( N-1 \)(where \( N \) is the number of words in this line). If \( M \) cannot be divided by \( N-1 \), add 1 space for the first \(M \mod (N-1) \) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  </p>
-
-<p>Following is my C++ implementation of text justification:</p>
-
-<pre>
-class Solution {
-public:
-    vector<string> fullJustify(vector<string> &amp;words, int L) {
-        vector<string> ret;
-		int word_cnt=0; // count words that have been processed
-		
-		while(word_cnt &lt; static_cast<int>(words.size())) {
-			// count words that can be placed in current line
-			int char_cnt=0; // characters justified in a line
-			vector<string> vec;
-			int idx=word_cnt;
-			while(char_cnt+static_cast<int>(vec.size())-1&lt;=L &amp;&amp; idx&lt;static_cast<int>(words.size())) {
-				char_cnt+=static_cast<int>(words[idx].size());
-				vec.push_back(words[idx]);
-				idx++;
-			}
-			if(char_cnt+static_cast<int>(vec.size())-1&gt;L) {
-				char_cnt-=vec.back().size();
-				vec.pop_back(); // remove the last word because it surpasses the line limit
-			}
-			word_cnt+=vec.size();
-
-			// assign spaces for this line
-			string line;
-			int total_spaces=L-char_cnt;
-			int avg_spaces; // average spaces for 
-			int left_spaces; //spaces left
-			if(word_cnt!=static_cast<int>(words.size())) {
-				if(static_cast<int>(vec.size())&gt;1) { // This line contains more than 1 word
-					avg_spaces=total_spaces/(static_cast<int>(vec.size())-1);
-					left_spaces=total_spaces%(static_cast<int>(vec.size())-1);
-					// Formulate strings per line
-					for(int i=0;i&lt;static_cast<int>(vec.size())-1;++i) {
-						line+=vec[i];
-						for(int j=0;j&lt;avg_spaces;++j)
-							line+=" ";
-						if(left_spaces&gt;0) {
-							line+=" ";
-							left_spaces--;
-						}
-					}
-					line+=vec.back(); // put the last word to the rightmost position
-				} else { // Only one word
-					avg_spaces=0;
-					left_spaces=total_spaces;
-					line+=vec.back();
-					while(left_spaces&gt;0) {
-						line+=" "; // append spaces to the last word
-						--left_spaces;
-					}
-				}
-			} else { 
-				// The last line
-				avg_spaces=1;
-				left_spaces=total_spaces-static_cast<int>(vec.size())+1;
-				for(int i=0;i&lt;static_cast<int>(vec.size())-1;++i) {
-					line+=vec[i];
-					line+=" ";
-				}
-				line+=vec.back();
-				while(left_spaces&gt;0) {
-					line+=" "; // append spaces to the last word
-					--left_spaces;
-				}
-			}
-			ret.push_back(line);
-		}
-
-		return ret;
-    }
-};
-
-</int></int></int></int></int></int></int></int></int></int></int></string></int></string></string></string></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/17/sort-colors">Sort Colors</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-17</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/sort-colors/">Problem</a>:</p>
-
-<blockquote>
-  <p>Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.</p>
-
-  <p>Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.</p>
-</blockquote>
-
-<p>This problem is trivial when using two-pass counting sort: first pass count the numbers of each color, and then assign each element in array into corresponding regions in the array in the second pass.</p>
-
-<p>The follow up of this problem requires to design a one-pass algorithm using constant space. The strategy is go through all the elements in the array, and move red colors(0s) to the left and move blue colors to the right(2s). The green colors(1s) will finally remain in the middle part of the array.</p>
-
-<p>In order to implement above strategy, three indices can be used: one index for current element, one idex for the right-most red color, and one index for the left-most blue color. When meeting a red color, move it to the end of the red colors. When meeting a blue color, move it to the front(left-most) of the blue colors. And when meeting a green color, just increase current index.</p>
-
-<p>Following is my C++ implementation:</p>
-
-<pre><code>class Solution {
-public:
-    void sortColors(int A[], int n) {
-		int idx=0,ridx=0,bidx=n-1; // ridx - index for red color, bidx - index for blue color
-        while(idx&lt;=bidx) {
-			switch(A[idx]) {
-				case 0: { // Red color, move it to left
-					while(A[ridx]==0 &amp;&amp; ridx&lt;n)
-						++ridx;
-					if(idx&gt;ridx){
-						swap(A[idx],A[ridx]);
-						++ridx;
-					} else {
-						idx=ridx;
-					}
-					break;
-				}
-				case 1: { // Green color, skip it
-					++idx;					
-					break;
-				}
-				case 2: { // Blue color, move it to right
-					while(A[bidx]==2 &amp;&amp; bidx&gt;idx)
-						--bidx;
-					swap(A[idx],A[bidx]);
-					--bidx;
-					break;
-				}
-				default:
-					cout&lt;&lt;"Error: invalid color detected"&lt;&lt;endl;
-			}
-		} // end while
-    }
-};
-</code></pre>
-
-<p>And the following code can be used for test:</p>
-
-<pre><code>#include &lt;iostream&gt;
-#include &lt;utility&gt;
-#include &lt;cstdlib&gt;
-using namespace std;
-
-int main() {
-	/* initialize random seed: */
-	srand (time(NULL));
-	
-	const int N=10;
-	Solution sol;
-	int* A=new int[N];
-	cout&lt;&lt;"Before sorting:"&lt;&lt;endl;
-	for(int i=0;i&lt;N;++i) {
-		A[i]=rand()%3;
-		cout&lt;&lt;A[i]&lt;&lt;" ";
-	}
-	cout&lt;&lt;endl;
-
-	sol.sortColors(A,N);
-	
-	cout&lt;&lt;"After sorting:"&lt;&lt;endl;
-	for(int i=0;i&lt;N;++i)
-		cout&lt;&lt;A[i]&lt;&lt;" ";
-	cout&lt;&lt;endl;
-
-
-	delete [] A;
-}
-</code></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/06/14/soduku">Check Soduku Solution</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-06-14</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The objective of Soduku game is to fill a \(9 \times 9\) grid with digits so that each column, each row, and each of the nine \(3 \times 3\) sub-grids that compose the grid (also called “boxes”, “blocks”, “regions”, or “sub-squares”) contains all of the digits from 1 to 9. A solved Soduku game is like:</p>
-
-<p><img src="/assets/images/sudoku_solution.png" alt="Solved_Suduku" /></p>
-
-<p>To check if a \(9 \times 9\) grid is a valid solution, we need to check every row, every column and \(3 \times 3\) subgrids. It is not hard to check rows and columns, but checking subgrids is little tricky. When considering going through the grid only one time, it will be much harder.</p>
-
-<p>My solution is define a 9-item-long vector to count the occurrences of each element in a row, a 9-item-long vector to count the occurrences of each element in a column, and a \(3 \times 9\) matrix to count the occurrences of elements in the 3 nearby subgrids. The value of each element in grid can be used as the indices of the counting vectors, because they are supposed to be in the range of 0~9. If found one occurrence greater than one in the vectors, then return false.</p>
-
-<pre><code>bool isSoduku(vector&lt;vector&lt;int&gt;&gt; grid) {
-	const int dim=3;
-	vector&lt;vector&lt;int&gt;&gt; subGridCnt(grid[0].size()/dim,vector&lt;int&gt;(dim*dim+1,0)); // count the occurrences of elements in 3 nearby 3x3 subgrids.
-	// check row,column, subgrids
-	for(int i=0;i&lt;grid.size();++i) {
-		if(i%3==0) { // reset subGridCnt
-			subGridCnt.clear();
-			for(int cnt=0;cnt&lt;grid[0].size()/dim;++cnt)
-				subGridCnt.push_back(vector&lt;int&gt;(dim*dim+1,0));
-		}
-		vector&lt;int&gt; rowCnt(grid[0].size()+1,0); // count the occurrences of elements in one row.
-		vector&lt;int&gt; colCnt(grid.size()+1,0); // count the occurrences of elements in one column.
-		for(int j=0;j&lt;grid[i].size();++j) {
-			rowCnt[grid[i][j]]++;
-			colCnt[grid[j][i]]++;
-			subGridCnt[j/3][grid[i][j]]++;
-			if(rowCnt[grid[i][j]]&gt;1) {
-				cout&lt;&lt;"Error: "&lt;&lt;rowCnt[grid[i][j]]&lt;&lt;" "&lt;&lt;grid[i][j]&lt;&lt;"s found in row "&lt;&lt;i+1&lt;&lt;"."&lt;&lt;endl;
-				return false;
-			}
-			if(colCnt[grid[j][i]]&gt;1) {
-				cout&lt;&lt;"Error: "&lt;&lt;colCnt[grid[j][i]]&lt;&lt;" "&lt;&lt;grid[j][i]&lt;&lt;"s found in column "&lt;&lt;i+1&lt;&lt;"."&lt;&lt;endl;
-				return false;
-			}
-			if(subGridCnt[j/3][grid[i][j]]&gt;1) {
-				cout&lt;&lt;"Error: duplicate elements found in subgrid &lt;"&lt;&lt;i/3+1&lt;&lt;","&lt;&lt;j/3+1&lt;&lt;"&gt;: "&lt;&lt;grid[i][j]&lt;&lt;"."&lt;&lt;endl;
-				return false;
-			}
-		}
-	}
-	
-	return true;
-}
-</code></pre>
-
-<p>To test above funciton, following code segment can be used:</p>
-
-<pre><code>int main() {
-	vector&lt;vector&lt;int&gt;&gt; grid={ 
-		{6,5,7,2,9,1,8,4,3},
-		{8,9,4,6,7,3,2,1,5},
-		{1,2,3,5,8,4,7,9,6},
-		{5,6,8,3,4,7,1,8,2},
-		{7,3,1,9,2,8,5,6,4},
-		{4,8,2,1,6,5,3,7,9},
-		{2,7,6,8,3,9,4,5,1},
-		{3,4,5,7,1,6,9,2,8},
-		{9,1,8,4,5,2,6,3,7} 
-	};
-
-	for(int i=0;i&lt;grid.size();++i) {
-		for(int j=0;j&lt;grid[i].size();++j) {
-			cout&lt;&lt;grid[i][j]&lt;&lt;" ";
-		}
-		cout&lt;&lt;endl;
-	}
-	
-	if(isSoduku(grid))
-		cout&lt;&lt;"A valid solution!"&lt;&lt;endl;
-	else
-		cout&lt;&lt;"Not a solution!"&lt;&lt;endl;
-}
-</code></pre>
-
-	</div>
-	</div>
-    
-	
-	<!-- Pagination links -->
-	
-	<ul class="pager">
-	    
-	    <li class="previous"><a href="/page3">&larr; Older</a></li>
-	    
-	
-	    
-	    <li class="next"><a href="/index.html">Newer &rarr;</a></li>
-	    
-	</ul>
-	
-	<!-- content -->
-</div>
-
-<div class="col-lg-3">
-		<div class="well">
-            <h4>Links</h4>
-			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> 
-			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> 
-			<a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a>
-			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> 
-        	<a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a>	
+            
+          </p>
         </div>
-        <!-- /well -->
-        <div class="well">
-			<h4>Tags</h4>
-				<div class="tag_box">
-				
-				<!-- site_tags: C/C++,Algorithm,EMC,Fault Diagnosis,Notes,AI,Database,Unix/Linux,Personal,Telecom,Tcl/Tk,Shell,Network,Perl,Industry,Cloud Computing,API,Android,VBA,Virtualization,Browser,Plan 9,Go,Distributed Systems,Tips,Genetic Algorihtm,Mac OS,Statistics,Matlab,Multithreading,Bioinformatics,Computer Vision,Machine Learning,BACI,Jekyll,Architecture,Java -->
-				
-				<!-- tag_words:  -->
-
-				
-  <ul class="nav nav-pills nav-stacked">
-  
-    
-        <li><a href="/tags.html#AI">AI <span class="badge pull-right">7</span></a></li>
-    
-        <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
-    
-        <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Architecture">Architecture <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#BACI">BACI <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Bioinformatics">Bioinformatics <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
-    
-        <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Computer+Vision">Computer Vision <span class="badge pull-right">4</span></a></li>
-    
-        <li><a href="/tags.html#Database">Database <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Distributed+Systems">Distributed Systems <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#EMC">EMC <span class="badge pull-right">9</span></a></li>
-    
-        <li><a href="/tags.html#Fault+Diagnosis">Fault Diagnosis <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Genetic+Algorihtm">Genetic Algorihtm <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Go">Go <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Industry">Industry <span class="badge pull-right">6</span></a></li>
-    
-        <li><a href="/tags.html#Java">Java <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Jekyll">Jekyll <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Mac+OS">Mac OS <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Machine+Learning">Machine Learning <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Matlab">Matlab <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Multithreading">Multithreading <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Network">Network <span class="badge pull-right">4</span></a></li>
-    
-        <li><a href="/tags.html#Notes">Notes <span class="badge pull-right">25</span></a></li>
-    
-        <li><a href="/tags.html#Perl">Perl <span class="badge pull-right">15</span></a></li>
-    
-        <li><a href="/tags.html#Personal">Personal <span class="badge pull-right">13</span></a></li>
-    
-        <li><a href="/tags.html#Plan+9">Plan 9 <span class="badge pull-right">9</span></a></li>
-    
-        <li><a href="/tags.html#Shell">Shell <span class="badge pull-right">15</span></a></li>
-    
-        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Tcl%2FTk">Tcl/Tk <span class="badge pull-right">9</span></a></li>
-    
-        <li><a href="/tags.html#Telecom">Telecom <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Tips">Tips <span class="badge pull-right">4</span></a></li>
-    
-        <li><a href="/tags.html#Unix%2FLinux">Unix/Linux <span class="badge pull-right">100</span></a></li>
-    
-        <li><a href="/tags.html#VBA">VBA <span class="badge pull-right">5</span></a></li>
-    
-        <li><a href="/tags.html#Virtualization">Virtualization <span class="badge pull-right">4</span></a></li>
-    
-  
-  </ul>
+      
+        <div class="post py3">
+          <p class="post-meta">Aug 3, 2014</p>
+          <a href="/algorithm/c/c++/2014/08/03/string-permutation/" class="post-link"><h3 class="h2 post-title">String Permutation</h3></a>
+          <p class="post-summary">
+            
+              <p>The <em>string permutation</em> problem aims to find all the <em>permutations</em> of a string(re-arrangement of characters in this string). A string of length <code class="highlighter-rouge">n</code> has <code class="highlighter-rouge">n!</code> permutations.</p>
 
 
-
-
-				</div>
-		</div>
-		<!-- /well -->
-        <div class="well">
-			<h4>Visitors</h4>
-				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4gy6jc9lpsq&amp;s=220&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
-	
+            
+          </p>
         </div>
-		<!-- /well -->
-		<div class="well">
-			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- Right-side Ad(300x600) -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:300px;height:600px"
-     data-ad-client="ca-pub-1292710832620237"
-     data-ad-slot="9707222500"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	   	</div>
-        <!-- /well -->
-</div>
-
-	</div>
-</div>
-
-
+      
     </div>
 
-    <footer>
-        <p>&copy; 2007 <span id="now_year"></span> Bo Yang. </p>
-        <script type="text/javascript">
-          var now_year = new Date().getFullYear();
-          if (now_year != 2007) {
-              $('#now_year').html('- ' + now_year);
-          }
-	    </script>
-      </footer>
+    <div class="pagination clearfix mb1 mt4">
+  <div class="left">
+    
+      
+        <a class="pagination-item" href="/">Newer</a>
+      
+    
   </div>
-
-  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
-  <script src="/assets/run_prettify.js"></script>
-  <script type="text/javascript">
-    $(function() {
-
-      $('a[href^="http"]').each(function () {
-        $(this).attr('target', '_blank');
-      });
-
-      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
-      window.prettyPrint && prettyPrint();
-
-      function traverse($node, len, maxCount) {
-        var reachMaxCount = len > maxCount;
-        if (reachMaxCount) {
-          $node.hide();
-        }
-        var $contents = $node.contents();
-        for (var i = 0; i < $contents.length; ++i) {
-          if (reachMaxCount) {
-            $contents.eq(i).hide();
-            continue;
-          }
-          if ($contents[i].nodeType == 3) { // TextNode
-            var tmp = len;
-            var s = $contents[i].nodeValue;
-            len += s.length;
-            reachMaxCount = len > maxCount;
-            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
-              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
-            }
-          }
-          else if ($contents[i].nodeType == 1) { // Element
-            len = traverse($contents.eq(i), len, maxCount);
-          }
-        }
-        return len;
-      }
-
-      $('.post_at_index').each(function() {
-        var count = traverse($(this), 0, 400);
-        if (count > 400) {
-          var thisUrl = $(this).siblings().first().children().attr('href');
-          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow" class="btn btn-primary" role="button">' + 'Read More &raquo;</a>');
-        }
-      });
-    });
-  </script>
+  <div class="right">
+    
+      <a class="pagination-item" href="/page3/">Older</a>
+    
+  </div>
+</div>
 
   
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
 
 </body>
 </html>
-

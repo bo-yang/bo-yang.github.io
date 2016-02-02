@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Retrieve String From Sampled Slices &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Algorithm, C/C++, Statistics">
+    <link rel="canonical" href="http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Retrieve String From Sampled Slices">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Retrieve String From Sampled Slices" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Retrieve String From Sampled Slices</h1>
+  <span class="post-meta">Aug 9, 2014</span><br>
+  
+  <span class="post-meta small">
+  
+    3 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <ol>
+  <li><a href="#problem">Problem</a></li>
+  <li><a href="#solution">Solution</a></li>
+  <li><a href="#code">Source Code</a></li>
+</ol>
+
+<h3 id="a-nameproblemproblema">1. <a name="problem">Problem</a></h3>
+
+<p>Given a string, such as 01001010101001101011, we can randomly sliced multiple substrings. Assume that during the slicing, due to some unexpected noises, some characters may flip(0-&gt;1 or 1-&gt;0). For example:</p>
+
+<pre>
+Position: 0123456789.........
+String:   01001010101001101011
+
+slice1:    1001110101000
+slice2:       1010111001111
+slice3:       10101
+slice4:                1101011
+</pre>
+
+<p>In above sample, <code class="highlighter-rouge">slice1</code> starts from position 1(assume that the index of a string begins with 0), <code class="highlighter-rouge">slice2</code> starts from position 4, <code class="highlighter-rouge">slice3</code> starts from 4, and <code class="highlighter-rouge">slice4</code> starts from 13. In slice1, <code class="highlighter-rouge">0</code> flips to <code class="highlighter-rouge">1</code> at position 5 and <code class="highlighter-rouge">1</code> flips to <code class="highlighter-rouge">0</code> at position 13.</p>
+
+<p>For one specific position in the original string, if it is <code class="highlighter-rouge">1</code>, then the probability of flipping to 0 in a slicing is 0.1; and vice versa(i.e.Prob(0-&gt;1)=0.1).</p>
+
+<p>The problem is: <strong>if we only have multiple slices(the length of each slice may vary) and their starting positions in the string, and we don’t know the original string, given an arbitrary position in the original string, how can we calculate the probability that position is a <code class="highlighter-rouge">1</code>?</strong></p>
+
+<p>Assume most positions will be covered at least once in slices, and we have following parameters:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>p01=0.1; // Probability a ‘0’ in string but flipped to a ‘1’ in a slice
+p10=0.1; // Probability a ‘1’ in string but flipped to a ‘0’ in a slice
+p1=0.5;  // Prior probability that any given position in string is a ‘1’
+</code></pre>
+</div>
+
+<p>We can also assume that the string is a random string of <code class="highlighter-rouge">0</code>s and <code class="highlighter-rouge">1</code>s, and during slicing, each position is sampled independently.</p>
+
+<p>For the above example string and four slices, we already have following probabilities for each position:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Pos Prob
+0   0.500
+1   0.900
+2   0.100
+3   0.100
+4   0.999
+5   0.100
+6   0.999
+7   0.001
+8   0.999
+9   0.500
+10  0.988
+11  0.012
+12  0.012
+13  0.900
+14  0.988
+15  0.500
+16  0.988
+17  0.100
+18  0.900
+19  0.900
+</code></pre>
+</div>
+
+<h3 id="a-namesolutionsolutiona">2. <a name="solution">Solution</a></h3>
+
+<p>Obviously, the numbers of 0s and 1s in all slices for each position can be counted using a hashmap(<code class="highlighter-rouge">unordered_map</code> in C++). However, the difficult part is to find a model to calculate the probabilities. Simple multiplicaiton or subtraction won’t work, because we cannot get <code class="highlighter-rouge">0.999</code> with the given probabilities and arithmetic operations. Besides, the Bayes’ theorem also cannot be used directly, because we don’t know the number of slices and the computation would be too complicated. And we also may be tempted to try Markov Model, but Markov Model cannot fit all positions in the above example, such as positions 4(<code class="highlighter-rouge">1,1,1</code>), 5(<code class="highlighter-rouge">1,0,0</code>), 9(<code class="highlighter-rouge">0,1</code>) and 13(<code class="highlighter-rouge">0,1,1</code>).</p>
+
+<p>The best model to fit this problem is the <a href="http://www.mathworks.com/help/stats/binomial-distribution.html">Binomial Distribution</a>:</p>
+
+<blockquote>
+  <p>The binomial distribution models the total number of successes in repeated trials from an infinite population under the following conditions:</p>
+
+  <ul>
+    <li>Only two outcomes are possible on each of n trials.</li>
+    <li>The probability of success for each trial is constant.</li>
+    <li>All trials are independent of each other.</li>
+  </ul>
+</blockquote>
+
+<p>The probability density function(pdf) of Binomial Distribution is:</p>
+
+<script type="math/tex; mode=display">f(x|n,p)={n \choose x} p^x (1-p)^{n-x}; \quad \quad x=0,1,2,\cdots,n.</script>
+
+<p>As for this problem, given a position in the original string, we first need to find the probability of a <code class="highlighter-rouge">0</code> occurs in this position(in this case <code class="highlighter-rouge">0</code>=&gt;<code class="highlighter-rouge">1</code>, say <code class="highlighter-rouge">bp01</code>), and then calculate the probability of a <code class="highlighter-rouge">1</code> occurs in this position(in this case <code class="highlighter-rouge">1</code>=&gt;<code class="highlighter-rouge">1</code>, say <code class="highlighter-rouge">bp11</code>). Finally, we can get the probability of <code class="highlighter-rouge">1</code> in this position in the original string by: <code class="highlighter-rouge">p=bp11/(bp01+bp11)</code>.</p>
+
+<p>Take position 5 as an example. We get one <code class="highlighter-rouge">1</code> and two <code class="highlighter-rouge">0</code>s in position 5 in three observations. We can calculate <code class="highlighter-rouge">b11</code> using Matlab <code class="highlighter-rouge">binopdf</code> function. Since <code class="highlighter-rouge">p11=1-p10=0.9</code>, therefore we have <code class="highlighter-rouge">bp11=binopdf(1,3,0.9)=0.027</code>. As for <code class="highlighter-rouge">bp01</code>, because <code class="highlighter-rouge">p01=0.1</code>, we have <code class="highlighter-rouge">bp01=binopdf(1,3,0.1)=0.243</code>. Therefore, we can calc the probability of <code class="highlighter-rouge">1</code> in position 5 by <code class="highlighter-rouge">p=0.027/(0.243 + 0.027)=0.1</code>.</p>
+
+<h3 id="a-namecodesource-codea">3. <a name="code">Source Code</a></h3>
+
+<p>The implementation of this problem can be found in <a href="https://github.com/bo-yang/ProgrammingChallenges/tree/master/string_retrieve">my GitHub Channel</a>.</p>
+
+<h3 id="references">References:</h3>
+
+<ol>
+  <li><a href="http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o">http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o</a></li>
+  <li><a href="http://www.mathworks.com/help/stats/binomial-distribution.html">http://www.mathworks.com/help/stats/binomial-distribution.html</a></li>
+</ol>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Retrieve String From Sampled Slices&url=http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/&title=Retrieve String From Sampled Slices" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/&name=Retrieve String From Sampled Slices" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/&title=Retrieve String From Sampled Slices" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/&t=Retrieve String From Sampled Slices" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices';
+    var disqus_title      = 'Retrieve String From Sampled Slices';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//algorithm/c/c++/statistics/2014/08/09/retrive-string-from-slices/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

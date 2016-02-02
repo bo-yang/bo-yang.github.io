@@ -1,928 +1,1195 @@
-
-<!DOCTYPE HTML>
-<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bo Yang | Bo's Blog</title>
-  
-  <meta name="author" content="Bo Yang" />
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <!--
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    
+    <link rel="canonical" href="http://www.bo-yang.net//page6/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
-  <!-- Bootstrap -->
-  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
 
-  <!-- font-awesome -->
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
 
-  <!-- Google Prettify -->
-  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
-  <!-- Google Pretty end -->
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
 
-  <link href="/assets/style/blog.css" rel="stylesheet">
-  
-  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
-  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Bo&#39;s Blog">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//page6/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Bo's Blog" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//page6/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
 </head>
 
-<body>
+<body class="site">
 
-   <!-- navigation bar -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a class="navbar-brand" href="/"><b>bo-yang</b></a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="/archive.html"><b>Archive</b></a>
-					</li>
-					<li><a href="/tags.html"><b>Tags</b></a>
-                    </li>
-                    <li><a href="/about.html"><b>About</b></a>
-                    </li>
-                    <li><a href="/messages.html"><b>Messages</b></a>
-                    </li>
-				</ul>
-				<ul class="nav navbar-nav pull-right">
-		          <li>
-		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
-		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
-		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
-		              <input type="hidden" name="ie" value="UTF-8" />
-		              <input type="hidden" name="oe" value="UTF-8" />
-		              <input type="hidden" name="hl" value="en-US" />
-		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
-					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
-					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
-		            </form>
-		          </li>
-		        </ul>
-            </div>
-			<!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-  <div class="container">
-    <div class="row" id="content-row">
-      
-<div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
-</div>
-
-<div class="container">
-    <div class="row" id="content-row">
-		<div class="col-md-9">
-	<!-- blog entry -->
 	
-	<div class="post paper">	
-    <h2 class="header"><a href="/2012/02/02/file-descriptors-per-process">File Descriptors per Process</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-02-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>A file descriptor is a handle created by a process when a file is opened. There is a limit to the amount of file descriptors per process. In order to check the default limit of the system, you can use command:</p>
-<ol>
-<li><code>ulimit -a # all limitations</code></li>
-<li><code>ulimit -Sn # soft limit</code></li>
-<li><code>ulimit -Hn # hard limit</code></li>
-</ol>
-<p>If the file descriptor limit is exceeded for a process, you may see the error <code>Too Many Open Files</code>.</p>
-<p>And if you want to change the limit per process temporarily, you can:</p>
-<ol>
-<li><code>ulimit -n &lt;desired_#&gt; # both</code></li>
-<li><code>ulimit -Sn &lt;desired_#&gt; # soft limit</code></li>
-<li><code>ulimit -Hn &lt;desired_#&gt; # hard limit</code></li>
-</ol>
-<p>To check the open files of a process, you can use command <code>pfiles &lt;PID&gt;</code>.</p>
-<p>To check the run time limit of each process in Solaris, you can <code>plimit &lt;PID&gt;</code>(it seems this command is not supported in Linux). If you have the root permission and you want to change the limit of an process without killing or restarting the process, you can <code>plimit -n &lt;desired_#&gt;</code>.</p>
-<p>It was said that it may be dangerous to set the soft limit higher than 256 or hard limit greater than 1024 due to limitations with the stdio library.If programs require more file descriptors, they should use setrlimit directly.</p>
-<p>-------------<br />
-References:</p>
-<ol>
-<li><a href="http://www.brandonhutchinson.com/File_descriptors.html">File descriptors</a></li>
-<li><a href="http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/">Linux Increase The Maximum Number Of Open Files / File Descriptors (FD)</a></li>
-<li><a href="http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/">Linux / UNIX: List Open Files for Process</a></li>
-<li><a href="http://www.princeton.edu/~unix/Solaris/troubleshoot/filedesc.html">Princeton University Enterprise Servers and Storage, File Descriptors</a></li>
-<li><a href="http://compute.cnr.berkeley.edu/cgi-bin/man-cgi?plimit+1">plimit</a></li>
-</ol>
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
 
-	</div>
-	</div>
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2012/01/13/onlive">OnLive——在iPad上使用MS Word, Excel, PowerPoint</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-01-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Industry-ref" rel="nofollow">Industry</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>昨晚睡前看到Walter Mossburg的最新文章<a href="http://allthingsd.com/20120111/working-in-word-excel-powerpoint-on-an-ipad/">Working in Word, Excel, PowerPoint on an iPad</a>：尽管iPad上已经有office软件，可以在上面编辑或创建文档，但这些软件对MS Office的兼容性并不好，而且还是收费的。<a href="http://desktop.onlive.com/">OnLive<br />
- Desktop</a>即将推出一个免费的应用，该应用可以利用云端的MS Word, Excel, PowerPoint创建并编辑文档，文档保存在云端，可以在iPad和PC上（今后会有Android版）编辑。免费版每人2G云端存储空间，付费版$10每月每人50G空间。&nbsp;除常用的Office软件，还支持常用的Windows小程序，如计算器，画图板，记事本等。</p>
-<p>OnLive对于网络要求较高，低于1M的网络很可能无法连接到服务器。另外，文档输入时的虚拟键盘不是iPad的虚拟键盘而是Windows的键盘，编辑长文档时会很麻烦。</p>
-<p style="text-align:center;"><img src="http://online.wsj.com/public/resources/images/PJ-BE740_PTECHJ_G_20120111170747.jpg" alt="" /></p>
-<p>看过视频之后，我认为这个软件就是一个高级版的VNC应用，创新之处就在于云端的Windows服务器集群，能维护Windows环境以及自动为用户分配Windows服务器。一年多以前，在《<a href="http://blog.csdn.net/bonny95/article/details/5857256">Splashtop Remote——让你在iPad上也能用Windows下的应用</a>》一文中，我曾预言</p>
-<p><span style="background-color:rgb(204,204,204);">&quot;<span style="color:rgb(51,51,51);font-family:Arial;font-size:14px;line-height:26px;text-align:left;">试想如果将来有公司（比如这个DeviceVM）推出一项服务（可以免费，也可收费），为用户提供现成的Windows应用，而用户所需要做的就是在iPad或gPad上安装Splashtop Remote，打开这个应用就可以自动连接到DeviceVM的Windows<br />
- PC/Server，利用现成的Windows程序了——省去了自己购买并维护PC的很多麻烦，节省了购买大量Windows软件的开支，何乐而不为呢？而且这也正契合了时下的云计算潮流。</span>&quot;</span></p>
-<p>果然英雄所见略同，已经有人开始提供这样的服务了。不过OnLive能否流行开来，还有待用户和市场的检验。使用体验是否可以被用户接受？如何解决网速（无论有线或无线）慢的情况？ 微软会不会推出iPad版的Office软件？即使该服务的终极目标不仅仅限于Windows或者Office软件，其他只能能在PC运行的程序会不会有替代解决方案在iPad或者Android平板上？以及现存的很多类VNC的软件……凡此种种，都构成了该服务的不确定因素。</p>
-<p>无论如何，这都是一个很好的尝试。</p>
 
-	</div>
-	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2012/01/09/updating-fedora-to-fedora16-and-installing-ubuntu-11-04">Updating Fedora to Fedora16 and Installing Ubuntu 11.04</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2012-01-09</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>2.5years ago I installed Fedora11 on my Thinkpad R61,and then updated it to Fedora 12 and then Fedora 14. A bunch of software were installed, and as a result, the system went slower and slower... 固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。<br />
-基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。<br />
-Ubuntu很快就下完。首先在Fedora下创建启动U盘，参照 How to create and use Live USB：<br />
-Check the size of your USB stick<br />
-Many USB sticks indicate the size on the packaging or the outside of the stick.</p>
-<p>If you don't know the size of the stick, or want to check it for data, you should be able to auto-mount the USB stick by inserting it into a USB port. You can check the contents and size using the graphical file manager. In Linux, you can also use the command line:</p>
-<p>$ df -h<br />
-Filesystem Size Used Avail Use% Mounted on<br />
-/dev/mapper/VolGroup00-LogVol00<br />
-143G 14G 122G 10% /<br />
-/dev/sda1 99M 12M 82M 13% /boot<br />
-tmpfs 1009M 0 1009M 0% /dev/shm<br />
-/dev/sdb1 3.9G 4.0K 3.9G 1% /media/usbdisk<br />
-USB drives are usually mounted in /media. In this case, the device is /dev/sdb1, has a 3.9GB capacity and is almost empty.</p>
-<p>Take note of "/dev/sdb1" or equivalent; you will be specifying the device name if you use the command line method.</p>
-<p>How to Partition</p>
-<p>CAUTION<br />
-This will erase all data on the USB drive! Please read the instructions below carefully.<br />
-If the drive has not been partitioned properly (or if you are unsure), use fdisk to repartition it.</p>
-<p>It is also possible to do a non-destructive installation of a LiveUSB image, if you have sufficient empty space. See How to install non-destructively below.</p>
-<p>The fdisk command must be run as root. Include only the drive name in the command, not the partition number. Be sure to select the correct disk, or you may erase important data! Check the output of "df -h" if you are unsure. For example, if your partition will be /dev/sdb1, do:</p>
-<p>$ /sbin/fdisk /dev/sdb<br />
-If you don't have fdisk installed, run</p>
-<p>yum install util-linux-ng<br />
-as root.<br />
-The following session output from fdisk shows the responses to give to the prompts. The line starting Last cylinder ... refers to the size of the flash drive, so may be different than in the example.</p>
-<p>Command (m for help): d<br />
-Selected partition 1</p>
-<p>Command (m for help): n<br />
-Command action<br />
-e extended<br />
-p primary partition (1-4)<br />
-p<br />
-Partition number (1-4): 1<br />
-First cylinder (1-960, default 1): ↵<br />
-Using default value 1<br />
-Last cylinder or +size or +sizeM or +sizeK (1-960, default 960): ↵<br />
-Using default value 960</p>
-<p>Command (m for help): t<br />
-Selected partition 1<br />
-Hex code (type L to list codes): 6<br />
-Changed system type of partition 1 to 6 (FAT16)</p>
-<p>Command (m for help): a<br />
-Partition number (1-4): 1</p>
-<p>Command (m for help): w<br />
-The partition table has been altered!</p>
-<p>Calling ioctl() to re-read partition table.</p>
-<p>WARNING: If you have created or modified any DOS 6.x<br />
-partitions, please see the fdisk manual page for additional<br />
-information.<br />
-Syncing disks.<br />
-How to Format</p>
-<p>CAUTION<br />
-This will erase all data on the USB drive! Please read the instructions below carefully.<br />
-If your USB media has sufficient free space on a vfat file system already, you do not need to perform this step.</p>
-<p>To finish, the partition must be formatted with an actual file system using mkdosfs as the root user. Unmount the device before using mkdosfs. In the below example, /dev/USBPARTITIONNAME might be, for example, /dev/sdb1. Be sure to select the correct partition; formatting destroys all data on it!</p>
-<p>$ umount /dev/USBPARTITIONNAME<br />
-$ /sbin/mkdosfs -F 32 -n usbdisk /dev/USBPARTITIONNAME<br />
-If you don't have mkdosfs installed, run "yum install dosfstools" as root.</p>
-<p>通过命令<br />
-su -c "yum install liveusb-creator"<br />
-安装了Fedora的liveusb-creator，但是发现Fedora的这个程序无法制作Ubuntu的启动盘。无奈之下，试着把Ubuntu的iso文件复制到U盘里：<br />
-sudo dd if=F12-Live-i686.iso of=/dev/sdX bs=8M</p>
-<p>之后重启电脑，开机之后按c进入grub引导程序。尝试以往的通过kernel指定vmlinuz时失败，才发现Grub2中已经没有了kernel命令，尝试legacy_kernel和xnu_kernel，结果均遭失败。于是我尝试直接指定 initrd (hd1,4)/casper/initrd.gz，然后exit，没成想Ubuntu的安装界面竟然出现了！<br />
-安装Ubuntu的过程中竟然就已经支持了WIFI，着实令我欣慰，看来Ubuntu这么多年在用户友好性上改进不少。<br />
-安装完成后重启，结果Grub无法正常工作，进入grub rescue模式。用iPad百度之后，发现好文Ubuntu启动问题以及Grub Rescue修复方法，逐步去试，果然灵验。转载该文如下：<br />
-Ubuntu启动问题以及Grub Rescue修复方法</p>
-<p>问题：<br />
-之前系统是Windows7 64bit（C盘） + D，E盘（都是NTFS） + Ubuntu。<br />
-今天，在Windows7中删除了E盘，准备向其中安装RedHat 6。 重启Windows7之后发现Ubuntu的grub菜单不能启动。屏幕显示Invalid FileSystem。 （如果没有记错的话，呵呵）<br />
-分析<br />
-由于在Windows下面更改了分区状态，删掉了Ubuntu之前的一个分区，造成Ubuntu的分区由sda5变为sda4了，这样找不到grub了，开机显示<br />
-grub rescue&gt;<br />
-解决<br />
-1. 先使用ls命令，找到Ubuntu的安装在哪个分区：<br />
-grub rescue&gt;ls<br />
-会罗列所有的磁盘分区信息，比方说：<br />
-(hd0,1),(hd0,5),(hd0,3),(hd0,2)<br />
-2. 然后依次调用如下命令： X表示各个分区号码<br />
-grub rescue&gt;ls (hd0,X)/boot/grub<br />
-如果都找不到的话，需要查一下是否因为Linux版本差异，造成grub的路径不对，例如直接ls(hd0,X)/grub等等。<br />
-3. 假设找到（hd0,5）时，显示了文件夹中的文件，则表示Linux安装在这个分区。<br />
-4. 调用如下命令：<br />
-grub rescue&gt;set root=(hd0,5)<br />
-grub rescue&gt;set prefix=(hd0,5)/boot/grub<br />
-grub rescue&gt;insmod /boot/grub/normal.mod<br />
-5. 然后调用如下命令，就可以显示出丢失的grub菜单了。<br />
-grub rescue&gt;normal<br />
-6. 不过不要高兴，如果这时重启，问题依旧存在，我们需要进入Linux中，对grub进行修复。<br />
-进入Linux之后，在命令行执行：<br />
-sudo update-grub<br />
-sudo grub-install /dev/sda<br />
-（sda是你的硬盘号码，千万不要指定分区号码，例如sda1，sda5等都不对）<br />
-7. 重启测试是否已经恢复了grub的启动菜单？ 恭喜你恢复成功！</p>
-<p>Grub恢复成功后，开始安装常用软件。Ubuntu新的界面不像以前想象中那么难用，而且他们终于部分放弃了以前屎黄色的界面风格，最难得的是在我那破本本上速度还是很快滴！期待Ubuntu12.04早日发布，到时直接升级之。</p>
 
-	</div>
-	</div>
     
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/31/install-ubuntu-11-04">升级Fedora 16 与安装Ubuntu 11.04</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-31</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
+        <a href="/archive/">Archive</a>
     
-    <div class="post_at_index thepost">
-    	<p>两年半前安装了Fedora11，之后升级到Fedora 12， Fedora 14，期间安装了大量的软件，系统越来越慢……固然有我个人懒惰不愿优化的原因，系统性能下降也与两年多来Fedora的复杂程度的增长有关。前天晚上禁不住诱惑升级到了Fedora 16，过程中没遇到问题，只是升级后发现：（1）Gnome 3的界面进不去，因为笔记本配置太低，没有独立显卡；（2）Classic Gnome with compiz也基本无法使用，尽管我已经装好了compiz；（3）KDE界面虽然花哨但速度较慢不甚喜欢；（4）无线网卡经常无法工作。</p>
-<p>基于以上缺陷，我终于忍无可忍，决定更换系统到Ubuntu或者FreeBSD了。本来我更倾向于FreeBSD的，但是由于下载速度缓慢，不得不暂时放弃。</p>
-<p>Ubuntu很快就下完。首先在Fedora下创建启动U盘，参照&nbsp;<span style="font-family:sans-serif;"><span style="font-size:13px;"><a href="http://fedoraproject.org/wiki/How_to_create_and_use_Live_USB">How to create and use Live USB</a>：</span></span></p></p>
-<ol>
-<li><span style="font-family:sans-serif;font-size:13px;"></span><br />
-<h3 style="font-size:16px;border-bottom-width:initial;border-bottom-style:none;border-bottom-color:initial;font-family:sans-serif;margin:0 0 .3em;padding:.5em 0 .17em;">
-<span class="mw-headline" id="Check_the_size_of_your_USB_stick" style="margin:0;padding:0;">Check the size of your USB stick</span></h3>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-Many USB sticks indicate the size on the packaging or the outside of the stick.</p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-If you don't know the size of the stick, or want to check it for data, you should be able to auto-mount the USB stick by inserting it into a USB port. You can check the contents and size using the graphical file manager. In Linux, you can also use the command<br />
- line:</p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-<pre>$ df -h
-Filesystem            Size  Used Avail Use% Mounted on
-/dev/mapper/VolGroup00-LogVol00
-143G   14G  122G  10% /
-/dev/sda1              99M   12M   82M  13% /boot
-tmpfs                1009M     0 1009M   0% /dev/shm
-/dev/sdb1             3.9G  4.0K  3.9G   1% /media/usbdisk</pre></p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-USB drives are usually mounted in /media. In this case, the device is /dev/sdb1, has a 3.9GB capacity and is almost empty.</p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-Take note of &quot;/dev/sdb1&quot; or equivalent; you will be specifying the device name if you use the command line method.</p>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+<div class="home">
+  
+    <div class="posts">
+      
+        <div class="post py3">
+          <p class="post-meta">May 16, 2013</p>
+          <a href="/bioinformatics/go/2013/05/16/counting-unique-k-mers-my-first-go-program/" class="post-link"><h3 class="h2 post-title">Counting Unique k-mers -- My First Go Program</h3></a>
+          <p class="post-summary">
+            
+              <p>Previously, I wrote a Perl program to count the number of unique k-mers. It is very convenient to implement it in Perl, because Perl supports hash-of-hashes(which could dynamically count distinct k-mers) and sorting hashes by value(which can easily list the occurrences of unique k-mers in descending order).</p>
+<p>Unfortunately, comparing to C++, Perl program usually costs more memory and longer time. This is not a big issue when the FASTA files are not large(smaller than 400MB). However, when handling larger FASTA files, my Perl program would require more than 8GB memory, which exceeds the limits of my computer. Therefore, I decided to rewrite the program by Go, a system language that supports concurrent features and can has C/C++-comparable speed.</p>
+<p>The syntax of Go is very different from C/C++, which takes me a whole day familiarize. Some operations that can be implemented easily in Perl can only be done in complicated way, such as calling system command, reading file line-by-line, writing file and sorting map by value. Since this small tool doesn't involve network and concurrency, I cannot compare the difficulty of writing Go program to implement such work. </p>
+<p>Although the experience of the first Go program is not happy, I still think it is necessary to continue learning Go language, because Go program really runs very fast and saves memory(comparing to Perl script). And you don't need to worry about the tricky part of C++. </p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Apr 5, 2013</p>
+          <a href="/algorithm/c/c++/2013/04/05/linear-space-sequence-alignment/" class="post-link"><h3 class="h2 post-title">Linear Space Sequence Alignment</h3></a>
+          <p class="post-summary">
+            
+              <p>For explanation to linear space sequence alignment, please refer to <a href="http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf">http://ai.stanford.edu/~serafim/CS262_2007/notes/lecture3.pdf</a>.</p>
+<p>The algorithm and equation I used was from the textbook <em>Algorithm Design</em> by Jon Kleinberg and Éva Tardos(2005):</p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Mar 20, 2013</p>
+          <a href="/c/c++/algorithm/2013/03/20/implementation-of-strassens-algorithm-for-matrix-multiplication/" class="post-link"><h3 class="h2 post-title">Implementation of Strassen's Algorithm for Matrix Multiplication</h3></a>
+          <p class="post-summary">
+            
+              <p>Strassen's algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen's algorithm on <a href="http://en.wikipedia.org/wiki/Strassen_algorithm">Wikipedia</a>.</p>
+<p>However, the implementation of Strassen's algorithm cannot be used directly, because it  just sets the base case of the divide-and-conquer to be 1x1 matrix, which would consume huge time cost for iteration. If set the base case to 2x2 matrix, which means 2x2 matrix and 1x1 matrix will be multiplied by naive algorithm, then the Strassen's algorithm will be more efficient for matrices larger than 512x512.</p>
+<p><img class="size-full wp-image-521" alt="When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512." src="http://bo-yang.github.io/assets/images/strassen/strassen_2x2.png" width="529" height="395" /></img> </p>
+<p>When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512.</p>
+<p><img class=" wp-image-520  " alt="When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128. " src="http://bo-yang.github.io/assets/images/strassen/strassen_6x6.png" width="529" height="396" /></img></p> 
+<p>When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128.</p>
+<pre><code>
+/*------------------------------------------------------------------------------*/
+// matrix_mult.cc -- Implementation of matrix multiplication with
+// Strassen's algorithm.
+//
+// Compile this file with gcc command:
+// g++ -Wall -o matrix_mult matrix_mult.cc 
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;cmath&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+// This function allocates the matrix
+inline double** allocate_matrix(int n)
+{
+double** mat=new double*[n];
+for(int i=0;i&lt;n;++i)
+{
+mat[i]=new double[n];
+memset(mat[i],0,sizeof(double)*n);
+}
+
+return (mat); // returns the pointer to the vector.
+}
+
+/*------------------------------------------------------------------------------*/
+// This function unallocates the matrix (frees memory)
+inline void free_matrix(double **M, int n)
+{
+for (int i = 0; i &lt; n; i++)
+{
+delete [] M[i];
+}
+
+delete [] M; // frees the pointer /
+M = NULL;
+}
+
+/*------------------------------------------------------------------------------*/
+// function to sum two matrices
+inline void sum(double **a, double **b, double **result, int tam) {
+
+int i, j;
+
+for (i = 0; i &lt; tam; i++) {
+for (j = 0; j &lt; tam; j++) {
+result[i][j] = a[i][j] + b[i][j];
+}
+}
+}
+
+/*------------------------------------------------------------------------------*/
+// function to subtract two matrices
+inline void subtract(double **a, double **b, double **result, int tam) {
+
+int i, j;
+
+for (i = 0; i &lt; tam; i++) {
+for (j = 0; j &lt; tam; j++) {
+result[i][j] = a[i][j] - b[i][j];
+}
+}
+}
+
+/*------------------------------------------------------------------------------*/
+// naive method
+void naive(double** A, double** B,double** C, int n)
+{
+for (int i=0;i&lt;n;i++)
+for (int j=0;j&lt;n;j++)
+for(int k=0;k&lt;n;k++)
+C[i][j] += A[i][k]*B[k][j];
+}
+
+/*------------------------------------------------------------------------------*/
+// Strassen's method
+void strassen(double **a, double **b, double **c, int tam)
+{
+// Key observation: call naive method for matrices smaller than 2 x 2
+if(tam &lt;= 4)
+{
+naive(a,b,c,tam);
+return;
+}
+
+// other cases are treated here:
+int newTam = tam/2;
+double **a11, **a12, **a21, **a22;
+double **b11, **b12, **b21, **b22;
+double **c11, **c12, **c21, **c22;
+double **p1, **p2, **p3, **p4, **p5, **p6, **p7;
+
+// memory allocation:
+a11 = allocate_matrix(newTam);
+a12 = allocate_matrix(newTam);
+a21 = allocate_matrix(newTam);
+a22 = allocate_matrix(newTam);
+
+b11 = allocate_matrix(newTam);
+b12 = allocate_matrix(newTam);
+b21 = allocate_matrix(newTam);
+b22 = allocate_matrix(newTam);
+
+c11 = allocate_matrix(newTam);
+c12 = allocate_matrix(newTam);
+c21 = allocate_matrix(newTam);
+c22 = allocate_matrix(newTam);
+
+p1 = allocate_matrix(newTam);
+p2 = allocate_matrix(newTam);
+p3 = allocate_matrix(newTam);
+p4 = allocate_matrix(newTam);
+p5 = allocate_matrix(newTam);
+p6 = allocate_matrix(newTam);
+p7 = allocate_matrix(newTam);
+
+double **aResult = allocate_matrix(newTam);
+double **bResult = allocate_matrix(newTam);
+
+//dividing the matrices in 4 sub-matrices:
+for (int i = 0; i &lt; newTam; i++) {
+for (int j = 0; j &lt; newTam; j++) {
+a11[i][j] = a[i][j];
+a12[i][j] = a[i][j + newTam];
+a21[i][j] = a[i + newTam][j];
+a22[i][j] = a[i + newTam][j + newTam];
+
+b11[i][j] = b[i][j];
+b12[i][j] = b[i][j + newTam];
+b21[i][j] = b[i + newTam][j];
+b22[i][j] = b[i + newTam][j + newTam];
+}
+}
+
+// Calculating p1 to p7:
+
+sum(a11, a22, aResult, newTam); // a11 + a22
+sum(b11, b22, bResult, newTam); // b11 + b22
+strassen(aResult, bResult, p1, newTam); // p1 = (a11+a22) * (b11+b22)
+
+sum(a21, a22, aResult, newTam); // a21 + a22
+strassen(aResult, b11, p2, newTam); // p2 = (a21+a22) * (b11)
+
+subtract(b12, b22, bResult, newTam); // b12 - b22
+strassen(a11, bResult, p3, newTam); // p3 = (a11) * (b12 - b22)
+
+subtract(b21, b11, bResult, newTam); // b21 - b11
+strassen(a22, bResult, p4, newTam); // p4 = (a22) * (b21 - b11)
+
+sum(a11, a12, aResult, newTam); // a11 + a12
+strassen(aResult, b22, p5, newTam); // p5 = (a11+a12) * (b22)
+
+subtract(a21, a11, aResult, newTam); // a21 - a11
+sum(b11, b12, bResult, newTam); // b11 + b12
+strassen(aResult, bResult, p6, newTam); // p6 = (a21-a11) * (b11+b12)
+
+subtract(a12, a22, aResult, newTam); // a12 - a22
+sum(b21, b22, bResult, newTam); // b21 + b22
+strassen(aResult, bResult, p7, newTam); // p7 = (a12-a22) * (b21+b22)
+
+// calculating c21, c21, c11 e c22:
+
+sum(p3, p5, c12, newTam); // c12 = p3 + p5
+sum(p2, p4, c21, newTam); // c21 = p2 + p4
+
+sum(p1, p4, aResult, newTam); // p1 + p4
+sum(aResult, p7, bResult, newTam); // p1 + p4 + p7
+subtract(bResult, p5, c11, newTam); // c11 = p1 + p4 - p5 + p7
+
+sum(p1, p3, aResult, newTam); // p1 + p3
+sum(aResult, p6, bResult, newTam); // p1 + p3 + p6
+subtract(bResult, p2, c22, newTam); // c22 = p1 + p3 - p2 + p6
+
+// Grouping the results obtained in a single matrix:
+for (int i = 0; i &lt; newTam ; i++) {
+for (int j = 0 ; j &lt; newTam ; j++) {
+c[i][j] = c11[i][j];
+c[i][j + newTam] = c12[i][j];
+c[i + newTam][j] = c21[i][j];
+c[i + newTam][j + newTam] = c22[i][j];
+}
+}
+
+// deallocating memory (free):
+free_matrix(a11, newTam);
+free_matrix(a12, newTam);
+free_matrix(a21, newTam);
+free_matrix(a22, newTam);
+
+free_matrix(b11, newTam);
+free_matrix(b12, newTam);
+free_matrix(b21, newTam);
+free_matrix(b22, newTam);
+
+free_matrix(c11, newTam);
+free_matrix(c12, newTam);
+free_matrix(c21, newTam);
+free_matrix(c22, newTam);
+
+free_matrix(p1, newTam);
+free_matrix(p2, newTam);
+free_matrix(p3, newTam);
+free_matrix(p4, newTam);
+free_matrix(p5, newTam);
+free_matrix(p6, newTam);
+free_matrix(p7, newTam);
+free_matrix(aResult, newTam);
+free_matrix(bResult, newTam);
+
+} // end of Strassen function
+
+/*------------------------------------------------------------------------------*/
+// Generate random matrices
+void gen_matrix(double** M,int n)
+{
+for(int i=0;i&lt;n;++i)
+{
+for(int j=0;j&lt;n;++j)
+{
+M[i][j]=rand()%100;
+//M[i][j]=1;
+}
+}
+}
+
+/*------------------------------------------------------------------------------*/
+// print matrix M using specied fstream
+void print_matrix(fstream&amp; fs, double** M, int n)
+{
+for(int i=0;i&lt;n;++i)
+{
+for(int j=0;j&lt;n;++j)
+{
+fs&lt;&lt;M[i][j]&lt;&lt;" ";
+}
+fs&lt;&lt;endl;
+}
+fs&lt;&lt;endl;
+}
+
+/*------------------------------------------------------------------------------*/
+// record the generated matrix and the final product
+void mat_mult_log(double** A, double** B,double** C,int n,char* file)
+{
+fstream fs;
+fs.open(file,fstream::out);
+
+fs&lt;&lt;"Random Matrix A:"&lt;&lt;endl;
+print_matrix(fs,A,n);
+fs&lt;&lt;"Random Matrix B:"&lt;&lt;endl;
+print_matrix(fs,B,n);
+fs&lt;&lt;"C=A * B"&lt;&lt;endl;
+print_matrix(fs,C,n);
+
+fs.close();
+}
+
+/*------------------------------------------------------------------------------*/
+
+int main(int argc, char** argv)
+{
+srand(time(NULL));
+
+int mdim=2; // matrix dimension
+char* output=NULL;
+bool is_strassen=false;
+int c;
+
+while ((c = getopt (argc, argv, "sn:o:")) != -1)
+{
+switch (c)
+{
+case 's':
+is_strassen=true;
+break;
+case 'n':
+mdim = pow((int)2,atoi(optarg)); // 2^n dimensions
+break;
+case 'o':
+output = optarg; // 2^n dimensions
+break;
+case '?':
+if (optopt == 'n')
+fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+else if (isprint (optopt))
+fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+else
+fprintf (stderr,
+"Unknown option character `\x%x'.\n",
+optopt);
+return 1;
+default:
+abort ();
+}
+}
+
+// create new matrices
+double** A=allocate_matrix(mdim);
+double** B=allocate_matrix(mdim);
+double** C=allocate_matrix(mdim);
+gen_matrix(A,mdim);
+gen_matrix(B,mdim);
+
+// matrices multiplication
+if(is_strassen)
+strassen(A,B,C,mdim);
+else
+naive(A,B,C,mdim);
+
+if(output!=NULL)
+mat_mult_log(A,B,C,mdim,output);
+
+free_matrix(A,mdim);
+free_matrix(B,mdim);
+free_matrix(C,mdim);
+
+return 0;
+}</code></pre>
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Jan 29, 2013</p>
+          <a href="/2013/01/29/basic-linux-multi-process-multi-thread-programming/" class="post-link"><h3 class="h2 post-title">Basic Linux Multi-Process and Multi-Thread Programming</h3></a>
+          <p class="post-summary">
+            
+              <p>
+	Today I have to make my algorithm running in parallel in order to make it faster. At first I used following way to implement multi-process:</p>
+<pre class="cpp">	unsigned int proc_num = 5;
+	pid_t* pids=new pid_t[proc_num];
+	double incr=(double)N/(double)proc_num;
+	
+	/* Start children. */
+	for (unsigned int i = 0; i &lt; proc_num; ++i) {
+		if ((pids[i] = fork()) &lt; 0) {
+	    		perror(&quot;fork&quot;);
+	    		abort();
+	 	} else if (pids[i] == 0) {
+	    		// DoWorkInChild();
+
+	    		exit(0);
+	  	}
+	}
+	
+	/* Wait for children to exit. */
+	int status;
+	pid_t pid;
+	while (proc_num &gt; 0) {
+	  	pid = wait(&amp;status);
+		if(status != 0)
+	  		printf(&quot;Child Process with PID %ld aborted with status 0x%x.\n&quot;, (long)pid, status);
+	  	--proc_num;  // TODO(pts): Remove pid from the pids array.
+	}
+</pre>
 <p>
+Above way worked well, however, there's no way to change the &quot;shared&quot; variables in child processes. Because each child process has an independent copy of all variables.</p>
+<p>
+	In order to change the same array in parallel, I implemented multi threads.</p></p>
+<pre class="cpp">struct thread_info {    /* Used as argument to thread_start() */
+	pthread_t thread_id;        /* ID returned by pthread_create() */
+	int	start;       /* Application-defined thread # */
+	int     end;      /* From command-line argument */
+	int*	gpdarr;	/* Array to store GPD number */
+	long int G;	/* genome length */
+	unsigned int L;	/* read length */
+	double l1;	// GPD parameter lambda1
+	double l2;	// GPD parameter lambda2
+	double M;	// maximum of GPD density
+};
+
+void printPt(pthread_t pt) {
+  unsigned char *ptc = (unsigned char*)(void*)(&amp;pt);
+  printf(&quot;0x&quot;);
+  for (size_t i=0; i&lt;sizeof(pt); i++) {
+    printf(&quot;%02x&quot;, (unsigned)(ptc[i]));
+  }
+}
+
+void* gen_gpd_num(void* arg)
+{
+	struct thread_info *tinfo = (struct thread_info *) arg;
+	// do something here
+
+	pthread_exit(0);
+}
+
+int main()
+{
+        unsigned int tnum = 20;
+	double incr=(double)N/(double)tnum;
+	
+	thread_info* tinfo=new thread_info[tnum];
+
+	int err;
+	void* res;
+	
+	/* Start children. */
+	for(unsigned int idx=0;idx&lt;tnum;++idx) 
+	{
+		tinfo[idx].start=incr*idx;
+		tinfo[idx].end=incr*(idx+1);
+		tinfo[idx].gpdarr=gpdnum;
+		tinfo[idx].G=G;
+		tinfo[idx].L=l;
+		tinfo[idx].l1=l1;
+		tinfo[idx].l2=l2;
+		tinfo[idx].M=M;
+
+		err = pthread_create(&amp;tinfo[idx].thread_id, NULL, &amp;gen_gpd_num, &amp;tinfo[idx]);
+
+		if(err!=0)
+			printf(&quot;can't create thread :[%s]&quot;, strerror(err));
+		else
+			pthread_join(tinfo[idx].thread_id, &amp;res);
+	}
+        delete [] tinfo;
+}</pre>
+<p>
+The potential problem of using multi-threading in Linux is -- it is hard to figure out if there really are many threads are running&nbsp;simultaneously.&nbsp;</p>
+<p>
+	When compiling multi-threading program using GCC, pthread library must be specified:</p></p>
+<pre class="cpp">g++ -o foo -Wall foo.cc -L/usr/lib -lpthread</pre>
+<p>
+References:</p></p>
+<ol>
+<li>
+		<a href="http://www.thegeekstuff.com/2012/04/create-threads-in-linux/" style="font-size:14px;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;letter-spacing:-1px;line-height:1.364em;">How to Create Threads in Linux (With a C Example Program)</a></p>
+<h1 class="entry-title" style="padding:0;margin:0;font-weight:normal;color:rgb(169,0,0);line-height:1.364em;letter-spacing:-1px;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
+		</h1>
 </li>
 <li>
-<h2 style="font-size:18px;font-weight:normal;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(170,170,170);font-family:sans-serif;margin:0 0 .6em;padding:.5em 0 .17em;">
-<span class="mw-headline" id="How_to_Partition" style="margin:0;padding:0;">How to Partition</span></h2>
-<div class="messagebox" style="font-family:sans-serif;line-height:18px;background-color:rgb(249,246,183);min-height:35px;border-color:rgb(196,194,149);border-style:solid;border-width:1px;margin:1ex 0;padding:5px 5px 5px 45px;">
-<div style="float:left;margin:0 0 0 -40px;padding:0;">
-<a href="http://fedoraproject.org/wiki/File:Warning_(medium_size).png" class="image" style="color:rgb(114,159,207);text-decoration:none;margin:0;padding:0;"><img alt="Warning (medium size).png" src="http://fedoraproject.org/w/uploads/thumb/f/fd/Warning_%28medium_size%29.png/35px-Warning_%28medium_size%29.png" width="35" height="35" style="border-width:initial;border-color:initial;border-style:none;margin:0;padding:0;" /></a></div>
-<div style="margin:0;padding:0;">
-<span style="margin:0;padding:0;">CAUTION&nbsp;</span><br style="clear:none!important;margin:0;padding:0;" /><br />
-This will erase all data on the USB drive! Please read the instructions below&nbsp;<span style="margin:0;padding:0;">carefully</span>.</div>
-</div>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-If the drive has not been partitioned properly (or if you are unsure), use&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">fdisk</code>&nbsp;to<br />
- repartition it.</p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-It is also possible to do a non-destructive installation of a LiveUSB image, if you have sufficient empty space. See&nbsp;<a href="https://fedoraproject.org/wiki/How_to_create_and_use_Live_USB#How_to_install_non-destructively" class="external text" style="color:rgb(51,102,187);text-decoration:none;background-color:initial;margin:0;padding:0 16px 0 0;">How<br />
- to install non-destructively</a>&nbsp;below.</p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-The&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">fdisk</code>&nbsp;command must be run as root. Include<br />
- only the drive name in the command, not the partition number.&nbsp;<span style="margin:0;padding:0;"><span style="margin:0;padding:0;">Be<br />
- sure to select the correct disk, or you may erase important data!</span></span>&nbsp;Check the output of &quot;df -h&quot; if you are unsure. For example, if your partition will be /dev/sdb1, do:</p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-<pre>$ /sbin/fdisk /dev/sdb</pre></p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-If you don't have fdisk installed, run&nbsp;</p>
-<pre>yum install util-linux-ng</pre>
-<p>&nbsp;as root.</p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-The following session output from&nbsp;<span style="font-size:16px;"><code style="background-color:rgb(249,249,249);margin:0;padding:0;">fdisk</code>&nbsp;</span>shows<br />
- the responses to give to the prompts. The line starting&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">Last<br />
- cylinder ...</code>&nbsp;refers to the size of the flash drive, so may be different than in the example.</p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-<pre>Command (m for help): d
-Selected partition 1
-
-Command (m for help): n
-Command action
-e   extended
-p   primary partition (1-4)
-p
-Partition number (1-4): 1
-First cylinder (1-960, default 1): ↵
-Using default value 1
-Last cylinder or +size or +sizeM or +sizeK (1-960, default 960): ↵
-Using default value 960
-
-Command (m for help): t
-Selected partition 1
-Hex code (type L to list codes): 6
-Changed system type of partition 1 to 6 (FAT16)
-
-Command (m for help): a
-Partition number (1-4): 1
-
-Command (m for help): w
-The partition table has been altered!
-
-Calling ioctl() to re-read partition table.
-
-WARNING: If you have created or modified any DOS 6.x
-partitions, please see the fdisk manual page for additional
-information.
-Syncing disks.</pre></p>
-<h2 style="font-size:18px;font-weight:normal;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(170,170,170);font-family:sans-serif;margin:0 0 .6em;padding:.5em 0 .17em;">
-<span class="mw-headline" id="How_to_Format" style="margin:0;padding:0;">How to Format</span></h2>
-<div class="messagebox" style="font-family:sans-serif;line-height:18px;background-color:rgb(249,246,183);min-height:35px;border-color:rgb(196,194,149);border-style:solid;border-width:1px;margin:1ex 0;padding:5px 5px 5px 45px;">
-<div style="float:left;margin:0 0 0 -40px;padding:0;">
-<a href="http://fedoraproject.org/wiki/File:Warning_(medium_size).png" class="image" style="color:rgb(114,159,207);text-decoration:none;margin:0;padding:0;"><img alt="Warning (medium size).png" src="http://fedoraproject.org/w/uploads/thumb/f/fd/Warning_%28medium_size%29.png/35px-Warning_%28medium_size%29.png" width="35" height="35" style="border-width:initial;border-color:initial;border-style:none;margin:0;padding:0;" /></a></div>
-<div style="margin:0;padding:0;">
-<span style="margin:0;padding:0;">CAUTION&nbsp;</span><br style="clear:none!important;margin:0;padding:0;" /><br />
-This will erase all data on the USB drive! Please read the instructions below&nbsp;<span style="margin:0;padding:0;">carefully</span>.</div>
-</div>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-If your USB media has sufficient free space on a&nbsp;<span style="margin:0;padding:0;">vfat</span>&nbsp;file system already, you do not need to<br />
- perform this step.</p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-To finish, the partition must be formatted with an actual file system using&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">mkdosfs</code>&nbsp;as<br />
- the root user. Unmount the device before using&nbsp;<code style="background-color:rgb(249,249,249);font-size:2.4ex;margin:0;padding:0;">mkdosfs</code>.<br />
- In the below example, /dev/USBPARTITIONNAME might be, for example, /dev/sdb1.&nbsp;<span style="margin:0;padding:0;"><span style="margin:0;padding:0;">Be<br />
- sure to select the correct partition; formatting destroys all data on it!</span></span></p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-<span style="margin:0;padding:0;"><span style="margin:0;padding:0;"></span></span></p>
-<pre>$ umount /dev/USBPARTITIONNAME
-$ /sbin/mkdosfs -F 32 -n usbdisk /dev/USBPARTITIONNAME</pre></p>
-<p style="margin-top:1ex;margin-right:5ex;margin-bottom:1ex;padding-top:0;padding-bottom:0;font-family:sans-serif;line-height:18px;">
-If you don't have mkdosfs installed, run &quot;yum install dosfstools&quot; as root.</p>
-<p>
+		http://www.kernel.org/doc/man-pages/online/pages/man3/pthread_create.3.html</p>
 </li>
-<li><span style="font-family:sans-serif;font-size:13px;">通过命令</span>
-<pre>su -c &quot;yum install liveusb-creator&quot;</pre>
-<p>安装了Fedora的liveusb-creator，但是发现Fedora的这个程序无法制作Ubuntu的启动盘<img alt="快哭了" src="http://static.blog.csdn.net/xheditor/xheditor_emot/default/fastcry.gif" />。<span style="font-family:sans-serif;font-size:13px;">无奈之下，试着把Ubuntu的iso文件复制到U盘里：</span>
-<pre>sudo dd if=F12-Live-i686.iso of=/dev/sdX bs=8M</pre>
+</ol></p>
 <p>
-</li>
-<li><span style="font-family:sans-serif;font-size:13px;">之后重启电脑，开机之后按c进入grub引导程序。尝试以往的通过kernel指定vmlinuz时失败，才发现Grub2中已经没有了kernel命令，尝试legacy_kernel和xnu_kernel，结果均遭失败。于是我尝试直接指定&nbsp;<span style="font-family:Consolas, 'Courier New', Courier, mono, serif;line-height:18px;text-align:left;background-color:rgb(248,248,248);">initrd&nbsp;(hd1,4)/casper/initrd.gz，然后exit，没成想Ubuntu的安装界面竟然出现了！</span></span></li>
-<li><span style="font-family:sans-serif;font-size:13px;">安装Ubuntu的过程中竟然就已经支持了WIFI，着实令我欣慰，看来Ubuntu这么多年在用户友好性上改进不少。</span></li>
-<li><span style="font-family:sans-serif;font-size:13px;">安装完成后重启，结果Grub无法正常工作，进入grub rescue模式。用iPad百度之后，发现好文<a href="http://www.cnblogs.com/samcn/archive/2011/03/30/1999615.html">Ubuntu启动问题以及Grub Rescue修复方法</a>，逐步去试，果然灵验。转载该文如下：</span></li>
-</ol>
-<p><span style="font-family:sans-serif;font-size:13px;"></span></p>
-<div class="postTitle" style="font-family:verdana;word-wrap:break-word;font-size:14px;font-weight:bold;line-height:21px;border-color:red;border-style:solid;border-width:0;padding:10px 10px 10px 5px;">
-<h3><a id="ctl02_TitleUrl" class="postTitle2" href="http://www.cnblogs.com/samcn/archive/2011/03/30/1999615.html" style="border-bottom-style:dotted;border-bottom-width:0;border-bottom-color:rgb(239,239,239);padding-bottom:10px;color:rgb(120,175,211);text-decoration:none;">Ubuntu启动问题以及Grub<br />
- Rescue修复方法</a></h3>
-</div>
-<div id="cnblogs_post_body" style="font-family:verdana;word-wrap:break-word;font-size:14px;line-height:21px;">
-<ul>
-<li>问题：</li>
-</ul>
-<p style="margin:5px auto;">
-之前系统是Windows7 64bit（C盘） &#043; D，E盘（都是NTFS）&nbsp;&#043; Ubuntu。</p>
-<p style="margin:5px auto;">
-今天，在Windows7中删除了E盘，准备向其中安装RedHat 6。 重启Windows7之后发现Ubuntu的grub菜单不能启动。屏幕显示Invalid FileSystem。 （如果没有记错的话，呵呵）</p>
-<ul>
-<li>分析</li>
-</ul>
-<p style="margin:5px auto;">
-由于在Windows下面更改了分区状态，删掉了Ubuntu之前的一个分区，造成Ubuntu的分区由sda5变为sda4了，这样找不到grub了，开机显示</p>
-<p style="margin:5px auto;">
-grub rescue&gt;</p>
-<ul>
-<li>解决</li>
-</ul>
-<p style="margin:5px auto;">
-1.&nbsp; 先使用ls命令，找到Ubuntu的安装在哪个分区：&nbsp; &nbsp; &nbsp;</p>
-<p style="margin:5px auto;">
-<pre>grub rescue&gt;ls</pre></p>
-<p style="margin:5px auto;">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;会罗列所有的磁盘分区信息，比方说：</p>
-<p style="margin:5px auto;">
-&nbsp;&nbsp;&nbsp;&nbsp; (hd0,1),(hd0,5),(hd0,3),(hd0,2)</p>
-<p style="margin:5px auto;">
-2.&nbsp;然后依次调用如下命令： X表示各个分区号码&nbsp; &nbsp; &nbsp;</p>
-<p style="margin:5px auto;">
-<pre>grub rescue&gt;ls (hd0,X)/boot/grub</pre></p>
-<p style="margin:5px auto;">
-&nbsp; &nbsp; &nbsp;如果都找不到的话，需要查一下是否因为Linux版本差异，造成grub的路径不对，例如直接ls(hd0,X)/grub等等。</p>
-<p style="margin:5px auto;">
-3. 假设找到（hd0,5）时，显示了文件夹中的文件，则表示Linux安装在这个分区。</p>
-<p style="margin:5px auto;">
-4. 调用如下命令：</p>
-<pre>grub rescue&gt;set root=(hd0,5)
-grub rescue&gt;set prefix=(hd0,5)/boot/grub
-grub rescue&gt;insmod /boot/grub/normal.mod</pre></p>
-<p style="margin:5px auto;">
-5. 然后调用如下命令，就可以显示出丢失的grub菜单了。</p>
-<pre>grub rescue&gt;normal</pre></p>
-<p style="margin:5px auto;">
-6. 不过不要高兴，如果这时重启，问题依旧存在，我们需要进入Linux中，对grub进行修复。</p>
-<p style="margin:5px auto;">
-&nbsp;&nbsp;&nbsp; 进入Linux之后，在命令行执行：&nbsp; &nbsp;&nbsp;</p>
-<p style="margin:5px auto;">
-<pre>sudo update-grub
-sudo grub-install /dev/sda</pre></p>
-<p style="margin:5px auto;">
-（sda是你的硬盘号码，千万不要指定分区号码，例如sda1，sda5等都不对）</p>
-<p style="margin:5px auto;">
-7. 重启测试是否已经恢复了grub的启动菜单？ 恭喜你恢复成功！</p>
-</div>
-<p><span style="font-family:sans-serif;font-size:13px;">Grub恢复成功后，开始安装常用软件。Ubuntu新的界面不像以前想象中那么难用，而且他们终于部分放弃了以前屎黄色的界面风&#26684;，最难得的是在我那破本本上速度还是很快滴！期待Ubuntu12.04早日发布，到时直接升级之。</span></p>
-<p><span style="font-family:sans-serif;font-size:13px;"><br />
-</span></p>
-<p><span style="font-family:sans-serif;font-size:13px;"></span></p>
-<p>【Update 2012-04-29】</p>
-<p><span style="font-size:32px;"><strong>恢复Grub2</strong></span></p>
-<p>升级Ubuntu 11.10到12.04后，开机报错“no partition found”,进入Grub后，输入&quot;ls&quot;命令，也报错“no partition found”。</p>
-<p>于是我下载了<a href="http://unetbootin.sourceforge.net/">UNetbootin</a>，然后利用它在Win 7下制作Ubuntu自启动U盘。制作好之后，结果发现不会自动引导启动，需要在开机之后出现Thinkpad欢迎界面时按F12，然后选择U盘启动。然后选择U盘启动Ubuntu，进入Ubuntu后按照&nbsp;<a href="http://www.webupd8.org/2009/12/how-to-recover-grub2-linux.html">How to<br />
- Fix Grub 2</a> 中的方法安装Grub 2到硬盘。</p></p>
-<div style="margin:0;padding:0;color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;">
-<span style="margin:0;padding:0;">To fix GRUB 2, you need an Ubuntu live CD from which you need to boot.</span>&nbsp;Once you boot to the LIVE CD, open a terminal an and type these commands:</div>
-<p><br style="margin:0;padding:0;color:rgb(85,85,85);font-size:14px;line-height:20px;" /></p>
-<div style="margin:0;padding:0;color:rgb(85,85,85);font-size:14px;line-height:20px;text-align:justify;">
-<span style="margin:0;padding:0;font-weight:bold;">a) Firstly, you need to find out on which partition your Linux system is installed:</span><br style="margin:0;padding:0;" /></p>
-<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo fdisk -l</code></pre>
-<p>(in my case, it's &quot;sda1&quot;)<br style="margin:0;padding:0;" /><br />
-<br style="margin:0;padding:0;" /><br />
-<span style="margin:0;padding:0;font-weight:bold;">b) Now, we must mount this partition:</span><br style="margin:0;padding:0;" /></p>
-<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo mount /dev/<span style="margin:0;padding:0;font-weight:bold;">sda1</span> /mnt</code></pre>
-<p>Where &quot;sda1&quot; is the partition where you installed Ubuntu (or any other Linux distro). It could be &quot;sda5&quot;, &quot;sda6&quot;, etc. for you.<br style="margin:0;padding:0;" /><br />
-<br style="margin:0;padding:0;" /><br />
-<span style="margin:0;padding:0;font-weight:bold;">c) Install grub to the partition you've mounted:</span><br style="margin:0;padding:0;" /></p>
-<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo grub-install --root-directory=/mnt/ /dev/sda</code></pre>
-<p><br style="margin:0;padding:0;" /><br />
-<br style="margin:0;padding:0;" /><br />
-<span style="margin:0;padding:0 2px;background-color:rgb(255,255,177);border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(223,223,223);border-right-width:1px;border-right-style:solid;border-right-color:rgb(223,223,223);color:rgb(51,51,51);">Important:</span>&nbsp;Please<br />
- notice that it's &quot;/dev/sda&quot;, not &quot;/dev/sda1&quot;. &quot;sda&quot; is the hard disk on which your Linux distribution is installed!<br style="margin:0;padding:0;" /><br />
-<br style="margin:0;padding:0;" /><br />
-<span style="margin:0;padding:0;font-weight:bold;">d) Restart your computer. As previous Grub 2 entries are removed, run the following command to restore them:</span><br style="margin:0;padding:0;" /></p>
-<pre class="linux-code" style="margin-top:10px;margin-bottom:10px;margin-left:10px;padding:28px 10px 10px;background-color:rgb(229,202,202);color:rgb(0,0,0);font-size:13px;font-family:'UbuntuBeta Mono', 'Ubuntu Mono', 'Courier New', Courier, monospace;max-height:500px;min-height:16px;overflow:auto;width:522px;z-index:10000;border-color:rgb(155,5,5);border-style:solid;border-width:1px 1px 1px 20px;"><code style="margin:0;padding:0;">sudo update-grub</code></pre>
-</div>
-<p>
-重启电脑进入Grub 2之后，输入命令</p>
-<p>
-<pre>linux (hd0,X)/vmlinuz-3.2......
-initrd (hd0,X)/initrd.img-3.2......
-boot</pre>
-<p>
-Grub 2中已经不再支持kernel命令，需要用linux指定kernel。</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/19/backquote">Backquotes in Ksh here document</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-19</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
 	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>When the shell encounters a string between backquotes</p>
-<pre>     `cmd`</pre>
-<p>it executes cmd and replaces the backquoted string with the standard output of cmd, with any trailing newlines deleted. Quoting inside backquoted commands is somewhat complicated, mainy because the same token is used to start and to end a backquoted command. As a consequence, to nest backquoted commands, the backquotes of the inner one have to be escaped using backslashes, e.g.<br />
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Dec 6, 2012</p>
+          <a href="/matlab/2012/12/06/simple-matlaboctave-commands-to-process-data/" class="post-link"><h3 class="h2 post-title">Simple Matlab/Octave Commands to Process Data</h3></a>
+          <p class="post-summary">
+            
+              <p>To load data in following format stored in a text file "read_pos' into Matlab/Octave, use commands<br />
 <code><br />
-LABNAME=$(echo $labname | tr "[a-z]" "[A-Z]" | sed 's/-/_/g'<br />
-cat &lt;&lt;-IOTA &gt;$iota_cfg<br />
-path=\`checkpath\`<br />
-export ${LABNAME}_COOLXDIR=$COOLXDIR<br />
-IOTA</code></p>
-<p>Since the LABNAME is a variable defined out of the here document, it must be quoted by braces {}, or error will occur.</p>
-<p>--------------</p>
-<p>Reference:</p>
-<ol>
-<li> <a href="http://www.mpi-inf.mpg.de/~uwe/lehre/unixffb/quoting-guide.html#para:sh-backquotes">A Guide to Unix Shell Quoting</a></li>
-</ol>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/18/merge-split-pdf-files">Merge/Split PDF files in Linux</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-18</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-First install pdftk (pdf toolkit). Pdftk runs from the command line which means you should unpack the software into a directory that you can access easily. I put the file into c: for&nbsp;<a href="http://www.ghacks.net/2007/10/02/merge-pdf-files/#" class="kLink" id="KonaLink0" style="border-style:initial;border-color:initial;outline-width:initial;outline-style:none;outline-color:initial;background-color:transparent!important;vertical-align:baseline;color:rgb(0,114,188);font-family:inherit!important;display:inline!important;top:0;right:0;bottom:0;left:0;position:static;font-size:inherit!important;border-width:0!important;margin:0;padding:0;"><span style="color:#0072bc;border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0;margin:0;padding:0;"><span class="kLink" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;width:auto!important;float:none!important;display:inline!important;font-family:inherit!important;font-size:inherit!important;position:static;border-width:0 0 1px!important;margin:0;padding:0 0 1px!important;">testing</span></span></a>&nbsp;purposes<br />
- along with two pdfs called 123.pdf and 456.pdf.</p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-If you run pdftk without parameters you get a quick output that details the most important parameters. Lets take a look at the possible operations:</p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span id="more-2012" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;"></span><span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Merge<br />
- pdf files:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- 123.pdf 456.pdf output 123456.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-This tells pdftk to merge the two pdf files 123.pdf and 456.pdf into a new pdf called 123456.pdf. If you want to merge more than two pdf files at once you simply add them between pdftk and output. You could also use wildcards to merge many or all pdfs with<br />
- a certain name.</p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- *.pdf output 123456.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Split<br />
- pages from one or more pdfs:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- A=123.pdf B=456.pdf cat A1-2 B4-5 output 1245.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Repair<br />
- a pdf:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- 123.pdf output 123fixed.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Merge<br />
- encrypted pdfs:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<code style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;font-size:1em;font-family:'Courier New', Courier, monospace;border-width:0;margin:0;padding:0;">pdftk<br />
- A=123.pdf 456.pdf input_pw A=password cat output 123456.pdf</code></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-Pdftk offers several more possibilities which are worth a look if you want to do something that I did not describe on this website. A version for Linux and Windows is available.</p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<span style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;border-width:0;margin:0;padding:0;">Read<br />
- More:</span></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-<a href="http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/" style="border-style:initial;border-color:initial;outline-width:0;outline-style:initial;outline-color:initial;background-color:transparent;vertical-align:baseline;text-decoration:none;color:rgb(0,0,255);border-width:0;margin:0;padding:0;">Pdftk<br />
- Homepage</a></p>
-<p style="border-style:initial;border-color:initial;margin-top:0;margin-bottom:1em;outline-width:0;outline-style:initial;outline-color:initial;padding-top:0;padding-bottom:0;vertical-align:baseline;color:rgb(16,16,16);font-family:'Lucida Grande', Verdana, 'Lucida Sans Regular', 'Lucida Sans Unicode', Arial, sans-serif;line-height:21px;border-width:0;">
-原文：<a href="http://www.ghacks.net/2007/10/02/merge-pdf-files/">http://www.ghacks.net/2007/10/02/merge-pdf-files/</a></p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/16/tcl-send">Tk send</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Tcl/Tk-ref" rel="nofollow">Tcl/Tk</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-<code>send</code>&nbsp;is a Tk command&nbsp;used to execute a command in a different application. This send communication mechanism is limited to applications&nbsp;running on one display. Multiple screens on one workstation still count as the same display on X.</p>
-<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-In order to use&nbsp;<code>send</code>&nbsp;in your program, you should</p>
-<ol style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-<ol>
-<li>use command&nbsp;<tt>winfo interps</tt>&nbsp;to find out all the names of Tk applications reachable with send.</li>
-<li>to get the real name of a spplicaiton, using&nbsp;<tt>tk appname &lt;application&gt;.</tt></li>
-<li><tt>run tcl command remotely by send [tk appname &lt;application&gt;] &lt;command&gt;.</tt></li>
-</ol>
-</ol>
-<p style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-------------------<br />
-Reference:</p>
-<ol style="font-family:Georgia, 'Times New Roman', 'Bitstream Charter', Times, serif;font-size:13px;line-height:19px;">
-<li>send manual page:&nbsp;<a href="http://www.tcl.tk/man/tcl8.4/TkCmd/send.htm">http://www.tcl.tk/man/tcl8.4/TkCmd/send.htm</a></li>
-<li><a href="http://www.amazon.com/exec/obidos/ISBN=0130385603/brentwelchA/">Practical Programming in Tcl and Tk(4th edition)</a></li>
-</ol>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/16/change-character-case">How to change the character case in ksh?</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Shell-ref" rel="nofollow">Shell</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>1. To change lower case characters to upper case, you can</p></p>
-<pre>echo abc | tr &quot;[a-z]&quot; &quot;[A-Z]&quot;</pre>
+    f=fopen('read_pos','r'); % open file<br />
+    a=textscan(f,'%s%d');  % read file<br />
+    y=a{2}; % a is a cell: a{1} stores read id, a{2} stores numbers.<br />
+</code><br />
+<br />
+Then data of the second column are stored in variable y.<br />
+<code><br />
+r12353.1 	2407054.5<br />
+r12361.1 	5328858.5<br />
+r12363.1 	2360272<br />
+r12368.1 	4726440.5<br />
+r12372.1 	2224001<br />
+r12373.1 	5165613.5<br />
+r12381.1 	501776<br />
+r12385.1 	3475398<br />
+r12394.1 	3376364<br />
+r12401.1 	2142875.5<br />
+r12411.1 	2191090.5<br />
+r12419.1 	1240590<br />
+r12420.1 	4903572<br />
+r12422.1 	767011.5<br />
+r12426.1 	3575915.5<br />
+r12429.1 	554956<br />
+r12433.1 	4786335<br />
+r12435.1 	3373955.5<br />
+r12442.1 	5363611.5<br />
+r12452.1 	1903660.5<br />
+r12454.1 	2784165<br />
+r12466.1 	5137479<br />
+r12470.1 	592191<br />
+</code><br />
+<br />
+If there are only numbers stored in file "read_pos", following commands should be used:<br />
+<code><br />
+    f=fopen('read_pos','r'); % open file<br />
+    a=textscan(f,'%s%d');  % read file<br />
+    y=cell2mat{a}; % convert cell a to vector<br />
+    size(y) % check the size<br />
+</code></p>
 <p>
-or&nbsp;</p></p>
-<pre>echo abc | tr '[:lower:]' '[:upper:]'</pre>
+To plot the distribution of all the numbers, you can:<br />
+<code><br />
+    x=zeros(size(y));<br />
+    plot(y,x,'bo');<br />
+</code><br />
+<br />
+If another data set z is also loaded and you want to plot y and z in the same graph, you can:<br />
+<code><br />
+    figure<br />
+    x=zeros(size(y));<br />
+    plot(y,x,'bo');<br />
+    hold on<br />
+    x=ones(size(z));<br />
+    plot(z,x,'r+');<br />
+</code></p>
 <p>
-2. To change upper case characters to lower case, you can</p>
-<p><span style="font-family:monospace;"><span style="white-space:pre;"></span></span>
-<pre>echo ABC | tr &quot;[A-Z]&quot; &quot;[a-z]&quot;</pre>
-<p>
-<span style="white-space:pre;font-family:monospace;">or</span></p>
-<p><span style="font-family:monospace;"><span style="white-space:pre;"></span></span>
-<pre>echo ABC | tr '[:upper:]' '[:lower:]'</pre></p>
+To annotate and scale the graph, use commands;<br />
+<code><br />
+    xlabel('AMD Data k-mer Occurrances');<br />
+    title('GPD Classification of AMD k-mers')<br />
+    legend('Bin 1','Bin 2')<br />
+    axis([-5 5 0 10000]) % scale axes<br />
+</code></p>
+<p>A matlab function to plot multiple datasets:<br />
+<code><br />
+function result=plot_distr(varargin)</p>
+<p>nVarargs=length(varargin);</p>
+<p>marker={'bo' 'r+' 'k*' 'gs' 'y^' 'md' 'cp' 'bx' 'r.' 'k&gt;' 'gh' 'y&lt;&#039;};<br />
+figure<br />
+for k=1:nVarargs<br />
+	f=fopen(varargin{k},&#039;r&#039;);<br />
+	a=textscan(f,&#039;%d&#039;);<br />
+	y=cell2mat(a);<br />
+	x=zeros(size(y))+k;<br />
+	plot(y,x,marker{k});<br />
+	hold on<br />
+end<br />
+ylim([0-5*nVarargs 6*nVarargs]); % scale y-axis<br />
+</code></p>
 
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/02/rup-rpc-program-not-registered-in-rhel6-1">rup:: RPC: Program not registered in RHEL6.1</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>I just installed Redhat Enterprise Linux 6.1 on one HP server. Following error met when rup it on other servers:</p>
-<p>[sourcecode language="text"]<br />
-$rup coolnjmcl033<br />
-rup:coolnjmcl033: RPC: Program not registered<br />
-[/sourcecode]</p>
-<p>SOLUTION:<br />
-1) check if all nfs related services are working:</p>
-<p>[sourcecode language="text"]<br />
-[root@coolnjmcl033init.d]# rpcinfo -p<br />
-program vers proto port service<br />
-100000 4 tcp 111 portmapper<br />
-100000 3 tcp 111 portmapper<br />
-100000 2 tcp 111 portmapper<br />
-100000 4 udp 111 portmapper<br />
-100000 3 udp 111 portmapper<br />
-100000 2 udp 111 portmapper<br />
-100011 1 udp 875 rquotad<br />
-100011 2 udp 875 rquotad<br />
-100011 1 tcp 875 rquotad<br />
-100011 2 tcp 875 rquotad<br />
-100003 2 tcp 2049 nfs<br />
-100003 3 tcp 2049 nfs<br />
-100003 4 tcp 2049 nfs<br />
-100227 2 tcp 2049 nfs_acl<br />
-100227 3 tcp 2049 nfs_acl<br />
-100003 2 udp 2049 nfs<br />
-100003 3 udp 2049 nfs<br />
-100003 4 udp 2049 nfs<br />
-100227 2 udp 2049 nfs_acl<br />
-100227 3 udp 2049 nfs_acl<br />
-100005 1 udp 51310 mountd<br />
-100005 1 tcp 60605 mountd<br />
-100005 2 udp 42799 mountd<br />
-100005 2 tcp 44201 mountd<br />
-100005 3 udp 49544 mountd<br />
-100005 3 tcp 49098 mountd<br />
-100024 1 udp 37035 status<br />
-100024 1 tcp 60898 status<br />
-100001 3 udp 1008 rstatd<br />
-100001 2 udp 1008 rstatd<br />
-100001 1 udp 1008 rstatd<br />
-[/sourcecode]</p>
-<p>If there is no running rstatdservice , start it byservice rstatd start.<br />
-Accordingto RHEL 6 RUP manual:</p>
-<p>[sourcecode language="text"]<br />
-rup: RPC: Program not registered<br />
-[/sourcecode]</p>
-<p>The rpc.rstatd(8) daemon has not been started on the remote host.</p>
-<p>2) check if package rusers-server-*and rusers-* are installed: rpm –qa|greprusers. If not, install it and then restart service rstatd.</p>
-<p>PS:<br />
-Other userful commands:<br />
-[sourcecode language="text"]<br />
-rup localhost<br />
-service rstatd status<br />
-[/sourcecode]</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2011/12/02/cfilt">C++filt</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2011-12-02</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Unix/Linux-ref" rel="nofollow">Unix/Linux</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>c++flit decodes(demangles) low-level names into user-level names so that the linker can keep these overloaded functions from clashing.</p>
-<p>You may use c++filt to demangle the symbols.<br />
-[sourcecode language="text"]<br />
-$ c++filt _ZNSt8ios_base4InitD1Ev<br />
-std::ios_base::Init::~Init()<br />
-[/sourcecode]</p>
-<p>You may try adding-lstdc++ to your link command to resolve the issue.</p>
-<p><a href="http://sourceware.org/binutils/docs-2.16/binutils/c_002b_002bfilt.html"><strong>c++filt manual</strong></a> </p>
-
-	</div>
-	</div>
-    
-	
-	<!-- Pagination links -->
-	
-	<ul class="pager">
-	    
-	    <li class="previous"><a href="/page7">&larr; Older</a></li>
-	    
-	
-	    
-	    <li class="next"><a href="/page5">Newer &rarr;</a></li>
-	    
-	</ul>
-	
-	<!-- content -->
-</div>
-
-<div class="col-lg-3">
-		<div class="well">
-            <h4>Links</h4>
-			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> 
-			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> 
-			<a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a>
-			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> 
-        	<a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a>	
+            
+          </p>
         </div>
-        <!-- /well -->
-        <div class="well">
-			<h4>Tags</h4>
-				<div class="tag_box">
-				
-				<!-- site_tags: C/C++,Algorithm,EMC,Fault Diagnosis,Notes,AI,Database,Unix/Linux,Personal,Telecom,Tcl/Tk,Shell,Network,Perl,Industry,Cloud Computing,API,Android,VBA,Virtualization,Browser,Plan 9,Go,Distributed Systems,Tips,Genetic Algorihtm,Mac OS,Statistics,Matlab,Multithreading,Bioinformatics,Computer Vision,Machine Learning,BACI,Jekyll,Architecture,Java -->
-				
-				<!-- tag_words:  -->
+      
+        <div class="post py3">
+          <p class="post-meta">Nov 17, 2012</p>
+          <a href="/tips/2012/11/17/tips-about-regular-expression/" class="post-link"><h3 class="h2 post-title">Tips about Regular Expression</h3></a>
+          <p class="post-summary">
+            
+              <ol>
+<li>In Vim, greedy matching is used by default. In order to use non-greedy matching, you can use \{-}, or \{-n,m}, such as: :/Q.\{-0,200}[IL].\{-0,2000}FF.</li>
+<li>In Perl, default matching is also greedy. To use non-greedy matching, please change <code>*</code> , <code>+</code> , <code>?</code> , and<code>{}</code> into <code>*?</code> , <code>+?</code> , <code>??</code> , and <code>{}?</code> , respectively.</li>
+<li>To count the number of matching in Vim, you can use command ":%s/&lt;pattern&gt;//g". After get the number of matches, then execute ":u" to undo the changes.</li>
+<li>In Perl, to count the number of matching, you can use command: 
+<pre><code>my $number =()= $string =~ /\./gi;</code></pre>
+</li>
+</ol>
+<p>References:</p>
+<ol>
+<li>http://vimregex.com/</li>
+<li>http://stackoverflow.com/questions/1849329/is-there-a-perl-shortcut-to-count-the-number-of-matches-in-a-string</li>
+<li>http://docstore.mik.ua/orelly/perl/cookbook/ch06_16.htm</li>
+</ol>
+<p> </p>
 
-				
-  <ul class="nav nav-pills nav-stacked">
-  
-    
-        <li><a href="/tags.html#AI">AI <span class="badge pull-right">7</span></a></li>
-    
-        <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
-    
-        <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Architecture">Architecture <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#BACI">BACI <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Bioinformatics">Bioinformatics <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
-    
-        <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Computer+Vision">Computer Vision <span class="badge pull-right">4</span></a></li>
-    
-        <li><a href="/tags.html#Database">Database <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Distributed+Systems">Distributed Systems <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#EMC">EMC <span class="badge pull-right">9</span></a></li>
-    
-        <li><a href="/tags.html#Fault+Diagnosis">Fault Diagnosis <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Genetic+Algorihtm">Genetic Algorihtm <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Go">Go <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Industry">Industry <span class="badge pull-right">6</span></a></li>
-    
-        <li><a href="/tags.html#Java">Java <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Jekyll">Jekyll <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Mac+OS">Mac OS <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Machine+Learning">Machine Learning <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Matlab">Matlab <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Multithreading">Multithreading <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Network">Network <span class="badge pull-right">4</span></a></li>
-    
-        <li><a href="/tags.html#Notes">Notes <span class="badge pull-right">25</span></a></li>
-    
-        <li><a href="/tags.html#Perl">Perl <span class="badge pull-right">15</span></a></li>
-    
-        <li><a href="/tags.html#Personal">Personal <span class="badge pull-right">13</span></a></li>
-    
-        <li><a href="/tags.html#Plan+9">Plan 9 <span class="badge pull-right">9</span></a></li>
-    
-        <li><a href="/tags.html#Shell">Shell <span class="badge pull-right">15</span></a></li>
-    
-        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Tcl%2FTk">Tcl/Tk <span class="badge pull-right">9</span></a></li>
-    
-        <li><a href="/tags.html#Telecom">Telecom <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Tips">Tips <span class="badge pull-right">4</span></a></li>
-    
-        <li><a href="/tags.html#Unix%2FLinux">Unix/Linux <span class="badge pull-right">100</span></a></li>
-    
-        <li><a href="/tags.html#VBA">VBA <span class="badge pull-right">5</span></a></li>
-    
-        <li><a href="/tags.html#Virtualization">Virtualization <span class="badge pull-right">4</span></a></li>
-    
-  
-  </ul>
-
-
-
-
-				</div>
-		</div>
-		<!-- /well -->
-        <div class="well">
-			<h4>Visitors</h4>
-				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4gy6jc9lpsq&amp;s=220&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
-	
+            
+          </p>
         </div>
-		<!-- /well -->
-		<div class="well">
-			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- Right-side Ad(300x600) -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:300px;height:600px"
-     data-ad-client="ca-pub-1292710832620237"
-     data-ad-slot="9707222500"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+      
+        <div class="post py3">
+          <p class="post-meta">Nov 5, 2012</p>
+          <a href="/c/c++/machine%20learning/2012/11/05/calculate-the-cdf-of-poisson-distribution-with-boost-c-library/" class="post-link"><h3 class="h2 post-title">Calculate the CDF of Poisson Distribution with Boost C++ Library</h3></a>
+          <p class="post-summary">
+            
+              <p>The Cumulative Distribution Function(CDF) of Poisson distribution can be easily calculated by R function ppois() or octave/Matlab function poisspdf(). However, it is not a easy thing to deal with statistics with C++ from scratch.</p>
+<p>Today I found a very powerful C++ mathematical library(actually not limited to math), boost. Unfortunately, it is hard to figure out the API of boost library from the code if you are not familiar with generalization programming(just like me). Besides, there is no useful "hello world" examples on the Internet to show the boost library handling statistics(examples on webpage <a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a> is a bit complicated and the header files are not included).</p>
+<p>Therefore, I made up following example to show how to get the cdf of Poisson distribution with boost C++ library:<br />
+<code><br />
+#include &lt;boost/math/distributions/poisson.hpp&gt;<br />
+#include &lt;iostream&gt;</code></p>
+<p>using namespace std;<br />
+using namespace boost::math;</p>
+<p>int main()<br />
+{<br />
+poisson_distribution&lt;&gt; p(2.9);<br />
+cout&lt;&lt;"cdf: ppois(1,2.9)="&lt;&lt;cdf(p,1)&lt;&lt;endl;</p>
+<p>return 0;<br />
+}</p>
+<p><em>References:</em></p>
+<ol>
+<li><a href="http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html">http://www.boost.org/doc/libs/1_52_0/libs/math/doc/sf_and_dist/html/math_toolkit/dist/dist_ref/dists/poisson_dist.html</a></li>
+<li><a href="https://www.quantnet.com/threads/c-statistical-distributions-in-boost.10016/">C++ Statistical Distributions in Boost</a></li>
+<li><a href="http://www.datasimfinancial.com/forum/viewtopic.php?t=111">http://www.datasimfinancial.com/forum/viewtopic.php?t=111</a></li>
+</ol>
 
-	   	</div>
-        <!-- /well -->
-</div>
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Nov 4, 2012</p>
+          <a href="/2012/11/04/an-implementation-of-merge-sort-in-c/" class="post-link"><h3 class="h2 post-title">An Implementation of Merge Sort in C</h3></a>
+          <p class="post-summary">
+            
+              <p>Following C code is the implementation of merge sort, with the time complexity of O(nlogn). It was used in my current project to sort 148 million integers. At first I used bubbled sort, which took me hours to have the 148M integers sorted, because the time complexity of bubble sort is O(n^2). After replacing the sorting algorithm with merge sort, the time of sorting reduced to less than 10 mins. Amazing improvement! Although I have heard of the importance of sorting/searching algorithm for years, it was the first time I realize the magic of algorithms. </p>
+<p>The merge sort below was found in Internet. Sorry that I forgot to record the hyperlink of the webpage. Only a few changes were made by me. </p>
+<p> </p>
+<p><code>void Merge(int* input, long p, long r)<br />
+{<br />
+	long mid = floor((p + r) / 2);<br />
+	long i1 = 0;<br />
+	long i2 = p;<br />
+	long i3 = mid + 1;</p>
+<p>	// Temp array<br />
+	int* temp=new int[r-p+1];</p>
+<p>	// Merge in sorted form the 2 arrays<br />
+	while ( i2 &lt;= mid &amp;&amp; i3 &lt;= r )<br />
+		if ( input[i2] &lt; input[i3] )<br />
+			temp[i1++] = input[i2++];<br />
+		else<br />
+			temp[i1++] = input[i3++];</p>
+<p>	// Merge the remaining elements in left array<br />
+	while ( i2 &lt;= mid )<br />
+		temp[i1++] = input[i2++];</p>
+<p>	// Merge the remaining elements in right array<br />
+	while ( i3 &lt;= r )<br />
+		temp[i1++] = input[i3++];</p>
+<p>	// Move from temp array to master array<br />
+	for ( int i = p; i &lt;= r; i++ )<br />
+		input[i] = temp[i-p];</p>
+<p>	delete [] temp;<br />
+}</p>
+<p>// inputs:<br />
+//	p - the start index of array input<br />
+//	r - the end index of array input<br />
+void Merge_sort(int* input, long p, long r)<br />
+{<br />
+	if ( p &lt; r )<br />
+	{<br />
+		long mid = floor((p + r) / 2);<br />
+		Merge_sort(input, p, mid);<br />
+		Merge_sort(input, mid + 1, r);<br />
+		Merge(input, p, r);<br />
+	}<br />
+}<br />
+</code></p>
 
-	</div>
-</div>
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Aug 24, 2012</p>
+          <a href="/unix/linux/2012/08/24/connect-mac-os-x-with-linux-server/" class="post-link"><h3 class="h2 post-title">Connect Mac OS X with Linux Server</h3></a>
+          <p class="post-summary">
+            
+              <p>There are many ways to connect Mac OS X with Linux by command line. However, connecting them with GUI is not so easy. I tried two ways, but none of them work perfectly and each of them has both advantages and disadvantages.</p>
+<p>The first way I tried was VNC. <a href="http://sourceforge.net/projects/cotvnc/">Chicken of the VNC</a> was said to be the best VNC client under Mac OS X, unfortunately, I haven't make it work, even follow the tips of webpage <a id="using_vnc_on_mac_os_x" name="using_vnc_on_mac_os_x"></a><a href="http://www.cs.vassar.edu/sysnews/vnc/osx">Using VNC on Mac OS X</a>. I used realvnc. The first step is to configure ssh. I followed the tips on webpage <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>.  In the Linux server, after installing openssh, edit the file <code>/etc/ssh/ssh_config</code> and make sure</p>
+<pre>ForwardAgent yes
+ForwardX11 yes
+ForwardX11Trusted yes</pre>
+<p>Then edit <code>/etc/ssh/sshd_config</code> and make sure</p>
+<pre>X11Forwarding yes</pre>
+<p>.</p>
+<p>In the terminal of Mac OS X, enter command "<code>ssh -L 5901:localhost:5900 &lt;login&gt;@&lt;LinuxServer&gt;</code>". 5901 is the port number to be used by RealVNC, and 5900 is the port number of the VNC in Linux. For details about this command, refer to <a href="http://manas.tungare.name/blog/ssh-port-forwarding-on-mac-os-x/">SSH Port Forwarding on Mac OS X</a>. Then start RealVNC, enter "<code>localhost:5901</code>" and your VNC password.</p>
+<p>RealVNC works reliably, but the quality of GUI is not good and sometimes responds slowly.</p>
+<p>The other method is also based on ssh, therefore the ssh should also be configured in the Linux side. The only difference is X11 should be installed in Mac OS X. The above<br />
+ssh command can also be used. Or just use "ssh -X &lt;login&gt;@&lt;LinuxServer&gt;". After login to Linux in terminal, run command "<code>gnome-session</code>"(this requires Gnome be installed in Linux server). In this way, remote Linux programs runs as local Mac applications. For more info, please refer to <a href="http://narnia.cs.ttu.edu/drupal/node/132">Connecting to Remote Linux Desktop via SSH with X11 Forwarding</a>. The disadvantage of using this way is, X11 is not reliable in Mac OS X and it may crash at any time.</p>
 
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Aug 8, 2012</p>
+          <a href="/unix/linux/2012/08/08/how-to-make-nic-bcm57780-work-in-scientific-linux/" class="post-link"><h3 class="h2 post-title">How to make NIC BCM57780 work in Scientific Linux?</h3></a>
+          <p class="post-summary">
+            
+              <p>I decided to install Scientific Linux on the computer in my lab. Partly because this distribution is called "Scientific", partly because it is compiled from Red Hat Enterprise Linux, the most prestigious Linux distribution in the world.</p>
+<p>At first, I downloaded the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso">Everything DVDs</a> and burned it into my USB stick via <a href="http://unetbootin.sourceforge.net/">UNetbootin</a>. Unfortunately, it couldn't boot. Then I tried the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveCD.iso">Live CD</a>. It did worked and I installed the SL in a few minutes. However, the network could not be connected and the NIC could not be activated. I checked the NIC type by "<code>lspci | grep net</code>", and I found it was <strong>Broadcom Corporation NetLink BCM57780</strong>.</p>
+<p>Many people complain this network card. Some guys tried to download the<a href="http://www.broadcom.com/support/ethernet_nic/netlink_k57.php"> source code </a>of the driver from Broadcom and compiled it by themselves. I didn't want to do that, so I searched "tg3 rpm" and finally got the rpm package for SL <a href="ftp://ftp.ntua.gr/pub/linux/scientificlinux/6.2/x86_64/updates/fastbugs/kmod-tg3-3.122-1.el6_2.x86_64.rpm">kmod-tg3-3.122-1.el6_2.x86_64.rpm</a>. I installed it and restarted the network even the computer, the NIC still didn't work.</p>
+<p>Then I resorted to compiling the source code of tg3. Unfortunately, I realized that gcc was not installed -- the LiveCD didn't contain the GCC package. When I tried to manually install GCC from rpm, a series of shared library dependencies blocked me. So I have to downloaded the <a href="http://ftp.scientificlinux.org/linux/scientific/6.2/x86_64/iso/SL-62-x86_64-2012-02-16-LiveDVD.iso">LiveDVD of SL</a>, burned it again and installed the SL again. This time, the GCC was included.</p>
+<p>Before building the tg3 driver, I installed the downloaded tg3 rpm package and searched again for the driver. Finally I found webpage <strong><a href="http://www.aoddy.com/2007/10/15/how-to-updating-driver-for-gigabit-network-card-broadcom-tg3netxtream-on-fedora-core-4-2/">How to updating driver for gigabit network card [Broadcom TG3:netXtream] on fedora core 4.</a> </strong>and responses to <a href="http://fonality.com/trixbox/forums/trixbox-forums/help/eth0-no-device-found-nic-broadcom-tg3-drivers-kernel-dkms">eth0 no device found, NIC Broadcom tg3 drivers, kernel, DKMS</a>. Combing the two webpages, I got to know how to make BCM57780 work in SL:</p>
+<ol>
+<li>Download and install <a href="ftp://ftp.ntua.gr/pub/linux/scientificlinux/6.2/x86_64/updates/fastbugs/kmod-tg3-3.122-1.el6_2.x86_64.rpm">kmod-tg3-3.122-1.el6_2.x86_64.rpm</a>.</li>
+<li>Go to <code>/lib/modules/&lt;kernel#&gt;/kernel/net </code> and check if tg3.ko there. If not, try executing "locate tg3".</li>
+<li>Run command "<code>insmod  /path/to/tg3.ko</code>".</li>
+<li>Run command "<code>service network restart</code>".</li>
+<li>Update /etc/.rc.local and append commands in 3 &amp; 4 to the end. Or you must manually run commands 3&amp;4 after reboot.</li>
+</ol>
+<p>Besides, if the above still not work, you may consider appending "<code>biosdevname=0</code>" to the kernel line of the grub config file <code>/etc/grub.conf</code>.</p>
+<p><em><strong>[Update 08/09/2012]:</strong></em></p>
+<p>I am sorry that I didn't really tried if the way above modifying /etc/rc.local really work after reboot. And today I did try, but the answer was no. I struggled for another hour and finally found out the tricky tip: <span style="color:#ff0000;"><strong>module tg3.ko must be removed and re-installed before restarting your network, or the Broadcom NIC still wouldn't work!</strong></span></p>
+<p>So you should append following code to your /etc/rc.local:</p>
+<p><strong><code>rmmod tg3.ko<br />
+insmod /path/to/tg3.ko<br />
+service network restart</code></strong></p>
 
+            
+          </p>
+        </div>
+      
     </div>
 
-    <footer>
-        <p>&copy; 2007 <span id="now_year"></span> Bo Yang. </p>
-        <script type="text/javascript">
-          var now_year = new Date().getFullYear();
-          if (now_year != 2007) {
-              $('#now_year').html('- ' + now_year);
-          }
-	    </script>
-      </footer>
+    <div class="pagination clearfix mb1 mt4">
+  <div class="left">
+    
+      
+        <a class="pagination-item" href="/page5/">Newer</a>
+      
+    
   </div>
-
-  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
-  <script src="/assets/run_prettify.js"></script>
-  <script type="text/javascript">
-    $(function() {
-
-      $('a[href^="http"]').each(function () {
-        $(this).attr('target', '_blank');
-      });
-
-      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
-      window.prettyPrint && prettyPrint();
-
-      function traverse($node, len, maxCount) {
-        var reachMaxCount = len > maxCount;
-        if (reachMaxCount) {
-          $node.hide();
-        }
-        var $contents = $node.contents();
-        for (var i = 0; i < $contents.length; ++i) {
-          if (reachMaxCount) {
-            $contents.eq(i).hide();
-            continue;
-          }
-          if ($contents[i].nodeType == 3) { // TextNode
-            var tmp = len;
-            var s = $contents[i].nodeValue;
-            len += s.length;
-            reachMaxCount = len > maxCount;
-            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
-              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
-            }
-          }
-          else if ($contents[i].nodeType == 1) { // Element
-            len = traverse($contents.eq(i), len, maxCount);
-          }
-        }
-        return len;
-      }
-
-      $('.post_at_index').each(function() {
-        var count = traverse($(this), 0, 400);
-        if (count > 400) {
-          var thisUrl = $(this).siblings().first().children().attr('href');
-          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow" class="btn btn-primary" role="button">' + 'Read More &raquo;</a>');
-        }
-      });
-    });
-  </script>
+  <div class="right">
+    
+      <a class="pagination-item" href="/page7/">Older</a>
+    
+  </div>
+</div>
 
   
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
 
 </body>
 </html>
-

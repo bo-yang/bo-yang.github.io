@@ -1,95 +1,432 @@
-
-<!DOCTYPE HTML>
-<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parallelize mex file in Matlab | Bo's Blog</title>
-  
-  <meta name="author" content="Bo Yang" />
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <!--
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Parallelize mex file in Matlab &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="">
+    <link rel="canonical" href="http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
-  <!-- Bootstrap -->
-  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
 
-  <!-- font-awesome -->
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
 
-  <!-- Google Prettify -->
-  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
-  <!-- Google Pretty end -->
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
 
-  <link href="/assets/style/blog.css" rel="stylesheet">
-  
-  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
-  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Parallelize mex file in Matlab">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Parallelize mex file in Matlab" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
 </head>
 
-<body>
+<body class="site">
 
-   <!-- navigation bar -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a class="navbar-brand" href="/"><b>bo-yang</b></a>
-            </div>
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="/archive.html"><b>Archive</b></a>
-					</li>
-					<li><a href="/tags.html"><b>Tags</b></a>
-                    </li>
-                    <li><a href="/about.html"><b>About</b></a>
-                    </li>
-                    <li><a href="/messages.html"><b>Messages</b></a>
-                    </li>
-				</ul>
-				<ul class="nav navbar-nav pull-right">
-		          <li>
-		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
-		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
-		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
-		              <input type="hidden" name="ie" value="UTF-8" />
-		              <input type="hidden" name="oe" value="UTF-8" />
-		              <input type="hidden" name="hl" value="en-US" />
-		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
-					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
-					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
-		            </form>
-		          </li>
-		        </ul>
-            </div>
-			<!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
 
-  <div class="container">
-    <div class="row" id="content-row">
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
       
-<div class="page-header">
-	<h1>Parallelize mex file in Matlab</h1>
-	<p>
-		<span class="glyphicon glyphicon-time"></span> Posted at &nbsp; 2013-10-20 &nbsp; &nbsp; by  <a href="/about.html"><strong>Bo Yang</strong></a> &nbsp; &nbsp; <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Matlab" rel="nofollow">Matlab</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Multithreading" rel="nofollow">Multithreading</a>
-	</p>
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Parallelize mex file in Matlab</h1>
+  <span class="post-meta">Oct 20, 2013</span><br>
+  
+  <span class="post-meta small">
+  
+    1 minute read
+  
+  </span>
 </div>
 
-<div class="col-lg-10">
-	<div class="post paper">
-		<p>By default mex file cannot be executed in parallel in Matlab, which will be a major bottleneck for Matlab program. Fortunately, there is a way to execute loop operations in parallel -- <a href="http://www.mathworks.com/help/distcomp/parfor.html">parfor</a>. Matlab provides a good tutorial on parfor: <a href="http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html">Getting Started with parfor</a>.</p>
+<article class="post-content">
+  <p>By default mex file cannot be executed in parallel in Matlab, which will be a major bottleneck for Matlab program. Fortunately, there is a way to execute loop operations in parallel -- <a href="http://www.mathworks.com/help/distcomp/parfor.html">parfor</a>. Matlab provides a good tutorial on parfor: <a href="http://www.mathworks.com/help/distcomp/getting-started-with-parfor.html">Getting Started with parfor</a>.</p>
 <p>One tricky problem with parfor is dealing with reduction assignments, which means the value of some variables are updated by each iteration, such as assignment to an array/matrix indexed by loop index.  My suggestion is to separate the loop into two parts: one part deal with non-reduction assignment with <code>parfor</code>, and the other part do the reduction assignment with traditional <code>for</code> loop.</p>
 <p>If you cannot save all the <code>parfor</code>-assigned variables in memory, then you must save them into mat file and load them in the next for-loop. In the <code>parfor</code>-loop, command "<code>save</code>" cannot  be used directly because it violates the transparency(God knows what does it mean!). As an alternative, you can create a wrapper function of <code>save</code> and call that function instead. FOr example:</p>
 <p>Save the following as "parsave.m":<br />
@@ -110,166 +447,182 @@ end</code></p>
 <li>How do I use SAVE with a PARFOR loop: http://www.mathworks.com/support/solutions/en/data/1-D8103H/?product=DM&amp;solution=1-D8103H</li>
 </ol>
 
-	</div>
-
-	<div align="right">
-        <div class="bshare-custom">
-	<span class='st_facebook_large' displayText='Facebook'></span>
-	<span class='st_googleplus_large' displayText='Google +'></span>
-	<span class='st_twitter_large' displayText='Tweet'></span>
-	<span class='st_sina_large' displayText='Sina'></span>
-	<span class='st_linkedin_large' displayText='LinkedIn'></span>
-	<span class='st_tumblr_large' displayText='Tumblr'></span>
-	<span class='st_sharethis_large' displayText='ShareThis'></span>
-	<span class='st_blogger_large' displayText='Blogger'></span>
-	<span class='st_email_large' displayText='Email'></span>
-</div>
-<script type="text/javascript">var switchTo5x=true;</script>
-<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-<script type="text/javascript">stLight.options({publisher: "6e9cb968-ad78-4055-b1e7-1b7ab6751416", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
-
-	</div>
-
-	<!-- page link -->
-    <div class="pager">
-      <ul>
-      
-        <li class="previous"><a href="/2013/10/11/notes-of-advanced-machine-learningi" title="Notes of Advanced Machine Learning(I)">&larr; Previous</a></li>
-      
-
-      
-        <li class="next"><a href="/2014/01/10/dense-trajectory-notes" title="Dense Trajectory Notes">Next &rarr;</a></li>
-      
-      </ul>
-    </div>
-
-	<!--
-	<div class="well">
-		<script>
-var linkwithin_site_id = 2140443;
-</script>
-<script src="http://www.linkwithin.com/widget.js"></script>
-<a href="http://www.linkwithin.com/"><img src="http://www.linkwithin.com/pixel.png" alt="Related Posts Plugin for WordPress, Blogger..." style="border: 0" /></a>
-
-	</div>
-	-->
-    <div class="well">
-		
+</article>
 
 
-  <div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_developer = 1;
-    var disqus_shortname = 'boyang'; // required: replace example with your forum shortname
-     var disqus_identifier = '/2013/10/20/parallel-mex-file-in-matlab';
-    var disqus_url = 'http://bo-yang.github.com//2013/10/20/parallel-mex-file-in-matlab';
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
     
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
 
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Parallelize mex file in Matlab&url=http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
 
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
 
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/&title=Parallelize mex file in Matlab" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
 
-    </div>
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/&name=Parallelize mex file in Matlab" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/&title=Parallelize mex file in Matlab" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/&t=Parallelize mex file in Matlab" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
 </div>
 
-<div class="col-lg-2">
-	<div class="well">
-		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- RIght-side Ad(160x600) -->
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
 <ins class="adsbygoogle"
-     style="display:inline-block;width:160px;height:600px"
-     data-ad-client="ca-pub-1292710832620237"
-     data-ad-slot="3290428906"></ins>
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	</div>
-	<div class="well">
-		<h4>Visitors</h4>
-		<div class="tag_box">
-			<script type="text/javascript" src="http://je.revolvermaps.com/2/2.js?i=493pvkdo4nt&amp;m=0&amp;s=130&amp;c=ff0000&amp;t=1" async="async"></script>
-	
-		</div>
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/2013/10/20/parallel-mex-file-in-matlab';
+    var disqus_title      = 'Parallelize mex file in Matlab';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//2013/10/20/parallel-mex-file-in-matlab/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
     </div>
-
-</div>
-
-
-
-
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
     </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
 
-    <footer>
-        <p>&copy; 2007 <span id="now_year"></span> Bo Yang. </p>
-        <script type="text/javascript">
-          var now_year = new Date().getFullYear();
-          if (now_year != 2007) {
-              $('#now_year').html('- ' + now_year);
-          }
-	    </script>
-      </footer>
+
+      </div>
+    </div>
   </div>
 
-  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
-  <script src="/assets/run_prettify.js"></script>
-  <script type="text/javascript">
-    $(function() {
-
-      $('a[href^="http"]').each(function () {
-        $(this).attr('target', '_blank');
-      });
-
-      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
-      window.prettyPrint && prettyPrint();
-
-      function traverse($node, len, maxCount) {
-        var reachMaxCount = len > maxCount;
-        if (reachMaxCount) {
-          $node.hide();
-        }
-        var $contents = $node.contents();
-        for (var i = 0; i < $contents.length; ++i) {
-          if (reachMaxCount) {
-            $contents.eq(i).hide();
-            continue;
-          }
-          if ($contents[i].nodeType == 3) { // TextNode
-            var tmp = len;
-            var s = $contents[i].nodeValue;
-            len += s.length;
-            reachMaxCount = len > maxCount;
-            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
-              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
-            }
-          }
-          else if ($contents[i].nodeType == 1) { // Element
-            len = traverse($contents.eq(i), len, maxCount);
-          }
-        }
-        return len;
-      }
-
-      $('.post_at_index').each(function() {
-        var count = traverse($(this), 0, 400);
-        if (count > 400) {
-          var thisUrl = $(this).siblings().first().children().attr('href');
-          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow" class="btn btn-primary" role="button">' + 'Read More &raquo;</a>');
-        }
-      });
-    });
-  </script>
-
-  
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
 
 </body>
 </html>
-

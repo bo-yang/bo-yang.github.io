@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>N-Queens Problem &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Algorithm, C/C++">
+    <link rel="canonical" href="http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="N-Queens Problem">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="N-Queens Problem" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>N-Queens Problem</h1>
+  <span class="post-meta">Jun 27, 2014</span><br>
+  
+  <span class="post-meta small">
+  
+    2 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><a href="https://oj.leetcode.com/problems/n-queens/">N-Queens Problem</a>:</p>
+
+<blockquote>
+  <p>The \(n\)-queens puzzle is the problem of placing \(n\) queens on an \(n \times n\) chessboard such that no two queens attack each other, which means <a href="http://en.wikipedia.org/wiki/Eight_queens_puzzle">no two queens share the same row, column, or diagonal</a>.
+Given an integer \(n\), return all distinct solutions to the \(n\)-queens puzzle.
+Each solution contains a distinct board configuration of the \(n\)-queens’ placement, where ‘Q’ and ‘.’ both indicate a queen and an empty space respectively.</p>
+</blockquote>
+
+<p>This problem can be solved recursively: for every free grid in a row, resursively check possible solutions in the row below, until (1) there is no free grid in the next row(failure) or (2) there is no row below(current row is the last row, sucess).</p>
+
+<p>For any grid in the table, if the value of the grid is <em>true</em>, then this grid is free. Otherwise, it is not free. In order to guaranttee there is no two queens in the same row, column or diagonal, after picking up a grid, set the value of grids in the same row, column or diagonal to be <em>false</em>. After checking the remaining rows, the states of grids set in this step should be restored.</p>
+
+<p>Following is my C++ implementation. Functions checkRow() and setGrid() are very tricky.</p>
+
+<pre>
+class Solution {
+public:
+	vector&lt;vector<string> &gt; solveNQueens(int n) {
+	   vector&lt;vector<bool> &gt; grid;
+	   vector<bool> row_bool;
+	   for(int j=0;j&lt;n;++j) 
+		   row_bool.push_back(true);
+	   for(int i=0;i&lt;n;++i)
+		   grid.push_back(row_bool);
+
+	   vector&lt;vector&lt;pair&lt;int,int&gt; &gt; &gt; points;
+	   vector&lt;pair&lt;int,int&gt; &gt; path;
+	   checkRow(grid,path,points,n,0);
+
+	   vector&lt;vector<string> &gt; ret;
+	   for(int i=0;i&lt;points.size();++i) {
+		   vector<string> trace;
+		   string row_trace;
+		   for(int i=0;i&lt;n;++i)
+			   row_trace+=".";
+		   for(int i=0;i&lt;n;++i)
+			   trace.push_back(row_trace);
+
+		   for(auto&amp; pt: points[i]) 
+			   trace[pt.first][pt.second]='Q';
+
+		   ret.push_back(trace);
+	   }
+
+	   return ret;
+    }
+
+	// Recrusively try a solution row-by-row
+	void checkRow(vector&lt;vector<bool> &gt;&amp; grid, vector&lt;pair&lt;int,int&gt; &gt;&amp; path, vector&lt;vector&lt;pair&lt;int,int&gt; &gt; &gt;&amp; trace, int n, int row) {
+		if(row==n &amp;&amp; path.size()==n) {
+			trace.push_back(path);	// store the solution
+			return;
+		}
+
+		vector<int> avail_cols;
+		findAvailGrids(grid,avail_cols,row);
+		if(avail_cols.empty())
+			return;
+
+		for(auto&amp; col:avail_cols) {
+			path.push_back(pair&lt;int,int&gt;(row,col));
+			vector&lt;pair&lt;int,int&gt; &gt; points;
+			setGrid(grid,points,row,col,false);
+			checkRow(grid,path,trace,n,row+1);
+			setGrid(grid,points,true);	// recover the state of table
+			path.pop_back();
+		}
+	}
+
+	// Find available grids in a row
+	void findAvailGrids(vector&lt;vector<bool> &gt;&amp; grid,vector<int>&amp; vec,int row) {
+		for(int j=0;j&lt;grid[0].size();++j) {
+			if(grid[row][j])
+				vec.push_back(j);
+		}
+	}
+
+	// Set grids to val based on the coordinate of a given grid
+	void setGrid(vector&lt;vector<bool> &gt;&amp; grid,vector&lt;pair&lt;int,int&gt; &gt;&amp; points, int row, int col, bool val) {
+		const int n=grid.size();
+		// set grids in the same row and column
+		for(int i=0;i&lt;n;++i) {
+			if(grid[i][col]!=val)
+				points.push_back(pair&lt;int,int&gt;(i,col));
+			if(grid[row][i]!=val)
+				points.push_back(pair&lt;int,int&gt;(row,i));
+			grid[i][col]=val;
+			grid[row][i]=val;
+		}
+		// set diagnal grids
+		int x=row;
+		int y=col;
+		while(x&gt;=0 &amp;&amp; y&gt;=0) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&lt;int,int&gt;(x,y));
+			grid[x][y]=val;
+			x--;y--;
+		}
+		x=row+1; y=col+1;
+		while(x&lt;n &amp;&amp; y&lt;n) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&lt;int,int&gt;(x,y));
+			grid[x][y]=val;
+			x++;y++;
+		}
+		x=row-1; y=col+1;
+		while(x&gt;=0 &amp;&amp; y&lt;n) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&lt;int,int&gt;(x,y));
+			grid[x][y]=val;
+			x--;y++;
+		}
+		x=row+1; y=col-1;
+		while(x&lt;n &amp;&amp; y&gt;=0) {
+			if(grid[x][y]!=val)
+				points.push_back(pair&lt;int,int&gt;(x,y));
+			grid[x][y]=val;
+			x++;y--;
+		}
+	}
+
+	// Set grids to val based on a collection of grids
+	void setGrid(vector&lt;vector<bool> &gt;&amp; grid, vector&lt;pair&lt;int,int&gt; &gt;&amp; points, bool val) {
+		for(auto&amp; pt:points)
+			grid[pt.first][pt.second]=val;
+	}
+
+	// Print all solutions, test only
+	void printSolution(vector&lt;vector<string> &gt;&amp; trace) {
+		cout&lt;&lt;"["&lt;&lt;endl;
+		for(int i=0;i&lt;trace.size();++i) {
+			cout&lt;&lt;"  [\""&lt;&lt;trace[i][0]&lt;&lt;"\","&lt;&lt;endl;
+			for(int j=1;j&lt;trace[i].size();++j) {
+				if(j!=trace[i].size()-1)
+					cout&lt;&lt;"   \""&lt;&lt;trace[i][j]&lt;&lt;"\","&lt;&lt;endl;
+				else
+					cout&lt;&lt;"   \""&lt;&lt;trace[i][j]&lt;&lt;"\"]"&lt;&lt;endl;
+			}
+			cout&lt;&lt;endl;
+		}
+	}
+
+	// Print the values of all grids in the table, test only
+	void printGrid(vector&lt;vector<bool> &gt;&amp; grid,int row,int col,string str) {
+		cout&lt;&lt;"("&lt;&lt;row&lt;&lt;","&lt;&lt;col&lt;&lt;")"&lt;&lt;str&lt;&lt;":"&lt;&lt;endl;
+		for(int i=0;i&lt;grid.size();++i) {
+			for(int j=0;j&lt;grid[0].size();++j) {
+				if(grid[i][j])
+					cout&lt;&lt;"T ";
+				else
+					cout&lt;&lt;"F ";
+			}
+			cout&lt;&lt;endl;
+		}
+		cout&lt;&lt;endl;
+	}
+};
+
+</bool></string></bool></bool></int></bool></int></bool></string></string></bool></bool></string></pre>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=N-Queens Problem&url=http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/&title=N-Queens Problem" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/&name=N-Queens Problem" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/&title=N-Queens Problem" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/&t=N-Queens Problem" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/algorithm/c/c++/2014/06/27/nqueens';
+    var disqus_title      = 'N-Queens Problem';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//algorithm/c/c++/2014/06/27/nqueens/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

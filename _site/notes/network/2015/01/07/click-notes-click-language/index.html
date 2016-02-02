@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Click Notes II - Click Script Language &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Notes, Network">
+    <link rel="canonical" href="http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Click Notes II - Click Script Language">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Click Notes II - Click Script Language" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Click Notes II - Click Script Language</h1>
+  <span class="post-meta">Jan 7, 2015</span><br>
+  
+  <span class="post-meta small">
+  
+    9 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>The <a href="http://www.read.cs.ucla.edu/click/docs/language">Click programming language</a> was developed to configure Click routers, but nowadays you also can use it to write test cases for Click elements.</p>
+
+<ol>
+  <li><a href="#syntax">Basic Syntax</a></li>
+  <li><a href="#element_group">Element Group</a></li>
+  <li><a href="#comp_element">Compound Element</a></li>
+  <li><a href="#script">Script</a></li>
+  <li><a href="#testie">Testie</a></li>
+</ol>
+
+<h3 id="a-namesyntaxbasic-syntaxa"><a name="syntax">Basic Syntax</a></h3>
+
+<p>The Click Script Language defines a configuration graph, which consists of connected elements. Each element has an element class specified by class name. Elements are connected through their input and output ports. Input and output ports are distinguished by number, while elements are distinguished by name.</p>
+
+<p>Click configuration strings are comma-separated lists of arguments delimited by parentheses. The fundamental syntax of Click Script Language is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>name :: class(config-string);    // declare element object
+name1, name2, ..., nameN :: class(config); // declaration shorhand
+name1[port1] -&gt; [port2]name2;    // connect two elements
+name1[port1] -&gt; [port2a]name2[port2b] -&gt; [port3]name3;    // piggyback connections
+name1 -&gt; name2 :: class(config-string) -&gt; name3;  // declaring elements inside connections is allowed
+name1 -&gt; class(config-string) -&gt; name3;  // anonymous element
+require(requirement[, requirement …]);   // list config requirements
+
+n1, n2 :: class -&gt; n3;  // many-to-one connections
+
+// many-to-many connections:
+// A many-to-many connection matches output ports to input ports. 
+// There must be as many ports on the left as on the right.
+// '=&gt;' is the many-to-many connector.
+c[0], c[1], c[2] =&gt; Paint(0), Paint(1), Paint(2) -&gt; next;
+c =&gt; Paint(0), Paint(1), Paint(2) -&gt; next;
+</code></pre>
+</div>
+
+<h3 id="a-nameelementgroupelement-groupa"><a name="element_group">Element Group</a></h3>
+
+<p>An element group is one or more Click statements enclosed in parentheses. Within the parentheses, the special pseudoelements <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> refer to connections from outside the group. Click expands the group at parse time, so connections through <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> have no run-time overhead. The following five lines are equivalent:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>x -&gt; y;
+x -&gt; ( input -&gt; output ) -&gt; y;
+x -&gt; ( [0] -&gt; [0] ) -&gt; y;
+x -&gt; (-&gt;) -&gt; y;
+x -&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) =&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) -&gt; y;
+</code></pre>
+</div>
+
+<p>Line five uses the fact that connections may be repeated without error (the line expands to <code class="highlighter-rouge">x -&gt; y; x -&gt; y</code>), where the explicit semicolons are used to avoid ambiguity.</p>
+
+<p>Element groups have implicit, overridable port specifications that list all their ports in sequential order. For example, these three lines are equivalent:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>x =&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) -&gt; y;
+x =&gt; [0,1] ( [0]-&gt;[0]; [1]-&gt;[1] ) [0,1] -&gt; y;
+x -&gt; y; x [1] -&gt; y;
+</code></pre>
+</div>
+
+<p>An element group does <strong>not</strong> define a new scope. Its contents may refer to elements declared outside of the group, and declarations inside the group are visible after the group closes. This differs from compound elements, described next, which have a related syntax but additionally introduce a new scope.</p>
+
+<h3 id="a-namecompelementcompound-elementa"><a name="comp_element">Compound Element</a></h3>
+
+<p>A <strong>compound element</strong> is a scoped collection of elements that behaves like a single element. A compound element can be used anywhere an element class is expected (that is, in a declaration or connection). Syntactically, a compound element is a set of Click statements enclosed in braces <code class="highlighter-rouge"><span class="p">{</span><span class="w"> </span><span class="p">}</span></code>. Inside the braces, the special names <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> represent connections from or to the outside.</p>
+
+<p>Compound element classes are router configuration fragments consisted by Click elements and statements that are treated like element classes. For compound elements, only components remain in the final configuration graph, and all compound element structure is compiled away. This process is called <strong>flattening</strong>, during which compound element components are given names that reflect their origin. For example, a component named <code class="highlighter-rouge">e</code> of a compound element <code class="highlighter-rouge">compound</code> is named <code class="highlighter-rouge">compound/e</code> in the flattened configuration.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>elementclass Name {    // compound elements
+    ... Click Statements …  // defined by click statements but not C++ class
+}
+e :: {    // anonymous compound element class
+    ... Click Statements … 
+}
+elementclass MyQueue Queue;   // define an alias for an existing element class
+</code></pre>
+</div>
+
+<p>Like any element, compound elements may have input and output ports. Each connection to or from a compound element port is transformed by flattening into a connection to or from one of its components’ ports. Inside a compound element class, the special pseudoelements <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> specify how this transformation proceeds. Given a compound element e. If <code class="highlighter-rouge">e/input</code> connects to component <code class="highlighter-rouge">e/c</code> through port <code class="highlighter-rouge">i</code>, then every connection to <code class="highlighter-rouge">e</code>’s input port <code class="highlighter-rouge">i</code> will flatten into a connection to its component <code class="highlighter-rouge">e/c</code>.  For example,</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>elementclass Example {
+    s1 :: InfiniteSource; s2 :: RatedSource;
+    s1 -&gt; [0]output; s2 -&gt; [0]output;
+}
+e :: Example -&gt; d :: Discard;
+
+above code will be flattened to
+
+e/s1 :: InfiniteSource; e/s2 :: RatedSource; d :: Discard;
+e/s1 -&gt; d; e/s2 -&gt; d;
+</code></pre>
+</div>
+
+<p>Compound element classes also can take varying number configuration arguments, input ports, and output ports. <strong>Formal parameters</strong> define the arguments that a compound element class should take. A <strong>formal parameter</strong> is a sequence of alphanumeric characters preceded by a dollar sign, such as <code class="highlighter-rouge">$var</code>. A compound element class may begin with a list of parameters.</p>
+
+<p>While formal parameters let a compound element class support a fixed number of positional arguments, <strong>overloading</strong> lets several compound element definitions with different numbers of arguments or ports share a single name. As a side-effect, overloading also support different behaviors in a compound element based on numbers of input/output ports. Every compound element class can correspond to a number of definitions, which are textually separated by <code class="highlighter-rouge">||</code>, which are distinguished by the numbers of formal parameters, input ports or output ports. Given a declaration of compound element, the interpreter checks the number of arguments and search for a matching definition. If found one, then it is expanded; otherwise, an error will occur.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// Example 1: argument overloading
+elementclass ShapedQueue {				
+    input -&gt; Queue -&gt; Shaper(10000) -&gt; output;
+    ||
+    $cap | input -&gt; Queue($cap) -&gt; Shaper(10000) -&gt; output; 
+}				
+q1 :: ShapedQueue;    // OK; uses first definition
+q2 :: ShapedQueue(1024);    // OK; uses second definition
+q3 :: ShapedQueue(1024, 10000);   // error—no matching definition 
+
+// Example 1: port overloading - additional output port				
+elementclass VerboseCheckIPHeader {
+    input -&gt; c :: CheckIPHeader -&gt; output; c[1] -&gt; Print(CheckIPHeader) -&gt; Discard; 
+    ||
+    input -&gt; c :: CheckIPHeader -&gt; output; c[1] -&gt; Print(CheckIPHeader) -&gt; [1]output;	
+} 
+</code></pre>
+</div>
+
+<p>Overloading also allows user to add new definitions to an existing element class. For example, following definition will add a two-argument version of <code class="highlighter-rouge">Queue</code>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>elementclass Queue {
+  ... ||  // 'dot dot dot' is part of the syntax 
+$capacity, $rate | input -&gt; Queue($capacity)
+                         -&gt; Shaper($rate) -&gt; output;
+}
+q1 :: Queue;        // built-in Queue
+q2 :: Queue(1024);  // built-in Queue
+q3 :: Queue(1024, 10000); // overloaded Queue definition above
+</code></pre>
+</div>
+
+<p>When choosing the definition that corresponds to a given compound element declaration, Click only considers the definitions that were lexically visible at the point of declaration.</p>
+
+<p>Compound element configuration arguments are only meaningful inside the configuration strings of components. So that you cannot change the element class of a given component, or cause components to be added to or subtracted from the compound. However, it  is possible to build a compound element that sends packets through different sets of components based on the value of its configuration string. Following example uses StaticSwitch to implement a selective checksum check.(The <code class="highlighter-rouge">CheckIPHeader</code> element checks an IP header’s length and checksum for sanity; <code class="highlighter-rouge">CheckIPHeader2</code> does the work of <code class="highlighter-rouge">CheckIPHeader</code> except for the checksum check.)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>elementclass MaybeChecksum { $checksum_p |
+    input -&gt; sw :: StaticSwitch($checksum_p);
+    sw[0] -&gt; CheckIPHeader2 -&gt; output;
+    sw[1] -&gt; CheckIPHeader -&gt; output;
+};
+c1 :: MaybeChecksum(0);    // uses CheckIPHeader2, skips checksum
+c2 :: MaybeChecksum(1);    // uses CheckIPHeader, checks checksum
+</code></pre>
+</div>
+
+<h3 id="a-namescriptscripta"><a name="script">Script</a></h3>
+
+<p>The <a href="http://www.read.cs.ucla.edu/click/elements/script">Script element</a> implements a simple scripting language interpreter useful for controlling Click configurations. Scripts can set variables, call handlers, wait for prodding from other elements, and stop the router. Script element is defined in <code class="highlighter-rouge">click/elements/standard/Script.hh</code>.  For details of instructions and handlers, please refer to <a href="http://www.read.cs.ucla.edu/click/elements/script">http://www.read.cs.ucla.edu/click/elements/script</a>.</p>
+
+<p>In the Script element, each keyword is handled by a corresponding handler:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>void
+Script::add_handlers()
+{
+    set_handler("step", Handler::OP_WRITE | Handler::h_nonconst, step_handler, 0, ST_STEP);
+    set_handler("goto", Handler::OP_WRITE | Handler::h_nonconst, step_handler, 0, ST_GOTO);
+    set_handler("run", Handler::OP_READ | Handler::READ_PARAM | Handler::OP_WRITE | Handler::h_nonconst, step_handler, 0, ST_RUN);
+    set_handler("add", Handler::OP_READ | Handler::READ_PARAM, arithmetic_handler, ar_add, 0);
+    set_handler("sub", Handler::OP_READ | Handler::READ_PARAM, arithmetic_handler, ar_sub, 0);
+    set_handler("min", Handler::OP_READ | Handler::READ_PARAM, arithmetic_handler, ar_min, 0);
+    set_handler("max", Handler::OP_READ | Handler::READ_PARAM, arithmetic_handler, ar_max, 0);
+        set_handler("length", Handler::OP_READ | Handler::READ_PARAM, basic_handler, ar_length, 0);
+    set_handler("unquote", Handler::OP_READ | Handler::READ_PARAM, basic_handler, ar_unquote, 0);
+…….
+}
+</code></pre>
+</div>
+
+<table>
+  <tbody>
+    <tr>
+      <td>All of the handlers defined in the Script element need to parse the script language, which is implemented in click/lib/confparse.[hh</td>
+      <td>cc]. In this way, the Script element could serve as an interpreter to the script instructions and handlers.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="a-nametestietestiea"><a name="testie">Testie</a></h3>
+
+<p><a href="http://www.read.cs.ucla.edu/click/docs/testie">Testie</a> is a simple test tool for Click elements, which enables the Test-Driven-Development of Click. Each testie file is written mainly in Click script language and incorporates a shell script to be run. Tool <code class="highlighter-rouge">click/test/testie</code> runs the Click script, and checks the expected error or output. A testie file may have following layout:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>%info 
+// a short description of the test.
+
+%require [-q]
+// prerequisites that must be satisfied before the test can run.
+
+%include FILENAME
+// interpolate the contents of another testie file.
+
+%script
+// Shell scripts that controls the test. Testie will run each command in sequence.
+// Command “click” need to be specified to interpret Click scripts.
+
+%file [-d] [+LENGTH] FILENAME...
+// Create an input file for the script. FILENAME can be `stdin`, which sets the script's standard input.
+
+%expectv [-ad] [+LENGTH] FILENAME...
+%expect [-adiw] [+LENGTH] FILENAME…
+%expectx [-adiw] [+LENGTH] FILENAME...
+// An expected output file for the script. FILENAME can be 'stdout' or 'stderr'. 
+// Testie will run the script, then compare the file generated by script with the provided data. The files are compared line-by-line. 
+// The -a flag marks this expected output as an alternate. Testie will compare the script's output file with each provided alternate; the test succeeds if any of the alternates match. 
+// The -d flag behaves as in %file. 
+// The -i flag makes any regular expressions case-insensitive (text outside of regular expressions must match case), and the -w flag ignores any differences in amount of whitespace within a line.
+
+%ignorex [-di] [+LENGTH] [FILENAME]
+%ignore, %ignorev
+// lines to be ignored.
+</code></pre>
+</div>
+
+<p>In addition to above sections, you also can define one or multiple Script elements in the testie file, which group a set of Click Script instructions.</p>
+
+<p><code class="highlighter-rouge">click/test/testie</code> is the Perl tool to run testie files. Given a testie file, the testie interpreter will first read and parse each section defined in the testie file: <code class="highlighter-rouge">%require</code> files will be expanded, files defined in section <code class="highlighter-rouge">%file</code> will be created in a temporary directory, commands listed under <code class="highlighter-rouge">%script</code> will be recorded in a hash, and so on. After preprocessing, the commands will be executed by shell or interpreted by click. <code class="highlighter-rouge">click/test/testie</code> is a very good template of simple interpreter.</p>
+
+<h3 id="a-namereferreferencesa"><a name="refer">References</a></h3>
+<ul>
+  <li><a href="http://www.read.cs.ucla.edu/click/docs/language">http://www.read.cs.ucla.edu/click/docs/language</a></li>
+  <li><a href="http://pdos.csail.mit.edu/papers/click:kohler-phd/thesis.pdf">Eddie Kohler, <em>The Click modular router</em>, Ph.D. thesis, MIT, November 2000. This has more detail and examples than the TOCS and SOSP papers of the same name.</a></li>
+  <li><a href="http://www.read.cs.ucla.edu/click/elements/script">http://www.read.cs.ucla.edu/click/elements/script</a></li>
+  <li><a href="http://www.read.cs.ucla.edu/click/docs/testie">http://www.read.cs.ucla.edu/click/docs/testie</a></li>
+</ul>
+
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Click Notes II - Click Script Language&url=http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/&title=Click Notes II - Click Script Language" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/&name=Click Notes II - Click Script Language" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/&title=Click Notes II - Click Script Language" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/&t=Click Notes II - Click Script Language" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/notes/network/2015/01/07/click-notes-click-language';
+    var disqus_title      = 'Click Notes II - Click Script Language';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/11/20/pthread_exit-in-main/" class="post-link">
+        <h4 class="post-title">Be careful to pthread_exit() in main()</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,9 +1,0 @@
-{% for post in posts limit: listing_limit %}
-<h3><a href="{{ post.url }}" class="dark-link">{{ post.title }}</a></h3>
-<h4 class="low-top">
-    Posted on {{ post.date | date_to_string }}
-</h4>
-
-<p>{{ post.content | strip_html | truncatewords: 200 }}</p>
-<p><a href="{{ post.url }}" class="btn btn-primary btn-lg" role="button">Read more &raquo;</a></p>
-{% endfor %}

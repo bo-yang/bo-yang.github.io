@@ -1,1563 +1,582 @@
-
-<!DOCTYPE HTML>
-<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:wb="http://open.weibo.com/wb">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bo Yang | Bo's Blog</title>
-  
-  <meta name="author" content="Bo Yang" />
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <!--
-  <link href="/assets/themes/clear/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    
+    <link rel="canonical" href="http://www.bo-yang.net//">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
-  <!-- Bootstrap -->
-  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
 
-  <!-- font-awesome -->
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
 
-  <!-- Google Prettify -->
-  <link href="/assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
-  <!-- Google Pretty end -->
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
 
-  <link href="/assets/style/blog.css" rel="stylesheet">
-  
-  <script src="/assets/bootstrap/js/jquery-1.10.2.js"></script>
-  <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Bo&#39;s Blog">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Bo's Blog" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
 </head>
 
-<body>
+<body class="site">
 
-   <!-- navigation bar -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-				<a class="navbar-brand" href="/"><b>bo-yang</b></a>
-            </div>
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav">
-					<li><a href="/archive.html"><b>Archive</b></a>
-					</li>
-					<li><a href="/tags.html"><b>Tags</b></a>
-                    </li>
-                    <li><a href="/about.html"><b>About</b></a>
-                    </li>
-                    <li><a href="/messages.html"><b>Messages</b></a>
-                    </li>
-				</ul>
-				<ul class="nav navbar-nav pull-right">
-		          <li>
-		            <form class="navbar-form navbar-search" method="get" action="http://www.google.com/search" target="google_window">
-		              <input id="g_search" type="text" class="search-query" placeholder="Search..." name="q" />
-		              <input type="submit" name="btnG" style="display:none" id="searchsubmit" value="Search" />
-		              <input type="hidden" name="ie" value="UTF-8" />
-		              <input type="hidden" name="oe" value="UTF-8" />
-		              <input type="hidden" name="hl" value="en-US" />
-		              <input type="hidden" name="domains" value="http://bo-yang.github.io/" />
-					  <input type="hidden" name="sitesearch" value="http://bo-yang.github.io/" />
-					  <button type="submit" class="button button-rounded button-flat-blue">Go</button>
-		            </form>
-		          </li>
-		        </ul>
-            </div>
-			<!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
 
-  <div class="container">
-    <div class="row" id="content-row">
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
       
-<div class="page-header">
-	<h1>Bo Yang  <small style="margin-left:20px;"><font face="cursive"><i>Keep looking. Don't settle.</i></font></small></h1>
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
 </div>
+<div class="clearfix"></div>
 
-<div class="container">
-    <div class="row" id="content-row">
-		<div class="col-md-9">
-	<!-- blog entry -->
-	
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/08/16/binary-tree-ii">Binary Tree Operations(II) - Path Sum and Cycle Detection</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-08-16</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>This is the second article on binary tree operations. For topics on binary tree build, traversal and comparison, please refer to <a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a></p>
+      
+    </div>
+  </div>
+</header>
 
-<ol>
-  <li><a href="#path_sum">Path Sum</a></li>
-  <li><a href="#build_cycle">Build Binary Tree With Cycle</a></li>
-  <li><a href="#detect_cycle">Detect Cycle in Binary Tree</a></li>
-</ol>
 
-<h3 id="a-namepathsumpath-suma">1. <a name="path_sum">Path Sum</a></h3>
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
 
-<p>The <a href="http://www.programcreek.com/2013/01/leetcode-path-sum/">Path Sum problem</a> of binary tree is:</p>
-
-<blockquote>
-  <p>Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.</p>
-</blockquote>
-
-<p>This problem can be easily solved by level-order traversal. During traversal, record the sum and path to each node: </p>
-
-<ul>
-  <li>if the sum to current node is larger than the given sum, then remove the sum and path to current node and stop tracing its child nodes.</li>
-  <li>if the sum to current node equals to the given sum, the print or record the path.</li>
-  <li>if to current node is less than the given sum, continue searching its children.</li>
-</ul>
-
-<p>For the source code of this section, please refer to function <code>PathSum()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
-
-<h3 id="a-namebuildcyclebuild-binary-tree-with-cyclea">2. <a name="build_cycle">Build Binary Tree With Cycle</a></h3>
-
-<p>To build a binary tree with cycles, we can first build a binary tree using the method described in <a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a>, and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(<code>left</code> and <code>right</code>).</p>
-
-<pre><code>struct TreeNode {
-	int val;
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-</code></pre>
-
-<p>For example, given a binary tree in following image,</p>
-
-<p><img src="/assets/images/binary_tree_with_cycle.png" alt="Binary Tree with Cycle" /></p>
-
-<p>We can build a tree using string sequence {1,2,3,4,#,5,#} at first, and then add links {3-&gt;2, 2-&gt;5}. Or build tree {1,2,3,4,5,#,#} first and then add links {3-&gt;2,3-&gt;5}. </p>
-
-<p>For the source code of this section, please refer to functions <code>BuildTree()</code> and <code>BuildCycleTree()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
-
-<h3 id="a-namedetectcycledetect-cycle-in-binary-treea">3. <a name="detect_cycle">Detect Cycle in Binary Tree</a></h3>
-
-<p>Cycles in a binary tree can be detected by DFS(in preorder) - if there’s a cycle, there must be a node has a child node that is already been accessed before(i.e. a right hand node linked to the left hand node). A <code>unordered_set</code> can be used to record the nodes that have been accessed.</p>
-
-<p>Considering above example again, when we traverse that binary tree in pre-order, we would first access nodes {1,2,4,5}. And when we accessing node <code>3</code>, we will find that node <code>3</code> has a child <code>2</code>(or<code>5</code>) that has already been accessed. So this tree has a cycle.</p>
-
-<p>For the source code of this section, please refer to function <code>HasLoop()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
-
-<h3 id="references">References:</h3>
-
-<ol>
-  <li><a href="http://www.geeksforgeeks.org/detect-cycle-in-a-graph/">Detect Cycle in a Directed Graph</a></li>
-</ol>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/08/09/retrive-string-from-slices">Retrieve String From Sampled Slices</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-08-09</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Statistics-ref" rel="nofollow">Statistics</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<ol>
-  <li><a href="#problem">Problem</a></li>
-  <li><a href="#solution">Solution</a></li>
-  <li><a href="#code">Source Code</a></li>
-</ol>
-
-<h3 id="a-nameproblemproblema">1. <a name="problem">Problem</a></h3>
-
-<p>Given a string, such as 01001010101001101011, we can randomly sliced multiple substrings. Assume that during the slicing, due to some unexpected noises, some characters may flip(0-&gt;1 or 1-&gt;0). For example:</p>
-
-<pre>
-Position: 0123456789.........
-String:   01001010101001101011
-
-slice1:    1001110101000
-slice2:       1010111001111
-slice3:       10101
-slice4:                1101011
-</pre>
-
-<p>In above sample, <code>slice1</code> starts from position 1(assume that the index of a string begins with 0), <code>slice2</code> starts from position 4, <code>slice3</code> starts from 4, and <code>slice4</code> starts from 13. In slice1, <code>0</code> flips to <code>1</code> at position 5 and <code>1</code> flips to <code>0</code> at position 13.</p>
-
-<p>For one specific position in the original string, if it is <code>1</code>, then the probability of flipping to 0 in a slicing is 0.1; and vice versa(i.e.Prob(0-&gt;1)=0.1).</p>
-
-<p>The problem is: <strong>if we only have multiple slices(the length of each slice may vary) and their starting positions in the string, and we don’t know the original string, given an arbitrary position in the original string, how can we calculate the probability that position is a <code>1</code>?</strong></p>
-
-<p>Assume most positions will be covered at least once in slices, and we have following parameters:</p>
-
-<pre><code>p01=0.1; // Probability a ‘0’ in string but flipped to a ‘1’ in a slice
-p10=0.1; // Probability a ‘1’ in string but flipped to a ‘0’ in a slice
-p1=0.5;  // Prior probability that any given position in string is a ‘1’
-</code></pre>
-
-<p>We can also assume that the string is a random string of <code>0</code>s and <code>1</code>s, and during slicing, each position is sampled independently.</p>
-
-<p>For the above example string and four slices, we already have following probabilities for each position:</p>
-
-<pre><code>Pos Prob
-0   0.500
-1   0.900
-2   0.100
-3   0.100
-4   0.999
-5   0.100
-6   0.999
-7   0.001
-8   0.999
-9   0.500
-10  0.988
-11  0.012
-12  0.012
-13  0.900
-14  0.988
-15  0.500
-16  0.988
-17  0.100
-18  0.900
-19  0.900
-</code></pre>
-
-<h3 id="a-namesolutionsolutiona">2. <a name="solution">Solution</a></h3>
-
-<p>Obviously, the numbers of 0s and 1s in all slices for each position can be counted using a hashmap(<code>unordered_map</code> in C++). However, the difficult part is to find a model to calculate the probabilities. Simple multiplicaiton or subtraction won’t work, because we cannot get <code>0.999</code> with the given probabilities and arithmetic operations. Besides, the Bayes’ theorem also cannot be used directly, because we don’t know the number of slices and the computation would be too complicated. And we also may be tempted to try Markov Model, but Markov Model cannot fit all positions in the above example, such as positions 4(<code>1,1,1</code>), 5(<code>1,0,0</code>), 9(<code>0,1</code>) and 13(<code>0,1,1</code>).</p>
-
-<p>The best model to fit this problem is the <a href="http://www.mathworks.com/help/stats/binomial-distribution.html">Binomial Distribution</a>:</p>
-
-<blockquote>
-  <p>The binomial distribution models the total number of successes in repeated trials from an infinite population under the following conditions:</p>
-
-  <ul>
-    <li>Only two outcomes are possible on each of n trials.</li>
-    <li>The probability of success for each trial is constant.</li>
-    <li>All trials are independent of each other.</li>
-  </ul>
-</blockquote>
-
-<p>The probability density function(pdf) of Binomial Distribution is:</p>
-
-<script type="math/tex; mode=display">
-	f(x|n,p)={n \choose x} p^x (1-p)^{n-x}; \quad \quad x=0,1,2,\cdots,n.
-</script>
-
-<p>As for this problem, given a position in the original string, we first need to find the probability of a <code>0</code> occurs in this position(in this case <code>0</code>=&gt;<code>1</code>, say <code>bp01</code>), and then calculate the probability of a <code>1</code> occurs in this position(in this case <code>1</code>=&gt;<code>1</code>, say <code>bp11</code>). Finally, we can get the probability of <code>1</code> in this position in the original string by: <code>p=bp11/(bp01+bp11)</code>.</p>
-
-<p>Take position 5 as an example. We get one <code>1</code> and two <code>0</code>s in position 5 in three observations. We can calculate <code>b11</code> using Matlab <code>binopdf</code> function. Since <code>p11=1-p10=0.9</code>, therefore we have <code>bp11=binopdf(1,3,0.9)=0.027</code>. As for <code>bp01</code>, because <code>p01=0.1</code>, we have <code>bp01=binopdf(1,3,0.1)=0.243</code>. Therefore, we can calc the probability of <code>1</code> in position 5 by <code>p=0.027/(0.243 + 0.027)=0.1</code>.</p>
-
-<h3 id="a-namecodesource-codea">3. <a name="code">Source Code</a></h3>
-
-<p>The implementation of this problem can be found in <a href="https://github.com/bo-yang/ProgrammingChallenges/tree/master/string_retrieve">my GitHub Channel</a>. </p>
-
-<h3 id="references">References:</h3>
-
-<ol>
-  <li><a href="http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o">http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o</a></li>
-  <li><a href="http://www.mathworks.com/help/stats/binomial-distribution.html">http://www.mathworks.com/help/stats/binomial-distribution.html</a></li>
-</ol>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/08/03/string-permutation">String Permutation</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-08-03</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The <em>string permutation</em> problem aims to find all the <em>permutations</em> of a string(re-arrangement of characters in this string). A string of length <code>n</code> has <code>n!</code> permutations.</p>
-
-<p>The essence of string permutation is recursively swapping each letter with other letters in this string. Following image shows the permutation of string “ABC”. For each step, fix the left part of the string, and swap two letters in the right part, until there is no letters left in the right part. </p>
-
-<p><img src="http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif" width="678" height="277" class="aligncenter size-full wp-image-118925" />&lt;/img&gt;</p>
-
-<p>Based on above strategy, the following two recusive algorithm could be implemented.</p>
-
-<p>Algorithm 1(Reference: <a href="http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/">Write a C program to print all permutations of a given string</a>): </p>
-
-<pre><code>void StrPermute(string&amp; str, vector&lt;string&gt;&amp; vec, int i) {
-	if(i==str.length())
-		vec.push_back(str);
-	else {
-		for(int j=i;j&lt;str.size();++j) {
-			std::swap(str[i],str[j]);
-			StrPermute(str,vec,i+1);
-			std::swap(str[i],str[j]);
-		}
-	} // end if
-}
-</code></pre>
-
-<p>Algorithm 2(Reference: <a href="http://learnprogramming.machinesentience.com/java_permutations_recursion/">Find all the permutations of a string in Java</a>):</p>
-
-<pre><code>void StrPermute(vector&lt;string&gt;&amp; vec, string prefix, string str) {
-	//cout&lt;&lt;"prefix="&lt;&lt;prefix&lt;&lt;", str="&lt;&lt;str&lt;&lt;endl; // TEST ONLY
-	int n=str.length();
-	if(n==0)
-		vec.push_back(prefix);
-	else {
-		for(int j=0;j&lt;n;++j)
-			StrPermute(vec,prefix+str[j],str.substr(0,j)+str.substr(j+1));
-	} // end if
-}
-</code></pre>
-
-<p>The permuted strings are stored as a vector of string. For both algorithms, the time complexities are <code>O(n*n!)</code>.</p>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/28/word-search">Word Search Problem - Non-recursive Solution</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-28</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The <a href="https://oj.leetcode.com/problems/word-search/">Word Search</a> states:</p>
-
-<blockquote>
-  <p>Given a 2D board and a word, find if the word exists in the grid.</p>
-
-  <p>The word can be constructed from letters of sequentially adjacent cell, where “adjacent” cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.</p>
-
-  <p>For example,</p>
-
-  <p>Given board =</p>
-
-  <p>[</p>
-
-  <p>[“ABCE”],</p>
-
-  <p>[“SFCS”],</p>
-
-  <p>[“ADEE”]</p>
-
-  <p>]</p>
-</blockquote>
-
-<blockquote>
-  <ul>
-    <li>word = “ABCCED”, -&gt; returns <code>true</code>,</li>
-    <li>word = “SEE”, -&gt; returns <code>true</code>,</li>
-    <li>word = “ABCB”, -&gt; returns <code>false</code>.</li>
-  </ul>
-</blockquote>
-
-<p>The most popular solution to this problem is recursive, such as <a href="http://yucoding.blogspot.com/2013/02/leetcode-question-124-word-search.html">http://yucoding.blogspot.com/2013/02/leetcode-question-124-word-search.html</a>.</p>
-
-<p>However, I tried to solve this problem without recursion. In my implementation, three stacks are used to record the possible coordinates in <code>board</code>, the character position in <code>word</code>(with respect to each candidate cell) and the cells have been accessed to each possible coordinates, repectively. </p>
-
-<p>The first step is finding the possible cells for the first char in <code>word</code>, and push coordinates, position of the char in <code>word</code>(here is 0) and accessed cells(here are matched cells) into stacks. </p>
-
-<p>The second step is exploring all the neighbors of cells in stack, and match each char in <code>word</code> respectively. For a match, push contexts into stack and try to match the next char. For a mismatch, pop the top of stacks and try another candidate. If the search could reach the end of the word, then we successfully find the word. If the stacks turns empty and there are still chars left, that means the seach fails.</p>
-
-<p>Following is my C++ implementation of the non-recursive solution.</p>
-
-<pre><code>class Solution {
-public:
-    bool exist(vector&lt;vector&lt;char&gt; &gt; &amp;board, string word) {
-		if(board.empty())
-			return false;
-
-		std::stack&lt;std::pair&lt;int,int&gt;&gt; st_coord; // coordinates of the board
-		std::stack&lt;int&gt; st_char; // store characters of the words
-		vector&lt;std::pair&lt;int,int&gt; &gt; vec;
-		std::stack&lt;vector&lt;std::pair&lt;int,int&gt; &gt; &gt; st_access;
-		bool found=false;
-        for(int l=0;l&lt;word.length();) {
-			if(l==0) { // Find the first character of word in board
-				for(int i=0;i&lt;board.size();++i) {
-					for(int j=0;j&lt;board[0].size();++j)
-						if(board[i][j]==word[l]){
-							st_coord.push(std::pair&lt;int,int&gt;(i,j));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(i,j));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-							if(word.size()==1) 
-								return true;
-						}
-				}
-				l++;
-			} else {
-				if(st_coord.empty()) // cannot find the first character
-					break;
-
-				// Explore all possible cells to match each character of the word
-				while(!st_coord.empty()) {
-					int x=st_coord.top().first;
-					int y=st_coord.top().second;
-					vec=st_access.top();
-					l=st_char.top()+1;
-					if(l==word.length()) {
-						found=true;
-						break;
-					}
-					
-					st_coord.pop();
-					st_char.pop();
-					st_access.pop();
-
-					if(x-1&gt;=0 &amp;&amp; board[x-1][y]==word[l]) {
-						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
-							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x-1,y));
-						if(got==vec.end()) {
-							st_coord.push(std::pair&lt;int,int&gt;(x-1,y));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(x-1,y));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-						}
-					}
-					if(x+1&lt;board.size() &amp;&amp; board[x+1][y]==word[l]) {
-						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
-							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x+1,y));
-						if(got==vec.end()) {
-							st_coord.push(std::pair&lt;int,int&gt;(x+1,y));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(x+1,y));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-						}
-					}
-					if(y-1&gt;=0 &amp;&amp; board[x][y-1]==word[l]) {
-						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
-							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x,y-1));
-						if(got==vec.end()) {
-							st_coord.push(std::pair&lt;int,int&gt;(x,y-1));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(x,y-1));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-						}
-					}
-					if(y+1&lt;board[0].size() &amp;&amp; board[x][y+1]==word[l]) {
-						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
-							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x,y+1));
-						if(got==vec.end()) {
-							st_coord.push(std::pair&lt;int,int&gt;(x,y+1));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(x,y+1));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-						}
-					}
-				}
-			} // end else
-		} // end for l
-
-		return found;
-    }
-};
-</code></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/21/merge-k-sorted-lists">Merge K Sorted Lists</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-21</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<h4 id="contents">Contents</h4>
-
-<ol>
-  <li><a href="#naive_method">Naive Method</a></li>
-  <li><a href="#divide_conquer">Divide-and-Conquer Algorithm</a></li>
-  <li><a href="#heap">Non-Recursive Method</a></li>
-</ol>
-
-<p>The <a href="https://oj.leetcode.com/problems/merge-k-sorted-lists/">Merge <code>k</code> Sorted Lists</a> is:</p>
-
-<blockquote>
-  <p>Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.</p>
-</blockquote>
-
-<p>In this problem, the sorted lists are stored in a vector, i.e. <code>vector&lt;ListNode*&gt;</code>. Assume the longest list contains <code>n</code> elements.</p>
-
-<h3 id="a-namenaivemethodnaive-methoda"><a name="naive_method">Naive Method</a></h3>
-
-<p>The naive method of merging <code>k</code> sorted lists is: iteratively compare the head elements of the <code>k</code> lists, find the smallest node, append this node to the merged list and forward that list by one step. Then repeat above step until all lists reach the end. Obviously, since in every iteration <code>k</code> comparisons are needed, and the longest list has <code>n</code> elements, therefore, the time complexity is \( O(k^{nk}) \) - the worst case is all lists have <code>n</code> elements, so for the total <code>nk</code> elements, totally \( k^{nk} \) comparisons are needed to merge them into one list.</p>
-
-<h3 id="a-namedivideconquerdivide-and-conquer-algorithma"><a name="divide_conquer">Divide-and-Conquer Algorithm</a></h3>
-
-<p>Other than exponential time complexity, a much better method is to use divide-and-conquer. Since merging two sorted lists is easy, we can recursively divide the <code>k</code> lists into two parts until there are no more than two lists. Then we can use a merge method similiar to the merge sort to merge the two lists together.</p>
-
-<p>Assume the longest list contains <code>n</code> elements, the time required for dividing and merging lists is \( T(k)=2T(k/2)+O(nk) \). According to the Master Theorem, the time complexity is \( O(nk \log k) \). The space complexity of this algorithm is \( O(1) \).</p>
-
-<p>Following is my C++ implementation of the divide-conquer method.</p>
-
-<pre><code>class Solution {
-public:
-    ListNode *mergeKLists(vector&lt;ListNode *&gt; &amp;lists) {
-		if(lists.size()==0)
-            return NULL;
-        if(lists.size()==1)
-            return lists[0];
-
-		return divideConquerLists(lists,0,lists.size()-1);
-    }
-
-	ListNode* divideConquerLists(vector&lt;ListNode *&gt; &amp;lists, int start, int end) {
-		if(start+1&lt;end) {
-			int mid=(start+end)/2;
-			ListNode* head1=divideConquerLists(lists,start,mid);
-			ListNode* head2=divideConquerLists(lists,mid+1,end);
-			return mergeTwoLists(head1,head2);
-		} else if(start+1==end) {
-			return mergeTwoLists(lists[start],lists[end]);
-		} else if(start==end) {
-			return lists[start];
-		}
-	}
-
-	ListNode* mergeTwoLists(ListNode* head1, ListNode* head2) {
-		if(head1==NULL)
-			return head2;
-		if(head2==NULL)
-			return head1;
-	
-		ListNode* pre_head=new ListNode(-1);
-		ListNode* pre=pre_head;
-		ListNode* node1=head1;
-		ListNode* node2=head2;
-		while(node1!=NULL &amp;&amp; node2!=NULL) {
-			if(node1-&gt;val &lt; node2-&gt;val) {
-				pre-&gt;next=node1;
-				node1=node1-&gt;next;
-			} else {
-				pre-&gt;next=node2;
-				node2=node2-&gt;next;
-			}
-			pre=pre-&gt;next;
-		}
-		while(node1!=NULL) {
-			pre-&gt;next=node1;
-			node1=node1-&gt;next;
-			pre=pre-&gt;next;
-		}
-		while(node2!=NULL) {
-			pre-&gt;next=node2;
-			node2=node2-&gt;next;
-			pre=pre-&gt;next;
-		}
-		pre-&gt;next=NULL;
-
-		ListNode* head=pre_head-&gt;next;
-		delete pre_head;
-
-		return head;
-	}
-};
-</code></pre>
-
-<h3 id="a-nameheapnon-recursive-methoda"><a name="heap">Non-Recursive Method</a></h3>
-
-<p>In addition to the recursive divide-conquer method, there is also a non-recursive method. We can use a maximum <code>k</code>-element heap(in C++, <code>priority_queue</code>) to merge the <code>k</code> lists. The strategy is:</p>
-
-<ol>
-  <li>Create a heap to store <code>ListNode*</code>, which should sort list nodes in the ascending order or node values.</li>
-  <li>Insert the first node(head) of each list into the heap, so that we store all the <code>k</code> entries in the heap.</li>
-  <li>Get the top element in heap and add in to the merged list.</li>
-  <li>If the top element of heap is the last node in a list, pop it and go to step 3.</li>
-  <li>If the top element of heap has followers, pop it and push its following node into heap. </li>
-  <li>Go to step 3 until the heap is empty.</li>
-</ol>
-
-<p>To create a heap meet step’1 requirement, we need to create a structure/class that overloads the operator <code>()</code>, so that we can compare two list nodes based on their values. Such structure/class is required by the <code>priority_queue</code> template. Instead of a struct, I would rather use a lambda function to do so. Unfortunately, lambda function still cannot be used as the comparison object in <code>priority_queue</code>.</p>
-
-<p>For a <code>k</code>-element <code>priority_queue</code>, an insertion requires \( O(\log k) \) time. Since we need to do such insertion for at most \(nk\) times, therefore the time complexity for this method is also \( O(nk \log k) \). Obviously, the space complexity of this algorithm is \( O(k) \).</p>
-
-<pre><code>class Solution {
-public:
-	// comparison structure, required by priority_queue template
-	struct greaterListNode{ 
-		bool operator() (ListNode* x, ListNode* y) {return x-&gt;val &gt; y-&gt;val;}
-	};
-
-    ListNode *mergeKLists(vector&lt;ListNode *&gt; &amp;lists) {
-		if(lists.size()==0)
-			return NULL;
-		if(lists.size()==1)
-			return lists[0];
-
-		ListNode* pre_head=new ListNode(-1);
-		ListNode* pre=pre_head;
-		std::priority_queue&lt;ListNode*, vector&lt;ListNode*&gt;, greaterListNode&gt; pq;
-
-		// Insert entries of every list into heap
-		for(auto&amp; lst:lists)
-			if(lst!=NULL)
-				pq.push(lst);
-
-		// Recursively parse every element in lists
-		while(!pq.empty()) {
-			pre-&gt;next=pq.top();
-			pre=pre-&gt;next;
-			pq.pop();
-
-			if(pre!=NULL &amp;&amp; pre-&gt;next!=NULL)
-				pq.push(pre-&gt;next);
-		}
-
-		ListNode* head=pre_head-&gt;next;
-		delete pre_head;
-		return head;
-    }
-};
-</code></pre>
-
-<h3 id="references">References:</h3>
-
-<ol>
-  <li><a href="http://blog.csdn.net/linhuanmars/article/details/19899259">Merge k Sorted Lists – LeetCode</a></li>
-  <li><a href="http://www.cplusplus.com/reference/queue/priority_queue/">std::priority_queue</a></li>
-  <li><a href="http://www.cplusplus.com/reference/functional/greater/">std::greater</a></li>
-</ol>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/14/insertion-sort-list">Insertion Sort List</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-14</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The <a href="https://oj.leetcode.com/problems/insertion-sort-list/">Insertion Sort List problem</a> is:</p>
-
-<blockquote>
-  <p>Sort a linked list using insertion sort.</p>
-</blockquote>
-
-<p>There is a very simple insertion sort method for arrays in Wikipedia.</p>
-
-<pre><code>for i ← 1 to length(A)
-    j ← i
-    while j &gt; 0 and A[j-1] &gt; A[j]
-        swap A[j] and A[j-1]
-        j ← j - 1
-</code></pre>
-
-<p>The core of this algorithm is to find the position where to insert an smaller element. Compared to array, the list nodes cannot access nodes before them - they only know the nodes behind them. Therefore, instead of looking for insert positions decreasingly from current position down to the beginning, we can search the position from the head instead.</p>
-
-<p>Following is my C++ implementation. Swapping two nodes is a little tricky, because you need to take care of four links.</p>
-
-<pre><code>struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
-};
- 
-class Solution {
-public:
-    ListNode *insertionSortList(ListNode *head) {
-        if(head==NULL||head-&gt;next==NULL)
-			return head;
-
-		ListNode* pre_head=new ListNode(-1); // to manipulate the head
-		pre_head-&gt;next=head;
-		ListNode* cur=head;
-		while(cur-&gt;next!=NULL) {
-			if(cur-&gt;val &gt; cur-&gt;next-&gt;val) {
-				ListNode* node=pre_head;
-
-				// find position to insert
-				while(node-&gt;next-&gt;val &lt; cur-&gt;next-&gt;val)
-					node=node-&gt;next;
-
-				// swap nodes
-				ListNode* tmp1=node-&gt;next;
-				ListNode* tmp2=cur-&gt;next-&gt;next;
-				node-&gt;next=cur-&gt;next;
-				cur-&gt;next-&gt;next=tmp1;
-				cur-&gt;next=tmp2;
-			} else {
-				cur=cur-&gt;next;
-			}
-		}
-		
-		head=pre_head-&gt;next;
-		delete pre_head;
-
-		return head;
-    }
-};
-</code></pre>
-
-<p>In addition to above insertion sort, which moves smaller elements forward, we also can move the larger elments backward. The following code is more like bubble sort.</p>
-
-<pre><code>ListNode *insertionSortList(ListNode *head) {
-    if(head==NULL||head-&gt;next==NULL)
-		return head;
-
-	// find the length of the list
-	int len=0;
-	ListNode* node=head;
-	while(node!=NULL) {
-		node=node-&gt;next;
-		len++;
-	}
-
-	// iteratively insert the largest number to the end
-	for(int i=len-1;i&gt;=0;i--) {
-		int j=0;
-		node=head;
-		ListNode* prev=NULL; // previous of node
-		while(j&lt;i &amp;&amp; node!=NULL &amp;&amp; node-&gt;next!=NULL) {
-			if(node-&gt;val &gt; node-&gt;next-&gt;val) {
-				// swap nodes
-				ListNode* tmp=node-&gt;next;
-				node-&gt;next=node-&gt;next-&gt;next;
-				tmp-&gt;next=node;
-				if(j==0||prev==NULL) {
-					head=tmp;
-				} else {
-					prev-&gt;next=tmp;
-				}
-				prev=tmp;
-			} else {
-				prev=node;
-				node=node-&gt;next;
-			}
-			j++;
-		}
-	} // end for
-
-	return head;
-}
-</code></pre>
-
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/13/linked-list-cycle">Linked List Cycle Problems</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-13</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The <a href="https://oj.leetcode.com/problems/linked-list-cycle/">Linked List Cycle problem</a> is:</p>
-
-<blockquote>
-  <p>Given a linked list, determine if it has a cycle in it. Can you solve it without using extra space?</p>
-</blockquote>
-
-<p>A <a href="https://oj.leetcode.com/problems/linked-list-cycle-ii/">follow up problem</a> is:</p>
-
-<blockquote>
-  <p>Given a linked list, return the node where the cycle begins. If there is no cycle, return <code>null</code>.Can you solve it without using extra space? </p>
-</blockquote>
-
-<p>The first problem can be solved by the <strong><a href="http://www.geeksforgeeks.org/write-a-c-function-to-detect-loop-in-a-linked-list/">Floyd’s Cycle-Finding Algorithm</a></strong>:</p>
-
-<blockquote>
-  <p>Traverse linked list using two pointers: move one pointer by <em>one</em> and other pointer by <em>two</em>.  If these pointers meet at some node then there is a loop.  If pointers do not meet then linked list doesn’t have loop.</p>
-</blockquote>
-
-<p>As for the second problem, it is also based on the <strong>Floyd’s Cycle-Finding Algorithm</strong>. However, after detecting loop, we need to find the starting point of the cycle. <strong>The most convinient way is to use two pointers, one points to the head node, and the other points to the node that pointers meet when detecting loop. Then move both the two pointers by one respectively in each iteration, until they meet. The node they meet is the starting point of the cycle.</strong></p>
-
-<p>Here is the detailed explanation of above trick(reference: <a href="http://www.cnblogs.com/TenosDoIt/p/3416702.html">http://www.cnblogs.com/TenosDoIt/p/3416702.html</a>). </p>
-
-<ol>
-  <li>Assume the length(number of nodes, the same below) of the list is <code>l</code>, the distance(number of nodes, the same below) between <code>head</code> and the starting point of cycle is <code>a</code>, the distance between the cycle-starting point and the point where the slow/fast pointers meet is <code>b</code>, and the length of the cycle is <code>r</code>.</li>
-  <li>Assume when the fast/slow pointers meet, the slow pointer has accessed <code>s</code> nodes. Then the fast pointer has moved <code>2s</code>, and <code>s=a+b</code>.</li>
-  <li>Since the nodes accessed by the fast pointer also calculated as <code>kr+s</code>, where <code>k</code> is the number of cycles and \( k \ge 1 \). We have <code>2s=kr+s</code>, i.e. <code>s=kr</code>.</li>
-  <li>Since <code>s=a+b</code> and <code>s=kr</code>, we have <code>a+b=kr=(k-1)r+r</code>. Since <code>r=l-a</code>, we have <code>a+b=(k-1)+l-a</code>, i.e. <code>a=(k-1)+l-a-b</code>. Notice that <code>l-a-b</code> is the distance from the point where slow/fast pointers meet to the starting point of cycle(note: we only can go through the cycle of the linked list in one direction).</li>
-  <li>Since <code>a</code> is the distance between <code>head</code> node and the starting point of cycle, <code>a=(k-1)+l-a-b</code> means that the distance between <code>head</code> node and the starting point of cycle(<code>a</code>) <em>equals</em> to the distance from the point where slow/fast pointers meet to the starting point of cycle(<code>l-a-b</code>) plus several loops of the cycle.</li>
-  <li>Therefore, when we use two pointers to find the starting point of cycle, one pointer moves to the start point from the head of the list, while the other pointer winds aroung the cycle at the same pace. When the two pointers meet, one pointer must have moved <code>a</code> and the other moved <code>(k-1)+l-a-b</code>.</li>
-</ol>
-
-<p>Following is my C++ implmentation.</p>
-
-<pre><code>class Solution {
-public:
-	ListNode *detectCycle(ListNode *head) {
-		if(head==NULL || head-&gt;next==NULL)
-			return NULL;
-
-		ListNode* first=head;
-		ListNode* second=head;
-        while(first!=NULL &amp;&amp; second!=NULL &amp;&amp; second-&gt;next!=NULL) {
-			first=first-&gt;next;
-			second=second-&gt;next-&gt;next;
-
-			if(first==second)
-				break;
-		}
-
-		if(first==second) {
-			// Continue walking X steps
-			first = head;
-			while(first!=second)
-			{
-	            first = first-&gt;next;
-	            second = second-&gt;next;
-	        }
-	
-			return second;
-		} else {
-			return NULL;
-		}
-    }
-
-	// Create list with cycle using given vector of integers.
-	// 	lb - the beginning index(in vec) of the cycle.
-	ListNode* createList(vector&lt;int&gt;&amp; vec, int lb) {
-		head=new ListNode(vec[0]);
-		ListNode* node=head;
-		ListNode* begin=NULL;
-		for(int i=1;i&lt;vec.size();++i) {
-			node-&gt;next=new ListNode(vec[i]);
-			node=node-&gt;next;
-			if(i==lb)
-				begin=node;
-		}
-		if(lb&gt;0 &amp;&amp; lb&lt;vec.size())
-			node-&gt;next=begin;
-		else if(lb&gt;=vec.size()) // index out of upper bound, set to NULL
-			node-&gt;next=NULL;
-		else
-			node-&gt;next=head; // index out of lower bound, linked to the head
-
-		return head;
-	}
-
-	void printList(ListNode *head) {
-		ListNode* node=head;
-		while(node!=NULL) {
-			cout&lt;&lt;node-&gt;val&lt;&lt;" ";
-			node=node-&gt;next;
-		}
-		cout&lt;&lt;endl;
-	}
-
-	Solution() {head=NULL;}
-
-	~Solution() {
-		ListNode* node=head;
-		while(head!=NULL){
-			head=head-&gt;next;
-			delete node;
-			node=head;
-		}
-	}
-
-private:
-	ListNode* head;
-
-};
-</code></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/08/sort-list">Sort List</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-08</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/sort-list/">The Sort List problem</a> is:</p>
-
-<blockquote>
-  <p>Sort a linked list in \( O(n log n) \) time using constant space complexity.</p>
-</blockquote>
-
-<p>The solution to this problem is modifying the array/vector based merge sort and make it work for lists. The key is finding the middle node of each list to be sorted. This can be achieved by two pointers: one points to the head of list(<code>mid</code>), and the other point to the next node of head(<code>end</code>). Then iteratively go through elements in the list - the <code>mid</code> pointer increase one position in each iteration, while the <code>end</code> pointer increased two positions. Thus when <code>end</code> pointer reached the end of the list, the <code>mid</code> pointer arrives at the middle of the list.</p>
-
-<p>Following is my C++ implementation, which contains methods of creating list, printing list, sorting list and deleting allocated memory.</p>
-
-<pre><code>struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
-};
- 
-class Solution {
-public:
-    ListNode *sortList(ListNode *head) {
-	   //cout&lt;&lt;"sorting list: "; // TEST ONLY
-	   //printList(head); // TEST ONLY
-
-       if(head==NULL || head-&gt;next==NULL) 
-		   return head;
-
-	   // Find the middle node of the list
-	   ListNode* mid=head;
-	   ListNode* end=head-&gt;next;
-	   while(end!=NULL &amp;&amp; end-&gt;next!=NULL) {
-		   mid=mid-&gt;next;
-		   end=end-&gt;next-&gt;next;
-	   }
-
-	   ListNode* head_right=mid-&gt;next;
-	   mid-&gt;next=NULL;
-	   ListNode* head_left=sortList(head);
-	   head_right=sortList(head_right);
-	   head=mergeList(head_left,head_right);
-
-	   //cout&lt;&lt;"merged lists: "; // TEST ONLY
-	   //printList(head); // TEST ONLY
-
-	   return head;
-    }
-
-	ListNode* mergeList(ListNode *head_left, ListNode *head_right) {
-		if(head_left==NULL &amp;&amp; head_right==NULL)
-			return NULL;
-
-		// Determine the head
-		ListNode* head=NULL;
-		if(head_left==NULL || head_left-&gt;val &gt; head_right-&gt;val) {
-			head=head_right; 
-			head_right=head_right-&gt;next;
-		} else {
-			head=head_left;
-			head_left=head_left-&gt;next;
-		}
-
-		// Merge lists in ascending order
-		ListNode* node=head;
-		while(head_left!=NULL &amp;&amp; head_right!=NULL) {
-			if(head_left-&gt;val &lt; head_right-&gt;val) {
-				node-&gt;next=head_left;
-				head_left=head_left-&gt;next;
-			} else {
-				node-&gt;next=head_right;
-				head_right=head_right-&gt;next;
-			}
-			node=node-&gt;next;
-		}
-		while(head_left!=NULL) {
-			node-&gt;next=head_left;
-			node=node-&gt;next;
-			head_left=head_left-&gt;next;
-		}
-		while(head_right!=NULL) {
-			node-&gt;next=head_right;
-			node=node-&gt;next;
-			head_right=head_right-&gt;next;
-		}
-
-		return head;
-	}
-
-	// Create list using given vector of integers
-	ListNode* createList(vector&lt;int&gt;&amp; vec) {
-		head=new ListNode(vec[0]);
-		ListNode* node=head;
-		for(int i=1;i&lt;vec.size();++i) {
-			node-&gt;next=new ListNode(vec[i]);
-			node=node-&gt;next;
-		}
-
-		return head;
-	}
-
-	void printList(ListNode *head) {
-		ListNode* node=head;
-		while(node!=NULL) {
-			cout&lt;&lt;node-&gt;val&lt;&lt;" ";
-			node=node-&gt;next;
-		}
-		cout&lt;&lt;endl;
-	}
-
-	Solution() {head=NULL;}
-
-	~Solution() {
-		ListNode* node=head;
-		while(head!=NULL){
-			head=head-&gt;next;
-			delete node;
-			node=head;
-		}
-	}
-
-private:
-	ListNode* head;
-};
-</code></pre>
-
-<p>Following code can be used for testing the above solution:</p>
-
-<pre><code>int main() {
-	vector&lt;int&gt; vec={3,6,2,-1,4,7,4,11,9,20,8,-3,0};
-	Solution sol;
-	ListNode* head=sol.createList(vec);
-	cout&lt;&lt;"Before sorting:"&lt;&lt;endl;
-	sol.printList(head);
-	
-	head=sol.sortList(head);
-	cout&lt;&lt;"After sorting:"&lt;&lt;endl;
-	sol.printList(head);
-}
-</code></pre>
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/07/subset-sum">Subset Sum Problem</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-07</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Algorithm-ref" rel="nofollow">Algorithm</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#C/C++-ref" rel="nofollow">C/C++</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p><a href="https://oj.leetcode.com/problems/3sum/">The 3Sum problem</a> is:</p>
-
-<blockquote>
-  <p>Given an array <code>S</code> of n integers, are there elements <code>a, b, c</code> in <code>S</code> such that <code>a + b + c = 0</code>? Find all unique triplets in the array which gives the sum of zero.</p>
-
-  <p>Note:</p>
-
-  <ul>
-    <li>Elements in a triplet <code>(a,b,c)</code> must be in non-descending order. (ie, <code>a ≤ b ≤ c</code>)</li>
-    <li>The solution set must not contain duplicate triplets.</li>
-  </ul>
-</blockquote>
-
-<p>Inspired by the <a href="http://en.wikipedia.org/wiki/3SUM">Wikipedia solution</a>, I implemented following solution. The first step is sorting the array <code>S</code> in ascending order, so that we can guarantee the front elements in the array are not less than the elemts at the end of the array. Then for every number in array, we can use the two variables to go through the whole array to find the triplets summed to 0. </p>
-
-<p>In order to guarantee there are no duplicate triplets, a hash table is used to record the triplets that have been found. Before inserting the newly found triplet into the solution matrix(<code>vector&lt;vector&lt;int&gt; &gt;</code>), try to look for the triplet in the hash table first. Since C++ doesn’t support <code>vector&lt;int&gt;</code> keys, I formulate string keys using the integer triplets in the following code.</p>
-
-<pre><code>class Solution {
-public:
-    vector&lt;vector&lt;int&gt; &gt; threeSum(vector&lt;int&gt; &amp;num) {
-		// Sort the vector
-		std::sort(num.begin(), num.end());
-		
-		// Find triplets
-		unordered_map&lt;string,bool&gt; map; // store found triplets
-		char* buf=new char[100];
-		for(int i=0;i&lt;num.size();++i) {
-			vector&lt;int&gt; triplet;
-			int hi=num.size()-1;
-			int lo=0;
-			while(hi&gt;i &amp;&amp; lo&lt;i) {
-				if(num[i]+num[hi]+num[lo]==0) { // found a triplet
-					sprintf(buf,"%d%d%d",num[i],num[hi],num[lo]);
-					string str(buf);
-					unordered_map&lt;string,bool&gt;::const_iterator got=map.find(str);
-					if(got==map.end()) { // a brand new triplet
-						triplet.push_back(num[lo]);
-						triplet.push_back(num[i]);
-						triplet.push_back(num[hi]);
-						map[str]=true;
-						sol.push_back(triplet);
-					}
-					triplet.clear();
-					hi--;lo++;
-				} else if(num[i]+num[hi]+num[lo]&gt;0) {
-					hi--;
-				} else { // &lt;0
-					lo++;
-				}
-			}
-		}
-		delete [] buf;
-
-		return sol;
-    }
-	
-private:
-	vector&lt;vector&lt;int&gt; &gt; sol;
-};
-</code></pre>
-
-
-	</div>
-	</div>
-    
-	<div class="post paper">	
-    <h2 class="header"><a href="/2014/07/07/determine-top-common-ip-addresses">Find Top Source IP Addresses in Distributed Systems</a></h2>
-    <p>
-    	<span class="glyphicon glyphicon-time"></span> Posted by <strong>Bo Yang</strong> at <strong>2014-07-07</strong> with tags <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Distributed Systems-ref" rel="nofollow">Distributed Systems</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Perl-ref" rel="nofollow">Perl</a>, <span class="glyphicon glyphicon-tag"></span><a href="/tags.html#Network-ref" rel="nofollow">Network</a>
-	</p>
-	<hr>
-    
-    <div class="post_at_index thepost">
-    	<p>The problem is:</p>
-
-<blockquote>
-  <p>Determines the top 10 most common source IP addresses, and their hit rates, for a fleet of 1000 web servers within the last hour.</p>
-
-  <p>The following assumptions may be used…</p>
-
-  <ul>
-    <li>web servers are locally writing access logs in the <a href="http://httpd.apache.org/docs/current/logs.html#combined">Apache Combined Log Format</a>.</li>
-    <li>web servers are accessible by <code>ssh</code>.</li>
-  </ul>
-</blockquote>
-
-<p>My solution is:</p>
-
-<ol>
-  <li>For each server in the fleet, copy the <code>/var/log/httpd/access_log</code> to local directory by <code>ssh</code>.</li>
-  <li>Given a access_log, for each line in the log, extract the IP address, time/time zone and status code. </li>
-  <li>For lines written in the past hour, count the occurrences of each IP address(number of requests) and numbers of sucessful operations(status code 1xx,2xx and 3xx in my implementation).</li>
-  <li>After counting logs of all servers, sort the IP addresses by their occurrences.</li>
-  <li>For the top 10 IP addresses, calculate their hit rates using equation:
- <code>hit rate = (# of successful operations) / (# of all requests)</code></li>
-</ol>
-
-<p>Assumptions are:</p>
-
-<ol>
-  <li>The names of servers in the fleet are stored in a file, such as ‘fleet_servers’. The servers can be geographically distributed in different cities/countries.</li>
-  <li>This script will be executed in a directory that can be read &amp; written by the user. </li>
-  <li>The report of the top 10 most common IPs and hit rates will be stored in current directory.</li>
-  <li>The SSH keys to remote servers have been generated and synced, so that there is no need to manually enter the passwords. </li>
-  <li>Following Perl modules should be installed:
-    <ul>
-      <li><code>DateTime</code> - used to determine if the logs are older than 1 hour.</li>
-      <li><code>Parallel::ForkManager</code> - check multiple logs in concurrently.</li>
-    </ul>
-  </li>
-</ol>
-
-<p>Following is my Perl implementation. For more information and the source file, please refer to <a href="https://github.com/bo-yang/CommonSourceIPs">https://github.com/bo-yang/CommonSourceIPs</a>.</p>
-
-<pre><code>use strict;
-use warnings;
-use POSIX qw(strftime);
-use DateTime;
-use Parallel::ForkManager;
-use Getopt::Long;
-use FindBin qw($Bin);
-use Cwd 'abs_path';
-
-my $ldt=DateTime-&gt;now(); # Get UTC date time
-my $input='fleet_servers'; # default file to store server list
-my $output="report_".strftime("%Y%d%m_%H%M%S",localtime()); # default file t ostore report
-my $login=`whoami`;
-my $access_log='/var/log/httpd/access_log'; # the default location of the access log
-my $time_range=1; # 1 hour by default
-my $num_ips=10;	# number of the most common source IP addresses
-my $num_process=30; # Max number of processes for parallel processing
-
-GetOptions(
-	'input|i=s'  =&gt; \$input,
-	'output|o=s' =&gt; \$output,
-	'login|l=s'  =&gt; \$login,
-	'alog|a=s'   =&gt; \$access_log,
-	'trange|t=i' =&gt; \$time_range,
-	'num_ip|n=i' =&gt; \$num_ips,
-	'process|p=i'=&gt; \$num_process,
-	'help|?'	 =&gt; \&amp;ShowUsage
-   ) or ShowUsage();
-
-
-die("ERROR: no input reads specied!\n") if (!$input);
-
-# Handle signals
-my $CleanupDone   = 0;
-$SIG{'ABRT'} = 'doCleanup';
-$SIG{'HUP'}  = 'doCleanup';
-$SIG{'INT'}  = 'doCleanup';
-$SIG{'QUIT'} = 'doCleanup';
-
-open IN, "&lt;$input" or die("ERROR: cannot open file $input!");
-
-# Iteratively access each server. Assume that each line of the input file is 
-# a server name or IP address.
-my $clients={};
-my $pm = new Parallel::ForkManager($num_process);
-while (my $server = &lt;IN&gt;) {
-	$pm-&gt;start and next; # do the fork
-
-	chomp $server;
-	my $tmplog=".${server}.access_log.tmp";
-	`ssh ${login}@${server} "cat ${access_log}" &gt; $tmplog`;
-
-	open LOG, "&lt;$tmplog" or die("ERROR: cannot open file $tmplog!");
-	# Parse the access_log of this server
-	while (my $line = &lt;LOG&gt;) {
-		if($line =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/) {
-			my $ip=$1;
-			my ($rdt, $stat_code)=($line =~ m/\[(.*)\].*" (\d{3})/);
-	
-			# Calculate time differece between local and remote servers(in seconds)
-			my $time_diff=CompareTime($ldt,$rdt);
-			# Skip messages older than specified time range
-			next if($time_diff &gt; $time_range*3600);
-	
-			# Count requests and successful oprations
-			if(not $clients-&gt;{$ip}){
-				$clients-&gt;{$ip}-&gt;{'request'}=1;
-				$clients-&gt;{$ip}-&gt;{'success'}=0;
-			} else {
-				$clients-&gt;{$ip}-&gt;{'request'}++;
-			}
-			# Only status code that begins with 1, 2 or 3 will be counted
-			$clients-&gt;{$ip}-&gt;{'success'}++ if($stat_code =~ /[1-3]\d{2}/);
-		} else {
-			warn "No IP address found in ${tmplog}.";
-		}
-	}
-	close LOG;
-	unlink $tmplog; # remove temporary files
-
-	$pm-&gt;finish;
-}
-$pm-&gt;wait_all_children; # wait for forked-processes
-
-close IN;
-
-# Find the most common IP addresses and calculate their hit rates
-open OUT, "&gt;$output" or die("ERROR: cannot write file $output!");
-print OUT "IP Address \t Hit Rate \t # Req \t # Succ\n";
-print STDOUT "IP Address \t Hit Rate \t # Req \t # Succ\n";
-my $cnt=0;
-# Sort source IP addresses in descending order of requests
-foreach my $ip (sort {$clients-&gt;{$b}-&gt;{'request'} &lt;=&gt; $clients-&gt;{$a}-&gt;{'request'}} keys %{$clients}) {
-	# Calculate hit rate
-	$clients-&gt;{$ip}-&gt;{'hit rate'}=$clients-&gt;{$ip}-&gt;{'success'}/$clients-&gt;{$ip}-&gt;{'request'};
-	my $hit_rate=sprintf("%.4f",$clients-&gt;{$ip}-&gt;{'hit rate'});
-	print OUT "$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n";
-	print STDOUT "$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n";
-
-	$cnt++;
-	last if($cnt&gt;=$num_ips); # break out
-}
-
-close OUT;
-
-
-#
-# Compare two time and return the differences in seconds.
-# 
-# Inputs: 
-# 	local time(array), remote time(string)
-# Output: 
-# 	time difference(in seconds)
-#
-sub CompareTime {
-	my $ldt=$_[0]; # local time, array
-	my $remote_dt=$_[1]; # remote time, string
-	
-	my %month_map = (
-		'Jan' =&gt; 1, 'Feb' =&gt; 2, 'Mar' =&gt; 3,
-		'Apr' =&gt; 4, 'May' =&gt; 5, 'Jun' =&gt; 6,
-		'Jul' =&gt; 7, 'Aug' =&gt; 8, 'Sep' =&gt; 9,
-		'Oct' =&gt; 10,'Sep' =&gt; 11,'Dec' =&gt; 12
-	);
-
-	my ($rday,$rmonth,$ryear,$rhour,$rmin,$rsec,$rtz)=($remote_dt =~ m/(\d+)\/(\S+)\/(\d+):(\d+):(\d+):(\d+) ([+-]\d+)/);
-	my $rdt = DateTime-&gt;new(
-		year	=&gt; $ryear,
-		month	=&gt; $month_map{$rmonth},
-		day		=&gt; $rday,
-		hour	=&gt; $rhour,
-		minute	=&gt; $rmin,
-		second	=&gt; $rsec,
-		time_zone =&gt; $ldt-&gt;time_zone,
-	);
-
-	# Convert the remote time into UTC time zone.
-	my $ltz='+0000';
-	if($ltz ne $rtz) {
-		my $abs_rtz=$rtz;
-		if($abs_rtz =~ m/[+-].*/) {
-			$abs_rtz=substr $abs_rtz, 1; # remove the leading +/-
-		}
-		# The ISO 8601 offset from UTC in timezone linke +0700 (1 minute=1, 1 hour=100)
-		my $tz_diff=$abs_rtz/100*3600; # time zone diff in seconds
-		my $dur = DateTime::Duration-&gt;new(
-			years       =&gt; 0,
-	      	months      =&gt; 0,
-	      	weeks       =&gt; 0,
-	      	days        =&gt; 0,
-	      	hours       =&gt; 0,
-	      	minutes     =&gt; 0,
-	      	seconds     =&gt; $tz_diff,
-	      	nanoseconds =&gt; 0
-		);
-		# Add/subtract time zone influence
-		if($rtz =~ /\-\d+/) {
-			$rdt-&gt;add_duration($dur);
-		} else {
-			$rdt-&gt;subtract_duration($dur);
-		}
-	}
-	
-	# Calculate the absolute time differences in seconds
-	my $time_diff=$ldt-&gt;subtract_datetime_absolute($rdt);
-	return $time_diff-&gt;in_units('seconds');
-}
-
-#
-# Show usgage
-# 
-sub ShowUsage {
-	my $proc=`basename $0`;
-	chomp($proc);
-
-	print STDOUT "Usage: $proc [-i server_list] [-o report] [-l login] [-a access_log] [-t time_range] [-n ip_num] [-p process_num]\n";
-	print STDOUT "where:\n";
-	print STDOUT "  server_list\t - list of servers in the pool, optional\n";
-	print STDOUT "  report\t - report file, optional \n";
-	print STDOUT "  login\t\t - login to admin servers, optional\n";
-	print STDOUT "  access_log\t - path of Apache access_log, optional\n";
-	print STDOUT "  time_range\t - range of time to be analysed(unit: hour), optional\n";
-	print STDOUT "  ip_num\t - number of the top source IPs, optional\n";
-	print STDOUT "  process_num\t - number of concurrent processes, optional\n";
-	
-	exit;
-}
-
-#
-# Clean up before exit
-#
-sub doCleanup {
-	if($CleanupDone == 1) {
-		exit;
-	}
-
-	`rm .*.access_log.tmp`; # remove temp files
-	$CleanupDone = 1;
-	exit 0;
-} ## end sub doCleanup
-</code></pre>
-
-	</div>
-	</div>
-    
-	
-	<!-- Pagination links -->
-	
-	<ul class="pager">
-	    
-	    <li class="previous"><a href="/page2">&larr; Older</a></li>
-	    
-	
-	    
-	    <li class="next disabled"><a>Newer &rarr;</a></li>
-	    
-	</ul>
-	
-	<!-- content -->
-</div>
-
-<div class="col-lg-3">
-		<div class="well">
-            <h4>Links</h4>
-			<a href="https://www.linkedin.com/pub/bo-yang/21/a3/893" target="_blank"> <i class="fa fa-linkedin-square fa-3x"></i> </a> 
-			<a href="https://github.com/bo-yang" target="_blank"> <i class="fa fa-github fa-3x"></i> </a> 
-			<a href="https://www.facebook.com/bo.yang.52493" target="_blank"> <i class="fa fa-facebook-square fa-3x"></i> </a>
-			<a href="http://www.weibo.com/bonnyang" target="_blank"> <i class="fa fa-weibo fa-3x"></i> </a> 
-        	<a href="/atom.xml" target="_blank"> <i class="fa fa-rss-square fa-3x"></i> </a>	
-        </div>
-        <!-- /well -->
-        <div class="well">
-			<h4>Tags</h4>
-				<div class="tag_box">
-				
-				<!-- site_tags: C/C++,Algorithm,EMC,Fault Diagnosis,Notes,AI,Database,Unix/Linux,Personal,Telecom,Tcl/Tk,Shell,Network,Perl,Industry,Cloud Computing,API,Android,VBA,Virtualization,Browser,Plan 9,Go,Distributed Systems,Tips,Genetic Algorihtm,Mac OS,Statistics,Matlab,Multithreading,Bioinformatics,Computer Vision,Machine Learning,BACI,Jekyll,Architecture,Java -->
-				
-				<!-- tag_words:  -->
-
-				
-  <ul class="nav nav-pills nav-stacked">
+<div class="home">
   
-    
-        <li><a href="/tags.html#AI">AI <span class="badge pull-right">7</span></a></li>
-    
-        <li><a href="/tags.html#API">API <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Algorithm">Algorithm <span class="badge pull-right">29</span></a></li>
-    
-        <li><a href="/tags.html#Android">Android <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Architecture">Architecture <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#BACI">BACI <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Bioinformatics">Bioinformatics <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Browser">Browser <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#C%2FC%2B%2B">C/C++ <span class="badge pull-right">54</span></a></li>
-    
-        <li><a href="/tags.html#Cloud+Computing">Cloud Computing <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Computer+Vision">Computer Vision <span class="badge pull-right">4</span></a></li>
-    
-        <li><a href="/tags.html#Database">Database <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Distributed+Systems">Distributed Systems <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#EMC">EMC <span class="badge pull-right">9</span></a></li>
-    
-        <li><a href="/tags.html#Fault+Diagnosis">Fault Diagnosis <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Genetic+Algorihtm">Genetic Algorihtm <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Go">Go <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Industry">Industry <span class="badge pull-right">6</span></a></li>
-    
-        <li><a href="/tags.html#Java">Java <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Jekyll">Jekyll <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Mac+OS">Mac OS <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Machine+Learning">Machine Learning <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Matlab">Matlab <span class="badge pull-right">3</span></a></li>
-    
-        <li><a href="/tags.html#Multithreading">Multithreading <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Network">Network <span class="badge pull-right">4</span></a></li>
-    
-        <li><a href="/tags.html#Notes">Notes <span class="badge pull-right">25</span></a></li>
-    
-        <li><a href="/tags.html#Perl">Perl <span class="badge pull-right">15</span></a></li>
-    
-        <li><a href="/tags.html#Personal">Personal <span class="badge pull-right">13</span></a></li>
-    
-        <li><a href="/tags.html#Plan+9">Plan 9 <span class="badge pull-right">9</span></a></li>
-    
-        <li><a href="/tags.html#Shell">Shell <span class="badge pull-right">15</span></a></li>
-    
-        <li><a href="/tags.html#Statistics">Statistics <span class="badge pull-right">2</span></a></li>
-    
-        <li><a href="/tags.html#Tcl%2FTk">Tcl/Tk <span class="badge pull-right">9</span></a></li>
-    
-        <li><a href="/tags.html#Telecom">Telecom <span class="badge pull-right">1</span></a></li>
-    
-        <li><a href="/tags.html#Tips">Tips <span class="badge pull-right">4</span></a></li>
-    
-        <li><a href="/tags.html#Unix%2FLinux">Unix/Linux <span class="badge pull-right">100</span></a></li>
-    
-        <li><a href="/tags.html#VBA">VBA <span class="badge pull-right">5</span></a></li>
-    
-        <li><a href="/tags.html#Virtualization">Virtualization <span class="badge pull-right">4</span></a></li>
-    
-  
-  </ul>
+    <div class="posts">
+      
+        <div class="post py3">
+          <p class="post-meta">Jan 26, 2016</p>
+          <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link"><h3 class="h2 post-title">Generate Wireshark-Understandable Hexdump</h3></a>
+          <p class="post-summary">
+            
+              <p>When debugging network packets in Click, usually the packets are printed to screen as hex string:</p>
 
 
-
-
-				</div>
-		</div>
-		<!-- /well -->
-        <div class="well">
-			<h4>Visitors</h4>
-				<script type="text/javascript" src="http://je.revolvermaps.com/2/1.js?i=4gy6jc9lpsq&amp;s=220&amp;m=0&amp;v=true&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
-	
+            
+          </p>
         </div>
-		<!-- /well -->
-		<div class="well">
-			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- Right-side Ad(300x600) -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:300px;height:600px"
-     data-ad-client="ca-pub-1292710832620237"
-     data-ad-slot="9707222500"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	   	</div>
-        <!-- /well -->
-</div>
-
-	</div>
-</div>
+      
+        <div class="post py3">
+          <p class="post-meta">Aug 31, 2015</p>
+          <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link"><h3 class="h2 post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h3></a>
+          <p class="post-summary">
+            
+              <p>Since CentOS 7(or RedHat 7) is quite different from CentOS 6.x, most notes online for installing TFTP server in CentOS are obsolete already. This post not only summarizes the procedure of installing &amp; configuring TFTP server, but also introduces a general strategy of configuring network services in CentOS 7.</p>
 
 
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Aug 20, 2015</p>
+          <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link"><h3 class="h2 post-title">How To Use Local Facilities For Logging?</h3></a>
+          <p class="post-summary">
+            
+              <p>This post introduces how to configure and use syslogd-compatible syslog tools. These tips should be supported by rsyslog, but rsyslog-specific commands are not covered.</p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">May 27, 2015</p>
+          <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link"><h3 class="h2 post-title">Retrieve Last Log After Crash</h3></a>
+          <p class="post-summary">
+            
+              <p>In Linux, there are two kinds of crashes - kernel panic/oom and user space core dump. For kernel panic, the standard config is rebooting the system. Unfortunately, the panic log can only be printed to console and will disappear after reboot if there is no additional device to record the console log - most kernel panic/oom logs won’t be written to system log, and even they do, there is no way to sync them to disk storage during panic.</p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Apr 2, 2015</p>
+          <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link"><h3 class="h2 post-title">Customizing OpenWRT System Log Timestamp</h3></a>
+          <p class="post-summary">
+            
+              <p>As explained in previous post <a href="http://www.bo-yang.net/2015/01/12/linux-system-log/">Linux System Log</a>, threre is no way to directly change the default timestamps printed on Linux console. However, it is still possible to get human readable timestamp without using fancy syslog tools like <a href="http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html">syslog-ng</a>.</p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Mar 30, 2015</p>
+          <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link"><h3 class="h2 post-title">Debug Kernel Space Memory Leak</h3></a>
+          <p class="post-summary">
+            
+              <h3 id="detect-memory-leak">1. Detect Memory Leak</h3>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Jan 12, 2015</p>
+          <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link"><h3 class="h2 post-title">Linux System Log</h3></a>
+          <p class="post-summary">
+            
+              <ol>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#printk">printk</a></li>
+  <li><a href="#klogd">klogd</a></li>
+  <li><a href="#syslog">syslog</a></li>
+  <li><a href="#dmesg">dmesg</a></li>
+  <li><a href="#syslog-ng">syslog-ng</a></li>
+  <li><a href="#convert_timestamp">Convert Timestamp</a></li>
+</ol>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Jan 7, 2015</p>
+          <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link"><h3 class="h2 post-title">Click Notes II - Click Script Language</h3></a>
+          <p class="post-summary">
+            
+              <p>The <a href="http://www.read.cs.ucla.edu/click/docs/language">Click programming language</a> was developed to configure Click routers, but nowadays you also can use it to write test cases for Click elements.</p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Dec 23, 2014</p>
+          <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link"><h3 class="h2 post-title">Click Notes I - Overview</h3></a>
+          <p class="post-summary">
+            
+              <p><a href="http://www.read.cs.ucla.edu/click/click">Click</a> is a modular router toolkit written mainly in C++, which can be run in both user space and OS kernel space. Since its invention in late 1990s by Eddie Kohler, Click is has gained great successes in both research and industry. This series of notes aims to (1)introduce Click platform, (2)analyze the implementation of Click, and (3) discuss some general problems related to Operating System and Network Programming. The Click Source code can be found <a href="https://github.com/kohler/click/">here</a>.</p>
+
+
+            
+          </p>
+        </div>
+      
+        <div class="post py3">
+          <p class="post-meta">Dec 19, 2014</p>
+          <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link"><h3 class="h2 post-title">Building Remote+Local *nix Develop Environment(II)</h3></a>
+          <p class="post-summary">
+            
+              <p><em>This is the second article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the previous article on this topic, please refer to <a href="http://www.bo-yang.net/2014/10/21/remote-local-linux-develop-env/">Building Remote+Local *nix Develop Environment</a>.</em></p>
+
+
+            
+          </p>
+        </div>
+      
     </div>
 
-    <footer>
-        <p>&copy; 2007 <span id="now_year"></span> Bo Yang. </p>
-        <script type="text/javascript">
-          var now_year = new Date().getFullYear();
-          if (now_year != 2007) {
-              $('#now_year').html('- ' + now_year);
-          }
-	    </script>
-      </footer>
+    <div class="pagination clearfix mb1 mt4">
+  <div class="left">
+    
+      <span class="pagination-item disabled">Newer</span>
+    
   </div>
-
-  <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
-  <script src="/assets/run_prettify.js"></script>
-  <script type="text/javascript">
-    $(function() {
-
-      $('a[href^="http"]').each(function () {
-        $(this).attr('target', '_blank');
-      });
-
-      $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto');
-      window.prettyPrint && prettyPrint();
-
-      function traverse($node, len, maxCount) {
-        var reachMaxCount = len > maxCount;
-        if (reachMaxCount) {
-          $node.hide();
-        }
-        var $contents = $node.contents();
-        for (var i = 0; i < $contents.length; ++i) {
-          if (reachMaxCount) {
-            $contents.eq(i).hide();
-            continue;
-          }
-          if ($contents[i].nodeType == 3) { // TextNode
-            var tmp = len;
-            var s = $contents[i].nodeValue;
-            len += s.length;
-            reachMaxCount = len > maxCount;
-            if (reachMaxCount && $contents[i].parentNode.nodeName != 'A') {
-              $contents[i].nodeValue = s.substring(0, maxCount - tmp);
-            }
-          }
-          else if ($contents[i].nodeType == 1) { // Element
-            len = traverse($contents.eq(i), len, maxCount);
-          }
-        }
-        return len;
-      }
-
-      $('.post_at_index').each(function() {
-        var count = traverse($(this), 0, 400);
-        if (count > 400) {
-          var thisUrl = $(this).siblings().first().children().attr('href');
-          $(this).after('\n<a href="' + thisUrl + '" rel="nofollow" class="btn btn-primary" role="button">' + 'Read More &raquo;</a>');
-        }
-      });
-    });
-  </script>
+  <div class="right">
+    
+      <a class="pagination-item" href="/page2/">Older</a>
+    
+  </div>
+</div>
 
   
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
 
 </body>
 </html>
-

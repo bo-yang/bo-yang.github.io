@@ -1,11 +1,14 @@
 ---
-layout: page
-title : "Archive"
+layout: default
+title : Archive
 header : Post Archive
+tags: archive
+permalink: /archive/
 group: navigation
 ---
-<div class="col-md-10">
-<div class="post paper">
+
+<h1>{{ page.title }}</h1>
+
 {% for post in site.posts %}
 
 {% unless post.next %}
@@ -18,33 +21,16 @@ group: navigation
 {% endif %}
 {% endunless %}
 
-
-
 <li>
-
 <span class="text-warning time">{{ post.date | date: "%Y-%m-%d" }}</span> - 
 <a class="feature-link title" href="{{ post.url }}">{{ post.title }}</a>
 
 {% for tag in post.tags %}
 <span class="label label-info" style="margin-left: 10px;"><span class="glyphicon glyphicon-tag"></span> <a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag }}" style="color:black">{{ tag }}</a></span>
 {% endfor %}
-
 </li>
 
 {% endfor %}
-</div>
 <center>{% include bo/adsense_728x90 %}</center>
-</div>
-
-<div class="col-md-2">
-    {% include bo/adsense_160x600 %}
-	<div class="well">
-		<h4>Visitors</h4>
-		<div class="tag_box">
-			{% include bo/revolvermaps_small %}	
-		</div>
-	</div>
-	{% include bo/adsense_160x600 %}
-</div>
 
 {% include bo/analytics %}

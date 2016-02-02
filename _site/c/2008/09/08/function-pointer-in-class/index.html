@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>类成员函数指针浅析 &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="C">
+    <link rel="canonical" href="http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="类成员函数指针浅析">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="类成员函数指针浅析" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>类成员函数指针浅析</h1>
+  <span class="post-meta">Sep 8, 2008</span><br>
+  
+  <span class="post-meta small">
+  
+    2 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>
+    今天看某软件的源代码时，发现有这样一行
+<div class="highlighter">
+<ol class="highlighter-c" start="1">
+<li><span>typedef&nbsp;CPB_RETVAL&nbsp;(CPBprb_Prb::*CPBprb_action)(CPBprb_Prb&nbsp;&amp;,&nbsp;unsigned);</span></li>
+</ol>
+</div>
+<p>其中CPB_RETVAL是一个enum类型，CPBprb_Prb是一个类，CPBprb_action在代码中其他地方没有找到定义。因不知这行代码所为何意，遂在论坛发贴请教<a href="http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230">http://topic.csdn.net/u/20080908/11/0f127830-8c90-414d-9bab-5d946b115522.html?seed=1500702230</a>。</p>
+<p>承蒙众多高手赐教，才知上段代码定义了成员函数指针<span>类型CPBprb_action，</span>该类型函数有2个参数，类型分别为CPBprb_Prb &amp;, unsigned，返回值类型为CPB_RETVAL。此函数指针的类型有个定义域，它是类CPBprb_Prb的成员<span>（CPBprb_Prb::*CPBprb_action）。</p>
+<p>另外，</span><span>CPBprb_action不仅可以指向</span>CPBprb_Prb的成员函数，也可以指向CPBprb_Prb的派生类成员函数。甚至,CPBprb_Prb里可以根本就没有任何诸如CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned)这样的函数,而完全可以在CPBprb_Prb的派生类里去增加 CPB_RETVAL functionName (CPBprb_Prb &amp;, unsigned);这样的函数，如：</p>
+<div class="highlighter">
+<ol class="highlighter-c" start="1">
+<li><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><span></span></li>
+<li class="alt"><span></span></li>
+<li><span></span><span class="keyword">class</span><span>&nbsp;A</span></li>
+<li class="alt"><span>{</span></li>
+<li><span></span><span class="keyword">public</span><span>:</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;A(){};</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">virtual</span><span>&nbsp;~A(){};</span></li>
+<li class="alt"><span>};</span></li>
+<li><span></span></li>
+<li class="alt"><span></span><span class="keyword">class</span><span>&nbsp;B&nbsp;:&nbsp;</span><span class="keyword">public</span><span>&nbsp;&nbsp;A</span></li>
+<li><span>{</span></li>
+<li class="alt"><span></span><span class="keyword">public</span><span>:</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B(){};</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;~B(){};</span></li>
+<li><span></span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;Fb(</span><span class="keyword">int</span><span>&nbsp;a){&nbsp;</span><span class="keyword">return</span><span>&nbsp;a*a;}</span></li>
+<li><span>};</span></li>
+<li class="alt"><span></span></li>
+<li><span>typedef&nbsp;</span><span class="keyword">int</span><span>&nbsp;(A::*Myfunction)(</span><span class="keyword">int</span><span>);</span></li>
+<li class="alt"><span></span></li>
+<li><span></span><span class="keyword">int</span><span>&nbsp;main()</span></li>
+<li class="alt"><span>{</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;B*&nbsp;pB&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;B;</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;Myfunction&nbsp;pf&nbsp;=&nbsp;(Myfunction)(&amp;B::Fb);</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">int</span><span>&nbsp;retValue&nbsp;=&nbsp;(pB-&gt;*pf)(3);</span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cout&lt;&lt;retValue;</span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;std::cin&gt;&gt;retValue;</span></li>
+<li class="alt"><span></span></li>
+<li><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span>&nbsp;1;</span></li>
+<li class="alt"><span>}</span></li>
+</ol>
+</div>
+<p>通过typedef int (A::*Myfunction)(int);定义的Myfunction是A的成员（函数指针），但只能在类外定义。</p>
+<p>需要指出的是，使用指向成员函数的指针变量是比较危险的!因此不建议这么用。</p>
+<p>（<font color="#800000">上文引用了论坛中对我帖子的回复，再次对关心并帮助我的人表示感谢。</font>）</p>
+<p><font color="#000080">PS：</font><br />
+<h1>函数指针(全局函数/类成员函数)和函数对象</h1>
+<p>（原文链接：<a href="http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og">http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</a>）</p>
+<h2>关键字：函数指针 全局函数 类成员函数 函数对象 Function object </h2>
+<h2>作者：ErranLi&nbsp; &nbsp; 更新：2007-01-06 02:31:47&nbsp; &nbsp; 浏览：9166</h2>
+<div id="divCodeArea">
+<div class="source">
+<p>
+函数指针(全局函数/类成员函数)、函数对象(Function&nbsp;object)</p>
+<p>一.&nbsp;函数指针类型为全局函数.</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(*fp)(<span class="reserved">int</span>);</p>
+<p><span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
+{<br />
+&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+}</p>
+<p><span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
+{<br />
+&nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+}</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; fp&nbsp;testAct;</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;(testAct&nbsp;!=&nbsp;NULL)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Drink;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; doact.testAct&nbsp;=&nbsp;&amp;Eat;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>二.&nbsp;函数指针类型为类成员函数.</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Action;<br />
+<span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="comment">//&nbsp;函数指针类型为类&nbsp;Action&nbsp;的成员函数</span><br />
+<span class="reserved">typedef</span>&nbsp;<span class="reserved">void</span>&nbsp;(Action::*fp)(<span class="reserved">int</span>);</p>
+<p><span class="reserved">class</span>&nbsp;Action<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Drink(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Eat(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="comment">//&nbsp;定义一个函数指针</span><br />
+&nbsp; &nbsp; fp&nbsp;testAct;<br />
+&nbsp; &nbsp; <span class="comment">//Action&nbsp;对象实例&nbsp;,&nbsp;该指针用于记录被实例化的&nbsp;Action&nbsp;对象</span><br />
+&nbsp; &nbsp; Action&nbsp;*&nbsp;pAction;</p>
+<p>&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">if</span>&nbsp;((pAction&nbsp;!=&nbsp;NULL)&nbsp;&amp;&amp;&nbsp;(testAct&nbsp;!=&nbsp;NULL))<br />
+&nbsp; &nbsp; &nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">//&nbsp;调用</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (pAction-&gt;*testAct)(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; Action&nbsp;act;<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.pAction&nbsp;=&nbsp;&amp;act;<br />
+&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Drink;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; doact.testAct&nbsp;= &amp;Action::Eat;<br />
+&nbsp; &nbsp; doact.TestAct(0);<br />
+&nbsp; &nbsp; doact.TestAct(1);<br />
+&nbsp; &nbsp; doact.TestAct(2);<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>三.&nbsp;函数对象&nbsp;(Function&nbsp;object)<br />
+<span class="sp874">// 本文转自 C++Builder研究 - http://www.ccrun.com/article.asp?i=1005&amp;d=sc37og</span></p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span></p>
+<p><span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span><br />
+<span class="preprocessor">#include&nbsp;&lt;functional&gt;</span></p>
+<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Action;<br />
+<span class="reserved">class</span>&nbsp;Drink;<br />
+<span class="reserved">class</span>&nbsp;Eat;<br />
+<span class="reserved">class</span>&nbsp;TestAction;</p>
+<p><span class="reserved">class</span>&nbsp;Action<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">int</span>&nbsp;<span class="reserved">operator</span>()(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Act(i);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;i;<br />
+&nbsp; &nbsp; }</p>
+<p>&nbsp; &nbsp; <span class="reserved">virtual</span>&nbsp;<span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)&nbsp;=&nbsp;0;<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;Drink&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
+{<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;drink..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;Eat&nbsp;:&nbsp;<span class="reserved">public</span>&nbsp;Action<br />
+{<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;Act(<span class="reserved">int</span>&nbsp;i)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; cout&lt;&lt;<span class="quotedstring">"No.&nbsp;"</span>&lt;&lt;i&lt;&lt;<span class="quotedstring">"&nbsp;eat..."</span>&lt;&lt;endl;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">class</span>&nbsp;TestAction<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">void</span>&nbsp;TestAct(<span class="reserved">int</span>&nbsp;i,&nbsp;Action&amp;&nbsp;testAct)<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; testAct(i);<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; TestAction&nbsp;doact;<br />
+&nbsp; &nbsp; doact.TestAct(0,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(1,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(2,&nbsp;Drink());<br />
+&nbsp; &nbsp; doact.TestAct(0,&nbsp;Eat());<br />
+&nbsp; &nbsp; doact.TestAct(1,&nbsp;Eat());<br />
+&nbsp; &nbsp; doact.TestAct(2,&nbsp;Eat());<br />
+&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>虽然传递函数指针被广泛应用于事件驱动系统中，以此实现回调函数通过指针来调用。但&nbsp;C++&nbsp;还是提供了另外一种可供选择的办法，即函数对象，利用它可以<br />
+避免使用函数指针。这样做有几个优点。首先，&nbsp;因为对象可以在内部修改而不用改动外部接口，因此设计更灵活，更富有弹性。函数对象也具备有存储先前调用结<br />
+果的数据成员。。&nbsp;此外，编译器可以内联函数对象，从而进一步增强性能。函数对象可以具体表达依赖成员模板的通用算法&nbsp;,&nbsp;这些算法借助普通的函数指针难<br />
+以完成。例用函数对象实现了一个通用的&nbsp;Negation&nbsp;算法操作：</p>
+<p><span class="preprocessor">#include&nbsp;"stdafx.h"</span><br />
+<span class="preprocessor">#include&nbsp;&lt;iostream&gt;</span></p>
+<p><span class="reserved">using</span>&nbsp;<span class="reserved">namespace</span>&nbsp;std;</p>
+<p><span class="reserved">class</span>&nbsp;Negate<br />
+{<br />
+<span class="reserved">public</span>:<br />
+&nbsp; &nbsp; <span class="reserved">template</span>&lt;<span class="reserved">class</span>&nbsp;T&gt;&nbsp;T&nbsp;<span class="reserved">operator</span>()(T&nbsp;t)&nbsp;const<br />
+&nbsp; &nbsp; {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="reserved">return</span>&nbsp;-t;<br />
+&nbsp; &nbsp; }<br />
+};</p>
+<p><span class="reserved">void</span>&nbsp;Callback(<span class="reserved">int</span>&nbsp;n,&nbsp;<span class="reserved">const</span>&nbsp;Negate&amp;&nbsp;neg)&nbsp; <span class="comment">//&nbsp;传递一个函数对象</span><br />
+{<br />
+&nbsp; &nbsp; n&nbsp;=&nbsp;neg(n);&nbsp; <span class="comment">//&nbsp;调用重载的&nbsp;()&nbsp;操作&nbsp;来对&nbsp;n&nbsp;进行&nbsp;negate&nbsp;操作</span><br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;n&nbsp;&lt;&lt;&nbsp;endl;<br />
+}</p>
+<p><span class="reserved">int</span>&nbsp;main(<span class="reserved">int</span>&nbsp;argc,&nbsp;<span class="reserved">char</span>*&nbsp;argv[])<br />
+{<br />
+&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式一</span><br />
+&nbsp; &nbsp; Callback(5,&nbsp;Negate());</p>
+<p>&nbsp; &nbsp; <span class="comment">//&nbsp;调用方式二</span><br />
+&nbsp; &nbsp; Negate&nbsp;neg;<br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(9.99999)&nbsp;&lt;&lt;&nbsp;endl;<br />
+&nbsp; &nbsp; cout&nbsp;&lt;&lt;&nbsp;neg(<span class="reserved">__int32</span>(39999999))&nbsp;&lt;&lt;&nbsp;endl;</p>
+<p>&nbsp; &nbsp; <span class="reserved">return</span>&nbsp;0;<br />
+}</p>
+<p>&nbsp; &nbsp; STL&nbsp;库中定义了很多函数对象以供相关算法调用，如&nbsp;模板化的函数对象&nbsp;greater&lt;&gt;&nbsp;或者&nbsp;less&lt;&gt;:</p>
+<p>vector&nbsp;&lt;<span class="reserved">int</span>&gt;&nbsp;vi;<br />
+<span class="comment">//..&nbsp;填充向量</span><br />
+sort(vi.begin(),&nbsp;vi.end(),&nbsp;greater&lt;<span class="reserved">int</span>&gt;()&nbsp;);<span class="comment">//&nbsp;降序&nbsp;(descending)</span><br />
+sort(vi.begin(),&nbsp;vi.end(),&nbsp;less&lt;<span class="reserved">int</span>&gt;()&nbsp;);&nbsp;<span class="comment">//&nbsp;升序&nbsp;(ascending)</span></p>
+</div>
+</div>
+<p><!-- end of divCodeArea --></p>
+<p>本文转自：http://www.cppblog.com/erran/archive/2006/12/26/16868.html</p>
+<p><span style="color:rgb(255,0,0);">函数对象（function&nbsp;<br />
+object）,又名仿函数（functor),是重载了operator（）的一个类，其实在stl算法中有大量运用，c++标准预定义的如<br />
+less &lt;&gt;,greater &lt;&gt;,bind2nd &lt;&gt;等&nbsp; <br /> &nbsp; 为什么引入仿函数？&nbsp;  <br /> &nbsp; 原因：&nbsp;  <br /> &nbsp; １．仿函数有具体型别，可用在模板参数，而函数不行&nbsp;  <br /> &nbsp; ２．同类仿函数可有不同植，可代表不同状态，比函数灵活（须定义多个）&nbsp;  <br /> &nbsp; ３．仿函数可能比普通函数快&nbsp;  <br /> &nbsp; ．．．．．．．．可能还有，不过凭印象就这些了</span> </p>
+<p></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=类成员函数指针浅析&url=http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/&title=类成员函数指针浅析" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/&name=类成员函数指针浅析" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/&title=类成员函数指针浅析" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/&t=类成员函数指针浅析" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/c/2008/09/08/function-pointer-in-class';
+    var disqus_title      = '类成员函数指针浅析';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//c/2008/09/08/function-pointer-in-class/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

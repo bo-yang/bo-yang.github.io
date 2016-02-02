@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fedora 12升级Chromium遇到的问题及解决方法 &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Unix/Linux">
+    <link rel="canonical" href="http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Fedora 12升级Chromium遇到的问题及解决方法">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Fedora 12升级Chromium遇到的问题及解决方法" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Fedora 12升级Chromium遇到的问题及解决方法</h1>
+  <span class="post-meta">Dec 23, 2009</span><br>
+  
+  <span class="post-meta small">
+  
+    1 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>自打装好Fedora 12之后就发现chromium不能用rpm安装了，安装时总是缺这少那，很是费劲，于是按照网上的方法，在/etc/yum.repos.d/下创建一个chromium.repo，内容如下：</p>
+<p>
+<pre>[chromium]
+name=Chromium Test Packages
+baseurl=http://spot.fedorapeople.org/chromium/F$releasever/
+enabled=0
+gpgcheck=0
+</pre>
+<p>&nbsp;</p>
+<p>然后通过yum安装就可以了。</p>
+<p>&nbsp;</p>
+<p>今天在Fedora People看到有新的chromium安装包出现，于是打算升级chromium。下载了所有的rpm包(忘记了最初是通过yum安装的)。安装时chromium, chromium-libs都能通过rpm -Uvh正常安装，可是升级v8时还是出了问题。想起以前的教训，打算先把v8完全卸载再安装，可是缺无法卸载，无论是通过rpm -e还是yum remove都不行。</p>
+<p>&nbsp;</p>
+<p>这时想到了用yum upodate v8-*，结果却出现了&ldquo;Package v8-devel-2.0.3-1.20091209svn3443.fc12.i686.rpm is not signed&rdquo;的错误。在网上找到一个办法，就是编辑&nbsp;<strong>/etc/yum.conf</strong><br />
+，把gpgcheck=1 改为 gpgcheck=0。不过这样做有潜在的风险，因此在安装完v8之后就立刻把gpgcheck重新设为1.</p>
+<p>&nbsp;</p>
+<p>另外一个奇怪的问题是，打开Chromium时，浏览器打不开，而且SELinux总是报错：</p>
+<p>&nbsp;</p>
+<p>
+<pre>Summary:
+SELinux is preventing /usr/lib/chromium-browser/chromium-browser from loading
+/usr/lib/chromium-browser/libmedia.so which requires text relocation.
+Detailed Description:
+The chromium-browse application attempted to load
+/usr/lib/chromium-browser/libmedia.so which requires text relocation. This is a
+potential security problem. Most libraries do not need this permission.
+Libraries are sometimes coded incorrectly and request this permission. The
+SELinux Memory Protection Tests
+(http://people.redhat.com/drepper/selinux-mem.html) web page explains how to
+remove this requirement. You can configure SELinux temporarily to allow
+/usr/lib/chromium-browser/libmedia.so to use relocation as a workaround, until
+the library is fixed. Please file a bug report.
+Allowing Access:
+If you trust /usr/lib/chromium-browser/libmedia.so to run correctly, you can
+change the file context to textrel_shlib_t. &quot;chcon -t textrel_shlib_t
+'/usr/lib/chromium-browser/libmedia.so'&quot; You must also change the default file
+context files on the system in order to preserve them even on a full relabel.
+&quot;semanage fcontext -a -t textrel_shlib_t
+'/usr/lib/chromium-browser/libmedia.so'&quot;
+Fix Command:
+chcon -t textrel_shlib_t '/usr/lib/chromium-browser/libmedia.so'
+Additional Information:
+Source Context                unconfined_u:unconfined_r:unconfined_execmem_t:s0-
+                              s0:c0.c1023
+Target Context                system_u:object_r:lib_t:s0
+Target Objects                /usr/lib/chromium-browser/libmedia.so [ file ]
+Source                        chromium-browse
+Source Path                   /usr/lib/chromium-browser/chromium-browser
+Port                          &lt;Unknown&gt;
+Host                          bonn.yang
+Source RPM Packages           chromium-4.0.273.0-0.1.20091216svn34775.fc12
+Target RPM Packages           chromium-libs-4.0.273.0-0.1.20091216svn34775.fc12
+Policy RPM                    selinux-policy-3.6.32-56.fc12
+Selinux Enabled               True
+Policy Type                   targeted
+Enforcing Mode                Enforcing
+Plugin Name                   allow_execmod
+Host Name                     bonn.yang
+Platform                      Linux bonn.yang 2.6.31.6-166.fc12.i686.PAE #1 SMP
+                              Wed Dec 9 11:00:30 EST 2009 i686 i686
+Alert Count                   11
+First Seen                    Wed 23 Dec 2009 09:38:16 PM CST
+Last Seen                     Wed 23 Dec 2009 10:28:36 PM CST
+Local ID                      b1f55f28-145d-48dd-9d71-6fb7fe6a57c8
+Line Numbers                  
+Raw Audit Messages            
+node=bonn.yang type=AVC msg=audit(1261578516.240:27332): avc:  denied  { execmod } for  pid=2946 comm=&quot;chromium-browse&quot; path=&quot;/usr/lib/chromium-browser/libmedia.so&quot; dev=sda2 ino=277322 scontext=unconfined_u:unconfined_r:unconfined_execmem_t:s0-s0:c0.c1023 tcontext=system_u:object_r:lib_t:s0 tclass=file
+node=bonn.yang type=SYSCALL msg=audit(1261578516.240:27332): arch=40000003 syscall=125 success=no exit=-13 a0=8ff8000 a1=63000 a2=5 a3=bf899bf0 items=0 ppid=1 pid=2946 auid=500 uid=500 gid=500 euid=500 suid=500 fsuid=500 egid=500 sgid=500 fsgid=500 tty=(none) ses=1 comm=&quot;chromium-browse&quot; exe=&quot;/usr/lib/chromium-browser/chromium-browser&quot; subj=unconfined_u:unconfined_r:unconfined_execmem_t:s0-s0:c0.c1023 key=(null)
+</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>试了半天也没能在SELinux中设好libmedia.so的permission（有人说只要把libmedia.so的permission设为permissive就可以）。后来在一个法语的网页上(<a href="http://tuxmaya.wordpress.com/2009/12/21/nuevos-paquetes-de-chormium-en-fedora/">http://tuxmaya.wordpress.com/2009/12/21/nuevos-paquetes-de-chormium-en-fedora/</a><br />
+)发现了这样一条命令来取消 SELinux 对 /usr/lib/chromium-browser/下的所有.so文件的permission 的检查。</p>
+<p>&nbsp;</p>
+<p>
+<pre>chcon -t texrel_shlib_t /usr/lib*/chromium-browser/*.so</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>另外，该网页(<a href="http://forums.fedoraforum.org/showthread.php?t=237029">http://forums.fedoraforum.org/showthread.php?t=237029</a><br />
+)上也提到了这种方法。</p>
+<p>&nbsp;</p>
+<p>设置之后，chromium就可以正常工作了。这篇博文就是用chromium来写的。</p>
+<p>&nbsp;</p>
+<p>PS:&nbsp;</p>
+<p>&nbsp;</p>
+<p>写完博文后在SELinux的错误信息中发现了fix的方法：</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>
+<pre>hcon -t textrel_shlib_t '/usr/lib/chromium-browser/libmedia.so'</pre>
+<p>&nbsp;</p>
+<p>
+<pre>semanage fcontext -a -t textrel_shlib_t
+'/usr/lib/chromium-browser/libmedia.so'</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>实在是太粗心了，当时竟然没有仔细看&hellip;&hellip; 谨记这一教训！</p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Fedora 12升级Chromium遇到的问题及解决方法&url=http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/&title=Fedora 12升级Chromium遇到的问题及解决方法" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/&name=Fedora 12升级Chromium遇到的问题及解决方法" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/&title=Fedora 12升级Chromium遇到的问题及解决方法" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/&t=Fedora 12升级Chromium遇到的问题及解决方法" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/unix/linux/2009/12/23/update-chrome-in-fedora12';
+    var disqus_title      = 'Fedora 12升级Chromium遇到的问题及解决方法';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//unix/linux/2009/12/23/update-chrome-in-fedora12/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

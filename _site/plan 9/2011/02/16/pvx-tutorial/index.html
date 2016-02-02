@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>9vx tutorial: running a cpu server from kfs (RFC) &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Plan 9">
+    <link rel="canonical" href="http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="9vx tutorial: running a cpu server from kfs (RFC)">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="9vx tutorial: running a cpu server from kfs (RFC)" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>9vx tutorial: running a cpu server from kfs (RFC)</h1>
+  <span class="post-meta">Feb 16, 2011</span><br>
+  
+  <span class="post-meta small">
+  
+    3 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>原文：<a href="http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd">&nbsp;http://groups.google.com/group/comp.os.plan9/browse_thread/thread/2db7a483a46f9acd</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div>
+<p><span>【说明】</span></p>
+<p><span>本文是yiyus发布在9fans上的一篇教程。文中用到的9vx是yiyus维护的分支：</span><a href="http://bytebucket.org/yiyus/vx32/overview">http://bytebucket.org/yiyus/vx32/overview</a>。根据yiyus在9fans中的说明，他的9vx分支是从ron的分支上更改的。vx32/9vx的创始人Russ Cox最近在9fans中声明他本人已经放弃了对9vx的维护，准备将所有权限转交给ron minnich（八卦一下：Russ Cox现在是Google Go语言的核心成员之一，正与Rob Pike，Ken Tompson等原plan9的元老一起维护Go&hellip;&hellip;）。</p>
+</div>
+<div>&nbsp;-------------------------------------------------------</div>
+<p>&nbsp;</p>
+<div>
+<h1 id="zw-12e2e7c010cc6H2Tp3916c"><span id="zw-12e2ede98aavnmvgj3916c">9vx tutorial:</span><span id="zw-12e2edec946BgJF9J3916c">&nbsp;</span><span id="zw-12e2ede99882FtZgu3916c">running a cpu server from kfs (RFC)</span><span id="zw-12e2ede9988SM7byw3916c">&nbsp;&nbsp;</span></h1>
+<p id="zw-12e2e7c3536WlOKdt3916c"><span id="zw-12e2e7c3537XVH5MS3916c">This tutorial is a work in progress (it will eventually be added to&nbsp;</span><span id="zw-12e2e7c3537arcii83916c">the 9vx documentation and probably to the Plan 9 wiki). Please let me&nbsp;</span><span id="zw-12e2e7c3537TL8RB33916c">know if you see anything I'm doing wrong (unfortunately I don't have&nbsp;</span><span id="zw-12e2e7c3537whmwf43916c">too much experience&nbsp;with real Plan 9 systems of more than one&nbsp;</span><span id="zw-12e2e7c3537XtRCA3916c">machine). In particular, I don't know why I could not use mkfs instead&nbsp;</span><span id="zw-12e2e7c3537gPJh1d3916c">of dircp. The line&nbsp;</span></p>
+<p id="zw-12e2e94864bSyqBpZ3916c"><span id="zw-12e2e94864bEE4NC33916c">&nbsp;&nbsp;
+<pre> % disk/mkfs -s /n/9660 /sys/lib/sysconfig/proto/allproto </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e3eEKEBu13916c"><span id="zw-12e2e95854a9D-czm3916c">gave me this error:&nbsp;</span><span id="zw-12e2edec95bhi6LFZ3916c">&nbsp;</span></p>
+<p id="zw-12e2e7c1df8QFHSYZ3916c"><span id="zw-12e2e7c1df9E8SbsK3916c">&nbsp; &nbsp;</span><span id="zw-12e2e960dcaLCGKRy3916c">&nbsp;</span><span style="font-family:mceinline;"><span id="zw-12e2edf46e0GLLVZ3916c">mkfs: /sys/lib/sysconfig/proto/allproto:1: can't move tmp file to&nbsp;</span><span id="zw-12e2e95e07btk4zLw3916c">/n/kfs/dist/replica/plan9.compressed.db: wstat -- unknown type/mode&nbsp;</span></span></p>
+<p id="zw-12e2e7c1dfaWgaIQN3916c"><span id="zw-12e2e7c1dfbpYEmbw3916c">Anyway, these instructions are working here. Please, let me know if&nbsp;</span><span id="zw-12e2e965525WjSCTn3916c">they work for you too.&nbsp;</span></p>
+<p id="zw-12e2e7c1dfcHzaUAw3916c"><span id="zw-12e2e7c1dfdxBy3T73916c">By the way, this tutorial is only the first one, but I'd like to have&nbsp;</span><span id="zw-12e2e967f47zy0X-O3916c">some more. For example, to run several 9vx instances in a private&nbsp;</span><span id="zw-12e2e9686a5ISlVW83916c">network using the tap device and to run 9vx from fossil backed up by&nbsp;</span><span id="zw-12e2e968f83cjlZom3916c">p9p's venti. Contributions are welcomed ;-)&nbsp;</span></p>
+<p id="zw-12e2e7c1e00sZ2bi3916c"><span id="zw-12e2e7c1e01DWUEbQ3916c">----------------------------------------------------------------------</span><span id="zw-12e2edec95cu_sRsD3916c">​</span></p>
+<p id="zw-12e2e7c1e02ZfffOa3916c"><span id="zw-12e2e7c1e03rCtzas3916c">This is a brief tutorial on how to run a 9vx cpu server from a kfs&nbsp;</span><span id="zw-12e2e970b10h9TSbm3916c">file system. You will need 9vx, a plan9.iso and some free disk space.&nbsp;</span></p>
+<p id="zw-12e2e7c1e04R1Jx63916c"><span id="zw-12e2e7c1e05bbvaaI3916c">First, go to the destination directory and install 9vx:&nbsp;</span></p>
+<p id="zw-12e2e7c1e05svn39h3916c"><span id="zw-12e2eefeb87mcWL1O3916c">&nbsp;&nbsp;
+<pre>$ hg clone http://bitbucket.org/yiyus/vx32/ 
+$ cd vx32/src/ 
+$ make 9vx/9vx &amp;&amp; sudo make 9vx/install </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e09V3a83916c"><span id="zw-12e2e7c1e09GQZ4fp3916c">(<strong>Commands run on the host are preceded by $, commands run from inside&nbsp;</strong></span><span id="zw-12e2e988e4bNr603d3916c"><strong>9vx are preceded with %</strong>)&nbsp;</span></p>
+<p id="zw-12e2e7c1e0aSQCEmh3916c"><span id="zw-12e2e7c1e0b-b3A9E3916c">You can check that 9vx is working running the minimal system embedded&nbsp;</span><span id="zw-12e2e98ab92nzZNTv3916c">in the executable. The rcvx script should take you to a vx32% rc&nbsp;</span><span id="zw-12e2e98b4ffnklqHV3916c">prompt in the current directory. Once you have played a bit with a&nbsp;</span><span id="zw-12e2e98c1bbOW6Z2h3916c">rootless 9vx type exit to go back to your host system.&nbsp;</span></p>
+<p id="zw-12e2e7c1e0d_O1Dd3916c"><span id="zw-12e2e7c1e0eZiwMVZ3916c">rcvx is cool but you will want a full Plan 9 tree to have real fun.&nbsp;</span><span id="zw-12e2edec95f8uPmz3916c">&nbsp;</span></p>
+<p id="zw-12e2e7c1e41YAeJd_3916c"><span id="zw-12e2e7c1e0ezorRNc3916c">Let's boot from the iso file:&nbsp;</span></p>
+<p id="zw-12e2e7c1e0f5rF-Fj3916c"><span id="zw-12e2e7c1e0fW1F1Cf3916c">&nbsp;&nbsp;
+<pre> $ 9vx -r plan9.iso -u glenda "CWD=#Z`pwd`" "nvram=#Z`pwd`/plan9.nvr" </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e41-SWd8A3916c"><span id="zw-12e2e99b018PJMlg63916c">You should be in rio now, have an acme and a rio window, stats,&nbsp;</span><span id="zw-12e2e9a8581RJi33V3916c">faces... This is the live system in the iso that you probably already&nbsp;</span><span id="zw-12e2e9a93b7IDfw_43916c">know. The CWD=... and nvram=... arguments are interpreted as plan9.ini&nbsp;</span><span id="zw-12e2e9a9a949Ka7In3916c">lines and passed as environment variables, we will use them later.&nbsp;</span></p>
+<p id="zw-12e2e7c1e13HHsmwG3916c"><span id="zw-12e2e7c1e14E_-xFU3916c">Open a new rio window:&nbsp;</span></p>
+<p id="zw-12e2e7c1e14r-aZU3916c"><span id="zw-12e2ef48ddf7wmF-E3916c">&nbsp;&nbsp; &nbsp;
+<pre>% cd $CWD 
+% dd -if /dev/random -of plan9.nvr -bs 512 -count 1 
+% dd -if /dev/zero -of plan9.kfs -bs 1024 -count 320000 </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e16Q2tDoO3916c"><span id="zw-12e2e7c1e178Xvjp33916c">Those files will be our nvram and kfs partitions (check the size of&nbsp;</span><span id="zw-12e2ebb332fVCtHPl3916c">your kfs file, 320Mb is not too much, but will be enough). Nvram needs&nbsp;</span><span id="zw-12e2ebb437bvlQGlr3916c">to be initialized:&nbsp;</span></p>
+<p id="zw-12e2e7c1e18-UPMoz3916c">
+<pre>    % auth/wrkey 
+    authid: bootes 
+    authdom: 9vx 
+    secstore key: 
+    password: </pre>
+<p>&nbsp;</p>
+<p id="zw-12e2e7c1e1cJK0W053916c"><span id="zw-12e2e7c1e1cHkXjtz3916c">We can populate the file system now:&nbsp;</span></p>
+<p id="zw-12e2e7c1e43SMA8A3916c"><span style="font-family:monospace;font-size:x-small;"><span style="white-space:pre-wrap;">
+<pre>% 9660srv -f plan9.iso 
+% 9fs 9660 
+% disk/kfs -f plan9.kfs 
+File system main inconsistent 
+Would you like to ream it (y/n)? y 
+% 9fs kfs 
+% dircp /n/9660 /n/kfs </pre>
+<p> </span></span></p>
+<p id="zw-12e2e7c1e21S6igCx3916c"><span id="zw-12e2e7c1e22xV5I8q3916c">The system is now installed. You should be able to open a new 9vx&nbsp;</span><span id="zw-12e2e9d16dcxMQUuw3916c">instance from your new root:&nbsp;</span></p>
+<p id="zw-12e2e7c1e22cfR4fL3916c"><span id="zw-12e2ef4e62b1b7gn83916c">&nbsp;&nbsp; &nbsp;
+<pre>$ 9vx "nvram=#Z`pwd`/plan9.nvr" -r plan9.kfs -u glenda </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e43i5zhP3916c"><span id="zw-12e2e9d829dcizCED3916c">You can also boot a cpu server. We will use the canopenpath option, so&nbsp;</span><span id="zw-12e2e9d8d67pWo5o3916c">that only the files which begin with `pwd`/plan9 can be opened from&nbsp;</span><span id="zw-12e2e9d940dlOmSsY3916c">9vx, the -ic flags tell 9vx to pass -c to /386/init:&nbsp;</span></p>
+<p id="zw-12e2e7c1e252kexP-3916c"><span id="zw-12e2ef4fea6GrOSQ3916c">&nbsp;</span><span id="zw-12e2e9db9feHedRAA3916c">&nbsp;
+<pre>$ 9vx -gic -r plan9.kfs "nvram=#Z`pwd`/plan9.nvr" "canopenpath=`pwd`/plan9" -u bootes </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e27kMzC7K3916c"><span id="zw-12e2e7c1e27aKeSLj3916c">When you see the vx32# prompt add a key so that you can cpu as glenda:&nbsp;</span></p>
+<p id="zw-12e2e7c1e44wabKIv3916c"><span id="zw-12e2ef51c08DQfrMq3916c">&nbsp;&nbsp; &nbsp;
+<pre>vx32# echo 'key proto=p9sk1 dom=9vx user=glenda !password=password' &gt;/mnt/factotum/ctl </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e29dHLgZ3916c"><span id="zw-12e2e7c1e2a_uAPXD3916c">Now you can cpu to your new server. From another 9vx instance (for&nbsp;</span><span id="zw-12e2ea171ccTkGuT3916c">example, booted from the iso):&nbsp;</span></p>
+<p id="zw-12e2e7c1e2aM_7KT83916c"><span id="zw-12e2e7c1e2bZTc5Ep3916c">&nbsp;&nbsp; &nbsp;
+<pre>% cpu -h 127.0.0.1 </pre>
+<p>&nbsp;</span></p>
+<p id="zw-12e2e7c1e44vK_Dc3916c">&nbsp;</p>
+<p id="zw-12e2e7c1e2bmcFPV3916c"><span id="zw-12e2e7c1e2dErEswl3916c">If it worked we are done.&nbsp;</span></p>
+<p id="zw-12e2e7c1e44N-mz8b3916c">&nbsp;</p>
+<p id="zw-12e2e7c1e2dlCMKe73916c"><span id="zw-12e2e7c1e2dz_k0Ct3916c">Now you will probably want to adjust to your needs the 9vxc script to&nbsp;</span><span id="zw-12e2ef0574aISfLe3916c">launch cpu servers (also, think about adding a /cfg/vx32/cpurc file).&nbsp;</span></p>
+<p id="zw-12e2e7c1e451b74Pj3916c"><span id="zw-12e2e7c1e2eN3pQF3916c">You could be interested in the options localroot, canopenpath,&nbsp;</span><span id="zw-12e2e7c1e2fXsSTFb3916c">cpulimit and memsize. Or maybe you want to setup a virtual ethernet&nbsp;</span><span id="zw-12e2e7c1e2fCMPtOk3916c">device (have a look at the tap script and the 9vx man page).&nbsp;</span></p>
+<p id="zw-12e2e7c1e2frKWNh93916c"><span id="zw-12e2e7c1e30E_qQB83916c">Have fun! (and please, report bugs)&nbsp;</span></p>
+<p id="zw-12e2e7c1e45ChSS03916c">&nbsp;</p>
+<p id="zw-12e2e7c1e31k8xSAq3916c"><span id="zw-12e2e7c1e32ahNphh3916c">--&nbsp;</span></p>
+<p id="zw-12e2e7c1e45mXjHMA3916c"></p>
+<p id="zw-12e2e7c1e45WjjzbV3916c"><span id="zw-12e2e7c1e33mjLvWi3916c">- yiyus || JGL . 4l77.com&nbsp;</span><span id="zw-12e2e7c1e330DFFyj3916c">&nbsp;&nbsp;</span></p>
+<p id="zw-12e2e7c1e4d8qBIi3916c">&nbsp;</p>
+</div>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=9vx tutorial: running a cpu server from kfs (RFC)&url=http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/&title=9vx tutorial: running a cpu server from kfs (RFC)" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/&name=9vx tutorial: running a cpu server from kfs (RFC)" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/&title=9vx tutorial: running a cpu server from kfs (RFC)" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/&t=9vx tutorial: running a cpu server from kfs (RFC)" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/plan%209/2011/02/16/pvx-tutorial';
+    var disqus_title      = '9vx tutorial: running a cpu server from kfs (RFC)';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//plan%209/2011/02/16/pvx-tutorial/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

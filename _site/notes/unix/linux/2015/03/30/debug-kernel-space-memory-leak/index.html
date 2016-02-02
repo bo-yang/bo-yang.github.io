@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Debug Kernel Space Memory Leak &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Notes, Unix/Linux">
+    <link rel="canonical" href="http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Debug Kernel Space Memory Leak">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Debug Kernel Space Memory Leak" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Debug Kernel Space Memory Leak</h1>
+  <span class="post-meta">Mar 30, 2015</span><br>
+  
+  <span class="post-meta small">
+  
+    3 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <h3 id="detect-memory-leak">1. Detect Memory Leak</h3>
+
+<p>Memory leak can be detected by monitoring the free memory periodically. Command <code class="highlighter-rouge">free</code> can be used to show rough memory usage. A more detailed way to analyze memroy is <code class="highlighter-rouge">cat /proc/meminfo</code> and <code class="highlighter-rouge">cat /proc/slabinfo</code>. <code class="highlighter-rouge">/proc/meminfo</code> contains info about total memory, free memory, total highmem, free highmem, total lowmem, free lowmem and etc. Usually highmem is user-space memory, while lowmem is kernel-space memory. If free highmem(HighFree) or free lowmem(LowFree) is continuously decreasing, in most cases it means user space or kernel space memory leaking.</p>
+
+<p>Once detected memory leaking, we need to determine which slab(s) is(are) leaking. This can be done by monitoring <code class="highlighter-rouge">/proc/slabinfo</code>. If the number of a slab’s active objects(column 2) or total objects(column 3) keep increasing, then this slab is very likely leaking memory.</p>
+
+<p>Following script can be used to monitor both meminfo and slabinfo:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+
+<span class="nv">MAX_SIZE</span><span class="o">=</span>20000000
+<span class="nv">MON_FILE</span><span class="o">=</span>/path/to/monitor_output_<span class="k">$(</span>uname -n<span class="k">)</span>
+<span class="k">while </span><span class="nb">true
+</span><span class="k">do
+    </span>date &gt;&gt; <span class="nv">$MON_FILE</span>
+    cat /proc/meminfo &gt;&gt; <span class="nv">$MON_FILE</span>
+    <span class="nb">echo</span> <span class="s2">"----------------------"</span> &gt;&gt; <span class="nv">$MON_FILE</span>
+    cat /proc/slabinfo &gt;&gt; <span class="nv">$MON_FILE</span>
+    <span class="nb">echo</span> <span class="s2">"----------------------"</span> &gt;&gt; <span class="nv">$MON_FILE</span>
+    ps -o pid,comm,stat,time,rss,vsz &gt;&gt; <span class="nv">$MON_FILE</span>
+    <span class="nb">echo</span> <span class="s2">"++++++++++++++++++++++"</span> &gt;&gt; <span class="nv">$MON_FILE</span>
+    <span class="nv">fsize</span><span class="o">=</span><span class="sb">`</span>ls -l <span class="nv">$MON_FILE</span> | awk <span class="s1">'{print $5}'</span><span class="sb">`</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$fsize</span> -gt <span class="nv">$MAX_SIZE</span> <span class="o">]</span>; <span class="k">then</span>
+    	<span class="c"># upload file to TFTP server</span>
+        <span class="nv">suffix</span><span class="o">=</span><span class="sb">`</span>cat /proc/uptime | cut -d<span class="s2">" "</span> -f1<span class="sb">`</span>
+        mv <span class="nv">$MON_FILE</span> <span class="nv">$MON_FILE</span>.<span class="nv">$suffix</span>
+        <span class="c"># upload to cloud</span>
+    <span class="k">fi
+    </span>sleep 300
+<span class="k">done</span>
+</code></pre>
+</div>
+
+<p>After continuously monitoring for hours, simply grep some keywords(e.g. HighFree, LowFree, kmalloc-192, etc.) could find the trend of memory usage. Following data is extracted from a real memory leak monitoring log:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>LowFree:          599392 kB
+LowFree:          571072 kB
+LowFree:          544484 kB
+LowFree:          516832 kB
+LowFree:          489232 kB
+LowFree:          462280 kB
+LowFree:          433680 kB
+LowFree:          405244 kB
+LowFree:          378572 kB
+LowFree:          350136 kB
+LowFree:          322648 kB
+LowFree:          295824 kB
+LowFree:          267532 kB
+LowFree:          238272 kB
+LowFree:          210856 kB
+LowFree:          181148 kB
+LowFree:          153652 kB
+LowFree:          123148 kB
+LowFree:          599392 kB
+LowFree:          571072 kB
+LowFree:          544484 kB
+LowFree:          181148 kB
+LowFree:          153652 kB
+LowFree:          123148 kB
+LowFree:           94548 kB
+LowFree:           94548 kB
+</code></pre>
+</div>
+
+<h3 id="debug-memory-leak">2. Debug Memory Leak</h3>
+
+<p>After finding out the leaking slab, more info could be detected by tracing that slab. If the kernel was built with option <code class="highlighter-rouge">CONFIG_SLUB_DEBUG</code>, the simplest way is to issue command <code class="highlighter-rouge">echo 1 &gt; /sys/kernel/slab/&lt;leaking_slab&gt;/trace</code>. Then the memory allocation trace for this slab will be printed to the console:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[  375.201468] TRACE kmalloc-4096 alloc 0xe6be6000 inuse=8 fp=0x  (null)
+[  375.207872] Backtrace:
+[  375.210309] [&lt;c0012378&gt;] (dump_backtrace+0x0/0x114) from [&lt;c03a0a5c&gt;] (dump_stack+0x18/0x1c)
+[  375.218712]  r6:ef300480 r5:e6be6000 r4:c0d40c00 r3:c07004c4
+[  375.224367] [&lt;c03a0a44&gt;] (dump_stack+0x0/0x1c) from [&lt;c03a2738&gt;] (alloc_debug_processing+0xc8/0x164)
+[  375.233489] [&lt;c03a2670&gt;] (alloc_debug_processing+0x0/0x164) from [&lt;c03a2d0c&gt;] (__slab_alloc.isra.50.constprop.56+0x538/0x5dc)
+[  375.244767]  r7:80080008 r6:00080007 r5:e6be6000 r4:c0d40c00
+[  375.250421] [&lt;c03a27d4&gt;] (__slab_alloc.isra.50.constprop.56+0x0/0x5dc) from [&lt;c00e872c&gt;] (__kmalloc_track_caller+0xbc/0x190)
+[  375.261605] [&lt;c00e8670&gt;] (__kmalloc_track_caller+0x0/0x190) from [&lt;c031f96c&gt;] (__alloc_skb+0x58/0xf4)
+[  375.270790] [&lt;c031f914&gt;] (__alloc_skb+0x0/0xf4) from [&lt;c03200d4&gt;] (dev_alloc_skb+0x40/0x64)
+[  375.279131] [&lt;c0320094&gt;] (dev_alloc_skb+0x0/0x64) from [&lt;bf6bb504&gt;] (__adf_nbuf_alloc+0x24/0xa4 [adf])
+[  375.288409]  r4:ea5c8600 r3:00000004
+[  375.292158] [&lt;bf6bb4e0&gt;] (__adf_nbuf_alloc+0x0/0xa4 [adf]) from [&lt;bf8d5f40&gt;] (htt_rx_ring_fill_n+0x34/0x108 [umac])
+[  375.302405]  r7:00000000 r6:000005b1 r5:ea5c8720 r4:ea5c8600
+[  375.308372] [&lt;bf8d5f0c&gt;] (htt_rx_ring_fill_n+0x0/0x108 [umac]) from [&lt;bf8d6888&gt;] (htt_rx_msdu_buff_replenish+0x54/0x6c [umac])
+[  375.319400]  r8:bf927c04 r7:eaaee9c0 r6:eb5b3c00 r5:ea5c8720 r4:ea5c8600
+[  375.326429] [&lt;bf8d6834&gt;] (htt_rx_msdu_buff_replenish+0x0/0x6c [umac]) from [&lt;bf8c6b24&gt;] (ol_rx_indication_handler+0x7bc/0x8cc [umac])
+[  375.338081]  r5:ea5c8600 r4:00000000
+[  375.341955] [&lt;bf8c6368&gt;] (ol_rx_indication_handler+0x0/0x8cc [umac]) from [&lt;bf8d770c&gt;] (htt_t2h_msg_handler_fast+0xac/0x280 [umac])
+[  375.353764] [&lt;bf8d7660&gt;] (htt_t2h_msg_handler_fast+0x0/0x280 [umac]) from [&lt;bf8c02dc&gt;] (CE_per_engine_service_each+0x178/0x4b4 [umac])
+[  375.365823] [&lt;bf8c0164&gt;] (CE_per_engine_service_each+0x0/0x4b4 [umac]) from [&lt;bf8c3634&gt;] (ath_tasklet+0x68/0x128 [umac])
+[  375.376507] [&lt;bf8c35cc&gt;] (ath_tasklet+0x0/0x128 [umac]) from [&lt;c0064478&gt;] (tasklet_action+0xa0/0x11c)
+[  375.385567]  r6:e8b88000 r5:c435ef44 r4:c435ef40
+[  375.390159] [&lt;c00643d8&gt;] (tasklet_action+0x0/0x11c) from [&lt;c006495c&gt;] (__do_softirq+0x140/0x34c)
+[  375.398937] [&lt;c006481c&gt;] (__do_softirq+0x0/0x34c) from [&lt;c0064d38&gt;] (do_softirq+0x4c/0x58)
+[  375.407185] [&lt;c0064cec&gt;] (do_softirq+0x0/0x58) from [&lt;c0064dd0&gt;] (local_bh_enable_ip+0x8c/0xcc)
+[  375.415870]  r4:e8b88000 r3:0000004a
+[  375.419431] [&lt;c0064d44&gt;] (local_bh_enable_ip+0x0/0xcc) from [&lt;c03aa68c&gt;] (_raw_spin_unlock_bh+0x54/0x58)
+[  375.428865]  r5:00000304 r4:e9662c00
+[  375.432427] [&lt;c03aa638&gt;] (_raw_spin_unlock_bh+0x0/0x58) from [&lt;c038a47c&gt;] (packet_poll+0xa4/0xe4)
+[  375.441299] [&lt;c038a3d8&gt;] (packet_poll+0x0/0xe4) from [&lt;c0316e34&gt;] (sock_poll+0x24/0x28)
+[  375.449265]  r7:ea9ffe40 r6:00000000 r5:e8b89c4c r4:e8b89c04
+[  375.454920] [&lt;c0316e10&gt;] (sock_poll+0x0/0x28) from [&lt;c00fc914&gt;] (do_sys_poll+0x20c/0x3e8)
+[  375.463074] [&lt;c00fc708&gt;] (do_sys_poll+0x0/0x3e8) from [&lt;c00fcbb0&gt;] (sys_poll+0x64/0xd0)
+[  375.471071] [&lt;c00fcb4c&gt;] (sys_poll+0x0/0xd0) from [&lt;c000e7c0&gt;] (ret_fast_syscall+0x0/0x30)
+[  375.479318]  r6:0007a120 r5:00000000 r4:6b3f60a0
+</code></pre>
+</div>
+
+<p>The first line could only be “TRACE kmalloc-4096 alloc” or “free”, which logs the entry address of this slab. So if the memory leak is very fast, it is possible to monitor all of the alloc/free slabs before the system out of memory. Then find out addresses that never freed, analyze the call traces, and hopefull we could detect the problematic module or functions.</p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Debug Kernel Space Memory Leak&url=http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/&title=Debug Kernel Space Memory Leak" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/&name=Debug Kernel Space Memory Leak" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/&title=Debug Kernel Space Memory Leak" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/&t=Debug Kernel Space Memory Leak" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak';
+    var disqus_title      = 'Debug Kernel Space Memory Leak';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/network/c/c++/click/2016/01/26/gen-hex-dump/" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/31/centos7-install-tftp-server/" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/08/20/linux-system-log-2/" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/unix/linux/2015/01/12/linux-system-log/" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2015/01/07/click-notes-click-language/" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/notes/network/2014/12/23/click-notes-overview/" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/unix/linux/notes/2014/11/20/pthread_exit-in-main/" class="post-link">
+        <h4 class="post-title">Be careful to pthread_exit() in main()</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>
