@@ -23,6 +23,7 @@ TFTP server can be installed using following command, where `xinetd` is necessar
     
 Then edit `/etc/xinetd.d/tftp` - set `disable` to `no` and add `-c` option into `server_args` if you need to upload files to TFTP server from client. 
 
+~~~cpp
     service tftp
     {
     	socket_type		= dgram
@@ -36,6 +37,7 @@ Then edit `/etc/xinetd.d/tftp` - set `disable` to `no` and add `-c` option into 
     	cps			    = 100 2
     	flags			= IPv4
     }
+~~~
 
 ### 2. Enable TFTP Service
 
