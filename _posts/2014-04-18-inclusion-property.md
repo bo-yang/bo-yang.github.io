@@ -43,6 +43,7 @@ To support the new added struct element, a new parameter
 
 should also be added into function cache_create(), which is called in sim-cache.c and sim-outorder.c. The new interface of this function becomes:
 
+~~~cpp
 	/* create and initialize a general cache structure */
 	struct cache_t *			/* pointer to cache created */
 	cache_create(char *name,		/* name of the cache */
@@ -59,15 +60,19 @@ should also be added into function cache_create(), which is called in sim-cache.
 						   tick_t now),
 		     unsigned int hit_latency,/* latency in cycles for a hit */
 		     struct cache_t *ucp);	/* upper level cache */
+~~~
 
 For DL2 cache, the pointer ucp is set to cache_dl1 in sim-cache.c in function cache_create(). For other cache, NULL is set. For example:
 
+~~~cpp
 	cache_dl2 = cache_create(name, nsets, bsize, /* balloc */FALSE,
 					   /* usize */0, assoc, cache_char2policy(c),
 					   dl2_access_fn, /* hit latency */1,cache_dl1);
+~~~
 
 As checking and removing blocks from DL1 only involves DL1 and DL2 cache, all the operations can be encapsulated in a function cache_inclusion(). This function is called after blocks moved out from DL2 in the case of cache miss. Then check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.
 
+~~~cpp
 	/*
 	 * Inclusion Property:
 	 * 	Make sure data leave DL2 also leave DL1 
@@ -129,10 +134,13 @@ As checking and removing blocks from DL1 only involves DL1 and DL2 cache, all th
 		
 		return lat;
 	}
+~~~
 
 This function should be called in cache_access() after removing blocks from DL2. The basic idea of the above function is to  check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.
 
 The code segment for calling cache_inclusion() in cache_access() is:
+
+~~~cpp
 	/* cache block not found */
 	
 	 /* **MISS** */
@@ -152,6 +160,7 @@ The code segment for calling cache_inclusion() in cache_access() is:
 	
 	  /* return latency of the operation */
 	  return lat;
+~~~
 
 ### 3. <a name="experiments">Experiments</a>
 
