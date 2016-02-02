@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,61 +429,57 @@
   <p>The <a href="https://oj.leetcode.com/problems/longest-palindromic-substring/">Longest Palindromic Substring problem</a> is:</p>
 
 <blockquote>
-  <p>Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring.</p>
+<p>Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, and there exists one unique longest palindromic substring. </p>
 </blockquote>
 
 <p>To solve this problem, first investigate following examples:</p>
 
 <ul>
-  <li><code class="highlighter-rouge">abcdefedchz</code>: the longest palindrome is <code class="highlighter-rouge">cdefedc</code>, the left and right parts are symmetric to letter <code class="highlighter-rouge">f</code>.</li>
-  <li><code class="highlighter-rouge">acbbcae</code>: the longest palindrome <code class="highlighter-rouge">acbbca</code>, which is symmetric to the (virtual) postion between <code class="highlighter-rouge">bb</code>.</li>
-  <li><code class="highlighter-rouge">a</code>: the longest palindrome is the letter <code class="highlighter-rouge">a</code>.</li>
+<li><code>abcdefedchz</code>: the longest palindrome is <code>cdefedc</code>, the left and right parts are symmetric to letter <code>f</code>.</li>
+<li><code>acbbcae</code>: the longest palindrome <code>acbbca</code>, which is symmetric to the (virtual) postion between <code>bb</code>.</li>
+<li><code>a</code>: the longest palindrome is the letter <code>a</code>.</li>
 </ul>
 
-<p>Based on above investigations, we could summarize the solution as:</p>
+<p>Based on above investigations, we could summarize the solution as: </p>
 
 <ol>
-  <li>For every letter in the string, find the longest repetitive characters to current letter, record the <code class="highlighter-rouge">start</code> and <code class="highlighter-rouge">end</code> position;</li>
-  <li>Minus <code class="highlighter-rouge">start</code> position by one and see if <code class="highlighter-rouge">s[start]</code> is still identical to <code class="highlighter-rouge">s[end]</code>.</li>
-  <li>If yes, iteratively compare <code class="highlighter-rouge">s[start--]</code> and <code class="highlighter-rouge">s[end--]</code> until they are not equal.</li>
-  <li>The possible longest palindrome for current letter is <code class="highlighter-rouge">end-start-1</code>.</li>
+<li>For every letter in the string, find the longest repetitive characters to current letter, record the <code>start</code> and <code>end</code> position;</li>
+<li>Minus <code>start</code> position by one and see if <code>s[start]</code> is still identical to <code>s[end]</code>.</li>
+<li>If yes, iteratively compare <code>s[start--]</code> and <code>s[end--]</code> until they are not equal.</li>
+<li>The possible longest palindrome for current letter is <code>end-start-1</code>.</li>
 </ol>
 
-<p>Following is my C++ implementation. This algorithm could be enhanced by not checking every letters, however, the time complexity will still be \( O(N^2) \). A better method is <a href="http://en.wikipedia.org/wiki/Longest_palindromic_substring">Manacher’s Algorithm</a>, which has  \( O(N) \) time complexity.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>class Solution {
+<p>Following is my C++ implementation. This algorithm could be enhanced by not checking every letters, however, the time complexity will still be \( O(N^2) \). A better method is <a href="http://en.wikipedia.org/wiki/Longest_palindromic_substring">Manacher&rsquo;s Algorithm</a>, which has  \( O(N) \) time complexity.</p>
+<div class="highlight"><pre><code class="language-" data-lang="">class Solution {
 public:
     string longestPalindrome(string s) {
-		if(s.empty())
-			return "";
+        if(s.empty())
+            return "";
 
         int pd_start=0; // the start position of the palindrome
-		int pd_len=0; // the length of the palindrome
-		for(int i=0;i&lt;s.length();++i) {
-			int start=i;
-			int end=i;
-			while(end&lt;s.length() &amp;&amp; s[start]==s[end])
-				end++;
+        int pd_len=0; // the length of the palindrome
+        for(int i=0;i&lt;s.length();++i) {
+            int start=i;
+            int end=i;
+            while(end&lt;s.length() &amp;&amp; s[start]==s[end])
+                end++;
 
-			start--;
-			while(start&gt;=0 &amp;&amp; end&lt;s.length() &amp;&amp; s[start]==s[end]) {
-				start--;
-				end++;
-			}
-			
-			if(pd_len&lt;end-start-1) {
-				pd_len=end-start-1;
-				pd_start=start+1;	
-			}
-		}
+            start--;
+            while(start&gt;=0 &amp;&amp; end&lt;s.length() &amp;&amp; s[start]==s[end]) {
+                start--;
+                end++;
+            }
 
-		return s.substr(pd_start,pd_len);		
+            if(pd_len&lt;end-start-1) {
+                pd_len=end-start-1;
+                pd_start=start+1;   
+            }
+        }
+
+        return s.substr(pd_start,pd_len);       
     }
 };
-</code></pre>
-</div>
-
-
+</code></pre></div>
 </article>
 
 

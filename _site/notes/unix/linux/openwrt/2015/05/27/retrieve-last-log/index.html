@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -426,59 +426,49 @@
 </div>
 
 <article class="post-content">
-  <p>In Linux, there are two kinds of crashes - kernel panic/oom and user space core dump. For kernel panic, the standard config is rebooting the system. Unfortunately, the panic log can only be printed to console and will disappear after reboot if there is no additional device to record the console log - most kernel panic/oom logs won’t be written to system log, and even they do, there is no way to sync them to disk storage during panic.</p>
+  <p>In Linux, there are two kinds of crashes - kernel panic/oom and user space core dump. For kernel panic, the standard config is rebooting the system. Unfortunately, the panic log can only be printed to console and will disappear after reboot if there is no additional device to record the console log - most kernel panic/oom logs won&rsquo;t be written to system log, and even they do, there is no way to sync them to disk storage during panic.</p>
 
-<p>As for user-sapce core dump, core files will be generated to <code class="highlighter-rouge">/tmp/pid.core</code>(core pattern can be changed in <code class="highlighter-rouge">/proc/sys/kernel/core_pattern</code>) by default. It is up to the admin to decide if the system or process needs reboot after core dump. Although a script can be used to record more logs for the coredump, sometimes it’s still useful to retain some info in the persistent memory, like the backtrace of the coredumped process.</p>
+<p>As for user-sapce core dump, core files will be generated to <code>/tmp/pid.core</code>(core pattern can be changed in <code>/proc/sys/kernel/core_pattern</code>) by default. It is up to the admin to decide if the system or process needs reboot after core dump. Although a script can be used to record more logs for the coredump, sometimes it&rsquo;s still useful to retain some info in the persistent memory, like the backtrace of the coredumped process.</p>
 
 <h4 id="modules-needed">Modules Needed</h4>
 
 <ul>
-  <li><a href="http://lxr.free-electrons.com/source/drivers/mtd/devices/phram.c"><strong>phram</strong></a></li>
+<li><a href="http://lxr.free-electrons.com/source/drivers/mtd/devices/phram.c"><strong>phram</strong></a></li>
 </ul>
 
-<p><code class="highlighter-rouge">phram</code> is a Memory Technology Device(MTD) driver, which supports accessing non-system memory, i.e. from the PCI address space. This module can act as a special memory file to store important data during reboots.</p>
+<p><code>phram</code> is a Memory Technology Device(MTD) driver, which supports accessing non-system memory, i.e. from the PCI address space. This module can act as a special memory file to store important data during reboots.</p>
 
 <ul>
-  <li><a href="https://www.kernel.org/doc/Documentation/ramoops.txt"><strong>ramoops</strong></a></li>
+<li><a href="https://www.kernel.org/doc/Documentation/ramoops.txt"><strong>ramoops</strong></a></li>
 </ul>
 
-<p><code class="highlighter-rouge">ramoops</code> is an kernel oops/panic logger that writes its logs to predefined memory area before the system crashes. It works by logging oopses and panics in a circular buffer. As long as the device has power supply during reboot, the content stored in ramoops won’t go away.</p>
+<p><code>ramoops</code> is an kernel oops/panic logger that writes its logs to predefined memory area before the system crashes. It works by logging oopses and panics in a circular buffer. As long as the device has power supply during reboot, the content stored in ramoops won&rsquo;t go away.</p>
 
-<p>Both <code class="highlighter-rouge">phram</code> and <code class="highlighter-rouge">ramoops</code> can be compiled to <code class="highlighter-rouge">.ko</code> shared library, which can be configured using Linux menuconfig.</p>
+<p>Both <code>phram</code> and <code>ramoops</code> can be compiled to <code>.ko</code> shared library, which can be configured using Linux menuconfig. </p>
 
 <h4 id="loading-modules">Loading Modules</h4>
 
-<p><code class="highlighter-rouge">phram</code> can be dynamically loaded using following command:</p>
+<p><code>phram</code> can be dynamically loaded using following command:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">insmod /lib/modules/phram.ko phram=&lt;name&gt;,&lt;addr&gt;,&lt;len&gt;
+</code></pre></div>
+<p>where <code>&lt;name&gt;</code> is the device(i.e. file) name under <code>/dev/mtdchar/</code>, <code>&lt;addr&gt;</code> is the reserved starting memory address, and <code>&lt;len&gt;</code> is the predefined length of the memory area.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>insmod /lib/modules/phram.ko phram=&lt;name&gt;,&lt;addr&gt;,&lt;len&gt;
-</code></pre>
-</div>
+<p>To load <code>ramoops</code></p>
+<div class="highlight"><pre><code class="language-" data-lang="">insmod /lib/modules/ramoops.ko mem_address=&lt;addr&gt; mem_size=&lt;len&gt; [record_size=&lt;chunks&gt;]
+</code></pre></div>
+<p>where <code>&lt;addr&gt;</code> and <code>&lt;len&gt;</code> have the same meaning as above, and <code>record_size</code> is the chunks of reserved memory area.</p>
 
-<p>where <code class="highlighter-rouge">&lt;name&gt;</code> is the device(i.e. file) name under <code class="highlighter-rouge">/dev/mtdchar/</code>, <code class="highlighter-rouge">&lt;addr&gt;</code> is the reserved starting memory address, and <code class="highlighter-rouge">&lt;len&gt;</code> is the predefined length of the memory area.</p>
+<h4 id="copy-log-to-phram-memory">Copy Log To <code>phram</code> Memory</h4>
 
-<p>To load <code class="highlighter-rouge">ramoops</code></p>
+<p>For kernel panic, the ramoops will automatically copy the panic log into the reserved memory. The panic log begins with leading &ldquo;====&rdquo; followed by a timestamp and a new line.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>insmod /lib/modules/ramoops.ko mem_address=&lt;addr&gt; mem_size=&lt;len&gt; [record_size=&lt;chunks&gt;]
-</code></pre>
-</div>
+<p>If you need to store other info, <code>dd</code> command can be used to copy file to the memory, e.g.</p>
+<div class="highlight"><pre><code class="language-" data-lang="">dd if=/var/log/messages bs=1 count=65536 skip=&lt;fsize - len&gt; of=/dev/mtdchar/phram-oops
+</code></pre></div>
+<p>According to <code>dd</code> manual, <code>if</code> is the the input file stream, <code>of</code> is the output file, <code>bs</code> specifies the bytes to be read and write at a time, and <code>skip</code> configs the input blocks to be skipped from the input file. Here the size of <em>block</em> is defined by <code>bs</code>. In the above example, the block size is set to 1 byte, and only the last <code>len</code> bytes will be copied to <code>phram</code> memory.</p>
 
-<p>where <code class="highlighter-rouge">&lt;addr&gt;</code> and <code class="highlighter-rouge">&lt;len&gt;</code> have the same meaning as above, and <code class="highlighter-rouge">record_size</code> is the chunks of reserved memory area.</p>
-
-<h4 id="copy-log-to-phram-memory">Copy Log To <code class="highlighter-rouge">phram</code> Memory</h4>
-
-<p>For kernel panic, the ramoops will automatically copy the panic log into the reserved memory. The panic log begins with leading “====” followed by a timestamp and a new line.</p>
-
-<p>If you need to store other info, <code class="highlighter-rouge">dd</code> command can be used to copy file to the memory, e.g.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>dd if=/var/log/messages bs=1 count=65536 skip=&lt;fsize - len&gt; of=/dev/mtdchar/phram-oops
-</code></pre>
-</div>
-
-<p>According to <code class="highlighter-rouge">dd</code> manual, <code class="highlighter-rouge">if</code> is the the input file stream, <code class="highlighter-rouge">of</code> is the output file, <code class="highlighter-rouge">bs</code> specifies the bytes to be read and write at a time, and <code class="highlighter-rouge">skip</code> configs the input blocks to be skipped from the input file. Here the size of <em>block</em> is defined by <code class="highlighter-rouge">bs</code>. In the above example, the block size is set to 1 byte, and only the last <code class="highlighter-rouge">len</code> bytes will be copied to <code class="highlighter-rouge">phram</code> memory.</p>
-
-<p>Unfortunately, reading &amp; writing byte-by-byte usaully is very slow. A faster way is setting <code class="highlighter-rouge">bs</code> to a larger number, like 128, 512, 1024, etc. In this case, the <code class="highlighter-rouge">skip</code> and <code class="highlighter-rouge">count</code> need to be calculated correspondingly: say the size of reserved memory is <code class="highlighter-rouge">len</code>, input file size is <code class="highlighter-rouge">fsize</code>, <code class="highlighter-rouge">bs</code> is set to <code class="highlighter-rouge">bsize</code>, then</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>// len: memory size
+<p>Unfortunately, reading &amp; writing byte-by-byte usaully is very slow. A faster way is setting <code>bs</code> to a larger number, like 128, 512, 1024, etc. In this case, the <code>skip</code> and <code>count</code> need to be calculated correspondingly: say the size of reserved memory is <code>len</code>, input file size is <code>fsize</code>, <code>bs</code> is set to <code>bsize</code>, then</p>
+<div class="highlight"><pre><code class="language-" data-lang="">// len: memory size
 // fsize: input file size
 bs = bsize
 if (fsize &lt;= bsize)
@@ -486,33 +476,25 @@ if (fsize &lt;= bsize)
 else
     skip = (fsize - len)/bsize + 1;
 count = len/bsize + 1;
-</code></pre>
-</div>
-
+</code></pre></div>
 <h4 id="dump-last-log">Dump Last Log</h4>
 
-<p><code class="highlighter-rouge">dd</code> command can also be used for dumping data from reserved phram memory area, e.g.</p>
+<p><code>dd</code> command can also be used for dumping data from reserved phram memory area, e.g.</p>
+<div class="highlight"><pre><code class="language-" data-lang="">dd if=/dev/mtdchar/phram-oops bs=&lt;len&gt; count=1
+</code></pre></div>
+<p>Other file operation commands/APIs can also be used for <code>phram</code> memory device.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>dd if=/dev/mtdchar/phram-oops bs=&lt;len&gt; count=1
-</code></pre>
-</div>
+<h4 id="reset-phram-memory">Reset <code>phram</code> Memory</h4>
 
-<p>Other file operation commands/APIs can also be used for <code class="highlighter-rouge">phram</code> memory device.</p>
-
-<h4 id="reset-phram-memory">Reset <code class="highlighter-rouge">phram</code> Memory</h4>
-
-<p><code class="highlighter-rouge">phram</code> memory can be cleared by file operation coomands/APIS, e.g.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>dd if=/dev/zero bs=&lt;len&gt; count=1 of=/dev/mtdchar/phram-oops
-</code></pre>
-</div>
-
+<p><code>phram</code> memory can be cleared by file operation coomands/APIS, e.g.</p>
+<div class="highlight"><pre><code class="language-" data-lang="">dd if=/dev/zero bs=&lt;len&gt; count=1 of=/dev/mtdchar/phram-oops
+</code></pre></div>
 <h4 id="references">References</h4>
 
 <ol>
-  <li><a href="http://www.gentoo-wiki.info/TIP_Use_memory_on_video_card_as_swap">Use Memory On Video Card As Swap</a></li>
-  <li><a href="https://www.kernel.org/doc/Documentation/ramoops.txt">Ramoops oops/panic logger</a></li>
-  <li><a href="http://linux.die.net/man/1/dd"><code class="highlighter-rouge">dd</code> manual</a></li>
+<li><a href="http://www.gentoo-wiki.info/TIP_Use_memory_on_video_card_as_swap">Use Memory On Video Card As Swap</a></li>
+<li><a href="https://www.kernel.org/doc/Documentation/ramoops.txt">Ramoops oops/panic logger</a></li>
+<li><a href="http://linux.die.net/man/1/dd"><code>dd</code> manual</a></li>
 </ol>
 
 </article>

@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -428,65 +428,55 @@
 <article class="post-content">
   <p>This post introduces how to configure and use syslogd-compatible syslog tools. These tips should be supported by rsyslog, but rsyslog-specific commands are not covered.</p>
 
-<p>As documented in the man page, the Linux system log is configured in file <code class="highlighter-rouge">/etc/syslog.conf</code> by default.You can specify other config file with <code class="highlighter-rouge">-f</code> option for syslogd. The format of syslog config file is</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;facility&gt;.&lt;priority&gt;   [logfile]
-</code></pre>
-</div>
-
-<p>The supported facilities and priorites are defined in <code class="highlighter-rouge">syslog.h</code>:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>#define	LOG_EMERG	0	/* system is unusable */
-#define	LOG_ALERT	1	/* action must be taken immediately */
-#define	LOG_CRIT	2	/* critical conditions */
-#define	LOG_ERR		3	/* error conditions */
-#define	LOG_WARNING	4	/* warning conditions */
-#define	LOG_NOTICE	5	/* normal but significant condition */
-#define	LOG_INFO	6	/* informational */
-#define	LOG_DEBUG	7	/* debug-level messages */
+<p>As documented in the man page, the Linux system log is configured in file <code>/etc/syslog.conf</code> by default.You can specify other config file with <code>-f</code> option for syslogd. The format of syslog config file is</p>
+<div class="highlight"><pre><code class="language-" data-lang="">&lt;facility&gt;.&lt;priority&gt;   [logfile]
+</code></pre></div>
+<p>The supported facilities and priorites are defined in <code>syslog.h</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">#define LOG_EMERG   0   /* system is unusable */
+#define LOG_ALERT   1   /* action must be taken immediately */
+#define LOG_CRIT    2   /* critical conditions */
+#define LOG_ERR     3   /* error conditions */
+#define LOG_WARNING 4   /* warning conditions */
+#define LOG_NOTICE  5   /* normal but significant condition */
+#define LOG_INFO    6   /* informational */
+#define LOG_DEBUG   7   /* debug-level messages */
 
 /* facility codes */
-#define	LOG_KERN	(0&lt;&lt;3)	/* kernel messages */
-#define	LOG_USER	(1&lt;&lt;3)	/* random user-level messages */
-#define	LOG_MAIL	(2&lt;&lt;3)	/* mail system */
-#define	LOG_DAEMON	(3&lt;&lt;3)	/* system daemons */
-#define	LOG_AUTH	(4&lt;&lt;3)	/* security/authorization messages */
-#define	LOG_SYSLOG	(5&lt;&lt;3)	/* messages generated internally by syslogd */
-#define	LOG_LPR		(6&lt;&lt;3)	/* line printer subsystem */
-#define	LOG_NEWS	(7&lt;&lt;3)	/* network news subsystem */
-#define	LOG_UUCP	(8&lt;&lt;3)	/* UUCP subsystem */
-#define	LOG_CRON	(9&lt;&lt;3)	/* clock daemon */
-#define	LOG_AUTHPRIV	(10&lt;&lt;3)	/* security/authorization messages (private) */
-#define	LOG_FTP		(11&lt;&lt;3)	/* ftp daemon */
+#define LOG_KERN    (0&lt;&lt;3)  /* kernel messages */
+#define LOG_USER    (1&lt;&lt;3)  /* random user-level messages */
+#define LOG_MAIL    (2&lt;&lt;3)  /* mail system */
+#define LOG_DAEMON  (3&lt;&lt;3)  /* system daemons */
+#define LOG_AUTH    (4&lt;&lt;3)  /* security/authorization messages */
+#define LOG_SYSLOG  (5&lt;&lt;3)  /* messages generated internally by syslogd */
+#define LOG_LPR     (6&lt;&lt;3)  /* line printer subsystem */
+#define LOG_NEWS    (7&lt;&lt;3)  /* network news subsystem */
+#define LOG_UUCP    (8&lt;&lt;3)  /* UUCP subsystem */
+#define LOG_CRON    (9&lt;&lt;3)  /* clock daemon */
+#define LOG_AUTHPRIV    (10&lt;&lt;3) /* security/authorization messages (private) */
+#define LOG_FTP     (11&lt;&lt;3) /* ftp daemon */
 
 /* other codes through 15 reserved for system use */
-#define	LOG_LOCAL0	(16&lt;&lt;3)	/* reserved for local use */
-#define	LOG_LOCAL1	(17&lt;&lt;3)	/* reserved for local use */
-#define	LOG_LOCAL2	(18&lt;&lt;3)	/* reserved for local use */
-#define	LOG_LOCAL3	(19&lt;&lt;3)	/* reserved for local use */
-#define	LOG_LOCAL4	(20&lt;&lt;3)	/* reserved for local use */
-#define	LOG_LOCAL5	(21&lt;&lt;3)	/* reserved for local use */
-#define	LOG_LOCAL6	(22&lt;&lt;3)	/* reserved for local use */
-#define	LOG_LOCAL7	(23&lt;&lt;3)	/* reserved for local use */
-</code></pre>
-</div>
-
-<p>The local facilities can be used for redirecting/filtering the log of your own programs. For example, given a program <code class="highlighter-rouge">foo</code>, if you want to log all the non-critical messages in <code class="highlighter-rouge">/var/log/foo.log</code>, and make the critical logs go to system log file <code class="highlighter-rouge">/var/log/messages</code>, you can use the following config file</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code># use facility local1 for foo logs
+#define LOG_LOCAL0  (16&lt;&lt;3) /* reserved for local use */
+#define LOG_LOCAL1  (17&lt;&lt;3) /* reserved for local use */
+#define LOG_LOCAL2  (18&lt;&lt;3) /* reserved for local use */
+#define LOG_LOCAL3  (19&lt;&lt;3) /* reserved for local use */
+#define LOG_LOCAL4  (20&lt;&lt;3) /* reserved for local use */
+#define LOG_LOCAL5  (21&lt;&lt;3) /* reserved for local use */
+#define LOG_LOCAL6  (22&lt;&lt;3) /* reserved for local use */
+#define LOG_LOCAL7  (23&lt;&lt;3) /* reserved for local use */
+</code></pre></div>
+<p>The local facilities can be used for redirecting/filtering the log of your own programs. For example, given a program <code>foo</code>, if you want to log all the non-critical messages in <code>/var/log/foo.log</code>, and make the critical logs go to system log file <code>/var/log/messages</code>, you can use the following config file</p>
+<div class="highlight"><pre><code class="language-" data-lang=""># use facility local1 for foo logs
 local1.debug;local1.info;local1.notice;local1.warn   -/var/log/foo.log
 local1.panic;local1.alert;local1.crit;local1.err   -/var/log/messages
 *.*;local1.none   /var/log/messages 
-</code></pre>
-</div>
+</code></pre></div>
+<p>The special priority <code>none</code> prevents those messages from being logged even though they would have been included in the <em>.</em>. In the above config, all facilities except for <code>local1</code> will be logged to <code>/var/log/messages</code>.</p>
 
-<p>The special priority <code class="highlighter-rouge">none</code> prevents those messages from being logged even though they would have been included in the <em>.</em>. In the above config, all facilities except for <code class="highlighter-rouge">local1</code> will be logged to <code class="highlighter-rouge">/var/log/messages</code>.</p>
+<p>However, the dash(-) in front of the log filename is not documented in the man page, but it turns out to mean &ldquo;Don&rsquo;t sync after every write to the file&rdquo;. Except that rsyslogd won&rsquo;t sync anyway, unless you add a special directive in the Global Directives section. Note that you might lose information if the system crashes right behind a write attempt. Nevertheless this might give you back some performance, especially if you run programs that use logging in a very verbose manner. So for most people, a dash makes no difference one way or the other &ndash; it will be ignored.</p>
 
-<p>However, the dash(-) in front of the log filename is not documented in the man page, but it turns out to mean “Don’t sync after every write to the file”. Except that rsyslogd won’t sync anyway, unless you add a special directive in the Global Directives section. Note that you might lose information if the system crashes right behind a write attempt. Nevertheless this might give you back some performance, especially if you run programs that use logging in a very verbose manner. So for most people, a dash makes no difference one way or the other – it will be ignored.</p>
-
-<p>And in program <code class="highlighter-rouge">foo</code>, what you need to do is open log file by specifing <code class="highlighter-rouge">LOG_LOCAL1</code> facility. The use of <code class="highlighter-rouge">openlog()</code> is mandatory here. Otherwise, it will automatically be called by syslog(), in which case facility will default to <code class="highlighter-rouge">LOG_USER</code>.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>#include &lt;syslog.h&gt;
+<p>And in program <code>foo</code>, what you need to do is open log file by specifing <code>LOG_LOCAL1</code> facility. The use of <code>openlog()</code> is mandatory here. Otherwise, it will automatically be called by syslog(), in which case facility will default to <code>LOG_USER</code>.</p>
+<div class="highlight"><pre><code class="language-" data-lang="">#include &lt;syslog.h&gt;
 int main(int, char**)
 {
     openlog("foo", 0, LOG_LOCAL1);
@@ -494,14 +484,13 @@ int main(int, char**)
     syslog(LOG_ERR, "test error log"); /* go to /var/log/messages */
     closelog();
 }
-</code></pre>
-</div>
-
+</code></pre></div>
 <h3 id="references">References</h3>
+
 <ul>
-  <li><a href="http://linux.die.net/man/5/syslog.conf">http://linux.die.net/man/5/syslog.conf</a></li>
-  <li><a href="http://linux.die.net/man/3/openlog">http://linux.die.net/man/3/openlog</a></li>
-  <li><a href="http://shallowsky.com/blog/linux/rsyslog-conf-tutorial.html">A Brief Tutorial on rsyslog.conf</a></li>
+<li><a href="http://linux.die.net/man/5/syslog.conf">http://linux.die.net/man/5/syslog.conf</a></li>
+<li><a href="http://linux.die.net/man/3/openlog">http://linux.die.net/man/3/openlog</a></li>
+<li><a href="http://shallowsky.com/blog/linux/rsyslog-conf-tutorial.html">A Brief Tutorial on rsyslog.conf</a></li>
 </ul>
 
 </article>

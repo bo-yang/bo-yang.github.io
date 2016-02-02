@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -428,19 +428,15 @@
 <article class="post-content">
   <p><em>This is the second article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the previous article on this topic, please refer to <a href="http://www.bo-yang.net/2014/10/21/remote-local-linux-develop-env/">Building Remote+Local *nix Develop Environment</a>.</em></p>
 
-<h3 id="vim-tips--plugins">1. Vim Tips &amp; Plugins</h3>
+<h3 id="1-vim-tips-amp-plugins">1. Vim Tips &amp; Plugins</h3>
 
-<h4 id="highlight-all-instances-of-word-under-cursor">1.1 Highlight All Instances of Word Under Cursor</h4>
+<h4 id="1-1-highlight-all-instances-of-word-under-cursor">1.1 Highlight All Instances of Word Under Cursor</h4>
 
-<p>Add following line into your <code class="highlighter-rouge">$HOME/.vimrc</code></p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>autocmd CursorMoved * exe printf('match IncSearch /\V\&lt;%s\&gt;/', escape(expand('&lt;cword&gt;'), '/\'))
-</code></pre>
-</div>
-
-<p>Or use a more complicated one in the <code class="highlighter-rouge">.vimrc</code>:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>" Highlight all instances of word under cursor, when idle.
+<p>Add following line into your <code>$HOME/.vimrc</code></p>
+<div class="highlight"><pre><code class="language-" data-lang="">autocmd CursorMoved * exe printf('match IncSearch /\V\&lt;%s\&gt;/', escape(expand('&lt;cword&gt;'), '/\'))
+</code></pre></div>
+<p>Or use a more complicated one in the <code>.vimrc</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">" Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.
 " Type z/ to toggle highlighting on/off.
 
@@ -463,96 +459,75 @@ function! AutoHighlightToggle()
     return 1
   endif
 endfunction
-</code></pre>
-</div>
-
-<h4 id="automatically-load-ctags">1.2 Automatically Load Ctags</h4>
+</code></pre></div>
+<h4 id="1-2-automatically-load-ctags">1.2 Automatically Load Ctags</h4>
 
 <p>If you have generated ctags file, then you can automatically load it by:</p>
 
 <ul>
-  <li>
-    <p>export <code class="highlighter-rouge">CTAGS_TAG</code> in <code class="highlighter-rouge">$HOME/.bashrc</code> by <code class="highlighter-rouge">export CTAGS_TAG=/path/to/your/tags</code>.</p>
-  </li>
-  <li>
-    <p>add following lines into your <code class="highlighter-rouge">$HOME/.vimrc</code></p>
-  </li>
+<li><p>export <code>CTAGS_TAG</code> in <code>$HOME/.bashrc</code> by <code>export CTAGS_TAG=/path/to/your/tags</code>.</p></li>
+<li><p>add following lines into your <code>$HOME/.vimrc</code></p></li>
 </ul>
+<div class="highlight"><pre><code class="language-Shell" data-lang="Shell">
+    if filereadable($CTAGS_TAG)
+        set tags=$CTAGS_TAG
+    endif
 
-<p>```Shell</p>
+</code></pre></div>
+<h4 id="1-3-most-recently-used-mru-files">1.3 Most Recently Used(MRU) Files</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if filereadable($CTAGS_TAG)
-    set tags=$CTAGS_TAG
-endif
-</code></pre>
-</div>
-
-<p>```</p>
-
-<h4 id="most-recently-usedmru-files">1.3 Most Recently Used(MRU) Files</h4>
-
-<p>If you want to access the most recently used files in Vim, you need plugin <a href="http://www.vim.org/scripts/script.php?script_id=521">MRU</a>. The <code class="highlighter-rouge">:MRU</code> command will show you all the recently used files, and you can choose a file and press <code class="highlighter-rouge">&lt;Enter&gt;</code> to open it in current window. In addition</p>
+<p>If you want to access the most recently used files in Vim, you need plugin <a href="http://www.vim.org/scripts/script.php?script_id=521">MRU</a>. The <code>:MRU</code> command will show you all the recently used files, and you can choose a file and press <code>&lt;Enter&gt;</code> to open it in current window. In addition</p>
 
 <ul>
-  <li>To open a file from the MRU window in a new tab, press the <code class="highlighter-rouge">t</code> key.</li>
-  <li>You can open multiple files from the MRU window by specifying a count before pressing <code class="highlighter-rouge">&lt;Enter&gt;</code> or <code class="highlighter-rouge">v</code> or <code class="highlighter-rouge">o</code> or <code class="highlighter-rouge">t</code>.</li>
-  <li>You can close the MRU window by pressing the <code class="highlighter-rouge">q</code> key or the <code class="highlighter-rouge">&lt;Esc&gt;</code> key or using one of the Vim window commands.</li>
-  <li>You can specify a pattern to the <code class="highlighter-rouge">:MRU</code> command, such as <code class="highlighter-rouge">:MRU &lt;pattern&gt;</code>.</li>
+<li>To open a file from the MRU window in a new tab, press the <code>t</code> key. </li>
+<li>You can open multiple files from the MRU window by specifying a count before pressing <code>&lt;Enter&gt;</code> or <code>v</code> or <code>o</code> or <code>t</code>. </li>
+<li>You can close the MRU window by pressing the <code>q</code> key or the <code>&lt;Esc&gt;</code> key or using one of the Vim window commands. </li>
+<li>You can specify a pattern to the <code>:MRU</code> command, such as <code>:MRU &lt;pattern&gt;</code>. </li>
 </ul>
 
-<h4 id="pathogenhttpsgithubcomtpopevim-pathogen">1.4 <a href="https://github.com/tpope/vim-pathogen">Pathogen</a></h4>
+<h4 id="1-4-pathogen">1.4 <a href="https://github.com/tpope/vim-pathogen">Pathogen</a></h4>
 
-<p>Vim <code class="highlighter-rouge">runtimepath</code> manager, widely used by many plugins. Adding <code class="highlighter-rouge">call pathogen#infect()</code> to your <code class="highlighter-rouge">.vimrc</code>, then any plugins you wish to install can be extracted to a subdirectory under <code class="highlighter-rouge">~/.vim/bundle</code>. And they will be added to the <code class="highlighter-rouge">runtimepath</code>.</p>
+<p>Vim <code>runtimepath</code> manager, widely used by many plugins. Adding <code>call pathogen#infect()</code> to your <code>.vimrc</code>, then any plugins you wish to install can be extracted to a subdirectory under <code>~/.vim/bundle</code>. And they will be added to the <code>runtimepath</code>.</p>
 
-<h4 id="nerdtreehttpsgithubcomscrooloosenerdtree--nerdtree-tabshttpsgithubcomjistrvim-nerdtree-tabs">1.5 <a href="https://github.com/scrooloose/nerdtree">NERDTree</a> &amp; <a href="https://github.com/jistr/vim-nerdtree-tabs">NERDTree Tabs</a></h4>
+<h4 id="1-5-nerdtree-amp-nerdtree-tabs">1.5 <a href="https://github.com/scrooloose/nerdtree">NERDTree</a> &amp; <a href="https://github.com/jistr/vim-nerdtree-tabs">NERDTree Tabs</a></h4>
 
-<p>The NERD tree allows you to explore your filesystem and to open files and directories, and NERDTree Tabs can make NERDTree available for all Vim tabs(sometimes it is useful). After installing the these plugins, you can add the following lines to <code class="highlighter-rouge">.vimrc</code>.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>" Nerd Tree
+<p>The NERD tree allows you to explore your filesystem and to open files and directories, and NERDTree Tabs can make NERDTree available for all Vim tabs(sometimes it is useful). After installing the these plugins, you can add the following lines to <code>.vimrc</code>.</p>
+<div class="highlight"><pre><code class="language-" data-lang="">" Nerd Tree
 " let g:NERDTreeDirArrows=0 " Do not use new arrows for directories
 map &lt;C-n&gt; :NERDTreeToggle&lt;CR&gt;
 let g:nerdtree_tabs_open_on_gui_startup=0 " no nerdtree_tabs by default
-</code></pre>
-</div>
+</code></pre></div>
+<p>For some Linux distributions, the NERDTree could not show arrows for directories, then you need to uncomment the line <code>let g:NERDTreeDirArrows=0</code> in your <code>.vimrc</code>.</p>
 
-<p>For some Linux distributions, the NERDTree could not show arrows for directories, then you need to uncomment the line <code class="highlighter-rouge">let g:NERDTreeDirArrows=0</code> in your <code class="highlighter-rouge">.vimrc</code>.</p>
+<h4 id="1-6-supertab">1.6 <a href="https://github.com/ervandew/supertab">Supertab</a></h4>
 
-<h4 id="supertabhttpsgithubcomervandewsupertab">1.6 <a href="https://github.com/ervandew/supertab">Supertab</a></h4>
+<p>Supertab is a vim plugin which allows you to use <code>&lt;Tab&gt;</code> for all your insert completion needs (:help ins-completion).</p>
 
-<p>Supertab is a vim plugin which allows you to use <code class="highlighter-rouge">&lt;Tab&gt;</code> for all your insert completion needs (:help ins-completion).</p>
-
-<h4 id="ctrlphttpkiengithubioctrlpvim--command-thttpsgithubcomwincentcommand-t">1.7 <a href="http://kien.github.io/ctrlp.vim/">CtrlP</a> &amp; <a href="https://github.com/wincent/Command-T">Command-T</a></h4>
+<h4 id="1-7-ctrlp-amp-command-t">1.7 <a href="http://kien.github.io/ctrlp.vim/">CtrlP</a> &amp; <a href="https://github.com/wincent/Command-T">Command-T</a></h4>
 
 <p>These two plugins are used for searching/opening files(even not in ctags) in Vim. CtrlP is written in pure Vimscript, so it is very slow. Although Command-T is faster, it relies on Ruby, which makes it difficult to install. Actually, I rarely use them in daily work.</p>
 
-<p>My <code class="highlighter-rouge">vimrc</code> can be found at <a href="https://github.com/bo-yang/misc/blob/master/vimrc">https://github.com/bo-yang/misc/blob/master/vimrc</a>.</p>
+<p>My <code>vimrc</code> can be found at <a href="https://github.com/bo-yang/misc/blob/master/vimrc">https://github.com/bo-yang/misc/blob/master/vimrc</a>.</p>
 
-<h3 id="cscopehttpcscopesourceforgenet">2. <a href="http://cscope.sourceforge.net/">Cscope</a></h3>
+<h3 id="2-cscope">2. <a href="http://cscope.sourceforge.net/">Cscope</a></h3>
 
 <p>Cscope is a tool for browsing source code. You can either run cscope standalone or <a href="http://cscope.sourceforge.net/cscope_vim_tutorial.html">use it with Vim</a>. No matter in which way, you need to generate cscope database first. And the cscope DB depends on the source files you specified. General steps of using cscope are:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>find /my/project/dir -name '*.c' -o -name '*.h' &gt; /foo/cscope.files
+<div class="highlight"><pre><code class="language-" data-lang="">find /my/project/dir -name '*.c' -o -name '*.h' &gt; /foo/cscope.files
 cd /foo
 cscope -b
 CSCOPE_DB=/foo/cscope.out; export CSCOPE_DB
-</code></pre>
-</div>
-
-<p>In Vim, you can load cscope DB by command <code class="highlighter-rouge">:cs add &lt;path_to_cscope_db&gt;</code>. For more cscope operations in Vim, please run command <code class="highlighter-rouge">:cs help</code>. To automatically load cscope into Vim, you can export <code class="highlighter-rouge">CSCOPE_DB</code> in <code class="highlighter-rouge">$HOME/.bashrc</code>, such as</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>export CSCOPE_DB=/path/to/cscope.out
-</code></pre>
-</div>
-
-<p>Then the <code class="highlighter-rouge">CSCOPE_DB</code> will be automatically loaded every time you run Vim.</p>
+</code></pre></div>
+<p>In Vim, you can load cscope DB by command <code>:cs add &lt;path_to_cscope_db&gt;</code>. For more cscope operations in Vim, please run command <code>:cs help</code>. To automatically load cscope into Vim, you can export <code>CSCOPE_DB</code> in <code>$HOME/.bashrc</code>, such as</p>
+<div class="highlight"><pre><code class="language-" data-lang="">export CSCOPE_DB=/path/to/cscope.out
+</code></pre></div>
+<p>Then the <code>CSCOPE_DB</code> will be automatically loaded every time you run Vim.</p>
 
 <p>To save the effort of building cscope DB, I wrote a cross-platform(Linux &amp; Mac OS X) wrapper script, which can be found in my <a href="https://github.com/bo-yang/misc/blob/master/gen_cscope_ctags">GitHub channel</a>.</p>
 
-<h3 id="sshfs-wrapper">3. sshfs Wrapper</h3>
+<h3 id="3-sshfs-wrapper">3. sshfs Wrapper</h3>
 
-<p>Since <code class="highlighter-rouge">sshfs</code> command requires too much parameters, and things will be worse when the network is not stable. Following script will ease your pain.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+<p>Since <code>sshfs</code> command requires too much parameters, and things will be worse when the network is not stable. Following script will ease your pain. </p>
+<div class="highlight"><pre><code class="language-" data-lang=""><span class="c">#!/bin/sh</span>
 
 <span class="nv">USER</span><span class="o">=</span>&lt;your_name&gt;
 <span class="nv">SERVER</span><span class="o">=</span>&lt;your_server&gt;
@@ -561,15 +536,12 @@ CSCOPE_DB=/foo/cscope.out; export CSCOPE_DB
 
 <span class="k">if</span> <span class="o">[</span> ! -d <span class="k">${</span><span class="nv">local_dir</span><span class="k">}</span> -o ! -s <span class="k">${</span><span class="nv">local_dir</span><span class="k">}</span> <span class="o">]</span>
 <span class="k">then
-	</span>sudo umount -f <span class="nv">$local_dir</span>
+    </span>sudo umount -f <span class="nv">$local_dir</span>
 <span class="k">fi
 
 </span><span class="nb">cd</span> <span class="k">${</span><span class="nv">local_dir</span><span class="k">}</span>
 sshfs <span class="nv">$USER</span>@<span class="k">${</span><span class="nv">SERVER</span><span class="k">}</span>:<span class="k">${</span><span class="nv">remote_dir</span><span class="k">}</span> <span class="k">${</span><span class="nv">local_dir</span><span class="k">}</span>
-</code></pre>
-</div>
-
-
+</code></pre></div>
 </article>
 
 

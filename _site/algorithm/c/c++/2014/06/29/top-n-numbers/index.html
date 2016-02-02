@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,7 +429,7 @@
   <p>The problem is:</p>
 
 <blockquote>
-  <p>Given an arbitrarily large file and a number, \(N\), containing individual numbers on each line (e.g. 200Gb file), will output the largest \(N\) numbers, highest first. Analyse the run time/space complexity of your approach.</p>
+<p>Given an arbitrarily large file and a number, \(N\), containing individual numbers on each line (e.g. 200Gb file), will output the largest \(N\) numbers, highest first. Analyse the run time/space complexity of your approach.</p>
 </blockquote>
 
 <p>The intuitive method for the top-\(N\) is to sort all numbers first, and then return the first/last \(N\) numbers. However, the time complexity of sorting is usually \(O(n \log n)\), and when the data are very big, it is impossible to do the sorting in memory directly.</p>
@@ -439,106 +439,103 @@
 <p>The strategy is:</p>
 
 <ul>
-  <li>maintain an \(N\)-item long heap, and read all items iteratively.</li>
-  <li>after reading a new item from the huge data, compare it with the smallest number in heap.</li>
-  <li>if the number is greater than the smallest number in heap, then pop the top number in heap(also is the smallest one) and push this data into heap.</li>
-  <li>otherwise, continue and read a new data.</li>
-  <li>finally, dump the \(N\) items in the heap.</li>
+<li>maintain an \(N\)-item long heap, and read all items iteratively.</li>
+<li>after reading a new item from the huge data, compare it with the smallest number in heap.</li>
+<li>if the number is greater than the smallest number in heap, then pop the top number in heap(also is the smallest one) and push this data into heap.</li>
+<li>otherwise, continue and read a new data.</li>
+<li>finally, dump the \(N\) items in the heap.</li>
 </ul>
 
-<p>Since the heap could mantain the <em>heap property</em> by iteself, inserting a new item won’t disorder the heap. As inserting a new item to heap requires \( O(\log N) \) time, the worst case of processing \(n\) data costs \(O(n \log N) \) time.</p>
+<p>Since the heap could mantain the <em>heap property</em> by iteself, inserting a new item won&rsquo;t disorder the heap. As inserting a new item to heap requires \( O(\log N) \) time, the worst case of processing \(n\) data costs \(O(n \log N) \) time.</p>
 
 <p>Following is my C++ solution. The <em>push</em> function of <em>priority_queue</em> will invoke <a href="http://www.cplusplus.com/reference/queue/priority_queue/push/">two functions</a>: one call to push_back on the underlying container and one call to push_heap on the range that includes all the elements of the underlying container.</p>
+<div class="highlight"><pre><code class="language-" data-lang="">class Numbers {
+    public:
+        Numbers(){}
+        Numbers(long len){ genNums(len); }
+        Numbers(string file){ readNums(file); }
 
-<div class="highlighter-rouge"><pre class="highlight"><code>class Numbers {
-	public:
-		Numbers(){}
-		Numbers(long len){ genNums(len); }
-		Numbers(string file){ readNums(file); }
+        vector&lt;int&gt;&amp; topN(vector&lt;int&gt;&amp; nums, int N);
+        vector&lt;int&gt;&amp; topNbySort(vector&lt;int&gt;&amp; nums, int N);
+        vector&lt;int&gt;&amp; genNums(long len);
+        vector&lt;int&gt;&amp; readNums(string file);
+        void printNums();
+        void printTopN(vector&lt;int&gt;&amp; top_num);
 
-		vector&lt;int&gt;&amp; topN(vector&lt;int&gt;&amp; nums, int N);
-		vector&lt;int&gt;&amp; topNbySort(vector&lt;int&gt;&amp; nums, int N);
-		vector&lt;int&gt;&amp; genNums(long len);
-		vector&lt;int&gt;&amp; readNums(string file);
-		void printNums();
-		void printTopN(vector&lt;int&gt;&amp; top_num);
-
-	private:
-		vector&lt;int&gt; nums;
-		vector&lt;int&gt; top_nums;
+    private:
+        vector&lt;int&gt; nums;
+        vector&lt;int&gt; top_nums;
 };
 
 // Find the top N numbers by heap.
 vector&lt;int&gt;&amp; Numbers::topN(vector&lt;int&gt;&amp; nums, int N) {
-	priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt; pq; // top element is the minimum
-	pq.push(nums.front());
-	for(vector&lt;int&gt;::iterator it=nums.begin()+1;it!=nums.end();++it) {
-		if(pq.top()&lt;*it) {
-			if(pq.size()&lt;N) {
-				pq.push(*it);
-			} else {
-				pq.pop();
-				pq.push(*it);
-			}
-		}
-	}
-	while(!pq.empty()) {
-		top_nums.push_back(pq.top());
-		pq.pop();
-	}
+    priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt; pq; // top element is the minimum
+    pq.push(nums.front());
+    for(vector&lt;int&gt;::iterator it=nums.begin()+1;it!=nums.end();++it) {
+        if(pq.top()&lt;*it) {
+            if(pq.size()&lt;N) {
+                pq.push(*it);
+            } else {
+                pq.pop();
+                pq.push(*it);
+            }
+        }
+    }
+    while(!pq.empty()) {
+        top_nums.push_back(pq.top());
+        pq.pop();
+    }
 
-	return top_nums;
+    return top_nums;
 }
 
 // Find the top N numbers using sort.
 vector&lt;int&gt;&amp; Numbers::topNbySort(vector&lt;int&gt;&amp; nums, int N) {
-	sort(nums.begin(),nums.end()-1);
-	auto rit=nums.crbegin();
-	for(int i=0;i&lt;N;++i) {
-		top_nums.push_back(*rit);
-		rit++;
-	}
-	return top_nums;
+    sort(nums.begin(),nums.end()-1);
+    auto rit=nums.crbegin();
+    for(int i=0;i&lt;N;++i) {
+        top_nums.push_back(*rit);
+        rit++;
+    }
+    return top_nums;
 }
 
 void Numbers::printTopN(vector&lt;int&gt;&amp; top_num) {
-	cout&lt;&lt;"The top "&lt;&lt;top_num.size()&lt;&lt;" numbers are:"&lt;&lt;endl;
-	for(auto&amp; x:top_num)
-		cout&lt;&lt;x&lt;&lt;" ";
-	cout&lt;&lt;endl;
+    cout&lt;&lt;"The top "&lt;&lt;top_num.size()&lt;&lt;" numbers are:"&lt;&lt;endl;
+    for(auto&amp; x:top_num)
+        cout&lt;&lt;x&lt;&lt;" ";
+    cout&lt;&lt;endl;
 }
 
 vector&lt;int&gt;&amp; Numbers::genNums(long len) {
-	for(int i=0;i&lt;len;++i)
-		nums.push_back(rand()%len+1);
+    for(int i=0;i&lt;len;++i)
+        nums.push_back(rand()%len+1);
 
-	return nums;
+    return nums;
 }
 
 vector&lt;int&gt;&amp; Numbers::readNums(string file) {
-	fstream fs(file,std::fstream::in);
-	if (fs.is_open()) {
-		while(!fs.eof()) {
-			int tmp;
-			fs&gt;&gt;tmp;
-			nums.push_back(tmp);
-		}
-	} else {
-		cerr&lt;&lt;"Failed to open file "&lt;&lt;file&lt;&lt;endl;
-	}
-	fs.close();
-	nums.pop_back(); // delete the last number, because it was read two times.
-	return nums;
+    fstream fs(file,std::fstream::in);
+    if (fs.is_open()) {
+        while(!fs.eof()) {
+            int tmp;
+            fs&gt;&gt;tmp;
+            nums.push_back(tmp);
+        }
+    } else {
+        cerr&lt;&lt;"Failed to open file "&lt;&lt;file&lt;&lt;endl;
+    }
+    fs.close();
+    nums.pop_back(); // delete the last number, because it was read two times.
+    return nums;
 }
 
 void Numbers::printNums() {
-	for(auto&amp; x:nums)
-		cout&lt;&lt;x&lt;&lt;" ";
-	cout&lt;&lt;endl;
+    for(auto&amp; x:nums)
+        cout&lt;&lt;x&lt;&lt;" ";
+    cout&lt;&lt;endl;
 }
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>I tested the time costs of sorting and heap when handling 10,000,000 integers respectively. Obviously the heap method is 5 times faster than sort method.</p>
 
 <pre>
@@ -546,17 +543,17 @@ macmini:TopNumbers boyang$ time ./top_nums_sort
 The top 10 numbers are:
 8507985 9999999 9999997 9999995 9999994 9999992 9999991 9999991 9999990 9999986 
 
-real	0m6.646s
-user	0m6.589s
-sys	0m0.052s
+real    0m6.646s
+user    0m6.589s
+sys 0m0.052s
 
 macmini:TopNumbers boyang$ time ./top_nums_heap 
 The top 10 numbers are:
 9999986 9999986 9999990 9999991 9999991 9999992 9999994 9999995 9999997 9999999 
 
-real	0m1.182s
-user	0m1.130s
-sys	0m0.043s
+real    0m1.182s
+user    0m1.130s
+sys 0m0.043s
 </pre>
 
 </article>

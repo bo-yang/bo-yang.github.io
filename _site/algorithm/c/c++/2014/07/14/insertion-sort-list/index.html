@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,111 +429,101 @@
   <p>The <a href="https://oj.leetcode.com/problems/insertion-sort-list/">Insertion Sort List problem</a> is:</p>
 
 <blockquote>
-  <p>Sort a linked list using insertion sort.</p>
+<p>Sort a linked list using insertion sort.</p>
 </blockquote>
 
 <p>There is a very simple insertion sort method for arrays in Wikipedia.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>for i ← 1 to length(A)
+<div class="highlight"><pre><code class="language-" data-lang="">for i ← 1 to length(A)
     j ← i
     while j &gt; 0 and A[j-1] &gt; A[j]
         swap A[j] and A[j-1]
         j ← j - 1
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>The core of this algorithm is to find the position where to insert an smaller element. Compared to array, the list nodes cannot access nodes before them - they only know the nodes behind them. Therefore, instead of looking for insert positions decreasingly from current position down to the beginning, we can search the position from the head instead.</p>
 
 <p>Following is my C++ implementation. Swapping two nodes is a little tricky, because you need to take care of four links.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>struct ListNode {
+<div class="highlight"><pre><code class="language-" data-lang="">struct ListNode {
     int val;
     ListNode *next;
     ListNode(int x) : val(x), next(NULL) {}
 };
- 
+
 class Solution {
 public:
     ListNode *insertionSortList(ListNode *head) {
         if(head==NULL||head-&gt;next==NULL)
-			return head;
+            return head;
 
-		ListNode* pre_head=new ListNode(-1); // to manipulate the head
-		pre_head-&gt;next=head;
-		ListNode* cur=head;
-		while(cur-&gt;next!=NULL) {
-			if(cur-&gt;val &gt; cur-&gt;next-&gt;val) {
-				ListNode* node=pre_head;
+        ListNode* pre_head=new ListNode(-1); // to manipulate the head
+        pre_head-&gt;next=head;
+        ListNode* cur=head;
+        while(cur-&gt;next!=NULL) {
+            if(cur-&gt;val &gt; cur-&gt;next-&gt;val) {
+                ListNode* node=pre_head;
 
-				// find position to insert
-				while(node-&gt;next-&gt;val &lt; cur-&gt;next-&gt;val)
-					node=node-&gt;next;
+                // find position to insert
+                while(node-&gt;next-&gt;val &lt; cur-&gt;next-&gt;val)
+                    node=node-&gt;next;
 
-				// swap nodes
-				ListNode* tmp1=node-&gt;next;
-				ListNode* tmp2=cur-&gt;next-&gt;next;
-				node-&gt;next=cur-&gt;next;
-				cur-&gt;next-&gt;next=tmp1;
-				cur-&gt;next=tmp2;
-			} else {
-				cur=cur-&gt;next;
-			}
-		}
-		
-		head=pre_head-&gt;next;
-		delete pre_head;
+                // swap nodes
+                ListNode* tmp1=node-&gt;next;
+                ListNode* tmp2=cur-&gt;next-&gt;next;
+                node-&gt;next=cur-&gt;next;
+                cur-&gt;next-&gt;next=tmp1;
+                cur-&gt;next=tmp2;
+            } else {
+                cur=cur-&gt;next;
+            }
+        }
 
-		return head;
+        head=pre_head-&gt;next;
+        delete pre_head;
+
+        return head;
     }
 };
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>In addition to above insertion sort, which moves smaller elements forward, we also can move the larger elments backward. The following code is more like bubble sort.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>ListNode *insertionSortList(ListNode *head) {
+<div class="highlight"><pre><code class="language-" data-lang="">ListNode *insertionSortList(ListNode *head) {
     if(head==NULL||head-&gt;next==NULL)
-		return head;
+        return head;
 
-	// find the length of the list
-	int len=0;
-	ListNode* node=head;
-	while(node!=NULL) {
-		node=node-&gt;next;
-		len++;
-	}
+    // find the length of the list
+    int len=0;
+    ListNode* node=head;
+    while(node!=NULL) {
+        node=node-&gt;next;
+        len++;
+    }
 
-	// iteratively insert the largest number to the end
-	for(int i=len-1;i&gt;=0;i--) {
-		int j=0;
-		node=head;
-		ListNode* prev=NULL; // previous of node
-		while(j&lt;i &amp;&amp; node!=NULL &amp;&amp; node-&gt;next!=NULL) {
-			if(node-&gt;val &gt; node-&gt;next-&gt;val) {
-				// swap nodes
-				ListNode* tmp=node-&gt;next;
-				node-&gt;next=node-&gt;next-&gt;next;
-				tmp-&gt;next=node;
-				if(j==0||prev==NULL) {
-					head=tmp;
-				} else {
-					prev-&gt;next=tmp;
-				}
-				prev=tmp;
-			} else {
-				prev=node;
-				node=node-&gt;next;
-			}
-			j++;
-		}
-	} // end for
+    // iteratively insert the largest number to the end
+    for(int i=len-1;i&gt;=0;i--) {
+        int j=0;
+        node=head;
+        ListNode* prev=NULL; // previous of node
+        while(j&lt;i &amp;&amp; node!=NULL &amp;&amp; node-&gt;next!=NULL) {
+            if(node-&gt;val &gt; node-&gt;next-&gt;val) {
+                // swap nodes
+                ListNode* tmp=node-&gt;next;
+                node-&gt;next=node-&gt;next-&gt;next;
+                tmp-&gt;next=node;
+                if(j==0||prev==NULL) {
+                    head=tmp;
+                } else {
+                    prev-&gt;next=tmp;
+                }
+                prev=tmp;
+            } else {
+                prev=node;
+                node=node-&gt;next;
+            }
+            j++;
+        }
+    } // end for
 
-	return head;
+    return head;
 }
-</code></pre>
-</div>
-
-
+</code></pre></div>
 </article>
 
 

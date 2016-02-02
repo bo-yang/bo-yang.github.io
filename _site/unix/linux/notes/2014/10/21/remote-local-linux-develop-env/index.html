@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -428,102 +428,84 @@
 <article class="post-content">
   <p><em>This is the first article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the following-up article on this topic, please refer to <a href="http://www.bo-yang.net/2014/12/19/remote-local-linux-develop-env-2/">Building Remote+Local *nix Develop Environment(II)</a>.</em></p>
 
-<h3 id="bashrc-vs-bashprofile">1. <code class="highlighter-rouge">.bashrc</code> vs <code class="highlighter-rouge">.bash_profile</code></h3>
+<h3 id="1-bashrc-vs-bash_profile">1. <code>.bashrc</code> vs <code>.bash_profile</code></h3>
 
-<p>The Bash is configured by <code class="highlighter-rouge">.bashrc</code> or <code class="highlighter-rouge">.bash_profile</code>. According to the <a href="http://linux.die.net/man/1/bash">bash man page</a>, <code class="highlighter-rouge">.bash_profile</code> is executed for login shells, while <code class="highlighter-rouge">.bashrc</code> is executed for interactive non-login shells.</p>
+<p>The Bash is configured by <code>.bashrc</code> or <code>.bash_profile</code>. According to the <a href="http://linux.die.net/man/1/bash">bash man page</a>, <code>.bash_profile</code> is executed for login shells, while <code>.bashrc</code> is executed for interactive non-login shells.</p>
 
-<p>When you login (type username and password) via console(either sitting at the machine, or remotely via ssh), <code class="highlighter-rouge">.bash_profile</code> is executed to configure your shell before the initial command prompt.</p>
+<p>When you login (type username and password) via console(either sitting at the machine, or remotely via ssh), <code>.bash_profile</code> is executed to configure your shell before the initial command prompt.</p>
 
-<p>HOwever, if you’ve already logged into your machine and open a new terminal window(like <em>xterm</em>) inside Gnome or KDE, then <code class="highlighter-rouge">.bashrc</code> is executed before the window command prompt. <code class="highlighter-rouge">.bashrc</code> is also run when you start a new bash instance by typing <code class="highlighter-rouge">/bin/bash</code> in a terminal.</p>
+<p>HOwever, if you’ve already logged into your machine and open a new terminal window(like <em>xterm</em>) inside Gnome or KDE, then <code>.bashrc</code> is executed before the window command prompt. <code>.bashrc</code> is also run when you start a new bash instance by typing <code>/bin/bash</code> in a terminal.</p>
 
-<p>An exception to the terminal window guidelines is Mac OS X’s <em>Terminal.app</em>, which runs a login shell by default for each new terminal window, calling <code class="highlighter-rouge">.bash_profile</code> instead of <code class="highlighter-rouge">.bashrc</code>.</p>
+<p>An exception to the terminal window guidelines is Mac OS X’s <em>Terminal.app</em>, which runs a login shell by default for each new terminal window, calling <code>.bash_profile</code> instead of <code>.bashrc</code>. </p>
 
 <p>There are two options to make one copy of bash config file work for all scenarios:</p>
 
 <ul>
-  <li>force <code class="highlighter-rouge">.bash_profile</code> to be a link of <code class="highlighter-rouge">.bash_rc</code>, or vice versa: <code class="highlighter-rouge">ln -s ~/.bashrc ~/.bash_profile</code>.</li>
-  <li>
-    <p>or source <code class="highlighter-rouge">.bashrc</code> from your <code class="highlighter-rouge">.bash_profile</code> file, then putting <code class="highlighter-rouge">PATH</code> and common settings in <code class="highlighter-rouge">.bashrc</code>. To do this, add the following lines to <code class="highlighter-rouge">.bash_profile</code>:</p>
+<li>force <code>.bash_profile</code> to be a link of <code>.bash_rc</code>, or vice versa: <code>ln -s ~/.bashrc ~/.bash_profile</code>.</li>
+<li><p>or source <code>.bashrc</code> from your <code>.bash_profile</code> file, then putting <code>PATH</code> and common settings in <code>.bashrc</code>. To do this, add the following lines to <code>.bash_profile</code>:</p>
 
-    <p>if [ -f ~/.bashrc ]; then
-      source ~/.bashrc
-  fi</p>
-  </li>
+<p>if [ -f ~/.bashrc ]; then
+    source ~/.bashrc
+fi</p></li>
 </ul>
 
-<h3 id="sshfs">2. sshfs</h3>
+<h3 id="2-sshfs">2. sshfs</h3>
 
-<p>SSHFS (SSH Filesystem) is a filesystem client to mount and interact with directories and files located on a remote server or workstation. SSHFS is based on <a href="http://fuse.sourceforge.net/">FUSE</a> (the best userspace filesystem framework for *nix ).</p>
+<p>SSHFS (SSH Filesystem) is a filesystem client to mount and interact with directories and files located on a remote server or workstation. SSHFS is based on <a href="http://fuse.sourceforge.net/">FUSE</a> (the best userspace filesystem framework for *nix ). </p>
 
-<p>For Linux distributions, you can install sshfs using <code class="highlighter-rouge">sudo apt-get install sshfs</code> or <code class="highlighter-rouge">sudo yum install sshfs</code>. However, for Mac OS X, you will need to download FUSE and SSHFS from the <a href="http://osxfuse.github.io/"><strong>osxfuse site</strong></a>.</p>
+<p>For Linux distributions, you can install sshfs using <code>sudo apt-get install sshfs</code> or <code>sudo yum install sshfs</code>. However, for Mac OS X, you will need to download FUSE and SSHFS from the <a href="http://osxfuse.github.io/"><strong>osxfuse site</strong></a>.</p>
 
-<p>To mount remote directories, you can use command</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>sshfs username@hostname_or_ip:/remote/dir /local/dir [ssh_options]
-</code></pre>
-</div>
-
+<p>To mount remote directories, you can use command </p>
+<div class="highlight"><pre><code class="language-" data-lang="">sshfs username@hostname_or_ip:/remote/dir /local/dir [ssh_options]
+</code></pre></div>
 <p>After mounting the remote directory, you can manipulate remote files just like local files. And you can use any local tools that’s convenient for you to read/write remote files.</p>
 
 <p>To remove the mounted remote directory, please use command</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>fusermount -u &lt;LOCAL_MOUNT_POINT&gt;
-</code></pre>
-</div>
-
+<div class="highlight"><pre><code class="language-" data-lang="">fusermount -u &lt;LOCAL_MOUNT_POINT&gt;
+</code></pre></div>
 <p>for Linux, and use command</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>umount [-f] &lt;LOCAL_MOUNT_POINT&gt;
-</code></pre>
-</div>
-
+<div class="highlight"><pre><code class="language-" data-lang="">umount [-f] &lt;LOCAL_MOUNT_POINT&gt;
+</code></pre></div>
 <p>for Mac OS X.</p>
 
 <p>Since sshfs command requires too much parameters, and things will be worse when the network is not stable. <a href="https://github.com/bo-yang/misc/blob/master/sshfs_wrapper">This wrapper script</a> will ease your pain.</p>
 
-<h3 id="vimgvimmvim">3. vim/gvim/mvim</h3>
+<h3 id="3-vim-gvim-mvim">3. vim/gvim/mvim</h3>
 
-<p>File <code class="highlighter-rouge">$HOME/.vimrc</code> is used for Vim configuration, and Vim plugins are can be installed into directory <code class="highlighter-rouge">$HOME/.vim</code>.</p>
+<p>File <code>$HOME/.vimrc</code> is used for Vim configuration, and Vim plugins are can be installed into directory <code>$HOME/.vim</code>.</p>
 
-<h4 id="word-variable-function-and-line-completion">3.1 Word, variable, function, and line completion</h4>
+<h4 id="3-1-word-variable-function-and-line-completion">3.1 Word, variable, function, and line completion</h4>
 
-<p><em>Word completion</em>: if words or functions are in your dictionary, or in the current file, you can save a lot of time with <code class="highlighter-rouge">&lt;Ctrl-P&gt;</code> and <code class="highlighter-rouge">&lt;Ctrl-N&gt;</code>.</p>
+<p><em>Word completion</em>: if words or functions are in your dictionary, or in the current file, you can save a lot of time with <code>&lt;Ctrl-P&gt;</code> and <code>&lt;Ctrl-N&gt;</code>. </p>
 
-<p><img src="http://www.bo-yang.net//assets/images/2014-10-21-develop-env/vim_completion1.jpg" alt="vim completion" /></p>
+<p><img src="http://www.bo-yang.net//assets/images/2014-10-21-develop-env/vim_completion1.jpg" alt="vim completion"></p>
 
-<p><em>Line completion</em>: <code class="highlighter-rouge">&lt;Ctrl-X&gt;</code>, <code class="highlighter-rouge">&lt;Ctrl-L&gt;</code> will load the matching lines (white space matters!) into the menu, and from there you can move forward and backward with arrows or <code class="highlighter-rouge">&lt;Ctrl-P&gt;</code> and <code class="highlighter-rouge">&lt;Ctrl-N&gt;</code> (for <em>Previous</em> and <em>Next</em>).</p>
+<p><em>Line completion</em>: <code>&lt;Ctrl-X&gt;</code>, <code>&lt;Ctrl-L&gt;</code> will load the matching lines (white space matters!) into the menu, and from there you can move forward and backward with arrows or <code>&lt;Ctrl-P&gt;</code> and <code>&lt;Ctrl-N&gt;</code> (for <em>Previous</em> and <em>Next</em>).</p>
 
-<h4 id="indentation">3.2 Indentation</h4>
+<h4 id="3-2-indentation">3.2 Indentation</h4>
 
-<p>To turn indentation on, use command <code class="highlighter-rouge">:filetype indent plugin on</code>. You also can add this line into <code class="highlighter-rouge">.vimrc</code>.</p>
+<p>To turn indentation on, use command <code>:filetype indent plugin on</code>. You also can add this line into <code>.vimrc</code>.</p>
 
-<p>For those times when you’ve pasted some text in and the indentation is wrong, (your indent plugin must be loaded), you can use the = command. It’s probably easiest to type <code class="highlighter-rouge">10=</code> to re-indent the next ten lines, or to use visual mode and press <code class="highlighter-rouge">&lt;=&gt;</code>.</p>
+<p>For those times when you&rsquo;ve pasted some text in and the indentation is wrong, (your indent plugin must be loaded), you can use the = command. It&rsquo;s probably easiest to type <code>10=</code> to re-indent the next ten lines, or to use visual mode and press <code>&lt;=&gt;</code>.</p>
 
-<p>If you want, you can indent lines with <code class="highlighter-rouge">&gt;&gt;</code> and unindent them with <code class="highlighter-rouge">&lt;&lt;</code>.</p>
+<p>If you want, you can indent lines with <code>&gt;&gt;</code> and unindent them with <code>&lt;&lt;</code>.</p>
 
-<p>If you are in insert mode, use <code class="highlighter-rouge">&lt;Ctrl-D&gt;</code> and <code class="highlighter-rouge">&lt;Ctrl-T&gt;</code> to change the indentation of the line (<code class="highlighter-rouge">&lt;Ctrl-D&gt;</code> decreases indentation by one level and <code class="highlighter-rouge">&lt;Ctrl-T&gt;</code> increases it by one level).</p>
+<p>If you are in insert mode, use <code>&lt;Ctrl-D&gt;</code> and <code>&lt;Ctrl-T&gt;</code> to change the indentation of the line (<code>&lt;Ctrl-D&gt;</code> decreases indentation by one level and <code>&lt;Ctrl-T&gt;</code> increases it by one level).</p>
 
-<h4 id="open-multiple-files">3.3 Open Multiple Files</h4>
+<h4 id="3-3-open-multiple-files">3.3 Open Multiple Files</h4>
 
 <p>If you want to start vim with several files in a splitted window, just type</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>vim -o a b c
-</code></pre>
-</div>
-
+<div class="highlight"><pre><code class="language-" data-lang="">vim -o a b c
+</code></pre></div>
 <p>for the horizontal split, and</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>vim -O a b c
-</code></pre>
-</div>
-
+<div class="highlight"><pre><code class="language-" data-lang="">vim -O a b c
+</code></pre></div>
 <p>for the vertical split.</p>
 
-<p>To change between the windows opened, use <code class="highlighter-rouge">&lt;crtl+ww&gt;</code>.</p>
+<p>To change between the windows opened, use <code>&lt;crtl+ww&gt;</code>.</p>
 
 <p>Here are some commands to turn one vim session (inside one xterm) into multiple windows.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>:e filename      - edit another file
+<div class="highlight"><pre><code class="language-" data-lang="">:e filename      - edit another file
 :split filename  - split window and load another file
 ctrl-w up arrow  - move cursor up a window
 ctrl-w ctrl-w    - move cursor to another window (cycle)
@@ -536,88 +518,77 @@ ctrl-w=          - make all equal size
 :only            - keep only this window open
 :ls              - show current buffers
 :b 2             - open buffer #2 in this window
-</code></pre>
-</div>
+</code></pre></div>
+<h4 id="3-4-execute-shell-command">3.4 Execute shell command</h4>
 
-<h4 id="execute-shell-command">3.4 Execute shell command</h4>
+<p>To execute a shell command in vim, use <code>:! &lt;command&gt;</code> .</p>
 
-<p>To execute a shell command in vim, use <code class="highlighter-rouge">:! &lt;command&gt;</code> .</p>
+<h3 id="4-ctags-vim-tagbar">4. ctags+vim+Tagbar</h3>
 
-<h3 id="ctagsvimtagbar">4. ctags+vim+Tagbar</h3>
-
-<p><code class="highlighter-rouge">ctags</code> generates an index (or tags) file of language objects found in source files that allows these items to be quickly and easily located by a text editor or other utility. <a href="http://ctags.sourceforge.net/">Exuberant-ctags</a> is the most popular tags tool in *nix world. However, the built-in Mac OS X is not exuberant-ctags and is missing most of the useful features. Command <code class="highlighter-rouge">brew install ctags</code> can be used to install exuberant-ctags in OS X.</p>
+<p><code>ctags</code> generates an index (or tags) file of language objects found in source files that allows these items to be quickly and easily located by a text editor or other utility. <a href="http://ctags.sourceforge.net/">Exuberant-ctags</a> is the most popular tags tool in *nix world. However, the built-in Mac OS X is not exuberant-ctags and is missing most of the useful features. Command <code>brew install ctags</code> can be used to install exuberant-ctags in OS X.</p>
 
 <p>To use ctags:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>ctags -R .  # create file "tags" for current directory
+<div class="highlight"><pre><code class="language-" data-lang="">ctags -R .  # create file "tags" for current directory
 ctags -R -f ./.git/tags .   # create "tags"  file under a specified directory
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>In Vim:</p>
 
 <ul>
-  <li>To show the tags you’ve traversed since you opened vim, run <code class="highlighter-rouge">:tags</code>.</li>
-  <li>Typing <code class="highlighter-rouge">:tag text</code> will cause Vim to search through tags for a tag name,</li>
-  <li>and <code class="highlighter-rouge">:tag /pattern</code> will search for pattern instead.</li>
-  <li><code class="highlighter-rouge">:ts</code> or <code class="highlighter-rouge">:tselect</code> shows the list.</li>
-  <li><code class="highlighter-rouge">:tn</code> or <code class="highlighter-rouge">:tnext</code> goes to the next tag in that list.</li>
-  <li><code class="highlighter-rouge">:tp</code> or <code class="highlighter-rouge">:tprev</code> goes to the previous tag in that list.</li>
-  <li><code class="highlighter-rouge">:tf</code> or <code class="highlighter-rouge">:tfirst</code> goes to the first tag of the list.</li>
-  <li><code class="highlighter-rouge">:tl</code> or <code class="highlighter-rouge">:tlast</code> goes to the last tag of the list.</li>
+<li>To show the tags you’ve traversed since you opened vim, run <code>:tags</code>.</li>
+<li>Typing <code>:tag text</code> will cause Vim to search through tags for a tag name, </li>
+<li>and <code>:tag /pattern</code> will search for pattern instead.</li>
+<li><code>:ts</code> or <code>:tselect</code> shows the list.</li>
+<li><code>:tn</code> or <code>:tnext</code> goes to the next tag in that list. </li>
+<li><code>:tp</code> or <code>:tprev</code> goes to the previous tag in that list.</li>
+<li><code>:tf</code> or <code>:tfirst</code> goes to the first tag of the list.</li>
+<li><code>:tl</code> or <code>:tlast</code> goes to the last tag of the list.</li>
 </ul>
 
 <p>After moving the cursor to a word,</p>
 
 <ul>
-  <li><code class="highlighter-rouge">&lt;Ctrl+]&gt;</code> - go to definition.</li>
-  <li><code class="highlighter-rouge">&lt;Ctrl+T&gt;</code> - Jump back from the definition.</li>
-  <li><code class="highlighter-rouge">&lt;Ctrl+W Ctrl+]&gt;</code> - Open the definition in a horizontal split.</li>
-  <li><code class="highlighter-rouge">&lt;Ctrl+Left MouseClick&gt;</code> - Go to definition.</li>
-  <li><code class="highlighter-rouge">&lt;Ctrl+Right MouseClick&gt;</code> - Jump back from definition</li>
+<li><code>&lt;Ctrl+]&gt;</code> - go to definition.</li>
+<li><code>&lt;Ctrl+T&gt;</code> - Jump back from the definition.</li>
+<li><code>&lt;Ctrl+W Ctrl+]&gt;</code> - Open the definition in a horizontal split.</li>
+<li><code>&lt;Ctrl+Left MouseClick&gt;</code> - Go to definition.</li>
+<li><code>&lt;Ctrl+Right MouseClick&gt;</code> - Jump back from definition</li>
 </ul>
 
-<p>To open the definition of a tag in a <strong>new tab</strong>, add the following lines in <code class="highlighter-rouge">.vimrc</code>:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>map &lt;C-\&gt; :tab split&lt;CR&gt;:exec("tag ".expand("&lt;cword&gt;"))&lt;CR&gt;
+<p>To open the definition of a tag in a <strong>new tab</strong>, add the following lines in <code>.vimrc</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">map &lt;C-\&gt; :tab split&lt;CR&gt;:exec("tag ".expand("&lt;cword&gt;"))&lt;CR&gt;
 map &lt;A-]&gt; :vsp &lt;CR&gt;:exec("tag ".expand("&lt;cword&gt;"))&lt;CR&gt;
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>Then,</p>
 
 <ul>
-  <li><code class="highlighter-rouge">&lt;Ctrl+\&gt;</code> - Open the definition in a new tab.</li>
-  <li><code class="highlighter-rouge">&lt;Alt+]&gt;</code> - Open the definition in a vertical split.</li>
+<li><code>&lt;Ctrl+\&gt;</code> - Open the definition in a new tab.</li>
+<li><code>&lt;Alt+]&gt;</code> - Open the definition in a vertical split.</li>
 </ul>
 
-<p>To search for a specific tag and open Vim to its definition, run command <code class="highlighter-rouge">vim -t &lt;tag&gt;</code> in your shell.</p>
+<p>To search for a specific tag and open Vim to its definition, run command <code>vim -t &lt;tag&gt;</code> in your shell.</p>
 
-<p><a href="http://majutsushi.github.io/tagbar/">Tagbar</a> is another useful vim plugin to browse the tags of the current file and get an overview of its structure. Before using Tagbar, map shortcut in <code class="highlighter-rouge">.vimrc</code>, like</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>nmap tb :TagbarToggle&lt;CR&gt;
-</code></pre>
-</div>
-
-<p>, which bind key <code class="highlighter-rouge">&lt;t+b&gt;</code> to show/hide Tagbar.</p>
+<p><a href="http://majutsushi.github.io/tagbar/">Tagbar</a> is another useful vim plugin to browse the tags of the current file and get an overview of its structure. Before using Tagbar, map shortcut in <code>.vimrc</code>, like</p>
+<div class="highlight"><pre><code class="language-" data-lang="">nmap tb :TagbarToggle&lt;CR&gt;
+</code></pre></div>
+<p>, which bind key <code>&lt;t+b&gt;</code> to show/hide Tagbar.</p>
 
 <p>To save the effort of generating ctags, I wrote a cross-platform(Linux &amp; Mac OS X) <a href="https://github.com/bo-yang/misc/blob/master/gen_cscope_ctags">wrapper script</a>, which can be found in <a href="https://github.com/bo-yang/misc/blob/master/gen_cscope_ctags">my GitHub channel</a>.</p>
 
-<h3 id="vnc">5. vnc</h3>
+<h3 id="5-vnc">5. vnc</h3>
 
-<p>Vncserver and vncviewer are convenient for accessing remote GUI. Actually I am trying my best to avoid the use of remote GUI and VNC. Because I don’t like start heavy GUI like Gnome or KDE in remote server, I will try to use <a href="http://xwinman.org/mwm.php">MWM</a> or <a href="http://xwinman.org/olvwm.php">OLVWM</a> if I have to. To make them fancy, you need to modify or download the corresponding <code class="highlighter-rouge">.*rc</code> files, <code class="highlighter-rouge">.Xdefaults</code> or <code class="highlighter-rouge">.Xresources</code> files.</p>
+<p>Vncserver and vncviewer are convenient for accessing remote GUI. Actually I am trying my best to avoid the use of remote GUI and VNC. Because I don&rsquo;t like start heavy GUI like Gnome or KDE in remote server, I will try to use <a href="http://xwinman.org/mwm.php">MWM</a> or <a href="http://xwinman.org/olvwm.php">OLVWM</a> if I have to. To make them fancy, you need to modify or download the corresponding <code>.*rc</code> files, <code>.Xdefaults</code> or <code>.Xresources</code> files.</p>
 
 <h3 id="references">References</h3>
-<ol>
-  <li><a href="http://www.joshstaiger.org/archives/2005/07/bash_profile_vs.html">.bash_profile vs .bashrc</a></li>
-  <li><a href="http://stackoverflow.com/questions/415403/whats-the-difference-between-bashrc-bash-profile-and-environment">What’s the difference between .bashrc, .bash_profile, and .environment?</a></li>
-  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-use-sshfs-to-mount-remote-file-systems-over-ssh">How To Use SSHFS to Mount Remote File Systems Over SSH</a></li>
-  <li><a href="http://andrew.stwrt.ca/posts/vim-ctags">Vim and Ctags</a></li>
-  <li><a href="http://usevim.com/2013/01/18/tags/">Vim 101: Tags</a></li>
-  <li><a href="http://stackoverflow.com/questions/563616/vim-and-ctags-tips-and-tricks">Vim and Ctags tips and tricks</a></li>
-  <li><a href="http://xwinman.org/">http://xwinman.org/</a></li>
-</ol>
 
+<ol>
+<li><a href="http://www.joshstaiger.org/archives/2005/07/bash_profile_vs.html">.bash_profile vs .bashrc</a></li>
+<li><a href="http://stackoverflow.com/questions/415403/whats-the-difference-between-bashrc-bash-profile-and-environment">What&rsquo;s the difference between .bashrc, .bash_profile, and .environment?</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-use-sshfs-to-mount-remote-file-systems-over-ssh">How To Use SSHFS to Mount Remote File Systems Over SSH</a></li>
+<li><a href="http://andrew.stwrt.ca/posts/vim-ctags">Vim and Ctags</a></li>
+<li><a href="http://usevim.com/2013/01/18/tags/">Vim 101: Tags</a></li>
+<li><a href="http://stackoverflow.com/questions/563616/vim-and-ctags-tips-and-tricks">Vim and Ctags tips and tricks</a></li>
+<li><a href="http://xwinman.org/">http://xwinman.org/</a></li>
+</ol>
 
 </article>
 

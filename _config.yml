@@ -91,11 +91,13 @@ text:
 
 
 # Build settings
-markdown:     kramdown
+#markdown:     kramdown
+markdown:     KramdownPygments
 kramdown:
     input:    GFM
+    default_lang: cpp
 redcarpet:
-  extensions: ['smart', 'tables', 'with_toc_data']
+  extensions: ["smart", "tables", "with_toc_data", "no_intra_emphasis", "autolink", "strikethrough"]
 permalink:    pretty
 paginate:     10
 sass:

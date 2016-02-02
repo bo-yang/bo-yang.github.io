@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,127 +429,110 @@
   <p><a href="https://oj.leetcode.com/problems/text-justification/">The Problem</a>:</p>
 
 <blockquote>
-  <p>Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.</p>
+<p>Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.</p>
 
-</blockquote>
+<p>You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces &rsquo; &rsquo; when necessary so that each line has exactly L characters.</p>
 
-<blockquote>
-  <p>You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ‘ ‘ when necessary so that each line has exactly L characters.</p>
+<p>Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.</p>
 
-</blockquote>
+<p>For the last line of text, it should be left justified and no extra space is inserted between words.</p>
 
-<blockquote>
-  <p>Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>For the last line of text, it should be left justified and no extra space is inserted between words.</p>
-
-</blockquote>
-
-<blockquote>
-  <p>For example, words: [“This”, “is”, “an”, “example”, “of”, “text”, “justification.”] 
+<p>For example, words: [&ldquo;This&rdquo;, &ldquo;is&rdquo;, &ldquo;an&rdquo;, &ldquo;example&rdquo;, &ldquo;of&rdquo;, &ldquo;text&rdquo;, &ldquo;justification.&rdquo;] 
 L: 16.</p>
-</blockquote>
 
-<blockquote>
-  <p>Return the formatted lines as:</p>
-</blockquote>
+<p>Return the formatted lines as:
 <pre>
 [
-   "This    is    an",
-   "example  of text",
-   "justification.  "
+   &quot;This    is    an&quot;,
+   &quot;example  of text&quot;,
+   &quot;justification.  &quot;
 ]
-</pre>
+</pre></p>
 
-<blockquote>
-  <p>Note: Each word is guaranteed not to exceed L in length.</p>
+<p>Note: Each word is guaranteed not to exceed L in length.</p>
 </blockquote>
 
-<p>This problem can be solved in two steps in general: (1) count the number of words that can be placed in current line, and then (2) allocate spaces.</p>
+<p>This problem can be solved in two steps in general: (1) count the number of words that can be placed in current line, and then (2) allocate spaces. </p>
 
 <p>For the first step, since the words should be packed in a greedy approach, what we need count is the sum of characters in the \( N \) words plus the default \( N-1 \) spaces between the N words. Be careful to the last word in this line.</p>
 
-<p>For the second step, we should treat two types of lines differently. Assume there are totally \( M \) spaces should be inserted in a line. For the lines other than the last line, insert \( M/(N-1) \) spaces between two nearby words if \( M \) can be divided by \( N-1 \)(where \( N \) is the number of words in this line). If \( M \) cannot be divided by \( N-1 \), add 1 space for the first \(M \mod (N-1) \) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.</p>
+<p>For the second step, we should treat two types of lines differently. Assume there are totally \( M \) spaces should be inserted in a line. For the lines other than the last line, insert \( M/(N-1) \) spaces between two nearby words if \( M \) can be divided by \( N-1 \)(where \( N \) is the number of words in this line). If \( M \) cannot be divided by \( N-1 \), add 1 space for the first \(M \mod (N-1) \) words. For the last line, put 1 space between two words, and put other spaces to the end of the last word.  </p>
 
 <p>Following is my C++ implementation of text justification:</p>
 
 <pre>
 class Solution {
 public:
-    vector<string> fullJustify(vector<string> &amp;words, int L) {
+    vector<string> fullJustify(vector<string> &words, int L) {
         vector<string> ret;
-		int word_cnt=0; // count words that have been processed
-		
-		while(word_cnt &lt; static_cast<int>(words.size())) {
-			// count words that can be placed in current line
-			int char_cnt=0; // characters justified in a line
-			vector<string> vec;
-			int idx=word_cnt;
-			while(char_cnt+static_cast<int>(vec.size())-1&lt;=L &amp;&amp; idx&lt;static_cast<int>(words.size())) {
-				char_cnt+=static_cast<int>(words[idx].size());
-				vec.push_back(words[idx]);
-				idx++;
-			}
-			if(char_cnt+static_cast<int>(vec.size())-1&gt;L) {
-				char_cnt-=vec.back().size();
-				vec.pop_back(); // remove the last word because it surpasses the line limit
-			}
-			word_cnt+=vec.size();
+        int word_cnt=0; // count words that have been processed
+        
+        while(word_cnt < static_cast<int>(words.size())) {
+            // count words that can be placed in current line
+            int char_cnt=0; // characters justified in a line
+            vector<string> vec;
+            int idx=word_cnt;
+            while(char_cnt+static_cast<int>(vec.size())-1<=L && idx<static_cast<int>(words.size())) {
+                char_cnt+=static_cast<int>(words[idx].size());
+                vec.push_back(words[idx]);
+                idx++;
+            }
+            if(char_cnt+static_cast<int>(vec.size())-1>L) {
+                char_cnt-=vec.back().size();
+                vec.pop_back(); // remove the last word because it surpasses the line limit
+            }
+            word_cnt+=vec.size();
 
-			// assign spaces for this line
-			string line;
-			int total_spaces=L-char_cnt;
-			int avg_spaces; // average spaces for 
-			int left_spaces; //spaces left
-			if(word_cnt!=static_cast<int>(words.size())) {
-				if(static_cast<int>(vec.size())&gt;1) { // This line contains more than 1 word
-					avg_spaces=total_spaces/(static_cast<int>(vec.size())-1);
-					left_spaces=total_spaces%(static_cast<int>(vec.size())-1);
-					// Formulate strings per line
-					for(int i=0;i&lt;static_cast<int>(vec.size())-1;++i) {
-						line+=vec[i];
-						for(int j=0;j&lt;avg_spaces;++j)
-							line+=" ";
-						if(left_spaces&gt;0) {
-							line+=" ";
-							left_spaces--;
-						}
-					}
-					line+=vec.back(); // put the last word to the rightmost position
-				} else { // Only one word
-					avg_spaces=0;
-					left_spaces=total_spaces;
-					line+=vec.back();
-					while(left_spaces&gt;0) {
-						line+=" "; // append spaces to the last word
-						--left_spaces;
-					}
-				}
-			} else { 
-				// The last line
-				avg_spaces=1;
-				left_spaces=total_spaces-static_cast<int>(vec.size())+1;
-				for(int i=0;i&lt;static_cast<int>(vec.size())-1;++i) {
-					line+=vec[i];
-					line+=" ";
-				}
-				line+=vec.back();
-				while(left_spaces&gt;0) {
-					line+=" "; // append spaces to the last word
-					--left_spaces;
-				}
-			}
-			ret.push_back(line);
-		}
+            // assign spaces for this line
+            string line;
+            int total_spaces=L-char_cnt;
+            int avg_spaces; // average spaces for 
+            int left_spaces; //spaces left
+            if(word_cnt!=static_cast<int>(words.size())) {
+                if(static_cast<int>(vec.size())>1) { // This line contains more than 1 word
+                    avg_spaces=total_spaces/(static_cast<int>(vec.size())-1);
+                    left_spaces=total_spaces%(static_cast<int>(vec.size())-1);
+                    // Formulate strings per line
+                    for(int i=0;i<static_cast<int>(vec.size())-1;++i) {
+                        line+=vec[i];
+                        for(int j=0;j<avg_spaces;++j)
+                            line+=" ";
+                        if(left_spaces>0) {
+                            line+=" ";
+                            left_spaces--;
+                        }
+                    }
+                    line+=vec.back(); // put the last word to the rightmost position
+                } else { // Only one word
+                    avg_spaces=0;
+                    left_spaces=total_spaces;
+                    line+=vec.back();
+                    while(left_spaces>0) {
+                        line+=" "; // append spaces to the last word
+                        --left_spaces;
+                    }
+                }
+            } else { 
+                // The last line
+                avg_spaces=1;
+                left_spaces=total_spaces-static_cast<int>(vec.size())+1;
+                for(int i=0;i<static_cast<int>(vec.size())-1;++i) {
+                    line+=vec[i];
+                    line+=" ";
+                }
+                line+=vec.back();
+                while(left_spaces>0) {
+                    line+=" "; // append spaces to the last word
+                    --left_spaces;
+                }
+            }
+            ret.push_back(line);
+        }
 
-		return ret;
+        return ret;
     }
 };
-
-</int></int></int></int></int></int></int></int></int></int></int></string></int></string></string></string></pre>
+</pre>
 
 </article>
 

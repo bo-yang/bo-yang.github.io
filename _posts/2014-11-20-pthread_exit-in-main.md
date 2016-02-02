@@ -27,55 +27,57 @@ I also noticed a undocumented problem caused by `pthread_exit()` - it may lead t
 
 Following program demonstrates this problem:
 
-	#include <pthread.h>
-	#include <stdio.h>
-	#include <stdlib.h>
-	#define NUM_THREADS	5
-	
-	void *PrintHello(void *threadid)
-	{
-	   long tid;
-	   tid = (long)threadid;
-	   printf("Hello World! It's me, thread #%ld!\n", tid);
-	
-	   sleep(10); // sleep sometime
-	
-	   /* Read file */
-	   FILE* fp=fopen("/proc/mounts","r"); // would fail
-	   //FILE* fp=fopen("/proc/cpuinfo","r");  // would succeed
-	   if(fp==NULL) {
-		   fprintf(stderr,"Failed to open file!\n");
-	   } else {
-		   char line[80];
-		   if(fgets(line,80,fp)==NULL)
-			   fprintf(stderr,"Failed to read file!\n");
-		   else
-			   fprintf(stdout,"%s\n",line);
-		   fclose(fp);
-	   }
-	
-	   sleep(1200);
-	   pthread_exit(NULL);
-	}
-	
-	int main(int argc, char *argv[])
-	{
-	   pthread_t threads[NUM_THREADS];
-	   int rc;
-	   long t;
-	   for(t=0;t<NUM_THREADS;t++){
-	     printf("In main: creating thread %ld\n", t);
-	     rc = pthread_create(&threads[t], NULL, PrintHello, (void *)t);
-	     if (rc){
-	       printf("ERROR; return code from pthread_create() is %d\n", rc);
-	       exit(-1);
-	       }
-	     }
-	
-	   /* Last thing that main() should do */
-	   pthread_detach(pthread_self());
-	   pthread_exit(NULL);
-	}
+~~~ cpp
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define NUM_THREADS	5
+
+void *PrintHello(void *threadid)
+{
+   long tid;
+   tid = (long)threadid;
+   printf("Hello World! It's me, thread #%ld!\n", tid);
+
+   sleep(10); // sleep sometime
+
+   /* Read file */
+   FILE* fp=fopen("/proc/mounts","r"); // would fail
+   //FILE* fp=fopen("/proc/cpuinfo","r");  // would succeed
+   if(fp==NULL) {
+	   fprintf(stderr,"Failed to open file!\n");
+   } else {
+	   char line[80];
+	   if(fgets(line,80,fp)==NULL)
+		   fprintf(stderr,"Failed to read file!\n");
+	   else
+		   fprintf(stdout,"%s\n",line);
+	   fclose(fp);
+   }
+
+   sleep(1200);
+   pthread_exit(NULL);
+}
+
+int main(int argc, char *argv[])
+{
+   pthread_t threads[NUM_THREADS];
+   int rc;
+   long t;
+   for(t=0;t<NUM_THREADS;t++){
+     printf("In main: creating thread %ld\n", t);
+     rc = pthread_create(&threads[t], NULL, PrintHello, (void *)t);
+     if (rc){
+       printf("ERROR; return code from pthread_create() is %d\n", rc);
+       exit(-1);
+       }
+     }
+
+   /* Last thing that main() should do */
+   pthread_detach(pthread_self());
+   pthread_exit(NULL);
+}
+~~~
 
 After building above code, say `pthread_exit_test`, run this program and find the PID of it. Then `cat /proc/<PID>/status`, you will find the process status like
 

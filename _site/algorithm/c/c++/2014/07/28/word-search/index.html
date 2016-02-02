@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,142 +429,137 @@
   <p>The <a href="https://oj.leetcode.com/problems/word-search/">Word Search</a> states:</p>
 
 <blockquote>
-  <p>Given a 2D board and a word, find if the word exists in the grid.</p>
+<p>Given a 2D board and a word, find if the word exists in the grid.</p>
 
-  <p>The word can be constructed from letters of sequentially adjacent cell, where “adjacent” cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.</p>
+<p>The word can be constructed from letters of sequentially adjacent cell, where &ldquo;adjacent&rdquo; cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.</p>
 
-  <p>For example,</p>
+<p>For example,</p>
 
-  <p>Given board =</p>
+<p>Given board =</p>
 
-  <p>[</p>
+<p>[</p>
 
-  <p>[“ABCE”],</p>
+<p>[&ldquo;ABCE&rdquo;],</p>
 
-  <p>[“SFCS”],</p>
+<p>[&ldquo;SFCS&rdquo;],</p>
 
-  <p>[“ADEE”]</p>
+<p>[&ldquo;ADEE&rdquo;]</p>
 
-  <p>]</p>
-</blockquote>
+<p>]</p>
 
-<blockquote>
-  <ul>
-    <li>word = “ABCCED”, -&gt; returns <code class="highlighter-rouge">true</code>,</li>
-    <li>word = “SEE”, -&gt; returns <code class="highlighter-rouge">true</code>,</li>
-    <li>word = “ABCB”, -&gt; returns <code class="highlighter-rouge">false</code>.</li>
-  </ul>
+<ul>
+<li>word = &ldquo;ABCCED&rdquo;, -&gt; returns <code>true</code>,</li>
+<li>word = &ldquo;SEE&rdquo;, -&gt; returns <code>true</code>,</li>
+<li>word = &ldquo;ABCB&rdquo;, -&gt; returns <code>false</code>.</li>
+</ul>
 </blockquote>
 
 <p>The most popular solution to this problem is recursive, such as <a href="http://yucoding.blogspot.com/2013/02/leetcode-question-124-word-search.html">http://yucoding.blogspot.com/2013/02/leetcode-question-124-word-search.html</a>.</p>
 
-<p>However, I tried to solve this problem without recursion. In my implementation, three stacks are used to record the possible coordinates in <code class="highlighter-rouge">board</code>, the character position in <code class="highlighter-rouge">word</code>(with respect to each candidate cell) and the cells have been accessed to each possible coordinates, repectively.</p>
+<p>However, I tried to solve this problem without recursion. In my implementation, three stacks are used to record the possible coordinates in <code>board</code>, the character position in <code>word</code>(with respect to each candidate cell) and the cells have been accessed to each possible coordinates, repectively. </p>
 
-<p>The first step is finding the possible cells for the first char in <code class="highlighter-rouge">word</code>, and push coordinates, position of the char in <code class="highlighter-rouge">word</code>(here is 0) and accessed cells(here are matched cells) into stacks.</p>
+<p>The first step is finding the possible cells for the first char in <code>word</code>, and push coordinates, position of the char in <code>word</code>(here is 0) and accessed cells(here are matched cells) into stacks. </p>
 
-<p>The second step is exploring all the neighbors of cells in stack, and match each char in <code class="highlighter-rouge">word</code> respectively. For a match, push contexts into stack and try to match the next char. For a mismatch, pop the top of stacks and try another candidate. If the search could reach the end of the word, then we successfully find the word. If the stacks turns empty and there are still chars left, that means the seach fails.</p>
+<p>The second step is exploring all the neighbors of cells in stack, and match each char in <code>word</code> respectively. For a match, push contexts into stack and try to match the next char. For a mismatch, pop the top of stacks and try another candidate. If the search could reach the end of the word, then we successfully find the word. If the stacks turns empty and there are still chars left, that means the seach fails.</p>
 
 <p>Following is my C++ implementation of the non-recursive solution.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>class Solution {
+<div class="highlight"><pre><code class="language-" data-lang="">class Solution {
 public:
     bool exist(vector&lt;vector&lt;char&gt; &gt; &amp;board, string word) {
-		if(board.empty())
-			return false;
+        if(board.empty())
+            return false;
 
-		std::stack&lt;std::pair&lt;int,int&gt;&gt; st_coord; // coordinates of the board
-		std::stack&lt;int&gt; st_char; // store characters of the words
-		vector&lt;std::pair&lt;int,int&gt; &gt; vec;
-		std::stack&lt;vector&lt;std::pair&lt;int,int&gt; &gt; &gt; st_access;
-		bool found=false;
+        std::stack&lt;std::pair&lt;int,int&gt;&gt; st_coord; // coordinates of the board
+        std::stack&lt;int&gt; st_char; // store characters of the words
+        vector&lt;std::pair&lt;int,int&gt; &gt; vec;
+        std::stack&lt;vector&lt;std::pair&lt;int,int&gt; &gt; &gt; st_access;
+        bool found=false;
         for(int l=0;l&lt;word.length();) {
-			if(l==0) { // Find the first character of word in board
-				for(int i=0;i&lt;board.size();++i) {
-					for(int j=0;j&lt;board[0].size();++j)
-						if(board[i][j]==word[l]){
-							st_coord.push(std::pair&lt;int,int&gt;(i,j));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(i,j));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-							if(word.size()==1) 
-								return true;
-						}
-				}
-				l++;
-			} else {
-				if(st_coord.empty()) // cannot find the first character
-					break;
+            if(l==0) { // Find the first character of word in board
+                for(int i=0;i&lt;board.size();++i) {
+                    for(int j=0;j&lt;board[0].size();++j)
+                        if(board[i][j]==word[l]){
+                            st_coord.push(std::pair&lt;int,int&gt;(i,j));
+                            st_char.push(l);
+                            vec.push_back(std::pair&lt;int,int&gt;(i,j));
+                            st_access.push(vec);
+                            vec.pop_back(); // do not affect other candidates
+                            if(word.size()==1) 
+                                return true;
+                        }
+                }
+                l++;
+            } else {
+                if(st_coord.empty()) // cannot find the first character
+                    break;
 
-				// Explore all possible cells to match each character of the word
-				while(!st_coord.empty()) {
-					int x=st_coord.top().first;
-					int y=st_coord.top().second;
-					vec=st_access.top();
-					l=st_char.top()+1;
-					if(l==word.length()) {
-						found=true;
-						break;
-					}
-					
-					st_coord.pop();
-					st_char.pop();
-					st_access.pop();
+                // Explore all possible cells to match each character of the word
+                while(!st_coord.empty()) {
+                    int x=st_coord.top().first;
+                    int y=st_coord.top().second;
+                    vec=st_access.top();
+                    l=st_char.top()+1;
+                    if(l==word.length()) {
+                        found=true;
+                        break;
+                    }
 
-					if(x-1&gt;=0 &amp;&amp; board[x-1][y]==word[l]) {
-						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
-							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x-1,y));
-						if(got==vec.end()) {
-							st_coord.push(std::pair&lt;int,int&gt;(x-1,y));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(x-1,y));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-						}
-					}
-					if(x+1&lt;board.size() &amp;&amp; board[x+1][y]==word[l]) {
-						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
-							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x+1,y));
-						if(got==vec.end()) {
-							st_coord.push(std::pair&lt;int,int&gt;(x+1,y));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(x+1,y));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-						}
-					}
-					if(y-1&gt;=0 &amp;&amp; board[x][y-1]==word[l]) {
-						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
-							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x,y-1));
-						if(got==vec.end()) {
-							st_coord.push(std::pair&lt;int,int&gt;(x,y-1));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(x,y-1));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-						}
-					}
-					if(y+1&lt;board[0].size() &amp;&amp; board[x][y+1]==word[l]) {
-						vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
-							std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x,y+1));
-						if(got==vec.end()) {
-							st_coord.push(std::pair&lt;int,int&gt;(x,y+1));
-							st_char.push(l);
-							vec.push_back(std::pair&lt;int,int&gt;(x,y+1));
-							st_access.push(vec);
-							vec.pop_back(); // do not affect other candidates
-						}
-					}
-				}
-			} // end else
-		} // end for l
+                    st_coord.pop();
+                    st_char.pop();
+                    st_access.pop();
 
-		return found;
+                    if(x-1&gt;=0 &amp;&amp; board[x-1][y]==word[l]) {
+                        vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
+                            std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x-1,y));
+                        if(got==vec.end()) {
+                            st_coord.push(std::pair&lt;int,int&gt;(x-1,y));
+                            st_char.push(l);
+                            vec.push_back(std::pair&lt;int,int&gt;(x-1,y));
+                            st_access.push(vec);
+                            vec.pop_back(); // do not affect other candidates
+                        }
+                    }
+                    if(x+1&lt;board.size() &amp;&amp; board[x+1][y]==word[l]) {
+                        vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
+                            std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x+1,y));
+                        if(got==vec.end()) {
+                            st_coord.push(std::pair&lt;int,int&gt;(x+1,y));
+                            st_char.push(l);
+                            vec.push_back(std::pair&lt;int,int&gt;(x+1,y));
+                            st_access.push(vec);
+                            vec.pop_back(); // do not affect other candidates
+                        }
+                    }
+                    if(y-1&gt;=0 &amp;&amp; board[x][y-1]==word[l]) {
+                        vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
+                            std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x,y-1));
+                        if(got==vec.end()) {
+                            st_coord.push(std::pair&lt;int,int&gt;(x,y-1));
+                            st_char.push(l);
+                            vec.push_back(std::pair&lt;int,int&gt;(x,y-1));
+                            st_access.push(vec);
+                            vec.pop_back(); // do not affect other candidates
+                        }
+                    }
+                    if(y+1&lt;board[0].size() &amp;&amp; board[x][y+1]==word[l]) {
+                        vector&lt;std::pair&lt;int,int&gt; &gt;::iterator got=
+                            std::find(vec.begin(),vec.end(),std::pair&lt;int,int&gt;(x,y+1));
+                        if(got==vec.end()) {
+                            st_coord.push(std::pair&lt;int,int&gt;(x,y+1));
+                            st_char.push(l);
+                            vec.push_back(std::pair&lt;int,int&gt;(x,y+1));
+                            st_access.push(vec);
+                            vec.pop_back(); // do not affect other candidates
+                        }
+                    }
+                }
+            } // end else
+        } // end for l
+
+        return found;
     }
 };
-</code></pre>
-</div>
-
+</code></pre></div>
 </article>
 
 

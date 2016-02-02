@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -426,46 +426,40 @@
 </div>
 
 <article class="post-content">
-  <p>The <em>string permutation</em> problem aims to find all the <em>permutations</em> of a string(re-arrangement of characters in this string). A string of length <code class="highlighter-rouge">n</code> has <code class="highlighter-rouge">n!</code> permutations.</p>
+  <p>The <em>string permutation</em> problem aims to find all the <em>permutations</em> of a string(re-arrangement of characters in this string). A string of length <code>n</code> has <code>n!</code> permutations.</p>
 
-<p>The essence of string permutation is recursively swapping each letter with other letters in this string. Following image shows the permutation of string “ABC”. For each step, fix the left part of the string, and swap two letters in the right part, until there is no letters left in the right part.</p>
+<p>The essence of string permutation is recursively swapping each letter with other letters in this string. Following image shows the permutation of string &ldquo;ABC&rdquo;. For each step, fix the left part of the string, and swap two letters in the right part, until there is no letters left in the right part. </p>
 
-<p><img src="http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif" width="678" height="277" class="aligncenter size-full wp-image-118925" />&lt;/img&gt;</p>
+<p><img src="http://d2o58evtke57tz.cloudfront.net/wp-content/uploads/NewPermutation.gif" width="678" height="277" class="aligncenter size-full wp-image-118925"></img></p>
 
 <p>Based on above strategy, the following two recusive algorithm could be implemented.</p>
 
-<p>Algorithm 1(Reference: <a href="http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/">Write a C program to print all permutations of a given string</a>):</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>void StrPermute(string&amp; str, vector&lt;string&gt;&amp; vec, int i) {
-	if(i==str.length())
-		vec.push_back(str);
-	else {
-		for(int j=i;j&lt;str.size();++j) {
-			std::swap(str[i],str[j]);
-			StrPermute(str,vec,i+1);
-			std::swap(str[i],str[j]);
-		}
-	} // end if
+<p>Algorithm 1(Reference: <a href="http://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/">Write a C program to print all permutations of a given string</a>): </p>
+<div class="highlight"><pre><code class="language-" data-lang="">void StrPermute(string&amp; str, vector&lt;string&gt;&amp; vec, int i) {
+    if(i==str.length())
+        vec.push_back(str);
+    else {
+        for(int j=i;j&lt;str.size();++j) {
+            std::swap(str[i],str[j]);
+            StrPermute(str,vec,i+1);
+            std::swap(str[i],str[j]);
+        }
+    } // end if
 }
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>Algorithm 2(Reference: <a href="http://learnprogramming.machinesentience.com/java_permutations_recursion/">Find all the permutations of a string in Java</a>):</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>void StrPermute(vector&lt;string&gt;&amp; vec, string prefix, string str) {
-	//cout&lt;&lt;"prefix="&lt;&lt;prefix&lt;&lt;", str="&lt;&lt;str&lt;&lt;endl; // TEST ONLY
-	int n=str.length();
-	if(n==0)
-		vec.push_back(prefix);
-	else {
-		for(int j=0;j&lt;n;++j)
-			StrPermute(vec,prefix+str[j],str.substr(0,j)+str.substr(j+1));
-	} // end if
+<div class="highlight"><pre><code class="language-" data-lang="">void StrPermute(vector&lt;string&gt;&amp; vec, string prefix, string str) {
+    //cout&lt;&lt;"prefix="&lt;&lt;prefix&lt;&lt;", str="&lt;&lt;str&lt;&lt;endl; // TEST ONLY
+    int n=str.length();
+    if(n==0)
+        vec.push_back(prefix);
+    else {
+        for(int j=0;j&lt;n;++j)
+            StrPermute(vec,prefix+str[j],str.substr(0,j)+str.substr(j+1));
+    } // end if
 }
-</code></pre>
-</div>
-
-<p>The permuted strings are stored as a vector of string. For both algorithms, the time complexities are <code class="highlighter-rouge">O(n*n!)</code>.</p>
+</code></pre></div>
+<p>The permuted strings are stored as a vector of string. For both algorithms, the time complexities are <code>O(n*n!)</code>.</p>
 
 </article>
 

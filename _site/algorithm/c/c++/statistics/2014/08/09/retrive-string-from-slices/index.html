@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -427,12 +427,12 @@
 
 <article class="post-content">
   <ol>
-  <li><a href="#problem">Problem</a></li>
-  <li><a href="#solution">Solution</a></li>
-  <li><a href="#code">Source Code</a></li>
+<li><a href="#problem">Problem</a></li>
+<li><a href="#solution">Solution</a></li>
+<li><a href="#code">Source Code</a></li>
 </ol>
 
-<h3 id="a-nameproblemproblema">1. <a name="problem">Problem</a></h3>
+<h3 id="1-problem">1. <a name="problem">Problem</a></h3>
 
 <p>Given a string, such as 01001010101001101011, we can randomly sliced multiple substrings. Assume that during the slicing, due to some unexpected noises, some characters may flip(0-&gt;1 or 1-&gt;0). For example:</p>
 
@@ -446,25 +446,21 @@ slice3:       10101
 slice4:                1101011
 </pre>
 
-<p>In above sample, <code class="highlighter-rouge">slice1</code> starts from position 1(assume that the index of a string begins with 0), <code class="highlighter-rouge">slice2</code> starts from position 4, <code class="highlighter-rouge">slice3</code> starts from 4, and <code class="highlighter-rouge">slice4</code> starts from 13. In slice1, <code class="highlighter-rouge">0</code> flips to <code class="highlighter-rouge">1</code> at position 5 and <code class="highlighter-rouge">1</code> flips to <code class="highlighter-rouge">0</code> at position 13.</p>
+<p>In above sample, <code>slice1</code> starts from position 1(assume that the index of a string begins with 0), <code>slice2</code> starts from position 4, <code>slice3</code> starts from 4, and <code>slice4</code> starts from 13. In slice1, <code>0</code> flips to <code>1</code> at position 5 and <code>1</code> flips to <code>0</code> at position 13.</p>
 
-<p>For one specific position in the original string, if it is <code class="highlighter-rouge">1</code>, then the probability of flipping to 0 in a slicing is 0.1; and vice versa(i.e.Prob(0-&gt;1)=0.1).</p>
+<p>For one specific position in the original string, if it is <code>1</code>, then the probability of flipping to 0 in a slicing is 0.1; and vice versa(i.e.Prob(0-&gt;1)=0.1).</p>
 
-<p>The problem is: <strong>if we only have multiple slices(the length of each slice may vary) and their starting positions in the string, and we don’t know the original string, given an arbitrary position in the original string, how can we calculate the probability that position is a <code class="highlighter-rouge">1</code>?</strong></p>
+<p>The problem is: <strong>if we only have multiple slices(the length of each slice may vary) and their starting positions in the string, and we don&rsquo;t know the original string, given an arbitrary position in the original string, how can we calculate the probability that position is a <code>1</code>?</strong></p>
 
 <p>Assume most positions will be covered at least once in slices, and we have following parameters:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>p01=0.1; // Probability a ‘0’ in string but flipped to a ‘1’ in a slice
+<div class="highlight"><pre><code class="language-" data-lang="">p01=0.1; // Probability a ‘0’ in string but flipped to a ‘1’ in a slice
 p10=0.1; // Probability a ‘1’ in string but flipped to a ‘0’ in a slice
 p1=0.5;  // Prior probability that any given position in string is a ‘1’
-</code></pre>
-</div>
-
-<p>We can also assume that the string is a random string of <code class="highlighter-rouge">0</code>s and <code class="highlighter-rouge">1</code>s, and during slicing, each position is sampled independently.</p>
+</code></pre></div>
+<p>We can also assume that the string is a random string of <code>0</code>s and <code>1</code>s, and during slicing, each position is sampled independently.</p>
 
 <p>For the above example string and four slices, we already have following probabilities for each position:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>Pos Prob
+<div class="highlight"><pre><code class="language-" data-lang="">Pos Prob
 0   0.500
 1   0.900
 2   0.100
@@ -485,42 +481,42 @@ p1=0.5;  // Prior probability that any given position in string is a ‘1’
 17  0.100
 18  0.900
 19  0.900
-</code></pre>
-</div>
+</code></pre></div>
+<h3 id="2-solution">2. <a name="solution">Solution</a></h3>
 
-<h3 id="a-namesolutionsolutiona">2. <a name="solution">Solution</a></h3>
-
-<p>Obviously, the numbers of 0s and 1s in all slices for each position can be counted using a hashmap(<code class="highlighter-rouge">unordered_map</code> in C++). However, the difficult part is to find a model to calculate the probabilities. Simple multiplicaiton or subtraction won’t work, because we cannot get <code class="highlighter-rouge">0.999</code> with the given probabilities and arithmetic operations. Besides, the Bayes’ theorem also cannot be used directly, because we don’t know the number of slices and the computation would be too complicated. And we also may be tempted to try Markov Model, but Markov Model cannot fit all positions in the above example, such as positions 4(<code class="highlighter-rouge">1,1,1</code>), 5(<code class="highlighter-rouge">1,0,0</code>), 9(<code class="highlighter-rouge">0,1</code>) and 13(<code class="highlighter-rouge">0,1,1</code>).</p>
+<p>Obviously, the numbers of 0s and 1s in all slices for each position can be counted using a hashmap(<code>unordered_map</code> in C++). However, the difficult part is to find a model to calculate the probabilities. Simple multiplicaiton or subtraction won&rsquo;t work, because we cannot get <code>0.999</code> with the given probabilities and arithmetic operations. Besides, the Bayes&rsquo; theorem also cannot be used directly, because we don&rsquo;t know the number of slices and the computation would be too complicated. And we also may be tempted to try Markov Model, but Markov Model cannot fit all positions in the above example, such as positions 4(<code>1,1,1</code>), 5(<code>1,0,0</code>), 9(<code>0,1</code>) and 13(<code>0,1,1</code>).</p>
 
 <p>The best model to fit this problem is the <a href="http://www.mathworks.com/help/stats/binomial-distribution.html">Binomial Distribution</a>:</p>
 
 <blockquote>
-  <p>The binomial distribution models the total number of successes in repeated trials from an infinite population under the following conditions:</p>
+<p>The binomial distribution models the total number of successes in repeated trials from an infinite population under the following conditions:</p>
 
-  <ul>
-    <li>Only two outcomes are possible on each of n trials.</li>
-    <li>The probability of success for each trial is constant.</li>
-    <li>All trials are independent of each other.</li>
-  </ul>
+<ul>
+<li>Only two outcomes are possible on each of n trials.</li>
+<li>The probability of success for each trial is constant.</li>
+<li>All trials are independent of each other.</li>
+</ul>
 </blockquote>
 
 <p>The probability density function(pdf) of Binomial Distribution is:</p>
 
-<script type="math/tex; mode=display">f(x|n,p)={n \choose x} p^x (1-p)^{n-x}; \quad \quad x=0,1,2,\cdots,n.</script>
+<p>$$
+    f(x|n,p)={n \choose x} p^x (1-p)^{n-x}; \quad \quad x=0,1,2,\cdots,n.
+$$</p>
 
-<p>As for this problem, given a position in the original string, we first need to find the probability of a <code class="highlighter-rouge">0</code> occurs in this position(in this case <code class="highlighter-rouge">0</code>=&gt;<code class="highlighter-rouge">1</code>, say <code class="highlighter-rouge">bp01</code>), and then calculate the probability of a <code class="highlighter-rouge">1</code> occurs in this position(in this case <code class="highlighter-rouge">1</code>=&gt;<code class="highlighter-rouge">1</code>, say <code class="highlighter-rouge">bp11</code>). Finally, we can get the probability of <code class="highlighter-rouge">1</code> in this position in the original string by: <code class="highlighter-rouge">p=bp11/(bp01+bp11)</code>.</p>
+<p>As for this problem, given a position in the original string, we first need to find the probability of a <code>0</code> occurs in this position(in this case <code>0</code>=&gt;<code>1</code>, say <code>bp01</code>), and then calculate the probability of a <code>1</code> occurs in this position(in this case <code>1</code>=&gt;<code>1</code>, say <code>bp11</code>). Finally, we can get the probability of <code>1</code> in this position in the original string by: <code>p=bp11/(bp01+bp11)</code>.</p>
 
-<p>Take position 5 as an example. We get one <code class="highlighter-rouge">1</code> and two <code class="highlighter-rouge">0</code>s in position 5 in three observations. We can calculate <code class="highlighter-rouge">b11</code> using Matlab <code class="highlighter-rouge">binopdf</code> function. Since <code class="highlighter-rouge">p11=1-p10=0.9</code>, therefore we have <code class="highlighter-rouge">bp11=binopdf(1,3,0.9)=0.027</code>. As for <code class="highlighter-rouge">bp01</code>, because <code class="highlighter-rouge">p01=0.1</code>, we have <code class="highlighter-rouge">bp01=binopdf(1,3,0.1)=0.243</code>. Therefore, we can calc the probability of <code class="highlighter-rouge">1</code> in position 5 by <code class="highlighter-rouge">p=0.027/(0.243 + 0.027)=0.1</code>.</p>
+<p>Take position 5 as an example. We get one <code>1</code> and two <code>0</code>s in position 5 in three observations. We can calculate <code>b11</code> using Matlab <code>binopdf</code> function. Since <code>p11=1-p10=0.9</code>, therefore we have <code>bp11=binopdf(1,3,0.9)=0.027</code>. As for <code>bp01</code>, because <code>p01=0.1</code>, we have <code>bp01=binopdf(1,3,0.1)=0.243</code>. Therefore, we can calc the probability of <code>1</code> in position 5 by <code>p=0.027/(0.243 + 0.027)=0.1</code>.</p>
 
-<h3 id="a-namecodesource-codea">3. <a name="code">Source Code</a></h3>
+<h3 id="3-source-code">3. <a name="code">Source Code</a></h3>
 
-<p>The implementation of this problem can be found in <a href="https://github.com/bo-yang/ProgrammingChallenges/tree/master/string_retrieve">my GitHub Channel</a>.</p>
+<p>The implementation of this problem can be found in <a href="https://github.com/bo-yang/ProgrammingChallenges/tree/master/string_retrieve">my GitHub Channel</a>. </p>
 
 <h3 id="references">References:</h3>
 
 <ol>
-  <li><a href="http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o">http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o</a></li>
-  <li><a href="http://www.mathworks.com/help/stats/binomial-distribution.html">http://www.mathworks.com/help/stats/binomial-distribution.html</a></li>
+<li><a href="http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o">http://stackoverflow.com/questions/24967842/how-to-calculate-the-probability-of-a-given-character-in-a-string-using-slices-o</a></li>
+<li><a href="http://www.mathworks.com/help/stats/binomial-distribution.html">http://www.mathworks.com/help/stats/binomial-distribution.html</a></li>
 </ol>
 
 </article>

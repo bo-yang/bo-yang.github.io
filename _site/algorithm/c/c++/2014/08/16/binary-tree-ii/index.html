@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -426,71 +426,66 @@
 </div>
 
 <article class="post-content">
-  <p>This is the second article on binary tree operations. For other topics on binary tree, please refer to</p>
+  <p>This is the second article on binary tree operations. For other topics on binary tree, please refer to </p>
 
 <ol>
-  <li><a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a></li>
-  <li><a href="http://bo-yang.github.io/2014/08/16/binary-tree-ii/">Binary Tree Operations(II)</a></li>
-  <li><a href="http://bo-yang.github.io/2014/09/12/binary-tree-iii/">Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation</a></li>
-  <li>
-    <p><a href="http://bo-yang.github.io/2014/10/09/is-valid-bst/">Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree</a></p>
-  </li>
-  <li><a href="#path_sum">Path Sum</a></li>
-  <li><a href="#build_cycle">Build Binary Tree With Cycle</a></li>
-  <li><a href="#detect_cycle">Detect Cycle in Binary Tree</a></li>
+<li><a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a></li>
+<li><a href="http://bo-yang.github.io/2014/08/16/binary-tree-ii/">Binary Tree Operations(II)</a></li>
+<li><a href="http://bo-yang.github.io/2014/09/12/binary-tree-iii/">Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation</a></li>
+<li><p><a href="http://bo-yang.github.io/2014/10/09/is-valid-bst/">Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree</a></p></li>
+<li><p><a href="#path_sum">Path Sum</a></p></li>
+<li><p><a href="#build_cycle">Build Binary Tree With Cycle</a></p></li>
+<li><p><a href="#detect_cycle">Detect Cycle in Binary Tree</a></p></li>
 </ol>
 
-<h3 id="a-namepathsumpath-suma">1. <a name="path_sum">Path Sum</a></h3>
+<h3 id="1-path-sum">1. <a name="path_sum">Path Sum</a></h3>
 
 <p>The <a href="http://www.programcreek.com/2013/01/leetcode-path-sum/">Path Sum problem</a> of binary tree is:</p>
 
 <blockquote>
-  <p>Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.</p>
+<p>Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.</p>
 </blockquote>
 
-<p>This problem can be easily solved by level-order traversal. During traversal, record the sum and path to each node:</p>
+<p>This problem can be easily solved by level-order traversal. During traversal, record the sum and path to each node: </p>
 
 <ul>
-  <li>if the sum to current node is larger than the given sum, then remove the sum and path to current node and stop tracing its child nodes.</li>
-  <li>if the sum to current node equals to the given sum, the print or record the path.</li>
-  <li>if to current node is less than the given sum, continue searching its children.</li>
+<li>if the sum to current node is larger than the given sum, then remove the sum and path to current node and stop tracing its child nodes.</li>
+<li>if the sum to current node equals to the given sum, the print or record the path.</li>
+<li>if to current node is less than the given sum, continue searching its children.</li>
 </ul>
 
-<p>For the source code of this section, please refer to function <code class="highlighter-rouge">PathSum()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
+<p>For the source code of this section, please refer to function <code>PathSum()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
 
-<h3 id="a-namebuildcyclebuild-binary-tree-with-cyclea">2. <a name="build_cycle">Build Binary Tree With Cycle</a></h3>
+<h3 id="2-build-binary-tree-with-cycle">2. <a name="build_cycle">Build Binary Tree With Cycle</a></h3>
 
-<p>To build a binary tree with cycles, we can first build a binary tree using the method described in <a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a>, and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(<code class="highlighter-rouge">left</code> and <code class="highlighter-rouge">right</code>).</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>struct TreeNode {
-	int val;
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+<p>To build a binary tree with cycles, we can first build a binary tree using the method described in <a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a>, and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(<code>left</code> and <code>right</code>).</p>
+<div class="highlight"><pre><code class="language-" data-lang="">struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>For example, given a binary tree in following image,</p>
 
-<p><img src="http://www.bo-yang.net//assets/images/binary_tree_with_cycle.png" alt="Binary Tree with Cycle" /></p>
+<p><img src="http://www.bo-yang.net//assets/images/binary_tree_with_cycle.png" alt="Binary Tree with Cycle"></p>
 
-<p>We can build a tree using string sequence {1,2,3,4,#,5,#} at first, and then add links {3-&gt;2, 2-&gt;5}. Or build tree {1,2,3,4,5,#,#} first and then add links {3-&gt;2,3-&gt;5}.</p>
+<p>We can build a tree using string sequence {1,2,3,4,#,5,#} at first, and then add links {3-&gt;2, 2-&gt;5}. Or build tree {1,2,3,4,5,#,#} first and then add links {3-&gt;2,3-&gt;5}. </p>
 
-<p>For the source code of this section, please refer to functions <code class="highlighter-rouge">BuildTree()</code> and <code class="highlighter-rouge">BuildCycleTree()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
+<p>For the source code of this section, please refer to functions <code>BuildTree()</code> and <code>BuildCycleTree()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
 
-<h3 id="a-namedetectcycledetect-cycle-in-binary-treea">3. <a name="detect_cycle">Detect Cycle in Binary Tree</a></h3>
+<h3 id="3-detect-cycle-in-binary-tree">3. <a name="detect_cycle">Detect Cycle in Binary Tree</a></h3>
 
-<p>Cycles in a binary tree can be detected by DFS(in preorder) - if there’s a cycle, there must be a node has a child node that is already been accessed before(i.e. a right hand node linked to the left hand node). A <code class="highlighter-rouge">unordered_set</code> can be used to record the nodes that have been accessed.</p>
+<p>Cycles in a binary tree can be detected by DFS(in preorder) - if there&rsquo;s a cycle, there must be a node has a child node that is already been accessed before(i.e. a right hand node linked to the left hand node). A <code>unordered_set</code> can be used to record the nodes that have been accessed.</p>
 
-<p>Considering above example again, when we traverse that binary tree in pre-order, we would first access nodes {1,2,4,5}. And when we accessing node <code class="highlighter-rouge">3</code>, we will find that node <code class="highlighter-rouge">3</code> has a child <code class="highlighter-rouge">2</code>(or<code class="highlighter-rouge">5</code>) that has already been accessed. So this tree has a cycle.</p>
+<p>Considering above example again, when we traverse that binary tree in pre-order, we would first access nodes {1,2,4,5}. And when we accessing node <code>3</code>, we will find that node <code>3</code> has a child <code>2</code>(or<code>5</code>) that has already been accessed. So this tree has a cycle.</p>
 
-<p>For the source code of this section, please refer to function <code class="highlighter-rouge">HasLoop()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
+<p>For the source code of this section, please refer to function <code>HasLoop()</code> in <a href="https://github.com/bo-yang/BinaryTree">my Binary Tree Library</a>.</p>
 
 <h3 id="references">References:</h3>
 
 <ol>
-  <li><a href="http://www.geeksforgeeks.org/detect-cycle-in-a-graph/">Detect Cycle in a Directed Graph</a></li>
+<li><a href="http://www.geeksforgeeks.org/detect-cycle-in-a-graph/">Detect Cycle in a Directed Graph</a></li>
 </ol>
 
 </article>

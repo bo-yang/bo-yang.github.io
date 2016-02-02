@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -426,66 +426,60 @@
 </div>
 
 <article class="post-content">
-  <h3 id="problem">1. Problem</h3>
+  <h3 id="1-problem">1. Problem</h3>
 
 <blockquote>
-  <p>Write a program that reads a large list of English words (e.g. from <code class="highlighter-rouge">/usr/share/dict/words</code> on a unix system) into memory, and then reads words from stdin, and prints either the best spelling suggestion, or “NO SUGGESTION” if no suggestion can be found. The program should print “<code class="highlighter-rouge">&gt;</code>” as a prompt before reading each word, and should loop until killed.</p>
+<p>Write a program that reads a large list of English words (e.g. from <code>/usr/share/dict/words</code> on a unix system) into memory, and then reads words from stdin, and prints either the best spelling suggestion, or &ldquo;NO SUGGESTION&rdquo; if no suggestion can be found. The program should print &ldquo;<code>&gt;</code>&rdquo; as a prompt before reading each word, and should loop until killed.</p>
 
-  <p>Your solution should be faster than O(n) per word checked, where n is the length of the dictionary. That is to say, you can’t scan the dictionary every time you want to spellcheck a word.</p>
+<p>Your solution should be faster than O(n) per word checked, where n is the length of the dictionary. That is to say, you can&rsquo;t scan the dictionary every time you want to spellcheck a word.</p>
 
-  <p>For example:</p>
+<p>For example:</p>
 
-  <div class="highlighter-rouge"><pre class="highlight"><code>&gt;sheeeeep
-sheep
+<blockquote>
+<p>sheeeeep
+  sheep</p>
 
-&gt;peepple
-people
+<p>peepple
+  people</p>
 
-&gt;sheeple
-NO SUGGESTION
-</code></pre>
-  </div>
-
-  <p>The class of spelling mistakes to be corrected is as follows:</p>
-
-  <p>Case (upper/lower) errors:</p>
-
-  <div class="highlighter-rouge"><pre class="highlight"><code>"inSIDE" =&gt; "inside"
-</code></pre>
-  </div>
-
-  <p>Repeated letters:</p>
-
-  <div class="highlighter-rouge"><pre class="highlight"><code>"jjoobbb" =&gt; "job"
-</code></pre>
-  </div>
-
-  <p>Incorrect vowels:</p>
-
-  <div class="highlighter-rouge"><pre class="highlight"><code>"weke" =&gt; "wake"
-</code></pre>
-  </div>
-
-  <p>In addition, any combination of the above types of error in a single word should be corrected (e.g. <code class="highlighter-rouge">"CUNsperrICY" =&gt; "conspiracy"</code>).</p>
-
-  <p>If there are many possible corrections of an input word, your program can choose one in any way you like, however your results must match the examples above (e.g. <code class="highlighter-rouge">"sheeeeep"</code> should return <code class="highlighter-rouge">"sheep"</code> and not <code class="highlighter-rouge">"shap"</code>).</p>
-
-  <p>Final step: Write a second program that generates words with spelling mistakes of the above form, starting with correctly spelled English words. Pipe its output into the first program and verify that there are no occurrences of “NO SUGGESTION” in the output.</p>
+<p>sheeple
+  NO SUGGESTION</p>
 </blockquote>
 
-<h3 id="solution">2. Solution</h3>
+<p>The class of spelling mistakes to be corrected is as follows:</p>
 
-<p>All words loaded from dictionary need to be transformed into patterns (such <code class="highlighter-rouge">p**pl*</code> for <code class="highlighter-rouge">people</code>) at first, and then stored into a hash table(<code class="highlighter-rouge">dict</code>).Since multiple words may mapped into the same pattern, <strong><code class="highlighter-rouge">defaultdict</code></strong> is used to store the words with identical patterns in a list.</p>
+<p>Case (upper/lower) errors:</p>
 
-<p>Given a (mis-spelled) word, it will also be transformed into a pattern, then search the pattern in the hash table. Since mis-spelled consequtive vowels could be mapped into one star(*)(i.e. <code class="highlighter-rouge">peepple =&gt; p*pl*</code>, but <code class="highlighter-rouge">people =&gt; p**pl*</code>),this program will also try to repeat the stars so as toenlarge candidates.</p>
+<p>&ldquo;inSIDE&rdquo; =&gt; &ldquo;inside&rdquo;</p>
 
-<p>Based on the patterns, the candidate words could be found in the hash table(<code class="highlighter-rouge">defaultdict</code>). In order to determine the closest match, <a href="http://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a> is used to calculate the distance between a candidate word and the given (mis-spelled) word.</p>
+<p>Repeated letters:</p>
+
+<p>&ldquo;jjoobbb&rdquo; =&gt; &ldquo;job&rdquo;</p>
+
+<p>Incorrect vowels:</p>
+
+<p>&ldquo;weke&rdquo; =&gt; &ldquo;wake&rdquo;</p>
+
+<p>In addition, any combination of the above types of error in a single word should be corrected (e.g. <code>&quot;CUNsperrICY&quot; =&gt; &quot;conspiracy&quot;</code>).</p>
+
+<p>If there are many possible corrections of an input word, your program can choose one in any way you like, however your results must match the examples above (e.g. <code>&quot;sheeeeep&quot;</code> should return <code>&quot;sheep&quot;</code> and not <code>&quot;shap&quot;</code>).</p>
+
+<p>Final step: Write a second program that generates words with spelling mistakes of the above form, starting with correctly spelled English words. Pipe its output into the first program and verify that there are no occurrences of &ldquo;NO SUGGESTION&rdquo; in the output.</p>
+</blockquote>
+
+<h3 id="2-solution">2. Solution</h3>
+
+<p>All words loaded from dictionary need to be transformed into patterns (such <code>p**pl*</code> for <code>people</code>) at first, and then stored into a hash table(<code>dict</code>).Since multiple words may mapped into the same pattern, <strong><code>defaultdict</code></strong> is used to store the words with identical patterns in a list. </p>
+
+<p>Given a (mis-spelled) word, it will also be transformed into a pattern, then search the pattern in the hash table. Since mis-spelled consequtive vowels could be mapped into one star(<em>)(i.e. `peepple =&gt; p*pl</em><code>, but</code>people =&gt; p*<em>pl</em>`),this program will also try to repeat the stars so as toenlarge candidates.</p>
+
+<p>Based on the patterns, the candidate words could be found in the hash table(<code>defaultdict</code>). In order to determine the closest match, <a href="http://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a> is used to calculate the distance between a candidate word and the given (mis-spelled) word. </p>
 
 <p>In order to guaranttee that the suggestions are reasonable, the English word frequencies(stored in a hash table, please refer to <a href="http://en.wiktionary.org/wiki/Wiktionary:Frequency_lists#English">http://en.wiktionary.org/wiki/Wiktionary:Frequency_lists#English</a>) are adopted to choose the more popular candidate by default - if there are multiple suggestions to a pattern, choose the most frequent one.</p>
 
-<p>Time complexity: <code class="highlighter-rouge">O(n*m)</code> for loading dictionary and <code class="highlighter-rouge">O(1 + m)</code> for word checking, where <code class="highlighter-rouge">n</code> is the number of entries in the dictionary, and m is the number of characters in the string. Finding a word in hash table usually takes constant time <code class="highlighter-rouge">O(1)</code>, and word operations costs <code class="highlighter-rouge">O(m)</code>.</p>
+<p>Time complexity: <code>O(n*m)</code> for loading dictionary and <code>O(1 + m)</code> for word checking, where <code>n</code> is the number of entries in the dictionary, and m is the number of characters in the string. Finding a word in hash table usually takes constant time <code>O(1)</code>, and word operations costs <code>O(m)</code>.</p>
 
-<h3 id="code">3. Code</h3>
+<h3 id="3-code">3. Code</h3>
 
 <p>For the python implementation of this problem, please refer to <a href="https://github.com/bo-yang/ProgrammingChallenges/tree/master/spell_check">https://github.com/bo-yang/ProgrammingChallenges/tree/master/spell_check</a>.</p>
 

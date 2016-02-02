@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -420,7 +420,7 @@
   
   <span class="post-meta small">
   
-    2 minute read
+    1 minute read
   
   </span>
 </div>
@@ -429,108 +429,102 @@
   <p><a href="https://oj.leetcode.com/problems/combination-sum/">Combination Sum Problem</a>:</p>
 
 <blockquote>
-  <p>Given a set of candidate numbers \(C\) and a target number \(T\), find all unique combinations in \(C\) where the candidate numbers sums to \(T\).</p>
+<p>Given a set of candidate numbers \(C\) and a target number \(T\), find all unique combinations in \(C\) where the candidate numbers sums to \(T\).</p>
 
-  <p>The same repeated number may be chosen from \(C\) unlimited number of times.</p>
+<p>The same repeated number may be chosen from \(C\) unlimited number of times.</p>
 
-  <p>Note:</p>
+<p>Note:</p>
 
-  <ul>
-    <li>All numbers (including target) will be positive integers.</li>
-    <li>Elements in a combination (\(a_1, a_2, \cdots , a_k\)) must be in non-descending order. (ie, \(a_1 \leq a_2 \leq \cdots ≤ a_k\)).</li>
-    <li>The solution set must not contain duplicate combinations.</li>
-  </ul>
+<ul>
+<li>All numbers (including target) will be positive integers.</li>
+<li>Elements in a combination (\(a_1, a_2, \cdots , a_k\)) must be in non-descending order. (ie, \(a_1 \leq a_2 \leq \cdots ≤ a_k\)).</li>
+<li>The solution set must not contain duplicate combinations.</li>
+</ul>
 
-  <p>For example, given candidate set 2,3,6,7 and target 7,</p>
-</blockquote>
+<p>For example, given candidate set 2,3,6,7 and target 7,</p>
 
-<blockquote>
-  <p>a solution set is:
+<p>a solution set is:
 [7]</p>
-</blockquote>
 
-<blockquote>
-  <p>[2, 2, 3]</p>
+<p>[2, 2, 3] </p>
 </blockquote>
 
 <p>The popular solution is to recursively scan all elements in the cadidate set, such as <a href="http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html">http://yucoding.blogspot.com/2012/12/leetcode-question-16-combination-sum.html</a>.</p>
 
-<p>However, I don’t want to use recursion. My solution to this problem is to build trees level by level for each number in the candidate set, where the nodes are candidate set number. The sum of the sequence from root to current node is compared to the target:</p>
+<p>However, I don&rsquo;t want to use recursion. My solution to this problem is to build trees level by level for each number in the candidate set, where the nodes are candidate set number. The sum of the sequence from root to current node is compared to the target:</p>
 
 <ul>
-  <li>if the sum equals to the target, then we find one solution;</li>
-  <li>if the sum is less than the target, then subnodes could be added to this node;</li>
-  <li>if the sum is larger than the target, then this node is a leaf node.</li>
+<li>if the sum equals to the target, then we find one solution;</li>
+<li>if the sum is less than the target, then subnodes could be added to this node; </li>
+<li>if the sum is larger than the target, then this node is a leaf node.</li>
 </ul>
 
 <p>Only numbers equal to or larger than current node can be used as the children of current node. When there is no child could be added, this tree stops growing.</p>
 
 <p>For example, given candidate set, \({2,3,6,7}\) and target 7, the following trees could be built:</p>
 
-<p><img src="http://www.bo-yang.net//assets/images/2014-06-25/combi_sum_trees.png" alt="Combination sum trees" /></p>
+<p><img src="http://www.bo-yang.net//assets/images/2014-06-25/combi_sum_trees.png" alt="Combination sum trees"></p>
 
 <p>Based on above strategy, my C++ implementation is:</p>
 
 <pre>
 class Solution {
 public:
-	struct Node {
-		int val;
-		int sum; // sum to now
-		vector<int> path; // path to now
-		//Node* pre; // parent node
-	};
+    struct Node {
+        int val;
+        int sum; // sum to now
+        vector<int> path; // path to now
+        //Node* pre; // parent node
+    };
 
-    vector&lt;vector<int> &gt; combinationSum(vector<int> &amp;candidates, int target) {
-		vector&lt;vector<int> &gt; trace;
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+        vector<vector<int> > trace;
 
-       	for(auto&amp; x:candidates) {
-			if(x==target) {
-				vector<int> tr={x};
-				trace.push_back(tr);
-				continue;
-			}
+        for(auto& x:candidates) {
+            if(x==target) {
+                vector<int> tr={x};
+                trace.push_back(tr);
+                continue;
+            }
 
-		   	// Build trees in level order for every candidate
-		   	vector&lt;vector<node>&gt; layers;
-			int cur=0;
-		   	int next=1;
-			vector<node> tmp;
-			layers.push_back(tmp);
-			layers.push_back(tmp);
+            // Build trees in level order for every candidate
+            vector<vector<Node>> layers;
+            int cur=0;
+            int next=1;
+            vector<Node> tmp;
+            layers.push_back(tmp);
+            layers.push_back(tmp);
 
-		  	Node nd={x,x,{x}};
-		   	layers[cur].push_back(nd);
-		  	while(layers[cur].size()&gt;0) {
-				for(auto&amp; y:layers[cur]) {
-					for(auto&amp; z: candidates) {
-						if(z&gt;=y.val &amp;&amp; z+y.sum&lt;=target) {
-							Node tmp_nd;
-							tmp_nd.val=z;
-							tmp_nd.sum=z+y.sum;
-							tmp_nd.path=y.path;
-							tmp_nd.path.push_back(z);
-							if(tmp_nd.sum==target) // reach the target, record the trace
-								trace.push_back(tmp_nd.path);
-							else
-								layers[next].push_back(tmp_nd);
-						}
-					} // end for z
-			   	} // end for y
-				cur=!cur;
-				next=!next;
-				layers[next].clear();
+            Node nd={x,x,{x}};
+            layers[cur].push_back(nd);
+            while(layers[cur].size()>0) {
+                for(auto& y:layers[cur]) {
+                    for(auto& z: candidates) {
+                        if(z>=y.val && z+y.sum<=target) {
+                            Node tmp_nd;
+                            tmp_nd.val=z;
+                            tmp_nd.sum=z+y.sum;
+                            tmp_nd.path=y.path;
+                            tmp_nd.path.push_back(z);
+                            if(tmp_nd.sum==target) // reach the target, record the trace
+                                trace.push_back(tmp_nd.path);
+                            else
+                                layers[next].push_back(tmp_nd);
+                        }
+                    } // end for z
+                } // end for y
+                cur=!cur;
+                next=!next;
+                layers[next].clear();
 
-				//cout&lt;&lt;endl;; // TEST ONLY
-		   	} // end while
-	   	}// end for
+                //cout<<endl;; // TEST ONLY
+            } // end while
+        }// end for
 
-		return trace;
+        return trace;
     } 
 };
-
-
-</node></node></int></int></int></int></int></pre>
+</pre>
 
 </article>
 

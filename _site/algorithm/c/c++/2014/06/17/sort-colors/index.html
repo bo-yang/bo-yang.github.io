@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,9 +429,9 @@
   <p><a href="https://oj.leetcode.com/problems/sort-colors/">Problem</a>:</p>
 
 <blockquote>
-  <p>Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.</p>
+<p>Given an array with n objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.</p>
 
-  <p>Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.</p>
+<p>Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.</p>
 </blockquote>
 
 <p>This problem is trivial when using two-pass counting sort: first pass count the numbers of each color, and then assign each element in array into corresponding regions in the array in the second pass.</p>
@@ -441,78 +441,72 @@
 <p>In order to implement above strategy, three indices can be used: one index for current element, one idex for the right-most red color, and one index for the left-most blue color. When meeting a red color, move it to the end of the red colors. When meeting a blue color, move it to the front(left-most) of the blue colors. And when meeting a green color, just increase current index.</p>
 
 <p>Following is my C++ implementation:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>class Solution {
+<div class="highlight"><pre><code class="language-" data-lang="">class Solution {
 public:
     void sortColors(int A[], int n) {
-		int idx=0,ridx=0,bidx=n-1; // ridx - index for red color, bidx - index for blue color
+        int idx=0,ridx=0,bidx=n-1; // ridx - index for red color, bidx - index for blue color
         while(idx&lt;=bidx) {
-			switch(A[idx]) {
-				case 0: { // Red color, move it to left
-					while(A[ridx]==0 &amp;&amp; ridx&lt;n)
-						++ridx;
-					if(idx&gt;ridx){
-						swap(A[idx],A[ridx]);
-						++ridx;
-					} else {
-						idx=ridx;
-					}
-					break;
-				}
-				case 1: { // Green color, skip it
-					++idx;					
-					break;
-				}
-				case 2: { // Blue color, move it to right
-					while(A[bidx]==2 &amp;&amp; bidx&gt;idx)
-						--bidx;
-					swap(A[idx],A[bidx]);
-					--bidx;
-					break;
-				}
-				default:
-					cout&lt;&lt;"Error: invalid color detected"&lt;&lt;endl;
-			}
-		} // end while
+            switch(A[idx]) {
+                case 0: { // Red color, move it to left
+                    while(A[ridx]==0 &amp;&amp; ridx&lt;n)
+                        ++ridx;
+                    if(idx&gt;ridx){
+                        swap(A[idx],A[ridx]);
+                        ++ridx;
+                    } else {
+                        idx=ridx;
+                    }
+                    break;
+                }
+                case 1: { // Green color, skip it
+                    ++idx;                  
+                    break;
+                }
+                case 2: { // Blue color, move it to right
+                    while(A[bidx]==2 &amp;&amp; bidx&gt;idx)
+                        --bidx;
+                    swap(A[idx],A[bidx]);
+                    --bidx;
+                    break;
+                }
+                default:
+                    cout&lt;&lt;"Error: invalid color detected"&lt;&lt;endl;
+            }
+        } // end while
     }
 };
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>And the following code can be used for test:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>#include &lt;iostream&gt;
+<div class="highlight"><pre><code class="language-" data-lang="">#include &lt;iostream&gt;
 #include &lt;utility&gt;
 #include &lt;cstdlib&gt;
 using namespace std;
 
 int main() {
-	/* initialize random seed: */
-	srand (time(NULL));
-	
-	const int N=10;
-	Solution sol;
-	int* A=new int[N];
-	cout&lt;&lt;"Before sorting:"&lt;&lt;endl;
-	for(int i=0;i&lt;N;++i) {
-		A[i]=rand()%3;
-		cout&lt;&lt;A[i]&lt;&lt;" ";
-	}
-	cout&lt;&lt;endl;
+    /* initialize random seed: */
+    srand (time(NULL));
 
-	sol.sortColors(A,N);
-	
-	cout&lt;&lt;"After sorting:"&lt;&lt;endl;
-	for(int i=0;i&lt;N;++i)
-		cout&lt;&lt;A[i]&lt;&lt;" ";
-	cout&lt;&lt;endl;
+    const int N=10;
+    Solution sol;
+    int* A=new int[N];
+    cout&lt;&lt;"Before sorting:"&lt;&lt;endl;
+    for(int i=0;i&lt;N;++i) {
+        A[i]=rand()%3;
+        cout&lt;&lt;A[i]&lt;&lt;" ";
+    }
+    cout&lt;&lt;endl;
+
+    sol.sortColors(A,N);
+
+    cout&lt;&lt;"After sorting:"&lt;&lt;endl;
+    for(int i=0;i&lt;N;++i)
+        cout&lt;&lt;A[i]&lt;&lt;" ";
+    cout&lt;&lt;endl;
 
 
-	delete [] A;
+    delete [] A;
 }
-</code></pre>
-</div>
-
+</code></pre></div>
 </article>
 
 

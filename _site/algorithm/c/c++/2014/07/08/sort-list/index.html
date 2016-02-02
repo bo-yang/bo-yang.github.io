@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,142 +429,136 @@
   <p><a href="https://oj.leetcode.com/problems/sort-list/">The Sort List problem</a> is:</p>
 
 <blockquote>
-  <p>Sort a linked list in \( O(n log n) \) time using constant space complexity.</p>
+<p>Sort a linked list in \( O(n log n) \) time using constant space complexity.</p>
 </blockquote>
 
-<p>The solution to this problem is modifying the array/vector based merge sort and make it work for lists. The key is finding the middle node of each list to be sorted. This can be achieved by two pointers: one points to the head of list(<code class="highlighter-rouge">mid</code>), and the other point to the next node of head(<code class="highlighter-rouge">end</code>). Then iteratively go through elements in the list - the <code class="highlighter-rouge">mid</code> pointer increase one position in each iteration, while the <code class="highlighter-rouge">end</code> pointer increased two positions. Thus when <code class="highlighter-rouge">end</code> pointer reached the end of the list, the <code class="highlighter-rouge">mid</code> pointer arrives at the middle of the list.</p>
+<p>The solution to this problem is modifying the array/vector based merge sort and make it work for lists. The key is finding the middle node of each list to be sorted. This can be achieved by two pointers: one points to the head of list(<code>mid</code>), and the other point to the next node of head(<code>end</code>). Then iteratively go through elements in the list - the <code>mid</code> pointer increase one position in each iteration, while the <code>end</code> pointer increased two positions. Thus when <code>end</code> pointer reached the end of the list, the <code>mid</code> pointer arrives at the middle of the list.</p>
 
 <p>Following is my C++ implementation, which contains methods of creating list, printing list, sorting list and deleting allocated memory.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>struct ListNode {
+<div class="highlight"><pre><code class="language-" data-lang="">struct ListNode {
     int val;
     ListNode *next;
     ListNode(int x) : val(x), next(NULL) {}
 };
- 
+
 class Solution {
 public:
     ListNode *sortList(ListNode *head) {
-	   //cout&lt;&lt;"sorting list: "; // TEST ONLY
-	   //printList(head); // TEST ONLY
+       //cout&lt;&lt;"sorting list: "; // TEST ONLY
+       //printList(head); // TEST ONLY
 
        if(head==NULL || head-&gt;next==NULL) 
-		   return head;
+           return head;
 
-	   // Find the middle node of the list
-	   ListNode* mid=head;
-	   ListNode* end=head-&gt;next;
-	   while(end!=NULL &amp;&amp; end-&gt;next!=NULL) {
-		   mid=mid-&gt;next;
-		   end=end-&gt;next-&gt;next;
-	   }
+       // Find the middle node of the list
+       ListNode* mid=head;
+       ListNode* end=head-&gt;next;
+       while(end!=NULL &amp;&amp; end-&gt;next!=NULL) {
+           mid=mid-&gt;next;
+           end=end-&gt;next-&gt;next;
+       }
 
-	   ListNode* head_right=mid-&gt;next;
-	   mid-&gt;next=NULL;
-	   ListNode* head_left=sortList(head);
-	   head_right=sortList(head_right);
-	   head=mergeList(head_left,head_right);
+       ListNode* head_right=mid-&gt;next;
+       mid-&gt;next=NULL;
+       ListNode* head_left=sortList(head);
+       head_right=sortList(head_right);
+       head=mergeList(head_left,head_right);
 
-	   //cout&lt;&lt;"merged lists: "; // TEST ONLY
-	   //printList(head); // TEST ONLY
+       //cout&lt;&lt;"merged lists: "; // TEST ONLY
+       //printList(head); // TEST ONLY
 
-	   return head;
+       return head;
     }
 
-	ListNode* mergeList(ListNode *head_left, ListNode *head_right) {
-		if(head_left==NULL &amp;&amp; head_right==NULL)
-			return NULL;
+    ListNode* mergeList(ListNode *head_left, ListNode *head_right) {
+        if(head_left==NULL &amp;&amp; head_right==NULL)
+            return NULL;
 
-		// Determine the head
-		ListNode* head=NULL;
-		if(head_left==NULL || head_left-&gt;val &gt; head_right-&gt;val) {
-			head=head_right; 
-			head_right=head_right-&gt;next;
-		} else {
-			head=head_left;
-			head_left=head_left-&gt;next;
-		}
+        // Determine the head
+        ListNode* head=NULL;
+        if(head_left==NULL || head_left-&gt;val &gt; head_right-&gt;val) {
+            head=head_right; 
+            head_right=head_right-&gt;next;
+        } else {
+            head=head_left;
+            head_left=head_left-&gt;next;
+        }
 
-		// Merge lists in ascending order
-		ListNode* node=head;
-		while(head_left!=NULL &amp;&amp; head_right!=NULL) {
-			if(head_left-&gt;val &lt; head_right-&gt;val) {
-				node-&gt;next=head_left;
-				head_left=head_left-&gt;next;
-			} else {
-				node-&gt;next=head_right;
-				head_right=head_right-&gt;next;
-			}
-			node=node-&gt;next;
-		}
-		while(head_left!=NULL) {
-			node-&gt;next=head_left;
-			node=node-&gt;next;
-			head_left=head_left-&gt;next;
-		}
-		while(head_right!=NULL) {
-			node-&gt;next=head_right;
-			node=node-&gt;next;
-			head_right=head_right-&gt;next;
-		}
+        // Merge lists in ascending order
+        ListNode* node=head;
+        while(head_left!=NULL &amp;&amp; head_right!=NULL) {
+            if(head_left-&gt;val &lt; head_right-&gt;val) {
+                node-&gt;next=head_left;
+                head_left=head_left-&gt;next;
+            } else {
+                node-&gt;next=head_right;
+                head_right=head_right-&gt;next;
+            }
+            node=node-&gt;next;
+        }
+        while(head_left!=NULL) {
+            node-&gt;next=head_left;
+            node=node-&gt;next;
+            head_left=head_left-&gt;next;
+        }
+        while(head_right!=NULL) {
+            node-&gt;next=head_right;
+            node=node-&gt;next;
+            head_right=head_right-&gt;next;
+        }
 
-		return head;
-	}
+        return head;
+    }
 
-	// Create list using given vector of integers
-	ListNode* createList(vector&lt;int&gt;&amp; vec) {
-		head=new ListNode(vec[0]);
-		ListNode* node=head;
-		for(int i=1;i&lt;vec.size();++i) {
-			node-&gt;next=new ListNode(vec[i]);
-			node=node-&gt;next;
-		}
+    // Create list using given vector of integers
+    ListNode* createList(vector&lt;int&gt;&amp; vec) {
+        head=new ListNode(vec[0]);
+        ListNode* node=head;
+        for(int i=1;i&lt;vec.size();++i) {
+            node-&gt;next=new ListNode(vec[i]);
+            node=node-&gt;next;
+        }
 
-		return head;
-	}
+        return head;
+    }
 
-	void printList(ListNode *head) {
-		ListNode* node=head;
-		while(node!=NULL) {
-			cout&lt;&lt;node-&gt;val&lt;&lt;" ";
-			node=node-&gt;next;
-		}
-		cout&lt;&lt;endl;
-	}
+    void printList(ListNode *head) {
+        ListNode* node=head;
+        while(node!=NULL) {
+            cout&lt;&lt;node-&gt;val&lt;&lt;" ";
+            node=node-&gt;next;
+        }
+        cout&lt;&lt;endl;
+    }
 
-	Solution() {head=NULL;}
+    Solution() {head=NULL;}
 
-	~Solution() {
-		ListNode* node=head;
-		while(head!=NULL){
-			head=head-&gt;next;
-			delete node;
-			node=head;
-		}
-	}
+    ~Solution() {
+        ListNode* node=head;
+        while(head!=NULL){
+            head=head-&gt;next;
+            delete node;
+            node=head;
+        }
+    }
 
 private:
-	ListNode* head;
+    ListNode* head;
 };
-</code></pre>
-</div>
-
+</code></pre></div>
 <p>Following code can be used for testing the above solution:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">int main() {
+    vector&lt;int&gt; vec={3,6,2,-1,4,7,4,11,9,20,8,-3,0};
+    Solution sol;
+    ListNode* head=sol.createList(vec);
+    cout&lt;&lt;"Before sorting:"&lt;&lt;endl;
+    sol.printList(head);
 
-<div class="highlighter-rouge"><pre class="highlight"><code>int main() {
-	vector&lt;int&gt; vec={3,6,2,-1,4,7,4,11,9,20,8,-3,0};
-	Solution sol;
-	ListNode* head=sol.createList(vec);
-	cout&lt;&lt;"Before sorting:"&lt;&lt;endl;
-	sol.printList(head);
-	
-	head=sol.sortList(head);
-	cout&lt;&lt;"After sorting:"&lt;&lt;endl;
-	sol.printList(head);
+    head=sol.sortList(head);
+    cout&lt;&lt;"After sorting:"&lt;&lt;endl;
+    sol.printList(head);
 }
-</code></pre>
-</div>
-
+</code></pre></div>
 </article>
 
 

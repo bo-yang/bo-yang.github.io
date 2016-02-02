@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012112" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602012210" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -426,114 +426,106 @@
 </div>
 
 <article class="post-content">
-  <p>When using <code class="highlighter-rouge">pthread</code> for multithreading, most threads call <code class="highlighter-rouge">pthread_exit()</code> implicitly on return from the thread start routine. Besides, <code class="highlighter-rouge">pthread_exit()</code> also can be used to terminate the initial process thread in <code class="highlighter-rouge">main()</code>, leaving other threads to continue operation. The process will go away automatically when the last thread terminates. If you don’t care about the process exit status, or if is difficult to know the created thread IDs(e.g. created by third party APIs), you can call</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>pthread_detach(pthread_self());
+  <p>When using <code>pthread</code> for multithreading, most threads call <code>pthread_exit()</code> implicitly on return from the thread start routine. Besides, <code>pthread_exit()</code> also can be used to terminate the initial process thread in <code>main()</code>, leaving other threads to continue operation. The process will go away automatically when the last thread terminates. If you don&rsquo;t care about the process exit status, or if is difficult to know the created thread IDs(e.g. created by third party APIs), you can call </p>
+<div class="highlight"><pre><code class="language-" data-lang="">pthread_detach(pthread_self());
 pthread_exit(NULL);
-</code></pre>
-</div>
+</code></pre></div>
+<p>at the end of the <code>main()</code> function. </p>
 
-<p>at the end of the <code class="highlighter-rouge">main()</code> function.</p>
+<p>However, you must be carefull when using <code>pthread_exit()</code> in the main thread. Because after calling <code>pthread_exit()</code> and before the process really terminate, the process becomes &ldquo;zombie&rdquo; - it still exists even though it is &ldquo;dead&rdquo;, just like a Unix/Linux process that&rsquo;s terminated but hasn&rsquo;t yet been &ldquo;reaped&rdquo; by a <code>wait</code> operation. The zombie process may retain most or all of the system resources that it used when running, so it is not a good idea to leave threads in this state for longer than necessary. And obviously, zombie process cannot save you resources! So also don&rsquo;t try <code>pthread_exit()</code> for saving CPU and memory.</p>
 
-<p>However, you must be carefull when using <code class="highlighter-rouge">pthread_exit()</code> in the main thread. Because after calling <code class="highlighter-rouge">pthread_exit()</code> and before the process really terminate, the process becomes “zombie” - it still exists even though it is “dead”, just like a Unix/Linux process that’s terminated but hasn’t yet been “reaped” by a <code class="highlighter-rouge">wait</code> operation. The zombie process may retain most or all of the system resources that it used when running, so it is not a good idea to leave threads in this state for longer than necessary. And obviously, zombie process cannot save you resources! So also don’t try <code class="highlighter-rouge">pthread_exit()</code> for saving CPU and memory.</p>
-
-<p>I also noticed a undocumented problem caused by <code class="highlighter-rouge">pthread_exit()</code> - it may lead to failure of open procfs(<code class="highlighter-rouge">/proc/</code>) files! If one of your threads would open <code class="highlighter-rouge">/proc/mounts</code>(<em>currently I only find this file will go wrong, and other procfs files like <code class="highlighter-rouge">/proc/cpuinfo</code> or <code class="highlighter-rouge">/proc/uptime</code> can be successfully opened</em>) during its life, and <code class="highlighter-rouge">pthread_exit()</code> is called after creating these threads in the main thread, you will meet the “Invalid argument” error because of functions like <code class="highlighter-rouge">open("/proc/mounts",'r')</code>.</p>
+<p>I also noticed a undocumented problem caused by <code>pthread_exit()</code> - it may lead to failure of open procfs(<code>/proc/</code>) files! If one of your threads would open <code>/proc/mounts</code>(<em>currently I only find this file will go wrong, and other procfs files like <code>/proc/cpuinfo</code> or <code>/proc/uptime</code> can be successfully opened</em>) during its life, and <code>pthread_exit()</code> is called after creating these threads in the main thread, you will meet the &ldquo;Invalid argument&rdquo; error because of functions like <code>open(&quot;/proc/mounts&quot;,&#39;r&#39;)</code>.</p>
 
 <p>Following program demonstrates this problem:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>#include &lt;pthread.h&gt;
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;pthread.h&gt;
 #include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
-#define NUM_THREADS	5
+#define NUM_THREADS 5
+</span>
+<span class="kt">void</span> <span class="o">*</span><span class="nf">PrintHello</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">threadid</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="kt">long</span> <span class="n">tid</span><span class="p">;</span>
+   <span class="n">tid</span> <span class="o">=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">threadid</span><span class="p">;</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">"Hello World! It's me, thread #%ld!</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tid</span><span class="p">);</span>
 
-void *PrintHello(void *threadid)
-{
-   long tid;
-   tid = (long)threadid;
-   printf("Hello World! It's me, thread #%ld!\n", tid);
+   <span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// sleep sometime
+</span>
+   <span class="cm">/* Read file */</span>
+   <span class="kt">FILE</span><span class="o">*</span> <span class="n">fp</span><span class="o">=</span><span class="n">fopen</span><span class="p">(</span><span class="s">"/proc/mounts"</span><span class="p">,</span><span class="s">"r"</span><span class="p">);</span> <span class="c1">// would fail
+</span>   <span class="c1">//FILE* fp=fopen("/proc/cpuinfo","r");  // would succeed
+</span>   <span class="k">if</span><span class="p">(</span><span class="n">fp</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+       <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">"Failed to open file!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+       <span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="mi">80</span><span class="p">];</span>
+       <span class="k">if</span><span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="n">fp</span><span class="p">)</span><span class="o">==</span><span class="nb">NULL</span><span class="p">)</span>
+           <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s">"Failed to read file!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+       <span class="k">else</span>
+           <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="s">"%s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">line</span><span class="p">);</span>
+       <span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+   <span class="p">}</span>
 
-   sleep(10); // sleep sometime
+   <span class="n">sleep</span><span class="p">(</span><span class="mi">1200</span><span class="p">);</span>
+   <span class="n">pthread_exit</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+<span class="p">}</span>
 
-   /* Read file */
-   FILE* fp=fopen("/proc/mounts","r"); // would fail
-   //FILE* fp=fopen("/proc/cpuinfo","r");  // would succeed
-   if(fp==NULL) {
-	   fprintf(stderr,"Failed to open file!\n");
-   } else {
-	   char line[80];
-	   if(fgets(line,80,fp)==NULL)
-		   fprintf(stderr,"Failed to read file!\n");
-	   else
-		   fprintf(stdout,"%s\n",line);
-	   fclose(fp);
-   }
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+   <span class="n">pthread_t</span> <span class="n">threads</span><span class="p">[</span><span class="n">NUM_THREADS</span><span class="p">];</span>
+   <span class="kt">int</span> <span class="n">rc</span><span class="p">;</span>
+   <span class="kt">long</span> <span class="n">t</span><span class="p">;</span>
+   <span class="k">for</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">t</span><span class="o">&lt;</span><span class="n">NUM_THREADS</span><span class="p">;</span><span class="n">t</span><span class="o">++</span><span class="p">){</span>
+     <span class="n">printf</span><span class="p">(</span><span class="s">"In main: creating thread %ld</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span>
+     <span class="n">rc</span> <span class="o">=</span> <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">threads</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">PrintHello</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">t</span><span class="p">);</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">rc</span><span class="p">){</span>
+       <span class="n">printf</span><span class="p">(</span><span class="s">"ERROR; return code from pthread_create() is %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">rc</span><span class="p">);</span>
+       <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+       <span class="p">}</span>
+     <span class="p">}</span>
 
-   sleep(1200);
-   pthread_exit(NULL);
-}
+   <span class="cm">/* Last thing that main() should do */</span>
+   <span class="n">pthread_detach</span><span class="p">(</span><span class="n">pthread_self</span><span class="p">());</span>
+   <span class="n">pthread_exit</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>After building above code, say <code>pthread_exit_test</code>, run this program and find the PID of it. Then <code>cat /proc/&lt;PID&gt;/status</code>, you will find the process status like</p>
+<div class="highlight"><pre><code class="language-" data-lang="">Name:   pthread_exit_te
+State:  Z (zombie)
+Tgid:   3091
+Pid:    3091
+PPid:   2849
+TracerPid:  0
+Uid:    370845  370845  370845  370845
+Gid:    25  25  25  25
+Utrace: 0
+FDSize: 0
+Groups: 25 1000000312 
+Threads:    6
+SigQ:   0/78966
+SigPnd: 0000000000000000
+ShdPnd: 0000000000000000
+SigBlk: 0000000000000000
+SigIgn: 0000000000000004
+SigCgt: 0000000180000000
+CapInh: 0000000000000000
+CapPrm: 0000000000000000
+CapEff: 0000000000000000
+CapBnd: ffffffffffffffff
+Cpus_allowed:   3f
+Cpus_allowed_list:  0-5
+Mems_allowed:   00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+Mems_allowed_list:  0
+voluntary_ctxt_switches:    14
+nonvoluntary_ctxt_switches: 1
+</code></pre></div>
+<p>For the above program, if replace <code>pthread_exit()</code> with <code>pthread_join()</code> or <code>while(1) {sleep(120); }</code>, it would work well. The <code>while</code> loop is especially usefull when you don&rsquo;t know the thread id to be joined.</p>
 
-int main(int argc, char *argv[])
-{
-   pthread_t threads[NUM_THREADS];
-   int rc;
-   long t;
-   for(t=0;t&lt;NUM_THREADS;t++){
-     printf("In main: creating thread %ld\n", t);
-     rc = pthread_create(&amp;threads[t], NULL, PrintHello, (void *)t);
-     if (rc){
-       printf("ERROR; return code from pthread_create() is %d\n", rc);
-       exit(-1);
-       }
-     }
-
-   /* Last thing that main() should do */
-   pthread_detach(pthread_self());
-   pthread_exit(NULL);
-}
-</code></pre>
-</div>
-
-<p>After building above code, say <code class="highlighter-rouge">pthread_exit_test</code>, run this program and find the PID of it. Then <code class="highlighter-rouge">cat /proc/&lt;PID&gt;/status</code>, you will find the process status like</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>Name:	pthread_exit_te
-State:	Z (zombie)
-Tgid:	3091
-Pid:	3091
-PPid:	2849
-TracerPid:	0
-Uid:	370845	370845	370845	370845
-Gid:	25	25	25	25
-Utrace:	0
-FDSize:	0
-Groups:	25 1000000312 
-Threads:	6
-SigQ:	0/78966
-SigPnd:	0000000000000000
-ShdPnd:	0000000000000000
-SigBlk:	0000000000000000
-SigIgn:	0000000000000004
-SigCgt:	0000000180000000
-CapInh:	0000000000000000
-CapPrm:	0000000000000000
-CapEff:	0000000000000000
-CapBnd:	ffffffffffffffff
-Cpus_allowed:	3f
-Cpus_allowed_list:	0-5
-Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
-Mems_allowed_list:	0
-voluntary_ctxt_switches:	14
-nonvoluntary_ctxt_switches:	1
-</code></pre>
-</div>
-
-<p>For the above program, if replace <code class="highlighter-rouge">pthread_exit()</code> with <code class="highlighter-rouge">pthread_join()</code> or <code class="highlighter-rouge">while(1) {sleep(120); }</code>, it would work well. The <code class="highlighter-rouge">while</code> loop is especially usefull when you don’t know the thread id to be joined.</p>
-
-<p>Until now I am still don’t know why openning <code class="highlighter-rouge">/proc/mounts</code> would fail and why openning <code class="highlighter-rouge">/proc/cpuinfo</code> could succeed in above code. I also tried other system file or link, and found all of them could be successively readed.</p>
+<p>Until now I am still don&rsquo;t know why openning <code>/proc/mounts</code> would fail and why openning <code>/proc/cpuinfo</code> could succeed in above code. I also tried other system file or link, and found all of them could be successively readed. </p>
 
 <h3 id="references">References</h3>
+
 <ol>
-  <li><a href="https://groups.google.com/forum/#!topic/comp.programming.threads/b1r0oUwG4rM">Should pthread_exit() be used in main()?</a></li>
-  <li><a href="http://books.google.com/books?id=_xvnuFzo7q0C&amp;printsec=frontcover&amp;source=gbs_ge_summary_r&amp;cad=0#v=onepage&amp;q&amp;f=false">Programming with POSIX Threads</a></li>
+<li><a href="https://groups.google.com/forum/#!topic/comp.programming.threads/b1r0oUwG4rM">Should pthread_exit() be used in main()?</a></li>
+<li><a href="http://books.google.com/books?id=_xvnuFzo7q0C&amp;printsec=frontcover&amp;source=gbs_ge_summary_r&amp;cad=0#v=onepage&amp;q&amp;f=false">Programming with POSIX Threads</a></li>
 </ol>
 
 </article>
