@@ -51,6 +51,7 @@ In order to connecting layers together via heads, at the begining of each layer,
 
 Following is the code to converting a left-right binary tree to down-right representation. For more details, please refer to [https://github.com/bo-yang/BinaryTree](https://github.com/bo-yang/BinaryTree). 
 
+~~~cpp
 	TreeNode* Convert2DL(TreeNode* root) {
 		if(root==NULL)
 			return NULL;
@@ -91,7 +92,7 @@ Following is the code to converting a left-right binary tree to down-right repre
 
 		return root;
 	}
-
+~~~
 
 ### References:
 
