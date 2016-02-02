@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Find The Shortest Path In Triangle Numbers &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Algorithm, C/C++">
+    <link rel="canonical" href="http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012335" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Find The Shortest Path In Triangle Numbers">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Find The Shortest Path In Triangle Numbers" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Find The Shortest Path In Triangle Numbers</h1>
+  <span class="post-meta">Sep 12, 2014</span><br>
+  
+  <span class="post-meta small">
+  
+    2 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <h3 id="problem">Problem</h3>
+
+<p>An example of triangle of numbers is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>      1
+     / \
+    2   5
+   / \ / \ 
+  9   4  33
+ / \ / \/  \ 
+11  6  99   0
+</code></pre>
+</div>
+
+<p>In each row (except for the last), the numbers are adjacent to two numbers on the row below it. For example, 9 is adjacent to 11 and 6.</p>
+
+<p>Imagine drawing a path connecting adjacent numbers from top to bottom. Take the sum of the numbers in this path. The lowest possible sum you could arrive at for this triangle is 13 (1 + 2 + 4 + 6).</p>
+
+<p>Write a program which will read a file describing a triangle such as this one, and determine the lowest possible sum of numbers which connect the top and the bottom. The input will be a tab-separated list of numbers.</p>
+
+<h3 id="solution">Solution</h3>
+
+<p>The lowest sum can be found recursively by choosing the child node with the smallest sum. This greedy strategy should work for both positive and negative numbers, because every possible combination of nearby numbers are considered in the recursion(considering the connections of numbers in two nearby layers).</p>
+
+<p>The recursion function is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>OPT(i,j)=tnum(i,j)+min(OPT(i+1,j),OPT(i+1,j+1))
+</code></pre>
+</div>
+
+<p>where <code class="highlighter-rouge">OPT(i,j)</code> is the lowest sum of number <code class="highlighter-rouge">tnum[i][j]</code>. Above function can be implemented by dynamic programming.</p>
+
+<p>The data structure for triangle numbers can be:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>// Data structure of Triangle numbers.
+class TriangNum {
+public:
+	TriangNum();	// default constructor
+	TriangNum(string file);	// constructor
+	~TriangNum(){}
+
+	const vector&lt;vector&lt;int&gt; &gt;&amp; LoadData(string file); // Build a binary tree from Triangle Numbers
+	int ShortestPath();	// Find the path of lowest possible sum of numbers
+	void PrintNum() const;
+	void PrintPath() const;
+
+private:
+	vector&lt;vector&lt;int&gt; &gt; tnum;	// triangle numbers
+	vector&lt;vector&lt;int&gt; &gt; trace; // all possible sums in the shortest path
+	vector&lt;int&gt; spath; // shortest path
+
+	vector&lt;int&gt; ReadNumbers(string line); // Read numbers in a line
+	int Min(int x, int y) { return x&lt;y?x:y; }
+};
+</code></pre>
+</div>
+
+<p>And the code for finding the shortest path is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>int TriangNum::ShortestPath() {
+	// Find the lowest possible sum of numbers.
+	trace=tnum;
+	for(int i=tnum.size()-2;i&gt;=0;--i) {
+		for(int j=tnum[i].size()-1;j&gt;=0;--j) {
+			trace[i][j]=tnum[i][j]+Min(trace[i+1][j],trace[i+1][j+1]);
+		}
+	}
+
+	// Find the shortest path
+	spath.push_back(tnum[0][0]);
+	int idx=0;
+	for(int i=1;i&lt;tnum.size();++i) {
+		if(trace[i][idx]&lt;trace[i][idx+1]) {
+			spath.push_back(tnum[i][idx]);
+		} else {
+			idx+=1;
+			spath.push_back(tnum[i][idx]);
+		}
+	}
+
+	return trace[0][0];
+}
+</code></pre>
+</div>
+
+<h3 id="complexity">Complexity</h3>
+
+<p>Given a triangle number with n lines, then:</p>
+
+<ul>
+  <li>Time complexity for finding the lowest sum of numbers: \( 1+2+ \cdots +n = O(n^2) \).</li>
+  <li>Time complexity for finding the shortest path: \( O(n) \).</li>
+  <li>Space complexity for above code is \( O(n^2) \), because the sums from bottom to the root of each node are recorded in an matrix.</li>
+</ul>
+
+<h3 id="code">Code</h3>
+
+<p>For the complete code of this problem, please refer to <a href="https://github.com/bo-yang/ProgrammingChallenges/tree/master/triangle_numbers">https://github.com/bo-yang/ProgrammingChallenges/tree/master/triangle_numbers</a>.</p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Find The Shortest Path In Triangle Numbers&url=http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers&title=Find The Shortest Path In Triangle Numbers" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers&name=Find The Shortest Path In Triangle Numbers" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers&title=Find The Shortest Path In Triangle Numbers" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers&t=Find The Shortest Path In Triangle Numbers" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/2014/09/12/shortest-path-in-triangle-numbers';
+    var disqus_title      = 'Find The Shortest Path In Triangle Numbers';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//2014/09/12/shortest-path-in-triangle-numbers" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2016/01/26/gen-hex-dump" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/31/centos7-install-tftp-server" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/20/linux-system-log-2" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/05/27/retrieve-last-log" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/04/02/customize-linux-system-log-timestamp" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/03/30/debug-kernel-space-memory-leak" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/12/linux-system-log" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/07/click-notes-click-language" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/23/click-notes-overview" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/19/remote-local-linux-develop-env-2" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

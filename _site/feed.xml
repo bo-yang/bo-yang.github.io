@@ -67,8 +67,8 @@
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 26 Jan 2016 00:00:00 -0800</pubDate>
-        <link>http://www.bo-yang.net//network/c/c++/click/2016/01/26/gen-hex-dump/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//network/c/c++/click/2016/01/26/gen-hex-dump/</guid>
+        <link>http://www.bo-yang.net//2016/01/26/gen-hex-dump</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2016/01/26/gen-hex-dump</guid>
       </item>
     
       <item>
@@ -85,19 +85,19 @@
 
 &lt;p&gt;Then edit &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/xinetd.d/tftp&lt;/code&gt; - set &lt;code class=&quot;highlighter-rouge&quot;&gt;disable&lt;/code&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;no&lt;/code&gt; and add &lt;code class=&quot;highlighter-rouge&quot;&gt;-c&lt;/code&gt; option into &lt;code class=&quot;highlighter-rouge&quot;&gt;server_args&lt;/code&gt; if you need to upload files to TFTP server from client.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;service tftp
-{
-	socket_type		= dgram
-	protocol		= udp
-	wait			= yes
-	user			= root
-	server			= /usr/sbin/in.tftpd
-	server_args		= -c -s /tftpboot
-	disable			= no
-	per_source		= 11
-	cps			    = 100 2
-	flags			= IPv4
-}
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;service&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tftp&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;socket_type&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dgram&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;protocol&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;udp&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;wait&lt;/span&gt;			&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yes&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;			&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;			&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;usr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sbin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tftpd&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;server_args&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tftpboot&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;disable&lt;/span&gt;			&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;no&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;per_source&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;cps&lt;/span&gt;			    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+    	&lt;span class=&quot;n&quot;&gt;flags&lt;/span&gt;			&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IPv4&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -211,8 +211,8 @@ systemctl start firewalld
 
 </description>
         <pubDate>Mon, 31 Aug 2015 00:00:00 -0700</pubDate>
-        <link>http://www.bo-yang.net//notes/unix/linux/2015/08/31/centos7-install-tftp-server/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//notes/unix/linux/2015/08/31/centos7-install-tftp-server/</guid>
+        <link>http://www.bo-yang.net//2015/08/31/centos7-install-tftp-server</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2015/08/31/centos7-install-tftp-server</guid>
       </item>
     
       <item>
@@ -296,8 +296,8 @@ local1.panic;local1.alert;local1.crit;local1.err   -/var/log/messages
 &lt;/ul&gt;
 </description>
         <pubDate>Thu, 20 Aug 2015 00:00:00 -0700</pubDate>
-        <link>http://www.bo-yang.net//notes/unix/linux/2015/08/20/linux-system-log-2/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//notes/unix/linux/2015/08/20/linux-system-log-2/</guid>
+        <link>http://www.bo-yang.net//2015/08/20/linux-system-log-2</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2015/08/20/linux-system-log-2</guid>
       </item>
     
       <item>
@@ -392,8 +392,8 @@ count = len/bsize + 1;
 &lt;/ol&gt;
 </description>
         <pubDate>Wed, 27 May 2015 00:00:00 -0700</pubDate>
-        <link>http://www.bo-yang.net//notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//notes/unix/linux/openwrt/2015/05/27/retrieve-last-log/</guid>
+        <link>http://www.bo-yang.net//2015/05/27/retrieve-last-log</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2015/05/27/retrieve-last-log</guid>
       </item>
     
       <item>
@@ -442,8 +442,8 @@ done
 
 </description>
         <pubDate>Thu, 02 Apr 2015 00:00:00 -0700</pubDate>
-        <link>http://www.bo-yang.net//notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//notes/unix/linux/openwrt/2015/04/02/customize-linux-system-log-timestamp/</guid>
+        <link>http://www.bo-yang.net//2015/04/02/customize-linux-system-log-timestamp</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2015/04/02/customize-linux-system-log-timestamp</guid>
       </item>
     
       <item>
@@ -558,8 +558,8 @@ LowFree:           94548 kB
 &lt;p&gt;The first line could only be “TRACE kmalloc-4096 alloc” or “free”, which logs the entry address of this slab. So if the memory leak is very fast, it is possible to monitor all of the alloc/free slabs before the system out of memory. Then find out addresses that never freed, analyze the call traces, and hopefull we could detect the problematic module or functions.&lt;/p&gt;
 </description>
         <pubDate>Mon, 30 Mar 2015 00:00:00 -0700</pubDate>
-        <link>http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//notes/unix/linux/2015/03/30/debug-kernel-space-memory-leak/</guid>
+        <link>http://www.bo-yang.net//2015/03/30/debug-kernel-space-memory-leak</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2015/03/30/debug-kernel-space-memory-leak</guid>
       </item>
     
       <item>
@@ -851,8 +851,8 @@ else
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 12 Jan 2015 00:00:00 -0800</pubDate>
-        <link>http://www.bo-yang.net//notes/unix/linux/2015/01/12/linux-system-log/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//notes/unix/linux/2015/01/12/linux-system-log/</guid>
+        <link>http://www.bo-yang.net//2015/01/12/linux-system-log</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2015/01/12/linux-system-log</guid>
       </item>
     
       <item>
@@ -1078,8 +1078,8 @@ Script::add_handlers()
 
 </description>
         <pubDate>Wed, 07 Jan 2015 00:00:00 -0800</pubDate>
-        <link>http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//notes/network/2015/01/07/click-notes-click-language/</guid>
+        <link>http://www.bo-yang.net//2015/01/07/click-notes-click-language</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2015/01/07/click-notes-click-language</guid>
       </item>
     
       <item>
@@ -1380,8 +1380,8 @@ private:
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 23 Dec 2014 00:00:00 -0800</pubDate>
-        <link>http://www.bo-yang.net//notes/network/2014/12/23/click-notes-overview/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//notes/network/2014/12/23/click-notes-overview/</guid>
+        <link>http://www.bo-yang.net//2014/12/23/click-notes-overview</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2014/12/23/click-notes-overview</guid>
       </item>
     
       <item>
@@ -1531,8 +1531,8 @@ sshfs &lt;span class=&quot;nv&quot;&gt;$USER&lt;/span&gt;@&lt;span class=&quot;k
 
 </description>
         <pubDate>Fri, 19 Dec 2014 00:00:00 -0800</pubDate>
-        <link>http://www.bo-yang.net//unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/</link>
-        <guid isPermaLink="true">http://www.bo-yang.net//unix/linux/notes/2014/12/19/remote-local-linux-develop-env-2/</guid>
+        <link>http://www.bo-yang.net//2014/12/19/remote-local-linux-develop-env-2</link>
+        <guid isPermaLink="true">http://www.bo-yang.net//2014/12/19/remote-local-linux-develop-env-2</guid>
       </item>
     
   </channel>

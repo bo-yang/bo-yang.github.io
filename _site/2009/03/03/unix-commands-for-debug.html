@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>UNIX Commands Used to Debug &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Unix/Linux">
+    <link rel="canonical" href="http://www.bo-yang.net//2009/03/03/unix-commands-for-debug">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012335" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="UNIX Commands Used to Debug">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//2009/03/03/unix-commands-for-debug">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="UNIX Commands Used to Debug" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//2009/03/03/unix-commands-for-debug" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>UNIX Commands Used to Debug</h1>
+  <span class="post-meta">Mar 3, 2009</span><br>
+  
+  <span class="post-meta small">
+  
+    13 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <div>
+<h1>UNIX Commands Used to Debug</h1>
+<div></p>
+<div>
+<h3>1. truss</h3>
+<div>bjbldc:/home/bonny &gt;2&gt; truss -p 6535</div>
+<div>read(11, 0xFFBED6C8, 1024) &nbsp; &nbsp; &nbsp;(sleeping...)</div>
+<div></div>
+</div>
+<h3>2. ps -fu &lt;user_name&gt;</h3>
+</div>
+<div>bjbldc:/home/bonny &gt;&gt; ps -fu bonny</div>
+<div>&nbsp;&nbsp; &nbsp; UID &nbsp; PID &nbsp;PPID &nbsp;C &nbsp; &nbsp;STIME TTY &nbsp; &nbsp; &nbsp;TIME CMD</div>
+<div>&nbsp;&nbsp; bonny &nbsp;9006 &nbsp;9005 &nbsp;0 &nbsp; Feb 26 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 19743 &nbsp;8910 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 dtfile -session dtstaGjf</div>
+<div>&nbsp;&nbsp; bonny &nbsp;8784 &nbsp;8776 &nbsp;0 &nbsp; Feb 16 ? &nbsp; &nbsp; &nbsp; &nbsp;0:13 dtwm</div>
+<div>&nbsp;&nbsp; bonny &nbsp;8911 &nbsp;8776 &nbsp;0 &nbsp; Feb 16 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm -session dt_.a</div>
+<div>q4t -C -ls</div>
+<div>&nbsp;&nbsp; bonny 18994 &nbsp;8784 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttpro</div>
+<div>cid 2.19cDSU 01 8751 1289637095 1 1 39237 135.</div>
+<div>&nbsp;&nbsp; bonny 25275 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 25 ? &nbsp; &nbsp; &nbsp; &nbsp;0:11 gvim BMAcpMsgpr.c</div>
+<div>&nbsp;&nbsp; bonny 25106 &nbsp;8911 &nbsp;0 &nbsp; Feb 25 pts/186 &nbsp;0:00 -ksh</div>
+<div></div>
+<h3>3. ptree &lt;user_name&gt;</h3>
+<div>
+<div>bjbldc:/home/bonny &gt;&gt; ptree bonny</div>
+<div>195 &nbsp; /usr/sbin/inetd -s</div>
+<div>&nbsp;&nbsp;6224 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6225 &nbsp;dtterm -xrm *workspaceList: COOL msc-s COOL/ msc-s -title COOL msc-s Installing</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6252 &nbsp;tail -f /bld/bonny/coolxdir_2/logs/Mar02.18:42:41/APs/31/COOLAPLOG</div>
+<div>&nbsp;&nbsp;6254 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6256 &nbsp;dtterm -xrm *workspaceList: COOL msc-s COOL/ msc-s -title COOL msc-s Installing</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6276 &nbsp;tail -f /bld/bonny/coolxdir_2/logs/Mar02.18:42:41/APs/33/COOLAPLOG</div>
+<div>&nbsp;&nbsp;6278 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6279 &nbsp;dtterm -xrm *workspaceList: COOL msc-s COOL/ msc-s -title COOL msc-s Installing</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6300 &nbsp;tail -f /bld/bonny/coolxdir_2/logs/Mar02.18:42:41/APs/35/COOLAPLOG</div>
+<div>&nbsp;&nbsp;6297 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6298 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLvirtenv -r /bld/bonny/coolxdir_2/APs/31 -a</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6535 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLstartAP -sL -c80 -Wcool01 -Fcoolap23 -dOWL</div>
+<div>&nbsp;&nbsp;6335 &nbsp;in.rshd</div>
+<div>&nbsp;&nbsp; &nbsp;6336 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLvirtenv -r /bld/bonny/coolxdir_2/APs/35 -a</div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp;6627 &nbsp;/usr/bin/ksh /opt/cool/tools/lib/COOLstartAP -sA -c80 -Wcool01 -Fcoolap09 -dOWL</div>
+<div></div>
+<h3>4. uptime</h3>
+<div>
+<div>&nbsp;cool01:/home/bonny &gt;&gt; uptime</div>
+<div>&nbsp;10:17pm &nbsp;up 18:10, &nbsp;2 users, &nbsp;load average: 0.03, 0.01, 0.06</div>
+<div></div>
+<h3>5. uname</h3>
+<div>
+<div>cool01:/home/bonny &gt;127&gt; uname -a</div>
+<div>SunOS cool01 5.8 Generic_117350-58 sun4u sparc SUNW,UltraAX-i2</div>
+<div></div>
+<div>
+<div>bjbldc:sc4.2/SUNWspro/bin &gt;&gt; uname -n</div>
+<div>bjbldc</div>
+<div></div>
+<h3>6. nmake</h3>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; nmake GLIB10=N -n -k -f mytstmk dumpit &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>
+<div>+ set +x</div>
+<div>+ cd /bld/bonny/1apx10</div>
+<div>+ /bin/pwd</div>
+<div>+ set -x</div>
+<div>+ : "STARTING ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div>+ print FMS_GOLDEN_HDRLIB=</div>
+<div>FMS_GOLDEN_HDRLIB=</div>
+<div>+ rm -f&nbsp;</div>
+<div>+ : "COMPLETED ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div></div>
+<h3>7. lb</h3>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -iA -mapbld</div>
+<div></div>
+<div>&nbsp;LB Pool Status for apbld &nbsp;(03/02/09 23:58:21):</div>
+<div></div>
+<div>&nbsp;MACH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RTP &nbsp;%AV &nbsp;RSP &nbsp;CPUF &nbsp;MLA IMLA &nbsp;PLA &nbsp;LA1 &nbsp; LA5 &nbsp; LA15</div>
+<div>bjbldb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1400 &nbsp; 99 &nbsp; 1 &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.08 &nbsp;0.06 &nbsp;0.08 &nbsp;0.30</div>
+<div>bjbldc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1394 &nbsp; 99 &nbsp; 3 &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.17 &nbsp;0.16 &nbsp;0.20 &nbsp;0.29</div>
+<div>bjbldd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1363 &nbsp; 96 &nbsp; 2 &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.61 &nbsp;0.60 &nbsp;0.63 &nbsp;0.69</div>
+<div>------------------------------------------------------------------------------</div>
+<div>AVERAGE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1385 &nbsp; 98 &nbsp; - &nbsp;1406 &nbsp;20.2 &nbsp;20 &nbsp;0.29 &nbsp;0.27 &nbsp;0.30 &nbsp;0.43</div>
+<div>TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4157 &nbsp; 98 &nbsp; 3 &nbsp;4218 &nbsp;60.6 &nbsp;60 &nbsp;0.86 &nbsp;0.82 &nbsp;0.91 &nbsp;1.28</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;apbld : &nbsp;98% available &nbsp; (98% available IMLA)&nbsp;</div>
+<div></div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -m bjbldc nmake GLIB10=N -n -k -f mytstmk dumpit</div>
+<div>+ set +x</div>
+<div>+ cd /bld/bonny/1apx10</div>
+<div>+ /bin/pwd</div>
+<div>+ set -x</div>
+<div>+ : "STARTING ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div>+ print FMS_GOLDEN_HDRLIB=</div>
+<div>FMS_GOLDEN_HDRLIB=</div>
+<div>+ rm -f&nbsp;</div>
+<div>+ : "COMPLETED ecpc NMAKE IN ROOT `silent date '+%m/%d/%y %H:%M:%S'`"</div>
+<div></div>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -iA -m CoolServers.ngnap</div>
+<div></div>
+<div>&nbsp;LB Pool Status for coolservers.ngnap &nbsp;(03/03/09 00:15:06):</div>
+<div></div>
+<div>&nbsp;MACH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RTP &nbsp;%AV &nbsp;RSP &nbsp;CPUF &nbsp;MLA IMLA &nbsp;PLA &nbsp;LA1 &nbsp; LA5 &nbsp; LA15</div>
+<div>coolap26 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1361 &nbsp; 94 &nbsp;21 &nbsp;1440 &nbsp;10.0 &nbsp;10 &nbsp;0.54 &nbsp;0.52 &nbsp;0.52 &nbsp;0.52</div>
+<div>coolap14 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 1 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap01 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 2 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.00 &nbsp;0.01 &nbsp;0.01</div>
+<div>coolap12 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 4 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap09 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 5 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap21 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp; 6 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap19 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;11 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap13 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;13 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap16 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;14 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap24 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;16 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap23 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;17 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap25 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 698 &nbsp; 99 &nbsp;19 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>coolap02 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 3 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.07 &nbsp;0.01 &nbsp;0.04 &nbsp;0.10</div>
+<div>coolap18 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 7 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.06 &nbsp;0.04 &nbsp;0.04 &nbsp;0.06</div>
+<div>coolap07 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 8 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.06 &nbsp;0.05 &nbsp;0.11 &nbsp;0.23</div>
+<div>coolap05 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp; 9 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.07 &nbsp;0.05 &nbsp;0.05 &nbsp;0.10</div>
+<div>coolap10 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp;10 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.07 &nbsp;0.05 &nbsp;0.05 &nbsp;0.07</div>
+<div>coolap20 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 695 &nbsp; 99 &nbsp;15 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.06 &nbsp;0.02 &nbsp;0.04 &nbsp;0.06</div>
+<div>coolap08 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 693 &nbsp; 99 &nbsp;12 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.10 &nbsp;0.08 &nbsp;0.10 &nbsp;0.21</div>
+<div>coolap17 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 691 &nbsp; 98 &nbsp;18 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;0.13 &nbsp;0.11 &nbsp;0.13 &nbsp;0.12</div>
+<div>coolap11 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 623 &nbsp; 89 &nbsp;20 &nbsp; 700 &nbsp;10.0 &nbsp;10 &nbsp;1.09 &nbsp;0.96 &nbsp;0.39 &nbsp;0.26</div>
+<div>------------------------------------------------------------------------------</div>
+<div>AVERAGE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;724 &nbsp; 98 &nbsp; - &nbsp; 735 &nbsp;10.0 &nbsp;10 &nbsp;0.12 &nbsp;0.09 &nbsp;0.07 &nbsp;0.09</div>
+<div>TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;15216 &nbsp; 98 &nbsp;21 15440 210.0 210 &nbsp;2.48 &nbsp;1.89 &nbsp;1.48 &nbsp;1.84</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;coolservers.ngnap : &nbsp;98% available &nbsp; (98% available IMLA)&nbsp;</div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; lb -iA -m coolservers</div>
+<div></div>
+<div>&nbsp;LB Pool Status for coolservers &nbsp;(03/03/09 00:31:49):</div>
+<div></div>
+<div>&nbsp;MACH &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RTP &nbsp;%AV &nbsp;RSP &nbsp;CPUF &nbsp;MLA IMLA &nbsp;PLA &nbsp;LA1 &nbsp; LA5 &nbsp; LA15</div>
+<div>cool01 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 1 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool11 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 6 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool05 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 8 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool13 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp; 9 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.01 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool02 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 660 &nbsp; 99 &nbsp;12 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.02 &nbsp;0.01 &nbsp;0.01</div>
+<div>cool09 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 659 &nbsp; 99 &nbsp;10 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;0.04 &nbsp;0.01 &nbsp;0.01 &nbsp;0.03</div>
+<div>cool08 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 642 &nbsp; 99 &nbsp; 2 &nbsp; 644 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool07 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 642 &nbsp; 99 &nbsp; 5 &nbsp; 644 &nbsp;10.0 &nbsp;10 &nbsp;0.02 &nbsp;0.00 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool10 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 641 &nbsp; 99 &nbsp;11 &nbsp; 644 &nbsp;10.0 &nbsp;10 &nbsp;0.03 &nbsp;0.01 &nbsp;0.00 &nbsp;0.01</div>
+<div>cool14 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 591 &nbsp; 89 &nbsp; 3 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;1.07 &nbsp;1.05 &nbsp;1.03 &nbsp;1.04</div>
+<div>cool12 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 589 &nbsp; 88 &nbsp; 7 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;1.10 &nbsp;1.08 &nbsp;1.06 &nbsp;1.17</div>
+<div>cool03 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 376 &nbsp; 56 &nbsp; 4 &nbsp; 662 &nbsp;10.0 &nbsp;10 &nbsp;4.32 &nbsp;4.14 &nbsp;3.36 &nbsp;2.59</div>
+<div>------------------------------------------------------------------------------</div>
+<div>AVERAGE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;620 &nbsp; 94 &nbsp; - &nbsp; 658 &nbsp;10.0 &nbsp;10 &nbsp;0.56 &nbsp;0.53 &nbsp;0.46 &nbsp;0.41</div>
+<div>TOTAL &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7440 &nbsp; 94 &nbsp;12 &nbsp;7890 120.0 120 &nbsp;6.72 &nbsp;6.32 &nbsp;5.47 &nbsp;4.91</div>
+<div></div>
+<div>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;coolservers : &nbsp;94% available &nbsp; (94% available IMLA)&nbsp;</div>
+<div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h3>8.&nbsp;timex&nbsp;</h3>
+<div>timex- time a &nbsp;command; &nbsp;report &nbsp;process &nbsp;data &nbsp;and &nbsp;system&nbsp;activity.</div>
+<div></p>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; timex ping cool01</p>
+<div>cool01 is alive</div>
+<div></div>
+<div>real &nbsp; &nbsp; &nbsp; &nbsp;0.01</div>
+<div>user &nbsp; &nbsp; &nbsp; &nbsp;0.01</div>
+<div>sys &nbsp; &nbsp; &nbsp; &nbsp; 0.00</div>
+<div></div>
+<h3>9. remsh</h3>
+<div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; remsh bjbldd ps -fu bonny</div>
+<div>&nbsp;&nbsp; &nbsp; UID &nbsp; PID &nbsp;PPID &nbsp;C &nbsp; &nbsp;STIME TTY &nbsp; &nbsp; &nbsp;TIME CMD</div>
+<div>&nbsp;&nbsp; bonny 29793 29752 &nbsp;0 22:18:04 pts/179 &nbsp;0:00 rlogin bjbldc</div>
+<div>&nbsp;&nbsp; bonny 15715 15669 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 dtfile -session dtstaGjf</div>
+<div>&nbsp;&nbsp; bonny 23825 23779 &nbsp;0 00:38:20 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/bin/remsh cool01 eval set -aSTART[0]=/home/bonny/.env[</div>
+<div>&nbsp;&nbsp; bonny &nbsp;2409 15716 &nbsp;0 16:05:08 pts/41 &nbsp; 0:00 -ksh</div>
+<div>&nbsp;&nbsp; bonny 14037 &nbsp; &nbsp; 1 &nbsp;0 16:33:12 ? &nbsp; &nbsp; &nbsp; &nbsp;0:01 gvim COOLein2ap</div>
+<div>&nbsp;&nbsp; bonny 15542 15541 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /opt/exp/lib/vnc/vncconfig.bin -nowin</div>
+<div>&nbsp;&nbsp; bonny 29545 29543 &nbsp;0 22:17:05 pts/195 &nbsp;0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 23779 &nbsp;2666 &nbsp;0 00:38:19 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/bin/remsh cool01 eval set -aSTART[0]=/home/bonny/.env[</div>
+<div>&nbsp;&nbsp; bonny 24503 24502 &nbsp;0 20:49:36 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/clear3bemlab -i -p -lab bonny</div>
+<div>&nbsp;&nbsp; bonny 15498 &nbsp; &nbsp; 1 &nbsp;1 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;2:04 Xvnc :10 -desktop bjbldd:10 () -httpd /opt/exp/lib/vnc/clas</div>
+<div>&nbsp;&nbsp; bonny 23776 &nbsp; &nbsp; 1 &nbsp;0 00:38:19 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/tools/lib/GetDynCOOLID UNAME=coolap01 CO</div>
+<div>&nbsp;&nbsp; bonny 24175 24174 &nbsp;0 20:40:11 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/clear3bemlab -i -p -lab bonny</div>
+<div>&nbsp;&nbsp; bonny 13782 13780 &nbsp;0 16:28:08 pts/180 &nbsp;0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 24502 24343 &nbsp;0 20:49:36 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 15668 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 /usr/dt/bin/ttsession</div>
+<div>&nbsp;&nbsp; bonny 23482 &nbsp; &nbsp; 1 &nbsp;0 00:38:15 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/tools/lib/GetDynCOOLID UNAME=cool01</div>
+<div>&nbsp;&nbsp; bonny 19606 &nbsp; &nbsp; 1 &nbsp;0 17:06:00 ? &nbsp; &nbsp; &nbsp; &nbsp;0:12 gvim /apx/ecpc33/OFC5L33.0/1apx10/rules/tps.mk</div>
+<div>&nbsp;&nbsp; bonny &nbsp;2666 &nbsp; &nbsp; 1 &nbsp;0 16:07:01 ? &nbsp; &nbsp; &nbsp; &nbsp;0:11 /opt/cool/tools/lib/TclPro1.5/solaris-sparc/bin/wish8.3 -f&nbsp;</div>
+<div>&nbsp;&nbsp; bonny 28765 15692 &nbsp;0 22:14:32 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 13970 13969 &nbsp;0 13:45:33 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e athena -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 28767 28765 &nbsp;0 22:14:32 ?? &nbsp; &nbsp; &nbsp; 0:00 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 24588 24587 &nbsp;0 20:51:46 pts/41 &nbsp; 0:00 rlogin cool01</div>
+<div>&nbsp;&nbsp; bonny 14189 14162 &nbsp;2 13:45:39 ? &nbsp; &nbsp; &nbsp; 40:47 rm -rf /opt/cool2b/bonny/APs/21</div>
+<div>&nbsp;&nbsp; bonny 15717 15669 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:01 /usr/dt/bin/sdtperfmeter -f -H -t cpu -t disk -s 1 -name fp</div>
+<div>&nbsp;&nbsp; bonny 14126 14125 &nbsp;0 13:45:39 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/clear3bemlab -i -p -lab bonny</div>
+<div>&nbsp;&nbsp; bonny 15637 15635 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 -ksh -c &nbsp; &nbsp; &nbsp;unset DT; &nbsp; &nbsp; DISPLAY=bjbldd:10; &nbsp; &nbsp; &nbsp; /usr/dt</div>
+<div>&nbsp;&nbsp; bonny 15716 15669 &nbsp;0 &nbsp; Feb 26 ?? &nbsp; &nbsp; &nbsp; 0:03 /usr/dt/bin/dtterm -session dt_.aq4t -C -ls</div>
+<div>&nbsp;&nbsp; bonny 23483 23482 &nbsp;0 00:38:15 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 sleep 1800</div>
+<div>&nbsp;&nbsp; bonny 29752 29750 &nbsp;0 22:17:55 pts/179 &nbsp;0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 24132 24019 &nbsp;0 20:40:08 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 tail +0f /tmp/ldcool.24019/log.ldcool_bonny_bonny</div>
+<div>&nbsp;&nbsp; bonny 15541 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /opt/exp/bin/ksh /opt/exp/lib/vnc/vncconfig -nowin</div>
+<div>&nbsp;&nbsp; bonny 29750 29749 &nbsp;0 22:17:55 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 19600 &nbsp; &nbsp; 1 &nbsp;0 17:05:59 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 15692 15669 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:15 dtwm</div>
+<div>&nbsp;&nbsp; bonny 15634 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dsdm</div>
+<div>&nbsp;&nbsp; bonny 29570 29569 &nbsp;0 22:17:09 pts/195 &nbsp;0:00 rlogin cool01</div>
+<div>&nbsp;&nbsp; bonny 29794 29793 &nbsp;0 22:18:04 pts/179 &nbsp;0:00 rlogin bjbldc</div>
+<div>&nbsp;&nbsp; bonny 13879 &nbsp; &nbsp; 1 &nbsp;0 16:29:06 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 14082 13970 &nbsp;0 13:45:38 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 tail +0f /tmp/ldcool.13970/log.ldcool_bonny_bonny</div>
+<div>&nbsp;&nbsp; bonny 24019 24018 &nbsp;0 20:40:07 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 23823 23779 &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0:00 &lt;defunct&gt;</div>
+<div>&nbsp;&nbsp; bonny 14289 &nbsp; &nbsp; 1 &nbsp;0 16:38:04 ? &nbsp; &nbsp; &nbsp; &nbsp;0:19 gvim /opt/nwstools/bin/getnmakevar</div>
+<div>&nbsp;&nbsp; bonny 15533 &nbsp; &nbsp; 1 &nbsp;0 &nbsp; Feb 26 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /usr/dt/bin/Xsession</div>
+<div>&nbsp;&nbsp; bonny 28773 28767 &nbsp;0 22:14:33 pts/78 &nbsp; 0:00 /bin/ksh</div>
+<div>&nbsp;&nbsp; bonny 29542 15692 &nbsp;0 22:17:05 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 15669 15637 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 /usr/dt/bin/dtsession</div>
+<div>&nbsp;&nbsp; bonny 14162 14126 &nbsp;0 13:45:39 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/tools/bin/rmv_coolap -C /opt/cool2b/bonn</div>
+<div>&nbsp;&nbsp; bonny 23777 23776 &nbsp;0 00:38:19 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 sleep 1800</div>
+<div>&nbsp;&nbsp; bonny 24562 24503 &nbsp;1 20:49:36 ? &nbsp; &nbsp; &nbsp; 17:28 rm -rf APs</div>
+<div>&nbsp;&nbsp; bonny 29569 29545 &nbsp;0 22:17:09 pts/195 &nbsp;0:00 rlogin cool01</div>
+<div>&nbsp;&nbsp; bonny 24232 24175 &nbsp;3 20:40:11 ? &nbsp; &nbsp; &nbsp; 15:44 rm -rf APs</div>
+<div>&nbsp;&nbsp; bonny 14125 13970 &nbsp;0 13:45:39 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e athena -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 15635 15533 &nbsp;0 &nbsp; Feb 26 pts/118 &nbsp;0:00 /usr/dt/bin/sdt_shell -c &nbsp; &nbsp; &nbsp;unset DT; &nbsp; &nbsp; DISPLAY=bjbldd:</div>
+<div>&nbsp;&nbsp; bonny 13779 15692 &nbsp;0 16:28:08 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 13882 &nbsp; &nbsp; 1 &nbsp;0 16:29:07 ? &nbsp; &nbsp; &nbsp; &nbsp;0:10 gvim coolit</div>
+<div>&nbsp;&nbsp; bonny 14034 &nbsp; &nbsp; 1 &nbsp;0 16:33:12 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 14286 &nbsp; &nbsp; 1 &nbsp;0 16:38:03 pts/180 &nbsp;0:00 cscope -dl -f /apx/ecpc33/OFC5L33.0/1apx10/cscope/cscope.ou</div>
+<div>&nbsp;&nbsp; bonny 29749 15692 &nbsp;0 22:17:55 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /usr/dt/bin/dtexec -open 0 -ttprocid 2.19fbdI 01 15668 1289</div>
+<div>&nbsp;&nbsp; bonny 24343 24342 &nbsp;0 20:49:33 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 24460 24343 &nbsp;0 20:49:35 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 tail +0f /tmp/ldcool.24343/log.ldcool_bonny_bonny</div>
+<div>&nbsp;&nbsp; bonny 29543 29542 &nbsp;0 22:17:05 ?? &nbsp; &nbsp; &nbsp; 0:01 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 13780 13779 &nbsp;0 16:28:08 ?? &nbsp; &nbsp; &nbsp; 0:00 /usr/dt/bin/dtterm</div>
+<div>&nbsp;&nbsp; bonny 24174 24019 &nbsp;0 20:40:11 ? &nbsp; &nbsp; &nbsp; &nbsp;0:00 /bin/ksh /opt/cool/bin/ldcool -u bonny -e apollo -o is41 -l</div>
+<div>&nbsp;&nbsp; bonny 24587 &nbsp;2409 &nbsp;0 20:51:46 pts/41 &nbsp; 0:00 rlogin cool01</div>
+<div>bjbldb:bld/bonny/1apx10 &gt;&gt; remsh bjbldd ps -fu bonny | grep nmake</div>
+<div>&nbsp;&nbsp; bonny 14289 &nbsp; &nbsp; 1 &nbsp;0 16:38:04 ? &nbsp; &nbsp; &nbsp; &nbsp;0:19 gvim /opt/nwstools/bin/getnmakevar</div>
+</div>
+</div>
+</div>
+</div>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//2009/03/03/unix-commands-for-debug" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=UNIX Commands Used to Debug&url=http://www.bo-yang.net//2009/03/03/unix-commands-for-debug" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//2009/03/03/unix-commands-for-debug" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//2009/03/03/unix-commands-for-debug&title=UNIX Commands Used to Debug" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//2009/03/03/unix-commands-for-debug&name=UNIX Commands Used to Debug" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//2009/03/03/unix-commands-for-debug&title=UNIX Commands Used to Debug" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//2009/03/03/unix-commands-for-debug&t=UNIX Commands Used to Debug" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/2009/03/03/unix-commands-for-debug';
+    var disqus_title      = 'UNIX Commands Used to Debug';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//2009/03/03/unix-commands-for-debug" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2016/01/26/gen-hex-dump" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/31/centos7-install-tftp-server" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/20/linux-system-log-2" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/05/27/retrieve-last-log" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/04/02/customize-linux-system-log-timestamp" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/03/30/debug-kernel-space-memory-leak" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/12/linux-system-log" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/07/click-notes-click-language" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/23/click-notes-overview" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/19/remote-local-linux-develop-env-2" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

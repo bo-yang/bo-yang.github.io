@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TCL/Tk一句话笔记（一） &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="">
+    <link rel="canonical" href="http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012335" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="TCL/Tk一句话笔记（一）">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="TCL/Tk一句话笔记（一）" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>TCL/Tk一句话笔记（一）</h1>
+  <span class="post-meta">Apr 5, 2009</span><br>
+  
+  <span class="post-meta small">
+  
+    5 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><div><span></p>
+<div>
+<h1><span style="font-weight:normal;font-size:12px;">1. A backslash as the last character in a line is converted into a space, and all the white space at the beginning of the next line is replaced by this substitution.</span></h1>
+<div>2. The difference between double quotes and curly braces is that quotes allow substitutions to occur in the group, while curly braces prevent substitutions.</div>
+<div>3. Tcl uses the&nbsp;proc&nbsp;command to define procedures.</div>
+<div>4. The&nbsp;expr&nbsp;command is used to parse and evaluate math expressions. You can make&nbsp;expr&nbsp;operate more efficiently by grouping the entire expression in curly braces.</div>
+<div>5. TCL assumes that variable names contain only letters, digits, and the underscore. The construct&nbsp;$foo.o&nbsp;represents a concatenation of the value of&nbsp;foo&nbsp;and the literal&nbsp;".o".</div>
+<div>6. If the variable reference is not delimited by punctuation or white space, then you can use curly braces to explicitly delimit the variable name (e.g.,&nbsp;${x}).</div>
+<div>7. You can delete a variable with the&nbsp;unset&nbsp;command:</div>
+<pre>unset ?-nocomplain? ?--? <span class="docEmphasis">varName varName2</span> ...<a name="idd1e8098"></a><a name="idd1e8103"></a><a name="idd1e8108"></a></pre>
+<pre>8. <span>The existence of a variable can be tested with the&nbsp;info exists&nbsp;command.</span></pre>
+<pre><span style="font-family:verdana;">9. You should always group expressions in curly braces and let&nbsp;expr&nbsp;do command and variable substitutions.</span></pre>
+<pre><span style="font-family:verdana;">10. In TCL, the&nbsp;#&nbsp;must occur at the beginning of a command.</span></pre>
+<pre><span style="font-family:verdana;">11. A surprising property of Tcl comments is that curly braces inside comments are still counted for the purposes of finding matching brackets.</span></pre>
+<pre><span style="font-family:verdana;">12. Command arguments are separated by white space, unless arguments are grouped with curly braces or double quotes as described below. If you forget the space, you will get syntax errors about unexpected characters after the closing brace or quote.</span></pre>
+<pre><span style="font-family:verdana;">13. The Tcl shells pass the command-line arguments to the script as the value of the&nbsp;argv&nbsp;variable. The number of command-line arguments is given by the&nbsp;argc&nbsp;variable. The name of the program, or script, is not part of&nbsp;argv&nbsp;nor is it counted by&nbsp;argc. Instead, it is put into the&nbsp;argv0&nbsp;variable.&nbsp;argv&nbsp;is a list, so you can use the&nbsp;lindex&nbsp;command to extract items from it:</span></pre>
+<p class="docText"><a name="idd1e11776"></a></p>
+<pre>set arg1 [lindex $argv 0]</pre>
+<pre>14. <span>Some command-line options are interpreted by&nbsp;<span class="docEmphasis">wish</span>, and they do not appear in the&nbsp;argv&nbsp;variable. The general form of the&nbsp;<span class="docEmphasis">wish</span>&nbsp;command line is:</span></pre>
+<pre>wish ?options? ?script? ?arg1 arg2?</pre>
+<p class="docText">If no script is specified, then&nbsp;<span class="docEmphasis">wish</span>&nbsp;just enters an interactive command loop.</p>
+<p class="docText">15. You can use the&nbsp;info script&nbsp;command to find out where the CGI script is, and from that load the supporting file. The&nbsp;file dirname&nbsp;and&nbsp;file join&nbsp;commands manipulate file names in a platform-independent way.</p>
+<p class="docText">set dir [file dirname [info script]]&nbsp;</p>
+<p class="docText">set datafile [file join $dir guestbook.data]</p>
+<p class="docText">16. You can ask&nbsp;string&nbsp;for valid operations by giving it a bad one:</p>
+<pre>string junk<br /><span class="docEmphasis">=&gt; bad option "junk": should be bytelength, compare, equal, first, index, is, last, length<br /><img src="http://docs.google.com/Doc?docid=dd6nw3mt_258p66mf8fx&amp;hl=en" border="0" alt="graphics/ccc.gif" width="14" height="9" align="left" />, map, match, range, repeat, replace, tolower, totitle, toupper, trim, trimleft, trimright,<br /><img src="http://docs.google.com/Doc?docid=dd6nw3mt_258p66mf8fx&amp;hl=en" border="0" alt="graphics/ccc.gif" width="14" height="9" align="left" /> wordend, or wordstart</span></pre>
+<pre>17. <span>The&nbsp;string map&nbsp;command translates a string based on a character map. The map is in the form of a input, output list. Wherever a string contains an input sequence, that is replaced with the corresponding output. For example:</span></pre>
+<pre>string map {f p d l} food<br /><span class="docEmphasis">=&gt; pool</span></pre>
+<p class="docText">The inputs and outputs can be more than one character and they do not have to be the same length:</p>
+<pre>string map {f p d ll oo u} food<br /><span class="docEmphasis">=&gt; pull</span></pre>
+<pre>18. <span>A position specifier is&nbsp;<span class="docEmphasis">i$</span>, which means take the value from argument&nbsp;<span class="docEmphasis">i</span>&nbsp;as opposed to the normally corresponding argument. The position counts from 1. If a position is specified for one format keyword, the position must be used for all of them. If you group the format specification with double quotes, you need to quote the&nbsp;$&nbsp;with a backslash:</span></pre>
+<pre>&nbsp;&nbsp; &nbsp;set lang 2<br />&nbsp;&nbsp; &nbsp;format "%${lang}/$s" one un uno<br /><span class="docEmphasis">&nbsp;&nbsp; &nbsp;=&gt; un</span></pre>
+<pre>19. <span>The&nbsp;binary&nbsp;command provides conversions between strings and packed binary data representations. The&nbsp;binary format&nbsp;command takes values and packs them according to a template. The resulting binary value is returned:</span></pre>
+<p class="docText"><a name="idd1e16724"></a></p>
+<pre>binary format <span class="docEmphasis">template value</span> ?<span class="docEmphasis">value</span> ...?</pre>
+<p class="docText">The&nbsp;binary scan&nbsp;command extracts values from a binary string according to a similar template. It assigns values to a set of Tcl variables:</p>
+<pre>&nbsp;&nbsp; &nbsp;binary scan <span class="docEmphasis">value template variable</span> ?<span class="docEmphasis">variable</span> ...?</pre>
+<pre>20. Tcl commands described are: list, lindex, llength, <br />lrange, lappend, linsert, lreplace, <br />lsearch, lset, lsort, concat, join, <br />and split.</pre>
+<pre>21. <span>Tcl commands related to list are: list, lindex, llength, lrange, lappend, linsert, lreplace, lsearch, lset, lsort, concat, join, and split.</span></pre>
+<pre><span style="font-family:verdana;">22. Procedure</span></pre>
+<pre>22.1 <span><span style="font-size:x-small;">Default parameter values</span></span></pre>
+<p><a name="idd1e21501"></a></p>
+<pre>&nbsp;&nbsp; &nbsp;proc P2 {a {b 7} {c -2} } {
+ &nbsp;&nbsp; &nbsp;expr $a / $b + $c
+&nbsp;&nbsp; &nbsp;}
+&nbsp;&nbsp; &nbsp;P2 6 3
+<span class="docEmphasis">&nbsp;&nbsp; &nbsp;=&gt; 0</span>
+</pre>
+<pre>22.2 <span>A procedure can take a variable number of arguments by 
+specifying the args keyword as the last parameter. When the procedure 
+is called, the args parameter is a list that contains all the remaining 
+values.</span></pre>
+<pre><span style="font-family:verdana;">23. The rename command changes the name of a command:&nbsp;</span></pre>
+<pre>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;rename foo foo.orig</pre>
+<pre><span style="font-family:Verdana;">The other thing you can do with </span><span style="font-family:Verdana;">rename</span><span style="font-family:Verdana;"> is completely remove a command by renaming it to the empty string:</span></pre>
+<pre>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;rename exec {}</pre>
+<pre>24. <span>Use the upvar command when you need to pass the name of a variable, as 
+opposed to its value, into a procedure.</span></pre>
+<pre><span style="font-family:verdana;">25. Call by Name Using&nbsp;<span style="font-family:'Courier New';">upvar</span></span></pre>
+<pre><span style="font-family:verdana;">Use the </span>upvar<span style="font-family:verdana;"> command when you need to pass the name of a variable, as opposed to its value, into a procedure. <span style="text-decoration:underline;">The </span></span><span style="text-decoration:underline;">upvar</span><span style="font-family:verdana;"><span style="text-decoration:underline;"> command associates a local variable with a variable in a scope up the Tcl call stack</span>. The syntax of the upvar command is:</span></pre>
+<p class="docText"><a name="idd1e22008"></a></p>
+<pre>&nbsp;&nbsp; &nbsp;upvar <span class="docEmphasis">?level? varName localvar</span>
+</pre>
+<p class="docText">The&nbsp;<span class="docEmphasis">level</span>&nbsp;argument is optional, and it defaults to 1, which means one level up the Tcl call stack. You can specify some other number of frames to go up, or you can specify an absolute frame number with a #<span class="docEmphasis">number</span>&nbsp;syntax. Level #0 is the global scope.</p>
+<p class="docText">26. You can use any string as an index for array, but avoid using a string that contains spaces.</p>
+<p class="docText">27. The array get and array set operations are used to convert between an array and a list. The list returned by array get has an even number of elements. The first element is an index, and the next is the corresponding array value. The list elements continue to alternate between index and value. The list argument to array set must have the same structure.</p>
+<p class="docText">28.&nbsp;</p>
+<div></div>
+<p class="docText"><a name="idd1e23061"></a><a name="idd1e23066"></a></p>
+</div>
+<p></span></div></p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=TCL/Tk一句话笔记（一）&url=http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1&title=TCL/Tk一句话笔记（一）" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1&name=TCL/Tk一句话笔记（一）" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1&title=TCL/Tk一句话笔记（一）" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1&t=TCL/Tk一句话笔记（一）" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/2009/04/05/tcl-tk-one-line-1';
+    var disqus_title      = 'TCL/Tk一句话笔记（一）';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//2009/04/05/tcl-tk-one-line-1" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2016/01/26/gen-hex-dump" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/31/centos7-install-tftp-server" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/20/linux-system-log-2" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/05/27/retrieve-last-log" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/04/02/customize-linux-system-log-timestamp" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/03/30/debug-kernel-space-memory-leak" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/12/linux-system-log" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/07/click-notes-click-language" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/23/click-notes-overview" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/19/remote-local-linux-develop-env-2" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Implementing Inclusion Property with SimpleScalar &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Computer Architecture, C/C++">
+    <link rel="canonical" href="http://www.bo-yang.net//2014/04/18/inclusion-property">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012335" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Implementing Inclusion Property with SimpleScalar">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//2014/04/18/inclusion-property">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Implementing Inclusion Property with SimpleScalar" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//2014/04/18/inclusion-property" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Implementing Inclusion Property with SimpleScalar</h1>
+  <span class="post-meta">Apr 18, 2014</span><br>
+  
+  <span class="post-meta small">
+  
+    6 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <ol>
+  <li><a href="#inclusion_property">Inclusion Property</a></li>
+  <li><a href="#code_change">Code Change</a></li>
+  <li><a href="#experiments">Experiments</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ol>
+
+<h3 id="a-nameinclusionpropertyinclusion-propertya">1. <a name="inclusion_property">Inclusion Property</a></h3>
+
+<p>If the two-level cache system satisfies the inclusion property, it means everything in the primary cache is also in the secondary cache and all snooping can be done by the secondary cache. To implement the inclusion property, two requirements must be met:</p>
+
+<ul>
+  <li>Whenever a new block of data are loaded into(or removed from) L1 cache, they also should be loaded into(or removed from) the L2 cache.</li>
+  <li>Whenever a block of data are loaded into(or removed from) L2 cache, they also should be loaded into(or removed from) the L1 cache.</li>
+</ul>
+
+<p><em>SimpleScalar</em> already implemented the first requirement. When there is a cache miss in L1 cache, L2 cache will be accessed for the block. If the block are also cannot be found in the L2 cache, they will be loaded from the memory. The data consistency is kept in this way.</p>
+
+<p>However, the second requirement is not supported by the official SimpleScalar. To implement this feature, the data block must be checked every time L2 cache encounter a cache miss. Since all cache read/write operations are done in function cache_access(), the action of checking and removing data blocks from L1 cache should also be added into that function with the condition of accessing L2 cache.</p>
+
+<h3 id="a-namecodechangecode-changea">2. <a name="code_change">Code Change</a></h3>
+
+<p>Since there is no existing way in cache_t to find the upper level cache(DL1) of the DL2 cache, a new structure element</p>
+
+<p><code class="highlighter-rouge">struct cache_t *ucp;		/* upper level cache */</code></p>
+
+<p>should be added into struct cache_t. This pointer should be set to NULL in function cache_create() if the cache name is not “dl2”. Otherwise the pointer to DL1 cache should be assigned.</p>
+
+<p>To support the new added struct element, a new parameter</p>
+
+<p><code class="highlighter-rouge">struct cache_t *ucp;		/* upper level cache */</code></p>
+
+<p>should also be added into function cache_create(), which is called in sim-cache.c and sim-outorder.c. The new interface of this function becomes:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cm">/* create and initialize a general cache structure */</span>
+<span class="k">struct</span> <span class="n">cache_t</span> <span class="o">*</span>			<span class="cm">/* pointer to cache created */</span>
+<span class="n">cache_create</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>		<span class="cm">/* name of the cache */</span>
+	     <span class="kt">int</span> <span class="n">nsets</span><span class="p">,</span>			<span class="cm">/* total number of sets in cache */</span>
+	     <span class="kt">int</span> <span class="n">bsize</span><span class="p">,</span>			<span class="cm">/* block (line) size of cache */</span>
+	     <span class="kt">int</span> <span class="n">balloc</span><span class="p">,</span>		<span class="cm">/* allocate data space for blocks? */</span>
+	     <span class="kt">int</span> <span class="n">usize</span><span class="p">,</span>			<span class="cm">/* size of user data to alloc w/blks */</span>
+	     <span class="kt">int</span> <span class="n">assoc</span><span class="p">,</span>			<span class="cm">/* associativity of cache */</span>
+	     <span class="k">enum</span> <span class="n">cache_policy</span> <span class="n">policy</span><span class="p">,</span>	<span class="cm">/* replacement policy w/in sets */</span>
+	     <span class="cm">/* block access function, see description w/in struct cache def */</span>
+	     <span class="kt">unsigned</span> <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">blk_access_fn</span><span class="p">)(</span><span class="k">enum</span> <span class="n">mem_cmd</span> <span class="n">cmd</span><span class="p">,</span>
+					   <span class="n">md_addr_t</span> <span class="n">baddr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bsize</span><span class="p">,</span>
+					   <span class="k">struct</span> <span class="n">cache_blk_t</span> <span class="o">*</span><span class="n">blk</span><span class="p">,</span>
+					   <span class="n">tick_t</span> <span class="n">now</span><span class="p">),</span>
+	     <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">hit_latency</span><span class="p">,</span><span class="cm">/* latency in cycles for a hit */</span>
+	     <span class="k">struct</span> <span class="n">cache_t</span> <span class="o">*</span><span class="n">ucp</span><span class="p">);</span>	<span class="cm">/* upper level cache */</span>
+</code></pre>
+</div>
+
+<p>For DL2 cache, the pointer ucp is set to cache_dl1 in sim-cache.c in function cache_create(). For other cache, NULL is set. For example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">cache_dl2</span> <span class="o">=</span> <span class="n">cache_create</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">nsets</span><span class="p">,</span> <span class="n">bsize</span><span class="p">,</span> <span class="cm">/* balloc */</span><span class="n">FALSE</span><span class="p">,</span>
+				   <span class="cm">/* usize */</span><span class="mi">0</span><span class="p">,</span> <span class="n">assoc</span><span class="p">,</span> <span class="n">cache_char2policy</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
+				   <span class="n">dl2_access_fn</span><span class="p">,</span> <span class="cm">/* hit latency */</span><span class="mi">1</span><span class="p">,</span><span class="n">cache_dl1</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>As checking and removing blocks from DL1 only involves DL1 and DL2 cache, all the operations can be encapsulated in a function cache_inclusion(). This function is called after blocks moved out from DL2 in the case of cache miss. Then check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cm">/*
+ * Inclusion Property:
+ * 	Make sure data leave DL2 also leave DL1 
+ * */</span>
+<span class="kt">int</span> <span class="nf">cache_inclusion</span><span class="p">(</span><span class="k">struct</span> <span class="n">cache_t</span> <span class="o">*</span><span class="n">cp_l1</span><span class="p">,</span> <span class="cm">/* L1 cache */</span>
+		<span class="k">struct</span> <span class="n">cache_t</span> <span class="o">*</span><span class="n">cp_l2</span><span class="p">,</span> <span class="cm">/* L2 cache */</span>
+		<span class="n">tick_t</span> <span class="n">now</span><span class="p">)</span>		<span class="cm">/* time of access */</span>
+<span class="p">{</span>
+
+	<span class="cm">/* Loop through each set and each block in the L1 cache, 
+	 * probe the L2 cache to guaranttee the inclusion */</span>
+	<span class="kt">int</span> <span class="n">num_l1_sets</span> <span class="o">=</span> <span class="n">cp_l1</span><span class="o">-&gt;</span><span class="n">set_mask</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">set</span><span class="p">;</span>
+  	<span class="k">struct</span> <span class="n">cache_blk_t</span> <span class="o">*</span><span class="n">blk</span><span class="p">;</span>
+	<span class="n">md_addr_t</span> <span class="n">addr</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">hindex</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">num_hash_buckets</span> <span class="o">=</span> <span class="n">cp_l1</span><span class="o">-&gt;</span><span class="n">hsize</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">there</span><span class="p">;</span> <span class="cm">/* indicates if the L1 line is in L2 */</span>
+	<span class="kt">int</span> <span class="n">lat</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+	<span class="cm">/* for each set */</span>
+	<span class="k">for</span><span class="p">(</span><span class="n">set</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">set</span><span class="o">&lt;</span><span class="n">num_l1_sets</span><span class="p">;</span> <span class="n">set</span><span class="o">++</span><span class="p">){</span>
+		<span class="cm">/* for each block in a higly-associativity cache*/</span>
+  		<span class="k">if</span> <span class="p">(</span><span class="n">num_hash_buckets</span><span class="p">){</span>
+			<span class="cm">/* for each hash bucket */</span>
+			<span class="k">for</span><span class="p">(</span><span class="n">hindex</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">hindex</span><span class="o">&lt;</span><span class="n">num_hash_buckets</span><span class="p">;</span> <span class="n">hindex</span><span class="o">++</span><span class="p">){</span>
+			    <span class="cm">/* for each block in a hash bucket */</span>
+			    <span class="k">for</span> <span class="p">(</span><span class="n">blk</span><span class="o">=</span><span class="n">cp_l1</span><span class="o">-&gt;</span><span class="n">sets</span><span class="p">[</span><span class="n">set</span><span class="p">].</span><span class="n">hash</span><span class="p">[</span><span class="n">hindex</span><span class="p">];</span>
+				 <span class="n">blk</span><span class="p">;</span>
+				 <span class="n">blk</span><span class="o">=</span><span class="n">blk</span><span class="o">-&gt;</span><span class="n">hash_next</span><span class="p">)</span>
+				<span class="p">{</span>	
+					<span class="cm">/* Probe the L2 cache for this block */</span>
+					<span class="n">addr</span> <span class="o">=</span> <span class="n">CACHE_MK_BADDR</span><span class="p">(</span><span class="n">cp_l1</span><span class="p">,</span> <span class="n">blk</span><span class="o">-&gt;</span><span class="n">tag</span><span class="p">,</span> <span class="n">set</span><span class="p">);</span>
+					<span class="n">there</span> <span class="o">=</span> <span class="n">cache_probe</span><span class="p">(</span><span class="n">cp_l2</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span>
+					<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">there</span><span class="p">){</span> <span class="c1">// line in DL1 but not in DL2
+</span>						<span class="n">lat</span> <span class="o">+=</span> <span class="n">cache_flush_addr</span><span class="p">(</span><span class="n">cp_l1</span><span class="p">,</span><span class="n">addr</span><span class="p">,</span><span class="n">now</span><span class="p">);</span>
+						<span class="c1">//fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
+</span>					<span class="p">}</span>
+		   		<span class="p">}</span><span class="cm">/* end for block in a bucket */</span>
+			<span class="p">}</span><span class="cm">/* end for each bucket */</span>
+  		<span class="p">}</span><span class="cm">/* end if highly associative cache*/</span>
+
+		<span class="cm">/* for each block in a low-associativity cache*/</span>
+		<span class="k">else</span> <span class="p">{</span>
+			<span class="k">for</span> <span class="p">(</span><span class="n">blk</span><span class="o">=</span><span class="n">cp_l1</span><span class="o">-&gt;</span><span class="n">sets</span><span class="p">[</span><span class="n">set</span><span class="p">].</span><span class="n">way_head</span><span class="p">;</span>
+			 <span class="n">blk</span><span class="p">;</span>
+			 <span class="n">blk</span><span class="o">=</span><span class="n">blk</span><span class="o">-&gt;</span><span class="n">way_next</span><span class="p">)</span>
+    		<span class="p">{</span>
+				<span class="cm">/* Probe the L2 cache for this block */</span>
+				<span class="n">addr</span> <span class="o">=</span> <span class="n">CACHE_MK_BADDR</span><span class="p">(</span><span class="n">cp_l1</span><span class="p">,</span> <span class="n">blk</span><span class="o">-&gt;</span><span class="n">tag</span><span class="p">,</span> <span class="n">set</span><span class="p">);</span>
+				<span class="n">there</span> <span class="o">=</span> <span class="n">cache_probe</span><span class="p">(</span><span class="n">cp_l2</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span>
+				<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">there</span><span class="p">){</span> <span class="c1">// line in DL1 but not in DL2
+</span>					<span class="n">lat</span> <span class="o">+=</span> <span class="n">cache_flush_addr</span><span class="p">(</span><span class="n">cp_l1</span><span class="p">,</span><span class="n">addr</span><span class="p">,</span><span class="n">now</span><span class="p">);</span>
+					<span class="c1">//fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
+</span>				<span class="p">}</span>
+		    <span class="p">}</span><span class="cm">/* end for */</span>
+  		<span class="p">}</span><span class="cm">/* end for each block */</span>
+	<span class="p">}</span><span class="cm">/* end for each set */</span>
+	
+	<span class="k">return</span> <span class="n">lat</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>This function should be called in cache_access() after removing blocks from DL2. The basic idea of the above function is to  check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.</p>
+
+<p>The code segment for calling cache_inclusion() in cache_access() is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cm">/* cache block not found */</span>
+
+ <span class="cm">/* **MISS** */</span>
+ <span class="n">cp</span><span class="o">-&gt;</span><span class="n">misses</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">......</span>
+
+<span class="cm">/* link this entry back into the hash table */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">cp</span><span class="o">-&gt;</span><span class="n">hsize</span><span class="p">)</span>
+    <span class="n">link_htab_ent</span><span class="p">(</span><span class="n">cp</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cp</span><span class="o">-&gt;</span><span class="n">sets</span><span class="p">[</span><span class="n">set</span><span class="p">],</span> <span class="n">repl</span><span class="p">);</span>
+
+  <span class="cm">/* Inclusion property:
+   * 	Make sure data leave DL2 also leave DL1, or vice versa */</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">mystricmp</span><span class="p">(</span><span class="n">cp</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="s">"dl2"</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">cp</span><span class="o">-&gt;</span><span class="n">ucp</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> 
+  <span class="p">{</span>
+  	<span class="n">lat</span> <span class="o">+=</span> <span class="n">cache_inclusion</span><span class="p">(</span><span class="n">cp</span><span class="o">-&gt;</span><span class="n">ucp</span><span class="p">,</span><span class="n">cp</span><span class="p">,</span><span class="n">now</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="cm">/* return latency of the operation */</span>
+  <span class="k">return</span> <span class="n">lat</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<h3 id="a-nameexperimentsexperimentsa">3. <a name="experiments">Experiments</a></h3>
+
+<p>In my experiment, three benchmarks are used: gcc, mcf and vpr. For each benchmark, three different configurations are tested, which are the same as the three commands listed in the project requirement. Compared to the SimpleScalar without inclusion property, it took 2 times longer time after implementing the inclusion property.</p>
+
+<p>After implementing inclusion property, the miss rates of DL1 generally increase a little, while the miss rates of DL2 decrease or keep the same. This is consistent with the code change, because due to inclusion property, statistically fewer data can be stored in DL1, but more valid data can be stored in DL2 cache.</p>
+
+<p><img src="http://www.bo-yang.net//assets/images/2014-04-18-inclusion-property/dl1.jpg" alt="Miss rate of DL1" /></p>
+
+<p>Figure 1. Miss rate of DL1, with(red) and without(blue) inclusion.</p>
+
+<p><img src="http://www.bo-yang.net//assets/images/2014-04-18-inclusion-property/dl2.jpg" alt="Miss rate of DL2" /></p>
+
+<p>Figure 2. Miss rate of DL2, with(red) and without(blue) inclusion.</p>
+
+<h3 id="a-nameconclusionconclusiona">4. <a name="conclusion">Conclusion</a></h3>
+
+<p>In this project I implemented the inclusion property with SimpleScalar. I tested my change with three different benchmarks in three different configurations. Experiments show proves the correctness of my change. Inclusion property cannot guarantee the overall performance the cache, although it seems like a promising technique.</p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//2014/04/18/inclusion-property" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Implementing Inclusion Property with SimpleScalar&url=http://www.bo-yang.net//2014/04/18/inclusion-property" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//2014/04/18/inclusion-property" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//2014/04/18/inclusion-property&title=Implementing Inclusion Property with SimpleScalar" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//2014/04/18/inclusion-property&name=Implementing Inclusion Property with SimpleScalar" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//2014/04/18/inclusion-property&title=Implementing Inclusion Property with SimpleScalar" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//2014/04/18/inclusion-property&t=Implementing Inclusion Property with SimpleScalar" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/2014/04/18/inclusion-property';
+    var disqus_title      = 'Implementing Inclusion Property with SimpleScalar';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//2014/04/18/inclusion-property" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2016/01/26/gen-hex-dump" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/31/centos7-install-tftp-server" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/20/linux-system-log-2" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/05/27/retrieve-last-log" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/04/02/customize-linux-system-log-timestamp" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/03/30/debug-kernel-space-memory-leak" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/12/linux-system-log" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/07/click-notes-click-language" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/23/click-notes-overview" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/19/remote-local-linux-develop-env-2" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>

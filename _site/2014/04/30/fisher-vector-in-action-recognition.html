@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Action Recognition with Fisher Vectors &#8211; Bo's Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bo&#39;s blog.">
+    <meta name="author" content="Bo Yang">
+    <meta name="keywords" content="Computer Vision, Machine Learning">
+    <link rel="canonical" href="http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201602012335" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Google Prettify -->
+    <link href="http://www.bo-yang.net//assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+
+    <!-- MathJax -->
+    
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <!-- Verifications -->
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Action Recognition with Fisher Vectors">
+    <meta property="og:description" content="Bo&#39;s blog.">
+    <meta property="og:url" content="http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition">
+    <meta property="og:site_name" content="Bo&#39;s Blog">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@bonnyang" />
+    
+    <meta name="twitter:title" content="Action Recognition with Fisher Vectors" />
+    <meta name="twitter:description" content="Bo's blog." />
+    <meta name="twitter:url" content="http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-50551633-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+
+	
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+        <a href="http://www.bo-yang.net/" class="site-title"><b>Bo's Blog</b></a>
+      <nav class="site-nav">
+        
+    
+
+    
+
+    
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+        <a href="/about/">About Me</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+    
+
+    
+        <a href="/contact/">Contact</a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/bo-yang"></a>
+    
+    
+    
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/boyang"></a>
+    
+    <a class="fa fa-rss" href="/feed.xml"></a>
+    
+      <a class="fa fa-twitter" href="https://twitter.com/bonnyang"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-envelope" href="mailto:bonny95@gmail.com"></a>
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/boyanglink"></a>
+    
+    
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Action Recognition with Fisher Vectors</h1>
+  <span class="post-meta">Apr 30, 2014</span><br>
+  
+  <span class="post-meta small">
+  
+    6 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(<a href="http://crcv.ucf.edu/data/UCF101.php">http://crcv.ucf.edu/data/UCF101.php</a>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions.</p>
+
+<p>You can find my Matlab code from <a href="https://github.com/bo-yang">my GitHub Channel</a>:</p>
+
+<ul>
+  <li><a href="https://github.com/bo-yang/dtf_fisher">DTF + Fisher Vector code</a></li>
+  <li><a href="https://github.com/bo-yang/stip_fisher">STIP + Fisher Vector code</a></li>
+</ul>
+
+<h3 id="dense-trajectory-features">Dense Trajectory Features</h3>
+
+<p>For some details of DTF, please refer to <a href="http://bo-yang.github.io/2014/01/10/dense-trajectory-notes/">my previous post</a>.</p>
+
+<h3 id="pipeline">Pipeline</h3>
+
+<p>The pipeline of integrating DTF/STIP features and Fisher vectors is shown in Figure 1. The first step is subsampling a fixed number of STIP/DTF features(in my implementation, 1000) from each
+video clip in training list, which will be used to do PCA and train
+Gaussian Mixture Models(GMMs).</p>
+
+<p>After getting the PCA coefficients and GMM parameters, treat UCF 101 video clips
+action by action. For each action, first load all train videos in this
+action(positive videos), and then randomly load the same number of video
+clips not in this action(negative videos). All of the loaded videos are
+multiplied with the saved PCA coefficients in order to reduce dimensions
+and rotate matrices. Fisher vectors are computed for each loaded video
+clip. Finally a binary SVM model is trained with both the positive and negative
+Fisher vectors.</p>
+
+<p>When dealing with the test videos, similar process is adopted. The only
+difference is that the Fisher vectors are used for SVM classification,
+which is based on the SVM model trained with training videos.</p>
+
+<p><img src="http://www.bo-yang.net//assets/images/fisher_pipeline.png" alt="Figure 1. Pipeline of UCF101 action recognition using Fisher
+vector." />.</p>
+
+<p>To well utilize the STIP or DTF features, features(HOG, HOF, MBH, etc.) are treated
+separately and they are only combined(simple concatenation) after computing Fisher
+vectors before linear SVM classification.</p>
+
+<h3 id="pre-processing">Pre-processing</h3>
+
+<h4 id="stip-features">STIP Features</h4>
+
+<p>The offcial STIP features are stored in class, which means that all the STIP
+info of all video clips in each class are mixed together in a file. To
+extract STIP features for each video, I wrote a script(mk_stip_data)
+to separate STIP features for each video clip. And all the following
+operations are based on each video clip.</p>
+
+<h4 id="dtf-features">DTF Features</h4>
+
+<p>Since the DTF features are “dense”(which means a lot of data), it took me 4~5 days to exact the (improved) DTF features of UCF 101 clips with the dedault parameters on a modern Linux desktop(I used 10 threads for extraction in paralle). The installation of DTF tools was also a very tricky task.</p>
+
+<p>To save space, all the DTF features were compressed. For UCF101, it would cost about 500GB after zip compression. And the required space would doubled if not compressing. If you don’t want to save the DTF features, you can call the DTF tools in Matlab and discard the extracted features.</p>
+
+<h3 id="fisher-vector">Fisher Vector</h3>
+
+<p>The Fisher Vector (FV) representation of visual features is an extension of the popular bag-of-visual words (BOV)[1]. Both of them are based on an intermediate representation, the visual vocabulary built in the low level feature space. A probability density function (in most cases a Gaussian Mixture Model) is used to model the visual vocabulary, and we can compute the gradient of the log likelihood with respect to the parameters of the model to represent an image or video. The Fisher Vector is the concatenation of these partial derivatives and describes in which direction the parameters of the model should be modified to best fit the data. This representation has the advantage to give similar or even better classification performance than BOV obtained with supervised visual vocabularies.</p>
+
+<p>Following is the algorithm of computing Fisher vectors from features(actually I implemented this algorithm in Matlab, and if you are interested, please refer <a href="https://github.com/bo-yang/stip_fisher/blob/master/fisher_encode.m">here</a>):</p>
+
+<p><img src="http://www.bo-yang.net//assets/images/fisher_vector_algorithm.png" alt="Figure 2. Algorithm of computing Fisher vectors." />.</p>
+
+<p>During the subsampling of STIP features, I randomly chose 1000 HOG or
+HOF features from each training video clip. For some videos, if the
+total number of features were less than 1000, I would use all of their
+features. All the subsampled features are square rooted after L1
+normalization.</p>
+
+<p>After that, the dimensions of the subsampled features were reduced to
+half of their original dimensions by doing PCA. At this step, the
+coefficients of PCA were recorded, which would be used in later. The
+GMMs were trained with the half-sized features, and the parameters of
+GMMs(i.e. weight, mean and covariance) were stored for the following
+process. In my program, the GMM code implemented by <a href="http://www.robots.ox.ac.uk/~vgg/software/enceval_toolkit/">Oxford Visual Geometry Group(VGG)</a>
+is used, which eventually call <a href="http://www.vlfeat.org/">VLFeat</a>. In my
+code, 256 Gaussians were used.</p>
+
+<p>When computing the Gaussians, sometimes value <em>Inf</em> will be returned. For the <em>Inf</em> entries, a
+very large number(in my code, 1e30) is assigned instead to make the subsequent computation
+smoother. Before the L2 and power normalization, the unexpected <em>NaN</em> entries are replaced by a
+large number(in my implementation, 123456).</p>
+
+<h3 id="svm-classification">SVM Classification</h3>
+
+<p>Binary SVM classification(<a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a>) is used in my implementation.
+For each action, positive video clips are labeled as 1 while negative
+videos are as labeled -1 during training and test. In my code, SVM cost
+is set to 100. The option of SVM training is:</p>
+
+<blockquote>
+  <p>-t 0 -s 0 -q -c 100 -b 1.</p>
+</blockquote>
+
+<h3 id="results">Results</h3>
+
+<p>The action recognition accuracy of all the 101 actions was 77.95% when
+using above pipeline and STIP features. And the confusion matrix is shown in Figure 3.</p>
+
+<p><img src="http://www.bo-yang.net//assets/images/confusionmat_101.png" alt="Figure 3. Confusion matrix of all the 101 actions with STIP features." /></p>
+
+<p>The mean accurary of the fist 10 actions with DTF features was 90.6%, while the STIP was only 84.32%. The mean accuracy of the whole UCF 101 data(train/test list 1) was around 85% using DTF features, about 8% higher than using BOV representations(internal test). And the best result I got with the ISA neural network on UCF 101 was only 58% in November, 2013.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>It is obvious that Fisher vector can lead to better results than Bag-of-visual words in action recognition. Compared to other low-level visual features, DTF features have more advantages in action recognition. However, in the long run I still believe deep learning methods - when deep neural networks could be trained with millions of vidios[5], they would learn more info from scratch and achieve state-of-the-art accuracy.</p>
+
+<h3 id="references">References</h3>
+
+<ol>
+  <li>Gabriela Csurka, Florent Perronnin, <em>Fisher Vectors: Beyond Bag-of-Visual-Words Image Representations</em> , Communications in Computer and Information Science Volume 229, 2011, pp 28-42.</li>
+  <li>Chih-Chung Chang and Chih-Jen Lin. <em>Libsvm: A library for support vector machines</em>. ACM Trans. Intell. Syst. Technol., 2(3):27:1–27:27, May 2011.</li>
+  <li>Heng Wang and Cordelia Schmid. <em>Action Recognition with Improved Trajectories</em>. In ICCV 2013 - IEEE International Conference on Computer Vision, Sydney, Australia, December 2013. IEEE.</li>
+  <li>Jorge Sanchez, Florent Perronnin, Thomas Mensink, and Jakob Verbeek. <em>Image Classification with the Fisher Vector: Theory and Practice</em>. International Journal of Computer Vision, 105(3):222–245, December 2013.</li>
+  <li>Andrej Karpathy, George Toderici, Sanketh Shetty, Thomas Leung, Rahul Sukthankar, and Li Fei-Fei. <em>Large-scale video classification with convolutional neural networks</em>. In CVPR, 2014.</li>
+</ol>
+
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=Action Recognition with Fisher Vectors&url=http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+      <a class="fa fa-google-plus" href="https://plus.google.com/share?url=http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition" rel="nofollow" target="_blank" title="Share on Google+"></a>
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition&title=Action Recognition with Fisher Vectors" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+      <a class="fa fa-tumblr" href="http://www.tumblr.com/share/link?url=http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition&name=Action Recognition with Fisher Vectors" rel="nofollow" target="_blank" title="Share on Tumblr"></a>
+    
+
+    
+      <a class="fa fa-reddit" href="http://reddit.com/submit?url=http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition&title=Action Recognition with Fisher Vectors" rel="nofollow" target="_blank" title="Share on Reddit"></a>
+    
+
+    
+
+    
+      <a class="fa fa-hacker-news" onclick="parent.postMessage('submit','*')" href="https://news.ycombinator.com/submitlink?u=http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition&t=Action Recognition with Fisher Vectors" rel="nofollow" target="_blank" title="Share on Hacker News"></a>
+    
+  </div>
+</div>
+
+
+
+
+
+<center><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Banner_728x90 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-4220046549022535"
+     data-ad-slot="5852972202"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50551633-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'boyang';
+    var disqus_identifier = '/2014/04/30/fisher-vector-in-action-recognition';
+    var disqus_title      = 'Action Recognition with Fisher Vectors';
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  <div class="fb-comments" data-href="http://www.bo-yang.net//2014/04/30/fisher-vector-in-action-recognition" data-width="100%" data-numposts="10"></div>
+
+
+
+  <h3 class="related-post-title">Related Posts</h3>
+  
+    <div class="post ml2">
+      <a href="/2016/01/26/gen-hex-dump" class="post-link">
+        <h4 class="post-title">Generate Wireshark-Understandable Hexdump</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/31/centos7-install-tftp-server" class="post-link">
+        <h4 class="post-title">A Complete Guide For Installing TFTP Server In CentOS 7</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/08/20/linux-system-log-2" class="post-link">
+        <h4 class="post-title">How To Use Local Facilities For Logging?</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/05/27/retrieve-last-log" class="post-link">
+        <h4 class="post-title">Retrieve Last Log After Crash</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/04/02/customize-linux-system-log-timestamp" class="post-link">
+        <h4 class="post-title">Customizing OpenWRT System Log Timestamp</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/03/30/debug-kernel-space-memory-leak" class="post-link">
+        <h4 class="post-title">Debug Kernel Space Memory Leak</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/12/linux-system-log" class="post-link">
+        <h4 class="post-title">Linux System Log</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2015/01/07/click-notes-click-language" class="post-link">
+        <h4 class="post-title">Click Notes II - Click Script Language</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/23/click-notes-overview" class="post-link">
+        <h4 class="post-title">Click Notes I - Overview</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+    <div class="post ml2">
+      <a href="/2014/12/19/remote-local-linux-develop-env-2" class="post-link">
+        <h4 class="post-title">Building Remote+Local *nix Develop Environment(II)</h4>
+        <p class="post-summary"></p>
+      </a>
+    </div>
+  
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+      <small>
+      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
+         
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+    </small>
+  </div>
+</footer>
+
+</body>
+</html>
