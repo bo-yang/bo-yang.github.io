@@ -41,12 +41,14 @@ For the source code of this section, please refer to function `PathSum()` in [my
 
 To build a binary tree with cycles, we can first build a binary tree using the method described in [Binary Tree Operations(I)](http://bo-yang.github.io/2014/05/26/binary-tree-traversal/), and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(`left` and `right`).
 
+~~~cpp
 	struct TreeNode {
 		int val;
 		TreeNode *left;
 		TreeNode *right;
 		TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 	};
+~~~
 
 For example, given a binary tree in following image,
 

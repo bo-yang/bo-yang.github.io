@@ -40,17 +40,20 @@ For the complete C++ source code used in this article, please refer to: [https:/
 
 The data structure used for the tree node is very simple, which is adopted from [LeetCode OJ](https://oj.leetcode.com/problems/binary-tree-inorder-traversal/):
 
+~~~cpp
 	struct TreeNode {
 	    int val;
 	    TreeNode *left;
 	    TreeNode *right;
 	    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 	};
+~~~
 
 <strike>The constructing function TreeNode() is added to purely because it is easier to dynamically allocate TreeNode array by `new TreeNode[size]`. C++98 doesn't support specifying default arguments for objects allocated by `new`. However, the TreeNode array can simplify the process of building binary trees.</strike> 
 
 The data structure for the binary tree is:
 
+~~~cpp
 	class BinaryTree {
 	public:
 		BinaryTree() { root=NULL;layers=0; }
@@ -71,7 +74,7 @@ The data structure for the binary tree is:
 		TreeNode* root;
 		int layers;	// number of layers
 	};
-
+~~~
 
 ### <a name="build_tree">Build Binary Tree</a>
 
@@ -93,6 +96,7 @@ For each node other than the last layer, there are two children in the next laye
 
 Following is the C++ code for building binary trees:
 
+~~~cpp
 	TreeNode* BuildTree(vector<string>& t) {
 		if(t.empty())
 			return NULL;
@@ -155,9 +159,11 @@ Following is the C++ code for building binary trees:
 
 		return root;	// root of the tree
 	}
+~~~
 
 In order to delete the memroy dynamically allocated in function BuildTree(), in the desctructor, every node in the tree should be traversed and deleted. For simplicity, layer-by-layer traversal is used.
 
+~~~cpp
 	~BinaryTree() {
 		if(root!=NULL) {
 			// delete allocated nodes iteratively
@@ -187,7 +193,7 @@ In order to delete the memroy dynamically allocated in function BuildTree(), in 
 			}
 		}
 	}
-
+~~~
 
 ### <a name="preorder">Preorder Traversal</a>
 
@@ -198,12 +204,13 @@ To traverse a binary tree in Preorder, following operations are carried-out
 
 For the example binary tree {1,2,3,#,#,4,#,5,6}, the preorder traversal is:
 
-```
+~~~
 1,2,3,4,5,6
-```
+~~~
 
 Following is my C++ implementation of preorder traversal([Pseudo Code](http://en.wikipedia.org/wiki/Tree_traversal#Implementations)):
 
+~~~cpp
 	vector<int> PreorderTraversal(TreeNode *root) {
 		vector<int> trace;
 		stack<TreeNode*> st;
@@ -227,6 +234,7 @@ Following is my C++ implementation of preorder traversal([Pseudo Code](http://en
 		} // end of while
 		return trace;
 	}
+~~~
 
 ### <a name="inorder">Inorder Traversal</a>
 
@@ -237,12 +245,13 @@ To traverse a binary tree in Inorder, following operations are carried-out:
 
 For the example binary tree {1,2,3,#,#,4,#,5,6}, the inorder traversal is:
 
-```
+~~~
 2,1,5,4,6,3
-```
+~~~
 
 Following is my C++ implementation of inorder traversal([Pseudo Code](http://en.wikipedia.org/wiki/Tree_traversal#Implementations)):
 
+~~~cpp
 	vector<int> InorderTraversal(TreeNode *root) {
 		vector<int> trace;
 		stack<TreeNode> st;
@@ -269,6 +278,7 @@ Following is my C++ implementation of inorder traversal([Pseudo Code](http://en.
 		}
 		return trace;
 	}
+~~~
 
 ### <a name="postorder">Postorder Traversal</a>
 
@@ -279,12 +289,13 @@ To traverse a binary tree in Postorder, following operations are carried-out:
 
 For the example binary tree {1,2,3,#,#,4,#,5,6}, the postorder traversal is:
 
-```
+~~~
 2,5,6,4,3,1
-```
+~~~
 
 Following is my C++ implementation of postorder traversal([Pseudo Code](http://en.wikipedia.org/wiki/Tree_traversal#Implementations)):
 
+~~~cpp
 	vector<int> PostorderTraversal(TreeNode *root) {
 		vector<int> trace;
 		stack<TreeNode> st;
@@ -313,6 +324,7 @@ Following is my C++ implementation of postorder traversal([Pseudo Code](http://e
 		}
 		return trace;
 	}
+~~~
 
 ### <a name="bft">Breadth First Traversal(BFT)</a>
 
@@ -322,6 +334,7 @@ However, a single queue also can work well. For the first layer, there is only o
 
 Following is my C++ impementation of traversing binary tree in level order:
 
+~~~cpp
 	void PrintTree(TreeNode *root) {
 		queue<TreeNode*> q;
 		TreeNode* tmp=root;
@@ -349,6 +362,7 @@ Following is my C++ impementation of traversing binary tree in level order:
 			nodes_next_layer=0;
 		}
 	}
+~~~
 
 ### <a name="zigzag">Zigzag Traversal</a>
 
@@ -356,14 +370,15 @@ Zigzag level order traversal is a Breadth First Traversal(BFT). The procedure  o
 
 For the example binary tree {1,2,3,#,#,4,#,5,6}, the postorder traversal is:
 
-```
+~~~
 [[1],[3,2],[4],[6,5]]
-```
+~~~
 
 Although zigzag traversal is kind of BFT, it is not easy to use one or two queues to implement it, because you need to traverse every layer from left to right, and print nodes from right to left for some layers. Since I don't want to use three queues(one to store the nodes of current layer, the other two store the left-to-right traversal of next layer, but one of them should be used for left-to-right traveral in next iteration and the other used for right-to-left printing), I implemented the zigzag traversal with two lists: one list to store the left-to-right traversal of current layer, and the other list for storing left-to-right traversal of next layer. During printing, the same list can be controlled to output nodes either from left to right or right to left without loosing any information(unlike queue, quque is not iterable).
 
 Following is my code for zigzag traversal. Note that the output is a vector of vectors.
 
+~~~cpp
 	vector<vector<int> > ZigzagLevelOrder(TreeNode *root) {
         vector<vector<int> > trace;
 		list<TreeNode*> lst_cur;
@@ -419,7 +434,7 @@ Following is my code for zigzag traversal. Note that the output is a vector of v
 
 		return trace;
     }
-
+~~~
 
 ### <a name="comparison">Binary Tree Comparison</a>
 
@@ -427,6 +442,7 @@ As for the comparison of two binary trees, only equality is considered. Two bina
 
 For simplicity, Breadth First Traversal is used in my implementation:
 
+~~~cpp
 	bool IsSameTree(TreeNode *p, TreeNode *q) {
 		bool same_tree=true;
         queue<TreeNode*> qp;
@@ -476,7 +492,7 @@ For simplicity, Breadth First Traversal is used in my implementation:
 
 		return same_tree;
     }
-
+~~~
 
 _[Updated 05/30/2014]_
 

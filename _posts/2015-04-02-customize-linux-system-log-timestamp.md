@@ -24,6 +24,7 @@ The basic idea of customizing console syslog timestamp is periodically calling `
 
 Following is the source code in `ash`:
 
+~~~shell
     #!/bin/ash
     
     #
@@ -52,4 +53,4 @@ Following is the source code in `ash`:
     
         sleep 1
     done
-
+~~~
