@@ -44,83 +44,66 @@ To support the new added struct element, a new parameter
 should also be added into function cache_create(), which is called in sim-cache.c and sim-outorder.c. The new interface of this function becomes:
 
 ~~~cpp
-	/* create and initialize a general cache structure */
-	struct cache_t *			/* pointer to cache created */
-	cache_create(char *name,		/* name of the cache */
-		     int nsets,			/* total number of sets in cache */
-		     int bsize,			/* block (line) size of cache */
-		     int balloc,		/* allocate data space for blocks? */
-		     int usize,			/* size of user data to alloc w/blks */
-		     int assoc,			/* associativity of cache */
-		     enum cache_policy policy,	/* replacement policy w/in sets */
-		     /* block access function, see description w/in struct cache def */
-		     unsigned int (*blk_access_fn)(enum mem_cmd cmd,
-						   md_addr_t baddr, int bsize,
-						   struct cache_blk_t *blk,
-						   tick_t now),
-		     unsigned int hit_latency,/* latency in cycles for a hit */
-		     struct cache_t *ucp);	/* upper level cache */
+/* create and initialize a general cache structure */
+struct cache_t *			/* pointer to cache created */
+cache_create(char *name,		/* name of the cache */
+	     int nsets,			/* total number of sets in cache */
+	     int bsize,			/* block (line) size of cache */
+	     int balloc,		/* allocate data space for blocks? */
+	     int usize,			/* size of user data to alloc w/blks */
+	     int assoc,			/* associativity of cache */
+	     enum cache_policy policy,	/* replacement policy w/in sets */
+	     /* block access function, see description w/in struct cache def */
+	     unsigned int (*blk_access_fn)(enum mem_cmd cmd,
+					   md_addr_t baddr, int bsize,
+					   struct cache_blk_t *blk,
+					   tick_t now),
+	     unsigned int hit_latency,/* latency in cycles for a hit */
+	     struct cache_t *ucp);	/* upper level cache */
 ~~~
 
 For DL2 cache, the pointer ucp is set to cache_dl1 in sim-cache.c in function cache_create(). For other cache, NULL is set. For example:
 
 ~~~cpp
-	cache_dl2 = cache_create(name, nsets, bsize, /* balloc */FALSE,
-					   /* usize */0, assoc, cache_char2policy(c),
-					   dl2_access_fn, /* hit latency */1,cache_dl1);
+cache_dl2 = cache_create(name, nsets, bsize, /* balloc */FALSE,
+				   /* usize */0, assoc, cache_char2policy(c),
+				   dl2_access_fn, /* hit latency */1,cache_dl1);
 ~~~
 
 As checking and removing blocks from DL1 only involves DL1 and DL2 cache, all the operations can be encapsulated in a function cache_inclusion(). This function is called after blocks moved out from DL2 in the case of cache miss. Then check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.
 
 ~~~cpp
-	/*
-	 * Inclusion Property:
-	 * 	Make sure data leave DL2 also leave DL1 
-	 * */
-	int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
-			struct cache_t *cp_l2, /* L2 cache */
-			tick_t now)		/* time of access */
-	{
-	
-		/* Loop through each set and each block in the L1 cache, 
-		 * probe the L2 cache to guaranttee the inclusion */
-		int num_l1_sets = cp_l1->set_mask + 1;
-		int set;
-	  	struct cache_blk_t *blk;
-		md_addr_t addr;
-		int hindex;
-		int num_hash_buckets = cp_l1->hsize;
-		int there; /* indicates if the L1 line is in L2 */
-		int lat=0;
-	
-		/* for each set */
-		for(set=0; set<num_l1_sets; set++){
-			/* for each block in a higly-associativity cache*/
-	  		if (num_hash_buckets){
-				/* for each hash bucket */
-				for(hindex=0; hindex<num_hash_buckets; hindex++){
-				    /* for each block in a hash bucket */
-				    for (blk=cp_l1->sets[set].hash[hindex];
-					 blk;
-					 blk=blk->hash_next)
-					{	
-						/* Probe the L2 cache for this block */
-						addr = CACHE_MK_BADDR(cp_l1, blk->tag, set);
-						there = cache_probe(cp_l2, addr);
-						if(!there){ // line in DL1 but not in DL2
-							lat += cache_flush_addr(cp_l1,addr,now);
-							//fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
-						}
-			   		}/* end for block in a bucket */
-				}/* end for each bucket */
-	  		}/* end if highly associative cache*/
-	
-			/* for each block in a low-associativity cache*/
-			else {
-				for (blk=cp_l1->sets[set].way_head;
+/*
+ * Inclusion Property:
+ * 	Make sure data leave DL2 also leave DL1 
+ * */
+int cache_inclusion(struct cache_t *cp_l1, /* L1 cache */
+		struct cache_t *cp_l2, /* L2 cache */
+		tick_t now)		/* time of access */
+{
+
+	/* Loop through each set and each block in the L1 cache, 
+	 * probe the L2 cache to guaranttee the inclusion */
+	int num_l1_sets = cp_l1->set_mask + 1;
+	int set;
+  	struct cache_blk_t *blk;
+	md_addr_t addr;
+	int hindex;
+	int num_hash_buckets = cp_l1->hsize;
+	int there; /* indicates if the L1 line is in L2 */
+	int lat=0;
+
+	/* for each set */
+	for(set=0; set<num_l1_sets; set++){
+		/* for each block in a higly-associativity cache*/
+  		if (num_hash_buckets){
+			/* for each hash bucket */
+			for(hindex=0; hindex<num_hash_buckets; hindex++){
+			    /* for each block in a hash bucket */
+			    for (blk=cp_l1->sets[set].hash[hindex];
 				 blk;
-				 blk=blk->way_next)
-	    		{
+				 blk=blk->hash_next)
+				{	
 					/* Probe the L2 cache for this block */
 					addr = CACHE_MK_BADDR(cp_l1, blk->tag, set);
 					there = cache_probe(cp_l2, addr);
@@ -128,12 +111,29 @@ As checking and removing blocks from DL1 only involves DL1 and DL2 cache, all th
 						lat += cache_flush_addr(cp_l1,addr,now);
 						//fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
 					}
-			    }/* end for */
-	  		}/* end for each block */
-		}/* end for each set */
-		
-		return lat;
-	}
+		   		}/* end for block in a bucket */
+			}/* end for each bucket */
+  		}/* end if highly associative cache*/
+
+		/* for each block in a low-associativity cache*/
+		else {
+			for (blk=cp_l1->sets[set].way_head;
+			 blk;
+			 blk=blk->way_next)
+    		{
+				/* Probe the L2 cache for this block */
+				addr = CACHE_MK_BADDR(cp_l1, blk->tag, set);
+				there = cache_probe(cp_l2, addr);
+				if(!there){ // line in DL1 but not in DL2
+					lat += cache_flush_addr(cp_l1,addr,now);
+					//fprintf(stderr, "\nEvict address %x from DL1!\n", addr);
+				}
+		    }/* end for */
+  		}/* end for each block */
+	}/* end for each set */
+	
+	return lat;
+}
 ~~~
 
 This function should be called in cache_access() after removing blocks from DL2. The basic idea of the above function is to  check every block of DL1 in DL2: if the block can be found in DL2, keep it; it the block cannot be found in DL2, it means this block should be moved out of cache, so flush this block in DL1 to guarantee the inclusion property.
@@ -141,25 +141,25 @@ This function should be called in cache_access() after removing blocks from DL2.
 The code segment for calling cache_inclusion() in cache_access() is:
 
 ~~~cpp
-	/* cache block not found */
-	
-	 /* **MISS** */
-	 cp->misses++;
-	…...
-	
-	/* link this entry back into the hash table */
-	  if (cp->hsize)
-	    link_htab_ent(cp, &cp->sets[set], repl);
-	
-	  /* Inclusion property:
-	   * 	Make sure data leave DL2 also leave DL1, or vice versa */
-	  if(!mystricmp(cp->name,"dl2") && cp->ucp != NULL) 
-	  {
-	  	lat += cache_inclusion(cp->ucp,cp,now);
-	  }
-	
-	  /* return latency of the operation */
-	  return lat;
+/* cache block not found */
+
+ /* **MISS** */
+ cp->misses++;
+    ......
+
+/* link this entry back into the hash table */
+  if (cp->hsize)
+    link_htab_ent(cp, &cp->sets[set], repl);
+
+  /* Inclusion property:
+   * 	Make sure data leave DL2 also leave DL1, or vice versa */
+  if(!mystricmp(cp->name,"dl2") && cp->ucp != NULL) 
+  {
+  	lat += cache_inclusion(cp->ucp,cp,now);
+  }
+
+  /* return latency of the operation */
+  return lat;
 ~~~
 
 ### 3. <a name="experiments">Experiments</a>
