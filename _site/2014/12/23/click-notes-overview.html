@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012335" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602031809" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -466,88 +466,88 @@
 
 <p>An example of real Click element is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#ifndef CLICK_SWITCH_HH
-#define CLICK_SWITCH_HH
-#include &lt;click/element.hh&gt;
-CLICK_DECLS
-
-class Switch : public Element { public:
-
-  Switch() CLICK_COLD;
-
-  const char *class_name() const		{ return "Switch"; }
-  const char *port_count() const		{ return "1/-"; }
-  const char *processing() const		{ return PUSH; }
-  void add_handlers() CLICK_COLD;
-
-  int configure(Vector&lt;String&gt; &amp;, ErrorHandler *) CLICK_COLD;
-  bool can_live_reconfigure() const		{ return true; }
-
-  void push(int, Packet *);
-
-  int llrpc(unsigned, void *);
-
- private:
-
-  int _output;
-
-  static String read_param(Element *, void *) CLICK_COLD;
-  static int write_param(const String &amp;, Element *, void *, ErrorHandler *) CLICK_COLD;
-
-};
-
-CLICK_ENDDECLS
-#endif
-</code></pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="cp">#ifndef CLICK_SWITCH_HH
+</span>    <span class="cp">#define CLICK_SWITCH_HH
+</span>    <span class="cp">#include &lt;click/element.hh&gt;
+</span>    <span class="n">CLICK_DECLS</span>
+    
+    <span class="k">class</span> <span class="nc">Switch</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Element</span> <span class="p">{</span> <span class="k">public</span><span class="o">:</span>
+    
+      <span class="n">Switch</span><span class="p">()</span> <span class="n">CLICK_COLD</span><span class="p">;</span>
+    
+      <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">class_name</span><span class="p">()</span> <span class="k">const</span>		<span class="p">{</span> <span class="k">return</span> <span class="s">"Switch"</span><span class="p">;</span> <span class="p">}</span>
+      <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">port_count</span><span class="p">()</span> <span class="k">const</span>		<span class="p">{</span> <span class="k">return</span> <span class="s">"1/-"</span><span class="p">;</span> <span class="p">}</span>
+      <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">processing</span><span class="p">()</span> <span class="k">const</span>		<span class="p">{</span> <span class="k">return</span> <span class="n">PUSH</span><span class="p">;</span> <span class="p">}</span>
+      <span class="kt">void</span> <span class="n">add_handlers</span><span class="p">()</span> <span class="n">CLICK_COLD</span><span class="p">;</span>
+    
+      <span class="kt">int</span> <span class="n">configure</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="p">,</span> <span class="n">ErrorHandler</span> <span class="o">*</span><span class="p">)</span> <span class="n">CLICK_COLD</span><span class="p">;</span>
+      <span class="n">bool</span> <span class="n">can_live_reconfigure</span><span class="p">()</span> <span class="k">const</span>		<span class="p">{</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span> <span class="p">}</span>
+    
+      <span class="kt">void</span> <span class="n">push</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="n">Packet</span> <span class="o">*</span><span class="p">);</span>
+    
+      <span class="kt">int</span> <span class="n">llrpc</span><span class="p">(</span><span class="kt">unsigned</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">);</span>
+    
+     <span class="k">private</span><span class="o">:</span>
+    
+      <span class="kt">int</span> <span class="n">_output</span><span class="p">;</span>
+    
+      <span class="k">static</span> <span class="n">String</span> <span class="n">read_param</span><span class="p">(</span><span class="n">Element</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="n">CLICK_COLD</span><span class="p">;</span>
+      <span class="k">static</span> <span class="kt">int</span> <span class="n">write_param</span><span class="p">(</span><span class="k">const</span> <span class="n">String</span> <span class="o">&amp;</span><span class="p">,</span> <span class="n">Element</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">,</span> <span class="n">ErrorHandler</span> <span class="o">*</span><span class="p">)</span> <span class="n">CLICK_COLD</span><span class="p">;</span>
+    
+    <span class="p">};</span>
+    
+    <span class="n">CLICK_ENDDECLS</span>
+    <span class="cp">#endif
+</span></code></pre>
 </div>
 
 <p>In above code, the Click macros are defined as:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/* Define macros that surround Click declarations. */
-#define CLICK_DECLS		namespace Click {
-#define CLICK_ENDDECLS		}
-
-/* Define macro for cold (rarely used) functions. */
-#if __GNUC__ &lt; 4 || (__GNUC__ == 4 &amp;&amp; __GNUC_MINOR__ &lt; 3)
-# define CLICK_COLD /* nothing */
-#else
-# define CLICK_COLD __attribute__((cold))
-#endif
-</code></pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="cm">/* Define macros that surround Click declarations. */</span>
+    <span class="cp">#define CLICK_DECLS		namespace Click {
+</span>    <span class="cp">#define CLICK_ENDDECLS		}
+</span>    
+    <span class="cm">/* Define macro for cold (rarely used) functions. */</span>
+    <span class="cp">#if __GNUC__ &lt; 4 || (__GNUC__ == 4 &amp;&amp; __GNUC_MINOR__ &lt; 3)
+</span>    <span class="cp"># define CLICK_COLD </span><span class="cm">/* nothing */</span><span class="cp">
+</span>    <span class="cp">#else
+</span>    <span class="cp"># define CLICK_COLD __attribute__((cold))
+</span>    <span class="cp">#endif
+</span></code></pre>
 </div>
 
 <p>Where the GNU <code class="highlighter-rouge">cold</code> attribute on functions is used to inform the compiler that the function is unlikely to be executed. The function is optimized for size rather than speed and on many targets it is placed into a special subsection of the text section so all cold functions appear close together, improving code locality of non-cold parts of program.</p>
 
 <p>And the handlers of this element can be defined as:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>String
-Switch::read_param(Element *e, void *)
-{
-  Switch *sw = (Switch *)e;
-  return String(sw-&gt;_output);
-}
-
-int
-Switch::write_param(const String &amp;s, Element *e, void *, ErrorHandler *errh)
-{
-    Switch *sw = (Switch *)e;
-    int sw_output;
-    if (!IntArg().parse(s, sw_output))
-	return errh-&gt;error("Switch output must be integer");
-    if (sw_output &gt;= sw-&gt;noutputs())
-	sw_output = -1;
-    sw-&gt;_output = sw_output;
-    return 0;
-}
-
-void
-Switch::add_handlers()
-{
-    add_read_handler("switch", read_param, 0);
-    add_write_handler("switch", write_param, 0, Handler::h_nonexclusive);
-    add_read_handler("config", read_param, 0);
-    set_handler_flags("config", 0, Handler::CALM);
-}
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="n">String</span>
+    <span class="n">Switch</span><span class="o">::</span><span class="n">read_param</span><span class="p">(</span><span class="n">Element</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">Switch</span> <span class="o">*</span><span class="n">sw</span> <span class="o">=</span> <span class="p">(</span><span class="n">Switch</span> <span class="o">*</span><span class="p">)</span><span class="n">e</span><span class="p">;</span>
+      <span class="k">return</span> <span class="n">String</span><span class="p">(</span><span class="n">sw</span><span class="o">-&gt;</span><span class="n">_output</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="kt">int</span>
+    <span class="n">Switch</span><span class="o">::</span><span class="n">write_param</span><span class="p">(</span><span class="k">const</span> <span class="n">String</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">,</span> <span class="n">Element</span> <span class="o">*</span><span class="n">e</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">,</span> <span class="n">ErrorHandler</span> <span class="o">*</span><span class="n">errh</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Switch</span> <span class="o">*</span><span class="n">sw</span> <span class="o">=</span> <span class="p">(</span><span class="n">Switch</span> <span class="o">*</span><span class="p">)</span><span class="n">e</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">sw_output</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">IntArg</span><span class="p">().</span><span class="n">parse</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">sw_output</span><span class="p">))</span>
+    	<span class="k">return</span> <span class="n">errh</span><span class="o">-&gt;</span><span class="n">error</span><span class="p">(</span><span class="s">"Switch output must be integer"</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sw_output</span> <span class="o">&gt;=</span> <span class="n">sw</span><span class="o">-&gt;</span><span class="n">noutputs</span><span class="p">())</span>
+    	<span class="n">sw_output</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">sw</span><span class="o">-&gt;</span><span class="n">_output</span> <span class="o">=</span> <span class="n">sw_output</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="kt">void</span>
+    <span class="n">Switch</span><span class="o">::</span><span class="n">add_handlers</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">add_read_handler</span><span class="p">(</span><span class="s">"switch"</span><span class="p">,</span> <span class="n">read_param</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">add_write_handler</span><span class="p">(</span><span class="s">"switch"</span><span class="p">,</span> <span class="n">write_param</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">h_nonexclusive</span><span class="p">);</span>
+        <span class="n">add_read_handler</span><span class="p">(</span><span class="s">"config"</span><span class="p">,</span> <span class="n">read_param</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">set_handler_flags</span><span class="p">(</span><span class="s">"config"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">CALM</span><span class="p">);</span>
+    <span class="p">}</span>
 </code></pre>
 </div>
 
@@ -563,138 +563,138 @@ Switch::add_handlers()
 
 <p>In Linux, the sk_buff is defined as:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>struct sk_buff {
-	/* These two members must be first. */
-	struct sk_buff		*next;
-	struct sk_buff		*prev;
-
-        …...
-
-	ktime_t			tstamp;
-
-	struct sock		*sk;
-	struct net_device	*dev;
-
-	/*
-	 * This is the control buffer. It is free to use for every
-	 * layer. Please put your private variables there. If you
-	 * want to keep them across layers you have to do a skb_clone()
-	 * first. This is owned by whoever has the skb queued ATM.
-	 */
-#ifdef __LP64__
-	char			cb[96] __aligned(8);
-#else
-	char			cb[80] __aligned(8);
-#endif
-
-	unsigned long		_skb_refdst;
-#ifdef CONFIG_XFRM
-	struct	sec_path	*sp;
-#endif
-	unsigned int		len,
-				data_len;
-	__u16			mac_len,
-				hdr_len;
-	union {
-		__wsum		csum;
-		struct {
-			__u16	csum_start;
-			__u16	csum_offset;
-		};
-	};
-	__u32			priority;
-	kmemcheck_bitfield_begin(flags1);
-	__u8			local_df:1,
-				cloned:1,
-				ip_summed:2,
-				nohdr:1,
-				nfctinfo:3;
-	__u8			pkt_type:3,
-				fclone:2,
-				ipvs_property:1,
-				peeked:1,
-				nf_trace:1;
-	kmemcheck_bitfield_end(flags1);
-	__be16			protocol;
-
-	void			(*destructor)(struct sk_buff *skb);
-        ……..
-
-	int			skb_iif;
-
-	__u32			rxhash;
-
-	__u16			vlan_tci;
-
-        ……..
-
-	sk_buff_data_t		transport_header;
-	sk_buff_data_t		network_header;
-	sk_buff_data_t		mac_header;
-	/* These elements must be at the end, see alloc_skb() for details.  */
-	sk_buff_data_t		tail;
-	sk_buff_data_t		end;
-	unsigned char		*head,
-				*data;
-	unsigned int		truesize;
-	atomic_t		users;
-};
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="k">struct</span> <span class="n">sk_buff</span> <span class="p">{</span>
+    	<span class="cm">/* These two members must be first. */</span>
+    	<span class="k">struct</span> <span class="n">sk_buff</span>		<span class="o">*</span><span class="n">next</span><span class="p">;</span>
+    	<span class="k">struct</span> <span class="n">sk_buff</span>		<span class="o">*</span><span class="n">prev</span><span class="p">;</span>
+    
+            <span class="err">…</span><span class="p">...</span>
+    
+    	<span class="n">ktime_t</span>			<span class="n">tstamp</span><span class="p">;</span>
+    
+    	<span class="k">struct</span> <span class="n">sock</span>		<span class="o">*</span><span class="n">sk</span><span class="p">;</span>
+    	<span class="k">struct</span> <span class="n">net_device</span>	<span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+    
+    	<span class="cm">/*
+    	 * This is the control buffer. It is free to use for every
+    	 * layer. Please put your private variables there. If you
+    	 * want to keep them across layers you have to do a skb_clone()
+    	 * first. This is owned by whoever has the skb queued ATM.
+    	 */</span>
+    <span class="cp">#ifdef __LP64__
+</span>    	<span class="kt">char</span>			<span class="n">cb</span><span class="p">[</span><span class="mi">96</span><span class="p">]</span> <span class="n">__aligned</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+    <span class="cp">#else
+</span>    	<span class="kt">char</span>			<span class="n">cb</span><span class="p">[</span><span class="mi">80</span><span class="p">]</span> <span class="n">__aligned</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+    <span class="cp">#endif
+</span>    
+    	<span class="kt">unsigned</span> <span class="kt">long</span>		<span class="n">_skb_refdst</span><span class="p">;</span>
+    <span class="cp">#ifdef CONFIG_XFRM
+</span>    	<span class="k">struct</span>	<span class="n">sec_path</span>	<span class="o">*</span><span class="n">sp</span><span class="p">;</span>
+    <span class="cp">#endif
+</span>    	<span class="kt">unsigned</span> <span class="kt">int</span>		<span class="n">len</span><span class="p">,</span>
+    				<span class="n">data_len</span><span class="p">;</span>
+    	<span class="n">__u16</span>			<span class="n">mac_len</span><span class="p">,</span>
+    				<span class="n">hdr_len</span><span class="p">;</span>
+    	<span class="k">union</span> <span class="p">{</span>
+    		<span class="n">__wsum</span>		<span class="n">csum</span><span class="p">;</span>
+    		<span class="k">struct</span> <span class="p">{</span>
+    			<span class="n">__u16</span>	<span class="n">csum_start</span><span class="p">;</span>
+    			<span class="n">__u16</span>	<span class="n">csum_offset</span><span class="p">;</span>
+    		<span class="p">};</span>
+    	<span class="p">};</span>
+    	<span class="n">__u32</span>			<span class="n">priority</span><span class="p">;</span>
+    	<span class="n">kmemcheck_bitfield_begin</span><span class="p">(</span><span class="n">flags1</span><span class="p">);</span>
+    	<span class="n">__u8</span>			<span class="n">local_df</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+    				<span class="n">cloned</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+    				<span class="n">ip_summed</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span>
+    				<span class="n">nohdr</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+    				<span class="n">nfctinfo</span><span class="o">:</span><span class="mi">3</span><span class="p">;</span>
+    	<span class="n">__u8</span>			<span class="n">pkt_type</span><span class="o">:</span><span class="mi">3</span><span class="p">,</span>
+    				<span class="n">fclone</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span>
+    				<span class="n">ipvs_property</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+    				<span class="n">peeked</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+    				<span class="n">nf_trace</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span>
+    	<span class="n">kmemcheck_bitfield_end</span><span class="p">(</span><span class="n">flags1</span><span class="p">);</span>
+    	<span class="n">__be16</span>			<span class="n">protocol</span><span class="p">;</span>
+    
+    	<span class="kt">void</span>			<span class="p">(</span><span class="o">*</span><span class="n">destructor</span><span class="p">)(</span><span class="k">struct</span> <span class="n">sk_buff</span> <span class="o">*</span><span class="n">skb</span><span class="p">);</span>
+            <span class="err">……</span><span class="p">..</span>
+    
+    	<span class="kt">int</span>			<span class="n">skb_iif</span><span class="p">;</span>
+    
+    	<span class="n">__u32</span>			<span class="n">rxhash</span><span class="p">;</span>
+    
+    	<span class="n">__u16</span>			<span class="n">vlan_tci</span><span class="p">;</span>
+    
+            <span class="err">……</span><span class="p">..</span>
+    
+    	<span class="n">sk_buff_data_t</span>		<span class="n">transport_header</span><span class="p">;</span>
+    	<span class="n">sk_buff_data_t</span>		<span class="n">network_header</span><span class="p">;</span>
+    	<span class="n">sk_buff_data_t</span>		<span class="n">mac_header</span><span class="p">;</span>
+    	<span class="cm">/* These elements must be at the end, see alloc_skb() for details.  */</span>
+    	<span class="n">sk_buff_data_t</span>		<span class="n">tail</span><span class="p">;</span>
+    	<span class="n">sk_buff_data_t</span>		<span class="n">end</span><span class="p">;</span>
+    	<span class="kt">unsigned</span> <span class="kt">char</span>		<span class="o">*</span><span class="n">head</span><span class="p">,</span>
+    				<span class="o">*</span><span class="n">data</span><span class="p">;</span>
+    	<span class="kt">unsigned</span> <span class="kt">int</span>		<span class="n">truesize</span><span class="p">;</span>
+    	<span class="n">atomic_t</span>		<span class="n">users</span><span class="p">;</span>
+    <span class="p">};</span>
 </code></pre>
 </div>
 
 <p>The Click Packet is defined as:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>class Packet {
-…...
-private:
-
-    // Anno must fit in sk_buff's char cb[48].
-    /** @cond never */
-    union Anno {
-	char c[anno_size];
-	uint8_t u8[anno_size];
-	uint16_t u16[anno_size / 2];
-	uint32_t u32[anno_size / 4];
-#if HAVE_INT64_TYPES
-	uint64_t u64[anno_size / 8];
-#endif
-	// allocations: see packet_anno.hh
-    };
-
-#if !CLICK_LINUXMODULE
-    // All packet annotations are stored in AllAnno so that
-    // clear_annotations(true) can memset() the structure to zero.
-    struct AllAnno {
-	Anno cb;
-	unsigned char *mac;
-	unsigned char *nh;
-	unsigned char *h;
-	PacketType pkt_type;
-	Timestamp timestamp;
-	Packet *next;
-	Packet *prev;
-	AllAnno()
-	    : timestamp(Timestamp::uninitialized_t()) {
-	}
-    };
-#endif
-    /** @endcond never */
-
-#if !CLICK_LINUXMODULE
-    // User-space and BSD kernel module implementations.
-    atomic_uint32_t _use_count;
-    Packet *_data_packet;
-    /* mimic Linux sk_buff */
-    unsigned char *_head; /* start of allocated buffer */
-    unsigned char *_data; /* where the packet starts */
-    unsigned char *_tail; /* one beyond end of packet */
-    unsigned char *_end;  /* one beyond end of allocated buffer */
-# if CLICK_BSDMODULE
-    struct mbuf *_m;
-# endif
-    AllAnno _aa;
-…...
-}
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="k">class</span> <span class="nc">Packet</span> <span class="p">{</span>
+    <span class="err">…</span><span class="p">...</span>
+    <span class="k">private</span><span class="o">:</span>
+    
+        <span class="c1">// Anno must fit in sk_buff's char cb[48].
+</span>        <span class="cm">/** @cond never */</span>
+        <span class="k">union</span> <span class="n">Anno</span> <span class="p">{</span>
+    	<span class="kt">char</span> <span class="n">c</span><span class="p">[</span><span class="n">anno_size</span><span class="p">];</span>
+    	<span class="kt">uint8_t</span> <span class="n">u8</span><span class="p">[</span><span class="n">anno_size</span><span class="p">];</span>
+    	<span class="kt">uint16_t</span> <span class="n">u16</span><span class="p">[</span><span class="n">anno_size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">];</span>
+    	<span class="kt">uint32_t</span> <span class="n">u32</span><span class="p">[</span><span class="n">anno_size</span> <span class="o">/</span> <span class="mi">4</span><span class="p">];</span>
+    <span class="cp">#if HAVE_INT64_TYPES
+</span>    	<span class="kt">uint64_t</span> <span class="n">u64</span><span class="p">[</span><span class="n">anno_size</span> <span class="o">/</span> <span class="mi">8</span><span class="p">];</span>
+    <span class="cp">#endif
+</span>    	<span class="c1">// allocations: see packet_anno.hh
+</span>        <span class="p">};</span>
+    
+    <span class="cp">#if !CLICK_LINUXMODULE
+</span>        <span class="c1">// All packet annotations are stored in AllAnno so that
+</span>        <span class="c1">// clear_annotations(true) can memset() the structure to zero.
+</span>        <span class="k">struct</span> <span class="n">AllAnno</span> <span class="p">{</span>
+    	<span class="n">Anno</span> <span class="n">cb</span><span class="p">;</span>
+    	<span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">mac</span><span class="p">;</span>
+    	<span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">nh</span><span class="p">;</span>
+    	<span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">h</span><span class="p">;</span>
+    	<span class="n">PacketType</span> <span class="n">pkt_type</span><span class="p">;</span>
+    	<span class="n">Timestamp</span> <span class="n">timestamp</span><span class="p">;</span>
+    	<span class="n">Packet</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+    	<span class="n">Packet</span> <span class="o">*</span><span class="n">prev</span><span class="p">;</span>
+    	<span class="n">AllAnno</span><span class="p">()</span>
+    	    <span class="o">:</span> <span class="n">timestamp</span><span class="p">(</span><span class="n">Timestamp</span><span class="o">::</span><span class="n">uninitialized_t</span><span class="p">())</span> <span class="p">{</span>
+    	<span class="p">}</span>
+        <span class="p">};</span>
+    <span class="cp">#endif
+</span>        <span class="cm">/** @endcond never */</span>
+    
+    <span class="cp">#if !CLICK_LINUXMODULE
+</span>        <span class="c1">// User-space and BSD kernel module implementations.
+</span>        <span class="n">atomic_uint32_t</span> <span class="n">_use_count</span><span class="p">;</span>
+        <span class="n">Packet</span> <span class="o">*</span><span class="n">_data_packet</span><span class="p">;</span>
+        <span class="cm">/* mimic Linux sk_buff */</span>
+        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">_head</span><span class="p">;</span> <span class="cm">/* start of allocated buffer */</span>
+        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">_data</span><span class="p">;</span> <span class="cm">/* where the packet starts */</span>
+        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">_tail</span><span class="p">;</span> <span class="cm">/* one beyond end of packet */</span>
+        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">_end</span><span class="p">;</span>  <span class="cm">/* one beyond end of allocated buffer */</span>
+    <span class="cp"># if CLICK_BSDMODULE
+</span>        <span class="k">struct</span> <span class="n">mbuf</span> <span class="o">*</span><span class="n">_m</span><span class="p">;</span>
+    <span class="cp"># endif
+</span>        <span class="n">AllAnno</span> <span class="n">_aa</span><span class="p">;</span>
+    <span class="err">…</span><span class="p">...</span>
+    <span class="p">}</span>
 </code></pre>
 </div>
 
@@ -888,14 +888,14 @@ private:
   </div>
 
   <footer class="center">
-  <div class="measure">
-      <small>
-      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
-         
-      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
-      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
-    </small>
-  </div>
+    <div class="measure">
+        <small>
+            <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang</a>. &nbsp; <script type="text/javascript" src="//rc.revolvermaps.com/0/0/3.js?i=493pvkdo4nt&amp;b=0&amp;s=20&amp;m=2&amp;cl=ffffff&amp;co=010020&amp;cd=aa0000&amp;v0=60&amp;v1=60&amp;r=1" async="async"></script>
+ </p>
+
+            <p>Powered by <a href="https://github.com/jekyll/jekyll">Jekyll</a> and <a href="https://github.com/johnotander/pixyll">Pixyll</a>.</p>.
+        </small>
+    </div>
 </footer>
 
 </body>

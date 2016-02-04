@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012335" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602031809" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -467,206 +467,206 @@
 
 <p>Following is my Perl implementation. For more information and the source file, please refer to <a href="https://github.com/bo-yang/CommonSourceIPs">https://github.com/bo-yang/CommonSourceIPs</a>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>use strict;
-use warnings;
-use POSIX qw(strftime);
-use DateTime;
-use Parallel::ForkManager;
-use Getopt::Long;
-use FindBin qw($Bin);
-use Cwd 'abs_path';
-
-my $ldt=DateTime-&gt;now(); # Get UTC date time
-my $input='fleet_servers'; # default file to store server list
-my $output="report_".strftime("%Y%d%m_%H%M%S",localtime()); # default file t ostore report
-my $login=`whoami`;
-my $access_log='/var/log/httpd/access_log'; # the default location of the access log
-my $time_range=1; # 1 hour by default
-my $num_ips=10;	# number of the most common source IP addresses
-my $num_process=30; # Max number of processes for parallel processing
-
-GetOptions(
-	'input|i=s'  =&gt; \$input,
-	'output|o=s' =&gt; \$output,
-	'login|l=s'  =&gt; \$login,
-	'alog|a=s'   =&gt; \$access_log,
-	'trange|t=i' =&gt; \$time_range,
-	'num_ip|n=i' =&gt; \$num_ips,
-	'process|p=i'=&gt; \$num_process,
-	'help|?'	 =&gt; \&amp;ShowUsage
-   ) or ShowUsage();
-
-
-die("ERROR: no input reads specied!\n") if (!$input);
-
-# Handle signals
-my $CleanupDone   = 0;
-$SIG{'ABRT'} = 'doCleanup';
-$SIG{'HUP'}  = 'doCleanup';
-$SIG{'INT'}  = 'doCleanup';
-$SIG{'QUIT'} = 'doCleanup';
-
-open IN, "&lt;$input" or die("ERROR: cannot open file $input!");
-
-# Iteratively access each server. Assume that each line of the input file is 
-# a server name or IP address.
-my $clients={};
-my $pm = new Parallel::ForkManager($num_process);
-while (my $server = &lt;IN&gt;) {
-	$pm-&gt;start and next; # do the fork
-
-	chomp $server;
-	my $tmplog=".${server}.access_log.tmp";
-	`ssh ${login}@${server} "cat ${access_log}" &gt; $tmplog`;
-
-	open LOG, "&lt;$tmplog" or die("ERROR: cannot open file $tmplog!");
-	# Parse the access_log of this server
-	while (my $line = &lt;LOG&gt;) {
-		if($line =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/) {
-			my $ip=$1;
-			my ($rdt, $stat_code)=($line =~ m/\[(.*)\].*" (\d{3})/);
+<div class="highlighter-rouge"><pre class="highlight"><code>	<span class="k">use</span> <span class="nv">strict</span><span class="p">;</span>
+	<span class="k">use</span> <span class="nv">warnings</span><span class="p">;</span>
+	<span class="k">use</span> <span class="nv">POSIX</span> <span class="sx">qw(strftime)</span><span class="p">;</span>
+	<span class="k">use</span> <span class="nv">DateTime</span><span class="p">;</span>
+	<span class="k">use</span> <span class="nn">Parallel::</span><span class="nv">ForkManager</span><span class="p">;</span>
+	<span class="k">use</span> <span class="nn">Getopt::</span><span class="nv">Long</span><span class="p">;</span>
+	<span class="k">use</span> <span class="nv">FindBin</span> <span class="sx">qw($Bin)</span><span class="p">;</span>
+	<span class="k">use</span> <span class="nv">Cwd</span> <span class="s">'abs_path'</span><span class="p">;</span>
 	
-			# Calculate time differece between local and remote servers(in seconds)
-			my $time_diff=CompareTime($ldt,$rdt);
-			# Skip messages older than specified time range
-			next if($time_diff &gt; $time_range*3600);
+	<span class="k">my</span> <span class="nv">$ldt</span><span class="o">=</span><span class="nv">DateTime</span><span class="o">-&gt;</span><span class="nv">now</span><span class="p">();</span> <span class="c1"># Get UTC date time</span>
+	<span class="k">my</span> <span class="nv">$input</span><span class="o">=</span><span class="s">'fleet_servers'</span><span class="p">;</span> <span class="c1"># default file to store server list</span>
+	<span class="k">my</span> <span class="nv">$output</span><span class="o">=</span><span class="s">"report_"</span><span class="o">.</span><span class="nv">strftime</span><span class="p">(</span><span class="s">"%Y%d%m_%H%M%S"</span><span class="p">,</span><span class="nb">localtime</span><span class="p">());</span> <span class="c1"># default file t ostore report</span>
+	<span class="k">my</span> <span class="nv">$login</span><span class="o">=</span><span class="sb">`whoami`</span><span class="p">;</span>
+	<span class="k">my</span> <span class="nv">$access_log</span><span class="o">=</span><span class="s">'/var/log/httpd/access_log'</span><span class="p">;</span> <span class="c1"># the default location of the access log</span>
+	<span class="k">my</span> <span class="nv">$time_range</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="c1"># 1 hour by default</span>
+	<span class="k">my</span> <span class="nv">$num_ips</span><span class="o">=</span><span class="mi">10</span><span class="p">;</span>	<span class="c1"># number of the most common source IP addresses</span>
+	<span class="k">my</span> <span class="nv">$num_process</span><span class="o">=</span><span class="mi">30</span><span class="p">;</span> <span class="c1"># Max number of processes for parallel processing</span>
 	
-			# Count requests and successful oprations
-			if(not $clients-&gt;{$ip}){
-				$clients-&gt;{$ip}-&gt;{'request'}=1;
-				$clients-&gt;{$ip}-&gt;{'success'}=0;
-			} else {
-				$clients-&gt;{$ip}-&gt;{'request'}++;
-			}
-			# Only status code that begins with 1, 2 or 3 will be counted
-			$clients-&gt;{$ip}-&gt;{'success'}++ if($stat_code =~ /[1-3]\d{2}/);
-		} else {
-			warn "No IP address found in ${tmplog}.";
-		}
-	}
-	close LOG;
-	unlink $tmplog; # remove temporary files
-
-	$pm-&gt;finish;
-}
-$pm-&gt;wait_all_children; # wait for forked-processes
-
-close IN;
-
-# Find the most common IP addresses and calculate their hit rates
-open OUT, "&gt;$output" or die("ERROR: cannot write file $output!");
-print OUT "IP Address \t Hit Rate \t # Req \t # Succ\n";
-print STDOUT "IP Address \t Hit Rate \t # Req \t # Succ\n";
-my $cnt=0;
-# Sort source IP addresses in descending order of requests
-foreach my $ip (sort {$clients-&gt;{$b}-&gt;{'request'} &lt;=&gt; $clients-&gt;{$a}-&gt;{'request'}} keys %{$clients}) {
-	# Calculate hit rate
-	$clients-&gt;{$ip}-&gt;{'hit rate'}=$clients-&gt;{$ip}-&gt;{'success'}/$clients-&gt;{$ip}-&gt;{'request'};
-	my $hit_rate=sprintf("%.4f",$clients-&gt;{$ip}-&gt;{'hit rate'});
-	print OUT "$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n";
-	print STDOUT "$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n";
-
-	$cnt++;
-	last if($cnt&gt;=$num_ips); # break out
-}
-
-close OUT;
-
-
-#
-# Compare two time and return the differences in seconds.
-# 
-# Inputs: 
-# 	local time(array), remote time(string)
-# Output: 
-# 	time difference(in seconds)
-#
-sub CompareTime {
-	my $ldt=$_[0]; # local time, array
-	my $remote_dt=$_[1]; # remote time, string
+	<span class="nv">GetOptions</span><span class="p">(</span>
+		<span class="s">'input|i=s'</span>  <span class="o">=&gt;</span> <span class="o">\</span><span class="nv">$input</span><span class="p">,</span>
+		<span class="s">'output|o=s'</span> <span class="o">=&gt;</span> <span class="o">\</span><span class="nv">$output</span><span class="p">,</span>
+		<span class="s">'login|l=s'</span>  <span class="o">=&gt;</span> <span class="o">\</span><span class="nv">$login</span><span class="p">,</span>
+		<span class="s">'alog|a=s'</span>   <span class="o">=&gt;</span> <span class="o">\</span><span class="nv">$access_log</span><span class="p">,</span>
+		<span class="s">'trange|t=i'</span> <span class="o">=&gt;</span> <span class="o">\</span><span class="nv">$time_range</span><span class="p">,</span>
+		<span class="s">'num_ip|n=i'</span> <span class="o">=&gt;</span> <span class="o">\</span><span class="nv">$num_ips</span><span class="p">,</span>
+		<span class="s">'process|p=i'</span><span class="o">=&gt;</span> <span class="o">\</span><span class="nv">$num_process</span><span class="p">,</span>
+		<span class="s">'help|?'</span>	 <span class="o">=&gt;</span> <span class="o">\&amp;</span><span class="nv">ShowUsage</span>
+	   <span class="p">)</span> <span class="ow">or</span> <span class="nv">ShowUsage</span><span class="p">();</span>
 	
-	my %month_map = (
-		'Jan' =&gt; 1, 'Feb' =&gt; 2, 'Mar' =&gt; 3,
-		'Apr' =&gt; 4, 'May' =&gt; 5, 'Jun' =&gt; 6,
-		'Jul' =&gt; 7, 'Aug' =&gt; 8, 'Sep' =&gt; 9,
-		'Oct' =&gt; 10,'Sep' =&gt; 11,'Dec' =&gt; 12
-	);
-
-	my ($rday,$rmonth,$ryear,$rhour,$rmin,$rsec,$rtz)=($remote_dt =~ m/(\d+)\/(\S+)\/(\d+):(\d+):(\d+):(\d+) ([+-]\d+)/);
-	my $rdt = DateTime-&gt;new(
-		year	=&gt; $ryear,
-		month	=&gt; $month_map{$rmonth},
-		day		=&gt; $rday,
-		hour	=&gt; $rhour,
-		minute	=&gt; $rmin,
-		second	=&gt; $rsec,
-		time_zone =&gt; $ldt-&gt;time_zone,
-	);
-
-	# Convert the remote time into UTC time zone.
-	my $ltz='+0000';
-	if($ltz ne $rtz) {
-		my $abs_rtz=$rtz;
-		if($abs_rtz =~ m/[+-].*/) {
-			$abs_rtz=substr $abs_rtz, 1; # remove the leading +/-
-		}
-		# The ISO 8601 offset from UTC in timezone linke +0700 (1 minute=1, 1 hour=100)
-		my $tz_diff=$abs_rtz/100*3600; # time zone diff in seconds
-		my $dur = DateTime::Duration-&gt;new(
-			years       =&gt; 0,
-	      	months      =&gt; 0,
-	      	weeks       =&gt; 0,
-	      	days        =&gt; 0,
-	      	hours       =&gt; 0,
-	      	minutes     =&gt; 0,
-	      	seconds     =&gt; $tz_diff,
-	      	nanoseconds =&gt; 0
-		);
-		# Add/subtract time zone influence
-		if($rtz =~ /\-\d+/) {
-			$rdt-&gt;add_duration($dur);
-		} else {
-			$rdt-&gt;subtract_duration($dur);
-		}
-	}
 	
-	# Calculate the absolute time differences in seconds
-	my $time_diff=$ldt-&gt;subtract_datetime_absolute($rdt);
-	return $time_diff-&gt;in_units('seconds');
-}
-
-#
-# Show usgage
-# 
-sub ShowUsage {
-	my $proc=`basename $0`;
-	chomp($proc);
-
-	print STDOUT "Usage: $proc [-i server_list] [-o report] [-l login] [-a access_log] [-t time_range] [-n ip_num] [-p process_num]\n";
-	print STDOUT "where:\n";
-	print STDOUT "  server_list\t - list of servers in the pool, optional\n";
-	print STDOUT "  report\t - report file, optional \n";
-	print STDOUT "  login\t\t - login to admin servers, optional\n";
-	print STDOUT "  access_log\t - path of Apache access_log, optional\n";
-	print STDOUT "  time_range\t - range of time to be analysed(unit: hour), optional\n";
-	print STDOUT "  ip_num\t - number of the top source IPs, optional\n";
-	print STDOUT "  process_num\t - number of concurrent processes, optional\n";
+	<span class="nb">die</span><span class="p">(</span><span class="s">"ERROR: no input reads specied!\n"</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$input</span><span class="p">);</span>
 	
-	exit;
-}
-
-#
-# Clean up before exit
-#
-sub doCleanup {
-	if($CleanupDone == 1) {
-		exit;
-	}
-
-	`rm .*.access_log.tmp`; # remove temp files
-	$CleanupDone = 1;
-	exit 0;
-} ## end sub doCleanup
+	<span class="c1"># Handle signals</span>
+	<span class="k">my</span> <span class="nv">$CleanupDone</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="nv">$SIG</span><span class="p">{</span><span class="s">'ABRT'</span><span class="p">}</span> <span class="o">=</span> <span class="s">'doCleanup'</span><span class="p">;</span>
+	<span class="nv">$SIG</span><span class="p">{</span><span class="s">'HUP'</span><span class="p">}</span>  <span class="o">=</span> <span class="s">'doCleanup'</span><span class="p">;</span>
+	<span class="nv">$SIG</span><span class="p">{</span><span class="s">'INT'</span><span class="p">}</span>  <span class="o">=</span> <span class="s">'doCleanup'</span><span class="p">;</span>
+	<span class="nv">$SIG</span><span class="p">{</span><span class="s">'QUIT'</span><span class="p">}</span> <span class="o">=</span> <span class="s">'doCleanup'</span><span class="p">;</span>
+	
+	<span class="nb">open</span> <span class="nv">IN</span><span class="p">,</span> <span class="s">"&lt;$input"</span> <span class="ow">or</span> <span class="nb">die</span><span class="p">(</span><span class="s">"ERROR: cannot open file $input!"</span><span class="p">);</span>
+	
+	<span class="c1"># Iteratively access each server. Assume that each line of the input file is </span>
+	<span class="c1"># a server name or IP address.</span>
+	<span class="k">my</span> <span class="nv">$clients</span><span class="o">=</span><span class="p">{};</span>
+	<span class="k">my</span> <span class="nv">$pm</span> <span class="o">=</span> <span class="k">new</span> <span class="nn">Parallel::</span><span class="nv">ForkManager</span><span class="p">(</span><span class="nv">$num_process</span><span class="p">);</span>
+	<span class="k">while</span> <span class="p">(</span><span class="k">my</span> <span class="nv">$server</span> <span class="o">=</span> <span class="sr">&lt;IN&gt;</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nv">$pm</span><span class="o">-&gt;</span><span class="nv">start</span> <span class="ow">and</span> <span class="k">next</span><span class="p">;</span> <span class="c1"># do the fork</span>
+	
+		<span class="nb">chomp</span> <span class="nv">$server</span><span class="p">;</span>
+		<span class="k">my</span> <span class="nv">$tmplog</span><span class="o">=</span><span class="s">".${server}.access_log.tmp"</span><span class="p">;</span>
+		<span class="sb">`ssh ${login}@${server} "cat ${access_log}" &gt; $tmplog`</span><span class="p">;</span>
+	
+		<span class="nb">open</span> <span class="nv">LOG</span><span class="p">,</span> <span class="s">"&lt;$tmplog"</span> <span class="ow">or</span> <span class="nb">die</span><span class="p">(</span><span class="s">"ERROR: cannot open file $tmplog!"</span><span class="p">);</span>
+		<span class="c1"># Parse the access_log of this server</span>
+		<span class="k">while</span> <span class="p">(</span><span class="k">my</span> <span class="nv">$line</span> <span class="o">=</span> <span class="sr">&lt;LOG&gt;</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span><span class="p">(</span><span class="nv">$line</span> <span class="o">=~</span> <span class="sr">/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">my</span> <span class="nv">$ip</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+				<span class="k">my</span> <span class="p">(</span><span class="nv">$rdt</span><span class="p">,</span> <span class="nv">$stat_code</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nv">$line</span> <span class="o">=~</span> <span class="sr">m/\[(.*)\].*" (\d{3})/</span><span class="p">);</span>
+		
+				<span class="c1"># Calculate time differece between local and remote servers(in seconds)</span>
+				<span class="k">my</span> <span class="nv">$time_diff</span><span class="o">=</span><span class="nv">CompareTime</span><span class="p">(</span><span class="nv">$ldt</span><span class="p">,</span><span class="nv">$rdt</span><span class="p">);</span>
+				<span class="c1"># Skip messages older than specified time range</span>
+				<span class="k">next</span> <span class="k">if</span><span class="p">(</span><span class="nv">$time_diff</span> <span class="o">&gt;</span> <span class="nv">$time_range</span><span class="o">*</span><span class="mi">3600</span><span class="p">);</span>
+		
+				<span class="c1"># Count requests and successful oprations</span>
+				<span class="k">if</span><span class="p">(</span><span class="ow">not</span> <span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$ip</span><span class="p">}){</span>
+					<span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$ip</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'request'</span><span class="p">}</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+					<span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$ip</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'success'</span><span class="p">}</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$ip</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'request'</span><span class="p">}</span><span class="o">++</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="c1"># Only status code that begins with 1, 2 or 3 will be counted</span>
+				<span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$ip</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'success'</span><span class="p">}</span><span class="o">++</span> <span class="k">if</span><span class="p">(</span><span class="nv">$stat_code</span> <span class="o">=~</span> <span class="sr">/[1-3]\d{2}/</span><span class="p">);</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nb">warn</span> <span class="s">"No IP address found in ${tmplog}."</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="nb">close</span> <span class="nv">LOG</span><span class="p">;</span>
+		<span class="nb">unlink</span> <span class="nv">$tmplog</span><span class="p">;</span> <span class="c1"># remove temporary files</span>
+	
+		<span class="nv">$pm</span><span class="o">-&gt;</span><span class="nv">finish</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="nv">$pm</span><span class="o">-&gt;</span><span class="nv">wait_all_children</span><span class="p">;</span> <span class="c1"># wait for forked-processes</span>
+	
+	<span class="nb">close</span> <span class="nv">IN</span><span class="p">;</span>
+	
+	<span class="c1"># Find the most common IP addresses and calculate their hit rates</span>
+	<span class="nb">open</span> <span class="nv">OUT</span><span class="p">,</span> <span class="s">"&gt;$output"</span> <span class="ow">or</span> <span class="nb">die</span><span class="p">(</span><span class="s">"ERROR: cannot write file $output!"</span><span class="p">);</span>
+	<span class="k">print</span> <span class="nv">OUT</span> <span class="s">"IP Address \t Hit Rate \t # Req \t # Succ\n"</span><span class="p">;</span>
+	<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"IP Address \t Hit Rate \t # Req \t # Succ\n"</span><span class="p">;</span>
+	<span class="k">my</span> <span class="nv">$cnt</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+	<span class="c1"># Sort source IP addresses in descending order of requests</span>
+	<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$ip</span> <span class="p">(</span><span class="nb">sort</span> <span class="p">{</span><span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$b</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'request'</span><span class="p">}</span> <span class="sr">&lt;=&gt;</span> <span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$a</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'request'</span><span class="p">}}</span> <span class="nb">keys</span> <span class="nv">%</span><span class="p">{</span><span class="nv">$clients</span><span class="p">})</span> <span class="p">{</span>
+		<span class="c1"># Calculate hit rate</span>
+		<span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$ip</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'hit rate'</span><span class="p">}</span><span class="o">=</span><span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$ip</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'success'</span><span class="p">}</span><span class="o">/</span><span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$ip</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'request'</span><span class="p">};</span>
+		<span class="k">my</span> <span class="nv">$hit_rate</span><span class="o">=</span><span class="nb">sprintf</span><span class="p">(</span><span class="s">"%.4f"</span><span class="p">,</span><span class="nv">$clients</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$ip</span><span class="p">}</span><span class="o">-&gt;</span><span class="p">{</span><span class="s">'hit rate'</span><span class="p">});</span>
+		<span class="k">print</span> <span class="nv">OUT</span> <span class="s">"$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n"</span><span class="p">;</span>
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"$ip \t $hit_rate \t $clients-&gt;{$ip}-&gt;{'request'} \t $clients-&gt;{$ip}-&gt;{'success'}\n"</span><span class="p">;</span>
+	
+		<span class="nv">$cnt</span><span class="o">++</span><span class="p">;</span>
+		<span class="k">last</span> <span class="k">if</span><span class="p">(</span><span class="nv">$cnt</span><span class="o">&gt;=</span><span class="nv">$num_ips</span><span class="p">);</span> <span class="c1"># break out</span>
+	<span class="p">}</span>
+	
+	<span class="nb">close</span> <span class="nv">OUT</span><span class="p">;</span>
+	
+	
+	<span class="c1">#</span>
+	<span class="c1"># Compare two time and return the differences in seconds.</span>
+	<span class="c1"># </span>
+	<span class="c1"># Inputs: </span>
+	<span class="c1"># 	local time(array), remote time(string)</span>
+	<span class="c1"># Output: </span>
+	<span class="c1"># 	time difference(in seconds)</span>
+	<span class="c1">#</span>
+	<span class="k">sub </span><span class="nf">CompareTime</span> <span class="p">{</span>
+		<span class="k">my</span> <span class="nv">$ldt</span><span class="o">=</span><span class="nv">$_</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="c1"># local time, array</span>
+		<span class="k">my</span> <span class="nv">$remote_dt</span><span class="o">=</span><span class="nv">$_</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="c1"># remote time, string</span>
+		
+		<span class="k">my</span> <span class="nv">%month_map</span> <span class="o">=</span> <span class="p">(</span>
+			<span class="s">'Jan'</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s">'Feb'</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s">'Mar'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span>
+			<span class="s">'Apr'</span> <span class="o">=&gt;</span> <span class="mi">4</span><span class="p">,</span> <span class="s">'May'</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="s">'Jun'</span> <span class="o">=&gt;</span> <span class="mi">6</span><span class="p">,</span>
+			<span class="s">'Jul'</span> <span class="o">=&gt;</span> <span class="mi">7</span><span class="p">,</span> <span class="s">'Aug'</span> <span class="o">=&gt;</span> <span class="mi">8</span><span class="p">,</span> <span class="s">'Sep'</span> <span class="o">=&gt;</span> <span class="mi">9</span><span class="p">,</span>
+			<span class="s">'Oct'</span> <span class="o">=&gt;</span> <span class="mi">10</span><span class="p">,</span><span class="s">'Sep'</span> <span class="o">=&gt;</span> <span class="mi">11</span><span class="p">,</span><span class="s">'Dec'</span> <span class="o">=&gt;</span> <span class="mi">12</span>
+		<span class="p">);</span>
+	
+		<span class="k">my</span> <span class="p">(</span><span class="nv">$rday</span><span class="p">,</span><span class="nv">$rmonth</span><span class="p">,</span><span class="nv">$ryear</span><span class="p">,</span><span class="nv">$rhour</span><span class="p">,</span><span class="nv">$rmin</span><span class="p">,</span><span class="nv">$rsec</span><span class="p">,</span><span class="nv">$rtz</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nv">$remote_dt</span> <span class="o">=~</span> <span class="sr">m/(\d+)\/(\S+)\/(\d+):(\d+):(\d+):(\d+) ([+-]\d+)/</span><span class="p">);</span>
+		<span class="k">my</span> <span class="nv">$rdt</span> <span class="o">=</span> <span class="nv">DateTime</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span>
+			<span class="nv">year</span>	<span class="o">=&gt;</span> <span class="nv">$ryear</span><span class="p">,</span>
+			<span class="nv">month</span>	<span class="o">=&gt;</span> <span class="nv">$month_map</span><span class="p">{</span><span class="nv">$rmonth</span><span class="p">},</span>
+			<span class="nv">day</span>		<span class="o">=&gt;</span> <span class="nv">$rday</span><span class="p">,</span>
+			<span class="nv">hour</span>	<span class="o">=&gt;</span> <span class="nv">$rhour</span><span class="p">,</span>
+			<span class="nv">minute</span>	<span class="o">=&gt;</span> <span class="nv">$rmin</span><span class="p">,</span>
+			<span class="nv">second</span>	<span class="o">=&gt;</span> <span class="nv">$rsec</span><span class="p">,</span>
+			<span class="nv">time_zone</span> <span class="o">=&gt;</span> <span class="nv">$ldt</span><span class="o">-&gt;</span><span class="nv">time_zone</span><span class="p">,</span>
+		<span class="p">);</span>
+	
+		<span class="c1"># Convert the remote time into UTC time zone.</span>
+		<span class="k">my</span> <span class="nv">$ltz</span><span class="o">=</span><span class="s">'+0000'</span><span class="p">;</span>
+		<span class="k">if</span><span class="p">(</span><span class="nv">$ltz</span> <span class="ow">ne</span> <span class="nv">$rtz</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">my</span> <span class="nv">$abs_rtz</span><span class="o">=</span><span class="nv">$rtz</span><span class="p">;</span>
+			<span class="k">if</span><span class="p">(</span><span class="nv">$abs_rtz</span> <span class="o">=~</span> <span class="sr">m/[+-].*/</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nv">$abs_rtz</span><span class="o">=</span><span class="nb">substr</span> <span class="nv">$abs_rtz</span><span class="p">,</span> <span class="mi">1</span><span class="p">;</span> <span class="c1"># remove the leading +/-</span>
+			<span class="p">}</span>
+			<span class="c1"># The ISO 8601 offset from UTC in timezone linke +0700 (1 minute=1, 1 hour=100)</span>
+			<span class="k">my</span> <span class="nv">$tz_diff</span><span class="o">=</span><span class="nv">$abs_rtz</span><span class="o">/</span><span class="mi">100</span><span class="o">*</span><span class="mi">3600</span><span class="p">;</span> <span class="c1"># time zone diff in seconds</span>
+			<span class="k">my</span> <span class="nv">$dur</span> <span class="o">=</span> <span class="nn">DateTime::</span><span class="nv">Duration</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span>
+				<span class="nv">years</span>       <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+		      	<span class="nv">months</span>      <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+		      	<span class="nv">weeks</span>       <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+		      	<span class="nv">days</span>        <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+		      	<span class="nv">hours</span>       <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+		      	<span class="nv">minutes</span>     <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+		      	<span class="nv">seconds</span>     <span class="o">=&gt;</span> <span class="nv">$tz_diff</span><span class="p">,</span>
+		      	<span class="nv">nanoseconds</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+			<span class="p">);</span>
+			<span class="c1"># Add/subtract time zone influence</span>
+			<span class="k">if</span><span class="p">(</span><span class="nv">$rtz</span> <span class="o">=~</span> <span class="sr">/\-\d+/</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nv">$rdt</span><span class="o">-&gt;</span><span class="nv">add_duration</span><span class="p">(</span><span class="nv">$dur</span><span class="p">);</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nv">$rdt</span><span class="o">-&gt;</span><span class="nv">subtract_duration</span><span class="p">(</span><span class="nv">$dur</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		
+		<span class="c1"># Calculate the absolute time differences in seconds</span>
+		<span class="k">my</span> <span class="nv">$time_diff</span><span class="o">=</span><span class="nv">$ldt</span><span class="o">-&gt;</span><span class="nv">subtract_datetime_absolute</span><span class="p">(</span><span class="nv">$rdt</span><span class="p">);</span>
+		<span class="k">return</span> <span class="nv">$time_diff</span><span class="o">-&gt;</span><span class="nv">in_units</span><span class="p">(</span><span class="s">'seconds'</span><span class="p">);</span>
+	<span class="p">}</span>
+	
+	<span class="c1">#</span>
+	<span class="c1"># Show usgage</span>
+	<span class="c1"># </span>
+	<span class="k">sub </span><span class="nf">ShowUsage</span> <span class="p">{</span>
+		<span class="k">my</span> <span class="nv">$proc</span><span class="o">=</span><span class="sb">`basename $0`</span><span class="p">;</span>
+		<span class="nb">chomp</span><span class="p">(</span><span class="nv">$proc</span><span class="p">);</span>
+	
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"Usage: $proc [-i server_list] [-o report] [-l login] [-a access_log] [-t time_range] [-n ip_num] [-p process_num]\n"</span><span class="p">;</span>
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"where:\n"</span><span class="p">;</span>
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"  server_list\t - list of servers in the pool, optional\n"</span><span class="p">;</span>
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"  report\t - report file, optional \n"</span><span class="p">;</span>
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"  login\t\t - login to admin servers, optional\n"</span><span class="p">;</span>
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"  access_log\t - path of Apache access_log, optional\n"</span><span class="p">;</span>
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"  time_range\t - range of time to be analysed(unit: hour), optional\n"</span><span class="p">;</span>
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"  ip_num\t - number of the top source IPs, optional\n"</span><span class="p">;</span>
+		<span class="k">print</span> <span class="bp">STDOUT</span> <span class="s">"  process_num\t - number of concurrent processes, optional\n"</span><span class="p">;</span>
+		
+		<span class="nb">exit</span><span class="p">;</span>
+	<span class="p">}</span>
+	
+	<span class="c1">#</span>
+	<span class="c1"># Clean up before exit</span>
+	<span class="c1">#</span>
+	<span class="k">sub </span><span class="nf">doCleanup</span> <span class="p">{</span>
+		<span class="k">if</span><span class="p">(</span><span class="nv">$CleanupDone</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nb">exit</span><span class="p">;</span>
+		<span class="p">}</span>
+	
+		<span class="sb">`rm .*.access_log.tmp`</span><span class="p">;</span> <span class="c1"># remove temp files</span>
+		<span class="nv">$CleanupDone</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="nb">exit</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">}</span> <span class="c1">## end sub doCleanup</span>
 </code></pre>
 </div>
 
@@ -837,14 +837,14 @@ sub doCleanup {
   </div>
 
   <footer class="center">
-  <div class="measure">
-      <small>
-      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
-         
-      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
-      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
-    </small>
-  </div>
+    <div class="measure">
+        <small>
+            <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang</a>. &nbsp; <script type="text/javascript" src="//rc.revolvermaps.com/0/0/3.js?i=493pvkdo4nt&amp;b=0&amp;s=20&amp;m=2&amp;cl=ffffff&amp;co=010020&amp;cd=aa0000&amp;v0=60&amp;v1=60&amp;r=1" async="async"></script>
+ </p>
+
+            <p>Powered by <a href="https://github.com/jekyll/jekyll">Jekyll</a> and <a href="https://github.com/johnotander/pixyll">Pixyll</a>.</p>.
+        </small>
+    </div>
 </footer>
 
 </body>

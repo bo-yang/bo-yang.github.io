@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012335" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602031809" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -437,37 +437,36 @@
 
 <p>Following is the source code in <code class="highlighter-rouge">ash</code>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#!/bin/ash
-
-#
-# This script is used to tail the latest syslogs to stdout,
-# syslog file and specified log file.
-#
-
-SYSLOG=/var/log/messages
-custom_log=
-[ ! -z "$1" ] &amp;&amp; custom_log=$1
-
-base=$(cut -d" " -f1 /proc/uptime);
-ut=$(date +%s);
-# FIXME: Arithmetic operations are not fully supported in ash, use awk instead.
-base=`date | awk "{now=$ut - $base; printf \"%d\", now}"`
-
-dmesg -c &gt;&gt; $SYSLOG # clear circular syslog buffer
-while true
-do
-    dmesg -c | sed "s/^\[[ ]*\?\([0-9.]*\)\] \(.*\)/\\1 \\2/" |
-    while read ts msg; do
-        now=`date | awk "{now=$base + $ts; printf \"%d\", now}"`
-        newts=`date +"%m/%d/%Y %H:%M:%S" --date "@$now"` # human readable timestamp
-        printf "[%s] %s\n" "$newts" "$msg";
-    done | sed "s/$/$(printf '\r')/" | tee -a $SYSLOG $custom_log
-
-    sleep 1
-done
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="c">#!/bin/ash</span>
+    
+    <span class="c">#</span>
+    <span class="c"># This script is used to tail the latest syslogs to stdout,</span>
+    <span class="c"># syslog file and specified log file.</span>
+    <span class="c">#</span>
+    
+    <span class="nv">SYSLOG</span><span class="o">=</span>/var/log/messages
+    <span class="nv">custom_log</span><span class="o">=</span>
+    <span class="o">[</span> ! -z <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">custom_log</span><span class="o">=</span><span class="nv">$1</span>
+    
+    <span class="nv">base</span><span class="o">=</span><span class="k">$(</span>cut -d<span class="s2">" "</span> -f1 /proc/uptime<span class="k">)</span>;
+    <span class="nv">ut</span><span class="o">=</span><span class="k">$(</span>date +%s<span class="k">)</span>;
+    <span class="c"># FIXME: Arithmetic operations are not fully supported in ash, use awk instead.</span>
+    <span class="nv">base</span><span class="o">=</span><span class="sb">`</span>date | awk <span class="s2">"{now=</span><span class="nv">$ut</span><span class="s2"> - </span><span class="nv">$base</span><span class="s2">; printf </span><span class="se">\"</span><span class="s2">%d</span><span class="se">\"</span><span class="s2">, now}"</span><span class="sb">`</span>
+    
+    dmesg -c &gt;&gt; <span class="nv">$SYSLOG</span> <span class="c"># clear circular syslog buffer</span>
+    <span class="k">while </span><span class="nb">true
+    </span><span class="k">do
+        </span>dmesg -c | sed <span class="s2">"s/^</span><span class="se">\[</span><span class="s2">[ ]*</span><span class="se">\?\(</span><span class="s2">[0-9.]*</span><span class="se">\)\]</span><span class="s2"> </span><span class="se">\(</span><span class="s2">.*</span><span class="se">\)</span><span class="s2">/</span><span class="se">\\</span><span class="s2">1 </span><span class="se">\\</span><span class="s2">2/"</span> |
+        <span class="k">while </span><span class="nb">read </span>ts msg; <span class="k">do
+            </span><span class="nv">now</span><span class="o">=</span><span class="sb">`</span>date | awk <span class="s2">"{now=</span><span class="nv">$base</span><span class="s2"> + </span><span class="nv">$ts</span><span class="s2">; printf </span><span class="se">\"</span><span class="s2">%d</span><span class="se">\"</span><span class="s2">, now}"</span><span class="sb">`</span>
+            <span class="nv">newts</span><span class="o">=</span><span class="sb">`</span>date +<span class="s2">"%m/%d/%Y %H:%M:%S"</span> --date <span class="s2">"@</span><span class="nv">$now</span><span class="s2">"</span><span class="sb">`</span> <span class="c"># human readable timestamp</span>
+            <span class="nb">printf</span> <span class="s2">"[%s] %s</span><span class="se">\n</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$newts</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$msg</span><span class="s2">"</span>;
+        <span class="k">done</span> | sed <span class="s2">"s/</span><span class="nv">$/</span><span class="k">$(</span><span class="nb">printf</span> <span class="s1">'\r'</span><span class="k">)</span><span class="s2">/"</span> | tee -a <span class="nv">$SYSLOG</span> <span class="nv">$custom_log</span>
+    
+        sleep 1
+    <span class="k">done</span>
 </code></pre>
 </div>
-
 
 </article>
 
@@ -636,14 +635,14 @@ done
   </div>
 
   <footer class="center">
-  <div class="measure">
-      <small>
-      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
-         
-      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
-      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
-    </small>
-  </div>
+    <div class="measure">
+        <small>
+            <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang</a>. &nbsp; <script type="text/javascript" src="//rc.revolvermaps.com/0/0/3.js?i=493pvkdo4nt&amp;b=0&amp;s=20&amp;m=2&amp;cl=ffffff&amp;co=010020&amp;cd=aa0000&amp;v0=60&amp;v1=60&amp;r=1" async="async"></script>
+ </p>
+
+            <p>Powered by <a href="https://github.com/jekyll/jekyll">Jekyll</a> and <a href="https://github.com/johnotander/pixyll">Pixyll</a>.</p>.
+        </small>
+    </div>
 </footer>
 
 </body>

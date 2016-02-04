@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602012335" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602031809" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -442,22 +442,22 @@
 
 <p>Click configuration strings are comma-separated lists of arguments delimited by parentheses. The fundamental syntax of Click Script Language is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>name :: class(config-string);    // declare element object
-name1, name2, ..., nameN :: class(config); // declaration shorhand
-name1[port1] -&gt; [port2]name2;    // connect two elements
-name1[port1] -&gt; [port2a]name2[port2b] -&gt; [port3]name3;    // piggyback connections
-name1 -&gt; name2 :: class(config-string) -&gt; name3;  // declaring elements inside connections is allowed
-name1 -&gt; class(config-string) -&gt; name3;  // anonymous element
-require(requirement[, requirement …]);   // list config requirements
-
-n1, n2 :: class -&gt; n3;  // many-to-one connections
-
-// many-to-many connections:
-// A many-to-many connection matches output ports to input ports. 
-// There must be as many ports on the left as on the right.
-// '=&gt;' is the many-to-many connector.
-c[0], c[1], c[2] =&gt; Paint(0), Paint(1), Paint(2) -&gt; next;
-c =&gt; Paint(0), Paint(1), Paint(2) -&gt; next;
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="n">name</span> <span class="o">::</span> <span class="k">class</span><span class="err">(</span><span class="nc">config</span><span class="o">-</span><span class="n">string</span><span class="p">);</span>    <span class="c1">// declare element object
+</span>    <span class="n">name1</span><span class="p">,</span> <span class="n">name2</span><span class="p">,</span> <span class="p">...,</span> <span class="n">nameN</span> <span class="o">::</span> <span class="k">class</span><span class="err">(</span><span class="nc">config</span><span class="p">);</span> <span class="c1">// declaration shorhand
+</span>    <span class="n">name1</span><span class="p">[</span><span class="n">port1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">port2</span><span class="p">]</span><span class="n">name2</span><span class="p">;</span>    <span class="c1">// connect two elements
+</span>    <span class="n">name1</span><span class="p">[</span><span class="n">port1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">port2a</span><span class="p">]</span><span class="n">name2</span><span class="p">[</span><span class="n">port2b</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">port3</span><span class="p">]</span><span class="n">name3</span><span class="p">;</span>    <span class="c1">// piggyback connections
+</span>    <span class="n">name1</span> <span class="o">-&gt;</span> <span class="n">name2</span> <span class="o">::</span> <span class="k">class</span><span class="err">(</span><span class="nc">config</span><span class="o">-</span><span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">name3</span><span class="p">;</span>  <span class="c1">// declaring elements inside connections is allowed
+</span>    <span class="n">name1</span> <span class="o">-&gt;</span> <span class="k">class</span><span class="err">(</span><span class="nc">config</span><span class="o">-</span><span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">name3</span><span class="p">;</span>  <span class="c1">// anonymous element
+</span>    <span class="n">require</span><span class="p">(</span><span class="n">requirement</span><span class="p">[,</span> <span class="n">requirement</span> <span class="err">…</span><span class="p">]);</span>   <span class="c1">// list config requirements
+</span>    
+    <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">::</span> <span class="k">class</span> <span class="err">-</span><span class="o">&gt;</span> <span class="n">n3</span><span class="p">;</span>  <span class="c1">// many-to-one connections
+</span>    
+    <span class="c1">// many-to-many connections:
+</span>    <span class="c1">// A many-to-many connection matches output ports to input ports. 
+</span>    <span class="c1">// There must be as many ports on the left as on the right.
+</span>    <span class="c1">// '=&gt;' is the many-to-many connector.
+</span>    <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="n">Paint</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Paint</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Paint</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">next</span><span class="p">;</span>
+    <span class="n">c</span> <span class="o">=&gt;</span> <span class="n">Paint</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Paint</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Paint</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">next</span><span class="p">;</span>
 </code></pre>
 </div>
 
@@ -465,11 +465,11 @@ c =&gt; Paint(0), Paint(1), Paint(2) -&gt; next;
 
 <p>An element group is one or more Click statements enclosed in parentheses. Within the parentheses, the special pseudoelements <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> refer to connections from outside the group. Click expands the group at parse time, so connections through <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> have no run-time overhead. The following five lines are equivalent:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>x -&gt; y;
-x -&gt; ( input -&gt; output ) -&gt; y;
-x -&gt; ( [0] -&gt; [0] ) -&gt; y;
-x -&gt; (-&gt;) -&gt; y;
-x -&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) =&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) -&gt; y;
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">x</span> <span class="o">-&gt;</span> <span class="p">(</span> <span class="n">input</span> <span class="o">-&gt;</span> <span class="n">output</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">x</span> <span class="o">-&gt;</span> <span class="p">(</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">x</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="o">-&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">x</span> <span class="o">-&gt;</span> <span class="p">(</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">y</span><span class="p">;</span>
 </code></pre>
 </div>
 
@@ -477,9 +477,9 @@ x -&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) =&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) -&gt; y;
 
 <p>Element groups have implicit, overridable port specifications that list all their ports in sequential order. For example, these three lines are equivalent:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>x =&gt; ( [0]-&gt;[0]; [1]-&gt;[1] ) -&gt; y;
-x =&gt; [0,1] ( [0]-&gt;[0]; [1]-&gt;[1] ) [0,1] -&gt; y;
-x -&gt; y; x [1] -&gt; y;
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="n">x</span> <span class="o">=&gt;</span> <span class="p">(</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">x</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="p">(</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">y</span><span class="p">;</span> <span class="n">x</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">y</span><span class="p">;</span>
 </code></pre>
 </div>
 
@@ -491,28 +491,28 @@ x -&gt; y; x [1] -&gt; y;
 
 <p>Compound element classes are router configuration fragments consisted by Click elements and statements that are treated like element classes. For compound elements, only components remain in the final configuration graph, and all compound element structure is compiled away. This process is called <strong>flattening</strong>, during which compound element components are given names that reflect their origin. For example, a component named <code class="highlighter-rouge">e</code> of a compound element <code class="highlighter-rouge">compound</code> is named <code class="highlighter-rouge">compound/e</code> in the flattened configuration.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>elementclass Name {    // compound elements
-    ... Click Statements …  // defined by click statements but not C++ class
-}
-e :: {    // anonymous compound element class
-    ... Click Statements … 
-}
-elementclass MyQueue Queue;   // define an alias for an existing element class
-</code></pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="n">elementclass</span> <span class="n">Name</span> <span class="p">{</span>    <span class="c1">// compound elements
+</span>        <span class="p">...</span> <span class="n">Click</span> <span class="n">Statements</span> <span class="err">…</span>  <span class="c1">// defined by click statements but not C++ class
+</span>    <span class="p">}</span>
+    <span class="n">e</span> <span class="o">::</span> <span class="p">{</span>    <span class="c1">// anonymous compound element class
+</span>        <span class="p">...</span> <span class="n">Click</span> <span class="n">Statements</span> <span class="err">…</span> 
+    <span class="p">}</span>
+    <span class="n">elementclass</span> <span class="n">MyQueue</span> <span class="n">Queue</span><span class="p">;</span>   <span class="c1">// define an alias for an existing element class
+</span></code></pre>
 </div>
 
 <p>Like any element, compound elements may have input and output ports. Each connection to or from a compound element port is transformed by flattening into a connection to or from one of its components’ ports. Inside a compound element class, the special pseudoelements <code class="highlighter-rouge">input</code> and <code class="highlighter-rouge">output</code> specify how this transformation proceeds. Given a compound element e. If <code class="highlighter-rouge">e/input</code> connects to component <code class="highlighter-rouge">e/c</code> through port <code class="highlighter-rouge">i</code>, then every connection to <code class="highlighter-rouge">e</code>’s input port <code class="highlighter-rouge">i</code> will flatten into a connection to its component <code class="highlighter-rouge">e/c</code>.  For example,</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>elementclass Example {
-    s1 :: InfiniteSource; s2 :: RatedSource;
-    s1 -&gt; [0]output; s2 -&gt; [0]output;
-}
-e :: Example -&gt; d :: Discard;
-
-above code will be flattened to
-
-e/s1 :: InfiniteSource; e/s2 :: RatedSource; d :: Discard;
-e/s1 -&gt; d; e/s2 -&gt; d;
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="n">elementclass</span> <span class="n">Example</span> <span class="p">{</span>
+        <span class="n">s1</span> <span class="o">::</span> <span class="n">InfiniteSource</span><span class="p">;</span> <span class="n">s2</span> <span class="o">::</span> <span class="n">RatedSource</span><span class="p">;</span>
+        <span class="n">s1</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="n">output</span><span class="p">;</span> <span class="n">s2</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="n">output</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">e</span> <span class="o">::</span> <span class="n">Example</span> <span class="o">-&gt;</span> <span class="n">d</span> <span class="o">::</span> <span class="n">Discard</span><span class="p">;</span>
+    
+    <span class="n">above</span> <span class="n">code</span> <span class="n">will</span> <span class="n">be</span> <span class="n">flattened</span> <span class="n">to</span>
+    
+    <span class="n">e</span><span class="o">/</span><span class="n">s1</span> <span class="o">::</span> <span class="n">InfiniteSource</span><span class="p">;</span> <span class="n">e</span><span class="o">/</span><span class="n">s2</span> <span class="o">::</span> <span class="n">RatedSource</span><span class="p">;</span> <span class="n">d</span> <span class="o">::</span> <span class="n">Discard</span><span class="p">;</span>
+    <span class="n">e</span><span class="o">/</span><span class="n">s1</span> <span class="o">-&gt;</span> <span class="n">d</span><span class="p">;</span> <span class="n">e</span><span class="o">/</span><span class="n">s2</span> <span class="o">-&gt;</span> <span class="n">d</span><span class="p">;</span>
 </code></pre>
 </div>
 
@@ -520,50 +520,50 @@ e/s1 -&gt; d; e/s2 -&gt; d;
 
 <p>While formal parameters let a compound element class support a fixed number of positional arguments, <strong>overloading</strong> lets several compound element definitions with different numbers of arguments or ports share a single name. As a side-effect, overloading also support different behaviors in a compound element based on numbers of input/output ports. Every compound element class can correspond to a number of definitions, which are textually separated by <code class="highlighter-rouge">||</code>, which are distinguished by the numbers of formal parameters, input ports or output ports. Given a declaration of compound element, the interpreter checks the number of arguments and search for a matching definition. If found one, then it is expanded; otherwise, an error will occur.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>// Example 1: argument overloading
-elementclass ShapedQueue {				
-    input -&gt; Queue -&gt; Shaper(10000) -&gt; output;
-    ||
-    $cap | input -&gt; Queue($cap) -&gt; Shaper(10000) -&gt; output; 
-}				
-q1 :: ShapedQueue;    // OK; uses first definition
-q2 :: ShapedQueue(1024);    // OK; uses second definition
-q3 :: ShapedQueue(1024, 10000);   // error—no matching definition 
-
-// Example 1: port overloading - additional output port				
-elementclass VerboseCheckIPHeader {
-    input -&gt; c :: CheckIPHeader -&gt; output; c[1] -&gt; Print(CheckIPHeader) -&gt; Discard; 
-    ||
-    input -&gt; c :: CheckIPHeader -&gt; output; c[1] -&gt; Print(CheckIPHeader) -&gt; [1]output;	
-} 
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="c1">// Example 1: argument overloading
+</span>    <span class="n">elementclass</span> <span class="n">ShapedQueue</span> <span class="p">{</span>				
+        <span class="n">input</span> <span class="o">-&gt;</span> <span class="n">Queue</span> <span class="o">-&gt;</span> <span class="n">Shaper</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">output</span><span class="p">;</span>
+        <span class="o">||</span>
+        <span class="err">$</span><span class="n">cap</span> <span class="o">|</span> <span class="n">input</span> <span class="o">-&gt;</span> <span class="n">Queue</span><span class="p">(</span><span class="err">$</span><span class="n">cap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Shaper</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">output</span><span class="p">;</span> 
+    <span class="p">}</span>				
+    <span class="n">q1</span> <span class="o">::</span> <span class="n">ShapedQueue</span><span class="p">;</span>    <span class="c1">// OK; uses first definition
+</span>    <span class="n">q2</span> <span class="o">::</span> <span class="n">ShapedQueue</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span>    <span class="c1">// OK; uses second definition
+</span>    <span class="n">q3</span> <span class="o">::</span> <span class="n">ShapedQueue</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10000</span><span class="p">);</span>   <span class="c1">// error—no matching definition 
+</span>    
+    <span class="c1">// Example 1: port overloading - additional output port				
+</span>    <span class="n">elementclass</span> <span class="n">VerboseCheckIPHeader</span> <span class="p">{</span>
+        <span class="n">input</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">::</span> <span class="n">CheckIPHeader</span> <span class="o">-&gt;</span> <span class="n">output</span><span class="p">;</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">Print</span><span class="p">(</span><span class="n">CheckIPHeader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Discard</span><span class="p">;</span> 
+        <span class="o">||</span>
+        <span class="n">input</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">::</span> <span class="n">CheckIPHeader</span> <span class="o">-&gt;</span> <span class="n">output</span><span class="p">;</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">Print</span><span class="p">(</span><span class="n">CheckIPHeader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="n">output</span><span class="p">;</span>	
+    <span class="p">}</span> 
 </code></pre>
 </div>
 
 <p>Overloading also allows user to add new definitions to an existing element class. For example, following definition will add a two-argument version of <code class="highlighter-rouge">Queue</code>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>elementclass Queue {
-  ... ||  // 'dot dot dot' is part of the syntax 
-$capacity, $rate | input -&gt; Queue($capacity)
-                         -&gt; Shaper($rate) -&gt; output;
-}
-q1 :: Queue;        // built-in Queue
-q2 :: Queue(1024);  // built-in Queue
-q3 :: Queue(1024, 10000); // overloaded Queue definition above
-</code></pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="n">elementclass</span> <span class="n">Queue</span> <span class="p">{</span>
+      <span class="p">...</span> <span class="o">||</span>  <span class="c1">// 'dot dot dot' is part of the syntax 
+</span>    <span class="err">$</span><span class="n">capacity</span><span class="p">,</span> <span class="err">$</span><span class="n">rate</span> <span class="o">|</span> <span class="n">input</span> <span class="o">-&gt;</span> <span class="n">Queue</span><span class="p">(</span><span class="err">$</span><span class="n">capacity</span><span class="p">)</span>
+                             <span class="o">-&gt;</span> <span class="n">Shaper</span><span class="p">(</span><span class="err">$</span><span class="n">rate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">output</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">q1</span> <span class="o">::</span> <span class="n">Queue</span><span class="p">;</span>        <span class="c1">// built-in Queue
+</span>    <span class="n">q2</span> <span class="o">::</span> <span class="n">Queue</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span>  <span class="c1">// built-in Queue
+</span>    <span class="n">q3</span> <span class="o">::</span> <span class="n">Queue</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10000</span><span class="p">);</span> <span class="c1">// overloaded Queue definition above
+</span></code></pre>
 </div>
 
 <p>When choosing the definition that corresponds to a given compound element declaration, Click only considers the definitions that were lexically visible at the point of declaration.</p>
 
 <p>Compound element configuration arguments are only meaningful inside the configuration strings of components. So that you cannot change the element class of a given component, or cause components to be added to or subtracted from the compound. However, it  is possible to build a compound element that sends packets through different sets of components based on the value of its configuration string. Following example uses StaticSwitch to implement a selective checksum check.(The <code class="highlighter-rouge">CheckIPHeader</code> element checks an IP header’s length and checksum for sanity; <code class="highlighter-rouge">CheckIPHeader2</code> does the work of <code class="highlighter-rouge">CheckIPHeader</code> except for the checksum check.)</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>elementclass MaybeChecksum { $checksum_p |
-    input -&gt; sw :: StaticSwitch($checksum_p);
-    sw[0] -&gt; CheckIPHeader2 -&gt; output;
-    sw[1] -&gt; CheckIPHeader -&gt; output;
-};
-c1 :: MaybeChecksum(0);    // uses CheckIPHeader2, skips checksum
-c2 :: MaybeChecksum(1);    // uses CheckIPHeader, checks checksum
-</code></pre>
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="n">elementclass</span> <span class="n">MaybeChecksum</span> <span class="p">{</span> <span class="err">$</span><span class="n">checksum_p</span> <span class="o">|</span>
+        <span class="n">input</span> <span class="o">-&gt;</span> <span class="n">sw</span> <span class="o">::</span> <span class="n">StaticSwitch</span><span class="p">(</span><span class="err">$</span><span class="n">checksum_p</span><span class="p">);</span>
+        <span class="n">sw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">CheckIPHeader2</span> <span class="o">-&gt;</span> <span class="n">output</span><span class="p">;</span>
+        <span class="n">sw</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="n">CheckIPHeader</span> <span class="o">-&gt;</span> <span class="n">output</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="n">c1</span> <span class="o">::</span> <span class="n">MaybeChecksum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>    <span class="c1">// uses CheckIPHeader2, skips checksum
+</span>    <span class="n">c2</span> <span class="o">::</span> <span class="n">MaybeChecksum</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>    <span class="c1">// uses CheckIPHeader, checks checksum
+</span></code></pre>
 </div>
 
 <h3 id="a-namescriptscripta"><a name="script">Script</a></h3>
@@ -572,20 +572,20 @@ c2 :: MaybeChecksum(1);    // uses CheckIPHeader, checks checksum
 
 <p>In the Script element, each keyword is handled by a corresponding handler:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>void
-Script::add_handlers()
-{
-    set_handler("step", Handler::OP_WRITE | Handler::h_nonconst, step_handler, 0, ST_STEP);
-    set_handler("goto", Handler::OP_WRITE | Handler::h_nonconst, step_handler, 0, ST_GOTO);
-    set_handler("run", Handler::OP_READ | Handler::READ_PARAM | Handler::OP_WRITE | Handler::h_nonconst, step_handler, 0, ST_RUN);
-    set_handler("add", Handler::OP_READ | Handler::READ_PARAM, arithmetic_handler, ar_add, 0);
-    set_handler("sub", Handler::OP_READ | Handler::READ_PARAM, arithmetic_handler, ar_sub, 0);
-    set_handler("min", Handler::OP_READ | Handler::READ_PARAM, arithmetic_handler, ar_min, 0);
-    set_handler("max", Handler::OP_READ | Handler::READ_PARAM, arithmetic_handler, ar_max, 0);
-        set_handler("length", Handler::OP_READ | Handler::READ_PARAM, basic_handler, ar_length, 0);
-    set_handler("unquote", Handler::OP_READ | Handler::READ_PARAM, basic_handler, ar_unquote, 0);
-…….
-}
+<div class="highlighter-rouge"><pre class="highlight"><code>    <span class="kt">void</span>
+    <span class="n">Script</span><span class="o">::</span><span class="n">add_handlers</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">set_handler</span><span class="p">(</span><span class="s">"step"</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_WRITE</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">h_nonconst</span><span class="p">,</span> <span class="n">step_handler</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ST_STEP</span><span class="p">);</span>
+        <span class="n">set_handler</span><span class="p">(</span><span class="s">"goto"</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_WRITE</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">h_nonconst</span><span class="p">,</span> <span class="n">step_handler</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ST_GOTO</span><span class="p">);</span>
+        <span class="n">set_handler</span><span class="p">(</span><span class="s">"run"</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_READ</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">READ_PARAM</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_WRITE</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">h_nonconst</span><span class="p">,</span> <span class="n">step_handler</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ST_RUN</span><span class="p">);</span>
+        <span class="n">set_handler</span><span class="p">(</span><span class="s">"add"</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_READ</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">READ_PARAM</span><span class="p">,</span> <span class="n">arithmetic_handler</span><span class="p">,</span> <span class="n">ar_add</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">set_handler</span><span class="p">(</span><span class="s">"sub"</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_READ</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">READ_PARAM</span><span class="p">,</span> <span class="n">arithmetic_handler</span><span class="p">,</span> <span class="n">ar_sub</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">set_handler</span><span class="p">(</span><span class="s">"min"</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_READ</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">READ_PARAM</span><span class="p">,</span> <span class="n">arithmetic_handler</span><span class="p">,</span> <span class="n">ar_min</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">set_handler</span><span class="p">(</span><span class="s">"max"</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_READ</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">READ_PARAM</span><span class="p">,</span> <span class="n">arithmetic_handler</span><span class="p">,</span> <span class="n">ar_max</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+            <span class="n">set_handler</span><span class="p">(</span><span class="s">"length"</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_READ</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">READ_PARAM</span><span class="p">,</span> <span class="n">basic_handler</span><span class="p">,</span> <span class="n">ar_length</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">set_handler</span><span class="p">(</span><span class="s">"unquote"</span><span class="p">,</span> <span class="n">Handler</span><span class="o">::</span><span class="n">OP_READ</span> <span class="o">|</span> <span class="n">Handler</span><span class="o">::</span><span class="n">READ_PARAM</span><span class="p">,</span> <span class="n">basic_handler</span><span class="p">,</span> <span class="n">ar_unquote</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="err">……</span><span class="p">.</span>
+    <span class="p">}</span>
 </code></pre>
 </div>
 
@@ -602,34 +602,34 @@ Script::add_handlers()
 
 <p><a href="http://www.read.cs.ucla.edu/click/docs/testie">Testie</a> is a simple test tool for Click elements, which enables the Test-Driven-Development of Click. Each testie file is written mainly in Click script language and incorporates a shell script to be run. Tool <code class="highlighter-rouge">click/test/testie</code> runs the Click script, and checks the expected error or output. A testie file may have following layout:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>%info 
-// a short description of the test.
-
-%require [-q]
-// prerequisites that must be satisfied before the test can run.
-
-%include FILENAME
-// interpolate the contents of another testie file.
-
-%script
-// Shell scripts that controls the test. Testie will run each command in sequence.
-// Command “click” need to be specified to interpret Click scripts.
-
-%file [-d] [+LENGTH] FILENAME...
-// Create an input file for the script. FILENAME can be `stdin`, which sets the script's standard input.
-
-%expectv [-ad] [+LENGTH] FILENAME...
-%expect [-adiw] [+LENGTH] FILENAME…
-%expectx [-adiw] [+LENGTH] FILENAME...
-// An expected output file for the script. FILENAME can be 'stdout' or 'stderr'. 
-// Testie will run the script, then compare the file generated by script with the provided data. The files are compared line-by-line. 
-// The -a flag marks this expected output as an alternate. Testie will compare the script's output file with each provided alternate; the test succeeds if any of the alternates match. 
-// The -d flag behaves as in %file. 
-// The -i flag makes any regular expressions case-insensitive (text outside of regular expressions must match case), and the -w flag ignores any differences in amount of whitespace within a line.
-
-%ignorex [-di] [+LENGTH] [FILENAME]
-%ignore, %ignorev
-// lines to be ignored.
+<div class="highlighter-rouge"><pre class="highlight"><code>    %info 
+    // a short description of the test.
+    
+    %require <span class="o">[</span>-q]
+    // prerequisites that must be satisfied before the <span class="nb">test </span>can run.
+    
+    %include FILENAME
+    // interpolate the contents of another testie file.
+    
+    %script
+    // Shell scripts that controls the test. Testie will run each <span class="nb">command </span><span class="k">in </span>sequence.
+    // Command “click” need to be specified to interpret Click scripts.
+    
+    %file <span class="o">[</span>-d] <span class="o">[</span>+LENGTH] FILENAME...
+    // Create an input file <span class="k">for </span>the script. FILENAME can be <span class="sb">`</span>stdin<span class="sb">`</span>, which sets the script<span class="s1">'s standard input.
+    
+    %expectv [-ad] [+LENGTH] FILENAME...
+    %expect [-adiw] [+LENGTH] FILENAME…
+    %expectx [-adiw] [+LENGTH] FILENAME...
+    // An expected output file for the script. FILENAME can be '</span>stdout<span class="s1">' or '</span>stderr<span class="s1">'. 
+    // Testie will run the script, then compare the file generated by script with the provided data. The files are compared line-by-line. 
+    // The -a flag marks this expected output as an alternate. Testie will compare the script'</span>s output file with each provided alternate; the <span class="nb">test </span>succeeds <span class="k">if </span>any of the alternates match. 
+    // The -d flag behaves as <span class="k">in</span> %file. 
+    // The -i flag makes any regular expressions <span class="k">case</span>-insensitive <span class="o">(</span>text outside of regular expressions must match <span class="k">case</span><span class="p">)</span>, and the -w flag ignores any differences <span class="k">in </span>amount of whitespace within a line.
+    
+    %ignorex <span class="o">[</span>-di] <span class="o">[</span>+LENGTH] <span class="o">[</span>FILENAME]
+    %ignore, %ignorev
+    // lines to be ignored.
 </code></pre>
 </div>
 
@@ -813,14 +813,14 @@ Script::add_handlers()
   </div>
 
   <footer class="center">
-  <div class="measure">
-      <small>
-      <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang. </a></p>
-         
-      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
-      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
-    </small>
-  </div>
+    <div class="measure">
+        <small>
+            <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang</a>. &nbsp; <script type="text/javascript" src="//rc.revolvermaps.com/0/0/3.js?i=493pvkdo4nt&amp;b=0&amp;s=20&amp;m=2&amp;cl=ffffff&amp;co=010020&amp;cd=aa0000&amp;v0=60&amp;v1=60&amp;r=1" async="async"></script>
+ </p>
+
+            <p>Powered by <a href="https://github.com/jekyll/jekyll">Jekyll</a> and <a href="https://github.com/johnotander/pixyll">Pixyll</a>.</p>.
+        </small>
+    </div>
 </footer>
 
 </body>

@@ -718,7 +718,7 @@ pre a::before {
   display: inline-block;
   color: #ccc;
   margin-right: 16px;
-  font-size: 13px;
+  font-size: 11px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -917,6 +917,19 @@ table {
   table > tbody + tbody {
     border-top: 2px solid #333; }
 
+table.no-border {
+  font-size: 0.75rem; }
+  table.no-border > thead > tr > th,
+  table.no-border > thead > tr > td,
+  table.no-border > tbody > tr > th,
+  table.no-border > tbody > tr > td,
+  table.no-border > tfoot > tr > th,
+  table.no-border > tfoot > tr > td {
+    padding: 10px;
+    line-height: 1.2;
+    vertical-align: top;
+    border-top: 0px; }
+
 /*!
 Animate.css - http://daneden.me/animate
 Licensed under the MIT license - http://opensource.org/licenses/MIT
@@ -983,8 +996,8 @@ footer {
   background-color: #fafafa;
   border-top: thin solid #f3f3f3;
   color: #7a7a7a;
-  font-size: 0.75rem;
-  font-weight: 300;
+  font-size: 0.5rem;
+  font-weight: 200;
   padding: 2rem;
   text-align: center; }
 
