@@ -14,14 +14,15 @@ author: Bo Yang
 ---
 This is the second article on binary tree operations. For other topics on binary tree, please refer to 
 
-1. [Binary Tree Operations(I)](http://bo-yang.github.io/2014/05/26/binary-tree-traversal/)
-2. [Binary Tree Operations(II)](http://bo-yang.github.io/2014/08/16/binary-tree-ii/)
-3. [Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation](http://bo-yang.github.io/2014/09/12/binary-tree-iii/)
-4. [Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree](http://bo-yang.github.io/2014/10/09/is-valid-bst/)
+1. [Binary Tree Operations(I)]({{ site.url }}2014/05/26/binary-tree-traversal)
+2. [Binary Tree Operations(II)]({{ site.url }}2014/08/16/binary-tree-ii)
+3. [Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation]({{ site.url }}2014/09/12/binary-tree-iii)
+4. [Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree]({{ site.url }}2014/10/09/is-valid-bst)
 
-1. [Path Sum](#path_sum)
-2. [Build Binary Tree With Cycle](#build_cycle)
-3. [Detect Cycle in Binary Tree](#detect_cycle)
+
+- [Path Sum](#path_sum)
+- [Build Binary Tree With Cycle](#build_cycle)
+- [Detect Cycle in Binary Tree](#detect_cycle)
 
 ### 1. <a name="path_sum">Path Sum</a>
 
@@ -39,7 +40,7 @@ For the source code of this section, please refer to function `PathSum()` in [my
 
 ### 2. <a name="build_cycle">Build Binary Tree With Cycle</a>
 
-To build a binary tree with cycles, we can first build a binary tree using the method described in [Binary Tree Operations(I)](http://bo-yang.github.io/2014/05/26/binary-tree-traversal/), and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(`left` and `right`).
+To build a binary tree with cycles, we can first build a binary tree using the method described in [Binary Tree Operations(I)]({{ site.url }}2014/05/26/binary-tree-traversal), and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(`left` and `right`).
 
 ~~~cpp
 	struct TreeNode {

@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602041743" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602041831" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -429,16 +429,17 @@
   <p>This is the second article on binary tree operations. For other topics on binary tree, please refer to</p>
 
 <ol>
-  <li><a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a></li>
-  <li><a href="http://bo-yang.github.io/2014/08/16/binary-tree-ii/">Binary Tree Operations(II)</a></li>
-  <li><a href="http://bo-yang.github.io/2014/09/12/binary-tree-iii/">Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation</a></li>
-  <li>
-    <p><a href="http://bo-yang.github.io/2014/10/09/is-valid-bst/">Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree</a></p>
-  </li>
+  <li><a href="http://www.bo-yang.net/2014/05/26/binary-tree-traversal">Binary Tree Operations(I)</a></li>
+  <li><a href="http://www.bo-yang.net/2014/08/16/binary-tree-ii">Binary Tree Operations(II)</a></li>
+  <li><a href="http://www.bo-yang.net/2014/09/12/binary-tree-iii">Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation</a></li>
+  <li><a href="http://www.bo-yang.net/2014/10/09/is-valid-bst">Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree</a></li>
+</ol>
+
+<ul>
   <li><a href="#path_sum">Path Sum</a></li>
   <li><a href="#build_cycle">Build Binary Tree With Cycle</a></li>
   <li><a href="#detect_cycle">Detect Cycle in Binary Tree</a></li>
-</ol>
+</ul>
 
 <h3 id="a-namepathsumpath-suma">1. <a name="path_sum">Path Sum</a></h3>
 
@@ -460,7 +461,7 @@
 
 <h3 id="a-namebuildcyclebuild-binary-tree-with-cyclea">2. <a name="build_cycle">Build Binary Tree With Cycle</a></h3>
 
-<p>To build a binary tree with cycles, we can first build a binary tree using the method described in <a href="http://bo-yang.github.io/2014/05/26/binary-tree-traversal/">Binary Tree Operations(I)</a>, and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(<code class="highlighter-rouge">left</code> and <code class="highlighter-rouge">right</code>).</p>
+<p>To build a binary tree with cycles, we can first build a binary tree using the method described in <a href="http://www.bo-yang.net/2014/05/26/binary-tree-traversal">Binary Tree Operations(I)</a>, and then add links between two nodes. However, we need to keep in mind that we are dealing with binary tree, so for each node, there are at most two children(<code class="highlighter-rouge">left</code> and <code class="highlighter-rouge">right</code>).</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>	<span class="k">struct</span> <span class="n">TreeNode</span> <span class="p">{</span>
 		<span class="kt">int</span> <span class="n">val</span><span class="p">;</span>

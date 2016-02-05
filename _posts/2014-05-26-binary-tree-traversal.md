@@ -15,10 +15,10 @@ author: Bo Yang
 
 _This is the first article on binary tree operations. For other topics on binary tree, please refer to:_
 
-1. [Binary Tree Operations(I)](http://bo-yang.github.io/2014/05/26/binary-tree-traversal/)
-2. [Binary Tree Operations(II)](http://bo-yang.github.io/2014/08/16/binary-tree-ii/)
-3. [Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation](http://bo-yang.github.io/2014/09/12/binary-tree-iii/)
-4. [Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree](http://bo-yang.github.io/2014/10/09/is-valid-bst/)
+1. [Binary Tree Operations(I)]({{ site.url }}2014/05/26/binary-tree-traversal)
+2. [Binary Tree Operations(II)]({{ site.url }}2014/08/16/binary-tree-ii)
+3. [Binary Tree Operations(III) - Convert a Binary Tree to Down-Right Representation]({{ site.url }}2014/09/12/binary-tree-iii)
+4. [Binary Tree Operations(IV) - Determine if a Binary Tree is a Binary Search Tree]({{ site.url }}2014/10/09/is-valid-bst)
 
 There are two kinds of traversal for (binary) trees: Depth First Search(DFS) and Breadth First Search(BFS). Depth First Search visits the tree by proceeding deeper and deeper until it reaches the leaf nodes, including pre-order, in-order, post-order tree traversal. DFS uses a data structure called Stack.
 

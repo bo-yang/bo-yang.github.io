@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Bo's Blog" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201602041743" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201602041831" type="text/css">
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -426,9 +426,9 @@
 </div>
 
 <article class="post-content">
-  <p>As explained in previous post <a href="http://www.bo-yang.net/2015/01/12/linux-system-log/">Linux System Log</a>, threre is no way to directly change the default timestamps printed on Linux console. However, it is still possible to get human readable timestamp without using fancy syslog tools like <a href="http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html">syslog-ng</a>.</p>
+  <p>As explained in previous post <a href="http://www.bo-yang.net/2015/01/12/linux-system-log">Linux System Log</a>, threre is no way to directly change the default timestamps printed on Linux console. However, it is still possible to get human readable timestamp without using fancy syslog tools like <a href="http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html">syslog-ng</a>.</p>
 
-<p>A bash script of customizing Linux dmesg timestamp is also given in my post post <a href="http://www.bo-yang.net/2015/01/12/linux-system-log/">Linux System Log</a>. Unfortunately, that script won’t work if bash is not available in your Linux system. For example, the default shell in OpenWRT is Busybox ash, which lacks many powerful features of bash. The most significant shortcoming for ash is the lame arithmetic operations. In addition, many useful options for standard commands are not supported in Busybox ash. Fortunately, we have sed and awk installed in OpenWRT. So the arithmetic operations can be done by awk.</p>
+<p>A bash script of customizing Linux dmesg timestamp is also given in my post post <a href="http://www.bo-yang.net/2015/01/12/linux-system-log">Linux System Log</a>. Unfortunately, that script won’t work if bash is not available in your Linux system. For example, the default shell in OpenWRT is Busybox ash, which lacks many powerful features of bash. The most significant shortcoming for ash is the lame arithmetic operations. In addition, many useful options for standard commands are not supported in Busybox ash. Fortunately, we have sed and awk installed in OpenWRT. So the arithmetic operations can be done by awk.</p>
 
 <p>The basic idea of customizing console syslog timestamp is periodically calling <code class="highlighter-rouge">dmesg -c</code>, which clears system circular buffer after dumping the system log. In order to also store the log in syslog file(like /var/log/messages), the dumped message also needs to be redirected(or appending) to the syslog file. The timestamps of <code class="highlighter-rouge">dmesg</code> can be replaced with a human readable one. And the required addition/subtraction is implemented by awk in a very special way.</p>
 

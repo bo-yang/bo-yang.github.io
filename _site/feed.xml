@@ -398,9 +398,9 @@ count = len/bsize + 1;
     
       <item>
         <title>Customizing OpenWRT System Log Timestamp</title>
-        <description>&lt;p&gt;As explained in previous post &lt;a href=&quot;http://www.bo-yang.net/2015/01/12/linux-system-log/&quot;&gt;Linux System Log&lt;/a&gt;, threre is no way to directly change the default timestamps printed on Linux console. However, it is still possible to get human readable timestamp without using fancy syslog tools like &lt;a href=&quot;http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html&quot;&gt;syslog-ng&lt;/a&gt;.&lt;/p&gt;
+        <description>&lt;p&gt;As explained in previous post &lt;a href=&quot;http://www.bo-yang.net/2015/01/12/linux-system-log&quot;&gt;Linux System Log&lt;/a&gt;, threre is no way to directly change the default timestamps printed on Linux console. However, it is still possible to get human readable timestamp without using fancy syslog tools like &lt;a href=&quot;http://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html&quot;&gt;syslog-ng&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;A bash script of customizing Linux dmesg timestamp is also given in my post post &lt;a href=&quot;http://www.bo-yang.net/2015/01/12/linux-system-log/&quot;&gt;Linux System Log&lt;/a&gt;. Unfortunately, that script won’t work if bash is not available in your Linux system. For example, the default shell in OpenWRT is Busybox ash, which lacks many powerful features of bash. The most significant shortcoming for ash is the lame arithmetic operations. In addition, many useful options for standard commands are not supported in Busybox ash. Fortunately, we have sed and awk installed in OpenWRT. So the arithmetic operations can be done by awk.&lt;/p&gt;
+&lt;p&gt;A bash script of customizing Linux dmesg timestamp is also given in my post post &lt;a href=&quot;http://www.bo-yang.net/2015/01/12/linux-system-log&quot;&gt;Linux System Log&lt;/a&gt;. Unfortunately, that script won’t work if bash is not available in your Linux system. For example, the default shell in OpenWRT is Busybox ash, which lacks many powerful features of bash. The most significant shortcoming for ash is the lame arithmetic operations. In addition, many useful options for standard commands are not supported in Busybox ash. Fortunately, we have sed and awk installed in OpenWRT. So the arithmetic operations can be done by awk.&lt;/p&gt;
 
 &lt;p&gt;The basic idea of customizing console syslog timestamp is periodically calling &lt;code class=&quot;highlighter-rouge&quot;&gt;dmesg -c&lt;/code&gt;, which clears system circular buffer after dumping the system log. In order to also store the log in syslog file(like /var/log/messages), the dumped message also needs to be redirected(or appending) to the syslog file. The timestamps of &lt;code class=&quot;highlighter-rouge&quot;&gt;dmesg&lt;/code&gt; can be replaced with a human readable one. And the required addition/subtraction is implemented by awk in a very special way.&lt;/p&gt;
 
@@ -1385,7 +1385,7 @@ else
     
       <item>
         <title>Building Remote+Local *nix Develop Environment(II)</title>
-        <description>&lt;p&gt;&lt;em&gt;This is the second article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the previous article on this topic, please refer to &lt;a href=&quot;http://www.bo-yang.net/2014/10/21/remote-local-linux-develop-env/&quot;&gt;Building Remote+Local *nix Develop Environment&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;em&gt;This is the second article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the previous article on this topic, please refer to &lt;a href=&quot;http://www.bo-yang.net/2014/10/21/remote-local-linux-develop-env&quot;&gt;Building Remote+Local *nix Develop Environment&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;vim-tips--plugins&quot;&gt;1. Vim Tips &amp;amp; Plugins&lt;/h3&gt;
 

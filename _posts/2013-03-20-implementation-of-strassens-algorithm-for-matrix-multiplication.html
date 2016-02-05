@@ -20,9 +20,9 @@ author: Bo Yang
 ---
 <p>Strassen's algorithm is not the most efficient algorithm for matrix multiplication, but it was the first algorithm that was theoretically faster than the naive algorithm. There is very good explanation and implementation of Strassen's algorithm on <a href="http://en.wikipedia.org/wiki/Strassen_algorithm">Wikipedia</a>.</p>
 <p>However, the implementation of Strassen's algorithm cannot be used directly, because it  just sets the base case of the divide-and-conquer to be 1x1 matrix, which would consume huge time cost for iteration. If set the base case to 2x2 matrix, which means 2x2 matrix and 1x1 matrix will be multiplied by naive algorithm, then the Strassen's algorithm will be more efficient for matrices larger than 512x512.</p>
-<p><img class="size-full wp-image-521" alt="When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512." src="http://bo-yang.github.io/assets/images/strassen/strassen_2x2.png" width="529" height="395" /></img> </p>
+<p><img class="size-full wp-image-521" alt="When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512." src="{{ site.url }}assets/images/strassen/strassen_2x2.png" width="529" height="395" /></img> </p>
 <p>When set base case to 2x2 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 512x512.</p>
-<p><img class=" wp-image-520  " alt="When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128. " src="http://bo-yang.github.io/assets/images/strassen/strassen_6x6.png" width="529" height="396" /></img></p> 
+<p><img class=" wp-image-520  " alt="When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128. " src="{{ site.url }}assets/images/strassen/strassen_6x6.png" width="529" height="396" /></img></p> 
 <p>When set base case to 6x6 matrix, then the Strassen's algorithm will surpass naive algorithm for matrices larger than 128x128.</p>
 <pre><code>
 /*------------------------------------------------------------------------------*/

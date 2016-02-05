@@ -13,7 +13,7 @@ published: true
 author: Bo Yang
 ---
 
-_This is the first article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the following-up article on this topic, please refer to [Building Remote+Local *nix Develop Environment(II)](http://www.bo-yang.net/2014/12/19/remote-local-linux-develop-env-2/)._
+_This is the first article(collection) on how to build a *nix development environment by integrating remote servers and local Linux/Mac clients. For the following-up article on this topic, please refer to [Building Remote+Local *nix Develop Environment(II)]({{ site.url }}2014/12/19/remote-local-linux-develop-env-2)._
 
 ### 1. `.bashrc` vs `.bash_profile`
 
