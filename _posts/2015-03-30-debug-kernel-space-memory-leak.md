@@ -73,6 +73,7 @@ After continuously monitoring for hours, simply grep some keywords(e.g. HighFree
     LowFree:           94548 kB
     LowFree:           94548 kB
 
+[__update 02/14/2016__] To plot the trends of free/unreclaimed memory usage and slab allocation, a tool [memleak_plot.py](https://github.com/bo-yang/misc/blob/master/memleak_plot.py) is developed to visualize the memory leak.
 
 ### 2. Debug Memory Leak
 
