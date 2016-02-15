@@ -117,3 +117,15 @@ After finding out the leaking slab, more info could be detected by tracing that 
     [  375.479318]  r6:0007a120 r5:00000000 r4:6b3f60a0
 
 The first line could only be "TRACE kmalloc-4096 alloc" or "free", which logs the entry address of this slab. So if the memory leak is very fast, it is possible to monitor all of the alloc/free slabs before the system out of memory. Then find out addresses that never freed, analyze the call traces, and hopefull we could detect the problematic module or functions.
+
+### 3. `kmemleak`
+
+[`kmemleak`](https://www.kernel.org/doc/Documentation/kmemleak.txt) is a kernel space package to detect potential memory leak and periodically print the call stack. To build it into kernel, `CONFIG_DEBUG_KMEMLEAK` in "Kernel hacking" has to be enabled. For some systems `kmemleak` may not work due to the small buffer size for early log, so you also need to set `CONFIG_DEBUG_KMEMLEAK_EARLY_LOG_SIZE` to a larger number, e.g. 20000.
+
+`kmemleak` also relies on `debugfs`. To automatically detect memory leak after boot, you need to make sure `debugfs` is mounted by default - you can add following line to `/etc/init.d/S10boot`:
+
+~~~shell
+grep -q debugfs /proc/filesystems && mount -t debugfs none /sys/kernel/debug
+~~~
+
+To check if `kmemleak` is working, `cat /sys/kernel/debug/kmemleak`. By default `kmemleak` scans memory every 10 minutes and prints the number of new unreferenced objects found. To trigger an intermediate memory scan, `echo scan > /sys/kernel/debug/kmemleak`.
