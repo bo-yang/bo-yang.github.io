@@ -41,6 +41,11 @@ Following script can be used to monitor both meminfo and slabinfo:
             mv $MON_FILE $MON_FILE.$suffix
             # upload to cloud
         fi
+
+        # kmemleak
+        kmemleak=/sys/kernel/debug/kmemleak
+        [ -r $kmemleak ] && cat $kmemleak > /storage/kmemleak_$(uname -n).out
+
         sleep 300
     done
 
