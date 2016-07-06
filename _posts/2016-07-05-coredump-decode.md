@@ -514,7 +514,7 @@ Cannot access memory at address 0x0
 (gdb) p str2._r.memo
 $31 = (String::memo_t *) 0x152c100
 (gdb) p *(str2._r.memo)
-$32 = {refcount = 1, capacity = 20, dirty = 16, real_data = "prasanna"}
+$32 = {refcount = 1, capacity = 20, dirty = 16, real_data = "sample"}
 (gdb) p str3._r.memo
 $33 = (String::memo_t *) 0x15bd5e0 // _r.memo != 0
 (gdb) p *(str3._r.memo)
