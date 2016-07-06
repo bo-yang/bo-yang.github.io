@@ -267,7 +267,7 @@ In this example, process A encodes a packet and then send it to process B throug
 
 In most cases, process B just store one packet from process A into its buffer. However, there are chances that process B need to put two packets sent by process A into the buffer. This is controlled by a variable `enc_attr`. The pseudo code for encoding is: 
 
-```
+```cpp
 for (int i = 0; i < enc_attr; i++) {
     ......
     encode_one_packet(uchar_t * buffer, uint32_t len);
@@ -279,7 +279,7 @@ for (int i = 0; i < enc_attr; i++) {
 When process B crashed, the `enc_attr` was wrongly set to `2`. Since this kind of encoding packets could be as long as `4006` bytes in process A, two packets would definitely exceed the buffer size of process B. Following is the decode of the corefile.
 
 
-```
+```c
 (gdb) disassemble /m $pc
 1292	in ./msgproc/msg_proc.cpp
    0x00075c44 <+544>:	mov	r3, #0
@@ -345,7 +345,7 @@ $62 = {msglvl = 6, type = 239, enc_attr = 2 '\002', override = false, slotId = 0
 This is a weird problem caused by some kernel failure - after this failure, all busybox commands lead to coredump. The investigation is still in progress.
 
 
-```
+```c
 (gdb) info proc all
 exe = '/usr/bin/killall -q -15 process1 process2'
 Mapped address spaces:
@@ -436,7 +436,7 @@ End of assembler dump.
 
 This is a coredump caused by [Click String library](https://github.com/kohler/click/blob/master/include/click/string.hh). This library is not thread-safe for assignment like `String str = (char *)pstr;` - the _r.memo is possible to be reused before it's set to NULL in `String::deref()` after deleting memo by `String::delete_memo()`.
 
-```
+```cpp
 class DLL_PUBLIC String { public:
     ......
     inline String &operator=(const char *cstr);
@@ -479,7 +479,7 @@ private:
 Decode:
 
 
-```
+```cpp
 (gdb) bt full
 #0  0x4065975c in __GI_raise (sig=6) at libpthread/nptl/sysdeps/unix/sysv/linux/raise.c:67
 #1  0x4064eeb4 in __GI_abort () at libc/stdlib/abort.c:89
