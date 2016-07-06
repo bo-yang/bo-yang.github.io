@@ -15,7 +15,14 @@ author: Bo Yang
 
 This is a summary of decoding Linux userspace process corefiles using GDB.
 
-### Preparation
+1. [Preparation](#prep)
+2. [Decode](#decode)
+3. [Examples](#examples)
+    - [Example 1 - Buffer overflow](#buffer_overflow)
+    - [Example 2 - Busybox crash](#busybox_crash)
+    - [Example 3 - String race condition](#string_race_condition)
+
+### <a name="prep">Preparation</a>
 
 To decode the corefile, both gdb and unstripped binary are necessary.
 
@@ -208,7 +215,7 @@ $ ldd `which ps`
 
 If `ldd` is not available on the running system, then this can be checked after loading the corefile into gdb(next section).
 
-### Decode
+### <a name="decode">Decode</a>
 
 The basic command to decode corefile is
 
@@ -250,11 +257,11 @@ gdb command `backtrace`(or `bt`) is used to show the callback of the core dump. 
     `x/64x $sp` - print current frame stask in hex
     `disassemble /m $pc` - show the compiled assembly code together with source code of current frame
 
-### Examples
+### <a name="examples">Examples</a>
 
 The examples are based on real coredump found in our products. However, the proprietary callstack is replaced by toy snippet.
 
-#### Example 1 - packet encoding buffer overflow
+#### <a name="buffer_overflow">Example 1 - packet encoding buffer overflow<a>
 
 In this example, process A encodes a packet and then send it to process B through IPC socket. Process B copy this packet to its own buffer and add additional header before sending it out. The buffer sizes for both processes are `4096` bytes.
 
@@ -333,7 +340,7 @@ $62 = {msglvl = 6, type = 239, enc_attr = 2 '\002', override = false, slotId = 0
 
 `i == 1` and `enc_attr == 2` means that process B was trying to put two packets into the 4K buffer.
 
-#### Example 2 - Busybox crash
+#### <a name="busybox_crash">Example 2 - Busybox crash</a>
 
 This is a weird problem caused by some kernel failure - after this failure, all busybox commands lead to coredump. The investigation is still in progress.
 
@@ -425,7 +432,7 @@ Dump of assembler code for function bb_strtoul:
 End of assembler dump.
 ```
 
-#### Example 3 - Click String race condition
+#### <a name="string_race_condition">Example 3 - Click String race condition</a>
 
 This is a coredump caused by [Click String library](https://github.com/kohler/click/blob/master/include/click/string.hh). This library is not thread-safe for assignment like `String str = (char *)pstr;` - the _r.memo is possible to be reused before it's set to NULL in `String::deref()` after deleting memo by `String::delete_memo()`.
 
@@ -515,7 +522,8 @@ $34 = {refcount = 0, capacity = 0, dirty = 16777216, real_data = "\000\000\000\0
 
 ```
 
+In the above decode, both `str1` and `str2` are expected. However, the memo of `str3` is wrong.
 
 ### References
 
-1. http://visualgdb.com/gdbreference/commands/set_solib-search-path
+1. [http://visualgdb.com/gdbreference/commands/set_solib-search-path](http://visualgdb.com/gdbreference/commands/set_solib-search-path)
