@@ -15,6 +15,6 @@ My name is Bo Yang(杨博), a programmer living in San Jose, CA. For years I hav
 	<a href="https://twitter.com/bonnyang" target="_blank"><i class="fa fa-twitter fa-2x"></i>&nbsp;</a>&nbsp;&nbsp;
 	<a href="http://www.weibo.com/bonnyang" target="_blank"><i class="fa fa-weibo fa-2x"></i>&nbsp;</a>
     </li>
-	<li><a href="http://blog.csdn.net/bonny95">My CSDN Chinese Blog(Obsolete)</a></li>
+	<li><a href="http://blog.csdn.net/bonny95">My CSDN Chinese Blog(retired)</a></li>
 	<li><a href="mailto:bonny95@gmail.com"><i class="fa fa-envelope fa-2x"></i>&nbsp;bonny95 (at) gmail.com</a></li>
 </ul>
