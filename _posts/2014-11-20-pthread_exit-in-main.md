@@ -3,10 +3,11 @@ layout: post
 title: Be careful to pthread_exit() in main() 
 categories: 
 - Unix/Linux
+- Concurrency
 - Notes
 tags:
 - Unix/Linux
-- Multithreading
+- Concurrency
 - Notes
 status: publish
 type: post
