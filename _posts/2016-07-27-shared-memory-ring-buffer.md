@@ -17,19 +17,20 @@ author: Bo Yang
 
 This post explains how to implment a ring buffer that can be shared between multiple processes. For the simplicity and efficiency, shared memory is used to store the ring buffer. A read/write lock is also developed to sync the inter-process buffer read/write operations. The source code can be found on [my GitHub channel](https://github.com/bo-yang/shm_ring_buffer).
 
-1. [`pthread` In Multiprocessing](#pthread)
+1. [pthread In Multiprocessing](#pthread)
 2. [Shared Memory](#shared_memory)
     - [Use C++ Class In Shared Memory](#cpp_support)
 3. [Ring Buffer](#ring_buffer)
-4. [`ShmRingBuffer` Library](#shm_ring_buffer)
+4. [Library ShmRingBuffer](#shm_ring_buffer)
 5. [Test](#test)
 
-### <a name="pthread">`pthread` In Multiprocessing</a>
+### <a name="pthread">pthread In Multiprocessing</a>
 
 pthread mutex and condition also can be used for inter-process synchronization. There are two process-shared attribtues in pthread:
 
-    - `PTHREAD_PROCESS_PRIVATE` is the default attribute, which only operates upon threads created within the same process that initialized the mutex/condition.
-    - `PTHREAD_PROCESS_SHARED` permits a mutex/condition to be used by any thread that has access to the memory, even if the mutex/condition is in memory that's shared by multiple processes.
+- `PTHREAD_PROCESS_PRIVATE` is the default attribute, which only operates upon threads created within the same process that initialized the mutex/condition.
+
+- `PTHREAD_PROCESS_SHARED` permits a mutex/condition to be used by any thread that has access to the memory, even if the mutex/condition is in memory that's shared by multiple processes.
 
 The attribute can be set by function `pthread_mutexattr_setpshared` or `pthread_condattr_setpshared` respectively. The following code demonstrates how to use pthread interprocess mutex. The same applies to a pthread condition variable.
 
