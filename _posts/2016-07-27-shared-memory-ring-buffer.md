@@ -138,7 +138,7 @@ The shared memory is created/opened in the constructor of `ShmRingBuffer`. Each 
 
 Following is the code for `ShmRingBuffer` init.
 
-{% highlight ruby linenos %}
+```cpp
 template <typename T> inline bool
 ShmRingBuffer<T>::init(size_t cap, bool master, const char * path)
 {
@@ -178,7 +178,7 @@ ShmRingBuffer<T>::init(size_t cap, bool master, const char * path)
 
     return true;
 }
-{% endhighlight %}
+```
 
 ### <a name="test">Test</a>
 
