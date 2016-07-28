@@ -15,7 +15,7 @@ published: true
 author: Bo Yang
 ---
 
-This post explains how to implment a ring buffer that can be shared between multiple processes. For the simplicity and efficiency, shared memory is used to store the ring buffer. A read/write lock is also developed to sync the inter-process buffer read/write operations.
+This post explains how to implment a ring buffer that can be shared between multiple processes. For the simplicity and efficiency, shared memory is used to store the ring buffer. A read/write lock is also developed to sync the inter-process buffer read/write operations. The source code can be found on [my GitHub channel](https://github.com/bo-yang/shm_ring_buffer).
 
 1. [`pthread` In Multiprocessing](#pthread)
 2. [Shared Memory](#shared_memory)
