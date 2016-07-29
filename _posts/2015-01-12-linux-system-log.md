@@ -13,6 +13,8 @@ published: true
 author: Bo Yang
 ---
 
+This is a note of Linux system logging mechanism.
+
 1. [Overview](#overview)
 2. [printk](#printk)
 3. [klogd](#klogd)
@@ -33,7 +35,9 @@ The kernel log buffer is accessible for reading from userspace by `/proc/kmsg`. 
 
 `printk` is the kernel function to classify messages according to their severity by loglevels and write them to the circular system message buffer. The function then wakes any process that is waiting for messages, that is, any process that is sleeping in the `syslog` system call or that is reading `/proc/kmsg`. `printk` can be invoked from anywhere, even from an interrupt handler, with no limit on how much data can be printed.
 
-    printk( KERN_CRIT "Error code %08x.\n", val );
+```c
+printk( KERN_CRIT "Error code %08x.\n", val );
+```
 
 There are eight possible loglevel strings, defined in the header <linux/kernel.h>; we list them in order of decreasing severity:
 
@@ -62,30 +66,31 @@ The first integer shows you your current `console_loglevel`; the second is the `
 
 Kernel log timestamp is added by `vprintk()`, in `kernel/printk.c`:
 
-    #if defined(CONFIG_PRINTK_TIME)
-    static bool printk_time = 1;
-    #else
-    static bool printk_time = 0;
-    #endif
-    
-    if (printk_time) {
-			/* Add the current time stamp */
-			char tbuf[50], *tp;
-			unsigned tlen;
-			unsigned long long t;
-			unsigned long nanosec_rem;
+```c
+#if defined(CONFIG_PRINTK_TIME)
+static bool printk_time = 1;
+#else
+static bool printk_time = 0;
+#endif
 
-			t = cpu_clock(printk_cpu);
-			nanosec_rem = do_div(t, 1000000000);
-			tlen = sprintf(tbuf, "[%5lu.%06lu] ",
-					(unsigned long) t,
-					nanosec_rem / 1000);
+if (printk_time) {
+		/* Add the current time stamp */
+		char tbuf[50], *tp;
+		unsigned tlen;
+		unsigned long long t;
+		unsigned long nanosec_rem;
 
-			for (tp = tbuf; tp < tbuf + tlen; tp++)
-				emit_log_char(*tp);
-			printed_len += tlen;
-	}
+		t = cpu_clock(printk_cpu);
+		nanosec_rem = do_div(t, 1000000000);
+		tlen = sprintf(tbuf, "[%5lu.%06lu] ",
+				(unsigned long) t,
+				nanosec_rem / 1000);
 
+		for (tp = tbuf; tp < tbuf + tlen; tp++)
+			emit_log_char(*tp);
+		printed_len += tlen;
+}
+```
 
 ### 3. <a name="klogd">`klogd`</a>
 
@@ -104,15 +109,17 @@ Although reading from `/proc/kmsg` consumes the data from the log buffer, the `s
 
 Kernel space syslog API:
 
-    #include <syslog.h>
-    
-    void openlog(const char *ident, int option, int facility);
-    void syslog(int priority, const char *format, ...);
-    void closelog(void);
-    
-    #include <stdarg.h>
-    
-    void vsyslog(int priority, const char *format, va_list ap);
+```c
+#include <syslog.h>
+
+void openlog(const char *ident, int option, int facility);
+void syslog(int priority, const char *format, ...);
+void closelog(void);
+
+#include <stdarg.h>
+
+void vsyslog(int priority, const char *format, va_list ap);
+```
 
 - `closelog()` closes the descriptor being used to write to the system logger. 
 - `openlog()` opens a connection to the system logger for a program.
@@ -190,26 +197,27 @@ The algorithm below converts the printed time stamps to a human readable format:
 
 Following is a Shell script to transform uptime timestamp to human-readable timestamp:
 
-    #!/bin/bash
-    # Translate dmesg timestamps to human readable format
-    
-    # desired date format
-    date_format="%a %b %d %T %Y"
-    
-    # uptime in seconds
-    uptime=$(cut -d " " -f 1 /proc/uptime)
-    
-    # run only if timestamps are enabled
-    if [ "Y" = "$(cat /sys/module/printk/parameters/time)" ]; then
-      dmesg | sed "s/^\[[ ]*\?\([0-9.]*\)\] \(.*\)/\\1 \\2/" | while read timestamp message; do
-        #date +"%s" -d "1970-01-01 00:00:00"
-        #awk '{printf("%d:%02d:%02d\n", ($1/3600), ($1%3600/60),($1%60))}' /proc/uptime
-        printf "[%s] %s\n" "$(date --date "now - $uptime seconds + $timestamp seconds" +"${date_format}")" "$message"
-      done
-    else
-      echo "Timestamps are disabled (/sys/module/printk/parameters/time)"
-    fi
+```sh
+#!/bin/bash
+# Translate dmesg timestamps to human readable format
 
+# desired date format
+date_format="%a %b %d %T %Y"
+
+# uptime in seconds
+uptime=$(cut -d " " -f 1 /proc/uptime)
+
+# run only if timestamps are enabled
+if [ "Y" = "$(cat /sys/module/printk/parameters/time)" ]; then
+  dmesg | sed "s/^\[[ ]*\?\([0-9.]*\)\] \(.*\)/\\1 \\2/" | while read timestamp message; do
+    #date +"%s" -d "1970-01-01 00:00:00"
+    #awk '{printf("%d:%02d:%02d\n", ($1/3600), ($1%3600/60),($1%60))}' /proc/uptime
+    printf "[%s] %s\n" "$(date --date "now - $uptime seconds + $timestamp seconds" +"${date_format}")" "$message"
+  done
+else
+  echo "Timestamps are disabled (/sys/module/printk/parameters/time)"
+fi
+```
 
 ### References
 - [http://elinux.org/Debugging_by_printing](http://elinux.org/Debugging_by_printing)

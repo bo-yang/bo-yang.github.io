@@ -13,6 +13,8 @@ published: true
 author: Bo Yang
 ---
 
+This is a general guide for detecting and debugging kernel space memory leak. Since the drivers and firmwares in real products vary a lot, this post cannot cover the specific issues.
+
 ### 1. Detect Memory Leak
 
 Memory leak can be detected by monitoring the free memory periodically. Command `free` can be used to show rough memory usage. A more detailed way to analyze memroy is `cat /proc/meminfo` and `cat /proc/slabinfo`. `/proc/meminfo` contains info about total memory, free memory, total highmem, free highmem, total lowmem, free lowmem and etc. Usually highmem is user-space memory, while lowmem is kernel-space memory. If free highmem(HighFree) or free lowmem(LowFree) is continuously decreasing, in most cases it means user space or kernel space memory leaking.

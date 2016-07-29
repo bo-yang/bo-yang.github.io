@@ -51,90 +51,90 @@ Elements have five important properties: element class, ports, configuration str
 
 An example of real Click element is:
 
-~~~cpp
-    #ifndef CLICK_SWITCH_HH
-    #define CLICK_SWITCH_HH
-    #include <click/element.hh>
-    CLICK_DECLS
-    
-    class Switch : public Element { public:
-    
-      Switch() CLICK_COLD;
-    
-      const char *class_name() const		{ return "Switch"; }
-      const char *port_count() const		{ return "1/-"; }
-      const char *processing() const		{ return PUSH; }
-      void add_handlers() CLICK_COLD;
-    
-      int configure(Vector<String> &, ErrorHandler *) CLICK_COLD;
-      bool can_live_reconfigure() const		{ return true; }
-    
-      void push(int, Packet *);
-    
-      int llrpc(unsigned, void *);
-    
-     private:
-    
-      int _output;
-    
-      static String read_param(Element *, void *) CLICK_COLD;
-      static int write_param(const String &, Element *, void *, ErrorHandler *) CLICK_COLD;
-    
-    };
-    
-    CLICK_ENDDECLS
-    #endif
-~~~
+```cpp
+#ifndef CLICK_SWITCH_HH
+#define CLICK_SWITCH_HH
+#include <click/element.hh>
+CLICK_DECLS
+
+class Switch : public Element { public:
+
+  Switch() CLICK_COLD;
+
+  const char *class_name() const		{ return "Switch"; }
+  const char *port_count() const		{ return "1/-"; }
+  const char *processing() const		{ return PUSH; }
+  void add_handlers() CLICK_COLD;
+
+  int configure(Vector<String> &, ErrorHandler *) CLICK_COLD;
+  bool can_live_reconfigure() const		{ return true; }
+
+  void push(int, Packet *);
+
+  int llrpc(unsigned, void *);
+
+ private:
+
+  int _output;
+
+  static String read_param(Element *, void *) CLICK_COLD;
+  static int write_param(const String &, Element *, void *, ErrorHandler *) CLICK_COLD;
+
+};
+
+CLICK_ENDDECLS
+#endif
+```
 
 In above code, the Click macros are defined as:
 
-~~~cpp
-    /* Define macros that surround Click declarations. */
-    #define CLICK_DECLS		namespace Click {
-    #define CLICK_ENDDECLS		}
-    
-    /* Define macro for cold (rarely used) functions. */
-    #if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
-    # define CLICK_COLD /* nothing */
-    #else
-    # define CLICK_COLD __attribute__((cold))
-    #endif
-~~~
+```cpp
+/* Define macros that surround Click declarations. */
+#define CLICK_DECLS		namespace Click {
+#define CLICK_ENDDECLS		}
+
+/* Define macro for cold (rarely used) functions. */
+#if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 3)
+# define CLICK_COLD /* nothing */
+#else
+# define CLICK_COLD __attribute__((cold))
+#endif
+```
 
 Where the GNU `cold` attribute on functions is used to inform the compiler that the function is unlikely to be executed. The function is optimized for size rather than speed and on many targets it is placed into a special subsection of the text section so all cold functions appear close together, improving code locality of non-cold parts of program. 
 
 And the handlers of this element can be defined as:
     
-~~~cpp
-    String
-    Switch::read_param(Element *e, void *)
-    {
-      Switch *sw = (Switch *)e;
-      return String(sw->_output);
-    }
-    
-    int
-    Switch::write_param(const String &s, Element *e, void *, ErrorHandler *errh)
-    {
-        Switch *sw = (Switch *)e;
-        int sw_output;
-        if (!IntArg().parse(s, sw_output))
-    	return errh->error("Switch output must be integer");
-        if (sw_output >= sw->noutputs())
-    	sw_output = -1;
-        sw->_output = sw_output;
-        return 0;
-    }
-    
-    void
-    Switch::add_handlers()
-    {
-        add_read_handler("switch", read_param, 0);
-        add_write_handler("switch", write_param, 0, Handler::h_nonexclusive);
-        add_read_handler("config", read_param, 0);
-        set_handler_flags("config", 0, Handler::CALM);
-    }
-~~~
+```cpp
+String
+Switch::read_param(Element *e, void *)
+{
+  Switch *sw = (Switch *)e;
+  return String(sw->_output);
+}
+
+int
+Switch::write_param(const String &s, Element *e, void *, ErrorHandler *errh)
+{
+    Switch *sw = (Switch *)e;
+    int sw_output;
+    if (!IntArg().parse(s, sw_output))
+	return errh->error("Switch output must be integer");
+    if (sw_output >= sw->noutputs())
+	sw_output = -1;
+    sw->_output = sw_output;
+    return 0;
+}
+
+void
+Switch::add_handlers()
+{
+    add_read_handler("switch", read_param, 0);
+    add_write_handler("switch", write_param, 0, Handler::h_nonexclusive);
+    add_read_handler("config", read_param, 0);
+    set_handler_flags("config", 0, Handler::CALM);
+}
+```
 
 By adding handlers to element `Switch`, the Switch attributes `switch` and `config` can be read or changed by reading/writing files `/proc/click/<switch_obj>/switch` and `/proc/click/<switch_obj>/config` at run time, if Click is running in Linux kernel.
 
@@ -148,140 +148,140 @@ Headers contain a number of annotations in addition to a pointer to the packet d
 
 In Linux, the sk_buff is defined as:
 
-~~~cpp
-    struct sk_buff {
-    	/* These two members must be first. */
-    	struct sk_buff		*next;
-    	struct sk_buff		*prev;
-    
-            …...
-    
-    	ktime_t			tstamp;
-    
-    	struct sock		*sk;
-    	struct net_device	*dev;
-    
-    	/*
-    	 * This is the control buffer. It is free to use for every
-    	 * layer. Please put your private variables there. If you
-    	 * want to keep them across layers you have to do a skb_clone()
-    	 * first. This is owned by whoever has the skb queued ATM.
-    	 */
-    #ifdef __LP64__
-    	char			cb[96] __aligned(8);
-    #else
-    	char			cb[80] __aligned(8);
-    #endif
-    
-    	unsigned long		_skb_refdst;
-    #ifdef CONFIG_XFRM
-    	struct	sec_path	*sp;
-    #endif
-    	unsigned int		len,
-    				data_len;
-    	__u16			mac_len,
-    				hdr_len;
-    	union {
-    		__wsum		csum;
-    		struct {
-    			__u16	csum_start;
-    			__u16	csum_offset;
-    		};
-    	};
-    	__u32			priority;
-    	kmemcheck_bitfield_begin(flags1);
-    	__u8			local_df:1,
-    				cloned:1,
-    				ip_summed:2,
-    				nohdr:1,
-    				nfctinfo:3;
-    	__u8			pkt_type:3,
-    				fclone:2,
-    				ipvs_property:1,
-    				peeked:1,
-    				nf_trace:1;
-    	kmemcheck_bitfield_end(flags1);
-    	__be16			protocol;
-    
-    	void			(*destructor)(struct sk_buff *skb);
-            ……..
-    
-    	int			skb_iif;
-    
-    	__u32			rxhash;
-    
-    	__u16			vlan_tci;
-    
-            ……..
-    
-    	sk_buff_data_t		transport_header;
-    	sk_buff_data_t		network_header;
-    	sk_buff_data_t		mac_header;
-    	/* These elements must be at the end, see alloc_skb() for details.  */
-    	sk_buff_data_t		tail;
-    	sk_buff_data_t		end;
-    	unsigned char		*head,
-    				*data;
-    	unsigned int		truesize;
-    	atomic_t		users;
-    };
-~~~
+```cpp
+struct sk_buff {
+	/* These two members must be first. */
+	struct sk_buff		*next;
+	struct sk_buff		*prev;
+
+        …...
+
+	ktime_t			tstamp;
+
+	struct sock		*sk;
+	struct net_device	*dev;
+
+	/*
+	 * This is the control buffer. It is free to use for every
+	 * layer. Please put your private variables there. If you
+	 * want to keep them across layers you have to do a skb_clone()
+	 * first. This is owned by whoever has the skb queued ATM.
+	 */
+#ifdef __LP64__
+	char			cb[96] __aligned(8);
+#else
+	char			cb[80] __aligned(8);
+#endif
+
+	unsigned long		_skb_refdst;
+#ifdef CONFIG_XFRM
+	struct	sec_path	*sp;
+#endif
+	unsigned int		len,
+				data_len;
+	__u16			mac_len,
+				hdr_len;
+	union {
+		__wsum		csum;
+		struct {
+			__u16	csum_start;
+			__u16	csum_offset;
+		};
+	};
+	__u32			priority;
+	kmemcheck_bitfield_begin(flags1);
+	__u8			local_df:1,
+				cloned:1,
+				ip_summed:2,
+				nohdr:1,
+				nfctinfo:3;
+	__u8			pkt_type:3,
+				fclone:2,
+				ipvs_property:1,
+				peeked:1,
+				nf_trace:1;
+	kmemcheck_bitfield_end(flags1);
+	__be16			protocol;
+
+	void			(*destructor)(struct sk_buff *skb);
+        ……..
+
+	int			skb_iif;
+
+	__u32			rxhash;
+
+	__u16			vlan_tci;
+
+        ……..
+
+	sk_buff_data_t		transport_header;
+	sk_buff_data_t		network_header;
+	sk_buff_data_t		mac_header;
+	/* These elements must be at the end, see alloc_skb() for details.  */
+	sk_buff_data_t		tail;
+	sk_buff_data_t		end;
+	unsigned char		*head,
+				*data;
+	unsigned int		truesize;
+	atomic_t		users;
+};
+```
 
 The Click Packet is defined as:
 
-~~~cpp
-    class Packet {
-    …...
-    private:
-    
-        // Anno must fit in sk_buff's char cb[48].
-        /** @cond never */
-        union Anno {
-    	char c[anno_size];
-    	uint8_t u8[anno_size];
-    	uint16_t u16[anno_size / 2];
-    	uint32_t u32[anno_size / 4];
-    #if HAVE_INT64_TYPES
-    	uint64_t u64[anno_size / 8];
-    #endif
-    	// allocations: see packet_anno.hh
-        };
-    
-    #if !CLICK_LINUXMODULE
-        // All packet annotations are stored in AllAnno so that
-        // clear_annotations(true) can memset() the structure to zero.
-        struct AllAnno {
-    	Anno cb;
-    	unsigned char *mac;
-    	unsigned char *nh;
-    	unsigned char *h;
-    	PacketType pkt_type;
-    	Timestamp timestamp;
-    	Packet *next;
-    	Packet *prev;
-    	AllAnno()
-    	    : timestamp(Timestamp::uninitialized_t()) {
-    	}
-        };
-    #endif
-        /** @endcond never */
-    
-    #if !CLICK_LINUXMODULE
-        // User-space and BSD kernel module implementations.
-        atomic_uint32_t _use_count;
-        Packet *_data_packet;
-        /* mimic Linux sk_buff */
-        unsigned char *_head; /* start of allocated buffer */
-        unsigned char *_data; /* where the packet starts */
-        unsigned char *_tail; /* one beyond end of packet */
-        unsigned char *_end;  /* one beyond end of allocated buffer */
-    # if CLICK_BSDMODULE
-        struct mbuf *_m;
-    # endif
-        AllAnno _aa;
-    …...
-    }
-~~~
+```cpp
+class Packet {
+…...
+private:
+
+    // Anno must fit in sk_buff's char cb[48].
+    /** @cond never */
+    union Anno {
+	char c[anno_size];
+	uint8_t u8[anno_size];
+	uint16_t u16[anno_size / 2];
+	uint32_t u32[anno_size / 4];
+#if HAVE_INT64_TYPES
+	uint64_t u64[anno_size / 8];
+#endif
+	// allocations: see packet_anno.hh
+    };
+
+#if !CLICK_LINUXMODULE
+    // All packet annotations are stored in AllAnno so that
+    // clear_annotations(true) can memset() the structure to zero.
+    struct AllAnno {
+	Anno cb;
+	unsigned char *mac;
+	unsigned char *nh;
+	unsigned char *h;
+	PacketType pkt_type;
+	Timestamp timestamp;
+	Packet *next;
+	Packet *prev;
+	AllAnno()
+	    : timestamp(Timestamp::uninitialized_t()) {
+	}
+    };
+#endif
+    /** @endcond never */
+
+#if !CLICK_LINUXMODULE
+    // User-space and BSD kernel module implementations.
+    atomic_uint32_t _use_count;
+    Packet *_data_packet;
+    /* mimic Linux sk_buff */
+    unsigned char *_head; /* start of allocated buffer */
+    unsigned char *_data; /* where the packet starts */
+    unsigned char *_tail; /* one beyond end of packet */
+    unsigned char *_end;  /* one beyond end of allocated buffer */
+# if CLICK_BSDMODULE
+    struct mbuf *_m;
+# endif
+    AllAnno _aa;
+…...
+}
+```
 
 Obviously, both Linux `sk_buff` and Click `Packet` class have similiar elements, like hearder, data and tail of a packet.
 

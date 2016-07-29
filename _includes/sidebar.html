@@ -1,0 +1,14 @@
+<div class="sidebar well">
+{{ site.description }}
+</div>
+
+<div class="sidebar well">
+    <h3>Recent Posts</h3>
+    <ul class="list-nobull">
+        {% for post in site.posts limit:5 %}
+          <li><a href="{{ site.baseurl}}{{ post.url }}">{{ post.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% include bo/adsense_300x600 %}

@@ -13,7 +13,7 @@ published: true
 author: Bo Yang
 ---
 
-This is a summary of decoding Linux userspace process corefiles using GDB.
+This is a summary of decoding Linux userspace process corefiles using GDB. For how to enable coredump in Linux, please refer to [HOWTO enable core-dumps](http://en.linuxreviews.org/HOWTO_enable_core-dumps).
 
 1. [Preparation](#prep)
 2. [Decode](#decode)

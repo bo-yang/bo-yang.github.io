@@ -1,11 +1,16 @@
+# Jekyll configuration
+
 # Site settings
-title:       Bo's Blog
+name:        Bo Yang
 email:       bonny95@gmail.com
 author:      Bo Yang
-description: "Bo's blog."
+description: "My thoughts, notes & experiments."
 baseurl:     ""
 url:         "http://www.bo-yang.net/"
 date_format: "%b %-d, %Y"
+
+# This can be '' to hide the Github nav button
+github: 'scotte/jekyll-clean'
 
 # Google services
 google_analytics: UA-50551633-1
@@ -24,12 +29,6 @@ enable_anchorjs: false
 # Disqus post comments
 # (leave blank to disable Disqus)
 disqus_shortname:   boyang
-
-# Facebook Comments plugin
-# (leave blank to disable Facebook Comments, otherwise set it to true)
-facebook_comments:
-facebook_appid:
-facebook_comments_number:
 
 # Social icons
 github_username:    bo-yang
@@ -93,9 +92,12 @@ text:
   og_locale: 'en_US'
 
 # Build settings
+highlighter:  rouge
 markdown:     kramdown
 kramdown:
     input:    GFM
+    auto_ids: true
+    syntax_highlighter: rouge 
 redcarpet:
   extensions: ["smart", "tables", "with_toc_data", "no_intra_emphasis", "autolink", "strikethrough"]
 permalink:    /:year/:month/:day/:title
@@ -105,5 +107,4 @@ sass:
 gems:
   - jekyll-paginate
   - jekyll-sitemap
-# https://github.com/jekyll/jekyll/issues/2938
-exclude: [vendor]
+exclude: ['README.md', 'LICENSE']

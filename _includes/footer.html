@@ -1,9 +1,10 @@
-<footer class="center">
-    <div class="measure">
-        <small>
-            <p>&copy; 2007-2016 by <a href="http://www.bo-yang.net/">Bo Yang</a>. &nbsp; {% include bo/revolvermaps_tiny %} </p>
-
-            <p>Powered by <a href="https://github.com/jekyll/jekyll">Jekyll</a> and <a href="https://github.com/johnotander/pixyll">Pixyll</a>.</p>
-        </small>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 my-footer">
+            <center><p class="copyright">&copy; 2007-{{ site.time | date: '%Y' }} {{ site.name }}. Powered by <a href="http://jekyllrb.com">Jekyll</a>  &nbsp; {% include bo/revolvermaps_tiny %} </p></center>
+        </div>
     </div>
-</footer>
+</div>
+
+{% include disqus-counts.html %}
+{% include analytics.html %}

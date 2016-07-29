@@ -1,34 +1,24 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{% if page.title %}{{ page.title | strip_html }} &#8211; {% endif %}{{ site.title | strip_html }}</title>
-    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
-    <link rel="dns-prefetch" href="//cdn.mathjax.org">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{% if page.meta_description %}{{ page.meta_description | xml_escape }}{% elsif page.summary %}{{ page.summary | xml_escape }}{% else %}{{ site.description | xml_escape }}{% endif %}">
-    {% if page.meta_robots %}<meta name="robots" content="{{ page.meta_robots }}">
-    {% else %}<meta name="robots" content="all">{% endif %}
-    <meta name="author" content="{{ site.author }}">
-    {% if page.categories %}<meta name="keywords" content="{{ page.categories | join: ', ' }}">{% endif %}
-    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
-    <link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl }}" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ "/css/pixyll.css" | prepend: site.baseurl }}?{{ site.time | date: "%Y%m%d%H%M" }}" type="text/css">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/css/syntax.css" type="text/css">
+    <link rel="stylesheet" href="/css/theme.css" type="text/css">
 
     <!-- Fonts -->
-    <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
-
-    <!-- Google Prettify -->
-    <link href="assets/google-code-prettify/desert.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css" type="text/css">
 
     <!-- MathJax -->
     {% if site.enable_mathjax %}
     <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
     {% endif %}
+
+    <!-- Scripts -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
     <!-- Verifications -->
     {% if site.google_verification %}
@@ -57,20 +47,22 @@
     <meta name="twitter:url" content="{{ site.url }}{{ page.url }}" />
 
     <!-- Icons -->
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
-    <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/favicon/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/favicon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/favicon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/favicon/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/favicon/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/favicon/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/favicon/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/favicon/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-32x32.png" sizes="32x32">
+
+    {% include isso-comments.html %}
 
     {% if site.google_analytics %}
     <script type="text/javascript">
