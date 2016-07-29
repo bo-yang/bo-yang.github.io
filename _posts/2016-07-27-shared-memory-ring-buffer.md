@@ -127,7 +127,7 @@ if (_end == _begin)
 
 The source code of this library can be found on [my GitHub channel](https://github.com/bo-yang/shm_ring_buffer). The memory layout of class template `ShmRingBuffer` is shown in the following figure.
 
-![Figure. Memory Layout of ShmRingBuffer]({{ site.url }}/assets/images/shm_ring_buffer/shm_ring_buffer.png)
+![Figure. Memory Layout of ShmRingBuffer]({{ site.github_url }}/assets/images/shm_ring_buffer/shm_ring_buffer.png)
 
 All of the data that need to be shared between processes are stored in the shared memory. The pointer `_hdr` points to the memory that contains the basic info of the ring buffer, e.g. capacity, beginning index and the ending index.
 
