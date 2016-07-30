@@ -51,48 +51,48 @@ In order to connecting layers together via heads, at the begining of each layer,
 
 Following is the code to converting a left-right binary tree to down-right representation. For more details, please refer to [https://github.com/bo-yang/BinaryTree](https://github.com/bo-yang/BinaryTree). 
 
-~~~cpp
-	TreeNode* Convert2DL(TreeNode* root) {
-		if(root==NULL)
-			return NULL;
+```cpp
+TreeNode* Convert2DL(TreeNode* root) {
+	if(root==NULL)
+		return NULL;
 
-		queue<TreeNode*> q;
-		q.push(root);
-		int nCur=1; // number of nodes in current layer
-		TreeNode* head=NULL; // the head node in each layer
-		while(!q.empty()) {
-			head=q.front();
-			TreeNode* cur=head;
-			int nNext=0; // number of nodes in next layer
-			for(int i=0;i<nCur;++i) {
-				TreeNode* n=q.front();
-				q.pop();
-				if(n->left!=NULL) {
-					q.push(n->left);
-					nNext++;
-				}
-				if(n->right!=NULL) {
-					q.push(n->right);
-					nNext++;
-				}
-				// Link current node to the right of this layer
-				if(n!=head) { 
-					cur->right=n;
-					cur=n;
-					cur->left=NULL;
-				}
+	queue<TreeNode*> q;
+	q.push(root);
+	int nCur=1; // number of nodes in current layer
+	TreeNode* head=NULL; // the head node in each layer
+	while(!q.empty()) {
+		head=q.front();
+		TreeNode* cur=head;
+		int nNext=0; // number of nodes in next layer
+		for(int i=0;i<nCur;++i) {
+			TreeNode* n=q.front();
+			q.pop();
+			if(n->left!=NULL) {
+				q.push(n->left);
+				nNext++;
 			}
-			nCur=nNext;
-			cur->right=NULL;
-			if(q.empty())
-				head->left=NULL;
-			else 
-				head->left=q.front(); // point to the head of the next layer
+			if(n->right!=NULL) {
+				q.push(n->right);
+				nNext++;
+			}
+			// Link current node to the right of this layer
+			if(n!=head) { 
+				cur->right=n;
+				cur=n;
+				cur->left=NULL;
+			}
 		}
-
-		return root;
+		nCur=nNext;
+		cur->right=NULL;
+		if(q.empty())
+			head->left=NULL;
+		else 
+			head->left=q.front(); // point to the head of the next layer
 	}
-~~~
+
+	return root;
+}
+```
 
 ### References:
 

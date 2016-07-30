@@ -33,31 +33,31 @@ In order to implement the recursion, a helper function `IsBSTHelper(TreeNode* ro
 
 For complete code of checking BST, please refer to functions `IsBST()` and `IsBSTHelper(TreeNode* root, int min, int max)` in [my binary tree library](https://github.com/bo-yang/BinaryTree). Please note that, we assume a `NULL` node is a valid binary search tree.
 
+```cpp
+bool IsBST(TreeNode* root) {
+	return IsBSTHelper(root, INT_MIN, INT_MAX);
+}
 
-	bool IsBST(TreeNode* root) {
-		return IsBSTHelper(root, INT_MIN, INT_MAX);
-	}
+// Helper function for checking binary search tree
+bool IsBSTHelper(TreeNode* root, int min, int max) {
+	if(root==NULL)
+		return true;
+
+	assert(root->val > min && root->val < max);
+
+	bool bst_left=true;
+	bool bst_right=true;
+	if(root->left!=NULL && (root->left->val >= root->val || root->left->val <= min))
+		return false;
+	else
+		bst_left=IsBSTHelper(root->left, min, root->val);
 	
-	// Helper function for checking binary search tree
-	bool IsBSTHelper(TreeNode* root, int min, int max) {
-		if(root==NULL)
-			return true;
+	if(root->right!=NULL && (root->right->val <= root->val || root->right->val >= max))
+		return false;
+	else
+		bst_right=IsBSTHelper(root->right, root->val, max);
 
-		assert(root->val > min && root->val < max);
-
-		bool bst_left=true;
-		bool bst_right=true;
-		if(root->left!=NULL && (root->left->val >= root->val || root->left->val <= min))
-			return false;
-		else
-			bst_left=IsBSTHelper(root->left, min, root->val);
-		
-		if(root->right!=NULL && (root->right->val <= root->val || root->right->val >= max))
-			return false;
-		else
-			bst_right=IsBSTHelper(root->right, root->val, max);
-
-		return (bst_left && bst_right);
-	}
-
+	return (bst_left && bst_right);
+}
+```
 
