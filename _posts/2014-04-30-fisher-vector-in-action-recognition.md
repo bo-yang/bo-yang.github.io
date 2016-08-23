@@ -66,7 +66,7 @@ operations are based on each video clip.
 
 Since the DTF features are "dense"(which means a lot of data), it took me 4~5 days to exact the (improved) DTF features of UCF 101 clips with the dedault parameters on a modern Linux desktop(I used 10 threads for extraction in paralle). The installation of DTF tools was also a very tricky task.
 
-To save space, all the DTF features were compressed using script [gzip_dtp_files](https://github.com/bo-yang/dtf_fisher/blob/master/gzip_dtf_files). For UCF101, it would cost about 500GB after compression. And the required space would be doubled if no compression. If you don't want to save the DTF features, you can call the DTF tools in Matlab and discard the extracted features.
+To save space, all the DTF features were compressed using script [gzip_dtf_files](https://github.com/bo-yang/dtf_fisher/blob/master/gzip_dtf_files). For UCF101, it would cost about 500GB after compression. And the required space would be doubled if no compression. If you don't want to save the DTF features, you can call the DTF tools in Matlab and discard the extracted features.
 
 
 ### Fisher Vector
