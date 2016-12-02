@@ -15,6 +15,8 @@ This post introduces a Python class `Command` that can run a shell command with 
 
 The `Command` class supports running command in two modes: run the command ignoring the output, or capture the output of the command through pipe.
 
+The source code is also available in [my GitHub](https://github.com/bo-yang/misc/blob/master/run_command_timeout.py).
+
 ```python
 
 import subprocess
@@ -74,7 +76,7 @@ sleep 10 seconds
 Command timeout, kill it: echo "sleep 10 seconds"; sleep 10; echo "done"
 ```
 
-Reference:
+####References:
 
-- http://stackoverflow.com/questions/1191374/using-module-subprocess-with-timeout
-- https://pymotw.com/2/threading/
+- [http://stackoverflow.com/questions/1191374/using-module-subprocess-with-timeout](http://stackoverflow.com/questions/1191374/using-module-subprocess-with-timeout)
+- [https://pymotw.com/2/threading/](https://pymotw.com/2/threading/)
