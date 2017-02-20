@@ -37,7 +37,10 @@ Once got the hexdump file, it can be parsed by Wireshark using the "**File->Impo
 
 ![import_from_hex_dump](https://www.wireshark.org/docs/wsug_html_chunked/wsug_graphics/ws-file-import.png)
 
-To automatically generate the hexdump file, a [C++ tool `gen_hexdump`](https://github.com/bo-yang/misc/blob/master/gen_hexdump.cc) is developed. Usage:
+To automatically generate the hexdump file, a [C++ tool `gen_hexdump`](https://github.com/bo-yang/misc/blob/master/gen_hexdump.cc) is developed. The C++ source code can be compiled by command
+   `g++ -Wall -std=c++0x -o gen_hexdump gen_hexdump.cc`
+
+Usage:
 
    `gen_hexdump [-i input_file] [-n] [-s hex_str] -o out_file`
 
