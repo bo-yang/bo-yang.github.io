@@ -17,7 +17,7 @@ author: Bo Yang
 
 Just like many people, I also own a very limited number of stocks. Although I tried my best to massage my portfolio(based on my guess, feeling and luck) last year, its year-end return was only about 3.5%. Compared to the S&P500's 12% return, the poor performance shocked me. So I decided to study some formal computational stock analysis techniques. This post is the summary of what I learnt and developed. For the complete code, please refer to [`stock_analysis` in my Github](https://github.com/bo-yang/stock_analysis). 
 
-*[Note]: All of the methods/strategies mentioned in this post are collected from Internet or books, so there's no guarantee for the correctness and validness.*
+*All of the methods/strategies mentioned in this post are collected from Internet or books, so there's no guarantee for the correctness and validness.*
 
 ### Data Preparation
 
@@ -87,11 +87,11 @@ As stock-related data can be analyzed from many different aspects, a lot of indi
 ROI is also called Rate Of Return, which measures the gain/loss of your stock investment in a given period. It's defined as:
 
 ```
-	Total Stock Return = ((P1 - P0) + D) / P0
-    where
-        P0 = Initial Stock Price
-        P1 = Ending Stock Price
-        D  = Dividends
+Total Stock Return = ((P1 - P0) + D) / P0
+where
+	P0 = Initial Stock Price
+    P1 = Ending Stock Price
+    D  = Dividends
 ```
 
 Source code: [return_on_investment](https://github.com/bo-yang/stock_analysis/blob/master/symbol.py)
@@ -165,20 +165,20 @@ RSI is an oscillator to identify the trend, which ranges from 0 to 100, with a v
 The standard algorithm of calculating RSI is:
 
 ```
-                  100
-    RSI = 100 - --------
-                 1 + RS
-    RS = Average Gain / Average Loss
+              100
+RSI = 100 - --------
+             1 + RS
+RS = Average Gain / Average Loss
 
-    The very first calculations for average gain and average loss are simple 14 period averages.
-    
-    First Average Gain = Sum of Gains over the past 14 periods / 14.
-    First Average Loss = Sum of Losses over the past 14 periods / 14.
+The very first calculations for average gain and average loss are simple 14 period averages.
 
-    The second, and subsequent, calculations are based on the prior averages and the current gain loss:
-    
-    Average Gain = [(previous Average Gain) x 13 + current Gain] / 14.
-    Average Loss = [(previous Average Loss) x 13 + current Loss] / 14.
+First Average Gain = Sum of Gains over the past 14 periods / 14.
+First Average Loss = Sum of Losses over the past 14 periods / 14.
+
+The second, and subsequent, calculations are based on the prior averages and the current gain loss:
+
+Average Gain = [(previous Average Gain) x 13 + current Gain] / 14.
+Average Loss = [(previous Average Loss) x 13 + current Loss] / 14.
 ```
 
 Source code: [rsi](https://github.com/bo-yang/stock_analysis/blob/master/symbol.py)
@@ -190,9 +190,9 @@ Source code: [rsi](https://github.com/bo-yang/stock_analysis/blob/master/symbol.
 The stochastic oscillator can be calculated by:
 
 ```
-	 Stochastic Oscillator(%K) = (Close Price - Lowest Low) / (Highest High - Lowest Low) * 100
-     Fast %D = 3-day SMA of %K
-     Slow %D = 3-day SMA of fast %D
+Stochastic Oscillator(%K) = (Close Price - Lowest Low) / (Highest High - Lowest Low) * 100
+Fast %D = 3-day SMA of %K
+Slow %D = 3-day SMA of fast %D
 ```
 
 Source code: [stochastic](https://github.com/bo-yang/stock_analysis/blob/master/symbol.py)
@@ -227,7 +227,7 @@ sp500_value = value_analysis(sp500)  # do the value analysis
 
 ### Summary
 
-I want to restate what Greenblatt explained in [The Little Book That Beats the Market](https://www.amazon.com/dp/B000YIUWFQ/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1): 
+I want to restate what Greenblatt explained in [The Little Book That Beats the Market](https://www.amazon.com/dp/B000YIUWFQ/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1) here: 
 
 > Stock prices move around wildly over very short periods of time, but this does not mean that the values of the underlying companies have changed very much during that same period. So always buy shares of a company only when they trade at a large discount to TRUE VALUE as investing with a margin of the safety.
 
