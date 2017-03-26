@@ -21,6 +21,8 @@ Just like many people, I also own a very limited number of stocks. Although I tr
 
 ### Data Preparation
 
+-----
+
 For personal use, the most popular language for stock analysis is Python, and the most convenient library is [`Pandas`](http://pandas.pydata.org), which mainly depends on [`Numpy`](http://www.numpy.org). So all the following discussions are based on Python `Pandas`.
 
 To analyze stocks, we need a lot of data, like the history quotes, stock statistics, financial analysis, and etc. For my personal use, only free data sources are involved.
@@ -78,7 +80,10 @@ A more promising candidate is [`pystock-crawler`](https://github.com/eliangcs/py
 
 In addition to the aforementioned data, the insider trading and trading events are also very helpful. But I haven't got chance to try them.
 
+
 ### Data Processing
+
+-----
 
 As stock-related data can be analyzed from many different aspects, a lot of indicators/features have been invented. My superficial understanding is that, technical analysis focuses on history quotes, while fundamental analysis pays more attention to the financial statements. Actually the stats data downloaded from Yahoo Finance and the financial data from Google Finance are already processed data by experts. So this part only covers the commonly used indicators of stock quotes.
 
@@ -209,7 +214,10 @@ tdg.plot()
 
 ![tdg_plot]({{ site.url }}/assets/images/stock_analysis/tdg_plot.png)
 
+
 ### Strategies
+
+-------------
 
 As a newbie, I don't know many stock trading strategies. Most of my time were spent on finding good and cheap stocks. So I sitll don't know anything about stock prediction.
 
@@ -225,7 +233,10 @@ sp500.get_stats() # calculate key statistic features
 sp500_value = value_analysis(sp500)  # do the value analysis
 ```
 
+
 ### Summary
+
+----------
 
 I want to restate what Greenblatt explained in [The Little Book That Beats the Market](https://www.amazon.com/dp/B000YIUWFQ/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1) here: 
 
