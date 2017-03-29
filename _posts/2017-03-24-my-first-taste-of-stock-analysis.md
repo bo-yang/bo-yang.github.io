@@ -238,11 +238,17 @@ sp500_value = value_analysis(sp500)  # do the value analysis
 
 I want to restate what Greenblatt explained in [The Little Book That Beats the Market](https://www.amazon.com/dp/B000YIUWFQ/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1) here: 
 
-> Stock prices move around wildly over very short periods of time, but this does not mean that the values of the underlying companies have changed very much during that same period. So always buy shares of a company only when they trade at a large discount to TRUE VALUE as investing with a margin of the safety.
+> Stock prices move around wildly over very short periods of time, but this does not mean that the values of the underlying companies have changed very much during that same period.
+
+> So always buy shares of a company only when they trade at a large discount to TRUE VALUE as investing with a margin of the safety.
+
+> Companies that achieve a high return on capital are likely to have a special advantage of some kind. That special advantage keeps competitors from destroying the ability to earn above-average profits.
 
 But I also agree another point that Greenblatt discussed:
 
 > Puting all the time and effort into stock market investing isn’t a very productive use of time.
+
 > More than 95% of the stock trading back and forth each day is probably unnecessary.
+
 > Do not waste too much of the future potential. There are higher and better uses of your time and intellect.
 
