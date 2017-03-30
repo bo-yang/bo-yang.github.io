@@ -98,7 +98,11 @@ shm_unlink("/myregion");
 
 #### <a name="cpp_support">Use C++ Class In Shared Memory</a>
 
-Like C struct, C++ class can also be stored in the shared memory, but you only can map the shared memory object to POD(Plain Old Data) class. "A POD class is a class that is both trivial (can only be statically initialized) and standard-layout (has a simple data structure), and thus is mostly restricted to the characteristics of a class that are compatible with those of a C data structure declared with `struct` or `union` in that language". This means that the class cannot contain any user-defined constructors, desctructors, copy assignment operator, non-static data members or virtual member functions.
+Like C struct, C++ class can also be stored in the shared memory, but you only can map the shared memory object to **Plain Old Data(POD)** class.
+
+> "A POD class is a class that is both trivial (can only be statically initialized) and standard-layout (has a simple data structure), and thus is mostly restricted to the characteristics of a class that are compatible with those of a C data structure declared with `struct` or `union` in that language".
+
+This means that the class cannot contain any user-defined constructors, desctructors, copy assignment operator, non-static data members or virtual member functions.
 
 C++11 provides [`std::is_pod`](http://www.cplusplus.com/reference/type_traits/is_pod/?kw=is_pod) to check for POD type, but this check is based on the C++11 criteria(much relaxed compared to C++98).
 
