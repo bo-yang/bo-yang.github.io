@@ -19,7 +19,7 @@ Since CentOS 7(or RedHat 7) is quite different from CentOS 6.x, most notes onlin
 
 TFTP server can be installed using following command, where `xinetd` is necessary. 
 
-    yum install tftp tftp-server* xinetd*
+    sudo yum install tftp tftp-server* xinetd*
     
 Then edit `/etc/xinetd.d/tftp` - set `disable` to `no` and add `-c` option into `server_args` if you need to upload files to TFTP server from client. 
 
@@ -39,6 +39,11 @@ Then edit `/etc/xinetd.d/tftp` - set `disable` to `no` and add `-c` option into 
     }
 ~~~
 
+In the above config file, the default TFTP root directory is set to `/tftpboot/`. So you need to create it before starting TFTP server:
+
+    sudo mkdir /tftpboot
+    sudo chmod -R 777 /tftpboot
+
 ### 2. Enable TFTP Service
 
 The CentOS 7 services(`systemd`) can be configured from files under `/usr/lib/systemd/system/`. Go to this dir, and edit `tftp.service` as follows:
@@ -54,16 +59,18 @@ The CentOS 7 services(`systemd`) can be configured from files under `/usr/lib/sy
     [Install]
     WantedBy=multi-user.target
 
-The default `tftp.service` doesn't have the `[Install]` unit, but it's required by `systemd`. Besides, the tftpd options also need to be changed in the `ExecStart` entry.
+If the default `tftp.service` doesn't have the `[Install]` unit, add it as above, because it's required by `systemd`. Besides, the tftpd options also need to be changed in the `ExecStart` entry.
 
-Although `service` commands are deprecated in CentOS 7, they are still available but simply redirected to `systemctl`. So you still can use `service xinetd start` and `service tftp start` to start `xinetd` and TFTP.
+Then start services `xinetd` and `tftp`:
 
-However, to make them automatically start after boot, following commands are needed:
-
+    [root@localhost system]# systemctl start xinetd
+    [root@localhost system]# systemctl start tftp
     [root@localhost system]# systemctl enable xinetd
     [root@localhost system]# systemctl enable tftp
 
-After these two commands, permanent links will be made for  `xinetd` and TFTP services.
+Command `systemctl enable xxxx` creates permanent link to services. So that services can be automatically started after reboot.
+
+_Although `service` commands are deprecated in CentOS 7, they are still available but simply redirected to `systemctl`. So you still can use `service xinetd start` and `service tftp start` to start `xinetd` and TFTP._
 
 ### 3. Configure SELinux
 
