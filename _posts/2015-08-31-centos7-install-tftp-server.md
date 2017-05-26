@@ -111,24 +111,28 @@ Then check the tftp permissions in SELinux:
 
 If the TFTP write is off as shown above, enable it with `setsebool` command:
 
-    [root@localhost bobyan]# setsebool -P tftp_anon_write 1
-    [root@localhost bobyan]# setsebool -P tftp_home_dir 1
+    [root@localhost bobyan]# sudo setsebool -P tftp_anon_write 1
+    [root@localhost bobyan]# sudo setsebool -P tftp_home_dir 1
 
 Above changes to SELinux are permanent, so no need to change any SELinux config files any more.
 
 ### 4. Configure `firewalld`
 
-Unlike CentOS 6.x, the `firewalld` is used to replace `iptables` as default firewall in CentOS 7. Fortunately, `iptable` config file `/etc/sysconfig/iptables` is also used by `firewalld`. So to allow TFTP services, following line should be added to `/etc/sysconfig/iptables`
+Unlike CentOS 6.x, the `firewalld` is used to replace `iptables` as default firewall in CentOS 7. ~~Fortunately, `iptable` config file `/etc/sysconfig/iptables` is also used by `firewalld`. So to allow TFTP services, following line should be added to `/etc/sysconfig/iptables`~~
 
     -A INPUT -m state --state NEW -m udp -p udp -m udp --dport 69 -j ACCEPT
+    
+To allow TFTP port in `firewalld`, run command
 
-Then restart `firewalld` using command `firewall-cmd --reload`.
+    sudo firewall-cmd --permanent --add-port=69/udp
 
-A more standard way to allow TFTP is to use `firewall-cmd` command:
+To allow TFTP service:
 
-    firewall-cmd --zone=public --add-service=tftp --permanent
+    sudo firewall-cmd --zone=public --add-service=tftp --permanent
 
-Where the `--permanent` option is used to permanently enable the TFTP port. Command `firewall-cmd --reload` is needed every time changing the firewall config. 
+Where the `--permanent` option is used to permanently enable the TFTP port.
+
+Then restart `firewalld` using command `firewall-cmd --reload`. Actually this command is needed every time changing the firewall config. 
 
 To check the status or enable `firewalld`, following commands can be used:
     
