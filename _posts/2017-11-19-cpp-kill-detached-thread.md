@@ -13,7 +13,11 @@ published: true
 author: Bo Yang
 ---
 
-In C++11, C++ introduced built-in support for threads `std::thread`. Since then, starting a new thread in C++ is as easy as defining an object. However, dynamically terminating a running C++ thread is still very tricky, especially for the joined/detached thread. There are plenty of discussions of this topic, and the conclusion is that ["terminate 1 thread + forcefully (target thread doesn't cooperate) + pure C++11 = No way."](https://stackoverflow.com/questions/12207684/how-do-i-terminate-a-thread-in-c11). This post is not aimed to provide a magic to kill C++ thread with built-in C++ APIs - apologize for it. Instead, I am going to explain how to kill a C++ thread using native(OS/compiler-dependent) function.
+In C++11, C++ introduced built-in support for threads `std::thread`. Since then, starting a new thread in C++ is as easy as defining an object. However, dynamically terminating a running C++ thread is still very tricky, especially for the joined/detached thread. There are plenty of discussions of this topic, and the conclusion is that
+
+> ["terminate 1 thread + forcefully (target thread doesn't cooperate) + pure C++11 = No way"](https://stackoverflow.com/questions/12207684/how-do-i-terminate-a-thread-in-c11).
+
+This post is not aimed to provide a magic to kill C++ thread with built-in C++ APIs - apologize for it. Instead, I am going to explain how to kill a C++ thread using native(OS/compiler-dependent) function.
 
 The related codes can be found on [my github](https://github.com/bo-yang/terminate_cpp_thread), which is built with GCC 4.8.5 and verified on CentOS 7.
 
