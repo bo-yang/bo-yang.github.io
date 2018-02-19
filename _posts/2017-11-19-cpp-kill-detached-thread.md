@@ -19,7 +19,7 @@ In C++11, C++ introduced built-in support for threads `std::thread`. Since then,
 
 This post is not aimed to provide a magic to kill C++ thread with built-in C++ APIs - apologize for it. Instead, I am going to explain how to kill a C++ thread using native(OS/compiler-dependent) function.
 
-The related codes can be found on [my github](https://github.com/bo-yang/terminate_cpp_thread), which is built with GCC 4.8.5 and verified on CentOS 7.
+_The complete code in this post can be found on [my github](https://github.com/bo-yang/terminate_cpp_thread), which is built with GCC 4.8.5 and verified on CentOS 7._
 
 ### 1. `std::thread` destructor not work
 
@@ -119,7 +119,7 @@ Obviously, the test threads could not be killed in `Foo::stop_thread()`.
 
 To terminate threads with OS/compiler-dependent functions, we need to know how to get the native thread data type from C++ `std::thread`. Fortunately, `std::thread` provides an API `native_handle()` to get the thread's native handle type - before calling `join()` or `detach()`. And this native handle can be passed to native OS thread terminate function, e.g. `pthread_cancel()`.
 
-Here's a demo code to show fact that the `std::thread::native_handle()`, `std::thread::get_id()` and [`pthread_self()`](http://pubs.opengroup.org/onlinepubs/9699919799/) return the same `pthread_t` to handle a C++ thread for Linux/GCC. You also can [try it out online](http://coliru.stacked-crooked.com/view?id=44c988ce133260ee).
+Here's a demo code to show the fact that the `std::thread::native_handle()`, `std::thread::get_id()` and [`pthread_self()`](http://pubs.opengroup.org/onlinepubs/9699919799/) return the same `pthread_t` to handle a C++ thread for Linux/GCC. You also can [try it out online](http://coliru.stacked-crooked.com/view?id=44c988ce133260ee).
 
 ```cpp
 #include <mutex>
