@@ -24,16 +24,19 @@ To draw the ultrasound image, first we need to decide the background image size.
 With the background image, we need to paint the $$C \times L$$ raw probe points into the image. Based on the probe data($$L$$ points) and physical metrics, we can calculate the the number of pixels needed for the background image height and width:
 
 $$h = \frac{DL}{D-d}$$,
-$$w = \frac{2DL\sin(\frac{\theta}{2}}{D-d}$$.
+
+$$w = \frac{2DL\sin\frac{\theta}{2}}{D-d}$$.
 
 And the pixels mapped to the cone’s inner circle radius $$d'$$ and outer circle radius $$D'$$ are:
 
 $$d' = \frac{dL}{D-d}$$,
+
 $$D' = \frac{DL}{D-d}$$.
 
 In the ultrasound image, the origin is set to the upper-left corner. Given the $$l$$-th probe data from the $$c$$-th wave, suppose the cone area is painted from left to right, its coordinates $$(x,y)$$ can be calculated based on the cone's radius pixels $$d'$$ and $$D'$$, angle $$\theta$$, and number of points $$L$$ per cone border:
 
 $$x = \frac{D'}{2} + (d'+l)\cos\alpha$$,
+
 $$y = (d'+l)\sin\alpha$$.
 
 Where
@@ -48,7 +51,7 @@ To make the cone are in the center of the image, we can move each probe data up 
 
 $$y = (d'+l)\sin\alpha - \frac{d'}{2}$$.
 
-Following is a short ultrasound video clip generated using the formentioned tranformation.
+Following is a short ultrasound video clip generated with the tranformation method described above.
 
 ![Ultasound Video GIF]({{ site.url }}/assets/images/2018-03-05/sample-ultrasound.gif)
 
