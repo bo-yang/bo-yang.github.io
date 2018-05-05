@@ -1,77 +1,72 @@
 <html>
 
-{% include header.html %}
+	{% include header.html %}
 
-<div class="container container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="article">
-                <div class="card bg-light card-body mb-3">
-                    <h1><a href="{{ site.baseurl}}{{ page.url }}">{{ page.title }}</a></h1>
-                    <p class="post-meta">{{ page.date | date: "%Y-%m-%d" }}</p>
-                    {% if site.comments and page.comments %}
-                    {% if site.disqus != '' %}
-                    <p class="author"><a href="#disqus_thread" data-disqus-identifier="{{ page.url | slugify }}">Comments</a></p>
-                    {% elsif site.isso != '' %}
-                    <p class="author"><a href="{{ site.baseurl }}{{ page.url }}{{ site.isso_suffix }}#isso-thread">Comments</a></p>
-                    {% endif %}
-                    {% endif %}
-                    <div class="post-content">
-                        {{ content }}
-                    </div>
-                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                    <div class="addthis_sharing_toolbox" align="right"></div>
-                </div> <!-- end of div "well" -->
+	<div class="container container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="article">
+					<div class="card bg-light card-body mb-3">
+						<h1><a href="{{ site.baseurl}}{{ page.url }}">{{ page.title }}</a></h1>
+						<p class="post-meta">{{ page.date | date: "%Y-%m-%d" }}</p>
+						{% if site.comments and page.comments %}
+						{% if site.disqus != '' %}
+						<p class="author"><a href="#disqus_thread" data-disqus-identifier="{{ page.url | slugify }}">Comments</a></p>
+						{% elsif site.isso != '' %}
+						<p class="author"><a href="{{ site.baseurl }}{{ page.url }}{{ site.isso_suffix }}#isso-thread">Comments</a></p>
+						{% endif %}
+						{% endif %}
+						<div class="post-content">
+							{{ content }}
+						</div>
+						<!-- Go to www.addthis.com/dashboard to customize your tools -->
+						<div class="addthis_sharing_toolbox" align="right"></div>
+					</div> <!-- end of div "well" -->
 
-                <center>{% include bo/adsense_728x90 %}</center>
+					<center>{% include bo/adsense_728x90 %}</center>
 
-                <!-- pagination -->
-                <div>
-                    <ul class="pagination justify-content-center">
-                        {% if page.next %}
-                        <li class="page-item"><a class="page-link" href="{{ site.baseurl}}{{ page.next.url }}">&larr; {{ site.text.pagination.newer }}</a></li>
-                        {% else %}
-                        <li class="page-item disabled"><a class="page-link">&larr; {{ site.text.pagination.newer }}</a></li>
-                        {% endif %}
-                        {% if page.previous %}
-                        <li class="page-item"><a class="page-link" href="{{ site.baseurl}}{{ page.previous.url }}">{{ site.text.pagination.older }} &rarr;</a></li>
-                        {% else %}
-                        <li class="page-item disabled"><a class="page-link">{{ site.text.pagination.older }} &rarr;</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
+					<!-- pagination -->
+					<div>
+						<ul class="pagination justify-content-center">
+							{% if page.next %}
+							<li class="page-item"><a class="page-link" href="{{ site.baseurl}}{{ page.next.url }}">&larr; {{ site.text.pagination.newer }}</a></li>
+							{% else %}
+							<li class="page-item disabled"><a class="page-link">&larr; {{ site.text.pagination.newer }}</a></li>
+							{% endif %}
+							{% if page.previous %}
+							<li class="page-item"><a class="page-link" href="{{ site.baseurl}}{{ page.previous.url }}">{{ site.text.pagination.older }} &rarr;</a></li>
+							{% else %}
+							<li class="page-item disabled"><a class="page-link">{{ site.text.pagination.older }} &rarr;</a></li>
+							{% endif %}
+						</ul>
+					</div>
 
-                <!-- Disqus -->
-                {% if site.disqus_shortname %}
-                <div id="disqus_thread"></div>
-                <script type="text/javascript">
-                    var disqus_shortname  = '{{ site.disqus_shortname }}';
-                    var disqus_identifier = '{{ page.id }}';
-                    var disqus_title      = '{{ page.title }}';
-                    
-                    (function() {
-                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                     })();
-                </script>
-                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-                {% endif %}
+					<!-- Disqus -->
+					{% if site.disqus_shortname %}
+					<div id="disqus_thread"></div>
+					<script type="text/javascript">
+var disqus_shortname  = '{{ site.disqus_shortname }}';
+var disqus_identifier = '{{ page.id }}';
+var disqus_title      = '{{ page.title }}';
 
-            </div> <!-- end of div "article" -->
-        </div> <!-- end of div "col-md-9" -->
+(function() {
+	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+					</script>
+					<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					{% endif %}
 
-		<!--
-        <div class="col-sm-3">
-            {% include sidebar.html %}
-        </div>
-		-->
-    </div> <!-- end of div "row" -->
-</div>
+				</div> <!-- end of div "article" -->
+			</div> <!-- end of div "col-md-12" -->
 
-{% include bo/addthis.html %}
-{% include disqus-comments.html %}
-{% include footer.html %}
+		</div> <!-- end of div "row" -->
+	</div>
 
-</body>
+	{% include bo/addthis.html %}
+	{% include disqus-comments.html %}
+	{% include footer.html %}
+
+	</body>
 </html>
