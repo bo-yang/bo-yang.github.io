@@ -27,16 +27,16 @@
 
                 <!-- pagination -->
                 <div>
-                    <ul class="pagination">
+                    <ul class="pagination justify-content-center">
                         {% if page.next %}
-                        <li class="previous"><a href="{{ site.baseurl}}{{ page.next.url }}" class="next">&larr; {{ site.text.pagination.newer }}</a></li>
+                        <li class="page-item"><a class="page-link" href="{{ site.baseurl}}{{ page.next.url }}">&larr; {{ site.text.pagination.newer }}</a></li>
                         {% else %}
-                        <li class="previous disabled"><a class="next">&larr; {{ site.text.pagination.newer }}</a></li>
+                        <li class="page-item disabled"><a class="page-link">&larr; {{ site.text.pagination.newer }}</a></li>
                         {% endif %}
                         {% if page.previous %}
-                        <li class="next"><a href="{{ site.baseurl}}{{ page.previous.url }}" class="previous">{{ site.text.pagination.older }} &rarr;</a></li>
+                        <li class="page-item"><a class="page-link" href="{{ site.baseurl}}{{ page.previous.url }}">{{ site.text.pagination.older }} &rarr;</a></li>
                         {% else %}
-                        <li class="next disabled"><a class="previous">{{ site.text.pagination.older }} &rarr;</a></li>
+                        <li class="page-item disabled"><a class="page-link">{{ site.text.pagination.older }} &rarr;</a></li>
                         {% endif %}
                     </ul>
                 </div>
