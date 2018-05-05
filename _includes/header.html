@@ -6,24 +6,26 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <nav class="navbar navbar-dark bg-dark fixed-top navbar-expand-md" role="navigation">
+			<a class="navbar-brand" href="{{ site.baseurl }}/"><b>{{ site.name }}</b></a>
             <div class="d-flex flex-row order-2 order-lg-3">
+				<ul class="navbar-nav float-right">
+					<li class="nav-item"><a class="nav-link px-2" href="https://github.com/{{ site.github_username }}"><span class="fa fa-github"></span></a></li>
+					<li class="nav-item"><a class="nav-link px-2" href="https://www.linkedin.com/in/{{ site.linkedin_username }}"><span class="fa fa-linkedin"></span></a></li>
+					<li class="nav-item"><a class="nav-link px-2" href="https://stackoverflow.com/users/{{ site.stackoverflow_id }}"><span class="fa fa-stack-overflow"></span></a></li>
+					<li class="nav-item"><a class="nav-link px-2" href="{{ "/feed.xml" | prepend: site.baseurl }}"><span class="fa fa-rss"></span></a></li>
+					<li class="nav-item"><a class="nav-link px-2" href="https://twitter.com/{{ site.twitter_username }}"><span class="fa fa-twitter"></span></a></li>
+					<li class="nav-item"><a class="nav-link px-2" href="mailto:{{ site.email }}"><span class="fa fa-envelope"></span></a></li>
+                </ul>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                   <span class="navbar-toggler-icon"></span>
                 </button>
-              	<a class="navbar-brand" href="{{ site.baseurl }}/"><b>{{ site.name }}</b></a>
               </div>
               <div class="collapse navbar-collapse order-2 order-lg-3" id="bs-example-navbar-collapse-1">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a href="{{ site.baseurl }}/archive.html">Archive</a></li>
-                    <li class="nav-item"><a href="{{ site.baseurl }}/tags.html">Tags</a></li>
-                    <li class="nav-item"><a href="{{ site.baseurl }}/about.html">About</a></li>
-                </ul>
-                <ul class="navbar-nav float-right">
-                    <li class="nav-item">
-                    {% if site.show_social_icons %}
-                        {% include social_links.html %}
-                    {% endif %}
-                    </li>
+					<li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/archive.html">Archive</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/tags.html">Tags</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/about.html">About</a></li>
                 </ul>
               </div>
         </nav>
