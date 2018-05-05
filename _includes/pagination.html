@@ -9,7 +9,7 @@
     {% else %}
         <li class="page-item disabled"><a class="page-link">&larr; {{ site.text.pagination.newer }}</a></li>
     {% endif %}
-	<li class="page-item"><a class="page-link">Page: {{ paginator.page }} of {{ paginator.total_pages }}</a></li>
+	<li class="page-item"><a class="page-link">Page {{ paginator.page }} of {{ paginator.total_pages }}</a></li>
     {% if paginator.next_page %}
         <li class="page-item"><a class="page-link" href="{{ paginator.next_page_path }}">{{ site.text.pagination.older }} &rarr;</a></li>
     {% else %}
