@@ -15,7 +15,7 @@ author: Bo Yang
 
 _This post is a basic exercise of geometry and image processing. Nothing new._
 
-Ultrasound images are generated based on the probe data of beamwaves reflecting objects in a cone area. Suppose each ultrasound image is consisted with $$C$$ waves in different radial directions, and each ultrasound wave records $$L$$ points in the range of [0,255], then the raw data can be saved as a $$C \times L$$ array. To generate an ultrasound image with $$\theta$$ cone angle, we can assume that the radius of the inner circle of the cone area is $$d$$ mm, while the outer radius is $$D$$ mm. The following figure depicts the parameters of the ultrasound image. 
+Ultrasound images are generated based on the probe data of beamwaves reflecting objects in a cone area. Suppose each ultrasound image is consisted with $$C$$ waves in different radial directions, and each ultrasound wave records $$L$$ points in the range of $$[0,255]$$, then the raw data can be saved as a $$C \times L$$ array. To generate an ultrasound image with $$\theta$$ cone angle, we can assume that the radius of the inner circle of the cone area is $$d$$ mm, while the outer radius is $$D$$ mm. The following figure depicts the parameters of the ultrasound image. 
 
 ![Ultrasound Cone Depiction]({{ site.url }}/assets/images/2018-03-05/ultrasound_cone_img.svg)
 
