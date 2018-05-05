@@ -3,31 +3,42 @@
 
 <body>
 
-<div class="container-fluid">
-    <div class="row-fluid">
-        <nav class="navbar navbar-dark bg-dark fixed-top navbar-expand-md" role="navigation">
-			<a class="navbar-brand" href="{{ site.baseurl }}/"><b>{{ site.name }}</b></a>
-            <div class="d-flex flex-row order-2 order-lg-3">
-				<ul class="navbar-nav flex-row">
-					<li class="nav-item"><a class="nav-link pt-3" href="https://github.com/{{ site.github_username }}"><span class="fa fa-github"></span></a></li>
-					<li class="nav-item"><a class="nav-link pt-3" href="https://www.linkedin.com/in/{{ site.linkedin_username }}"><span class="fa fa-linkedin"></span></a></li>
-					<li class="nav-item"><a class="nav-link pt-3" href="https://stackoverflow.com/users/{{ site.stackoverflow_id }}"><span class="fa fa-stack-overflow"></span></a></li>
-					<li class="nav-item"><a class="nav-link pt-3" href="{{ "/feed.xml" | prepend: site.baseurl }}"><span class="fa fa-rss"></span></a></li>
-					<li class="nav-item"><a class="nav-link pt-3" href="https://twitter.com/{{ site.twitter_username }}"><span class="fa fa-twitter"></span></a></li>
-					<li class="nav-item"><a class="nav-link pt-3" href="mailto:{{ site.email }}"><span class="fa fa-envelope"></span></a></li>
-                </ul>
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#NavbarCollapseLinks">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-              </div>
-              <div class="collapse navbar-collapse order-3 order-lg-2" id="NavbarCollapseLinks">
-                <ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/archive.html">Archive</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/tags.html">Tags</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/about.html">About</a></li>
-                </ul>
-              </div>
-        </nav>
-    </div>
-</div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<nav class="navbar navbar-dark bg-dark fixed-top navbar-expand-md" role="navigation">
+				<a class="navbar-brand" href="{{ site.baseurl }}/"><b>{{ site.name }}</b></a>
+				<div class="d-flex flex-row order-2 order-lg-3">
+					<ul class="navbar-nav flex-row">
+						<li class="nav-item"><a class="nav-link pt-3" href="https://github.com/{{ site.github_username }}"><span class="fa fa-github"></span></a></li>
+						<li class="nav-item"><a class="nav-link pt-3" href="https://www.linkedin.com/in/{{ site.linkedin_username }}"><span class="fa fa-linkedin"></span></a></li>
+						<li class="nav-item"><a class="nav-link pt-3" href="https://stackoverflow.com/users/{{ site.stackoverflow_id }}"><span class="fa fa-stack-overflow"></span></a></li>
+						<li class="nav-item"><a class="nav-link pt-3" href="{{ "/feed.xml" | prepend: site.baseurl }}"><span class="fa fa-rss"></span></a></li>
+						<li class="nav-item"><a class="nav-link pt-3" href="https://twitter.com/{{ site.twitter_username }}"><span class="fa fa-twitter"></span></a></li>
+						<li class="nav-item"><a class="nav-link pt-3" href="mailto:{{ site.email }}"><span class="fa fa-envelope"></span></a></li>
+					</ul>
+					<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#NavbarCollapseLinks">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+				</div>
+				<div class="collapse navbar-collapse order-3 order-lg-2" id="NavbarCollapseLinks">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/index.html">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/archive.html">Archive</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/tags.html">Tags</a></li>
+						<li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}/about.html">About</a></li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown">Links</a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" href="https://github.com/{{ site.github_username }}"><span class="fa fa-github"></span></a>
+								<a class="dropdown-item" href="https://www.linkedin.com/in/{{ site.linkedin_username }}"><span class="fa fa-linkedin"></span></a>
+								<a class="dropdown-item" href="https://stackoverflow.com/users/{{ site.stackoverflow_id }}"><span class="fa fa-stack-overflow"></span></a>
+								<a class="dropdown-item" href="{{ "/feed.xml" | prepend: site.baseurl }}"><span class="fa fa-rss"></span></a>
+								<a class="dropdown-item" href="https://twitter.com/{{ site.twitter_username }}"><span class="fa fa-twitter"></span></a>
+								<a class="dropdown-item" href="mailto:{{ site.email }}"><span class="fa fa-envelope"></span></a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</div>
