@@ -2,10 +2,10 @@
 layout: post
 title: How to terminate a C++ std::thread?
 categories: 
-- C++
+- C/C++
 - Concurrency
 tags:
-- C++
+- C/C++
 - Concurrency
 status: publish
 type: post
