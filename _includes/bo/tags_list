@@ -1,14 +1,14 @@
 {% if site.JB.tags_list.provider == "custom" %}
   {% include custom/tags_list %}
 {% else %}
-  <ul class="nav nav-pills nav-stacked">
+  <ul class="nav nav-pills flex-column"></ul>
   {% if tags_list.first[0] == null %}
     {% for tag in tags_list %}
-        <li><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag | cgi_escape }}">{{ tag }} <span class="badge pull-right">{{ site.tags[tag].size }}</span></a></li>
+        <li><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag | cgi_escape }}">{{ tag }} <span class="badge float-right">{{ site.tags[tag].size }}</span></a></li>
     {% endfor %}
   {% else %}
     {% for tag in tags_list %}
-        <li><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] | cgi_escape }}">{{ tag[0] }} <span class="badge pull-right">{{ tag[1].size }}</span></a></li>
+        <li><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] | cgi_escape }}">{{ tag[0] }} <span class="badge float-right">{{ tag[1].size }}</span></a></li>
     {% endfor %}
   {% endif %}
   </ul>
