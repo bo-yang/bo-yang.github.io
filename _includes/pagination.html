@@ -7,15 +7,13 @@
             <li class="page-item"><a class="page-link" href="{{ paginator.previous_page_path }}">&larr;  {{ site.text.pagination.newer }}</a></li>
         {% endif %}
     {% else %}
-        <li class="page-item disabled"><a>&larr; {{ site.text.pagination.newer }}</a></li>
+        <li class="page-item disabled"><a class="page-link">&larr; {{ site.text.pagination.newer }}</a></li>
     {% endif %}
-	<!---
-	<li class="page-item"><span class="page_number">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span></li>
-	-->
+	<li class="page-item"><a class="page-link">Page: {{ paginator.page }} of {{ paginator.total_pages }}</a></li>
     {% if paginator.next_page %}
         <li class="page-item"><a class="page-link" href="{{ paginator.next_page_path }}">{{ site.text.pagination.older }} &rarr;</a></li>
     {% else %}
-        <li class="page-item disabled"><a>{{ site.text.pagination.older }} &rarr;</a></li>
+        <li class="page-item disabled"><a class="page-link">{{ site.text.pagination.older }} &rarr;</a></li>
     {% endif %}
     </ul>
 </div>
