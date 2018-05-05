@@ -53,5 +53,5 @@ To make the cone are in the center of the image, we can move each probe data up 
 
 Following is a short ultrasound video clip generated with the tranformation method described above.
 
-<center>![Ultasound Video GIF]({{ site.url }}/assets/images/2018-03-05/sample-ultrasound.gif)</center>
+![Ultasound Video GIF]({{ site.url }}/assets/images/2018-03-05/sample-ultrasound.gif)
 
