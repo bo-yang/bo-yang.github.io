@@ -49,7 +49,8 @@ For the second step, we should treat two types of lines differently. Assume ther
 
 Following is my C++ implementation of text justification:
 
-<pre>
+```cpp
+
 class Solution {
 public:
     vector<string> fullJustify(vector<string> &words, int L) {
@@ -121,4 +122,4 @@ public:
 		return ret;
     }
 };
-</pre>
+```
