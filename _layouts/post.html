@@ -8,6 +8,7 @@
 				<div class="article">
 					<div class="card bg-light card-body mb-3">
 						<h1><a href="{{ site.baseurl}}{{ page.url }}">{{ page.title }}</a></h1>
+                        <center>{% include bo/adsense_auto_size %}</center>
 						<p class="post-meta">{{ page.date | date: "%Y-%m-%d" }}</p>
 						{% if site.comments and page.comments %}
 						{% if site.disqus != '' %}
@@ -17,8 +18,8 @@
 						{% endif %}
 						{% endif %}
 						<div class="post-content">
-                            {% include bo/in_article_ad %}
 							{{ content }}
+                            {% include bo/in_article_ad %}
 						</div>
 						<!-- Go to www.addthis.com/dashboard to customize your tools -->
 						<div class="addthis_sharing_toolbox" align="right"></div>
