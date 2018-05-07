@@ -19,7 +19,7 @@ header: Posts By Tag
     {% endunless %}{% endfor %}
 </ul>
 
-<center>{% include bo/adsense_728x90 %}</center>
+<center>{% include bo/adsense_auto_size %}</center>
 
 {% for item in (0..site.tags.size) %}{% unless forloop.last %}
 {% capture this_word %}{{ tag_words[item] | strip_newlines }}{% endcapture %}
@@ -32,6 +32,6 @@ header: Posts By Tag
 {% endunless %}{% endfor %}
 </div>
 
-<center>{% include bo/adsense_728x90 %}</center>
+<center>{% include bo/adsense_auto_size %}</center>
 
 {% include bo/analytics %}
