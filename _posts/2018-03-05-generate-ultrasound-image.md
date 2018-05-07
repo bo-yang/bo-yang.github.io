@@ -33,7 +33,7 @@ And the pixels mapped to the cone’s inner circle radius $$d'$$ and outer circl
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$ D' = \frac{DL}{D-d} $$.
 
-In the ultrasound image, the origin is set to the upper-left corner. Given the $$l$$-th probe data from the $$c$$-th wave, suppose the cone area is painted from left to right, its coordinates $$(x,y)$$ can be calculated based on the cone's radius pixels $$d'$$ and $$D'$$, angle $$\theta$$, and number of points $$L$$ per cone border:
+As shown in the above image, we can set the origin to the middle of the image top. Given the $$l$$-th probe data from the $$c$$-th wave, suppose the cone area is painted from left to right, its coordinates $$(x,y)$$ can be calculated based on the cone's radius pixels $$d'$$ and $$D'$$, angle $$\theta$$, and number of points $$L$$ per cone border:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$ x = \frac{D'}{2} + (d'+l)\cos\alpha $$,
 
@@ -47,11 +47,13 @@ is the angle of the pixel to the $$x$$-axis, and $$c=C-1, \cdots, 0$$ (from left
 
 The point angle $$\alpha$$ is calculated by dividing cone angle $$\theta$$ into $$C-1$$ copies. For the left half of the cone area, $$\alpha$$ is an obtuse angle, hence the above formula still work.
 
-To make the cone are in the center of the image, we can move each probe data up for $$\frac{d'}{2}$$ pixels in the image. Therefore the y-axis becomes:
+In the real ultrasound image, the origin is set to the upper-left corner. We can shift the origin from the upper middle to left by adding $$\frac{w}{2}$$ to each probe data. To make the cone are in the center of the image, we can move each probe data up for $$\frac{d'}{2}$$ pixels in the image. Therefore the actual coordinates are:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$ x = \frac{D'}{2} + (d'+l)\cos\alpha + \frac{w}{2} $$,
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $$ y = (d'+l)\sin\alpha - \frac{d'}{2} $$.
 
-Following is a short ultrasound video clip generated with the tranformation method described above.
+Following is a short ultrasound video clip generated with the above tranformation method. And here is the [python implementation](https://github.com/bo-yang/ProgrammingChallenges/blob/master/ultrasound.py).
 
 ![Ultasound Video GIF]({{ site.url }}/assets/images/2018-03-05/sample-ultrasound.gif)
 
