@@ -22,7 +22,7 @@ You can find my Matlab code from [my GitHub Channel](https://github.com/bo-yang)
 
 ### Dense Trajectory Features
 
-For some details of DTF, please refer to [my previous DTF notes](www.bo-yang.github.io/2014/01/10/dense-trajectory-notes/).
+For some details of DTF, please refer to [my previous DTF notes]({{ site.url }}2014/01/10/dense-trajectory-notes).
 
 ### Pipeline
 
