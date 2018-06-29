@@ -13,7 +13,7 @@ published: true
 author: Bo Yang
 ---
 
-This is a summary of doing human action recognition using Fisher Vector with (Improved) Dense Trjectory Features(DTF, http://lear.inrialpes.fr/~wang/improved_trajectories) and STIP features(http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(<http://crcv.ucf.edu/data/UCF101.php>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. 
+This is a summary of doing human action recognition using Fisher Vector with [(Improved) Dense Trjectory Features(DTF)]( http://lear.inrialpes.fr/~wang/improved_trajectories) and [STIP features](http://crcv.ucf.edu/ICCV13-Action-Workshop/download.html) on UCF 101 dataset(<http://crcv.ucf.edu/data/UCF101.php>). In the STIP features, two low-level visual features HOG and HOF are integrated, with dimensions 72 and 90 respectively. The (improved) DTF employ more features(TR, HOG, HOF and MBHx/MBHy) with longer dimensions. 
 
 You can find my Matlab code from [my GitHub Channel](https://github.com/bo-yang):
 
@@ -22,7 +22,7 @@ You can find my Matlab code from [my GitHub Channel](https://github.com/bo-yang)
 
 ### Dense Trajectory Features
 
-For some details of DTF, please refer to [my previous post]({{ site.url }}2014/01/10/dense-trajectory-notes/).
+For some details of DTF, please refer to [my previous DTF notes]({{ site.url }}/2014/01/10/dense-trajectory-notes/).
 
 ### Pipeline
 
