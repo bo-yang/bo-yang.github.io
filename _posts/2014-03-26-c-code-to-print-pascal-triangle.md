@@ -10,26 +10,23 @@ tags:
 status: publish
 type: post
 published: true
-meta:
-  _rest_api_published: '1'
-  _rest_api_client_id: '-1'
-  publicize_linkedin_url: http://www.linkedin.com/updates?discuss=&scope=74863407&stype=M&topic=5854630283604676608&type=U&a=yF8a
-  _wpas_done_373263: '1'
-  _publicize_done_external: a:1:{s:8:"linkedin";a:1:{s:10:"DFfbe-Shd5";b:1;}}
-  _wpas_skip_373263: '1'
-author: 
+author: Bo Yang
 ---
-<ol>
-<li>
-<p>Printing Pascal Triangle seems like an easy problem, however, it is not that easy to print a good-looking Pascal Triangle.&nbsp;</p>
-</li>
-<p>To print the Pascal Triangle, for each line, first print spaces to the left of numbers, and then print digit numbers.</p>
-<p>To calculate Pascal numbers, two assays can be used: one array to store numbers of above line, the other array to store numbers of this line. The first line has 1 number(1), the second lien has 2 numbers(1 1), the third line has three numbers(1 2 1) and so on.</p>
-<p>To make the Pascal Triangle more readable, print spaces between two neighbor &nbsp;numbers in the same line.</p></p>
-<pre class="cpp">// Pascal triangle
-#include &lt;iostream&gt;
-#include &lt;iomanip&gt;
-#include &lt;cstring&gt;
+
+Printing Pascal Triangle seems like an easy problem, however, it is not that easy to print a good-looking Pascal Triangle.
+
+To print the Pascal Triangle, for each line, first print spaces to the left of numbers, and then print digit numbers.
+
+To calculate Pascal numbers, two assays can be used: one array to store numbers of above line, the other array to store numbers of this line. The first line has 1 number(1), the second lien has 2 numbers(1 1), the third line has three numbers(1 2 1) and so on.
+
+To make the Pascal Triangle more readable, print spaces between two neighbor &nbsp;numbers in the same line.
+
+~~~cpp
+
+// Pascal triangle
+#include <iostream>
+#include <iomanip>
+#include <cstring>
 using namespace std;
 
 const int WIDTH=7;
@@ -79,13 +76,17 @@ int main()
 
 	return 0;
 }
-</pre>
-<p>
-The output looks like:</p></p>
-<pre class="plain">             1
+~~~
+
+The output looks like:
+
+~~~
+             1
            1   1
          1   2   1
        1   3   3   1
      1   4   6   4   1
    1   5  10  10   5   1
- 1   6  15  20  15   6   1</pre></p>
+ 1   6  15  20  15   6   1
+
+~~~
