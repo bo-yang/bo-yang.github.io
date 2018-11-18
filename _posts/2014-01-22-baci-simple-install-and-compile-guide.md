@@ -11,6 +11,7 @@ type: post
 published: true
 author: Bo Yang
 ---
+
 This is a guideline for a course of this semester, for which I am serving as a teaching assistant. I publish it here in hope that it can also help someone else who want to use BACI.
 
 #### Install BACI
