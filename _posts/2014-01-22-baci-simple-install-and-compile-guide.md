@@ -72,16 +72,16 @@ process 1 decrement,  procedure decrement ended
   
 A BACI source file using the C-- compiler should use a `.cm` suffix. To execute a program in BACI, there are two steps:
   
-1. Compile a `.cm` file to obtain a PCODE file (`.pco`)
+ 1. Compile a `.cm` file to obtain a PCODE file (`.pco`)
 
 Usage: bacc [optional_flags] source_filename
 
 Optional_flags:
 
 * -h show this help
-* -c make a .pob object file for subsequent linkingInterpret a PCODE file (.pco) to execute the program
+* -c make a .pob object file for subsequent linkingInterpret a PCODE file (`.pco`) to execute the program
 
-2. Usage bainterp [optional_flags] pcode_filename
+ 2. Usage bainterp [optional_flags] pcode_filename
   
 Optional_flags:
   
@@ -92,4 +92,4 @@ Optional_flags:
 * -h show this help
 * -p show PCODE instructions as they are executed
 
-There is a shell script, `baccint`, that will call the compiler and then call the interpreter for you. It passes the options that you give it along to the interpreter. If you are using the Pascal compiler syntax, then the source file should be with a .pm suffix, and you compile the program with the bapas compiler.
+There is a shell script, `baccint`, that will call the compiler and then call the interpreter for you. It passes the options that you give it along to the interpreter. If you are using the Pascal compiler syntax, then the source file should be with a `.pm` suffix, and you compile the program with the `bapas` compiler.
