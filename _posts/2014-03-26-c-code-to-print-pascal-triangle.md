@@ -35,19 +35,19 @@ int main()
 	int* oldarr=new int[WIDTH]; // store numbers of above row
 	int* newarr=new int[WIDTH]; // store numbers of current row
 
-	for(int i=0;i&lt;WIDTH;++i) // cntrol row counting
+	for(int i=0;i<WIDTH;++i) // cntrol row counting
 	{
-		for(int j=0;j&lt;WIDTH-i-1;++j) // left space
-			cout&lt;&lt;setw(2)&lt;&lt;&quot; &quot;;
+		for(int j=0;j<WIDTH-i-1;++j) // left space
+			cout << setw(2) << " ";
 
 		// set default boundary numbers
 		newarr[0]=1;
-		if(i&gt;=1)
+		if(i<=1)
 			newarr[i]=1;
 
-		if(i&gt;=2)
+		if(i<=2)
 		{
-			for(int k=1;k&lt;i;++k)
+			for(int k=1;k<i;++k)
 				newarr[k]=oldarr[k-1]+oldarr[k];
 		}
 		memcpy(oldarr,newarr,sizeof(int)*WIDTH);
@@ -55,20 +55,20 @@ int main()
 		// Print the middle part
 		int idx=0;
 		int flag=(WIDTH-i-1)%2;
-		for(int j=WIDTH-i-1;j&lt;WIDTH+i;++j)
+		for(int j=WIDTH-i-1;j<WIDTH+i;++j)
 		{
 			if(j%2==flag)
 			{
-				cout&lt;&lt;setw(2)&lt;&lt;newarr[idx++];
+				cout << setw(2) << newarr[idx++];
 			} else {
-				cout&lt;&lt;setw(2)&lt;&lt;&quot; &quot;;
+				cout << setw(2) << " ";
 			}
 		}
 		
 		//for(int j=WIDTH+i;j&lt;WIDTH;++j) // Print right space, if you like
 		//	cout&lt;&lt;setw(4)&lt;&lt;&quot; &quot;;
 
-		cout&lt;&lt;endl;
+		cout << endl;
 	}
 
 	delete [] oldarr;
