@@ -70,7 +70,7 @@ DP-3 disconnected (normal left inverted right x axis y axis)
 
 this means that the 2560x1440 resolution is not a supported(or detected) mode in output HDMI-3.
 
-There are a lot of [guides](http://ubuntuhandbook.org/index.php/2017/04/custom-screen-resolution-ubuntu-desktop/) to adda custom screen resolution to Ubuntu. [Some people recommend](https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution) to use command `cvt` to calculate the custom Modeline, however, [the calculation may be wrong without `-r` option for LCD screens](https://wiki.archlinux.org/index.php/xrandr#Adding_undetected_resolutions).
+There are a lot of [guides](http://ubuntuhandbook.org/index.php/2017/04/custom-screen-resolution-ubuntu-desktop/) to add a custom screen resolution to Ubuntu. [Some people recommend](https://askubuntu.com/questions/377937/how-to-set-a-custom-resolution) to use command `cvt` to calculate the custom Modeline, however, [the calculation may be wrong without `-r` option for LCD screens](https://wiki.archlinux.org/index.php/xrandr#Adding_undetected_resolutions).
 
 ~~~console
 bo@bo-Macmini:~$ cvt -r 2560 1440 60
